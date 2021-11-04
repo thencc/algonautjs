@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "noImplicitReturns": true,
+    "noUnusedLocals": false,
+    "outDir": "dist",
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2017"
+  },
+  "compileOnSave": true,
+  "include": [
+    "src"
+  ],
+  "exclude": [
+     "src/contracts"
+ ]
+}
