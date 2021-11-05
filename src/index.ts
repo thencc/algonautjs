@@ -45,7 +45,7 @@ declare global {
 	}
 }
 
-export default class algonaut {
+export default class Algonaut {
 
 	// TBD: add algo wallet for mobile
 

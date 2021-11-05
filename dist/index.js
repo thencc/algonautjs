@@ -32,7 +32,7 @@ runAtomicTransaction([
 Object.defineProperty(exports, "__esModule", { value: true });
 const algosdk_1 = require("algosdk");
 const buffer_1 = require("buffer");
-class algonaut {
+class Algonaut {
     constructor(config) {
         this.account = undefined;
         this.address = undefined;
@@ -587,5 +587,5 @@ class algonaut {
         return tx;
     }
 }
-exports.default = algonaut;
+exports.default = Algonaut;
 //# sourceMappingURL=index.js.map
