@@ -1,3 +1,4 @@
+import algosdk from "algosdk"
 
 
 export interface AlgonautConfig {
@@ -22,4 +23,22 @@ export type AlgonautTransactionStatus = {
 export type AlgonautWallet = {
 	address: string;
 	mnemonic: string;
+}
+
+export type AlgonautTransactionParams = {
+	addresses?: string[],
+	foreignApps?: number[],
+	assets?: number[],
+	reKeyTo?: string,
+	note?: string,
+	closeRemainderTo?: string,
+	manager?: string,
+	freeze?: string,
+	clawback?: string,
+	reserve?: string
+}
+
+export type AlgonautAtomicTransaction = {
+	transaction: algosdk.Transaction;
+	signedTransaciton: Uint8Array;
 }

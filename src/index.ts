@@ -16,13 +16,23 @@ TBD:
 - standard error values, pre-parse the algo error goop
 
 
+there are a couple ways to go for atomic txs, i THINK the more pleasant API is
+
+runAtomicTransaction([
+	atomicSendASA(),
+	atomicSendAlgo(),
+	atomicCallApp()
+])
+
+
+
 
 */
 
 import algosdk from 'algosdk';
 import algosdkNpm from 'algosdk';
 import { Buffer } from 'buffer';
-import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautError } from './AlgonautTypes';
+import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionParams } from './AlgonautTypes';
 
 // import { mainNetConfig as config } from './algoconfig';
 
@@ -114,7 +124,7 @@ export default class algonaut {
 					.pendingTransactionInformation(txId)
 					.do();
 				console.log('pending info', pendingInfo);
-			} catch (er) {
+			} catch (er: any) {
 				console.error(er.message);
 			}
 
@@ -333,7 +343,7 @@ export default class algonaut {
 					status: 'success',
 					message: 'contract call was approved'
 				}
-			} catch(er) {
+			} catch(er: any) {
 				return {
 					status: 'fail',
 					message: er.message,
@@ -578,7 +588,77 @@ export default class algonaut {
 		return 'this is not done yet';
 	}
 
+	async atomicAssetTransfer(toAddress: string, amount: number | bigint, asset: number): Promise<AlgonautAtomicTransaction> {
 
+		if (this.account) {
+
+			const transaction =
+				algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
+					from: this.account.addr,
+					to: toAddress,
+					amount: amount,
+					assetIndex: asset,
+					suggestedParams: await this.algodClient.getTransactionParams().do()
+				});
+
+			return {
+				transaction: transaction,
+				signedTransaciton: transaction.signTxn(this.account?.sk)
+			}
+		} else {
+			throw new Error('there is no account!')
+		}
+	}
+
+
+
+	/**
+	 * run atomic takes an array of transactions to run in order, each
+	 * of the atomic transaction methods needs to return an object containing
+	 * the transaction and the signed transaction
+	 * 	[ atomicSendASA(),
+			atomicSendAlgo(),
+			atomicCallApp()]
+	 * @param transactions a Uint8Array of ALREADY SIGNED transactions
+	 */
+	async sendAtomicTransaction(transactions: AlgonautAtomicTransaction[]): Promise<AlgonautTransactionStatus> {
+
+		try {
+
+			const txns = [] as algosdk.Transaction[];
+			const signed = [] as Uint8Array[];
+			transactions.forEach((txn: AlgonautAtomicTransaction) => {
+				txns.push(txn.transaction);
+				signed.push(txn.signedTransaciton);
+			});
+
+			// this is critical, if the group doesn't have an id
+			// the transactions are processed as one-offs!
+			algosdk.assignGroupID(txns);
+
+			const tx = await this.algodClient.sendRawTransaction(signed).do();
+			console.log('Transaction : ' + tx.txId);
+
+			// Wait for transaction to be confirmed
+			await this.waitForConfirmation(tx.txId);
+			return {
+				status: 'success',
+				message: 'transaction confirmed'
+			}
+		} catch (e: any) {
+			return {
+				status: 'fail',
+				message: e.message,
+				error: e
+			}
+		}
+
+	}
+
+
+	/**********************************************/
+	/***** Below are the Algo Signer APIs *********/
+	/**********************************************/
 
 	/**
 	 * Sends a transaction via AlgoSigner.
