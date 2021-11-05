@@ -5,7 +5,7 @@
 	"main": "dist/index.js",
 	"typings": "dist/index",
 	"files": [
-		"dist/*.js",
+		"dist/",
 		"LICENSE",
 		"README.md"
 	],
