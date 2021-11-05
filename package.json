@@ -3,15 +3,14 @@
 	"version": "0.0.1",
 	"description": "algonaut.js is a Algorand library for Browsers and Front End Development",
 	"main": "dist/index.js",
-	"types": "dist/index.d.ts",
+	"typings": "dist/index",
 	"files": [
 		"dist/*.js",
-		"dist/index.d.ts",
 		"LICENSE",
 		"README.md"
 	],
 	"scripts": {
-		"build": "tsc && cp \"src/index.d.ts\" dist/",
+		"build": "tsc",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"keywords": [
