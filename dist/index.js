@@ -17,6 +17,16 @@ TBD:
 - standard error values, pre-parse the algo error goop
 
 
+there are a couple ways to go for atomic txs, i THINK the more pleasant API is
+
+runAtomicTransaction([
+    atomicSendASA(),
+    atomicSendAlgo(),
+    atomicCallApp()
+])
+
+
+
 
 */
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -450,6 +460,65 @@ class algonaut {
     async accountHasTokens(address, assetIndex) {
         return 'this is not done yet';
     }
+    async atomicAssetTransfer(toAddress, amount, asset) {
+        var _a;
+        if (this.account) {
+            const transaction = algosdk_1.default.makeAssetTransferTxnWithSuggestedParamsFromObject({
+                from: this.account.addr,
+                to: toAddress,
+                amount: amount,
+                assetIndex: asset,
+                suggestedParams: await this.algodClient.getTransactionParams().do()
+            });
+            return {
+                transaction: transaction,
+                signedTransaciton: transaction.signTxn((_a = this.account) === null || _a === void 0 ? void 0 : _a.sk)
+            };
+        }
+        else {
+            throw new Error('there is no account!');
+        }
+    }
+    /**
+     * run atomic takes an array of transactions to run in order, each
+     * of the atomic transaction methods needs to return an object containing
+     * the transaction and the signed transaction
+     * 	[ atomicSendASA(),
+            atomicSendAlgo(),
+            atomicCallApp()]
+     * @param transactions a Uint8Array of ALREADY SIGNED transactions
+     */
+    async sendAtomicTransaction(transactions) {
+        try {
+            const txns = [];
+            const signed = [];
+            transactions.forEach((txn) => {
+                txns.push(txn.transaction);
+                signed.push(txn.signedTransaciton);
+            });
+            // this is critical, if the group doesn't have an id
+            // the transactions are processed as one-offs!
+            algosdk_1.default.assignGroupID(txns);
+            const tx = await this.algodClient.sendRawTransaction(signed).do();
+            console.log('Transaction : ' + tx.txId);
+            // Wait for transaction to be confirmed
+            await this.waitForConfirmation(tx.txId);
+            return {
+                status: 'success',
+                message: 'transaction confirmed'
+            };
+        }
+        catch (e) {
+            return {
+                status: 'fail',
+                message: e.message,
+                error: e
+            };
+        }
+    }
+    /**********************************************/
+    /***** Below are the Algo Signer APIs *********/
+    /**********************************************/
     /**
      * Sends a transaction via AlgoSigner.
      * @param params Transaction parameters to send

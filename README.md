@@ -20,7 +20,7 @@ One of the most powerful aspects of the Algorand chain is the ability to group t
 
 ## Interacting with Smart Contracts
 
-Algorand smart contracts are fast, light, and super clean.  Trying to communicate their APIs across our team has been really hard.  For that reason, Algonaut.js supports a simple JSON descriptor for both Stateful and Stateless Smart contracts.  The goal is to be able to load this JSON descriptor into your dev envirnment and get a sense of what you can and can't do with a contract's API.
+Algorand smart contracts are fast, light, and super clean.  Trying to communicate their APIs across our team has been really hard.  For that reason, Algonaut.js supports a simple TypeScript descriptor for both Stateful and Stateless Smart contracts.  The goal is to be able to load this TypeScript descriptor into your dev envirnment and get a sense of what you can and can't do with a contract's API.
 
 Even the concept of Stateless contracts will be a curve climb for a lot of front end people.  Our goal with this descriptor approach is to communicate a baseline of information about what transactions are permitted, expected, etc, without the front-end developer needing to go into the TEAL or PyTeal directly to figure this stuff out.
 
