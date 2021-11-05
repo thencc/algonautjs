@@ -3,10 +3,10 @@
 	"version": "0.0.1",
 	"description": "algonaut.js is a Algorand library for Browsers and Front End Development",
 	"main": "dist/index.js",
-	"types": "dist/AlgonautTypes.ts",
+	"types": "dist/index.d.ts",
 	"files": [
 		"dist/*.js",
-		"dist/AlgonautTypes.ts",
+		"dist/index.d.ts",
 		"LICENSE",
 		"README.md"
 	],
