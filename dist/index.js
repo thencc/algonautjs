@@ -1,16 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const algosdk_1 = require("algosdk");
 const buffer_1 = require("buffer");
-window.Buffer = buffer_1.Buffer;
+const algosdk_min_1 = require("algosdk/dist/browser/algosdk.min");
 class Algonaut {
     constructor(config) {
         this.account = undefined;
         this.address = undefined;
         this.sKey = undefined;
         this.mnemonic = undefined;
-        this.algodClient = new algosdk_1.default.Algodv2(config.API_TOKEN, config.BASE_SERVER, config.PORT);
-        this.indexerClient = new algosdk_1.default.Indexer(config.API_TOKEN, config.BASE_SERVER, config.PORT);
+        this.algodClient = new algosdk_min_1.default.Algodv2(config.API_TOKEN, config.BASE_SERVER, config.PORT);
+        this.indexerClient = new algosdk_min_1.default.Indexer(config.API_TOKEN, config.BASE_SERVER, config.PORT);
         // TBD: add algo wallet for mobile
     }
     async checkStatus() {
@@ -25,21 +24,27 @@ class Algonaut {
     setAccount(account) {
         this.account = account;
         this.address = account.addr;
-        this.mnemonic = algosdk_1.default.secretKeyToMnemonic(account.sk);
+        this.mnemonic = algosdk_min_1.default.secretKeyToMnemonic(account.sk);
     }
     createWallet() {
-        this.account = algosdk_1.default.generateAccount();
-        this.address = this.account.addr;
-        this.mnemonic = algosdk_1.default.secretKeyToMnemonic(this.account.sk);
-        return {
-            address: this.account.addr,
-            mnemonic: this.mnemonic
-        };
+        this.account = algosdk_min_1.default.generateAccount();
+        if (this.account) {
+            this.address = this.account.addr;
+            this.mnemonic = algosdk_min_1.default.secretKeyToMnemonic(this.account.sk);
+            return {
+                address: this.account.addr,
+                mnemonic: this.mnemonic || ''
+            };
+        }
+        else {
+            throw new Error('There was no account: could not create algonaut wallet!');
+        }
     }
     recoverAccount(mnemonic) {
+        var _a;
         try {
-            this.account = algosdk_1.default.mnemonicToSecretKey(mnemonic);
-            if (algosdk_1.default.isValidAddress(this.account.addr)) {
+            this.account = algosdk_min_1.default.mnemonicToSecretKey(mnemonic);
+            if (algosdk_min_1.default.isValidAddress((_a = this.account) === null || _a === void 0 ? void 0 : _a.addr)) {
                 return this.account;
             }
         }
@@ -96,10 +101,10 @@ class Algonaut {
             //params.fee = 1000;
             //params.flatFee = true;
             // create unsigned transaction
-            const txn = algosdk_1.default.makeAssetTransferTxnWithSuggestedParams(sender, sender, undefined, undefined, 0, undefined, assetIndex, params);
+            const txn = algosdk_min_1.default.makeAssetTransferTxnWithSuggestedParams(sender, sender, undefined, undefined, 0, undefined, assetIndex, params);
             const txId = txn.txID().toString();
             // Sign the transaction
-            const signedTxn = algosdk_1.default.signTransaction(txn, this.account.sk);
+            const signedTxn = algosdk_min_1.default.signTransaction(txn, this.account.sk);
             console.log('Signed transaction with txID: %s', txId);
             // Submit the transaction
             try {
@@ -147,10 +152,10 @@ class Algonaut {
         // loop through args and encode them based on type
         args.forEach((arg) => {
             if (typeof arg == 'number') {
-                encodedArgs.push(algosdk_1.default.encodeUint64(arg));
+                encodedArgs.push(algosdk_min_1.default.encodeUint64(arg));
             }
             else if (typeof arg == 'bigint') {
-                encodedArgs.push(algosdk_1.default.encodeUint64(arg));
+                encodedArgs.push(algosdk_min_1.default.encodeUint64(arg));
             }
             else if (typeof arg == 'string') {
                 encodedArgs.push(new Uint8Array(buffer_1.Buffer.from(arg)));
@@ -176,14 +181,14 @@ class Algonaut {
         if (this.account) {
             try {
                 // Create transaction B to A
-                const transaction1 = algosdk_1.default.makeAssetTransferTxnWithSuggestedParamsFromObject({
+                const transaction1 = algosdk_min_1.default.makeAssetTransferTxnWithSuggestedParamsFromObject({
                     from: this.account.addr,
                     to: receiverAddress,
                     amount: amount,
                     assetIndex: assetIndex,
                     suggestedParams: await this.algodClient.getTransactionParams().do()
                 });
-                const signedTx1 = algosdk_1.default.signTransaction(transaction1, this.account.sk);
+                const signedTx1 = algosdk_min_1.default.signTransaction(transaction1, this.account.sk);
                 const tx = await this.algodClient.sendRawTransaction(signedTx1.blob).do();
                 await this.waitForConfirmation(tx.txId);
                 return {
@@ -219,7 +224,7 @@ class Algonaut {
             try {
                 const processedArgs = this.processArgs(args);
                 const params = await this.algodClient.getTransactionParams().do();
-                const callAppTransaction = algosdk_1.default.makeApplicationNoOpTxnFromObject({
+                const callAppTransaction = algosdk_min_1.default.makeApplicationNoOpTxnFromObject({
                     from: this.account.addr,
                     suggestedParams: params,
                     appIndex: appIndex,
@@ -288,7 +293,7 @@ class Algonaut {
                 encodedArgs = this.processArgs(createArgs);
             }
             const sender = lsig.address();
-            const onComplete = algosdk_1.default.OnApplicationComplete.NoOpOC;
+            const onComplete = algosdk_min_1.default.OnApplicationComplete.NoOpOC;
             const params = await this.algodClient.getTransactionParams().do();
             let approvalProgram = new Uint8Array();
             let clearProgram = new Uint8Array();
@@ -297,9 +302,9 @@ class Algonaut {
                 clearProgram = await this.compileProgram(tealClearCode);
                 // create unsigned transaction
                 if (approvalProgram && clearProgram) {
-                    const txn = algosdk_1.default.makeApplicationCreateTxn(sender, params, onComplete, approvalProgram, clearProgram, localInts, localBytes, globalInts, globalBytes, encodedArgs, accounts);
+                    const txn = algosdk_min_1.default.makeApplicationCreateTxn(sender, params, onComplete, approvalProgram, clearProgram, localInts, localBytes, globalInts, globalBytes, encodedArgs, accounts);
                     const txId = txn.txID().toString();
-                    const signedTxn = algosdk_1.default.signLogicSigTransactionObject(txn, lsig);
+                    const signedTxn = algosdk_min_1.default.signLogicSigTransactionObject(txn, lsig);
                     await this.algodClient.sendRawTransaction(signedTxn.blob).do();
                     await this.waitForConfirmation(txId);
                     // display results
@@ -339,7 +344,7 @@ class Algonaut {
         const suggestedParams = await this.algodClient.getTransactionParams().do();
         if (this.account) {
             try {
-                const txn = algosdk_1.default.makePaymentTxnWithSuggestedParamsFromObject({
+                const txn = algosdk_min_1.default.makePaymentTxnWithSuggestedParamsFromObject({
                     from: this.account.addr,
                     to: toAddress,
                     amount: amount,
@@ -434,7 +439,7 @@ class Algonaut {
     async atomicAssetTransfer(toAddress, amount, asset) {
         var _a;
         if (this.account) {
-            const transaction = algosdk_1.default.makeAssetTransferTxnWithSuggestedParamsFromObject({
+            const transaction = algosdk_min_1.default.makeAssetTransferTxnWithSuggestedParamsFromObject({
                 from: this.account.addr,
                 to: toAddress,
                 amount: amount,
@@ -469,7 +474,7 @@ class Algonaut {
             });
             // this is critical, if the group doesn't have an id
             // the transactions are processed as one-offs!
-            algosdk_1.default.assignGroupID(txns);
+            algosdk_min_1.default.assignGroupID(txns);
             const tx = await this.algodClient.sendRawTransaction(signed).do();
             console.log('Transaction : ' + tx.txId);
             // Wait for transaction to be confirmed

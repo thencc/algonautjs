@@ -1,9 +1,10 @@
-
-import algosdk from 'algosdk';
-import algosdkNpm from 'algosdk';
 import { Buffer } from 'buffer';
-import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields } from './AlgonautTypes';
+// the web build seems to me missing type defs for algosdk.Account
+// and a few other types so we use this ref to get them into the IDE
+import algosdkTypeRef from 'algosdk';
+import algosdk from 'algosdk/dist/browser/algosdk.min';
 
+import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields } from './AlgonautTypes';
 
 /*
 ! if you are reading an ADDRESS, you must do this:
@@ -46,24 +47,21 @@ runAtomicTransaction([
 declare global {
 	interface Window {
 		AlgoSigner: any;
-		algosdk: typeof algosdkNpm;
-		Buffer: typeof Buffer;
 	}
 }
-window.Buffer = Buffer;
 
 export default class Algonaut {
 
 	// TBD: add algo wallet for mobile
-
-	algodClient: algosdk.Algodv2;
-	indexerClient: algosdk.Indexer;
-	account = undefined as undefined | algosdkNpm.Account;
+	algodClient: algosdkTypeRef.Algodv2;
+	indexerClient: algosdkTypeRef.Indexer;
+	account = undefined as undefined | algosdkTypeRef.Account;
 	address = undefined as undefined | string;
 	sKey = undefined as undefined | Uint8Array;
 	mnemonic = undefined as undefined | string;
 
 	constructor(config: AlgonautConfig) {
+
 
 		this.algodClient = new algosdk.Algodv2(config.API_TOKEN, config.BASE_SERVER,  config.PORT);
 		this.indexerClient = new algosdk.Indexer(config.API_TOKEN, config.BASE_SERVER,  config.PORT);
@@ -82,7 +80,7 @@ export default class Algonaut {
 	 * @param account an algosdk account already created
 	 *
 	 */
-	setAccount(account: algosdk.Account): void {
+	setAccount(account: algosdkTypeRef.Account): void {
 		this.account = account;
 		this.address = account.addr;
 		this.mnemonic = algosdk.secretKeyToMnemonic(account.sk);
@@ -90,19 +88,25 @@ export default class Algonaut {
 
 	createWallet(): AlgonautWallet {
 		this.account = algosdk.generateAccount();
-		this.address = this.account.addr;
-		this.mnemonic = algosdk.secretKeyToMnemonic(this.account.sk);
-		return {
-			address: this.account.addr,
-			mnemonic: this.mnemonic
-		};
+
+		if (this.account) {
+			this.address = this.account.addr;
+			this.mnemonic = algosdk.secretKeyToMnemonic(this.account.sk);
+			return {
+				address: this.account.addr,
+				mnemonic: this.mnemonic || ''
+			};
+		} else {
+			throw new Error('There was no account: could not create algonaut wallet!');
+		}
+
 	}
 
 
 	recoverAccount(mnemonic: string): any {
 		try {
 			this.account = algosdk.mnemonicToSecretKey(mnemonic);
-			if (algosdk.isValidAddress(this.account.addr)) {
+			if (algosdk.isValidAddress(this.account?.addr)) {
 				return this.account;
 			}
 		} catch (error) {
@@ -384,7 +388,7 @@ export default class Algonaut {
 	 * @returns
 	 */
 	async deployTealWithLSig (
-		lsig: algosdkNpm.LogicSigAccount,
+		lsig: algosdkTypeRef.LogicSigAccount,
 		tealApprovalCode: string,
 		tealClearCode: string,
 		noteText: string,
@@ -631,7 +635,7 @@ export default class Algonaut {
 
 		try {
 
-			const txns = [] as algosdk.Transaction[];
+			const txns = [] as algosdkTypeRef.Transaction[];
 			const signed = [] as Uint8Array[];
 			transactions.forEach((txn: AlgonautAtomicTransaction) => {
 				txns.push(txn.transaction);

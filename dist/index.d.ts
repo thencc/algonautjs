@@ -1,19 +1,14 @@
-/// <reference types="node" />
-import algosdk from 'algosdk';
-import algosdkNpm from 'algosdk';
-import { Buffer } from 'buffer';
+import algosdkTypeRef from 'algosdk';
 import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields } from './AlgonautTypes';
 declare global {
     interface Window {
         AlgoSigner: any;
-        algosdk: typeof algosdkNpm;
-        Buffer: typeof Buffer;
     }
 }
 export default class Algonaut {
-    algodClient: algosdk.Algodv2;
-    indexerClient: algosdk.Indexer;
-    account: algosdk.Account | undefined;
+    algodClient: algosdkTypeRef.Algodv2;
+    indexerClient: algosdkTypeRef.Indexer;
+    account: algosdkTypeRef.Account | undefined;
     address: string | undefined;
     sKey: Uint8Array | undefined;
     mnemonic: string | undefined;
@@ -23,7 +18,7 @@ export default class Algonaut {
      * @param account an algosdk account already created
      *
      */
-    setAccount(account: algosdk.Account): void;
+    setAccount(account: algosdkTypeRef.Account): void;
     createWallet(): AlgonautWallet;
     recoverAccount(mnemonic: string): any;
     /**
@@ -87,7 +82,7 @@ export default class Algonaut {
      * @param globalBytes up to 32
      * @returns
      */
-    deployTealWithLSig(lsig: algosdkNpm.LogicSigAccount, tealApprovalCode: string, tealClearCode: string, noteText: string, createArgs: string[], accounts: string[], localInts: number, localBytes: number, globalInts: number, globalBytes: number): Promise<AlgonautTransactionStatus>;
+    deployTealWithLSig(lsig: algosdkTypeRef.LogicSigAccount, tealApprovalCode: string, tealClearCode: string, noteText: string, createArgs: string[], accounts: string[], localInts: number, localBytes: number, globalInts: number, globalBytes: number): Promise<AlgonautTransactionStatus>;
     compileProgram(programSource: string): Promise<Uint8Array>;
     sendAlgo(toAddress: string, amount: number, note?: string): Promise<AlgonautTransactionStatus>;
     /**
