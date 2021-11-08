@@ -1,37 +1,8 @@
 "use strict";
-/*
-! if you are reading an ADDRESS, you must do this:
-const addy = algosdk.encodeAddress(Buffer.from(stateItem.value.bytes, 'base64'));
-
-I think we can take an arg to "read as address"
-
-for stateful contracts i think we want to read it in and hold all the
-NV pairs as fields
-
-and maybe read the TEAL and make wrapper methods for things we see in
-a config file?
-
-TBD:
-
-- standard typed return values
-- standard error values, pre-parse the algo error goop
-
-
-there are a couple ways to go for atomic txs, i THINK the more pleasant API is
-
-runAtomicTransaction([
-    atomicSendASA(),
-    atomicSendAlgo(),
-    atomicCallApp()
-])
-
-
-
-
-*/
 Object.defineProperty(exports, "__esModule", { value: true });
 const algosdk_1 = require("algosdk");
 const buffer_1 = require("buffer");
+window.Buffer = buffer_1.Buffer;
 class Algonaut {
     constructor(config) {
         this.account = undefined;
@@ -240,10 +211,10 @@ class Algonaut {
      * an argument which branches to a specific place and reads the other args
      * @param contractIndex
      * @param args an array of arguments for the call
-     * @param accounts an array of addresses to send with the app call
-     * @param apps an array of "foreign apps" to send with the app call
+     * @param optionalTransactionFields an AlgonautTransactionFields object with
+     *  		  any additional fields you want to pass to this transaction
      */
-    async callStatefulApp(appIndex, args, accounts, apps, assets) {
+    async callStatefulApp(appIndex, args, optionalFields) {
         if (this.account && appIndex && args.length) {
             try {
                 const processedArgs = this.processArgs(args);
@@ -253,9 +224,9 @@ class Algonaut {
                     suggestedParams: params,
                     appIndex: appIndex,
                     appArgs: processedArgs,
-                    accounts: accounts,
-                    foreignApps: apps,
-                    foreignAssets: assets
+                    accounts: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.accounts) || undefined,
+                    foreignApps: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.foreignApps) || undefined,
+                    foreignAssets: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.assets) || undefined
                 });
                 const txId = callAppTransaction.txID().toString();
                 // Sign the transaction

@@ -1,4 +1,4 @@
-import algosdk from "algosdk";
+import algosdk from 'algosdk';
 export interface AlgonautConfig {
     BASE_SERVER: string;
     LEDGER: string;
@@ -18,8 +18,8 @@ export declare type AlgonautWallet = {
     address: string;
     mnemonic: string;
 };
-export declare type AlgonautTransactionParams = {
-    addresses?: string[];
+export declare type AlgonautTransactionFields = {
+    accounts?: string[];
     foreignApps?: number[];
     assets?: number[];
     reKeyTo?: string;

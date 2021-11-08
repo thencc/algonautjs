@@ -1,3 +1,10 @@
+
+import algosdk from 'algosdk';
+import algosdkNpm from 'algosdk';
+import { Buffer } from 'buffer';
+import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields } from './AlgonautTypes';
+
+
 /*
 ! if you are reading an ADDRESS, you must do this:
 const addy = algosdk.encodeAddress(Buffer.from(stateItem.value.bytes, 'base64'));
@@ -29,10 +36,8 @@ runAtomicTransaction([
 
 */
 
-import algosdk from 'algosdk';
-import algosdkNpm from 'algosdk';
-import { Buffer } from 'buffer';
-import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionParams } from './AlgonautTypes';
+
+
 
 // import { mainNetConfig as config } from './algoconfig';
 
@@ -42,8 +47,10 @@ declare global {
 	interface Window {
 		AlgoSigner: any;
 		algosdk: typeof algosdkNpm;
+		Buffer: typeof Buffer;
 	}
 }
+window.Buffer = Buffer;
 
 export default class Algonaut {
 
@@ -90,6 +97,7 @@ export default class Algonaut {
 			mnemonic: this.mnemonic
 		};
 	}
+
 
 	recoverAccount(mnemonic: string): any {
 		try {
@@ -296,15 +304,13 @@ export default class Algonaut {
 	 * an argument which branches to a specific place and reads the other args
 	 * @param contractIndex
 	 * @param args an array of arguments for the call
-	 * @param accounts an array of addresses to send with the app call
-	 * @param apps an array of "foreign apps" to send with the app call
+	 * @param optionalTransactionFields an AlgonautTransactionFields object with
+	 *  		  any additional fields you want to pass to this transaction
 	 */
 	async callStatefulApp (
 		appIndex: number,
 		args: any[],
-		accounts?: string[],
-		apps?: number[],
-		assets?: number[]
+		optionalFields?: AlgonautTransactionFields
 	): Promise<AlgonautTransactionStatus> {
 
 		if (this.account && appIndex && args.length) {
@@ -319,9 +325,9 @@ export default class Algonaut {
 					suggestedParams: params,
 					appIndex: appIndex,
 					appArgs: processedArgs,
-					accounts: accounts,
-					foreignApps: apps,
-					foreignAssets: assets
+					accounts: optionalFields?.accounts || undefined,
+					foreignApps: optionalFields?.foreignApps || undefined,
+					foreignAssets: optionalFields?.assets || undefined
 				});
 
 				const txId = callAppTransaction.txID().toString();
@@ -342,13 +348,13 @@ export default class Algonaut {
 				return {
 					status: 'success',
 					message: 'contract call was approved'
-				}
+				};
 			} catch(er: any) {
 				return {
 					status: 'fail',
 					message: er.message,
 					error: er
-				}
+				};
 			}
 
 		} else {
@@ -393,7 +399,7 @@ export default class Algonaut {
 			return {
 				status: 'fail',
 				message: 'your note is too dang long!'
-			}
+			};
 		}
 
 		if (this.account) {
@@ -445,7 +451,7 @@ export default class Algonaut {
 					return {
 						status: 'success',
 						message: 'created new app with id: ' + appId
-					}
+					};
 				}
 			} catch (er: any) {
 
@@ -453,13 +459,13 @@ export default class Algonaut {
 					status: 'fail',
 					message: er.message,
 					error: er
-				}
+				};
 			}
 		}
 		return {
 			status: 'fail',
 			message: 'no account'
-		}
+		};
 
 
 	}
@@ -500,19 +506,19 @@ export default class Algonaut {
 				return {
 					status: 'success',
 					message: 'transaction confirmed'
-				}
+				};
 			} catch (e: any) {
 				return {
 					status: 'fail',
 					message: e.message,
 					error: e
-				}
+				};
 			}
 		} else {
 			return {
 				status: 'fail',
 				message: 'there was no account'
-			}
+			};
 		}
 	}
 
@@ -604,9 +610,9 @@ export default class Algonaut {
 			return {
 				transaction: transaction,
 				signedTransaciton: transaction.signTxn(this.account?.sk)
-			}
+			};
 		} else {
-			throw new Error('there is no account!')
+			throw new Error('there is no account!');
 		}
 	}
 
@@ -644,13 +650,13 @@ export default class Algonaut {
 			return {
 				status: 'success',
 				message: 'transaction confirmed'
-			}
+			};
 		} catch (e: any) {
 			return {
 				status: 'fail',
 				message: e.message,
 				error: e
-			}
+			};
 		}
 
 	}

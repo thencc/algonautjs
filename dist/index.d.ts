@@ -1,10 +1,13 @@
+/// <reference types="node" />
 import algosdk from 'algosdk';
 import algosdkNpm from 'algosdk';
-import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction } from './AlgonautTypes';
+import { Buffer } from 'buffer';
+import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields } from './AlgonautTypes';
 declare global {
     interface Window {
         AlgoSigner: any;
         algosdk: typeof algosdkNpm;
+        Buffer: typeof Buffer;
     }
 }
 export default class Algonaut {
@@ -62,10 +65,10 @@ export default class Algonaut {
      * an argument which branches to a specific place and reads the other args
      * @param contractIndex
      * @param args an array of arguments for the call
-     * @param accounts an array of addresses to send with the app call
-     * @param apps an array of "foreign apps" to send with the app call
+     * @param optionalTransactionFields an AlgonautTransactionFields object with
+     *  		  any additional fields you want to pass to this transaction
      */
-    callStatefulApp(appIndex: number, args: any[], accounts?: string[], apps?: number[], assets?: number[]): Promise<AlgonautTransactionStatus>;
+    callStatefulApp(appIndex: number, args: any[], optionalFields?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus>;
     /**
      * deploys a contract from an lsig account
      * keep in mind that the local and global byte and int values have caps,
