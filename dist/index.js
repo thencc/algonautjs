@@ -8,9 +8,11 @@ class Algonaut {
         this.address = undefined;
         this.sKey = undefined;
         this.mnemonic = undefined;
+        this.config = undefined;
+        this.config = config;
         this.algodClient = new algosdk_min_1.default.Algodv2(config.API_TOKEN, config.BASE_SERVER, config.PORT);
         this.indexerClient = new algosdk_min_1.default.Indexer(config.API_TOKEN, config.BASE_SERVER, config.PORT);
-        // TBD: add algo wallet for mobile
+        // TBD: add support for algo wallet on mobile
     }
     async checkStatus() {
         const status = await this.algodClient.status().do();

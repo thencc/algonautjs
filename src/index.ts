@@ -26,18 +26,16 @@ TBD:
 
 there are a couple ways to go for atomic txs, i THINK the more pleasant API is
 
-runAtomicTransaction([
-	atomicSendASA(),
-	atomicSendAlgo(),
-	atomicCallApp()
+await runAtomicTransaction([
+	await atomicSendASA(),
+	await atomicSendAlgo(),
+	await atomicCallApp()
 ])
 
 
 
 
 */
-
-
 
 
 // import { mainNetConfig as config } from './algoconfig';
@@ -59,14 +57,15 @@ export default class Algonaut {
 	address = undefined as undefined | string;
 	sKey = undefined as undefined | Uint8Array;
 	mnemonic = undefined as undefined | string;
+	config = undefined as undefined | AlgonautConfig;
 
 	constructor(config: AlgonautConfig) {
 
-
+		this.config = config;
 		this.algodClient = new algosdk.Algodv2(config.API_TOKEN, config.BASE_SERVER,  config.PORT);
 		this.indexerClient = new algosdk.Indexer(config.API_TOKEN, config.BASE_SERVER,  config.PORT);
 
-		// TBD: add algo wallet for mobile
+		// TBD: add support for algo wallet on mobile
 
 	}
 

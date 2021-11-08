@@ -12,6 +12,7 @@ export default class Algonaut {
     address: string | undefined;
     sKey: Uint8Array | undefined;
     mnemonic: string | undefined;
+    config: AlgonautConfig | undefined;
     constructor(config: AlgonautConfig);
     checkStatus(): Promise<any>;
     /** if you already have an account, set it here
