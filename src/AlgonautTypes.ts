@@ -8,6 +8,20 @@ export interface AlgonautConfig {
 	API_TOKEN: any;
 }
 
+export interface AlgonautStateData {
+	key: string;
+	value: string | number | bigint;
+	address: string; // if we can detect an address, we put it here
+}
+
+export interface AlgonautAppState {
+	index: number;
+	hasState: boolean;
+	creatorAddress: string;
+	globals: AlgonautStateData[];
+	locals: AlgonautStateData[];
+}
+
 
 export type AlgonautError = {
 	message: string;
@@ -42,3 +56,4 @@ export type AlgonautAtomicTransaction = {
 	transaction: algosdk.Transaction;
 	signedTransaciton: Uint8Array;
 }
+

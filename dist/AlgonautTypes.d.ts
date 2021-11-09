@@ -5,6 +5,18 @@ export interface AlgonautConfig {
     PORT: string;
     API_TOKEN: any;
 }
+export interface AlgonautStateData {
+    key: string;
+    value: string | number | bigint;
+    address: string;
+}
+export interface AlgonautAppState {
+    index: number;
+    hasState: boolean;
+    creatorAddress: string;
+    globals: AlgonautStateData[];
+    locals: AlgonautStateData[];
+}
 export declare type AlgonautError = {
     message: string;
     rawError: Error;

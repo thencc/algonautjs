@@ -14,6 +14,9 @@ class Algonaut {
         this.indexerClient = new algosdk_min_1.default.Indexer(config.API_TOKEN, config.BASE_SERVER, config.PORT);
         // TBD: add support for algo wallet on mobile
     }
+    getConfig() {
+        return this.config;
+    }
     async checkStatus() {
         const status = await this.algodClient.status().do();
         console.log('Algorand network status: %o', status);
@@ -90,7 +93,7 @@ class Algonaut {
         return returnValue;
     }
     /**
-     * Opt-in for the Stacks token ASA
+     * Opt-in the current account for the a token or NFT ASA.
      * @returns Promise resolving to confirmed transaction or error
      */
     async optInASA(assetIndex) {
@@ -149,7 +152,7 @@ class Algonaut {
      * a mix of strings and numbers. Valid types are: string, number, and bigint
      * @returns a Uint8Array of encoded arguments
      */
-    processArgs(args) {
+    encodeArguments(args) {
         const encodedArgs = [];
         // loop through args and encode them based on type
         args.forEach((arg) => {
@@ -224,7 +227,7 @@ class Algonaut {
     async callStatefulApp(appIndex, args, optionalFields) {
         if (this.account && appIndex && args.length) {
             try {
-                const processedArgs = this.processArgs(args);
+                const processedArgs = this.encodeArguments(args);
                 const params = await this.algodClient.getTransactionParams().do();
                 const callAppTransaction = algosdk_min_1.default.makeApplicationNoOpTxnFromObject({
                     from: this.account.addr,
@@ -292,7 +295,7 @@ class Algonaut {
         if (this.account) {
             let encodedArgs = [];
             if (createArgs && createArgs.length) {
-                encodedArgs = this.processArgs(createArgs);
+                encodedArgs = this.encodeArguments(createArgs);
             }
             const sender = lsig.address();
             const onComplete = algosdk_min_1.default.OnApplicationComplete.NoOpOC;
@@ -438,6 +441,150 @@ class Algonaut {
     async accountHasTokens(address, assetIndex) {
         return 'this is not done yet';
     }
+    /**
+     *
+     * @param applicationIndex the applications index
+     */
+    async getAppGlobalState(applicationIndex, creatorAddress) {
+        //! if you are reading an ADDRESS, you must do this:
+        // const addy = algosdk.encodeAddress(Buffer.from(stateItem.value.bytes, 'base64'));
+        const state = {
+            hasState: false,
+            globals: [],
+            locals: [],
+            creatorAddress: '',
+            index: applicationIndex
+        };
+        // read state
+        // can we detect addresses values and auto-convert them?
+        // maybe a 32-byte field gets an address field added?
+        const accountInfoResponse = await this.algodClient
+            .accountInformation(creatorAddress)
+            .do();
+        console.log(accountInfoResponse);
+        for (let i = 0; i < accountInfoResponse['created-apps'].length; i++) {
+            if (accountInfoResponse['created-apps'][i].id == applicationIndex) {
+                console.log('Found Application');
+                state.hasState = true;
+                for (let n = 0; n < accountInfoResponse['created-apps'][i]['params']['global-state'].length; n++) {
+                    const stateItem = accountInfoResponse['created-apps'][i]['params']['global-state'][n];
+                    const key = buffer_1.Buffer.from(stateItem.key, 'base64').toString();
+                    const type = stateItem.value.type;
+                    let value = undefined;
+                    let valueAsAddr = '';
+                    if (type == 1) {
+                        value = buffer_1.Buffer.from(stateItem.value.bytes, 'base64').toString();
+                        valueAsAddr = algosdk_min_1.default.encodeAddress(buffer_1.Buffer.from(stateItem.value.bytes, 'base64'));
+                    }
+                    else if (stateItem.value.type == 2) {
+                        value = stateItem.value.uint;
+                    }
+                    state.globals.push({
+                        key: key,
+                        value: value || '',
+                        address: valueAsAddr
+                    });
+                }
+            }
+        }
+        return state;
+    }
+    /**
+     *
+     * @param applicationIndex the applications index
+     */
+    async getAppLocalState(applicationIndex) {
+        var _a;
+        if (this.account) {
+            const state = {
+                hasState: false,
+                globals: [],
+                locals: [],
+                creatorAddress: '',
+                index: applicationIndex
+            };
+            // read state
+            // can we detect addresses values and auto-convert them?
+            // maybe a 32-byte field gets an address field added?
+            const accountInfoResponse = await this.algodClient
+                .accountInformation((_a = this.account) === null || _a === void 0 ? void 0 : _a.addr)
+                .do();
+            console.log(accountInfoResponse);
+            for (let i = 0; i < accountInfoResponse['apps-local-state'].length; i++) {
+                if (accountInfoResponse['apps-local-state'][i].id == applicationIndex) {
+                    console.log('Found Application');
+                    state.hasState = true;
+                    for (let n = 0; n < accountInfoResponse['apps-local-state'][i]['key-value'].length; n++) {
+                        const stateItem = accountInfoResponse['apps-local-state'][i]['key-value'][n];
+                        const key = buffer_1.Buffer.from(stateItem.key, 'base64').toString();
+                        const type = stateItem.value.type;
+                        let value = undefined;
+                        let valueAsAddr = '';
+                        if (type == 1) {
+                            value = buffer_1.Buffer.from(stateItem.value.bytes, 'base64').toString();
+                            valueAsAddr = algosdk_min_1.default.encodeAddress(buffer_1.Buffer.from(stateItem.value.bytes, 'base64'));
+                        }
+                        else if (stateItem.value.type == 2) {
+                            value = stateItem.value.uint;
+                        }
+                        state.globals.push({
+                            key: key,
+                            value: value || '',
+                            address: valueAsAddr
+                        });
+                    }
+                }
+            }
+            return state;
+        }
+        else {
+            throw new Error('there is no account');
+        }
+    }
+    async atomicCallStatefulApp(appIndex, args, optionalFields) {
+        if (this.account && appIndex && args.length) {
+            const processedArgs = this.encodeArguments(args);
+            const params = await this.algodClient.getTransactionParams().do();
+            const callAppTransaction = algosdk_min_1.default.makeApplicationNoOpTxnFromObject({
+                from: this.account.addr,
+                suggestedParams: params,
+                appIndex: appIndex,
+                appArgs: processedArgs,
+                accounts: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.accounts) || undefined,
+                foreignApps: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.foreignApps) || undefined,
+                foreignAssets: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.assets) || undefined
+            });
+            return {
+                transaction: callAppTransaction,
+                signedTransaciton: callAppTransaction.signTxn(this.account.sk)
+            };
+        }
+        else {
+            throw new Error('there was no account!');
+        }
+    }
+    async atomicCallStatefulAppWithLSig(appIndex, args, logicSig, optionalFields) {
+        if (this.account && appIndex && args.length) {
+            const processedArgs = this.encodeArguments(args);
+            const params = await this.algodClient.getTransactionParams().do();
+            const callAppTransaction = algosdk_min_1.default.makeApplicationNoOpTxnFromObject({
+                from: logicSig.address(),
+                suggestedParams: params,
+                appIndex: appIndex,
+                appArgs: processedArgs,
+                accounts: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.accounts) || undefined,
+                foreignApps: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.foreignApps) || undefined,
+                foreignAssets: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.assets) || undefined
+            });
+            return {
+                transaction: callAppTransaction,
+                signedTransaciton: algosdk_min_1.default.signLogicSigTransactionObject(callAppTransaction, logicSig).blob
+            };
+        }
+        else {
+            throw new Error('there was no account!');
+        }
+    }
     async atomicAssetTransfer(toAddress, amount, asset) {
         var _a;
         if (this.account) {
@@ -451,6 +598,59 @@ class Algonaut {
             return {
                 transaction: transaction,
                 signedTransaciton: transaction.signTxn((_a = this.account) === null || _a === void 0 ? void 0 : _a.sk)
+            };
+        }
+        else {
+            throw new Error('there is no account!');
+        }
+    }
+    async atomicAssetTransferWithLSig(toAddress, amount, asset, logicSig) {
+        if (logicSig) {
+            const transaction = algosdk_min_1.default.makeAssetTransferTxnWithSuggestedParamsFromObject({
+                from: logicSig.address(),
+                to: toAddress,
+                amount: amount,
+                assetIndex: asset,
+                suggestedParams: await this.algodClient.getTransactionParams().do()
+            });
+            return {
+                transaction: transaction,
+                signedTransaciton: algosdk_min_1.default.signLogicSigTransactionObject(transaction, logicSig).blob
+            };
+        }
+        else {
+            throw new Error('there is no logic sig object!');
+        }
+    }
+    async atomicPayment(toAddress, amount, optionalTxParams) {
+        var _a;
+        if (this.account) {
+            const transaction = algosdk_min_1.default.makePaymentTxnWithSuggestedParamsFromObject({
+                from: this.account.addr,
+                to: toAddress,
+                amount: amount,
+                suggestedParams: await this.algodClient.getTransactionParams().do()
+            });
+            return {
+                transaction: transaction,
+                signedTransaciton: transaction.signTxn((_a = this.account) === null || _a === void 0 ? void 0 : _a.sk)
+            };
+        }
+        else {
+            throw new Error('there is no account!');
+        }
+    }
+    async atomicPaymentWithLSig(toAddress, amount, logicSig, optionalTxParams) {
+        if (logicSig) {
+            const transaction = algosdk_min_1.default.makePaymentTxnWithSuggestedParamsFromObject({
+                from: logicSig.address(),
+                to: toAddress,
+                amount: amount,
+                suggestedParams: await this.algodClient.getTransactionParams().do()
+            });
+            return {
+                transaction: transaction,
+                signedTransaciton: algosdk_min_1.default.signLogicSigTransactionObject(transaction, logicSig).blob
             };
         }
         else {

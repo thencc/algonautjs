@@ -1,5 +1,5 @@
 import algosdkTypeRef from 'algosdk';
-import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields } from './AlgonautTypes';
+import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields, AlgonautAppState } from './AlgonautTypes';
 declare global {
     interface Window {
         AlgoSigner: any;
@@ -14,6 +14,7 @@ export default class Algonaut {
     mnemonic: string | undefined;
     config: AlgonautConfig | undefined;
     constructor(config: AlgonautConfig);
+    getConfig(): AlgonautConfig | undefined;
     checkStatus(): Promise<any>;
     /** if you already have an account, set it here
      * @param account an algosdk account already created
@@ -29,7 +30,7 @@ export default class Algonaut {
      */
     waitForConfirmation(txId: string, limitDelta?: number): Promise<AlgonautTransactionStatus>;
     /**
-     * Opt-in for the Stacks token ASA
+     * Opt-in the current account for the a token or NFT ASA.
      * @returns Promise resolving to confirmed transaction or error
      */
     optInASA(assetIndex: number): Promise<AlgonautTransactionStatus>;
@@ -40,7 +41,7 @@ export default class Algonaut {
      * a mix of strings and numbers. Valid types are: string, number, and bigint
      * @returns a Uint8Array of encoded arguments
      */
-    processArgs(args: any[]): Uint8Array[];
+    encodeArguments(args: any[]): Uint8Array[];
     /**
      * Sends ASA to an address
      * @param receiverAddress the address to send to
@@ -121,7 +122,22 @@ export default class Algonaut {
      * @param assetIndex the index of the ASA
      */
     accountHasTokens(address: string, assetIndex: number): Promise<any>;
+    /**
+     *
+     * @param applicationIndex the applications index
+     */
+    getAppGlobalState(applicationIndex: number, creatorAddress: string): Promise<AlgonautAppState>;
+    /**
+     *
+     * @param applicationIndex the applications index
+     */
+    getAppLocalState(applicationIndex: number): Promise<AlgonautAppState>;
+    atomicCallStatefulApp(appIndex: number, args: any[], optionalFields?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
+    atomicCallStatefulAppWithLSig(appIndex: number, args: any[], logicSig: algosdkTypeRef.LogicSigAccount, optionalFields?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
     atomicAssetTransfer(toAddress: string, amount: number | bigint, asset: number): Promise<AlgonautAtomicTransaction>;
+    atomicAssetTransferWithLSig(toAddress: string, amount: number | bigint, asset: number, logicSig: algosdkTypeRef.LogicSigAccount): Promise<AlgonautAtomicTransaction>;
+    atomicPayment(toAddress: string, amount: number | bigint, optionalTxParams?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
+    atomicPaymentWithLSig(toAddress: string, amount: number | bigint, logicSig: algosdkTypeRef.LogicSigAccount, optionalTxParams?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
     /**
      * run atomic takes an array of transactions to run in order, each
      * of the atomic transaction methods needs to return an object containing
