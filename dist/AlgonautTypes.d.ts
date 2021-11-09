@@ -44,5 +44,6 @@ export declare type AlgonautTransactionFields = {
 };
 export declare type AlgonautAtomicTransaction = {
     transaction: algosdk.Transaction;
-    signedTransaciton: Uint8Array;
+    transactionSigner: algosdk.Account | algosdk.LogicSigAccount;
+    isLogigSig: boolean;
 };

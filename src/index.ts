@@ -764,7 +764,8 @@ export default class Algonaut {
 
 			return {
 				transaction: callAppTransaction,
-				signedTransaciton: callAppTransaction.signTxn(this.account.sk)
+				transactionSigner: this.account,
+				isLogigSig: false
 			};
 
 		} else {
@@ -794,7 +795,8 @@ export default class Algonaut {
 
 			return {
 				transaction: callAppTransaction,
-				signedTransaciton: algosdk.signLogicSigTransactionObject(callAppTransaction, logicSig).blob
+				transactionSigner: logicSig,
+				isLogigSig: true
 			};
 
 		} else {
@@ -817,7 +819,8 @@ export default class Algonaut {
 
 			return {
 				transaction: transaction,
-				signedTransaciton: transaction.signTxn(this.account?.sk)
+				transactionSigner: this.account,
+				isLogigSig: false
 			};
 		} else {
 			throw new Error('there is no account!');
@@ -838,7 +841,8 @@ export default class Algonaut {
 
 			return {
 				transaction: transaction,
-				signedTransaciton: algosdk.signLogicSigTransactionObject(transaction, logicSig).blob
+				transactionSigner: logicSig,
+				isLogigSig: true
 			};
 		} else {
 			throw new Error('there is no logic sig object!');
@@ -859,7 +863,8 @@ export default class Algonaut {
 
 			return {
 				transaction: transaction,
-				signedTransaciton: transaction.signTxn(this.account?.sk)
+				transactionSigner: this.account,
+				isLogigSig: false
 			};
 		} else {
 			throw new Error('there is no account!');
@@ -879,7 +884,8 @@ export default class Algonaut {
 
 			return {
 				transaction: transaction,
-				signedTransaciton: algosdk.signLogicSigTransactionObject(transaction, logicSig).blob
+				transactionSigner: logicSig,
+				isLogigSig: true
 			};
 		} else {
 			throw new Error('there is no account!');
@@ -903,12 +909,25 @@ export default class Algonaut {
 			const signed = [] as Uint8Array[];
 			transactions.forEach((txn: AlgonautAtomicTransaction) => {
 				txns.push(txn.transaction);
-				signed.push(txn.signedTransaciton);
 			});
 
 			// this is critical, if the group doesn't have an id
 			// the transactions are processed as one-offs!
-			algosdk.assignGroupID(txns);
+			const txnGroup = algosdk.assignGroupID(txns);
+
+			// sign all transactions in the group:
+			transactions.forEach((txn: AlgonautAtomicTransaction, i) => {
+				let signedTx: {
+					txID: string;
+					blob: Uint8Array;
+				};
+				if (txn.isLogigSig) {
+					signedTx = algosdk.signLogicSigTransaction(txnGroup[i], txn.transactionSigner as algosdkTypeRef.LogicSigAccount);
+				} else {
+					signedTx = algosdk.signTransaction(txnGroup[i], (txn.transactionSigner as algosdkTypeRef.Account).sk);
+				}
+				signed.push(signedTx.blob);
+			});
 
 			const tx = await this.algodClient.sendRawTransaction(signed).do();
 			console.log('Transaction : ' + tx.txId);

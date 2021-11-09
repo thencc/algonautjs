@@ -566,7 +566,8 @@ class Algonaut {
             });
             return {
                 transaction: callAppTransaction,
-                signedTransaciton: callAppTransaction.signTxn(this.account.sk)
+                transactionSigner: this.account,
+                isLogigSig: false
             };
         }
         else {
@@ -588,7 +589,8 @@ class Algonaut {
             });
             return {
                 transaction: callAppTransaction,
-                signedTransaciton: algosdk_min_1.default.signLogicSigTransactionObject(callAppTransaction, logicSig).blob
+                transactionSigner: logicSig,
+                isLogigSig: true
             };
         }
         else {
@@ -596,7 +598,6 @@ class Algonaut {
         }
     }
     async atomicAssetTransfer(toAddress, amount, asset) {
-        var _a;
         if (this.account) {
             const transaction = algosdk_min_1.default.makeAssetTransferTxnWithSuggestedParamsFromObject({
                 from: this.account.addr,
@@ -607,7 +608,8 @@ class Algonaut {
             });
             return {
                 transaction: transaction,
-                signedTransaciton: transaction.signTxn((_a = this.account) === null || _a === void 0 ? void 0 : _a.sk)
+                transactionSigner: this.account,
+                isLogigSig: false
             };
         }
         else {
@@ -625,7 +627,8 @@ class Algonaut {
             });
             return {
                 transaction: transaction,
-                signedTransaciton: algosdk_min_1.default.signLogicSigTransactionObject(transaction, logicSig).blob
+                transactionSigner: logicSig,
+                isLogigSig: true
             };
         }
         else {
@@ -633,7 +636,6 @@ class Algonaut {
         }
     }
     async atomicPayment(toAddress, amount, optionalTxParams) {
-        var _a;
         if (this.account) {
             const transaction = algosdk_min_1.default.makePaymentTxnWithSuggestedParamsFromObject({
                 from: this.account.addr,
@@ -643,7 +645,8 @@ class Algonaut {
             });
             return {
                 transaction: transaction,
-                signedTransaciton: transaction.signTxn((_a = this.account) === null || _a === void 0 ? void 0 : _a.sk)
+                transactionSigner: this.account,
+                isLogigSig: false
             };
         }
         else {
@@ -660,7 +663,8 @@ class Algonaut {
             });
             return {
                 transaction: transaction,
-                signedTransaciton: algosdk_min_1.default.signLogicSigTransactionObject(transaction, logicSig).blob
+                transactionSigner: logicSig,
+                isLogigSig: true
             };
         }
         else {
@@ -682,11 +686,21 @@ class Algonaut {
             const signed = [];
             transactions.forEach((txn) => {
                 txns.push(txn.transaction);
-                signed.push(txn.signedTransaciton);
             });
             // this is critical, if the group doesn't have an id
             // the transactions are processed as one-offs!
-            algosdk_min_1.default.assignGroupID(txns);
+            const txnGroup = algosdk_min_1.default.assignGroupID(txns);
+            // sign all transactions in the group:
+            transactions.forEach((txn, i) => {
+                let signedTx;
+                if (txn.isLogigSig) {
+                    signedTx = algosdk_min_1.default.signLogicSigTransaction(txnGroup[i], txn.transactionSigner);
+                }
+                else {
+                    signedTx = algosdk_min_1.default.signTransaction(txnGroup[i], txn.transactionSigner.sk);
+                }
+                signed.push(signedTx.blob);
+            });
             const tx = await this.algodClient.sendRawTransaction(signed).do();
             console.log('Transaction : ' + tx.txId);
             // Wait for transaction to be confirmed
