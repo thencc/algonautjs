@@ -93,6 +93,16 @@ class Algonaut {
         return returnValue;
     }
     /**
+     * Creates a LogicSig from a base64 program string.  Note that this method does not COMPILE
+     * the program, just builds an LSig from an already compiled base64 result!
+     * @param base64ProgramString
+     * @returns an algosdk LogicSigAccount
+     */
+    generateLogicSig(base64ProgramString) {
+        const program = new Uint8Array(buffer_1.Buffer.from(base64ProgramString, 'base64'));
+        return new algosdk_min_1.default.LogicSigAccount(program);
+    }
+    /**
      * Opt-in the current account for the a token or NFT ASA.
      * @returns Promise resolving to confirmed transaction or error
      */
