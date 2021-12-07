@@ -9,9 +9,11 @@ class Algonaut {
         this.sKey = undefined;
         this.mnemonic = undefined;
         this.config = undefined;
+        this.sdk = undefined;
         this.config = config;
         this.algodClient = new algosdk_min_1.default.Algodv2(config.API_TOKEN, config.BASE_SERVER, config.PORT);
         this.indexerClient = new algosdk_min_1.default.Indexer(config.API_TOKEN, config.BASE_SERVER, config.PORT);
+        this.sdk = algosdk_min_1.default;
         // TBD: add support for algo wallet on mobile
     }
     getConfig() {
@@ -125,17 +127,9 @@ class Algonaut {
             try {
                 await this.algodClient.sendRawTransaction(signedTxn.blob).do();
                 // Wait for confirmation
-                await this.waitForConfirmation(txId);
+                const txStatus = await this.waitForConfirmation(txId);
                 // display results
-                const transactionResponse = await this.algodClient
-                    .pendingTransactionInformation(txId)
-                    .do();
-                console.log(transactionResponse);
-                console.log('Opted-in to ASA with index ' + assetIndex);
-                return {
-                    status: 'success',
-                    message: 'Opt-in to ASA successful'
-                };
+                return txStatus;
             }
             catch (er) {
                 console.log('error in opt in');
@@ -179,6 +173,70 @@ class Algonaut {
         return encodedArgs;
     }
     /**
+     * Create ASA
+     *
+     *
+     * TBD: move optional params
+     * into a params object, add freeze, clawback, etc
+    */
+    async createAsset(assetName, symbol, metaBlock, decimals, amount, assetURL, defaultFrozen, assetMetadataHash) {
+        if (!metaBlock) {
+            metaBlock = 'wot? wot wot?';
+        }
+        if (!defaultFrozen)
+            defaultFrozen = false;
+        if (!assetURL)
+            assetURL = undefined;
+        const metaBlockLength = metaBlock.length;
+        console.log('meta block is ' + metaBlockLength);
+        if (metaBlockLength > 511) {
+            console.warn('drat! this meta block is too long!');
+            return 'error';
+        }
+        const enc = new TextEncoder();
+        if (this.account) {
+            console.log('ok, starting ASA deploy');
+            // arbitrary data: 512 bytes, ~512 characters
+            const note = enc.encode(metaBlock);
+            const addr = this.account.addr;
+            const totalIssuance = amount;
+            const manager = this.account.addr;
+            const reserve = this.account.addr;
+            const freeze = this.account.addr;
+            const clawback = this.account.addr;
+            const params = await this.algodClient.getTransactionParams().do();
+            // signing and sending "txn" allows "addr" to create an asset
+            const txn = algosdk_min_1.default.makeAssetCreateTxnWithSuggestedParams(addr, note, totalIssuance, decimals, defaultFrozen, manager, reserve, freeze, clawback, symbol, assetName, assetURL, assetMetadataHash, params);
+            try {
+                const rawSignedTxn = txn.signTxn(this.account.sk);
+                const tx = await this.algodClient.sendRawTransaction(rawSignedTxn).do();
+                console.log('Transaction : ' + tx.txId);
+                let assetID = null;
+                console.log('waiting for confirmation...');
+                // wait for transaction to be confirmed
+                const txStatus = await this.waitForConfirmation(tx.txId);
+                // TBD: make sure this TX goes through!
+                // Get the new asset's information from the creator account
+                const ptx = await this.algodClient
+                    .pendingTransactionInformation(tx.txId)
+                    .do();
+                assetID = ptx['asset-index'];
+                console.log(name + ' asset created!');
+                console.log(assetID);
+                return assetID;
+            }
+            catch (er) {
+                console.log('transaction error');
+                console.log(er);
+                return 'error!';
+            }
+        }
+        else {
+            console.log('it looks like there there is no account.');
+            return 'no account';
+        }
+    }
+    /**
      * Sends ASA to an address
      * @param receiverAddress the address to send to
      * @param assetIndex the index of the asset to send
@@ -205,11 +263,8 @@ class Algonaut {
                 });
                 const signedTx1 = algosdk_min_1.default.signTransaction(transaction1, this.account.sk);
                 const tx = await this.algodClient.sendRawTransaction(signedTx1.blob).do();
-                await this.waitForConfirmation(tx.txId);
-                return {
-                    status: 'success',
-                    message: 'You just bought sent ASA ' + assetIndex
-                };
+                const txStatus = await this.waitForConfirmation(tx.txId);
+                return txStatus;
             }
             catch (e) {
                 return {
@@ -245,7 +300,7 @@ class Algonaut {
                     appIndex: appIndex,
                     appArgs: processedArgs,
                     accounts: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.accounts) || undefined,
-                    foreignApps: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.foreignApps) || undefined,
+                    foreignApps: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.applications) || undefined,
                     foreignAssets: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.assets) || undefined
                 });
                 const txId = callAppTransaction.txID().toString();
@@ -254,13 +309,10 @@ class Algonaut {
                 // Submit the transaction
                 await this.algodClient.sendRawTransaction(signedTx).do();
                 // Wait for confirmation
-                await this.waitForConfirmation(txId);
+                const txStatus = await this.waitForConfirmation(txId);
                 // display results?
                 //await this.algodClient.pendingTransactionInformation(txId).do();
-                return {
-                    status: 'success',
-                    message: 'contract call was approved'
-                };
+                return txStatus;
             }
             catch (er) {
                 return {
@@ -321,7 +373,8 @@ class Algonaut {
                     const txId = txn.txID().toString();
                     const signedTxn = algosdk_min_1.default.signLogicSigTransactionObject(txn, lsig);
                     await this.algodClient.sendRawTransaction(signedTxn.blob).do();
-                    await this.waitForConfirmation(txId);
+                    const txStatus = await this.waitForConfirmation(txId);
+                    // TBD check txStatus
                     // display results
                     const transactionResponse = await this.algodClient
                         .pendingTransactionInformation(txId)
@@ -369,11 +422,8 @@ class Algonaut {
                 const signedTxn = txn.signTxn(this.account.sk);
                 const tx = await this.algodClient.sendRawTransaction(signedTxn).do();
                 // Wait for transaction to be confirmed
-                await this.waitForConfirmation(tx.txId);
-                return {
-                    status: 'success',
-                    message: 'transaction confirmed'
-                };
+                const txStatus = await this.waitForConfirmation(tx.txId);
+                return txStatus;
             }
             catch (e) {
                 return {
@@ -561,7 +611,7 @@ class Algonaut {
                 appIndex: appIndex,
                 appArgs: processedArgs,
                 accounts: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.accounts) || undefined,
-                foreignApps: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.foreignApps) || undefined,
+                foreignApps: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.applications) || undefined,
                 foreignAssets: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.assets) || undefined
             });
             return {
@@ -584,7 +634,7 @@ class Algonaut {
                 appIndex: appIndex,
                 appArgs: processedArgs,
                 accounts: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.accounts) || undefined,
-                foreignApps: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.foreignApps) || undefined,
+                foreignApps: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.applications) || undefined,
                 foreignAssets: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.assets) || undefined
             });
             return {
@@ -704,11 +754,8 @@ class Algonaut {
             const tx = await this.algodClient.sendRawTransaction(signed).do();
             console.log('Transaction : ' + tx.txId);
             // Wait for transaction to be confirmed
-            await this.waitForConfirmation(tx.txId);
-            return {
-                status: 'success',
-                message: 'transaction confirmed'
-            };
+            const txStatus = await this.waitForConfirmation(tx.txId);
+            return txStatus;
         }
         catch (e) {
             return {

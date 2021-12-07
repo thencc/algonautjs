@@ -32,7 +32,7 @@ export declare type AlgonautWallet = {
 };
 export declare type AlgonautTransactionFields = {
     accounts?: string[];
-    foreignApps?: number[];
+    applications?: number[];
     assets?: number[];
     reKeyTo?: string;
     note?: string;

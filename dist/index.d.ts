@@ -13,6 +13,7 @@ export default class Algonaut {
     sKey: Uint8Array | undefined;
     mnemonic: string | undefined;
     config: AlgonautConfig | undefined;
+    sdk: typeof algosdkTypeRef | undefined;
     constructor(config: AlgonautConfig);
     getConfig(): AlgonautConfig | undefined;
     checkStatus(): Promise<any>;
@@ -49,6 +50,14 @@ export default class Algonaut {
      * @returns a Uint8Array of encoded arguments
      */
     encodeArguments(args: any[]): Uint8Array[];
+    /**
+     * Create ASA
+     *
+     *
+     * TBD: move optional params
+     * into a params object, add freeze, clawback, etc
+    */
+    createAsset(assetName: string, symbol: string, metaBlock: string, decimals: number, amount: number, assetURL?: string, defaultFrozen?: boolean, assetMetadataHash?: string): Promise<string>;
     /**
      * Sends ASA to an address
      * @param receiverAddress the address to send to
