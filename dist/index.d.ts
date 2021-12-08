@@ -41,6 +41,11 @@ export default class Algonaut {
      * Opt-in the current account for the a token or NFT ASA.
      * @returns Promise resolving to confirmed transaction or error
      */
+    optInApp(appIndex: number, appArgs: any[], optionalFields?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus>;
+    /**
+     * Opt-in the current account for the a token or NFT ASA.
+     * @returns Promise resolving to confirmed transaction or error
+     */
     optInASA(assetIndex: number): Promise<AlgonautTransactionStatus>;
     /**
      * Sync function that returns a correctly-encoded argument array for
@@ -58,6 +63,8 @@ export default class Algonaut {
      * into a params object, add freeze, clawback, etc
     */
     createAsset(assetName: string, symbol: string, metaBlock: string, decimals: number, amount: number, assetURL?: string, defaultFrozen?: boolean, assetMetadataHash?: string): Promise<string>;
+    deleteApplication(appIndex: number): Promise<AlgonautTransactionStatus>;
+    deleteASA(assetId: number): Promise<AlgonautTransactionStatus>;
     /**
      * Sends ASA to an address
      * @param receiverAddress the address to send to
@@ -148,6 +155,8 @@ export default class Algonaut {
      * @param applicationIndex the applications index
      */
     getAppLocalState(applicationIndex: number): Promise<AlgonautAppState>;
+    atomicOptInApp(appIndex: number, appArgs: any[], optionalFields?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
+    atomicOptInASA(assetIndex: number): Promise<AlgonautAtomicTransaction>;
     atomicCallStatefulApp(appIndex: number, args: any[], optionalFields?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
     atomicCallStatefulAppWithLSig(appIndex: number, args: any[], logicSig: algosdkTypeRef.LogicSigAccount, optionalFields?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
     atomicAssetTransfer(toAddress: string, amount: number | bigint, asset: number): Promise<AlgonautAtomicTransaction>;

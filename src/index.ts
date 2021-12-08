@@ -8,6 +8,13 @@ import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtom
 
 /*
 
+AlgonautJS should have some "signing modes" which you set at invocation time
+
+probably in
+AlgonautConfig
+
+
+
 
 for stateful contracts i think we want to read it in and hold all the
 NV pairs as fields
@@ -178,6 +185,57 @@ export default class Algonaut {
 		);
 
 		return new algosdk.LogicSigAccount(program);
+	}
+
+	/**
+	 * Opt-in the current account for the a token or NFT ASA.
+	 * @returns Promise resolving to confirmed transaction or error
+	 */
+	async optInApp(appIndex: number, appArgs:any[], optionalFields?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus> {
+		if (this.account && appIndex) {
+
+			console.log('opt in to app ' + appIndex);
+			const sender = this.account.addr;
+			const params = await this.algodClient.getTransactionParams().do();
+
+			const optInTransaction = algosdk.makeApplicationOptInTxnFromObject({
+				from: sender,
+				appIndex: appIndex,
+				suggestedParams: params,
+				appArgs: appArgs ? this.encodeArguments(appArgs) : undefined,
+				accounts: optionalFields?.accounts ? optionalFields?.accounts : undefined,
+				foreignApps: optionalFields?.applications ? optionalFields?.applications : undefined,
+				foreignAssets: optionalFields?.assets ? optionalFields?.assets : undefined
+			});
+			const txId = optInTransaction.txID().toString();
+
+			// Sign the transaction
+			const signedTxn = optInTransaction.signTxn(this.account.sk);
+
+			try {
+				await this.algodClient.sendRawTransaction(signedTxn).do();
+
+				// Wait for confirmation
+				const txStatus = await this.waitForConfirmation(txId);
+				return txStatus;
+
+			} catch(er: any) {
+				console.log('error in opt in');
+				console.log(er.message);
+				return {
+					status: 'fail',
+					message: er.message,
+					error: er
+				};
+			}
+
+		} else {
+			return {
+				status: 'fail',
+				message: 'no algo account found...'
+			};
+		}
+
 	}
 
 	/**
@@ -366,6 +424,80 @@ export default class Algonaut {
 		} else {
 			console.log('it looks like there there is no account.');
 			return 'no account';
+		}
+	}
+
+
+	async deleteApplication(appIndex: number): Promise<AlgonautTransactionStatus> {
+
+		if (this.account && appIndex) {
+			try {
+				const sender = this.account.addr;
+				const params = await this.algodClient.getTransactionParams().do();
+
+				console.log('delete: ' + appIndex);
+
+				const txn = algosdk.makeApplicationDeleteTxn(sender, params, appIndex);
+				const txId = txn.txID().toString();
+				const signedTxn = txn.signTxn(this.account.sk);
+
+				await this.algodClient.sendRawTransaction(signedTxn).do();
+				await this.waitForConfirmation(txId);
+
+				// display results
+				const transactionResponse = await this.algodClient
+					.pendingTransactionInformation(txId)
+					.do();
+				const appId = transactionResponse['txn']['txn'].apid;
+				console.log('Deleted app-id: ', appId);
+
+				return {
+					status: 'success',
+					message: 'deleted app index ' + appId
+				};
+
+			} catch(e: any) {
+				console.log(e);
+				throw new Error(e.message);
+			}
+		} else {
+			return {
+				status: 'fail',
+				message: 'no account / algo'
+			};
+		}
+	}
+
+	async deleteASA(assetId: number): Promise<AlgonautTransactionStatus>  {
+
+		if (this.account && assetId) {
+
+			const sender = this.account.addr;
+			const enc = new TextEncoder();
+			// get node suggested parameters
+			const params = await this.algodClient.getTransactionParams().do();
+
+			const txn = algosdk.makeAssetDestroyTxnWithSuggestedParams(
+				sender,
+				enc.encode('doh!'),
+				assetId,
+				params
+			);
+
+			const signedTxn = txn.signTxn(this.account.sk);
+			const tx = await this.algodClient.sendRawTransaction(signedTxn).do();
+			const conf = await this.waitForConfirmation(tx.txId);
+			console.log(conf);
+			return {
+				status: 'success',
+				message: 'asset ' + assetId + ' deleted'
+			};
+
+		} else {
+			return {
+				status: 'fail',
+				message: 'there has no current account.'
+			};
 		}
 	}
 
@@ -824,7 +956,7 @@ export default class Algonaut {
 							value = stateItem.value.uint;
 						}
 
-						state.globals.push({
+						state.locals.push({
 							key: key,
 							value: value || '',
 							address: valueAsAddr
@@ -838,6 +970,58 @@ export default class Algonaut {
 		} else {
 			throw new Error('there is no account');
 		}
+	}
+
+	async atomicOptInApp(appIndex: number, appArgs:any[], optionalFields?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction> {
+		if (this.account && appIndex) {
+
+			const sender = this.account.addr;
+			const params = await this.algodClient.getTransactionParams().do();
+			const optInTransaction = algosdk.makeApplicationOptInTxnFromObject({
+				from: sender,
+				appIndex: appIndex,
+				suggestedParams: params,
+				appArgs: appArgs ? this.encodeArguments(appArgs) : undefined,
+				accounts: optionalFields?.accounts ? optionalFields?.accounts : undefined,
+				foreignApps: optionalFields?.applications ? optionalFields?.applications : undefined,
+				foreignAssets: optionalFields?.assets ? optionalFields?.assets : undefined
+			});
+
+			return {
+				transaction: optInTransaction,
+				transactionSigner: this.account,
+				isLogigSig: false
+			};
+
+		} else {
+			throw new Error('algonautjs has no account loaded!');
+		}
+
+	}
+
+	async atomicOptInASA(assetIndex: number): Promise<AlgonautAtomicTransaction> {
+
+		if (this.account && assetIndex) {
+
+			const params = await this.algodClient.getTransactionParams().do();
+			const optInTransaction = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
+				from: this.account.addr,
+				to: this.account.addr,
+				suggestedParams: params,
+				assetIndex: assetIndex,
+				amount: 0
+			});
+
+			return {
+				transaction: optInTransaction,
+				transactionSigner: this.account,
+				isLogigSig: false
+			};
+
+		} else {
+			throw new Error('there was no account!');
+		}
+
 	}
 
 	async atomicCallStatefulApp (

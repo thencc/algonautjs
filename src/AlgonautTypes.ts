@@ -1,11 +1,12 @@
 import algosdk from 'algosdk';
 
 
-export interface AlgonautConfig {
+export type AlgonautConfig = {
 	BASE_SERVER: string;
 	LEDGER: string;
 	PORT: string;
 	API_TOKEN: any;
+	SIGNING_MODE?: 'local' | 'wallet-connect' | 'algosigner';
 }
 
 export interface AlgonautStateData {
