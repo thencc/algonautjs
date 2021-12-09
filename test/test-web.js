@@ -10,7 +10,7 @@ function runTests() {
     SIGNING_MODE: 'wallet-connect'
   });
 
-  // testnet account
+  // testnet account for testing.  PEOPLE, SERIOUSLY, DO NOT ACTUALLY USE THIS ACCOUNT for anything other than testing!
   // 7P7VKJDENG3S2WJZXBY776DYXDIACK7AH4QCXXST73TWCG2XGVIZGTKFVU
   // wine slice height claw science approve know egg task chase story boost lonely confirm purpose rack kite soldier proud opinion wish pencil hire abstract blade
 

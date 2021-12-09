@@ -14,30 +14,38 @@ algonaut.recoverAccount('wine slice height claw science approve know egg task ch
 
 
 console.log('starting tests');
-console.log(algonaut);
+//console.log(algonaut);
 
-// opt into this app
-// const optIn = await algonaut.optInApp(appIndex, ['set_all',
-//   'Another',
-//   'Another swell guy',
-//   'https://ncc.la/another-dawg.png',
-//   'https://ncc.la',
-//   'https://ncc.la/something-else.md',
-//   '@memeeme']);
+async function runTxTest() {
 
-// console.log(optIn);
+	// opt into general purpose account app
+	// const optIn = await algonaut.optInApp(appIndex, ['set_all',
+	// 	'Another',
+	// 	'Another swell guy',
+	// 	'https://ncc.la/another-dawg.png',
+	// 	'https://ncc.la',
+	// 	'https://ncc.la/something-else.md',
+	// 	'@memeeme']);
 
-// const update = await algonaut.callApp(
-//   appIndex,
-//   ['set_all',
-//   'Aubrey',
-//   'A swell guy',
-//   'https://ncc.la/aub-dawg.png',
-//   'https://ncc.la',
-//   'https://ncc.la/something.md',
-//   '@memeeme']
-// );
+	// console.log(optIn);
+
+	const update = await algonaut.callApp(
+	  appIndex,
+	  ['set_all',
+	  'Loopy',
+	  'A really swell guy',
+	  'https://ncc.la/loopy-dawg.png',
+	  'https://ncc.la',
+	  'https://ncc.la/something-loopy.md',
+	  '@loopyloop997']
+	);
 
 
-// console.log(update);
+	console.log(update);
+
+}
+
+runTxTest();
+
+
 

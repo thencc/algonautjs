@@ -192,9 +192,9 @@ export default class Algonaut {
 				pendingInfo = await this.algodClient
 					.pendingTransactionInformation(txId)
 					.do();
-				console.log('pending info', pendingInfo);
+				console.log('waiting for confirmation');
 			} catch (er: any) {
-				console.error(er.message);
+				console.error(er.response.text);
 			}
 
 			if (
@@ -267,10 +267,10 @@ export default class Algonaut {
 
 			} catch(er: any) {
 				console.log('error in opt in');
-				console.log(er.message);
+				console.log(er.response.text);
 				return {
 					status: 'fail',
-					message: er.message,
+					message: er.response.text,
 					error: er
 				};
 			}
@@ -327,11 +327,11 @@ export default class Algonaut {
 
 			} catch (er: any) {
 				console.log('error in opt in');
-				console.log(er.message);
+				console.log(er.response.text);
 				console.log(er);
 				return {
 					status: 'fail',
-					message: er.message,
+					message: er.response.text,
 					error: er
 				};
 			}
@@ -504,7 +504,7 @@ export default class Algonaut {
 
 			} catch(e: any) {
 				console.log(e);
-				throw new Error(e.message);
+				throw new Error(e.response.text);
 			}
 		} else {
 			return {
@@ -582,7 +582,7 @@ export default class Algonaut {
 			} catch (e: any) {
 				return {
 					status: 'fail',
-					message: e.message,
+					message: e.response.text,
 					error: e
 				};
 			}
@@ -645,7 +645,7 @@ export default class Algonaut {
 			} catch(er: any) {
 				return {
 					status: 'fail',
-					message: er.message,
+					message: er.response.text,
 					error: er
 				};
 			}
@@ -752,7 +752,7 @@ export default class Algonaut {
 
 				return {
 					status: 'fail',
-					message: er.message,
+					message: er.response.text,
 					error: er
 				};
 			}
@@ -803,7 +803,7 @@ export default class Algonaut {
 			} catch (e: any) {
 				return {
 					status: 'fail',
-					message: e.message,
+					message: e.response.text,
 					error: e
 				};
 			}
@@ -1269,7 +1269,7 @@ export default class Algonaut {
 		} catch (e: any) {
 			return {
 				status: 'fail',
-				message: e.message,
+				message: e.response.text,
 				error: e
 			};
 		}

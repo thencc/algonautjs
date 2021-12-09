@@ -111,10 +111,10 @@ export default class Algonaut {
                 pendingInfo = await this.algodClient
                     .pendingTransactionInformation(txId)
                     .do();
-                console.log('pending info', pendingInfo);
+                console.log('waiting for confirmation');
             }
             catch (er) {
-                console.error(er.message);
+                console.error(er.response.text);
             }
             if (pendingInfo['confirmed-round'] !== null &&
                 pendingInfo['confirmed-round'] > 0) {
@@ -166,10 +166,10 @@ export default class Algonaut {
             }
             catch (er) {
                 console.log('error in opt in');
-                console.log(er.message);
+                console.log(er.response.text);
                 return {
                     status: 'fail',
-                    message: er.message,
+                    message: er.response.text,
                     error: er
                 };
             }
@@ -210,11 +210,11 @@ export default class Algonaut {
             }
             catch (er) {
                 console.log('error in opt in');
-                console.log(er.message);
+                console.log(er.response.text);
                 console.log(er);
                 return {
                     status: 'fail',
-                    message: er.message,
+                    message: er.response.text,
                     error: er
                 };
             }
@@ -337,7 +337,7 @@ export default class Algonaut {
             }
             catch (e) {
                 console.log(e);
-                throw new Error(e.message);
+                throw new Error(e.response.text);
             }
         }
         else {
@@ -403,7 +403,7 @@ export default class Algonaut {
             catch (e) {
                 return {
                     status: 'fail',
-                    message: e.message,
+                    message: e.response.text,
                     error: e
                 };
             }
@@ -451,7 +451,7 @@ export default class Algonaut {
             catch (er) {
                 return {
                     status: 'fail',
-                    message: er.message,
+                    message: er.response.text,
                     error: er
                 };
             }
@@ -523,7 +523,7 @@ export default class Algonaut {
             catch (er) {
                 return {
                     status: 'fail',
-                    message: er.message,
+                    message: er.response.text,
                     error: er
                 };
             }
@@ -562,7 +562,7 @@ export default class Algonaut {
             catch (e) {
                 return {
                     status: 'fail',
-                    message: e.message,
+                    message: e.response.text,
                     error: e
                 };
             }
@@ -937,7 +937,7 @@ export default class Algonaut {
         catch (e) {
             return {
                 status: 'fail',
-                message: e.message,
+                message: e.response.text,
                 error: e
             };
         }
