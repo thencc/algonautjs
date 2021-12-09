@@ -1375,9 +1375,6 @@ export default class Algonaut {
 	async disconnectAlgoWallet() {
 		if (this.walletConnect.connected) {
 			this.walletConnect.connector?.killSession();
-			const walletConnectButton = document.querySelector('.algonautjs-wc-button') as HTMLButtonElement;
-			walletConnectButton.innerHTML = 'Connect Wallet';
-			walletConnectButton.classList.remove('is-connected');
 		}
 	}
 
@@ -1446,6 +1443,10 @@ export default class Algonaut {
 				console.log(payload);
 				throw error;
 			}
+
+			const walletConnectButton = document.querySelector('.algonautjs-wc-button') as HTMLButtonElement;
+			walletConnectButton.innerHTML = 'Connect Wallet';
+			walletConnectButton.classList.remove('is-connected');
 
 			this.onDisconnect();
 		});

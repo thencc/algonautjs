@@ -1019,9 +1019,6 @@ export default class Algonaut {
         var _a;
         if (this.walletConnect.connected) {
             (_a = this.walletConnect.connector) === null || _a === void 0 ? void 0 : _a.killSession();
-            const walletConnectButton = document.querySelector('.algonautjs-wc-button');
-            walletConnectButton.innerHTML = 'Connect Wallet';
-            walletConnectButton.classList.remove('is-connected');
         }
     }
     async connectAlgoWallet() {
@@ -1071,6 +1068,9 @@ export default class Algonaut {
                 console.log(payload);
                 throw error;
             }
+            const walletConnectButton = document.querySelector('.algonautjs-wc-button');
+            walletConnectButton.innerHTML = 'Connect Wallet';
+            walletConnectButton.classList.remove('is-connected');
             this.onDisconnect();
         });
         if (this.walletConnect.connector.connected) {
