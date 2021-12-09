@@ -38,9 +38,11 @@ export default class Algonaut {
                 const walletConnectButton = document.querySelector('.algonautjs-wc-button');
                 console.log('click!', walletConnectButton.classList);
                 if (walletConnectButton.classList.contains('is-connected')) {
+                    console.log('starting disconnect');
                     this.disconnectAlgoWallet();
                 }
                 else {
+                    console.log('starting connect');
                     this.connectAlgoWallet();
                 }
             });
@@ -1038,9 +1040,6 @@ export default class Algonaut {
         if (!this.walletConnect.connector.connected) {
             // create new session
             this.walletConnect.connector.createSession();
-            const walletConnectButton = document.querySelector('.algonautjs-wc-button');
-            walletConnectButton.innerHTML = 'Disconnect Wallet';
-            walletConnectButton.classList.add('is-connected');
         }
         this.subscribeToEvents();
     }
@@ -1058,6 +1057,9 @@ export default class Algonaut {
         });
         this.walletConnect.connector.on('connect', (error, payload) => {
             console.log('connector.on("connect")');
+            const walletConnectButton = document.querySelector('.algonautjs-wc-button');
+            walletConnectButton.innerHTML = 'Disconnect Wallet';
+            walletConnectButton.classList.add('is-connected');
             if (error) {
                 throw error;
             }
