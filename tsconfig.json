@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
-    "moduleResolution": "node",
+    "module": "ES2015",
+    "moduleResolution": "Node",
     "noImplicitReturns": true,
     "noUnusedLocals": false,
     "outDir": "dist",

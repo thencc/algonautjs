@@ -6,6 +6,12 @@ import algosdk from 'algosdk/dist/browser/algosdk.min';
 
 import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields, AlgonautAppState, AlgonautStateData } from './AlgonautTypes';
 
+
+import WalletConnectMin from '@walletconnect/client/dist/umd/index.min';
+import WalletConnect from '@walletconnect/client';
+import QRCodeModal from 'algorand-walletconnect-qrcode-modal';
+import { formatJsonRpcRequest } from '@json-rpc-tools/utils';
+
 /*
 
 AlgonautJS should have some "signing modes" which you set at invocation time
@@ -65,6 +71,15 @@ export default class Algonaut {
 	mnemonic = undefined as undefined | string;
 	config = undefined as undefined | AlgonautConfig;
 	sdk = undefined as undefined | typeof algosdkTypeRef;
+	uiLoading = false;
+	walletConnect = {
+		connected: false,
+		connector: undefined as any,
+		accounts: [] as any[],
+		address: '',
+		assets: [] as any[],
+		chain: undefined as any
+	};
 
 	constructor(config: AlgonautConfig) {
 
@@ -74,7 +89,36 @@ export default class Algonaut {
 
 		this.sdk = algosdk;
 
-		// TBD: add support for algo wallet on mobile
+		// initial support for wallet connect
+		if (config.SIGNING_MODE == 'wallet-connect') {
+			console.log('spinning up in wallet connect mode!');
+
+			const wcButton = document.createElement('button') as HTMLButtonElement;
+			wcButton.style.position = 'absolute';
+			wcButton.style.top = '8px';
+			wcButton.style.right = '8px';
+			wcButton.style.zIndex = '10000';
+			wcButton.classList.add('algonautjs-wc-button');
+			wcButton.innerHTML = 'Connect Wallet';
+
+			wcButton.addEventListener('click', event => {
+
+				const walletConnectButton = document.querySelector('.algonautjs-wc-button') as HTMLButtonElement;
+
+				console.log('click!', walletConnectButton.classList);
+
+				if (walletConnectButton.classList.contains('is-connected')) {
+					this.disconnectAlgoWallet();
+				} else {
+					this.connectAlgoWallet();
+				}
+
+
+			});
+
+			document.body.appendChild(wcButton);
+
+		}
 
 	}
 
@@ -556,7 +600,7 @@ export default class Algonaut {
 	 * @param optionalTransactionFields an AlgonautTransactionFields object with
 	 *  		  any additional fields you want to pass to this transaction
 	 */
-	async callStatefulApp (
+	async callApp (
 		appIndex: number,
 		args: any[],
 		optionalFields?: AlgonautTransactionFields
@@ -1024,7 +1068,7 @@ export default class Algonaut {
 
 	}
 
-	async atomicCallStatefulApp (
+	async atomicCallApp (
 		appIndex: number,
 		args: any[],
 		optionalFields?: AlgonautTransactionFields
@@ -1055,7 +1099,7 @@ export default class Algonaut {
 		}
 	}
 
-	async atomicCallStatefulAppWithLSig (
+	async atomicCallAppWithLSig (
 		appIndex: number,
 		args: any[],
 		logicSig: algosdkTypeRef.LogicSigAccount,
@@ -1319,6 +1363,185 @@ export default class Algonaut {
 
 		return tx;
 	}
+
+
+
+
+	/*
+	* Wallet Connect API Stuff
+	*/
+	async disconnectAlgoWallet() {
+		if (this.walletConnect.connected) {
+			this.walletConnect.connector?.killSession();
+			const walletConnectButton = document.querySelector('.algonautjs-wc-button') as HTMLButtonElement;
+			walletConnectButton.innerHTML = 'Connect Wallet';
+			walletConnectButton.classList.remove('is-connected');
+		}
+	}
+
+	async connectAlgoWallet() {
+		console.log('connecting wallet: ');
+
+		// 4067ab2454244fb39835bfeafc285c8d
+
+		const bridge = 'https://bridge.walletconnect.org';
+
+		this.walletConnect.connector = new WalletConnectMin({
+			bridge,
+			apiKey: '4067ab2454244fb39835bfeafc285c8d',
+			qrcodeModal: QRCodeModal
+		});
+
+		console.log('connector created');
+		console.log(this.walletConnect.connector);
+
+		console.log('trying to create session');
+
+		// Check if connection is already established
+		if (!this.walletConnect.connector.connected) {
+			// create new session
+			this.walletConnect.connector.createSession();
+			const walletConnectButton = document.querySelector('.algonautjs-wc-button') as HTMLButtonElement;
+			walletConnectButton.innerHTML = 'Disconnect Wallet';
+			walletConnectButton.classList.add('is-connected');
+		}
+
+		this.subscribeToEvents();
+	}
+
+	async subscribeToEvents() {
+		if (!this.walletConnect.connector) {
+			return;
+		}
+
+		this.walletConnect.connector.on('session_update', async (error: any, payload: any) => {
+			console.log('connector.on("session_update")');
+
+			if (error) {
+				throw error;
+			}
+
+			const { accounts } = payload.params[0];
+			this.onSessionUpdate(accounts);
+		});
+
+		this.walletConnect.connector.on('connect', (error: any, payload: any) => {
+			console.log('connector.on("connect")');
+
+			if (error) {
+				throw error;
+			}
+
+			this.onConnect(payload);
+		});
+
+		this.walletConnect.connector.on('disconnect', (error: any, payload: any) => {
+			console.log('connector.on("disconnect")');
+
+			if (error) {
+				console.log(payload);
+				throw error;
+			}
+
+			this.onDisconnect();
+		});
+
+		if (this.walletConnect.connector.connected) {
+			const { accounts } = this.walletConnect.connector;
+			const address = accounts[0];
+
+			this.walletConnect.connected = true;
+			this.walletConnect.accounts = accounts;
+			this.walletConnect.address = address;
+			this.onSessionUpdate(accounts);
+		}
+	}
+
+	async killSession() {
+		if (this.walletConnect.connector) {
+			this.walletConnect.connector.killSession();
+		}
+		this.resetApp();
+	}
+
+	// this should get a ChainType
+	async chainUpdate(newChain: any) {
+		this.walletConnect.chain = newChain;
+		this.getAccountAssets();
+	}
+
+	async resetApp() {
+		console.log('reset app called');
+		console.log('TBD!');
+	}
+
+	// iinternal even type from example
+	async onConnect(payload: any) {
+		const { accounts } = payload.params[0];
+		const address = accounts[0];
+
+		this.walletConnect.connected = true;
+		this.walletConnect.accounts = accounts;
+		this.walletConnect.address = address;
+		this.getAccountAssets();
+	}
+
+	onDisconnect() {
+		this.walletConnect.connected = false;
+		this.walletConnect.accounts = [];
+		this.walletConnect.address = '';
+	}
+
+	async onSessionUpdate(accounts: any) {
+		this.walletConnect.address = accounts[0];
+		this.walletConnect.accounts = accounts;
+		await this.getAccountAssets();
+	}
+
+	async getAccountAssets() {
+		this.uiLoading = true;
+
+		try {
+			// get account balances
+			this.walletConnect.assets = await this.apiGetAccountAssets(this.walletConnect.address);
+		} catch (error) {
+			console.error(error);
+		}
+
+		this.uiLoading = false;
+	}
+
+	async apiGetAccountAssets(address: string): Promise<any> {
+		console.log('TBD get assets from algonautjs');
+
+		// return assets;
+		return 'almost there for ' + address;
+	}
+
+	async signTxns(walletTxns: any[]): Promise<Array<Uint8Array | null>> {
+		// can we just insist that you pass in an array?
+		const request = formatJsonRpcRequest('algo_signTxn', walletTxns);
+		const result: Array<string | null> =
+				await this.walletConnect.connector.sendCustomRequest(request);
+
+		const signedPartialTxns: Array<Uint8Array | null> = result.map((r, i) => {
+			// run whatever error checks here
+			if (r == null) {
+				throw new Error(
+					`Transaction at index ${i}: was not signed when it should have been`
+				);
+			}
+
+			const rawSignedTxn = Buffer.from(r, 'base64');
+			return new Uint8Array(rawSignedTxn);
+		});
+
+		console.log('signed partial txns are');
+		console.log(signedPartialTxns);
+		return signedPartialTxns;
+	}
+
+
 }
 
 

@@ -14,15 +14,7 @@ export default class Algonaut {
     mnemonic: string | undefined;
     config: AlgonautConfig | undefined;
     sdk: typeof algosdkTypeRef | undefined;
-    uiLoading: boolean;
-    walletConnect: {
-        connected: boolean;
-        connector: any;
-        accounts: any[];
-        address: string;
-        assets: any[];
-        chain: any;
-    };
+    walletConnectActive: boolean;
     constructor(config: AlgonautConfig);
     getConfig(): AlgonautConfig | undefined;
     checkStatus(): Promise<any>;
@@ -205,16 +197,4 @@ export default class Algonaut {
      * @returns Promise resolving to error or confirmed transaction
      */
     waitForAlgoSignerConfirmation(tx: any): Promise<any>;
-    disconnectAlgoWallet(): Promise<void>;
-    connectAlgoWallet(): Promise<void>;
-    subscribeToEvents(): Promise<void>;
-    killSession(): Promise<void>;
-    chainUpdate(newChain: any): Promise<void>;
-    resetApp(): Promise<void>;
-    onConnect(payload: any): Promise<void>;
-    onDisconnect(): void;
-    onSessionUpdate(accounts: any): Promise<void>;
-    getAccountAssets(): Promise<void>;
-    apiGetAccountAssets(address: string): Promise<any>;
-    signTxns(walletTxns: any[]): Promise<Array<Uint8Array | null>>;
 }

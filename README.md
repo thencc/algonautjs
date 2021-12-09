@@ -8,15 +8,37 @@ THE GOAL OF THIS LIBRARY IS SIMPLICITY AND EASE OF USE for the front end crew.  
 
 ## API Approach
 
-We package, expose and depend on the JavaScript Algosdk.  It's there if you need it, but that API is pretty intense for day-to-day use.  With Algonaut.js, you can run one-off transactions with a vastly simplified API as compared to transacting with the Algosdk directly.  We're trying to solve for the 90% cases and let you dive into the hard stuff if you actually need to use it.
+We package, expose and depend on the JavaScript Algosdk.  It's there if you need it, but that API is pretty intense for day-to-day use.  With Algonaut.js, you can run one-off transactions with a vastly simplified API as compared to transacting with the Algosdk directly.  We're trying to solve for the 90% cases and ask you to dive into the hard stuff only if you actually need to use it.
 
-``` hi, i'm a code example ```
+To create an instance with a node and get ready to transact:
+
+```
+import AlgonautJS from 'algonautjs';
+
+const algonaut = new AlgonautJS({
+  BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
+  LEDGER: 'TestNet',
+  PORT: '',
+  API_TOKEN: { 'X-API-Key': 'MY_KEY_HERE' }
+});
+
+algonaut.recoverAccount(a_mnemonic_phrase);
+
+```
 
 ## Atomic Transactions
 
-One of the most powerful aspects of the Algorand chain is the ability to group transactions together and run them as one.  The API for this is, again, pretty hard to folow for your average FED.  With Algonaut.js we aim to make using this incredibly powerful API a lot more intuitive:
+One of the most powerful aspects of the Algorand chain is the ability to group transactions together and run them as one.  The API for this is, again, pretty hard to folow for your average FED.  With Algonaut.js, the aim is to make using this incredibly powerful API simple and intuitive:
 
-``` i'm a code example. ```
+```
+// this transaction must pay and and then make a request to an Algorand Smart Contract in one transaction.
+// It must also include the asset index in the "assets" arg and an app index in the applications arg
+const status = await algonaut.sendAtomicTransaction([
+  await algonaut.atomicPayment(appAddress, 250000),
+  await algonaut.atomicCallApp(appIndex, ['get_bananas'], { applications: [ bananaPriceTicker ] , assets: [ bananaAsaIndex ] })
+])
+
+```
 
 ## Interacting with Smart Contracts
 
@@ -35,4 +57,6 @@ Here again we are trying to account for the 90% use case, not every possible cas
 
 ## Contributing
 
-...TBD
+- setting up a dev env
+- ESLint and code style
+- building and testing with Vite and Node
