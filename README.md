@@ -52,10 +52,24 @@ Here again we are trying to account for the 90% use case, not every possible cas
 
 ## Installation
 
-...TBD
+To install from NPM do
+
+```npm install algonaut.js --save```
+
+You can then
+
+Algonaut.js also supports use in a Node runtime (e.g. you can use it with the algob script to emulate what browser APIs might look like).  To do this, requore the CJS package like this
+
+```const { default: AlgonautJS } = require('algonaut.js/dist/cjs');```
+
+and then use the librarys APIs the same way you do on the front end.
+
+
 
 
 ## Contributing
+
+TBD:
 
 - setting up a dev env
 - ESLint and code style

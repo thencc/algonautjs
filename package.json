@@ -4,7 +4,7 @@
 	"description": "algonaut.js is a simplified Algorand transaction library built specifically for Browsers and Front End Development",
 	"main": "dist/cjs/index.js",
 	"browser": "dist/index.js",
-	"module": "dist/esm.js",
+	"module": "dist/index.js",
 	"typings": "dist/index",
 	"files": [
 		"dist/*",
