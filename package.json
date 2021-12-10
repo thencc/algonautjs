@@ -1,8 +1,8 @@
 {
 	"name": "algonaut.js",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "algonaut.js is a simplified Algorand transaction library built specifically for Browsers and Front End Development",
-	"main": "dist/cjs/index.js",
+	"main": "dist/index.js",
 	"browser": "dist/index.js",
 	"module": "dist/index.js",
 	"typings": "dist/index",
