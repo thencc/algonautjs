@@ -469,7 +469,7 @@ export default class Algonaut {
      * @returns
      */
     async getAppInfo(appId) {
-        const info = this.algodClient.getApplicationByID(appId);
+        const info = await this.algodClient.getApplicationByID(appId).do();
         return info;
     }
     /**
@@ -478,7 +478,7 @@ export default class Algonaut {
      * @returns
      */
     async getAssetInfo(assetIndex) {
-        const info = this.algodClient.getAssetByID(assetIndex);
+        const info = await this.algodClient.getAssetByID(assetIndex).do();
         return info;
     }
     /**
