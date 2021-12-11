@@ -99,6 +99,32 @@ export default class Algonaut {
      */
     callApp(appIndex: number, args: any[], optionalFields?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus>;
     /**
+     * Get info about an application
+     * @param appId
+     * @returns
+     */
+    getAppInfo(appId: number): Promise<any>;
+    /**
+     * Get info about an asset
+     * @param assetIndex
+     * @returns
+     */
+    getAssetInfo(assetIndex: number): Promise<any>;
+    /**
+     * Create and deploy a new Smart Contract from TEAL code
+     *
+     * @param tealApprovalCode
+     * @param tealClearCode
+     * @param args
+     * @param localInts
+     * @param localBytes
+     * @param globalInts
+     * @param globalBytes
+     * @param optionalFields
+     * @returns AlgonautTransactionStatus
+     */
+    deployFromTeal(tealApprovalCode: string, tealClearCode: string, args: any[], localInts?: number, localBytes?: number, globalInts?: number, globalBytes?: number, optionalFields?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus>;
+    /**
      * deploys a contract from an lsig account
      * keep in mind that the local and global byte and int values have caps,
      * 16 for local and 32 for global and that the cost of deploying the

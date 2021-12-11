@@ -466,6 +466,94 @@ class Algonaut {
         }
     }
     /**
+     * Get info about an application
+     * @param appId
+     * @returns
+     */
+    async getAppInfo(appId) {
+        const info = this.algodClient.getApplicationByID(appId);
+        return info;
+    }
+    /**
+     * Get info about an asset
+     * @param assetIndex
+     * @returns
+     */
+    async getAssetInfo(assetIndex) {
+        const info = this.algodClient.getAssetByID(assetIndex);
+        return info;
+    }
+    /**
+     * Create and deploy a new Smart Contract from TEAL code
+     *
+     * @param tealApprovalCode
+     * @param tealClearCode
+     * @param args
+     * @param localInts
+     * @param localBytes
+     * @param globalInts
+     * @param globalBytes
+     * @param optionalFields
+     * @returns AlgonautTransactionStatus
+     */
+    async deployFromTeal(tealApprovalCode, tealClearCode, args, localInts = 8, localBytes = 8, globalInts = 8, globalBytes = 8, optionalFields) {
+        if (optionalFields && optionalFields.note && optionalFields.note.length > 1023) {
+            console.warn('drat! your note is too long!');
+            return {
+                status: 'fail',
+                message: 'your note is too long!'
+            };
+        }
+        else if (this.account) {
+            try {
+                const sender = this.account.addr;
+                const onComplete = algosdk_min_1.default.OnApplicationComplete.NoOpOC;
+                const params = await this.algodClient.getTransactionParams().do();
+                let approvalProgram = new Uint8Array();
+                let clearProgram = new Uint8Array();
+                approvalProgram = await this.compileProgram(tealApprovalCode);
+                clearProgram = await this.compileProgram(tealClearCode);
+                // create unsigned transaction
+                if (approvalProgram && clearProgram) {
+                    const txn = algosdk_min_1.default.makeApplicationCreateTxn(sender, params, onComplete, approvalProgram, clearProgram, localInts, localBytes, globalInts, globalBytes, this.encodeArguments(args), (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.accounts) ? optionalFields.accounts : undefined, (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.applications) ? optionalFields.applications : undefined, (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.assets) ? optionalFields.assets : undefined, (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.note) ? new Uint8Array(buffer_1.Buffer.from(optionalFields.note, 'utf8')) : undefined);
+                    const txId = txn.txID().toString();
+                    // Sign the transaction
+                    const signedTxn = txn.signTxn(this.account.sk);
+                    console.log('Signed transaction with txID: %s', txId);
+                    // Submit the transaction
+                    await this.algodClient.sendRawTransaction(signedTxn).do();
+                    // Wait for confirmation
+                    const result = await this.waitForConfirmation(txId);
+                    const transactionResponse = await this.algodClient
+                        .pendingTransactionInformation(txId)
+                        .do();
+                    result.message = 'Created App ID: ' + transactionResponse['application-index'];
+                    result.meta = transactionResponse;
+                    return result;
+                }
+                else {
+                    return {
+                        status: 'fail',
+                        message: 'could not compile TEAL code'
+                    };
+                }
+            }
+            catch (er) {
+                return {
+                    status: 'fail',
+                    message: er.message,
+                    error: er
+                };
+            }
+        }
+        else {
+            return {
+                status: 'fail',
+                message: 'there was no account in context'
+            };
+        }
+    }
+    /**
      * deploys a contract from an lsig account
      * keep in mind that the local and global byte and int values have caps,
      * 16 for local and 32 for global and that the cost of deploying the
@@ -705,7 +793,7 @@ class Algonaut {
             const accountInfoResponse = await this.algodClient
                 .accountInformation((_a = this.account) === null || _a === void 0 ? void 0 : _a.addr)
                 .do();
-            console.log(accountInfoResponse);
+            //console.log(accountInfoResponse);
             for (let i = 0; i < accountInfoResponse['apps-local-state'].length; i++) {
                 if (accountInfoResponse['apps-local-state'][i].id == applicationIndex) {
                     console.log('Found Application');

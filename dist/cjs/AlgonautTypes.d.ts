@@ -26,6 +26,7 @@ export declare type AlgonautTransactionStatus = {
     status: 'success' | 'fail';
     message: string;
     error?: Error;
+    meta?: any;
 };
 export declare type AlgonautWallet = {
     address: string;
