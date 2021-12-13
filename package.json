@@ -1,6 +1,6 @@
 {
 	"name": "algonaut.js",
-	"version": "0.0.5",
+	"version": "0.0.8",
 	"description": "algonaut.js is a simplified Algorand transaction library built specifically for Browsers and Front End Development",
 	"main": "dist/index.js",
 	"browser": "dist/index.js",
@@ -33,7 +33,8 @@
 		"buffer": "^6.0.3",
 		"crypto-js": "^4.1.1",
 		"hi-base32": "^0.5.1",
-		"js-sha512": "^0.8.0"
+		"js-sha512": "^0.8.0",
+		"tslib": "^2.3.1"
 	},
 	"devDependencies": {
 		"@types/crypto-js": "^4.0.2",

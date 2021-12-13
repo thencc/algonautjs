@@ -478,7 +478,34 @@ export default class Algonaut {
      */
     async getAppInfo(appId) {
         const info = await this.algodClient.getApplicationByID(appId).do();
-        return info;
+        // decode state
+        const state = {
+            hasState: true,
+            globals: [],
+            locals: [],
+            creatorAddress: info.params.creator,
+            index: appId
+        };
+        for (let n = 0; n < info['params']['global-state'].length; n++) {
+            const stateItem = info['params']['global-state'][n];
+            const key = Buffer.from(stateItem.key, 'base64').toString();
+            const type = stateItem.value.type;
+            let value = undefined;
+            let valueAsAddr = '';
+            if (type == 1) {
+                value = Buffer.from(stateItem.value.bytes, 'base64').toString();
+                valueAsAddr = algosdk.encodeAddress(Buffer.from(stateItem.value.bytes, 'base64'));
+            }
+            else if (stateItem.value.type == 2) {
+                value = stateItem.value.uint;
+            }
+            state.globals.push({
+                key: key,
+                value: value || '',
+                address: valueAsAddr
+            });
+        }
+        return state;
     }
     /**
      * Get info about an asset

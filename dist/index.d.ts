@@ -109,7 +109,7 @@ export default class Algonaut {
      * @param appId
      * @returns
      */
-    getAppInfo(appId: number): Promise<any>;
+    getAppInfo(appId: number): Promise<AlgonautAppState>;
     /**
      * Get info about an asset
      * @param assetIndex

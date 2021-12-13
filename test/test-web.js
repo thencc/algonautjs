@@ -21,11 +21,17 @@ async function runTests() {
   const escrow = algonaut.getAppEscrowAccount(49803676);
 
   console.log(escrow);
-
   // LSJOD5C26OTW5VZIG4KF43UTU4UZY7LGXTGWMW366ZDBSFND4MZDX66HHI
 
 
 
+  // call bricks oracle on test net: 49584323
+  const bricksInfo = await algonaut.getAppInfo(49584323);
+
+  bricksInfo.globals.forEach((kv) => {
+    if (kv.key == 'bricks_per_algo')
+    console.log(kv.value)
+  })
 
 }
 
