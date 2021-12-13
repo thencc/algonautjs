@@ -2,9 +2,7 @@
 import AlgonautJS from '../dist/index.js'
 
 
-async function runTests() {
-	console.log('starting tests');
-  const algonaut = new AlgonautJS({
+const algonaut = new AlgonautJS({
     BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
     LEDGER: 'TestNet',
     PORT: '',
@@ -17,6 +15,10 @@ async function runTests() {
   // wine slice height claw science approve know egg task chase story boost lonely confirm purpose rack kite soldier proud opinion wish pencil hire abstract blade
 
   algonaut.recoverAccount('wine slice height claw science approve know egg task chase story boost lonely confirm purpose rack kite soldier proud opinion wish pencil hire abstract blade');
+
+async function runTests() {
+	console.log('starting tests');
+
 
   const escrow = algonaut.getAppEscrowAccount(49803676);
 
@@ -31,13 +33,65 @@ async function runTests() {
   bricksInfo.globals.forEach((kv) => {
     if (kv.key == 'bricks_per_algo')
     console.log(kv.value)
-  })
+  });
+
+
+
+
+
+}
+
+
+let wcListner = {
+  onSessionUpdate: function (payload) {
+    console.log('on session update');
+  },
+	onConnect: function (payload) {
+    console.log('on connect');
+  },
+	onDisconnect: function (payload) {
+    console.log('on disconnct');
+  }
+};
+
+function testWCConnect(event) {
+  console.log('testing WC connect');
+  console.log(event);
+
+  algonaut.connectAlgoWallet(wcListner)
+
+}
+
+async function testWCTransaction() {
+
+  console.log('testing WC Transaction');
+
+  const txns = await algonaut.createWalletConnectTransactions([
+    await algonaut.atomicOptInASA(49528267)
+  ]);
+
+
+
+  console.log(txns)
+
+  const res = await algonaut.sendWalletConnectTxns(txns);
 
 }
 
 
 
+
+
 document.addEventListener('DOMContentLoaded', () => {
 	runTests();
+
+  document.getElementById('wc-connect').addEventListener('click', (e) => {
+    testWCConnect(e);
+  });
+
+  document.getElementById('wc-transact').addEventListener('click', async (e) => {
+    console.log('transact');
+    await testWCTransaction();
+  });
 
 });

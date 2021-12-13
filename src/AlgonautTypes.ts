@@ -23,6 +23,12 @@ export interface AlgonautAppState {
 	locals: AlgonautStateData[];
 }
 
+export interface WalletConnectListener {
+	onSessionUpdate(payload: any): void;
+	onConnect(payload: any): void;
+	onDisconnect(payload: any): void;
+}
+
 
 export type AlgonautError = {
 	message: string;
@@ -60,4 +66,6 @@ export type AlgonautAtomicTransaction = {
 	transactionSigner: algosdk.Account | algosdk.LogicSigAccount;
 	isLogigSig: boolean;
 }
+
+
 

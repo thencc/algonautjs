@@ -18,6 +18,11 @@ export interface AlgonautAppState {
     globals: AlgonautStateData[];
     locals: AlgonautStateData[];
 }
+export interface WalletConnectListener {
+    onSessionUpdate(payload: any): void;
+    onConnect(payload: any): void;
+    onDisconnect(payload: any): void;
+}
 export declare type AlgonautError = {
     message: string;
     rawError: Error;
@@ -25,6 +30,7 @@ export declare type AlgonautError = {
 export declare type AlgonautTransactionStatus = {
     status: 'success' | 'fail';
     message: string;
+    index?: number;
     error?: Error;
     meta?: any;
 };

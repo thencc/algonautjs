@@ -1,5 +1,5 @@
 import algosdkTypeRef from 'algosdk';
-import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields, AlgonautAppState } from './AlgonautTypes';
+import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields, AlgonautAppState, WalletConnectListener } from './AlgonautTypes';
 declare global {
     interface Window {
         AlgoSigner: any;
@@ -31,6 +31,7 @@ export default class Algonaut {
      *
      */
     setAccount(account: algosdkTypeRef.Account): void;
+    setWalletConnectAccount(address: string): void;
     createWallet(): AlgonautWallet;
     recoverAccount(mnemonic: string): any;
     /**
@@ -214,6 +215,13 @@ export default class Algonaut {
      * @param transactions a Uint8Array of ALREADY SIGNED transactions
      */
     sendAtomicTransaction(transactions: AlgonautAtomicTransaction[]): Promise<AlgonautTransactionStatus>;
+    /**
+     * Prepare one or more transactions for wallet connect signature
+     *
+     * @param transactions one or more atomic transaction objects
+     * @returns an array of Transactions
+     */
+    createWalletConnectTransactions(transactions: AlgonautAtomicTransaction[]): Promise<algosdkTypeRef.Transaction[]>;
     /**********************************************/
     /***** Below are the Algo Signer APIs *********/
     /**********************************************/
@@ -238,15 +246,13 @@ export default class Algonaut {
      */
     waitForAlgoSignerConfirmation(tx: any): Promise<any>;
     disconnectAlgoWallet(): Promise<void>;
-    connectAlgoWallet(): Promise<void>;
-    subscribeToEvents(): Promise<void>;
+    connectAlgoWallet(clientListener?: WalletConnectListener): Promise<void>;
+    subscribeToEvents(clientListener: WalletConnectListener | undefined): void;
     killSession(): Promise<void>;
     chainUpdate(newChain: any): Promise<void>;
     resetApp(): Promise<void>;
     onConnect(payload: any): Promise<void>;
     onDisconnect(): void;
     onSessionUpdate(accounts: any): Promise<void>;
-    getAccountAssets(): Promise<void>;
-    apiGetAccountAssets(address: string): Promise<any>;
-    signTxns(walletTxns: any[]): Promise<Array<Uint8Array | null>>;
+    sendWalletConnectTxns(walletTxns: any[]): Promise<AlgonautTransactionStatus>;
 }
