@@ -92,39 +92,6 @@ export default class Algonaut {
 
 		this.sdk = algosdk;
 
-		// initial support for wallet connect
-		if (config.SIGNING_MODE == 'wallet-connect') {
-			console.log('spinning up in wallet connect mode!');
-
-			const wcButton = document.createElement('button') as HTMLButtonElement;
-			wcButton.style.position = 'absolute';
-			wcButton.style.top = '8px';
-			wcButton.style.right = '8px';
-			wcButton.style.zIndex = '10000';
-			wcButton.classList.add('algonautjs-wc-button');
-			wcButton.innerHTML = 'Connect Wallet';
-
-			wcButton.addEventListener('click', event => {
-
-				const walletConnectButton = document.querySelector('.algonautjs-wc-button') as HTMLButtonElement;
-
-				console.log('click!', walletConnectButton.classList);
-
-				if (walletConnectButton.classList.contains('is-connected')) {
-					console.log('starting disconnect');
-					this.disconnectAlgoWallet();
-				} else {
-					console.log('starting connect');
-					this.connectAlgoWallet();
-				}
-
-
-			});
-
-			document.body.appendChild(wcButton);
-
-		}
-
 	}
 
 	getConfig() {
@@ -811,6 +778,7 @@ export default class Algonaut {
 						.do();
 
 					result.message = 'Created App ID: ' + transactionResponse['application-index'];
+					result.index = transactionResponse['application-index'];
 					result.meta = transactionResponse;
 					return result;
 

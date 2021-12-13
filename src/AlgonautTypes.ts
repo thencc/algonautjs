@@ -32,6 +32,7 @@ export type AlgonautError = {
 export type AlgonautTransactionStatus = {
 	status: 'success' | 'fail';
 	message: string;
+	index?: number;
 	error?: Error;
 	meta?: any;
 }
