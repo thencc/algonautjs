@@ -466,6 +466,14 @@ class Algonaut {
         }
     }
     /**
+     * Get an application's escrow account
+     * @param appId
+     * @returns escrow account address as string
+     */
+    getAppEscrowAccount(appId) {
+        return algosdk_min_1.default.getApplicationAddress(appId);
+    }
+    /**
      * Get info about an application
      * @param appId
      * @returns

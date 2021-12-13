@@ -1,6 +1,6 @@
 {
 	"name": "algonaut.js",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"description": "algonaut.js is a simplified Algorand transaction library built specifically for Browsers and Front End Development",
 	"main": "dist/index.js",
 	"browser": "dist/index.js",
@@ -29,8 +29,11 @@
 		"@walletconnect/client": "^1.6.5",
 		"algorand-walletconnect-qrcode-modal": "^1.6.1",
 		"algosdk": "^1.12.0",
+		"base32-encode": "^2.0.0",
 		"buffer": "^6.0.3",
-		"crypto-js": "^4.1.1"
+		"crypto-js": "^4.1.1",
+		"hi-base32": "^0.5.1",
+		"js-sha512": "^0.8.0"
 	},
 	"devDependencies": {
 		"@types/crypto-js": "^4.0.2",

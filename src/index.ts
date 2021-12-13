@@ -1,16 +1,19 @@
-import { Buffer } from 'buffer';
+import { atob, Buffer } from 'buffer';
 // the web build seems to me missing type defs for algosdk.Account
 // and a few other types so we use this ref to get them into the IDE
 import algosdkTypeRef from 'algosdk';
 import algosdk from 'algosdk/dist/browser/algosdk.min';
 
 import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields, AlgonautAppState, AlgonautStateData } from './AlgonautTypes';
-
+import * as sha512 from 'js-sha512';
+import * as CryptoJS from 'crypto-js';
 
 import WalletConnectMin from '@walletconnect/client/dist/umd/index.min';
 import WalletConnect from '@walletconnect/client';
 import QRCodeModal from 'algorand-walletconnect-qrcode-modal';
 import { formatJsonRpcRequest } from '@json-rpc-tools/utils';
+
+
 
 /*
 
@@ -657,6 +660,20 @@ export default class Algonaut {
 			};
 		}
 	}
+
+	/**
+	 * Get an application's escrow account
+	 * @param appId
+	 * @returns escrow account address as string
+	 */
+	getAppEscrowAccount(appId: number | bigint): string {
+
+		return algosdk.getApplicationAddress(appId);
+
+	}
+
+
+
 
 	/**
 	 * Get info about an application

@@ -1,7 +1,8 @@
 
 import AlgonautJS from '../dist/index.js'
 
-function runTests() {
+
+async function runTests() {
 	console.log('starting tests');
   const algonaut = new AlgonautJS({
     BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
@@ -16,10 +17,21 @@ function runTests() {
   // wine slice height claw science approve know egg task chase story boost lonely confirm purpose rack kite soldier proud opinion wish pencil hire abstract blade
 
   algonaut.recoverAccount('wine slice height claw science approve know egg task chase story boost lonely confirm purpose rack kite soldier proud opinion wish pencil hire abstract blade');
+
+  const escrow = algonaut.getAppEscrowAccount(49803676);
+
+  console.log(escrow);
+
+  // LSJOD5C26OTW5VZIG4KF43UTU4UZY7LGXTGWMW366ZDBSFND4MZDX66HHI
+
+
+
+
 }
 
 
 
 document.addEventListener('DOMContentLoaded', () => {
 	runTests();
+
 });

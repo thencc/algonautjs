@@ -99,6 +99,12 @@ export default class Algonaut {
      */
     callApp(appIndex: number, args: any[], optionalFields?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus>;
     /**
+     * Get an application's escrow account
+     * @param appId
+     * @returns escrow account address as string
+     */
+    getAppEscrowAccount(appId: number | bigint): string;
+    /**
      * Get info about an application
      * @param appId
      * @returns
