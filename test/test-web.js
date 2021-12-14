@@ -26,6 +26,9 @@ async function runTests() {
   // LSJOD5C26OTW5VZIG4KF43UTU4UZY7LGXTGWMW366ZDBSFND4MZDX66HHI
 
 
+  const accountInfo = await algonaut.getAccountInfo('LSJOD5C26OTW5VZIG4KF43UTU4UZY7LGXTGWMW366ZDBSFND4MZDX66HHI');
+  console.log("account info is", accountInfo);
+
 
   // call bricks oracle on test net: 49584323
   const bricksInfo = await algonaut.getAppInfo(49584323);
@@ -35,12 +38,7 @@ async function runTests() {
     console.log(kv.value)
   });
 
-
-
-
-
 }
-
 
 let wcListner = {
   onSessionUpdate: function (payload) {
@@ -70,17 +68,9 @@ async function testWCTransaction() {
     await algonaut.atomicOptInASA(49528267)
   ]);
 
-
-
-  console.log(txns)
-
   const res = await algonaut.sendWalletConnectTxns(txns);
 
 }
-
-
-
-
 
 document.addEventListener('DOMContentLoaded', () => {
 	runTests();

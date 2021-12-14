@@ -13,8 +13,6 @@ import WalletConnect from '@walletconnect/client';
 import QRCodeModal from 'algorand-walletconnect-qrcode-modal';
 import { formatJsonRpcRequest } from '@json-rpc-tools/utils';
 
-
-
 /*
 
 AlgonautJS should have some "signing modes" which you set at invocation time
@@ -998,6 +996,17 @@ export default class Algonaut {
 		return accounts;
 	}
 
+	/**
+	 * Fetch full account info for an account
+	 * @param address the accress to read info for
+	 * @returns Promise of type AccountInfo
+	 */
+	async getAccountInfo(address: string): Promise<any> {
+		console.log('checking algo balance');
+		const accountInfo = await this.algodClient.accountInformation(address).do();
+		return accountInfo;
+	}
+
 
 	/**
 	 * Checks Algo balance of account
@@ -1576,6 +1585,8 @@ export default class Algonaut {
 		if (!this.walletConnect.connector.connected) {
 			// create new session
 			this.walletConnect.connector.createSession();
+			console.log('session created');
+
 
 		}
 

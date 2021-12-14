@@ -168,6 +168,12 @@ export default class Algonaut {
      */
     getAccounts(ledger: string): Promise<any>;
     /**
+     * Fetch full account info for an account
+     * @param address the accress to read info for
+     * @returns Promise of type AccountInfo
+     */
+    getAccountInfo(address: string): Promise<any>;
+    /**
      * Checks Algo balance of account
      * @param address Wallet of balance to check
      * @returns Promise resolving to Algo balance

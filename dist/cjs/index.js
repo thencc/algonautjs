@@ -707,6 +707,16 @@ class Algonaut {
         return accounts;
     }
     /**
+     * Fetch full account info for an account
+     * @param address the accress to read info for
+     * @returns Promise of type AccountInfo
+     */
+    async getAccountInfo(address) {
+        console.log('checking algo balance');
+        const accountInfo = await this.algodClient.accountInformation(address).do();
+        return accountInfo;
+    }
+    /**
      * Checks Algo balance of account
      * @param address Wallet of balance to check
      * @returns Promise resolving to Algo balance
@@ -1162,6 +1172,7 @@ class Algonaut {
         if (!this.walletConnect.connector.connected) {
             // create new session
             this.walletConnect.connector.createSession();
+            console.log('session created');
         }
         this.subscribeToEvents(clientListener);
     }

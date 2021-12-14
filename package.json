@@ -1,6 +1,6 @@
 {
 	"name": "algonaut.js",
-	"version": "0.0.9",
+	"version": "0.0.10",
 	"description": "algonaut.js is a simplified Algorand transaction library built specifically for Browsers and Front End Development",
 	"main": "dist/index.js",
 	"browser": "dist/index.js",
@@ -14,7 +14,7 @@
 	"scripts": {
 		"build": "tsc; tsc --module CommonJS --outDir dist/cjs; node buildscripts/swap_sdk.js",
 		"build-test": "vite build test",
-		"dev": "vite serve test",
+		"dev": "vite serve test --port 8891",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"keywords": [
