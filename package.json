@@ -1,6 +1,6 @@
 {
 	"name": "algonaut.js",
-	"version": "0.0.11",
+	"version": "0.0.12",
 	"description": "algonaut.js is a simplified Algorand transaction library built specifically for Browsers and Front End Development",
 	"main": "dist/index.js",
 	"browser": "dist/index.js",
@@ -24,6 +24,10 @@
 	],
 	"author": "Aubrey Anderson / NCC",
 	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/thencc/algonautjs"
+	},
 	"dependencies": {
 		"@json-rpc-tools/utils": "^1.7.6",
 		"@walletconnect/client": "^1.6.5",
