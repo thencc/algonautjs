@@ -84,4 +84,15 @@ document.addEventListener('DOMContentLoaded', () => {
     await testWCTransaction();
   });
 
+
+  document.getElementById('example-1').addEventListener('click', async (e) => {
+    setLog('example-1', '');
+    const status = await algonaut.checkStatus();
+    setLog('example-1', status);
+  })
+
 });
+
+function setLog(id, content) {
+  document.getElementById('log-' + id).innerHTML(content);
+}

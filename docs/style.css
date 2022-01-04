@@ -1,0 +1,17 @@
+body, form, input, textarea {
+    font-family: 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5 {
+    color: white;
+    font-weight: bold;
+}
+
+p {
+    color: lightgray;
+}
+
+pre.log {
+    background-color: #001c24;
+    padding: 5px 10px;
+}

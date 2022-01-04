@@ -13,7 +13,7 @@ We package, expose and depend on the JavaScript Algosdk.  It's there if you need
 To create an instance with a node and get ready to transact:
 
 ```
-import AlgonautJS from 'algonautjs';
+import AlgonautJS from 'algonaut.js';
 
 const algonaut = new AlgonautJS({
   BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
@@ -50,22 +50,35 @@ Here again we are trying to account for the 90% use case, not every possible cas
 
 ``` i'm a Stateful and Stateless contract descriptor example ```
 
-## Installation
+## Usage
 
-To install from NPM do
+Install from NPM:
 
 ```npm install algonaut.js --save```
 
-You can then
+Usage:
+
+```js
+import Algonaut from 'algonaut.js';
+const algonaut = new Algonaut({
+	BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
+	LEDGER: 'TestNet',
+	PORT: '',
+	API_TOKEN: { 'X-API-Key': 'YOUR_API_TOKEN' }
+});
+
+const account = algonaut.recoverAccount("a mnemonic phrase");
+algonaut.setAccount(account);
+
+const txnStatus = await algonaut.sendAlgo("toAddress", 1000, "a note for the transaction");
+console.log(txnStatus);
+```
 
 Algonaut.js also supports use in a Node runtime (e.g. you can use it with the algob script to emulate what browser APIs might look like).  To do this, requore the CJS package like this
 
 ```const { default: AlgonautJS } = require('algonaut.js/dist/cjs');```
 
 and then use the librarys APIs the same way you do on the front end.
-
-
-
 
 ## Contributing
 

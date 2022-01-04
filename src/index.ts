@@ -10,6 +10,7 @@ import * as CryptoJS from 'crypto-js';
 
 import WalletConnectMin from '@walletconnect/client/dist/umd/index.min';
 import WalletConnect from '@walletconnect/client';
+import { IInternalEvent } from '@walletconnect/types';
 import QRCodeModal from 'algorand-walletconnect-qrcode-modal';
 import { formatJsonRpcRequest } from '@json-rpc-tools/utils';
 
@@ -82,6 +83,24 @@ export default class Algonaut {
 		chain: undefined as any
 	};
 
+	/**
+	 * Instantiates Algonaut.js.
+	 * 
+	 * @example
+	 * Usage:
+	 * 
+	 * ```js
+	 * import Algonaut from 'algonaut.js';
+	 * const algonaut = new Algonaut({
+	 *	 BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
+	 *	 LEDGER: 'TestNet',
+	 *	 PORT: '',
+	 *	 API_TOKEN: { 'X-API-Key': 'YOUR_API_TOKEN' }
+	 * });
+	 * ```
+	 * 
+	 * @param config config object
+	 */
 	constructor(config: AlgonautConfig) {
 
 		this.config = config;
@@ -92,19 +111,27 @@ export default class Algonaut {
 
 	}
 
-	getConfig() {
-		return this.config;
+	/**
+	 * @returns config object or `false` if no config is set
+	 */
+	getConfig(): AlgonautConfig | boolean {
+		if (this.config) return this.config;
+		return false;
 	}
 
+	/**
+	 * Checks status of Algorand network
+	 * @returns Promise resolving to status of Algorand network
+	 */
 	async checkStatus(): Promise<any> {
 		const status = await this.algodClient.status().do();
 		console.log('Algorand network status: %o', status);
 		return status;
 	}
 
-	/** if you already have an account, set it here
+	/** 
+	 * if you already have an account, set it here
 	 * @param account an algosdk account already created
-	 *
 	 */
 	setAccount(account: algosdkTypeRef.Account): void {
 		this.account = account;
@@ -112,6 +139,10 @@ export default class Algonaut {
 		this.mnemonic = algosdk.secretKeyToMnemonic(account.sk);
 	}
 
+	/**
+	 * Sets account connected via WalletConnect
+	 * @param address account address
+	 */
 	setWalletConnectAccount(address: string) {
 		this.account = {
 			addr: address,
@@ -119,6 +150,10 @@ export default class Algonaut {
 		};
 	}
 
+	/**
+	 * Creates a wallet address + mnemonic from account's secret key
+	 * @returns AlgonautWallet Object containing `address` and `mnemonic`
+	 */
 	createWallet(): AlgonautWallet {
 		this.account = algosdk.generateAccount();
 
@@ -135,16 +170,23 @@ export default class Algonaut {
 
 	}
 
-	recoverAccount(mnemonic: string): any {
+	/**
+	 * Recovers account from mnemonic
+	 * @param mnemonic Mnemonic associated with Algonaut account
+	 * @returns If mnemonic is valid, returns account. Otherwise, returns false.
+	 */
+	recoverAccount(mnemonic: string): algosdkTypeRef.Account|boolean {
 		try {
 			this.account = algosdk.mnemonicToSecretKey(mnemonic);
 			if (algosdk.isValidAddress(this.account?.addr)) {
 				return this.account;
 			}
 		} catch (error) {
+			// should we throw an error here instead of returning false?
 			console.log(error);
 			return false;
 		}
+		return false;
 	}
 
 	/**
@@ -448,7 +490,11 @@ export default class Algonaut {
 		}
 	}
 
-
+	/**
+	 * Deletes an application from the blockchain
+	 * @param appIndex - ID of application
+	 * @returns Promise resolving to confirmed transaction or error
+	 */
 	async deleteApplication(appIndex: number): Promise<AlgonautTransactionStatus> {
 
 		if (this.account && appIndex) {
@@ -489,6 +535,11 @@ export default class Algonaut {
 		}
 	}
 
+	/**
+	 * Deletes ASA
+	 * @param assetId Index of the ASA to delete
+	 * @returns Promise resolving to confirmed transaction or error
+	 */
 	async deleteASA(assetId: number): Promise<AlgonautTransactionStatus>  {
 
 		if (this.account && assetId) {
@@ -523,17 +574,16 @@ export default class Algonaut {
 	}
 
 	/**
-	 * Sends ASA to an address
-	 * @param receiverAddress the address to send to
-	 * @param assetIndex the index of the asset to send
-	 * @param amount how much to send (based on the ASAs decimal setting)
-	 * 	so to send 1 token with a decimal setting of 3, this value should be 1000
-	 *
-	 * @returns Promise resolving to confirmed transaction or error
-	 *
-	 *
+	 * Sends ASA to an address.
+	 * 
 	 * IMPORTANT: Before you can call this, the target account has to "opt-in"
 	 * to the ASA index.  You can't just send ASAs to people blind!
+	 * 
+	 * @param receiverAddress - the address to send to
+	 * @param assetIndex - the index of the asset to send
+	 * @param amount - how much to send (based on the ASAs decimal setting). So to send 1 token with a decimal setting of 3, this value should be 1000.
+	 *
+	 * @returns Promise resolving to confirmed transaction or error
 	 *
 	 */
 	async sendASA(receiverAddress: string, assetIndex: number, amount: number|bigint): Promise<AlgonautTransactionStatus> {
@@ -635,8 +685,8 @@ export default class Algonaut {
 
 	/**
 	 * Get an application's escrow account
-	 * @param appId
-	 * @returns escrow account address as string
+	 * @param appId - ID of application
+	 * @returns Escrow account address as string
 	 */
 	getAppEscrowAccount(appId: number | bigint): string {
 
@@ -648,9 +698,10 @@ export default class Algonaut {
 
 
 	/**
-	 * Get info about an application
-	 * @param appId
-	 * @returns
+	 * Get info about an application (globals, locals, creator address, index)
+	 * 
+	 * @param appId - ID of application
+	 * @returns Promise resolving to application state
 	 */
 	async getAppInfo(appId: number): Promise<AlgonautAppState> {
 
@@ -917,6 +968,11 @@ export default class Algonaut {
 
 	}
 
+	/**
+	 * Compiles TEAL source via [algodClient.compile](https://py-algorand-sdk.readthedocs.io/en/latest/algosdk/v2client/algod.html#algosdk.v2client.algod.AlgodClient.compile)
+	 * @param programSource source to compile
+	 * @returns Promise resolving to Buffer of compiled bytes
+	 */
 	async compileProgram (programSource: string): Promise<Uint8Array> {
 		const encoder = new TextEncoder();
 		const programBytes = encoder.encode(programSource);
@@ -927,6 +983,14 @@ export default class Algonaut {
 		return compiledBytes;
 	}
 
+	/**
+	 * Sends ALGO from own account to `toAddress`. 
+	 * 
+	 * @param toAddress - address to send to
+	 * @param amount - amount of Algo to send
+	 * @param note - note to attach to transaction
+	 * @returns Promise resolving to transaction status
+	 */
 	async sendAlgo(toAddress: string, amount: number, note?: string): Promise<AlgonautTransactionStatus> {
 		// construct a transaction note
 
@@ -967,35 +1031,6 @@ export default class Algonaut {
 		}
 	}
 
-
-	/* BELOW HERE ARE ALL THE ALGO SIGNER APIS IF WE GO THAT ROUTE */
-
-	/**
-	 * Function to determine if the AlgoSigner extension is installed.
-	 * @returns Boolean
-	 */
-	isAlgoSignerInstalled(): boolean {
-		return typeof window.AlgoSigner !== 'undefined';
-	}
-
-	/**
-	 * Connects to AlgoSigner extension
-	 */
-	async connectToAlgoSigner(): Promise<any> {
-		return await window.AlgoSigner.connect();
-	}
-
-	/**
-	 * Async function that returns list of accounts in the wallet.
-	 * @param ledger must be 'TestNet' or 'MainNet'.
-	 * @returns Array of Objects with address fields: [{ address: <String> }, ...]
-	 */
-	async getAccounts(ledger: string): Promise<any> {
-		await this.connectToAlgoSigner();
-		const accounts = await window.AlgoSigner.accounts({ ledger });
-		return accounts;
-	}
-
 	/**
 	 * Fetch full account info for an account
 	 * @param address the accress to read info for
@@ -1010,7 +1045,7 @@ export default class Algonaut {
 
 	/**
 	 * Checks Algo balance of account
-	 * @param address Wallet of balance to check
+	 * @param address - Wallet of balance to check
 	 * @returns Promise resolving to Algo balance
 	 */
 	async getAlgoBalance(address: string): Promise<any> {
@@ -1021,8 +1056,8 @@ export default class Algonaut {
 
 	/**
 	 * Checks token balance of account
-	 * @param address Wallet of balance to check
-	 * @param assetIndex the ASA index
+	 * @param address - Wallet of balance to check
+	 * @param assetIndex - the ASA index
 	 * @returns Promise resolving to token balance
 	 */
 	async getTokenBalance(address: string, assetIndex: number): Promise<number> {
@@ -1043,8 +1078,8 @@ export default class Algonaut {
 	/**
 	 * Checks if account has at least one token (before playback)
 	 * Keeping this here in case this is a faster/less expensive operation than checking actual balance
-	 * @param address Address to check
-	 * @param assetIndex the index of the ASA
+	 * @param address - Address to check
+	 * @param assetIndex - the index of the ASA
 	 */
 	async accountHasTokens(address: string, assetIndex: number): Promise<any> {
 		return 'this is not done yet';
@@ -1052,7 +1087,7 @@ export default class Algonaut {
 
 	/**
 	 *
-	 * @param applicationIndex the applications index
+	 * @param applicationIndex - the applications index
 	 */
 	async getAppGlobalState(applicationIndex: number, creatorAddress: string): Promise<AlgonautAppState> {
 
@@ -1556,13 +1591,42 @@ export default class Algonaut {
 	/*
 	* Wallet Connect API Stuff
 	*/
+
+
 	async disconnectAlgoWallet() {
 		if (this.walletConnect.connected) {
 			this.walletConnect.connector?.killSession();
 		}
 	}
 
-	async connectAlgoWallet(clientListener?: WalletConnectListener) {
+	/**
+	 * Connects to algo wallet via WalletConnect, calling {@link subscribeToEvents}. 
+	 * Implementation borrowed from [Algorand Docs](https://developer.algorand.org/docs/get-details/walletconnect/)
+	 * 
+	 * @remarks
+	 * 
+	 * There are three listeners you can use, defined by {@link WalletConnectListener}:
+	 *  - `onConnect(payload: IInternalEvent)` (`payload.params[0]` contains an array of account addresses)
+	 *  - `onDisconnect()`
+	 *  - `onSessionUpdate(accounts: string[])`
+	 * 
+	 * @example
+	 * Usage:
+	 * 
+	 * ```ts
+	 * await algonaut.connectAlgoWallet({
+	 *   onConnect: (payload) => console.log('Accounts: ' + payload.params[0]),
+	 *   onDisconnect: () => console.log('Do something on disconnect'),
+	 *   onSessionUpdate: (accounts) => console.log('Accounts: ' + accounts)
+	 * })
+	 * ```
+	 * 
+	 * We can use the `onConnect` listener to store an address in application state, for example, 
+	 * which allows us to conditionally display components depending on authentication status.
+	 * 
+	 * @param clientListener object of listener functions (see {@link WalletConnectListener})
+	 */
+	async connectAlgoWallet(clientListener?: WalletConnectListener): Promise<void> {
 		console.log('connecting wallet: ');
 
 		// 4067ab2454244fb39835bfeafc285c8d
@@ -1593,7 +1657,11 @@ export default class Algonaut {
 		this.subscribeToEvents(clientListener);
 	}
 
-	subscribeToEvents(clientListener: WalletConnectListener | undefined) {
+	/**
+	 * Sets up listeners for WalletConnect events
+	 * @param clientListener optional object of listener functions, to be used in an application
+	 */
+	subscribeToEvents(clientListener?: WalletConnectListener): void {
 		if (!this.walletConnect.connector) {
 			return;
 		}
@@ -1642,6 +1710,9 @@ export default class Algonaut {
 		}
 	}
 
+	/**
+	 * Kills WalletConnect session and calls {@link resetApp}
+	 */
 	async killSession() {
 		if (this.walletConnect.connector) {
 			this.walletConnect.connector.killSession();
@@ -1654,13 +1725,17 @@ export default class Algonaut {
 		this.walletConnect.chain = newChain;
 	}
 
+
 	async resetApp() {
 		console.log('reset app called');
 		console.log('TBD!');
 	}
 
-	// iinternal even type from example
-	async onConnect(payload: any) {
+	/**
+	 * Function called upon connection to WalletConnect. Sets account in AlgonautJS via {@link setWalletConnectAccount}.
+	 * @param payload Event payload, containing an array of account addresses
+	 */
+	async onConnect(payload: IInternalEvent) {
 		const { accounts } = payload.params[0];
 		const address = accounts[0];
 
@@ -1672,6 +1747,9 @@ export default class Algonaut {
 
 	}
 
+	/**
+	 * Called upon disconnection from WalletConnect.
+	 */
 	onDisconnect() {
 		this.walletConnect.connected = false;
 		this.walletConnect.accounts = [];
@@ -1679,13 +1757,21 @@ export default class Algonaut {
 		this.account = undefined;
 	}
 
-	async onSessionUpdate(accounts: any) {
+	/**
+	 * Called when WalletConnect session updates
+	 * @param accounts Array of account address strings
+	 */
+	async onSessionUpdate(accounts: string[]) {
 		this.walletConnect.address = accounts[0];
 		this.walletConnect.accounts = accounts;
 		this.setWalletConnectAccount(accounts[0]);
 	}
 
-
+	/**
+	 * Sends one or multiple transactions via WalletConnect, prompting the user to approve transaction on their phone.
+	 * @param walletTxns Array of transactions to send
+	 * @returns Promise resolving to transaction status
+	 */
 	async sendWalletConnectTxns(walletTxns: any[]): Promise<AlgonautTransactionStatus> {
 
 		if (this.walletConnect.connected) {
@@ -1743,6 +1829,34 @@ export default class Algonaut {
 
 
 
+	}
+
+	/* BELOW HERE ARE ALL THE ALGO SIGNER APIS IF WE GO THAT ROUTE */
+
+	/**
+	 * Function to determine if the AlgoSigner extension is installed.
+	 * @returns true if `window.AlgoSigner` is defined
+	 */
+	 isAlgoSignerInstalled(): boolean {
+		return typeof window.AlgoSigner !== 'undefined';
+	}
+
+	/**
+	 * Connects to AlgoSigner extension
+	 */
+	async connectToAlgoSigner(): Promise<any> {
+		return await window.AlgoSigner.connect();
+	}
+
+	/**
+	 * Async function that returns list of accounts in the wallet.
+	 * @param ledger must be 'TestNet' or 'MainNet'.
+	 * @returns Array of Objects with address fields: [{ address: <String> }, ...]
+	 */
+	async getAccounts(ledger: string): Promise<any> {
+		await this.connectToAlgoSigner();
+		const accounts = await window.AlgoSigner.accounts({ ledger });
+		return accounts;
 	}
 
 
