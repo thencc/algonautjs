@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://use.typekit.net/tua0pgl.css">
     <link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css">
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/atom-one-dark-reasonable.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
     <link rel="stylesheet" href="../bootstrap.min.css">
     <link rel="stylesheet" href="../style.css">
@@ -39,11 +40,25 @@
     
 <div class="container-md pt-4">
   <div class="row">
+    <div class="col-md-12">
+      <h4>Examples:</h4>
+      <ul>
+        <li><a href="#get-started">Get Started</a></li>
+        <li><a href="#wc-login">Connect to Account with WalletConnect</a></li>
+        <li><a href="#wc-txn">Sign Transactions with WalletConnect</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- EXAMPLE ONE: GET STARTED -->
+  <div class="row" id="get-started">
     <div class="col-md-6">
       <h4>Get Started</h4>
       <p>This example runs on TestNet, using a Purestake node.</p>
-      <p><button id="example-1" class="btn btn-secondary btn-sm">Run example &rarr;</button></p>
-      <pre class="log" id="log-example-1"></pre>
+      <!-- <p><button id="example-1" class="btn btn-secondary btn-sm">Run example &rarr;</button></p>
+      <pre class="log" id="log-example-1"></pre> -->
     </div>
     <div class="col-md-6">
       <pre><code>import Algonaut from 'algonaut.js';
@@ -59,6 +74,62 @@ const status = await algonaut.checkStatus();
 console.log(status);</code></pre>
     </div>
   </div>
+
+  <!-- EXAMPLE TWO: LOGIN WITH WALLET CONNECT -->
+  <div class="row pt-3" id="wc-login">
+    <div class="col-md-6">
+      <h4>Connect to Account with WalletConnect</h4>
+      <p>One of the easiest ways we've found to interface with the Algorand blockchain is to connect to users' account with the Algorand Wallet on mobile.</p>
+      <p>Using WalletConnect, we prompt the user to scan a QR code, which connects our app to their wallet. From there, they sign transactions with a single tap on their phone.</p>
+      <!-- <p><button id="example-1" class="btn btn-secondary btn-sm">Run example &rarr;</button></p>
+      <pre class="log" id="log-example-1"></pre> -->
+    </div>
+    <div class="col-md-6">
+<pre><code>// Log a user in via WalletConnect
+const user = { address: '' };
+
+// calling connectAlgoWallet opens a QR code prompt
+// which the user scans with the Algorand mobile wallet
+algonaut.connectAlgoWallet({
+  onConnect: (payload) => {
+    // set "authenticated" state, to use in our app
+    const { accounts } = payload[0];
+    user.address = accounts[0];
+  },
+  onDisconnect: () => {
+    // "log out" the user
+    user.address = '';
+  },
+  onSessionUpdate: (accounts) => {
+    user.address = accounts[0];
+  }
+});
+</code></pre>
+    </div>
+  </div>
+
+  <!-- EXAMPLE THREE: WALLET CONNECT TRANSACTION -->
+  <div class="row pt-3" id="wc-txn">
+    <div class="col-md-6">
+      <h4>Sign Transactions with WalletConnect</h4>
+      <p>In this example, we are storing account info as local state in a contract identified by <code>ACCOUNT_CONTRACT_ID</code>.</p>
+      <p>Various functions in Algonaut.js will return <code>AlgonautAtomicTransaction</code>, which can be used in <a href="../docs/classes/default.html#createWalletConnectTransactions"><code>createWalletConnectTransactions</code></a> to bundle the transactions for signing via WalletConnect.</p>
+      <p>See the list of functions with an <code>atomic</code> prefix <a href="../docs/classes/default.html#atomicAssetTransfer">in the API docs</a>.</p>
+    </div>
+    <div class="col-md-6">
+<pre><code>const txns = await algonaut.createWalletConnectTransactions([
+  await algonaut.atomicOptInApp(ACCOUNT_CONTRACT_ID, [
+    'set_all',
+    account.name,
+    account.bio || '',
+    account.avatar || ''
+  ])
+]);
+const response = await algonaut.sendWalletConnectTxns(txns);
+</code></pre>
+    </div>
+  </div>
+  
 </div>
 
 </body>

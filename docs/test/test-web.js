@@ -94,5 +94,5 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function setLog(id, content) {
-  document.getElementById('log-' + id).innerHTML(content);
+  document.getElementById('log-' + id).innerHTML = content;
 }
