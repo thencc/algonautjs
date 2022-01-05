@@ -15,8 +15,7 @@ Install via NPM:
 
 Usage:
 
-```js
-import Algonaut from 'algonaut.js';
+<pre><code>import Algonaut from 'algonaut.js';
 const algonaut = new Algonaut({
 	BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
 	LEDGER: 'TestNet',
@@ -28,7 +27,6 @@ const account = algonaut.recoverAccount("a mnemonic phrase");
 algonaut.setAccount(account);
 
 const txnStatus = await algonaut.sendAlgo("toAddress", 1000, "a note for the transaction");
-console.log(txnStatus);
-```
+console.log(txnStatus);</code></pre>
 
 Check out our [examples page](./test/) for much more!
