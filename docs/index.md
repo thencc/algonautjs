@@ -15,7 +15,7 @@ Install via NPM:
 
 Usage:
 
-<pre><code>import Algonaut from 'algonaut.js';
+<pre><code class="hljs language-javascript">import Algonaut from 'algonaut.js';
 const algonaut = new Algonaut({
 	BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
 	LEDGER: 'TestNet',
