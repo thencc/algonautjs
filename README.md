@@ -21,11 +21,11 @@ const algonaut = new AlgonautJS({
   BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
   LEDGER: 'TestNet',
   PORT: '',
-  API_TOKEN: { 'X-API-Key': 'MY_KEY_HERE' }
+  API_TOKEN: { 'X-API-Key': 'MY_KEY_HERE' },
+  SIGNING_MODE: 'wallet-connect' // this is mandatory if you are using WalletConnect!
 });
 
 algonaut.recoverAccount(a_mnemonic_phrase);
-
 ```
 
 ## Atomic Transactions
@@ -39,7 +39,6 @@ const status = await algonaut.sendAtomicTransaction([
   await algonaut.atomicPayment(appAddress, 250000),
   await algonaut.atomicCallApp(appIndex, ['get_bananas'], { applications: [ bananaPriceTicker ] , assets: [ bananaAsaIndex ] })
 ])
-
 ```
 
 ## Interacting with Smart Contracts

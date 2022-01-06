@@ -819,24 +819,34 @@ export default class Algonaut {
 						optionalFields?.note ? new Uint8Array(Buffer.from(optionalFields.note, 'utf8'))  : undefined
 					);
 					const txId = txn.txID().toString();
+					
+					if (this.usingWalletConnect()) {
+						// const preparedTxn = await this.createWalletConnectTransactions([
+						// 	txn
+						// ])
+						return {
+							status: 'fail',
+							message: 'cannot deploy contracts from wallet connect yet. TODO!!'
+						}
+					} else {
+						// Sign the transaction
+						const signedTxn = txn.signTxn(this.account.sk);
+						console.log('Signed transaction with txID: %s', txId);
 
-					// Sign the transaction
-					const signedTxn = txn.signTxn(this.account.sk);
-					console.log('Signed transaction with txID: %s', txId);
+						// Submit the transaction
+						await this.algodClient.sendRawTransaction(signedTxn).do();
 
-					// Submit the transaction
-					await this.algodClient.sendRawTransaction(signedTxn).do();
+						// Wait for confirmation
+						const result = await this.waitForConfirmation(txId);
+						const transactionResponse = await this.algodClient
+							.pendingTransactionInformation(txId)
+							.do();
 
-					// Wait for confirmation
-					const result = await this.waitForConfirmation(txId);
-					const transactionResponse = await this.algodClient
-						.pendingTransactionInformation(txId)
-						.do();
-
-					result.message = 'Created App ID: ' + transactionResponse['application-index'];
-					result.index = transactionResponse['application-index'];
-					result.meta = transactionResponse;
-					return result;
+						result.message = 'Created App ID: ' + transactionResponse['application-index'];
+						result.index = transactionResponse['application-index'];
+						result.meta = transactionResponse;
+						return result;
+					} 
 
 				} else {
 					return {
@@ -1472,6 +1482,19 @@ export default class Algonaut {
 			};
 		}
 
+	}
+
+	/**
+	 * Interally used to determine how to sign transactions on more generic functions (e.g. {@link deployFromTeal})
+	 * @returns true if we are signing transactions with WalletConnect, false otherwise
+	 */
+	usingWalletConnect(): boolean {
+		if (this.config && 
+			this.config.SIGNING_MODE && 
+			this.config.SIGNING_MODE === 'wallet-connect') {
+				return true;
+		}
+		return false;
 	}
 
 	/**

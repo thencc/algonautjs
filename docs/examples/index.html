@@ -67,7 +67,8 @@ const algonaut = new Algonaut({
   BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
   LEDGER: 'TestNet',
   PORT: '',
-  API_TOKEN: { 'X-API-Key': 'INSERT_API_KEY_HERE' }
+  API_TOKEN: { 'X-API-Key': 'INSERT_API_KEY_HERE' },
+  //SIGNING_MODE: 'wallet-connect' // uncomment if you are using WalletConnect+Algorand Wallet
 });
 
 const status = await algonaut.checkStatus();
