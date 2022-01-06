@@ -4,6 +4,24 @@ import WalletConnectMin from '@walletconnect/client/dist/umd/index.min';
 import QRCodeModal from 'algorand-walletconnect-qrcode-modal';
 import { formatJsonRpcRequest } from '@json-rpc-tools/utils';
 export default class Algonaut {
+    /**
+     * Instantiates Algonaut.js.
+     *
+     * @example
+     * Usage:
+     *
+     * ```js
+     * import Algonaut from 'algonaut.js';
+     * const algonaut = new Algonaut({
+     *	 BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
+     *	 LEDGER: 'TestNet',
+     *	 PORT: '',
+     *	 API_TOKEN: { 'X-API-Key': 'YOUR_API_TOKEN' }
+     * });
+     * ```
+     *
+     * @param config config object
+     */
     constructor(config) {
         this.account = undefined;
         this.address = undefined;
@@ -25,29 +43,46 @@ export default class Algonaut {
         this.indexerClient = new algosdk.Indexer(config.API_TOKEN, config.BASE_SERVER, config.PORT);
         this.sdk = algosdk;
     }
+    /**
+     * @returns config object or `false` if no config is set
+     */
     getConfig() {
-        return this.config;
+        if (this.config)
+            return this.config;
+        return false;
     }
+    /**
+     * Checks status of Algorand network
+     * @returns Promise resolving to status of Algorand network
+     */
     async checkStatus() {
         const status = await this.algodClient.status().do();
         console.log('Algorand network status: %o', status);
         return status;
     }
-    /** if you already have an account, set it here
+    /**
+     * if you already have an account, set it here
      * @param account an algosdk account already created
-     *
      */
     setAccount(account) {
         this.account = account;
         this.address = account.addr;
         this.mnemonic = algosdk.secretKeyToMnemonic(account.sk);
     }
+    /**
+     * Sets account connected via WalletConnect
+     * @param address account address
+     */
     setWalletConnectAccount(address) {
         this.account = {
             addr: address,
             sk: new Uint8Array([])
         };
     }
+    /**
+     * Creates a wallet address + mnemonic from account's secret key
+     * @returns AlgonautWallet Object containing `address` and `mnemonic`
+     */
     createWallet() {
         this.account = algosdk.generateAccount();
         if (this.account) {
@@ -62,6 +97,11 @@ export default class Algonaut {
             throw new Error('There was no account: could not create algonaut wallet!');
         }
     }
+    /**
+     * Recovers account from mnemonic
+     * @param mnemonic Mnemonic associated with Algonaut account
+     * @returns If mnemonic is valid, returns account. Otherwise, returns false.
+     */
     recoverAccount(mnemonic) {
         var _a;
         try {
@@ -71,9 +111,11 @@ export default class Algonaut {
             }
         }
         catch (error) {
+            // should we throw an error here instead of returning false?
             console.log(error);
             return false;
         }
+        return false;
     }
     /**
      * General purpose method to await transaction confirmation
@@ -295,6 +337,11 @@ export default class Algonaut {
             return 'no account';
         }
     }
+    /**
+     * Deletes an application from the blockchain
+     * @param appIndex - ID of application
+     * @returns Promise resolving to confirmed transaction or error
+     */
     async deleteApplication(appIndex) {
         if (this.account && appIndex) {
             try {
@@ -329,6 +376,11 @@ export default class Algonaut {
             };
         }
     }
+    /**
+     * Deletes ASA
+     * @param assetId Index of the ASA to delete
+     * @returns Promise resolving to confirmed transaction or error
+     */
     async deleteASA(assetId) {
         if (this.account && assetId) {
             const sender = this.account.addr;
@@ -353,17 +405,16 @@ export default class Algonaut {
         }
     }
     /**
-     * Sends ASA to an address
-     * @param receiverAddress the address to send to
-     * @param assetIndex the index of the asset to send
-     * @param amount how much to send (based on the ASAs decimal setting)
-     * 	so to send 1 token with a decimal setting of 3, this value should be 1000
-     *
-     * @returns Promise resolving to confirmed transaction or error
-     *
+     * Sends ASA to an address.
      *
      * IMPORTANT: Before you can call this, the target account has to "opt-in"
      * to the ASA index.  You can't just send ASAs to people blind!
+     *
+     * @param receiverAddress - the address to send to
+     * @param assetIndex - the index of the asset to send
+     * @param amount - how much to send (based on the ASAs decimal setting). So to send 1 token with a decimal setting of 3, this value should be 1000.
+     *
+     * @returns Promise resolving to confirmed transaction or error
      *
      */
     async sendASA(receiverAddress, assetIndex, amount) {
@@ -447,16 +498,17 @@ export default class Algonaut {
     }
     /**
      * Get an application's escrow account
-     * @param appId
-     * @returns escrow account address as string
+     * @param appId - ID of application
+     * @returns Escrow account address as string
      */
     getAppEscrowAccount(appId) {
         return algosdk.getApplicationAddress(appId);
     }
     /**
-     * Get info about an application
-     * @param appId
-     * @returns
+     * Get info about an application (globals, locals, creator address, index)
+     *
+     * @param appId - ID of application
+     * @returns Promise resolving to application state
      */
     async getAppInfo(appId) {
         const info = await this.algodClient.getApplicationByID(appId).do();
@@ -532,20 +584,31 @@ export default class Algonaut {
                 if (approvalProgram && clearProgram) {
                     const txn = algosdk.makeApplicationCreateTxn(sender, params, onComplete, approvalProgram, clearProgram, localInts, localBytes, globalInts, globalBytes, this.encodeArguments(args), (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.accounts) ? optionalFields.accounts : undefined, (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.applications) ? optionalFields.applications : undefined, (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.assets) ? optionalFields.assets : undefined, (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.note) ? new Uint8Array(Buffer.from(optionalFields.note, 'utf8')) : undefined);
                     const txId = txn.txID().toString();
-                    // Sign the transaction
-                    const signedTxn = txn.signTxn(this.account.sk);
-                    console.log('Signed transaction with txID: %s', txId);
-                    // Submit the transaction
-                    await this.algodClient.sendRawTransaction(signedTxn).do();
-                    // Wait for confirmation
-                    const result = await this.waitForConfirmation(txId);
-                    const transactionResponse = await this.algodClient
-                        .pendingTransactionInformation(txId)
-                        .do();
-                    result.message = 'Created App ID: ' + transactionResponse['application-index'];
-                    result.index = transactionResponse['application-index'];
-                    result.meta = transactionResponse;
-                    return result;
+                    if (this.usingWalletConnect()) {
+                        // const preparedTxn = await this.createWalletConnectTransactions([
+                        // 	txn
+                        // ])
+                        return {
+                            status: 'fail',
+                            message: 'cannot deploy contracts from wallet connect yet. TODO!!'
+                        };
+                    }
+                    else {
+                        // Sign the transaction
+                        const signedTxn = txn.signTxn(this.account.sk);
+                        console.log('Signed transaction with txID: %s', txId);
+                        // Submit the transaction
+                        await this.algodClient.sendRawTransaction(signedTxn).do();
+                        // Wait for confirmation
+                        const result = await this.waitForConfirmation(txId);
+                        const transactionResponse = await this.algodClient
+                            .pendingTransactionInformation(txId)
+                            .do();
+                        result.message = 'Created App ID: ' + transactionResponse['application-index'];
+                        result.index = transactionResponse['application-index'];
+                        result.meta = transactionResponse;
+                        return result;
+                    }
                 }
                 else {
                     return {
@@ -567,6 +630,52 @@ export default class Algonaut {
                 status: 'fail',
                 message: 'there was no account in context'
             };
+        }
+    }
+    /**
+     * Create an atomic transaction to deploy a
+     * new Smart Contract from TEAL code
+     *
+     * @param tealApprovalCode
+     * @param tealClearCode
+     * @param args
+     * @param localInts
+     * @param localBytes
+     * @param globalInts
+     * @param globalBytes
+     * @param optionalFields
+     * @returns AlgonautAtomicTransaction
+     */
+    async atomicDeployFromTeal(tealApprovalCode, tealClearCode, args, localInts = 8, localBytes = 8, globalInts = 8, globalBytes = 8, optionalFields) {
+        if (optionalFields && optionalFields.note && optionalFields.note.length > 1023) {
+            throw new Error('Your NOTE is too long, it must be less thatn 1024 Bytes');
+        }
+        else if (this.account) {
+            try {
+                const sender = this.account.addr;
+                const onComplete = algosdk.OnApplicationComplete.NoOpOC;
+                const params = await this.algodClient.getTransactionParams().do();
+                let approvalProgram = new Uint8Array();
+                let clearProgram = new Uint8Array();
+                approvalProgram = await this.compileProgram(tealApprovalCode);
+                clearProgram = await this.compileProgram(tealClearCode);
+                // create unsigned transaction
+                if (!approvalProgram || !clearProgram) {
+                    throw new Error('Error: you must provide an approval program and a clear state program.');
+                }
+                const applicationCreateTransaction = algosdk.makeApplicationCreateTxn(sender, params, onComplete, approvalProgram, clearProgram, localInts, localBytes, globalInts, globalBytes, this.encodeArguments(args), (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.accounts) ? optionalFields.accounts : undefined, (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.applications) ? optionalFields.applications : undefined, (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.assets) ? optionalFields.assets : undefined, (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.note) ? new Uint8Array(Buffer.from(optionalFields.note, 'utf8')) : undefined);
+                return {
+                    transaction: applicationCreateTransaction,
+                    transactionSigner: this.account,
+                    isLogigSig: false
+                };
+            }
+            catch (er) {
+                throw new Error('There was an error creating the transaction');
+            }
+        }
+        else {
+            throw new Error('Algonaut.js has no account loaded!');
         }
     }
     /**
@@ -639,6 +748,11 @@ export default class Algonaut {
             message: 'no account'
         };
     }
+    /**
+     * Compiles TEAL source via [algodClient.compile](https://py-algorand-sdk.readthedocs.io/en/latest/algosdk/v2client/algod.html#algosdk.v2client.algod.AlgodClient.compile)
+     * @param programSource source to compile
+     * @returns Promise resolving to Buffer of compiled bytes
+     */
     async compileProgram(programSource) {
         const encoder = new TextEncoder();
         const programBytes = encoder.encode(programSource);
@@ -646,6 +760,14 @@ export default class Algonaut {
         const compiledBytes = new Uint8Array(Buffer.from(compileResponse.result, 'base64'));
         return compiledBytes;
     }
+    /**
+     * Sends ALGO from own account to `toAddress`.
+     *
+     * @param toAddress - address to send to
+     * @param amount - amount of Algo to send
+     * @param note - note to attach to transaction
+     * @returns Promise resolving to transaction status
+     */
     async sendAlgo(toAddress, amount, note) {
         // construct a transaction note
         const encodedNote = note ? new Uint8Array(Buffer.from(note, 'utf8')) : new Uint8Array();
@@ -680,30 +802,6 @@ export default class Algonaut {
             };
         }
     }
-    /* BELOW HERE ARE ALL THE ALGO SIGNER APIS IF WE GO THAT ROUTE */
-    /**
-     * Function to determine if the AlgoSigner extension is installed.
-     * @returns Boolean
-     */
-    isAlgoSignerInstalled() {
-        return typeof window.AlgoSigner !== 'undefined';
-    }
-    /**
-     * Connects to AlgoSigner extension
-     */
-    async connectToAlgoSigner() {
-        return await window.AlgoSigner.connect();
-    }
-    /**
-     * Async function that returns list of accounts in the wallet.
-     * @param ledger must be 'TestNet' or 'MainNet'.
-     * @returns Array of Objects with address fields: [{ address: <String> }, ...]
-     */
-    async getAccounts(ledger) {
-        await this.connectToAlgoSigner();
-        const accounts = await window.AlgoSigner.accounts({ ledger });
-        return accounts;
-    }
     /**
      * Fetch full account info for an account
      * @param address the accress to read info for
@@ -716,7 +814,7 @@ export default class Algonaut {
     }
     /**
      * Checks Algo balance of account
-     * @param address Wallet of balance to check
+     * @param address - Wallet of balance to check
      * @returns Promise resolving to Algo balance
      */
     async getAlgoBalance(address) {
@@ -726,8 +824,8 @@ export default class Algonaut {
     }
     /**
      * Checks token balance of account
-     * @param address Wallet of balance to check
-     * @param assetIndex the ASA index
+     * @param address - Wallet of balance to check
+     * @param assetIndex - the ASA index
      * @returns Promise resolving to token balance
      */
     async getTokenBalance(address, assetIndex) {
@@ -745,15 +843,15 @@ export default class Algonaut {
     /**
      * Checks if account has at least one token (before playback)
      * Keeping this here in case this is a faster/less expensive operation than checking actual balance
-     * @param address Address to check
-     * @param assetIndex the index of the ASA
+     * @param address - Address to check
+     * @param assetIndex - the index of the ASA
      */
     async accountHasTokens(address, assetIndex) {
         return 'this is not done yet';
     }
     /**
      *
-     * @param applicationIndex the applications index
+     * @param applicationIndex - the applications index
      */
     async getAppGlobalState(applicationIndex, creatorAddress) {
         //! if you are reading an ADDRESS, you must do this:
@@ -1059,6 +1157,18 @@ export default class Algonaut {
         }
     }
     /**
+     * Interally used to determine how to sign transactions on more generic functions (e.g. {@link deployFromTeal})
+     * @returns true if we are signing transactions with WalletConnect, false otherwise
+     */
+    usingWalletConnect() {
+        if (this.config &&
+            this.config.SIGNING_MODE &&
+            this.config.SIGNING_MODE === 'wallet-connect') {
+            return true;
+        }
+        return false;
+    }
+    /**
      * Prepare one or more transactions for wallet connect signature
      *
      * @param transactions one or more atomic transaction objects
@@ -1152,6 +1262,33 @@ export default class Algonaut {
             (_a = this.walletConnect.connector) === null || _a === void 0 ? void 0 : _a.killSession();
         }
     }
+    /**
+     * Connects to algo wallet via WalletConnect, calling {@link subscribeToEvents}.
+     * Implementation borrowed from [Algorand Docs](https://developer.algorand.org/docs/get-details/walletconnect/)
+     *
+     * @remarks
+     *
+     * There are three listeners you can use, defined by {@link WalletConnectListener}:
+     *  - `onConnect(payload: IInternalEvent)` (`payload.params[0]` contains an array of account addresses)
+     *  - `onDisconnect()`
+     *  - `onSessionUpdate(accounts: string[])`
+     *
+     * @example
+     * Usage:
+     *
+     * ```ts
+     * await algonaut.connectAlgoWallet({
+     *   onConnect: (payload) => console.log('Accounts: ' + payload.params[0]),
+     *   onDisconnect: () => console.log('Do something on disconnect'),
+     *   onSessionUpdate: (accounts) => console.log('Accounts: ' + accounts)
+     * })
+     * ```
+     *
+     * We can use the `onConnect` listener to store an address in application state, for example,
+     * which allows us to conditionally display components depending on authentication status.
+     *
+     * @param clientListener object of listener functions (see {@link WalletConnectListener})
+     */
     async connectAlgoWallet(clientListener) {
         console.log('connecting wallet: ');
         // 4067ab2454244fb39835bfeafc285c8d
@@ -1174,6 +1311,10 @@ export default class Algonaut {
         }
         this.subscribeToEvents(clientListener);
     }
+    /**
+     * Sets up listeners for WalletConnect events
+     * @param clientListener optional object of listener functions, to be used in an application
+     */
     subscribeToEvents(clientListener) {
         if (!this.walletConnect.connector) {
             return;
@@ -1216,6 +1357,9 @@ export default class Algonaut {
             this.onSessionUpdate(accounts);
         }
     }
+    /**
+     * Kills WalletConnect session and calls {@link resetApp}
+     */
     async killSession() {
         if (this.walletConnect.connector) {
             this.walletConnect.connector.killSession();
@@ -1230,7 +1374,10 @@ export default class Algonaut {
         console.log('reset app called');
         console.log('TBD!');
     }
-    // iinternal even type from example
+    /**
+     * Function called upon connection to WalletConnect. Sets account in AlgonautJS via {@link setWalletConnectAccount}.
+     * @param payload Event payload, containing an array of account addresses
+     */
     async onConnect(payload) {
         const { accounts } = payload.params[0];
         const address = accounts[0];
@@ -1239,17 +1386,29 @@ export default class Algonaut {
         this.walletConnect.accounts = accounts;
         this.walletConnect.address = address;
     }
+    /**
+     * Called upon disconnection from WalletConnect.
+     */
     onDisconnect() {
         this.walletConnect.connected = false;
         this.walletConnect.accounts = [];
         this.walletConnect.address = '';
         this.account = undefined;
     }
+    /**
+     * Called when WalletConnect session updates
+     * @param accounts Array of account address strings
+     */
     async onSessionUpdate(accounts) {
         this.walletConnect.address = accounts[0];
         this.walletConnect.accounts = accounts;
         this.setWalletConnectAccount(accounts[0]);
     }
+    /**
+     * Sends one or multiple transactions via WalletConnect, prompting the user to approve transaction on their phone.
+     * @param walletTxns Array of transactions to send
+     * @returns Promise resolving to transaction status
+     */
     async sendWalletConnectTxns(walletTxns) {
         if (this.walletConnect.connected) {
             // encode txns
@@ -1296,6 +1455,30 @@ export default class Algonaut {
                 message: 'There is no wallet connect session!'
             };
         }
+    }
+    /* BELOW HERE ARE ALL THE ALGO SIGNER APIS IF WE GO THAT ROUTE */
+    /**
+     * Function to determine if the AlgoSigner extension is installed.
+     * @returns true if `window.AlgoSigner` is defined
+     */
+    isAlgoSignerInstalled() {
+        return typeof window.AlgoSigner !== 'undefined';
+    }
+    /**
+     * Connects to AlgoSigner extension
+     */
+    async connectToAlgoSigner() {
+        return await window.AlgoSigner.connect();
+    }
+    /**
+     * Async function that returns list of accounts in the wallet.
+     * @param ledger must be 'TestNet' or 'MainNet'.
+     * @returns Array of Objects with address fields: [{ address: <String> }, ...]
+     */
+    async getAccounts(ledger) {
+        await this.connectToAlgoSigner();
+        const accounts = await window.AlgoSigner.accounts({ ledger });
+        return accounts;
     }
 }
 //# sourceMappingURL=index.js.map
