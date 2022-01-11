@@ -1406,6 +1406,11 @@ export default class Algonaut {
     }
     /**
      * Sends one or multiple transactions via WalletConnect, prompting the user to approve transaction on their phone.
+     *
+     * @remarks
+     * Returns the results of `algodClient.pendingTransactionInformation` in `AlgonautTransactionStatus.meta`.
+     * This is used to get the `application-index` from a `atomicDeployFromTeal` function, among other things.
+     *
      * @param walletTxns Array of transactions to send
      * @returns Promise resolving to transaction status
      */
@@ -1440,6 +1445,10 @@ export default class Algonaut {
                 console.log('Transaction : ' + tx.txId);
                 // Wait for transaction to be confirmed
                 const txStatus = await this.waitForConfirmation(tx.txId);
+                const transactionResponse = await this.algodClient
+                    .pendingTransactionInformation(tx.txId)
+                    .do();
+                txStatus.meta = transactionResponse;
                 return txStatus;
             }
             else {
