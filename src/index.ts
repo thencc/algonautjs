@@ -1937,6 +1937,19 @@ export default class Algonaut {
 
 	}
 
+	/**
+	 * Helper function to turn `globals` and `locals` array into more useful objects
+	 * @param stateArray 
+	 * @returns 
+	 */
+	stateArrayToObject (stateArray: object[]) {
+		const stateObj = {} as any;
+		stateArray.forEach((value: any) => {
+			stateObj[value.key] = value.value;
+		});
+		return stateObj;
+	}
+
 	/* BELOW HERE ARE ALL THE ALGO SIGNER APIS IF WE GO THAT ROUTE */
 
 	/**
