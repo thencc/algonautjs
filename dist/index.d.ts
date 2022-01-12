@@ -374,6 +374,11 @@ export default class Algonaut {
     onSessionUpdate(accounts: string[]): Promise<void>;
     /**
      * Sends one or multiple transactions via WalletConnect, prompting the user to approve transaction on their phone.
+     *
+     * @remarks
+     * Returns the results of `algodClient.pendingTransactionInformation` in `AlgonautTransactionStatus.meta`.
+     * This is used to get the `application-index` from a `atomicDeployFromTeal` function, among other things.
+     *
      * @param walletTxns Array of transactions to send
      * @returns Promise resolving to transaction status
      */
