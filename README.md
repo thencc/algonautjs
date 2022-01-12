@@ -88,3 +88,9 @@ TBD:
 - setting up a dev env
 - ESLint and code style
 - building and testing with Vite and Node
+
+To generate docs:
+
+```npm run docs```
+
+[Typedoc options](https://typedoc.org/guides/options/) are set in `typedoc.json`.

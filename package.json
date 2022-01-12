@@ -15,7 +15,8 @@
 		"build": "tsc; tsc --module CommonJS --outDir dist/cjs; node buildscripts/swap_sdk.js",
 		"build-test": "vite build test",
 		"dev": "vite serve test --port 8891",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"docs": "npx typedoc"
 	},
 	"keywords": [
 		"algo",
@@ -52,6 +53,7 @@
 		"eslint-plugin-prettier": "^3.4.0",
 		"node-testing-server": "^1.5.2",
 		"prettier": "^2.4.1",
+		"typedoc": "^0.22.10",
 		"typescript": "^4.4.4",
 		"vite": "^2.7.1"
 	},

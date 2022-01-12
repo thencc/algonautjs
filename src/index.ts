@@ -1939,13 +1939,14 @@ export default class Algonaut {
 
 	/**
 	 * Helper function to turn `globals` and `locals` array into more useful objects
-	 * @param stateArray 
-	 * @returns 
+	 * 
+	 * @param stateArray State array returned from functions like {@link getAppInfo}
+	 * @returns A more useful object: `{ array[0].key: array[0].value, array[1].key: array[1].value, ... }`
 	 */
 	stateArrayToObject (stateArray: object[]) {
 		const stateObj = {} as any;
 		stateArray.forEach((value: any) => {
-			stateObj[value.key] = value.value;
+			if (value.key) stateObj[value.key] = value.value || null;
 		});
 		return stateObj;
 	}
