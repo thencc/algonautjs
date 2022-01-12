@@ -4,7 +4,16 @@ import { atob, Buffer } from 'buffer';
 import algosdkTypeRef from 'algosdk';
 import algosdk from 'algosdk/dist/browser/algosdk.min';
 
-import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields, AlgonautAppState, AlgonautStateData, WalletConnectListener } from './AlgonautTypes';
+import { 
+	AlgonautConfig, 
+	AlgonautWallet, 
+	AlgonautTransactionStatus, 
+	AlgonautAtomicTransaction, 
+	AlgonautTransactionFields, 
+	AlgonautAppState, 
+	AlgonautStateData, 
+	WalletConnectListener, 
+	AlgonautTxnCallbacks } from './AlgonautTypes';
 import * as sha512 from 'js-sha512';
 import * as CryptoJS from 'crypto-js';
 
@@ -1103,7 +1112,7 @@ export default class Algonaut {
 			} catch (e: any) {
 				return {
 					status: 'fail',
-					message: e.response.text,
+					message: e.response ? e.response.text : '',
 					error: e
 				};
 			}
@@ -1872,9 +1881,10 @@ export default class Algonaut {
 	 * This is used to get the `application-index` from a `atomicDeployFromTeal` function, among other things.
 	 * 
 	 * @param walletTxns Array of transactions to send
+	 * @param callbacks Transaction callbacks `{ onSign, onSend, onConfirm }`
 	 * @returns Promise resolving to transaction status
 	 */
-	async sendWalletConnectTxns(walletTxns: any[]): Promise<AlgonautTransactionStatus> {
+	async sendWalletConnectTxns(walletTxns: any[], callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
 
 		if (this.walletConnect.connected) {
 
@@ -1906,10 +1916,12 @@ export default class Algonaut {
 
 			console.log('signed partial txns are');
 			console.log(signedPartialTxns);
+			if (callbacks?.onSign) callbacks.onSign(signedPartialTxns);
 
 			if (signedPartialTxns) {
 				const tx = await this.algodClient.sendRawTransaction(signedPartialTxns).do();
 				console.log('Transaction : ' + tx.txId);
+				if (callbacks?.onSend) callbacks.onSend(tx);
 
 				// Wait for transaction to be confirmed
 				const txStatus = await this.waitForConfirmation(tx.txId);
@@ -1917,6 +1929,7 @@ export default class Algonaut {
 					.pendingTransactionInformation(tx.txId)
 					.do();
 				txStatus.meta = transactionResponse;
+				if (callbacks?.onConfirm) callbacks.onConfirm(txStatus);
 				return txStatus;
 			} else {
 				return {
