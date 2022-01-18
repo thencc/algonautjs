@@ -545,6 +545,36 @@ export default class Algonaut {
 	}
 
 	/**
+	 * Deletes an application from the blockchain
+	 * @param appIndex - ID of application
+	 * @returns Promise resolving to atomic transaction that deletes application
+	 */
+	 async atomicDeleteApplication(appIndex: number): Promise<AlgonautAtomicTransaction> {
+
+		if (this.account && appIndex) {
+			try {
+				const sender = this.account.addr;
+				const params = await this.algodClient.getTransactionParams().do();
+
+				console.log('delete: ' + appIndex);
+
+				const txn = algosdk.makeApplicationDeleteTxn(sender, params, appIndex);
+				
+				return {
+					transaction: txn,
+					transactionSigner: this.account,
+					isLogigSig: false
+				};
+
+			} catch(e: any) {
+				throw new Error(e);
+			}
+		} else {
+			throw new Error('No account loaded');
+		}
+	}
+
+	/**
 	 * Deletes ASA
 	 * @param assetId Index of the ASA to delete
 	 * @returns Promise resolving to confirmed transaction or error
@@ -1962,6 +1992,47 @@ export default class Algonaut {
 			if (value.key) stateObj[value.key] = value.value || null;
 		});
 		return stateObj;
+	}
+
+	fromBase64 (encoded: string) {
+		return Buffer.from(encoded, 'base64').toString();
+	}
+
+	valueAsAddr (encoded: string) {
+		return algosdk.encodeAddress(Buffer.from(encoded, 'base64'));
+	}
+
+	decodeStateArray (stateArray: { key: string, value: { bytes: string, type: number, uint: number }}[]) {
+		const result: any[] = [];
+
+		for (let n = 0;
+			n < stateArray.length;
+			n++) {
+
+			const stateItem = stateArray[n];
+
+			const key = this.fromBase64(stateItem.key);
+			const type = stateItem.value.type;
+			let value = undefined as undefined | string | number;
+			let valueAsAddr = '';
+
+			if (type == 1) {
+				value = this.fromBase64(stateItem.value.bytes);
+				valueAsAddr = this.valueAsAddr(stateItem.value.bytes);
+
+			} else if (stateItem.value.type == 2) {
+				value = stateItem.value.uint;
+			}
+
+			result.push({
+				key: key,
+				value: value || '',
+				address: valueAsAddr
+			});
+
+		}
+
+		return result;
 	}
 
 	/* BELOW HERE ARE ALL THE ALGO SIGNER APIS IF WE GO THAT ROUTE */
