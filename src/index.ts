@@ -545,7 +545,7 @@ export default class Algonaut {
 	}
 
 	/**
-	 * Deletes an application from the blockchain
+	 * Returns atomic transaction that deletes application
 	 * @param appIndex - ID of application
 	 * @returns Promise resolving to atomic transaction that deletes application
 	 */
