@@ -1918,6 +1918,13 @@ export default class Algonaut {
 
 		if (this.walletConnect.connected) {
 
+			// this is critical, if the group doesn't have an id
+			// the transactions are processed as one-offs
+			if (walletTxns.length > 1) {
+				console.log('assigning group ID to transactions...');
+				walletTxns = algosdk.assignGroupID(walletTxns);
+			}
+
 			// encode txns
 			const txnsToSign = walletTxns.map(txn => {
 				const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString('base64');
