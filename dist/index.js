@@ -377,6 +377,32 @@ export default class Algonaut {
         }
     }
     /**
+     * Returns atomic transaction that deletes application
+     * @param appIndex - ID of application
+     * @returns Promise resolving to atomic transaction that deletes application
+     */
+    async atomicDeleteApplication(appIndex) {
+        if (this.account && appIndex) {
+            try {
+                const sender = this.account.addr;
+                const params = await this.algodClient.getTransactionParams().do();
+                console.log('delete: ' + appIndex);
+                const txn = algosdk.makeApplicationDeleteTxn(sender, params, appIndex);
+                return {
+                    transaction: txn,
+                    transactionSigner: this.account,
+                    isLogigSig: false
+                };
+            }
+            catch (e) {
+                throw new Error(e);
+            }
+        }
+        else {
+            throw new Error('No account loaded');
+        }
+    }
+    /**
      * Deletes ASA
      * @param assetId Index of the ASA to delete
      * @returns Promise resolving to confirmed transaction or error
@@ -790,7 +816,7 @@ export default class Algonaut {
             catch (e) {
                 return {
                     status: 'fail',
-                    message: e.response.text,
+                    message: e.response ? e.response.text : '',
                     error: e
                 };
             }
@@ -1412,10 +1438,17 @@ export default class Algonaut {
      * This is used to get the `application-index` from a `atomicDeployFromTeal` function, among other things.
      *
      * @param walletTxns Array of transactions to send
+     * @param callbacks Transaction callbacks `{ onSign, onSend, onConfirm }`
      * @returns Promise resolving to transaction status
      */
-    async sendWalletConnectTxns(walletTxns) {
+    async sendWalletConnectTxns(walletTxns, callbacks) {
         if (this.walletConnect.connected) {
+            // this is critical, if the group doesn't have an id
+            // the transactions are processed as one-offs
+            if (walletTxns.length > 1) {
+                console.log('assigning group ID to transactions...');
+                walletTxns = algosdk.assignGroupID(walletTxns);
+            }
             // encode txns
             const txnsToSign = walletTxns.map(txn => {
                 const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString('base64');
@@ -1440,15 +1473,21 @@ export default class Algonaut {
             });
             console.log('signed partial txns are');
             console.log(signedPartialTxns);
+            if (callbacks === null || callbacks === void 0 ? void 0 : callbacks.onSign)
+                callbacks.onSign(signedPartialTxns);
             if (signedPartialTxns) {
                 const tx = await this.algodClient.sendRawTransaction(signedPartialTxns).do();
                 console.log('Transaction : ' + tx.txId);
+                if (callbacks === null || callbacks === void 0 ? void 0 : callbacks.onSend)
+                    callbacks.onSend(tx);
                 // Wait for transaction to be confirmed
                 const txStatus = await this.waitForConfirmation(tx.txId);
                 const transactionResponse = await this.algodClient
                     .pendingTransactionInformation(tx.txId)
                     .do();
                 txStatus.meta = transactionResponse;
+                if (callbacks === null || callbacks === void 0 ? void 0 : callbacks.onConfirm)
+                    callbacks.onConfirm(txStatus);
                 return txStatus;
             }
             else {
@@ -1464,6 +1503,49 @@ export default class Algonaut {
                 message: 'There is no wallet connect session!'
             };
         }
+    }
+    /**
+     * Helper function to turn `globals` and `locals` array into more useful objects
+     *
+     * @param stateArray State array returned from functions like {@link getAppInfo}
+     * @returns A more useful object: `{ array[0].key: array[0].value, array[1].key: array[1].value, ... }`
+     */
+    stateArrayToObject(stateArray) {
+        const stateObj = {};
+        stateArray.forEach((value) => {
+            if (value.key)
+                stateObj[value.key] = value.value || null;
+        });
+        return stateObj;
+    }
+    fromBase64(encoded) {
+        return Buffer.from(encoded, 'base64').toString();
+    }
+    valueAsAddr(encoded) {
+        return algosdk.encodeAddress(Buffer.from(encoded, 'base64'));
+    }
+    decodeStateArray(stateArray) {
+        const result = [];
+        for (let n = 0; n < stateArray.length; n++) {
+            const stateItem = stateArray[n];
+            const key = this.fromBase64(stateItem.key);
+            const type = stateItem.value.type;
+            let value = undefined;
+            let valueAsAddr = '';
+            if (type == 1) {
+                value = this.fromBase64(stateItem.value.bytes);
+                valueAsAddr = this.valueAsAddr(stateItem.value.bytes);
+            }
+            else if (stateItem.value.type == 2) {
+                value = stateItem.value.uint;
+            }
+            result.push({
+                key: key,
+                value: value || '',
+                address: valueAsAddr
+            });
+        }
+        return result;
     }
     /* BELOW HERE ARE ALL THE ALGO SIGNER APIS IF WE GO THAT ROUTE */
     /**
