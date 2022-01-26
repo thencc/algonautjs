@@ -1,5 +1,5 @@
 import algosdkTypeRef from 'algosdk';
-import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields, AlgonautAppState, WalletConnectListener } from './AlgonautTypes';
+import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields, AlgonautAppState, WalletConnectListener, AlgonautTxnCallbacks } from './AlgonautTypes';
 import { IInternalEvent } from '@walletconnect/types';
 declare global {
     interface Window {
@@ -118,6 +118,12 @@ export default class Algonaut {
      * @returns Promise resolving to confirmed transaction or error
      */
     deleteApplication(appIndex: number): Promise<AlgonautTransactionStatus>;
+    /**
+     * Returns atomic transaction that deletes application
+     * @param appIndex - ID of application
+     * @returns Promise resolving to atomic transaction that deletes application
+     */
+    atomicDeleteApplication(appIndex: number): Promise<AlgonautAtomicTransaction>;
     /**
      * Deletes ASA
      * @param assetId Index of the ASA to delete
@@ -380,9 +386,27 @@ export default class Algonaut {
      * This is used to get the `application-index` from a `atomicDeployFromTeal` function, among other things.
      *
      * @param walletTxns Array of transactions to send
+     * @param callbacks Transaction callbacks `{ onSign, onSend, onConfirm }`
      * @returns Promise resolving to transaction status
      */
-    sendWalletConnectTxns(walletTxns: any[]): Promise<AlgonautTransactionStatus>;
+    sendWalletConnectTxns(walletTxns: any[], callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
+    /**
+     * Helper function to turn `globals` and `locals` array into more useful objects
+     *
+     * @param stateArray State array returned from functions like {@link getAppInfo}
+     * @returns A more useful object: `{ array[0].key: array[0].value, array[1].key: array[1].value, ... }`
+     */
+    stateArrayToObject(stateArray: object[]): any;
+    fromBase64(encoded: string): string;
+    valueAsAddr(encoded: string): string;
+    decodeStateArray(stateArray: {
+        key: string;
+        value: {
+            bytes: string;
+            type: number;
+            uint: number;
+        };
+    }[]): any[];
     /**
      * Function to determine if the AlgoSigner extension is installed.
      * @returns true if `window.AlgoSigner` is defined

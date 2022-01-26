@@ -3,7 +3,7 @@ layout: default
 title: Algonaut.js - Front-end library for Algorand
 ---
 
-**Algonaut.js** is designed to be a front end developer friendly and browser friendly library to fascilitate intuitive transactions on the Algorand network. Algorand is incredibly fast, powerful and secure, but it's early days and the tooling is still a little intense.
+**Algonaut.js** is designed to be a front end developer friendly and browser friendly library to facilitate intuitive transactions on the Algorand network. Algorand is incredibly fast, powerful and secure, but it's early days and the tooling is still a little intense.
 
 The goal of this library is simplicity and ease of use for the front end crew. This library aims to bring you closer to key concepts behind the mature transactional fiesta that is Algorand though ease of use. If you need a robust contract creation and debugging environment, please take the wonderful Algo Builder for a spin!
 
