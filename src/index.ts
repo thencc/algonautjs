@@ -661,9 +661,9 @@ export default class Algonaut {
 	/**
 	 * Call a "method" on a stateful contract.  In TEAL, you're really giving
 	 * an argument which branches to a specific place and reads the other args
-	 * @param contractIndex
+	 * @param appIndex
 	 * @param args an array of arguments for the call
-	 * @param optionalTransactionFields an AlgonautTransactionFields object with
+	 * @param optionalFields an AlgonautTransactionFields object with
 	 *  		  any additional fields you want to pass to this transaction
 	 */
 	async callApp (
@@ -719,6 +719,91 @@ export default class Algonaut {
 				status: 'fail',
 				message: 'contract calls need a contract index and at least one argument'
 			};
+		}
+	}
+
+	/**
+	 * Closes out the user's local state in an application.
+	 * The opposite of {@link optInApp}.
+	 * @param appIndex App to close out off
+	 * @param appArgs App arguments
+	 * @param optionalFields an AlgonautTransactionFields object with
+	 *  		 			 any additional fields you want to pass to this transaction
+	 * @returns Promise resolving to atomic transaction
+	 */
+	async closeOutApp (appIndex: number, appArgs: any[], optionalFields?: AlgonautTransactionFields) {
+		if (this.account && appIndex && appArgs.length) {
+			try {
+				const processedArgs = this.encodeArguments(appArgs);
+				const params = await this.algodClient.getTransactionParams().do();
+				const closeOutAppTransaction = algosdk.makeApplicationCloseOutTxnFromObject({
+					from: this.account.addr,
+					suggestedParams: params,
+					appIndex: appIndex,
+					appArgs: processedArgs,
+					accounts: optionalFields?.accounts || undefined,
+					foreignApps: optionalFields?.applications || undefined,
+					foreignAssets: optionalFields?.assets || undefined
+				});
+				const txId = closeOutAppTransaction.txID().toString();
+				// Sign the transaction
+				const signedTx = closeOutAppTransaction.signTxn(
+					this.account.sk
+				);
+				// Submit the transaction
+				await this.algodClient.sendRawTransaction(signedTx).do();
+				// Wait for confirmation
+				const txStatus = await this.waitForConfirmation(txId);
+				return txStatus;
+			} catch(er: any) {
+				return {
+					status: 'fail',
+					message: er.response.text,
+					error: er
+				};
+			}
+		} else {
+			return {
+				status: 'fail',
+				message: 'contract calls need a contract index and at least one argument'
+			};
+		}
+	}
+
+	/**
+	 * Returns an atomic transaction that closes out the user's local state in an application.
+	 * The opposite of {@link atomicOptInApp}.
+	 * @param appIndex App to close out of
+	 * @param appArgs App arguments
+	 * @param optionalFields an AlgonautTransactionFields object with
+	 *  		 			 any additional fields you want to pass to this transaction
+	 * @returns Promise resolving to atomic transaction
+	 */
+	async atomicCloseOutApp(appIndex: number, appArgs: any[], optionalFields?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction> {
+		if (this.account && appIndex) {
+			try {
+				const params = await this.algodClient.getTransactionParams().do();
+				const processedArgs = this.encodeArguments(appArgs);
+				const closeOutTxn = algosdk.makeApplicationCloseOutTxnFromObject({
+					from: this.account.addr,
+					suggestedParams: params,
+					appIndex,
+					appArgs: processedArgs,
+					accounts: optionalFields?.accounts || undefined,
+					foreignApps: optionalFields?.applications || undefined,
+					foreignAssets: optionalFields?.assets || undefined
+				});
+
+				return {
+					transaction: closeOutTxn,
+					transactionSigner: this.account,
+					isLogigSig: false
+				};
+			} catch (e: any) {
+				throw new Error(e);
+			}
+		} else {
+			throw new Error('requires app index');
 		}
 	}
 
