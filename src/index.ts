@@ -4,7 +4,16 @@ import { atob, Buffer } from 'buffer';
 import algosdkTypeRef from 'algosdk';
 import algosdk from 'algosdk/dist/browser/algosdk.min';
 
-import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields, AlgonautAppState, AlgonautStateData, WalletConnectListener } from './AlgonautTypes';
+import { 
+	AlgonautConfig, 
+	AlgonautWallet, 
+	AlgonautTransactionStatus, 
+	AlgonautAtomicTransaction, 
+	AlgonautTransactionFields, 
+	AlgonautAppState, 
+	AlgonautStateData, 
+	WalletConnectListener, 
+	AlgonautTxnCallbacks } from './AlgonautTypes';
 import * as sha512 from 'js-sha512';
 import * as CryptoJS from 'crypto-js';
 
@@ -532,6 +541,36 @@ export default class Algonaut {
 				status: 'fail',
 				message: 'no account / algo'
 			};
+		}
+	}
+
+	/**
+	 * Returns atomic transaction that deletes application
+	 * @param appIndex - ID of application
+	 * @returns Promise resolving to atomic transaction that deletes application
+	 */
+	 async atomicDeleteApplication(appIndex: number): Promise<AlgonautAtomicTransaction> {
+
+		if (this.account && appIndex) {
+			try {
+				const sender = this.account.addr;
+				const params = await this.algodClient.getTransactionParams().do();
+
+				console.log('delete: ' + appIndex);
+
+				const txn = algosdk.makeApplicationDeleteTxn(sender, params, appIndex);
+				
+				return {
+					transaction: txn,
+					transactionSigner: this.account,
+					isLogigSig: false
+				};
+
+			} catch(e: any) {
+				throw new Error(e);
+			}
+		} else {
+			throw new Error('No account loaded');
 		}
 	}
 
@@ -1103,7 +1142,7 @@ export default class Algonaut {
 			} catch (e: any) {
 				return {
 					status: 'fail',
-					message: e.response.text,
+					message: e.response ? e.response.text : '',
 					error: e
 				};
 			}
@@ -1872,11 +1911,19 @@ export default class Algonaut {
 	 * This is used to get the `application-index` from a `atomicDeployFromTeal` function, among other things.
 	 * 
 	 * @param walletTxns Array of transactions to send
+	 * @param callbacks Transaction callbacks `{ onSign, onSend, onConfirm }`
 	 * @returns Promise resolving to transaction status
 	 */
-	async sendWalletConnectTxns(walletTxns: any[]): Promise<AlgonautTransactionStatus> {
+	async sendWalletConnectTxns(walletTxns: any[], callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
 
 		if (this.walletConnect.connected) {
+
+			// this is critical, if the group doesn't have an id
+			// the transactions are processed as one-offs
+			if (walletTxns.length > 1) {
+				console.log('assigning group ID to transactions...');
+				walletTxns = algosdk.assignGroupID(walletTxns);
+			}
 
 			// encode txns
 			const txnsToSign = walletTxns.map(txn => {
@@ -1906,10 +1953,12 @@ export default class Algonaut {
 
 			console.log('signed partial txns are');
 			console.log(signedPartialTxns);
+			if (callbacks?.onSign) callbacks.onSign(signedPartialTxns);
 
 			if (signedPartialTxns) {
 				const tx = await this.algodClient.sendRawTransaction(signedPartialTxns).do();
 				console.log('Transaction : ' + tx.txId);
+				if (callbacks?.onSend) callbacks.onSend(tx);
 
 				// Wait for transaction to be confirmed
 				const txStatus = await this.waitForConfirmation(tx.txId);
@@ -1917,6 +1966,7 @@ export default class Algonaut {
 					.pendingTransactionInformation(tx.txId)
 					.do();
 				txStatus.meta = transactionResponse;
+				if (callbacks?.onConfirm) callbacks.onConfirm(txStatus);
 				return txStatus;
 			} else {
 				return {
@@ -1935,6 +1985,61 @@ export default class Algonaut {
 
 
 
+	}
+
+	/**
+	 * Helper function to turn `globals` and `locals` array into more useful objects
+	 * 
+	 * @param stateArray State array returned from functions like {@link getAppInfo}
+	 * @returns A more useful object: `{ array[0].key: array[0].value, array[1].key: array[1].value, ... }`
+	 */
+	stateArrayToObject (stateArray: object[]) {
+		const stateObj = {} as any;
+		stateArray.forEach((value: any) => {
+			if (value.key) stateObj[value.key] = value.value || null;
+		});
+		return stateObj;
+	}
+
+	fromBase64 (encoded: string) {
+		return Buffer.from(encoded, 'base64').toString();
+	}
+
+	valueAsAddr (encoded: string) {
+		return algosdk.encodeAddress(Buffer.from(encoded, 'base64'));
+	}
+
+	decodeStateArray (stateArray: { key: string, value: { bytes: string, type: number, uint: number }}[]) {
+		const result: any[] = [];
+
+		for (let n = 0;
+			n < stateArray.length;
+			n++) {
+
+			const stateItem = stateArray[n];
+
+			const key = this.fromBase64(stateItem.key);
+			const type = stateItem.value.type;
+			let value = undefined as undefined | string | number;
+			let valueAsAddr = '';
+
+			if (type == 1) {
+				value = this.fromBase64(stateItem.value.bytes);
+				valueAsAddr = this.valueAsAddr(stateItem.value.bytes);
+
+			} else if (stateItem.value.type == 2) {
+				value = stateItem.value.uint;
+			}
+
+			result.push({
+				key: key,
+				value: value || '',
+				address: valueAsAddr
+			});
+
+		}
+
+		return result;
 	}
 
 	/* BELOW HERE ARE ALL THE ALGO SIGNER APIS IF WE GO THAT ROUTE */
