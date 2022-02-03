@@ -23,6 +23,11 @@ export interface WalletConnectListener {
     onConnect(payload: any): void;
     onDisconnect(payload: any): void;
 }
+export interface AlgonautTxnCallbacks {
+    onSign(payload: any): void;
+    onSend(payload: any): void;
+    onConfirm(payload: any): void;
+}
 export declare type AlgonautError = {
     message: string;
     rawError: Error;
