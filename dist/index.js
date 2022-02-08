@@ -1560,7 +1560,18 @@ export default class Algonaut {
             if (callbacks === null || callbacks === void 0 ? void 0 : callbacks.onSign)
                 callbacks.onSign(signedPartialTxns);
             if (signedPartialTxns) {
-                const tx = await this.algodClient.sendRawTransaction(signedPartialTxns).do();
+                let tx;
+                try {
+                    tx = await this.algodClient.sendRawTransaction(signedPartialTxns).do();
+                }
+                catch (er) {
+                    tx = er;
+                    return {
+                        status: 'fail',
+                        message: 'Error sending Raw Transaction',
+                        error: er
+                    };
+                }
                 //console.log('Transaction : ' + tx.txId);
                 if (callbacks === null || callbacks === void 0 ? void 0 : callbacks.onSend)
                     callbacks.onSend(tx);
