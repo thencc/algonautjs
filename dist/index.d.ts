@@ -147,12 +147,40 @@ export default class Algonaut {
     /**
      * Call a "method" on a stateful contract.  In TEAL, you're really giving
      * an argument which branches to a specific place and reads the other args
-     * @param contractIndex
+     * @param appIndex
      * @param args an array of arguments for the call
-     * @param optionalTransactionFields an AlgonautTransactionFields object with
+     * @param optionalFields an AlgonautTransactionFields object with
      *  		  any additional fields you want to pass to this transaction
      */
     callApp(appIndex: number, args: any[], optionalFields?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus>;
+    /**
+     * Closes out the user's local state in an application.
+     * The opposite of {@link optInApp}.
+     * @param appIndex App to close out off
+     * @param appArgs App arguments
+     * @param optionalFields an AlgonautTransactionFields object with
+     *  		 			 any additional fields you want to pass to this transaction
+     * @returns Promise resolving to atomic transaction
+     */
+    closeOutApp(appIndex: number, appArgs: any[], optionalFields?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus | {
+        status: string;
+        message: any;
+        error: any;
+    } | {
+        status: string;
+        message: string;
+        error?: undefined;
+    }>;
+    /**
+     * Returns an atomic transaction that closes out the user's local state in an application.
+     * The opposite of {@link atomicOptInApp}.
+     * @param appIndex App to close out of
+     * @param appArgs App arguments
+     * @param optionalFields an AlgonautTransactionFields object with
+     *  		 			 any additional fields you want to pass to this transaction
+     * @returns Promise resolving to atomic transaction
+     */
+    atomicCloseOutApp(appIndex: number, appArgs: any[], optionalFields?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
     /**
      * Get an application's escrow account
      * @param appId - ID of application

@@ -167,7 +167,7 @@ export default class Algonaut {
      */
     async optInApp(appIndex, appArgs, optionalFields) {
         if (this.account && appIndex) {
-            console.log('opt in to app ' + appIndex);
+            //console.log('opt in to app ' + appIndex);
             const sender = this.account.addr;
             const params = await this.algodClient.getTransactionParams().do();
             const optInTransaction = algosdk.makeApplicationOptInTxnFromObject({
@@ -223,7 +223,7 @@ export default class Algonaut {
             const txId = txn.txID().toString();
             // Sign the transaction
             const signedTxn = algosdk.signTransaction(txn, this.account.sk);
-            console.log('Signed transaction with txID: %s', txId);
+            //console.log('Signed transaction with txID: %s', txId);
             // Submit the transaction
             try {
                 await this.algodClient.sendRawTransaction(signedTxn.blob).do();
@@ -289,14 +289,14 @@ export default class Algonaut {
         if (!assetURL)
             assetURL = undefined;
         const metaBlockLength = metaBlock.length;
-        console.log('meta block is ' + metaBlockLength);
+        //console.log('meta block is ' + metaBlockLength);
         if (metaBlockLength > 511) {
             console.warn('drat! this meta block is too long!');
             return 'error';
         }
         const enc = new TextEncoder();
         if (this.account) {
-            console.log('ok, starting ASA deploy');
+            //console.log('ok, starting ASA deploy');
             // arbitrary data: 512 bytes, ~512 characters
             const note = enc.encode(metaBlock);
             const addr = this.account.addr;
@@ -311,9 +311,9 @@ export default class Algonaut {
             try {
                 const rawSignedTxn = txn.signTxn(this.account.sk);
                 const tx = await this.algodClient.sendRawTransaction(rawSignedTxn).do();
-                console.log('Transaction : ' + tx.txId);
+                //console.log('Transaction : ' + tx.txId);
                 let assetID = null;
-                console.log('waiting for confirmation...');
+                //console.log('waiting for confirmation...');
                 // wait for transaction to be confirmed
                 const txStatus = await this.waitForConfirmation(tx.txId);
                 // TBD: make sure this TX goes through!
@@ -322,8 +322,8 @@ export default class Algonaut {
                     .pendingTransactionInformation(tx.txId)
                     .do();
                 assetID = ptx['asset-index'];
-                console.log(name + ' asset created!');
-                console.log(assetID);
+                //console.log(name + ' asset created!');
+                //console.log(assetID);
                 return assetID;
             }
             catch (er) {
@@ -347,7 +347,7 @@ export default class Algonaut {
             try {
                 const sender = this.account.addr;
                 const params = await this.algodClient.getTransactionParams().do();
-                console.log('delete: ' + appIndex);
+                //console.log('delete: ' + appIndex);
                 const txn = algosdk.makeApplicationDeleteTxn(sender, params, appIndex);
                 const txId = txn.txID().toString();
                 const signedTxn = txn.signTxn(this.account.sk);
@@ -386,7 +386,7 @@ export default class Algonaut {
             try {
                 const sender = this.account.addr;
                 const params = await this.algodClient.getTransactionParams().do();
-                console.log('delete: ' + appIndex);
+                //console.log('delete: ' + appIndex);
                 const txn = algosdk.makeApplicationDeleteTxn(sender, params, appIndex);
                 return {
                     transaction: txn,
@@ -417,7 +417,7 @@ export default class Algonaut {
             const signedTxn = txn.signTxn(this.account.sk);
             const tx = await this.algodClient.sendRawTransaction(signedTxn).do();
             const conf = await this.waitForConfirmation(tx.txId);
-            console.log(conf);
+            //console.log(conf);
             return {
                 status: 'success',
                 message: 'asset ' + assetId + ' deleted'
@@ -477,9 +477,9 @@ export default class Algonaut {
     /**
      * Call a "method" on a stateful contract.  In TEAL, you're really giving
      * an argument which branches to a specific place and reads the other args
-     * @param contractIndex
+     * @param appIndex
      * @param args an array of arguments for the call
-     * @param optionalTransactionFields an AlgonautTransactionFields object with
+     * @param optionalFields an AlgonautTransactionFields object with
      *  		  any additional fields you want to pass to this transaction
      */
     async callApp(appIndex, args, optionalFields) {
@@ -520,6 +520,90 @@ export default class Algonaut {
                 status: 'fail',
                 message: 'contract calls need a contract index and at least one argument'
             };
+        }
+    }
+    /**
+     * Closes out the user's local state in an application.
+     * The opposite of {@link optInApp}.
+     * @param appIndex App to close out off
+     * @param appArgs App arguments
+     * @param optionalFields an AlgonautTransactionFields object with
+     *  		 			 any additional fields you want to pass to this transaction
+     * @returns Promise resolving to atomic transaction
+     */
+    async closeOutApp(appIndex, appArgs, optionalFields) {
+        if (this.account && appIndex && appArgs.length) {
+            try {
+                const processedArgs = this.encodeArguments(appArgs);
+                const params = await this.algodClient.getTransactionParams().do();
+                const closeOutAppTransaction = algosdk.makeApplicationCloseOutTxnFromObject({
+                    from: this.account.addr,
+                    suggestedParams: params,
+                    appIndex: appIndex,
+                    appArgs: processedArgs,
+                    accounts: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.accounts) || undefined,
+                    foreignApps: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.applications) || undefined,
+                    foreignAssets: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.assets) || undefined
+                });
+                const txId = closeOutAppTransaction.txID().toString();
+                // Sign the transaction
+                const signedTx = closeOutAppTransaction.signTxn(this.account.sk);
+                // Submit the transaction
+                await this.algodClient.sendRawTransaction(signedTx).do();
+                // Wait for confirmation
+                const txStatus = await this.waitForConfirmation(txId);
+                return txStatus;
+            }
+            catch (er) {
+                return {
+                    status: 'fail',
+                    message: er.response.text,
+                    error: er
+                };
+            }
+        }
+        else {
+            return {
+                status: 'fail',
+                message: 'contract calls need a contract index and at least one argument'
+            };
+        }
+    }
+    /**
+     * Returns an atomic transaction that closes out the user's local state in an application.
+     * The opposite of {@link atomicOptInApp}.
+     * @param appIndex App to close out of
+     * @param appArgs App arguments
+     * @param optionalFields an AlgonautTransactionFields object with
+     *  		 			 any additional fields you want to pass to this transaction
+     * @returns Promise resolving to atomic transaction
+     */
+    async atomicCloseOutApp(appIndex, appArgs, optionalFields) {
+        if (this.account && appIndex) {
+            try {
+                const params = await this.algodClient.getTransactionParams().do();
+                const processedArgs = this.encodeArguments(appArgs);
+                const closeOutTxn = algosdk.makeApplicationCloseOutTxnFromObject({
+                    from: this.account.addr,
+                    suggestedParams: params,
+                    appIndex,
+                    appArgs: processedArgs,
+                    accounts: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.accounts) || undefined,
+                    foreignApps: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.applications) || undefined,
+                    foreignAssets: (optionalFields === null || optionalFields === void 0 ? void 0 : optionalFields.assets) || undefined
+                });
+                return {
+                    transaction: closeOutTxn,
+                    transactionSigner: this.account,
+                    isLogigSig: false
+                };
+            }
+            catch (e) {
+                throw new Error(e);
+            }
+        }
+        else {
+            throw new Error('requires app index');
         }
     }
     /**
@@ -622,7 +706,7 @@ export default class Algonaut {
                     else {
                         // Sign the transaction
                         const signedTxn = txn.signTxn(this.account.sk);
-                        console.log('Signed transaction with txID: %s', txId);
+                        //console.log('Signed transaction with txID: %s', txId);
                         // Submit the transaction
                         await this.algodClient.sendRawTransaction(signedTxn).do();
                         // Wait for confirmation
@@ -834,7 +918,7 @@ export default class Algonaut {
      * @returns Promise of type AccountInfo
      */
     async getAccountInfo(address) {
-        console.log('checking algo balance');
+        //console.log//('checking algo balance');
         const accountInfo = await this.algodClient.accountInformation(address).do();
         return accountInfo;
     }
@@ -844,7 +928,7 @@ export default class Algonaut {
      * @returns Promise resolving to Algo balance
      */
     async getAlgoBalance(address) {
-        console.log('checking algo balance');
+        //console.log('checking algo balance');
         const accountInfo = await this.algodClient.accountInformation(address).do();
         return accountInfo.amount;
     }
@@ -856,9 +940,9 @@ export default class Algonaut {
      */
     async getTokenBalance(address, assetIndex) {
         const accountInfo = await this.algodClient.accountInformation(address).do();
-        console.log(accountInfo);
+        //console.log(accountInfo);
         let stkBalance = 0;
-        console.log(accountInfo.assets);
+        //console.log(accountInfo.assets);
         accountInfo.assets.forEach((asset) => {
             if (asset['asset-id'] == assetIndex) {
                 stkBalance = asset.amount;
@@ -895,10 +979,10 @@ export default class Algonaut {
         const accountInfoResponse = await this.algodClient
             .accountInformation(creatorAddress)
             .do();
-        console.log(accountInfoResponse);
+        //console.log(accountInfoResponse);
         for (let i = 0; i < accountInfoResponse['created-apps'].length; i++) {
             if (accountInfoResponse['created-apps'][i].id == applicationIndex) {
-                console.log('Found Application');
+                //console.log('Found Application');
                 state.hasState = true;
                 for (let n = 0; n < accountInfoResponse['created-apps'][i]['params']['global-state'].length; n++) {
                     const stateItem = accountInfoResponse['created-apps'][i]['params']['global-state'][n];
@@ -946,7 +1030,7 @@ export default class Algonaut {
             //console.log(accountInfoResponse);
             for (let i = 0; i < accountInfoResponse['apps-local-state'].length; i++) {
                 if (accountInfoResponse['apps-local-state'][i].id == applicationIndex) {
-                    console.log('Found Application');
+                    //console.log('Found Application');
                     state.hasState = true;
                     for (let n = 0; n < accountInfoResponse['apps-local-state'][i]['key-value'].length; n++) {
                         const stateItem = accountInfoResponse['apps-local-state'][i]['key-value'][n];
@@ -1169,7 +1253,7 @@ export default class Algonaut {
                 signed.push(signedTx.blob);
             });
             const tx = await this.algodClient.sendRawTransaction(signed).do();
-            console.log('Transaction : ' + tx.txId);
+            //console.log('Transaction : ' + tx.txId);
             // Wait for transaction to be confirmed
             const txStatus = await this.waitForConfirmation(tx.txId);
             return txStatus;
@@ -1201,12 +1285,12 @@ export default class Algonaut {
      * @returns an array of Transactions
      */
     async createWalletConnectTransactions(transactions) {
-        console.log('start wc transaction builder');
+        //console.log('start wc transaction builder');
         const txns = [];
         transactions.forEach((txn) => {
             txns.push(txn.transaction);
         });
-        console.log('done', txns);
+        //console.log('done', txns);
         return txns;
     }
     /**********************************************/
@@ -1326,14 +1410,14 @@ export default class Algonaut {
             apiKey: '4067ab2454244fb39835bfeafc285c8d',
             qrcodeModal: QRCodeModal
         });
-        console.log('connector created');
-        console.log(this.walletConnect.connector);
-        console.log('trying to create session');
+        //console.log('connector created');
+        //console.log(this.walletConnect.connector);
+        //console.log('trying to create session');
         // Check if connection is already established
         if (!this.walletConnect.connector.connected) {
             // create new session
             this.walletConnect.connector.createSession();
-            console.log('session created');
+            //console.log('session created');
         }
         this.subscribeToEvents(clientListener);
     }
@@ -1346,7 +1430,7 @@ export default class Algonaut {
             return;
         }
         this.walletConnect.connector.on('session_update', async (error, payload) => {
-            console.log('connector.on("session_update")');
+            //console.log('connector.on("session_update")');
             if (error) {
                 throw error;
             }
@@ -1356,7 +1440,7 @@ export default class Algonaut {
             this.onSessionUpdate(accounts);
         });
         this.walletConnect.connector.on('connect', (error, payload) => {
-            console.log('connector.on("connect")');
+            //console.log('connector.on("connect")');
             if (error) {
                 throw error;
             }
@@ -1365,9 +1449,9 @@ export default class Algonaut {
             this.onConnect(payload);
         });
         this.walletConnect.connector.on('disconnect', (error, payload) => {
-            console.log('connector.on("disconnect")');
+            //console.log('connector.on("disconnect")');
             if (error) {
-                console.log(payload);
+                //console.log(payload);
                 throw error;
             }
             if (clientListener)
@@ -1446,7 +1530,7 @@ export default class Algonaut {
             // this is critical, if the group doesn't have an id
             // the transactions are processed as one-offs
             if (walletTxns.length > 1) {
-                console.log('assigning group ID to transactions...');
+                //console.log('assigning group ID to transactions...');
                 walletTxns = algosdk.assignGroupID(walletTxns);
             }
             // encode txns
@@ -1471,13 +1555,24 @@ export default class Algonaut {
                 const rawSignedTxn = Buffer.from(r, 'base64');
                 return new Uint8Array(rawSignedTxn);
             });
-            console.log('signed partial txns are');
-            console.log(signedPartialTxns);
+            //console.log('signed partial txns are');
+            //console.log(signedPartialTxns);
             if (callbacks === null || callbacks === void 0 ? void 0 : callbacks.onSign)
                 callbacks.onSign(signedPartialTxns);
             if (signedPartialTxns) {
-                const tx = await this.algodClient.sendRawTransaction(signedPartialTxns).do();
-                console.log('Transaction : ' + tx.txId);
+                let tx;
+                try {
+                    tx = await this.algodClient.sendRawTransaction(signedPartialTxns).do();
+                }
+                catch (er) {
+                    tx = er;
+                    return {
+                        status: 'fail',
+                        message: 'Error sending Raw Transaction',
+                        error: er
+                    };
+                }
+                //console.log('Transaction : ' + tx.txId);
                 if (callbacks === null || callbacks === void 0 ? void 0 : callbacks.onSend)
                     callbacks.onSend(tx);
                 // Wait for transaction to be confirmed
