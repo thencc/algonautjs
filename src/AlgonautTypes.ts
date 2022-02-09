@@ -15,6 +15,13 @@ export interface AlgonautStateData {
 	address: string; // if we can detect an address, we put it here
 }
 
+export interface AlgonautContractSchema {
+	localInts: number,
+	localBytes: number,
+	globalInts: number,
+	globalBytes: number,
+}
+
 export interface AlgonautAppState {
 	index: number;
 	hasState: boolean;

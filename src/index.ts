@@ -13,7 +13,8 @@ import {
 	AlgonautAppState, 
 	AlgonautStateData, 
 	WalletConnectListener, 
-	AlgonautTxnCallbacks } from './AlgonautTypes';
+	AlgonautTxnCallbacks, 
+	AlgonautContractSchema} from './AlgonautTypes';
 import * as sha512 from 'js-sha512';
 import * as CryptoJS from 'crypto-js';
 
@@ -886,10 +887,7 @@ export default class Algonaut {
 	 * @param tealApprovalCode
 	 * @param tealClearCode
 	 * @param args
-	 * @param localInts
-	 * @param localBytes
-	 * @param globalInts
-	 * @param globalBytes
+	 * @param schema
 	 * @param optionalFields
 	 * @returns AlgonautTransactionStatus
 	 */
@@ -897,10 +895,7 @@ export default class Algonaut {
 		tealApprovalCode: string,
 		tealClearCode: string,
 		args: any[],
-		localInts = 8,
-		localBytes = 8,
-		globalInts = 8,
-		globalBytes = 8,
+		schema: AlgonautContractSchema,
 		optionalFields?: AlgonautTransactionFields
 	): Promise<AlgonautTransactionStatus> {
 		if (optionalFields && optionalFields.note && optionalFields.note.length > 1023) {
@@ -932,10 +927,10 @@ export default class Algonaut {
 						onComplete,
 						approvalProgram,
 						clearProgram,
-						localInts,
-						localBytes,
-						globalInts,
-						globalBytes,
+						schema.localInts,
+						schema.localBytes,
+						schema.globalInts,
+						schema.globalBytes,
 						this.encodeArguments(args),
 						optionalFields?.accounts ? optionalFields.accounts : undefined,
 						optionalFields?.applications ? optionalFields.applications : undefined,
@@ -1001,10 +996,7 @@ export default class Algonaut {
 	 * @param tealApprovalCode
 	 * @param tealClearCode
 	 * @param args
-	 * @param localInts
-	 * @param localBytes
-	 * @param globalInts
-	 * @param globalBytes
+	 * @param schema
 	 * @param optionalFields
 	 * @returns AlgonautAtomicTransaction
 	 */
@@ -1012,10 +1004,7 @@ export default class Algonaut {
 		tealApprovalCode: string,
 		tealClearCode: string,
 		args: any[],
-		localInts = 8,
-		localBytes = 8,
-		globalInts = 8,
-		globalBytes = 8,
+		schema: AlgonautContractSchema,
 		optionalFields?: AlgonautTransactionFields
 	): Promise<AlgonautAtomicTransaction> {
 		if (optionalFields && optionalFields.note && optionalFields.note.length > 1023) {
@@ -1043,10 +1032,10 @@ export default class Algonaut {
 					onComplete,
 					approvalProgram,
 					clearProgram,
-					localInts,
-					localBytes,
-					globalInts,
-					globalBytes,
+					schema.localInts,
+					schema.localBytes,
+					schema.globalInts,
+					schema.globalBytes,
 					this.encodeArguments(args),
 					optionalFields?.accounts ? optionalFields.accounts : undefined,
 					optionalFields?.applications ? optionalFields.applications : undefined,
@@ -1081,10 +1070,7 @@ export default class Algonaut {
 	 * @param noteText
 	 * @param createArgs
 	 * @param accounts
-	 * @param localInts up to 16
-	 * @param localBytes up to 16
-	 * @param globalInts up to 32
-	 * @param globalBytes up to 32
+	 * @param schema
 	 * @returns
 	 */
 	async deployTealWithLSig (
@@ -1094,10 +1080,7 @@ export default class Algonaut {
 		noteText: string,
 		createArgs: string[],
 		accounts: string[],
-		localInts: number,
-		localBytes: number,
-		globalInts: number,
-		globalBytes: number
+		schema: AlgonautContractSchema,
 	): Promise<AlgonautTransactionStatus> {
 		if (noteText.length > 511) {
 			return {
@@ -1132,10 +1115,10 @@ export default class Algonaut {
 						onComplete,
 						approvalProgram,
 						clearProgram,
-						localInts,
-						localBytes,
-						globalInts,
-						globalBytes,
+						schema.localInts,
+						schema.localBytes,
+						schema.globalInts,
+						schema.globalBytes,
 						encodedArgs,
 						accounts
 					);
