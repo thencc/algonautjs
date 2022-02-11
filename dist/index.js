@@ -123,6 +123,7 @@ export default class Algonaut {
      * @param limitDelta how many rounds to wait, defaults to
      */
     async waitForConfirmation(txId, limitDelta) {
+        var _a;
         let lastround = (await this.algodClient.status().do())['last-round'];
         const limit = lastround + (limitDelta ? limitDelta : 50);
         const returnValue = {
@@ -138,7 +139,7 @@ export default class Algonaut {
                 console.log('waiting for confirmation');
             }
             catch (er) {
-                console.error(er.response.text);
+                console.error((_a = er.response) === null || _a === void 0 ? void 0 : _a.text);
             }
             if (pendingInfo['confirmed-round'] !== null &&
                 pendingInfo['confirmed-round'] > 0) {
@@ -166,6 +167,7 @@ export default class Algonaut {
      * @returns Promise resolving to confirmed transaction or error
      */
     async optInApp(appIndex, appArgs, optionalFields) {
+        var _a, _b;
         if (this.account && appIndex) {
             //console.log('opt in to app ' + appIndex);
             const sender = this.account.addr;
@@ -190,10 +192,10 @@ export default class Algonaut {
             }
             catch (er) {
                 console.log('error in opt in');
-                console.log(er.response.text);
+                console.log((_a = er.response) === null || _a === void 0 ? void 0 : _a.text);
                 return {
                     status: 'fail',
-                    message: er.response.text,
+                    message: (_b = er.response) === null || _b === void 0 ? void 0 : _b.text,
                     error: er
                 };
             }
@@ -210,6 +212,7 @@ export default class Algonaut {
      * @returns Promise resolving to confirmed transaction or error
      */
     async optInASA(assetIndex) {
+        var _a, _b;
         if (this.account) {
             // define sender
             const sender = this.account.addr;
@@ -234,11 +237,11 @@ export default class Algonaut {
             }
             catch (er) {
                 console.log('error in opt in');
-                console.log(er.response.text);
+                console.log((_a = er.response) === null || _a === void 0 ? void 0 : _a.text);
                 console.log(er);
                 return {
                     status: 'fail',
-                    message: er.response.text,
+                    message: (_b = er.response) === null || _b === void 0 ? void 0 : _b.text,
                     error: er
                 };
             }
@@ -343,6 +346,7 @@ export default class Algonaut {
      * @returns Promise resolving to confirmed transaction or error
      */
     async deleteApplication(appIndex) {
+        var _a;
         if (this.account && appIndex) {
             try {
                 const sender = this.account.addr;
@@ -366,7 +370,7 @@ export default class Algonaut {
             }
             catch (e) {
                 console.log(e);
-                throw new Error(e.response.text);
+                throw new Error((_a = e.response) === null || _a === void 0 ? void 0 : _a.text);
             }
         }
         else {
@@ -444,6 +448,7 @@ export default class Algonaut {
      *
      */
     async sendASA(receiverAddress, assetIndex, amount) {
+        var _a;
         if (this.account) {
             try {
                 // Create transaction B to A
@@ -462,7 +467,7 @@ export default class Algonaut {
             catch (e) {
                 return {
                     status: 'fail',
-                    message: e.response.text,
+                    message: (_a = e.response) === null || _a === void 0 ? void 0 : _a.text,
                     error: e
                 };
             }
@@ -510,7 +515,7 @@ export default class Algonaut {
             catch (er) {
                 return {
                     status: 'fail',
-                    message: er.response.text,
+                    message: er.response ? er.response.text : 'no response',
                     error: er
                 };
             }
@@ -532,6 +537,7 @@ export default class Algonaut {
      * @returns Promise resolving to atomic transaction
      */
     async closeOutApp(appIndex, appArgs, optionalFields) {
+        var _a;
         if (this.account && appIndex && appArgs.length) {
             try {
                 const processedArgs = this.encodeArguments(appArgs);
@@ -557,7 +563,7 @@ export default class Algonaut {
             catch (er) {
                 return {
                     status: 'fail',
-                    message: er.response.text,
+                    message: (_a = er.response) === null || _a === void 0 ? void 0 : _a.text,
                     error: er
                 };
             }
@@ -807,6 +813,7 @@ export default class Algonaut {
      * @returns
      */
     async deployTealWithLSig(lsig, tealApprovalCode, tealClearCode, noteText, createArgs, accounts, localInts, localBytes, globalInts, globalBytes) {
+        var _a;
         if (noteText.length > 511) {
             return {
                 status: 'fail',
@@ -848,7 +855,7 @@ export default class Algonaut {
             catch (er) {
                 return {
                     status: 'fail',
-                    message: er.response.text,
+                    message: (_a = er.response) === null || _a === void 0 ? void 0 : _a.text,
                     error: er
                 };
             }
@@ -1232,6 +1239,7 @@ export default class Algonaut {
      * @param transactions a Uint8Array of ALREADY SIGNED transactions
      */
     async sendAtomicTransaction(transactions) {
+        var _a;
         try {
             const txns = [];
             const signed = [];
@@ -1261,7 +1269,7 @@ export default class Algonaut {
         catch (e) {
             return {
                 status: 'fail',
-                message: e.response.text,
+                message: (_a = e.response) === null || _a === void 0 ? void 0 : _a.text,
                 error: e
             };
         }
@@ -1546,7 +1554,17 @@ export default class Algonaut {
             });
             const requestParams = [txnsToSign];
             const request = formatJsonRpcRequest('algo_signTxn', requestParams);
-            const result = await this.walletConnect.connector.sendCustomRequest(request);
+            // this will fail if they cancel... we think
+            let result;
+            try {
+                result = await this.walletConnect.connector.sendCustomRequest(request);
+            }
+            catch (er) {
+                return {
+                    status: 'fail',
+                    message: 'You canceled the transaction'
+                };
+            }
             const signedPartialTxns = result.map((r, i) => {
                 // run whatever error checks here
                 if (r == null) {

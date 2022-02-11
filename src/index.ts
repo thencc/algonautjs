@@ -220,7 +220,7 @@ export default class Algonaut {
 					.do();
 				console.log('waiting for confirmation');
 			} catch (er: any) {
-				console.error(er.response.text);
+				console.error(er.response?.text);
 			}
 
 			if (
@@ -293,10 +293,10 @@ export default class Algonaut {
 
 			} catch(er: any) {
 				console.log('error in opt in');
-				console.log(er.response.text);
+				console.log(er.response?.text);
 				return {
 					status: 'fail',
-					message: er.response.text,
+					message: er.response?.text,
 					error: er
 				};
 			}
@@ -353,11 +353,11 @@ export default class Algonaut {
 
 			} catch (er: any) {
 				console.log('error in opt in');
-				console.log(er.response.text);
+				console.log(er.response?.text);
 				console.log(er);
 				return {
 					status: 'fail',
-					message: er.response.text,
+					message: er.response?.text,
 					error: er
 				};
 			}
@@ -367,6 +367,43 @@ export default class Algonaut {
 				message: 'no algo account found...'
 			};
 		}
+	}
+
+
+	// this is a bit harder with the algosdk api
+	// async isOptedIntoApp(account: string, appId: number): boolean {
+	// 	let optInState = false;
+
+	// 	const accountInfo = await this.getAccountInfo(account);
+	// 	accountInfo.assets.forEach((asset: any) => {
+	// 		if (asset['asset-id'] == assetId) {
+	// 			optInState = true;
+	// 		}
+
+	// 	});
+
+	// 	return optInState;
+	// }
+
+
+	/**
+	 * You can be opted into an asset but still have a zero balance. Use this call
+	 * for cases where you just need to know the address's opt-in state
+	 * @param assetId
+	 * @returns
+	 */
+	async isOptedIntoAsset(account: string, assetId: number) {
+		let optInState = false;
+
+		const accountInfo = await this.getAccountInfo(account);
+		accountInfo.assets.forEach((asset: any) => {
+			if (asset['asset-id'] == assetId) {
+				optInState = true;
+			}
+
+		});
+
+		return optInState;
 	}
 
 	/**
@@ -534,7 +571,7 @@ export default class Algonaut {
 
 			} catch(e: any) {
 				console.log(e);
-				throw new Error(e.response.text);
+				throw new Error(e.response?.text);
 			}
 		} else {
 			return {
@@ -646,7 +683,7 @@ export default class Algonaut {
 			} catch (e: any) {
 				return {
 					status: 'fail',
-					message: e.response.text,
+					message: e.response?.text,
 					error: e
 				};
 			}
@@ -709,7 +746,7 @@ export default class Algonaut {
 			} catch(er: any) {
 				return {
 					status: 'fail',
-					message: er.response.text,
+					message: er.response ? er.response.text : 'no response',
 					error: er
 				};
 			}
@@ -758,7 +795,7 @@ export default class Algonaut {
 			} catch(er: any) {
 				return {
 					status: 'fail',
-					message: er.response.text,
+					message: er.response?.text,
 					error: er
 				};
 			}
@@ -1163,7 +1200,7 @@ export default class Algonaut {
 
 				return {
 					status: 'fail',
-					message: er.response.text,
+					message: er.response?.text,
 					error: er
 				};
 			}
@@ -1675,7 +1712,7 @@ export default class Algonaut {
 		} catch (e: any) {
 			return {
 				status: 'fail',
-				message: e.response.text,
+				message: e.response?.text,
 				error: e
 			};
 		}
@@ -2026,7 +2063,18 @@ export default class Algonaut {
 
 			const requestParams = [txnsToSign];
 			const request = formatJsonRpcRequest('algo_signTxn', requestParams);
-			const result = await this.walletConnect.connector.sendCustomRequest(request);
+
+			// this will fail if they cancel... we think
+			let result: any;
+			try {
+				result = await this.walletConnect.connector.sendCustomRequest(request);
+			} catch(er) {
+				return {
+					status: 'fail',
+					message: 'You canceled the transaction'
+				};
+			}
+
 			const signedPartialTxns = result.map((r: any, i: number) => {
 				// run whatever error checks here
 				if (r == null) {
