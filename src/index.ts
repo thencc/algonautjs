@@ -752,57 +752,12 @@ export default class Algonaut {
 	}
 
 	/**
-	 * Closes out the user's local state in an application.
-	 * The opposite of {@link optInApp}.
-	 * @param args Object containing `appIndex`, `appArgs`, and `optionalFields` properties
-	 * @returns Promise resolving to atomic transaction
-	 */
-	async closeOutApp (args: AlgonautCallAppArguments) {
-		if (this.account && args.appIndex && args.appArgs.length) {
-			try {
-				const processedArgs = this.encodeArguments(args.appArgs);
-				const params = await this.algodClient.getTransactionParams().do();
-				const closeOutAppTransaction = algosdk.makeApplicationCloseOutTxnFromObject({
-					from: this.account.addr,
-					suggestedParams: params,
-					appIndex: args.appIndex,
-					appArgs: processedArgs,
-					accounts: args.optionalFields?.accounts || undefined,
-					foreignApps: args.optionalFields?.applications || undefined,
-					foreignAssets: args.optionalFields?.assets || undefined
-				});
-				const txId = closeOutAppTransaction.txID().toString();
-				// Sign the transaction
-				const signedTx = closeOutAppTransaction.signTxn(
-					this.account.sk
-				);
-				// Submit the transaction
-				await this.algodClient.sendRawTransaction(signedTx).do();
-				// Wait for confirmation
-				const txStatus = await this.waitForConfirmation(txId);
-				return txStatus;
-			} catch(er: any) {
-				return {
-					status: 'fail',
-					message: er.response?.text,
-					error: er
-				};
-			}
-		} else {
-			return {
-				status: 'fail',
-				message: 'contract calls need a contract index and at least one argument'
-			};
-		}
-	}
-
-	/**
 	 * Returns an atomic transaction that closes out the user's local state in an application.
 	 * The opposite of {@link atomicOptInApp}.
 	 * @param args Object containing `appIndex`, `appArgs`, and `optionalFields` properties
 	 * @returns Promise resolving to atomic transaction
 	 */
-	async atomicCloseOutApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
+	 async atomicCloseOutApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
 		if (this.account && args.appIndex) {
 			try {
 				const params = await this.algodClient.getTransactionParams().do();
@@ -827,6 +782,41 @@ export default class Algonaut {
 			}
 		} else {
 			throw new Error('requires app index');
+		}
+	}
+
+	/**
+	 * Closes out the user's local state in an application.
+	 * The opposite of {@link optInApp}.
+	 * @param args Object containing `appIndex`, `appArgs`, and `optionalFields` properties
+	 * @returns Promise resolving to atomic transaction
+	 */
+	async closeOutApp (args: AlgonautCallAppArguments) {
+		if (this.account && args.appIndex && args.appArgs.length) {
+			try {				
+				const closeOutAppTransaction = await this.atomicCloseOutApp(args);
+				const txId = closeOutAppTransaction.transaction.txID().toString();
+				// Sign the transaction
+				const signedTx = closeOutAppTransaction.transaction.signTxn(
+					this.account.sk
+				);
+				// Submit the transaction
+				await this.algodClient.sendRawTransaction(signedTx).do();
+				// Wait for confirmation
+				const txStatus = await this.waitForConfirmation(txId);
+				return txStatus;
+			} catch(er: any) {
+				return {
+					status: 'fail',
+					message: er.response?.text,
+					error: er
+				};
+			}
+		} else {
+			return {
+				status: 'fail',
+				message: 'contract calls need a contract index and at least one argument'
+			};
 		}
 	}
 
