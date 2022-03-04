@@ -270,17 +270,15 @@ export default class Algonaut {
 	}
 
 	/**
-	 * Opt-in the current account for the a token or NFT ASA.
-	 * @param args Object containing `appIndex`, `appArgs`, and `optionalFields`
-	 * @returns Promise resolving to confirmed transaction or error
+	 * Creates transaction to opt into an app
+	 * @param args AlgonautCallAppArgs
+	 * @returns AlgonautAtomicTransaction
 	 */
-	async optInApp(args: AlgonautCallAppArguments): Promise<AlgonautTransactionStatus> {
+	 async atomicOptInApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
 		if (this.account && args.appIndex) {
 
-			//console.log('opt in to app ' + args.appIndex);
 			const sender = this.account.addr;
 			const params = await this.algodClient.getTransactionParams().do();
-
 			const optInTransaction = algosdk.makeApplicationOptInTxnFromObject({
 				from: sender,
 				appIndex: args.appIndex,
@@ -290,10 +288,31 @@ export default class Algonaut {
 				foreignApps: args.optionalFields?.applications ? args.optionalFields?.applications : undefined,
 				foreignAssets: args.optionalFields?.assets ? args.optionalFields?.assets : undefined
 			});
-			const txId = optInTransaction.txID().toString();
+
+			return {
+				transaction: optInTransaction,
+				transactionSigner: this.account,
+				isLogigSig: false
+			};
+
+		} else {
+			throw new Error('algonautjs has no account loaded!');
+		}
+
+	}
+
+	/**
+	 * Opt-in the current account for the a token or NFT ASA.
+	 * @param args Object containing `appIndex`, `appArgs`, and `optionalFields`
+	 * @returns Promise resolving to confirmed transaction or error
+	 */
+	async optInApp(args: AlgonautCallAppArguments): Promise<AlgonautTransactionStatus> {
+		if (this.account && args.appIndex) {
+			const { transaction } = await this.atomicOptInApp(args);
+			const txId = transaction.txID().toString();
 
 			// Sign the transaction
-			const signedTxn = optInTransaction.signTxn(this.account.sk);
+			const signedTxn = transaction.signTxn(this.account.sk);
 
 			try {
 				await this.algodClient.sendRawTransaction(signedTxn).do();
@@ -540,51 +559,6 @@ export default class Algonaut {
 	}
 
 	/**
-	 * Deletes an application from the blockchain
-	 * @param appIndex - ID of application
-	 * @returns Promise resolving to confirmed transaction or error
-	 */
-	async deleteApplication(appIndex: number): Promise<AlgonautTransactionStatus> {
-
-		if (this.account && appIndex) {
-			try {
-				const sender = this.account.addr;
-				const params = await this.algodClient.getTransactionParams().do();
-
-				//console.log('delete: ' + appIndex);
-
-				const txn = algosdk.makeApplicationDeleteTxn(sender, params, appIndex);
-				const txId = txn.txID().toString();
-				const signedTxn = txn.signTxn(this.account.sk);
-
-				await this.algodClient.sendRawTransaction(signedTxn).do();
-				await this.waitForConfirmation(txId);
-
-				// display results
-				const transactionResponse = await this.algodClient
-					.pendingTransactionInformation(txId)
-					.do();
-				const appId = transactionResponse['txn']['txn'].apid;
-				console.log('Deleted app-id: ', appId);
-
-				return {
-					status: 'success',
-					message: 'deleted app index ' + appId
-				};
-
-			} catch(e: any) {
-				console.log(e);
-				throw new Error(e.response?.text);
-			}
-		} else {
-			return {
-				status: 'fail',
-				message: 'no account / algo'
-			};
-		}
-	}
-
-	/**
 	 * Returns atomic transaction that deletes application
 	 * @param appIndex - ID of application
 	 * @returns Promise resolving to atomic transaction that deletes application
@@ -611,6 +585,46 @@ export default class Algonaut {
 			}
 		} else {
 			throw new Error('No account loaded');
+		}
+	}
+
+	/**
+	 * Deletes an application from the blockchain
+	 * @param appIndex - ID of application
+	 * @returns Promise resolving to confirmed transaction or error
+	 */
+	async deleteApplication(appIndex: number): Promise<AlgonautTransactionStatus> {
+
+		if (this.account && appIndex) {
+			try {
+				const { transaction } = await this.atomicDeleteApplication(appIndex);
+				const txId = transaction.txID().toString();
+				const signedTxn = transaction.signTxn(this.account.sk);
+
+				await this.algodClient.sendRawTransaction(signedTxn).do();
+				await this.waitForConfirmation(txId);
+
+				// display results
+				const transactionResponse = await this.algodClient
+					.pendingTransactionInformation(txId)
+					.do();
+				const appId = transactionResponse['txn']['txn'].apid;
+				console.log('Deleted app-id: ', appId);
+
+				return {
+					status: 'success',
+					message: 'deleted app index ' + appId
+				};
+
+			} catch(e: any) {
+				console.log(e);
+				throw new Error(e.response?.text);
+			}
+		} else {
+			return {
+				status: 'fail',
+				message: 'no account / algo'
+			};
 		}
 	}
 
@@ -652,6 +666,29 @@ export default class Algonaut {
 		}
 	}
 
+	async atomicSendASA(args: AlgonautSendASAArguments): Promise<AlgonautAtomicTransaction> {
+
+		if (this.account) {
+
+			const transaction =
+				algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
+					from: this.account.addr,
+					to: args.to,
+					amount: args.amount,
+					assetIndex: args.assetIndex,
+					suggestedParams: await this.algodClient.getTransactionParams().do()
+				});
+
+			return {
+				transaction: transaction,
+				transactionSigner: this.account,
+				isLogigSig: false
+			};
+		} else {
+			throw new Error('there is no account!');
+		}
+	}
+
 	/**
 	 * Sends ASA to an address.
 	 *
@@ -666,15 +703,9 @@ export default class Algonaut {
 			try {
 
 				// Create transaction B to A
-				const transaction1 = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
-					from: this.account.addr,
-					to: args.to,
-					amount: args.amount,
-					assetIndex: args.assetIndex,
-					suggestedParams: await this.algodClient.getTransactionParams().do()
-				});
+				const { transaction } = await this.atomicSendASA(args);
 
-				const signedTx1 = algosdk.signTransaction(transaction1, this.account.sk);
+				const signedTx1 = algosdk.signTransaction(transaction, this.account.sk);
 				const tx = await this.algodClient.sendRawTransaction(signedTx1.blob).do();
 				const txStatus = await this.waitForConfirmation(tx.txId);
 
@@ -1426,38 +1457,6 @@ export default class Algonaut {
 		}
 	}
 
-	/**
-	 * Creates transaction to opt into an app
-	 * @param args AlgonautCallAppArgs
-	 * @returns AlgonautAtomicTransaction
-	 */
-	async atomicOptInApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
-		if (this.account && args.appIndex) {
-
-			const sender = this.account.addr;
-			const params = await this.algodClient.getTransactionParams().do();
-			const optInTransaction = algosdk.makeApplicationOptInTxnFromObject({
-				from: sender,
-				appIndex: args.appIndex,
-				suggestedParams: params,
-				appArgs: args.appArgs ? this.encodeArguments(args.appArgs) : undefined,
-				accounts: args.optionalFields?.accounts ? args.optionalFields?.accounts : undefined,
-				foreignApps: args.optionalFields?.applications ? args.optionalFields?.applications : undefined,
-				foreignAssets: args.optionalFields?.assets ? args.optionalFields?.assets : undefined
-			});
-
-			return {
-				transaction: optInTransaction,
-				transactionSigner: this.account,
-				isLogigSig: false
-			};
-
-		} else {
-			throw new Error('algonautjs has no account loaded!');
-		}
-
-	}
-
 	async atomicOptInASA(assetIndex: number): Promise<AlgonautAtomicTransaction> {
 
 		if (this.account && assetIndex) {
@@ -1481,29 +1480,6 @@ export default class Algonaut {
 			throw new Error('there was no account!');
 		}
 
-	}
-
-	async atomicAssetTransfer(args: AlgonautSendASAArguments): Promise<AlgonautAtomicTransaction> {
-
-		if (this.account) {
-
-			const transaction =
-				algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
-					from: this.account.addr,
-					to: args.to,
-					amount: args.amount,
-					assetIndex: args.assetIndex,
-					suggestedParams: await this.algodClient.getTransactionParams().do()
-				});
-
-			return {
-				transaction: transaction,
-				transactionSigner: this.account,
-				isLogigSig: false
-			};
-		} else {
-			throw new Error('there is no account!');
-		}
 	}
 
 	async atomicAssetTransferWithLSig(args: AlgonautLsigSendASAArguments): Promise<AlgonautAtomicTransaction> {
