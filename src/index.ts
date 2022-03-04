@@ -758,7 +758,7 @@ export default class Algonaut {
 	 * @returns Promise resolving to atomic transaction
 	 */
 	 async atomicCloseOutApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
-		if (this.account && args.appIndex) {
+		if (this.account && args.appIndex && args.appArgs.length) {
 			try {
 				const params = await this.algodClient.getTransactionParams().do();
 				const processedArgs = this.encodeArguments(args.appArgs);
