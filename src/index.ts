@@ -16,12 +16,12 @@ import {
 	AlgonautTxnCallbacks, 
 	AlgonautContractSchema,
 	AlgonautCreateAssetArguments,
-	AlgonautSendASAArguments,
+	AlgonautSendAssetArguments,
 	AlgonautCallAppArguments,
 	AlgonautDeployArguments,
 	AlgonautLsigDeployArguments,
 	AlgonautLsigCallAppArguments,
-	AlgonautLsigSendASAArguments,
+	AlgonautLsigSendAssetArguments,
 	AlgonautPaymentArguments,
 	AlgonautLsigPaymentArguments} from './AlgonautTypes';
 import * as sha512 from 'js-sha512';
@@ -302,7 +302,7 @@ export default class Algonaut {
 	}
 
 	/**
-	 * Opt-in the current account for the a token or NFT ASA.
+	 * Opt-in the current account for an app.
 	 * @param args Object containing `appIndex`, `appArgs`, and `optionalFields`
 	 * @returns Promise resolving to confirmed transaction or error
 	 */
@@ -341,10 +341,10 @@ export default class Algonaut {
 	}
 
 	/**
-	 * Opt-in the current account for the a token or NFT ASA.
+	 * Opt-in the current account for the a token or NFT Asset.
 	 * @returns Promise resolving to confirmed transaction or error
 	 */
-	async optInASA(assetIndex: number): Promise<AlgonautTransactionStatus> {
+	async optInAsset(assetIndex: number): Promise<AlgonautTransactionStatus> {
 		if (this.account) {
 			// define sender
 			const sender = this.account.addr;
@@ -462,7 +462,7 @@ export default class Algonaut {
 
 
 	/**
-	 * Create ASA
+	 * Create asset
 	 *
 	 *
 	 * TBD: move optional params
@@ -629,11 +629,11 @@ export default class Algonaut {
 	}
 
 	/**
-	 * Deletes ASA
+	 * Deletes asset
 	 * @param assetId Index of the ASA to delete
 	 * @returns Promise resolving to confirmed transaction or error
 	 */
-	async deleteASA(assetId: number): Promise<AlgonautTransactionStatus>  {
+	async deleteAsset(assetId: number): Promise<AlgonautTransactionStatus>  {
 
 		if (this.account && assetId) {
 
@@ -666,7 +666,7 @@ export default class Algonaut {
 		}
 	}
 
-	async atomicSendASA(args: AlgonautSendASAArguments): Promise<AlgonautAtomicTransaction> {
+	async atomicSendAsset(args: AlgonautSendAssetArguments): Promise<AlgonautAtomicTransaction> {
 
 		if (this.account) {
 
@@ -690,7 +690,7 @@ export default class Algonaut {
 	}
 
 	/**
-	 * Sends ASA to an address.
+	 * Sends asset to an address.
 	 *
 	 * IMPORTANT: Before you can call this, the target account has to "opt-in"
 	 * to the ASA index.  You can't just send ASAs to people blind!
@@ -698,12 +698,12 @@ export default class Algonaut {
 	 * @param args - object containing `to`, `assetIndex`, and `amount` properties
 	 * @returns Promise resolving to confirmed transaction or error
 	 */
-	async sendASA(args: AlgonautSendASAArguments): Promise<AlgonautTransactionStatus> {
+	async sendAsset(args: AlgonautSendAssetArguments): Promise<AlgonautTransactionStatus> {
 		if (this.account) {
 			try {
 
 				// Create transaction B to A
-				const { transaction } = await this.atomicSendASA(args);
+				const { transaction } = await this.atomicSendAsset(args);
 
 				const signedTx1 = algosdk.signTransaction(transaction, this.account.sk);
 				const tx = await this.algodClient.sendRawTransaction(signedTx1.blob).do();
@@ -1457,7 +1457,7 @@ export default class Algonaut {
 		}
 	}
 
-	async atomicOptInASA(assetIndex: number): Promise<AlgonautAtomicTransaction> {
+	async atomicOptInAsset(assetIndex: number): Promise<AlgonautAtomicTransaction> {
 
 		if (this.account && assetIndex) {
 
@@ -1482,7 +1482,7 @@ export default class Algonaut {
 
 	}
 
-	async atomicAssetTransferWithLSig(args: AlgonautLsigSendASAArguments): Promise<AlgonautAtomicTransaction> {
+	async atomicAssetTransferWithLSig(args: AlgonautLsigSendAssetArguments): Promise<AlgonautAtomicTransaction> {
 
 		if (args.lsig) {
 			const transaction =

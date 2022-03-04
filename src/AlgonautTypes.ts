@@ -25,9 +25,14 @@ export interface AlgonautContractSchema {
 export interface AlgonautDeployArguments {
 	tealApprovalCode: string;
 	tealClearCode: string;
-	args: any[];
+	appArgs: any[];
 	schema: AlgonautContractSchema;
 	optionalFields?: AlgonautTransactionFields;
+}
+
+export interface AlgonautLsigDeployArguments extends AlgonautDeployArguments {
+	lsig: algosdk.LogicSigAccount;
+	noteText?: string;
 }
 
 export interface AlgonautAppState {
@@ -44,6 +49,10 @@ export interface AlgonautCallAppArguments {
 	optionalFields?: AlgonautTransactionFields; 
 }
 
+export interface AlgonautLsigCallAppArguments extends AlgonautCallAppArguments{
+	lsig: algosdk.LogicSigAccount;
+}
+
 export interface AlgonautCreateAssetArguments {
 	assetName: string;
 	symbol: string;
@@ -55,10 +64,23 @@ export interface AlgonautCreateAssetArguments {
 	assetMetadataHash?: string;
 }
 
-export interface AlgonautSendASAArguments {
+export interface AlgonautSendAssetArguments {
 	to: string;
 	assetIndex: number;
 	amount: number|bigint;
+}
+
+export interface AlgonautLsigSendAssetArguments extends AlgonautSendAssetArguments {
+	lsig: algosdk.LogicSigAccount;
+}
+
+export interface AlgonautPaymentArguments {
+	to: string;
+	amount: number|bigint;
+}
+
+export interface AlgonautLsigPaymentArguments extends AlgonautPaymentArguments {
+	lsig: algosdk.LogicSigAccount;
 }
 
 export interface WalletConnectListener {
