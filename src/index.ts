@@ -694,6 +694,33 @@ export default class Algonaut {
 		}
 	}
 
+	async atomicCallApp (args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
+
+		if (this.account && args.appIndex && args.appArgs.length) {
+
+			const processedArgs = this.encodeArguments(args.appArgs);
+			const params = await this.algodClient.getTransactionParams().do();
+			const callAppTransaction = algosdk.makeApplicationNoOpTxnFromObject({
+				from: this.account.addr,
+				suggestedParams: params,
+				appIndex: args.appIndex,
+				appArgs: processedArgs,
+				accounts: args.optionalFields?.accounts || undefined,
+				foreignApps: args.optionalFields?.applications || undefined,
+				foreignAssets: args.optionalFields?.assets || undefined
+			});
+
+			return {
+				transaction: callAppTransaction,
+				transactionSigner: this.account,
+				isLogigSig: false
+			};
+
+		} else {
+			throw new Error('there was no account!');
+		}
+	}
+
 	/**
 	 * Call a "method" on a stateful contract.  In TEAL, you're really giving
 	 * an argument which branches to a specific place and reads the other args
@@ -704,30 +731,12 @@ export default class Algonaut {
 		if (this.account && args.appIndex && args.appArgs.length) {
 
 			try {
-				const processedArgs = this.encodeArguments(args.appArgs);
-
-				const params = await this.algodClient.getTransactionParams().do();
-
-				const callAppTransaction = algosdk.makeApplicationNoOpTxnFromObject({
-					from: this.account.addr,
-					suggestedParams: params,
-					appIndex: args.appIndex,
-					appArgs: processedArgs,
-					accounts: args.optionalFields?.accounts || undefined,
-					foreignApps: args.optionalFields?.applications || undefined,
-					foreignAssets: args.optionalFields?.assets || undefined
-				});
-
-				const txId = callAppTransaction.txID().toString();
-
+				const callAppTxn = await this.atomicCallApp(args);
+				const txId = callAppTxn.transaction.txID().toString();
 				// Sign the transaction
-				const signedTx = callAppTransaction.signTxn(
-					this.account.sk
-				);
-
+				const signedTx = callAppTxn.transaction.signTxn(this.account.sk);
 				// Submit the transaction
 				await this.algodClient.sendRawTransaction(signedTx).do();
-
 				// Wait for confirmation
 				const txStatus = await this.waitForConfirmation(txId);
 				// display results?
@@ -748,6 +757,32 @@ export default class Algonaut {
 				status: 'fail',
 				message: 'contract calls need a contract index and at least one argument'
 			};
+		}
+	}
+
+	async atomicCallAppWithLSig (args: AlgonautLsigCallAppArguments): Promise<AlgonautAtomicTransaction> {
+
+		if (this.account && args.appIndex && args.appArgs.length) {
+			const processedArgs = this.encodeArguments(args.appArgs);
+			const params = await this.algodClient.getTransactionParams().do();
+			const callAppTransaction = algosdk.makeApplicationNoOpTxnFromObject({
+				from: args.lsig.address(),
+				suggestedParams: params,
+				appIndex: args.appIndex,
+				appArgs: processedArgs,
+				accounts: args.optionalFields?.accounts || undefined,
+				foreignApps: args.optionalFields?.applications || undefined,
+				foreignAssets: args.optionalFields?.assets || undefined
+			});
+
+			return {
+				transaction: callAppTransaction,
+				transactionSigner: args.lsig,
+				isLogigSig: true
+			};
+
+		} else {
+			throw new Error('there was no account!');
 		}
 	}
 
@@ -1446,59 +1481,6 @@ export default class Algonaut {
 			throw new Error('there was no account!');
 		}
 
-	}
-
-	async atomicCallApp (args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
-
-		if (this.account && args.appIndex && args.appArgs.length) {
-
-			const processedArgs = this.encodeArguments(args.appArgs);
-			const params = await this.algodClient.getTransactionParams().do();
-			const callAppTransaction = algosdk.makeApplicationNoOpTxnFromObject({
-				from: this.account.addr,
-				suggestedParams: params,
-				appIndex: args.appIndex,
-				appArgs: processedArgs,
-				accounts: args.optionalFields?.accounts || undefined,
-				foreignApps: args.optionalFields?.applications || undefined,
-				foreignAssets: args.optionalFields?.assets || undefined
-			});
-
-			return {
-				transaction: callAppTransaction,
-				transactionSigner: this.account,
-				isLogigSig: false
-			};
-
-		} else {
-			throw new Error('there was no account!');
-		}
-	}
-
-	async atomicCallAppWithLSig (args: AlgonautLsigCallAppArguments): Promise<AlgonautAtomicTransaction> {
-
-		if (this.account && args.appIndex && args.appArgs.length) {
-			const processedArgs = this.encodeArguments(args.appArgs);
-			const params = await this.algodClient.getTransactionParams().do();
-			const callAppTransaction = algosdk.makeApplicationNoOpTxnFromObject({
-				from: args.lsig.address(),
-				suggestedParams: params,
-				appIndex: args.appIndex,
-				appArgs: processedArgs,
-				accounts: args.optionalFields?.accounts || undefined,
-				foreignApps: args.optionalFields?.applications || undefined,
-				foreignAssets: args.optionalFields?.assets || undefined
-			});
-
-			return {
-				transaction: callAppTransaction,
-				transactionSigner: args.lsig,
-				isLogigSig: true
-			};
-
-		} else {
-			throw new Error('there was no account!');
-		}
 	}
 
 	async atomicAssetTransfer(args: AlgonautSendASAArguments): Promise<AlgonautAtomicTransaction> {
