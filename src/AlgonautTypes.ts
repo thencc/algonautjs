@@ -22,12 +22,43 @@ export interface AlgonautContractSchema {
 	globalBytes: number,
 }
 
+export interface AlgonautDeployArguments {
+	tealApprovalCode: string;
+	tealClearCode: string;
+	args: any[];
+	schema: AlgonautContractSchema;
+	optionalFields?: AlgonautTransactionFields;
+}
+
 export interface AlgonautAppState {
 	index: number;
 	hasState: boolean;
 	creatorAddress: string;
 	globals: AlgonautStateData[];
 	locals: AlgonautStateData[];
+}
+
+export interface AlgonautCallAppArguments {
+	appIndex: number;
+	appArgs: any[];
+	optionalFields?: AlgonautTransactionFields; 
+}
+
+export interface AlgonautCreateAssetArguments {
+	assetName: string;
+	symbol: string;
+	metaBlock: string;
+	decimals: number;
+	amount: number;
+	assetURL?: string;
+	defaultFrozen?: boolean;
+	assetMetadataHash?: string;
+}
+
+export interface AlgonautSendASAArguments {
+	to: string;
+	assetIndex: number;
+	amount: number|bigint;
 }
 
 export interface WalletConnectListener {
