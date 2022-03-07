@@ -6,7 +6,7 @@ export type AlgonautConfig = {
 	LEDGER: string;
 	PORT: string;
 	API_TOKEN: any;
-	SIGNING_MODE?: 'local' | 'wallet-connect' | 'algosigner';
+	SIGNING_MODE?: 'local' | 'walletconnect' | 'algosigner';
 }
 
 export interface AlgonautStateData {
