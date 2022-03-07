@@ -77,6 +77,7 @@ export interface AlgonautLsigSendAssetArguments extends AlgonautSendAssetArgumen
 export interface AlgonautPaymentArguments {
 	to: string;
 	amount: number|bigint;
+	note?: string;
 }
 
 export interface AlgonautLsigPaymentArguments extends AlgonautPaymentArguments {
@@ -104,6 +105,7 @@ export type AlgonautTransactionStatus = {
 	status: 'success' | 'fail';
 	message: string;
 	index?: number;
+	txId: string;
 	error?: Error;
 	meta?: any;
 }
