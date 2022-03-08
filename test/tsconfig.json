@@ -1,7 +1,13 @@
 {
-    "compilerOptions": {
-        "target": "es5",
-        "module": "none",
-        "moduleResolution": "node"
-    }
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "ES6",
+		"sourceMap": true,
+		"noImplicitAny": true,
+		"declaration": true,
+    "outDir": "./dist"
+	},
+	"include": [
+		"../src/**/*"
+	]
 }
