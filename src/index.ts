@@ -270,54 +270,6 @@ export default class Algonaut {
 		return new algosdk.LogicSigAccount(program);
 	}
 
-	/**
-	 * Creates transaction to opt into an app
-	 * @param args AlgonautCallAppArgs
-	 * @returns AlgonautAtomicTransaction
-	 */
-	 async atomicOptInApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
-		if (this.account && args.appIndex) {
-
-			const sender = this.account.addr;
-			const params = await this.algodClient.getTransactionParams().do();
-			const optInTransaction = algosdk.makeApplicationOptInTxnFromObject({
-				from: sender,
-				appIndex: args.appIndex,
-				suggestedParams: params,
-				appArgs: args.appArgs ? this.encodeArguments(args.appArgs) : undefined,
-				accounts: args.optionalFields?.accounts ? args.optionalFields?.accounts : undefined,
-				foreignApps: args.optionalFields?.applications ? args.optionalFields?.applications : undefined,
-				foreignAssets: args.optionalFields?.assets ? args.optionalFields?.assets : undefined
-			});
-
-			return {
-				transaction: optInTransaction,
-				transactionSigner: this.account,
-				isLogigSig: false
-			};
-
-		} else {
-			throw new Error('algonautjs has no account loaded!');
-		}
-
-	}
-
-	/**
-	 * Opt-in the current account for an app.
-	 * @param args Object containing `appIndex`, `appArgs`, and `optionalFields`
-	 * @returns Promise resolving to confirmed transaction or error
-	 */
-	async optInApp(args: AlgonautCallAppArguments): Promise<AlgonautTransactionStatus> {
-		if (this.account && args.appIndex) {
-			const { transaction } = await this.atomicOptInApp(args);
-			//const txId = transaction.txID().toString();
-			return await this.sendTransaction(transaction);
-		} else {
-			if (!this.account) throw new Error('No account set.')
-			throw new Error('Must provide appIndex');
-		}
-	}
-
 	async atomicOptInAsset(assetIndex: number): Promise<AlgonautAtomicTransaction> {
 
 		if (this.account && assetIndex) {
@@ -376,7 +328,7 @@ export default class Algonaut {
 	 * @param assetId
 	 * @returns
 	 */
-	async isOptedIntoAsset(args: {account: string, assetId: number}) {
+	async isOptedIntoAsset(args: {account: string, assetId: number}): Promise<boolean> {
 		let optInState = false;
 
 		const accountInfo = await this.getAccountInfo(args.account);
@@ -492,69 +444,6 @@ export default class Algonaut {
 		}
 	}
 
-	/**
-	 * Returns atomic transaction that deletes application
-	 * @param appIndex - ID of application
-	 * @returns Promise resolving to atomic transaction that deletes application
-	 */
-	 async atomicDeleteApplication(appIndex: number): Promise<AlgonautAtomicTransaction> {
-
-		if (this.account && appIndex) {
-			try {
-				const sender = this.account.addr;
-				const params = await this.algodClient.getTransactionParams().do();
-
-				//console.log('delete: ' + appIndex);
-
-				const txn = algosdk.makeApplicationDeleteTxn(sender, params, appIndex);
-
-				return {
-					transaction: txn,
-					transactionSigner: this.account,
-					isLogigSig: false
-				};
-
-			} catch(e: any) {
-				throw new Error(e);
-			}
-		} else {
-			throw new Error('No account loaded');
-		}
-	}
-
-	/**
-	 * Deletes an application from the blockchain
-	 * @param appIndex - ID of application
-	 * @returns Promise resolving to confirmed transaction or error
-	 */
-	async deleteApplication(appIndex: number): Promise<AlgonautTransactionStatus> {
-		if (!this.account) throw new Error('There was no account');
-
-		try {
-			const { transaction } = await this.atomicDeleteApplication(appIndex);
-			const txId = transaction.txID().toString();
-			
-			const status = await this.sendTransaction(transaction);
-
-			// display results
-			const transactionResponse = await this.algodClient
-				.pendingTransactionInformation(txId)
-				.do();
-			const appId = transactionResponse['txn']['txn'].apid;
-			console.log('Deleted app-id: ', appId);
-
-			return {
-				status: 'success',
-				message: 'deleted app index ' + appId,
-				txId
-			};
-
-		} catch(e: any) {
-			console.log(e);
-			throw new Error(e.response?.text);
-		}
-	}
-
 	async atomicDeleteAsset(assetId: number): Promise<AlgonautAtomicTransaction> {
 		if (!this.account) throw new Error('there was no account!');
 
@@ -626,6 +515,127 @@ export default class Algonaut {
 		if (!this.account) throw new Error('There was no account!');
 		const { transaction } = await this.atomicSendAsset(args);
 		return await this.sendTransaction(transaction);
+	}
+
+	/**
+	 * Get info about an asset
+	 * @param assetIndex
+	 * @returns
+	 */
+	 async getAssetInfo(assetIndex: number): Promise<any> {
+		const info = await this.algodClient.getAssetByID(assetIndex).do();
+		return info;
+	}
+
+	/**
+	 * Creates transaction to opt into an app
+	 * @param args AlgonautCallAppArgs
+	 * @returns AlgonautAtomicTransaction
+	 */
+	 async atomicOptInApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
+		if (this.account && args.appIndex) {
+
+			const sender = this.account.addr;
+			const params = await this.algodClient.getTransactionParams().do();
+			const optInTransaction = algosdk.makeApplicationOptInTxnFromObject({
+				from: sender,
+				appIndex: args.appIndex,
+				suggestedParams: params,
+				appArgs: args.appArgs ? this.encodeArguments(args.appArgs) : undefined,
+				accounts: args.optionalFields?.accounts ? args.optionalFields?.accounts : undefined,
+				foreignApps: args.optionalFields?.applications ? args.optionalFields?.applications : undefined,
+				foreignAssets: args.optionalFields?.assets ? args.optionalFields?.assets : undefined
+			});
+
+			return {
+				transaction: optInTransaction,
+				transactionSigner: this.account,
+				isLogigSig: false
+			};
+
+		} else {
+			throw new Error('algonautjs has no account loaded!');
+		}
+
+	}
+
+	/**
+	 * Opt-in the current account for an app.
+	 * @param args Object containing `appIndex`, `appArgs`, and `optionalFields`
+	 * @returns Promise resolving to confirmed transaction or error
+	 */
+	async optInApp(args: AlgonautCallAppArguments): Promise<AlgonautTransactionStatus> {
+		if (this.account && args.appIndex) {
+			const { transaction } = await this.atomicOptInApp(args);
+			//const txId = transaction.txID().toString();
+			return await this.sendTransaction(transaction);
+		} else {
+			if (!this.account) throw new Error('No account set.')
+			throw new Error('Must provide appIndex');
+		}
+	}
+
+	/**
+	 * Returns atomic transaction that deletes application
+	 * @param appIndex - ID of application
+	 * @returns Promise resolving to atomic transaction that deletes application
+	 */
+	 async atomicDeleteApplication(appIndex: number): Promise<AlgonautAtomicTransaction> {
+
+		if (this.account && appIndex) {
+			try {
+				const sender = this.account.addr;
+				const params = await this.algodClient.getTransactionParams().do();
+
+				//console.log('delete: ' + appIndex);
+
+				const txn = algosdk.makeApplicationDeleteTxn(sender, params, appIndex);
+
+				return {
+					transaction: txn,
+					transactionSigner: this.account,
+					isLogigSig: false
+				};
+
+			} catch(e: any) {
+				throw new Error(e);
+			}
+		} else {
+			throw new Error('No account loaded');
+		}
+	}
+
+	/**
+	 * Deletes an application from the blockchain
+	 * @param appIndex - ID of application
+	 * @returns Promise resolving to confirmed transaction or error
+	 */
+	async deleteApplication(appIndex: number): Promise<AlgonautTransactionStatus> {
+		if (!this.account) throw new Error('There was no account');
+
+		try {
+			const { transaction } = await this.atomicDeleteApplication(appIndex);
+			const txId = transaction.txID().toString();
+			
+			const status = await this.sendTransaction(transaction);
+
+			// display results
+			const transactionResponse = await this.algodClient
+				.pendingTransactionInformation(txId)
+				.do();
+			const appId = transactionResponse['txn']['txn'].apid;
+			console.log('Deleted app-id: ', appId);
+
+			return {
+				status: 'success',
+				message: 'deleted app index ' + appId,
+				txId
+			};
+
+		} catch(e: any) {
+			console.log(e);
+			throw new Error(e.response?.text);
+		}
 	}
 
 	async atomicCallApp (args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
@@ -805,16 +815,6 @@ export default class Algonaut {
 
 		return state;
 
-	}
-
-	/**
-	 * Get info about an asset
-	 * @param assetIndex
-	 * @returns
-	 */
-	async getAssetInfo(assetIndex: number): Promise<any> {
-		const info = await this.algodClient.getAssetByID(assetIndex).do();
-		return info;
 	}
 
 	/**

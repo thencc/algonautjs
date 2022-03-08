@@ -108,6 +108,7 @@ export type AlgonautTransactionStatus = {
 	txId: string;
 	error?: Error;
 	meta?: any;
+	createdIndex?: number; // implement this for created apps and assets
 }
 
 export type AlgonautWallet = {
