@@ -67,72 +67,77 @@ if (!testAccountMnemonic) {
     // ASSET OPERATIONS
 
     // createAsset
-    console.log('Let\'s try creating an asset.')
-    let asset = await algonaut.createAsset({
-        assetName: 'Presto Testo',
-        symbol: 'TEST',
-        metaBlock: 'This is a test of algonaut',
-        decimals: 3,
-        amount: 5,
-    })
-    console.log(asset); // this should be an ID
-    let newAsset = parseInt(asset);
+    try {
+        console.log('Let\'s try creating an asset.')
+        let asset = await algonaut.createAsset({
+            assetName: 'Presto Testo',
+            symbol: 'TEST',
+            metaBlock: 'This is a test of algonaut',
+            decimals: 3,
+            amount: 5,
+        })
+        console.log(asset); // this should be an ID
+        let newAsset = parseInt(asset);
 
-    // getAssetInfo
-    console.log('Getting info for our new asset: ' + newAsset);
-    console.log(await algonaut.getAssetInfo(newAsset));
+        // getAssetInfo
+        console.log('Getting info for our new asset: ' + newAsset);
+        console.log(await algonaut.getAssetInfo(newAsset));
 
-    // accountHasTokens
-    console.log('Does our account have these tokens now?');
-    console.log(await algonaut.accountHasTokens(algonaut.account.addr, newAsset));
+        // accountHasTokens
+        console.log('Does our account have these tokens now?');
+        console.log(await algonaut.accountHasTokens(algonaut.account.addr, newAsset));
 
-    // getTokenBalance
-    console.log('How many of this asset do we have?');
-    console.log(await algonaut.getTokenBalance(algonaut.account.addr, newAsset));
+        // getTokenBalance
+        console.log('How many of this asset do we have?');
+        console.log(await algonaut.getTokenBalance(algonaut.account.addr, newAsset));
 
-    // optInAsset
-    console.log('Going back to our first wallet!')
-    algonaut.recoverAccount(firstWallet.mnemonic);
-    console.log('Wallet is now: ' + algonaut.account.addr);
+        // optInAsset
+        console.log('Going back to our first wallet!')
+        algonaut.recoverAccount(firstWallet.mnemonic);
+        console.log('Wallet is now: ' + algonaut.account.addr);
 
-    console.log('Checking if account is opted into asset ' + newAsset);
-    let optedIn = await algonaut.isOptedIntoAsset({
-        account: algonaut.account.addr,
-        assetId: newAsset
-    });
-    console.log('Opted in? ' + optedIn);
-    
-    console.log('Opting into asset: ' + newAsset);
-    let response = await algonaut.optInAsset(newAsset);
-    console.log(response);
+        console.log('Checking if account is opted into asset ' + newAsset);
+        let optedIn = await algonaut.isOptedIntoAsset({
+            account: algonaut.account.addr,
+            assetId: newAsset
+        });
+        console.log('Opted in? ' + optedIn);
+        
+        console.log('Opting into asset: ' + newAsset);
+        let response = await algonaut.optInAsset(newAsset);
+        console.log(response);
 
-    console.log('Checking again if account is opted into asset ' + newAsset);
-    optedIn = await algonaut.isOptedIntoAsset({
-        account: algonaut.account.addr,
-        assetId: newAsset
-    });
-    console.log('Opted in? ' + optedIn);
+        console.log('Checking again if account is opted into asset ' + newAsset);
+        optedIn = await algonaut.isOptedIntoAsset({
+            account: algonaut.account.addr,
+            assetId: newAsset
+        });
+        console.log('Opted in? ' + optedIn);
 
-    // sendAsset
-    console.log('Now we are going back to the account that created the asset, and we will send one to the account that just opted in.');
-    algonaut.recoverAccount(testAccountMnemonic);
-    console.log('Account is now: ' + algonaut.account.addr);
+        // sendAsset
+        console.log('Now we are going back to the account that created the asset, and we will send one to the account that just opted in.');
+        algonaut.recoverAccount(testAccountMnemonic);
+        console.log('Account is now: ' + algonaut.account.addr);
 
-    response = await algonaut.sendAsset({
-        to: firstWallet.address,
-        amount: 1,
-        assetIndex: newAsset
-    });
-    console.log(response);
+        response = await algonaut.sendAsset({
+            to: firstWallet.address,
+            amount: 1,
+            assetIndex: newAsset
+        });
+        console.log(response);
 
-    console.log('Let us see if they got it? Checking token balance.');
-    console.log(await algonaut.getTokenBalance(firstWallet.address, newAsset));
+        console.log('Let us see if they got it? Checking token balance.');
+        console.log(await algonaut.getTokenBalance(firstWallet.address, newAsset));
 
-    // deleteAsset
-    console.log("That was fun but I don't want to play with you anymore.");
-    console.log('Deleting asset: ' + newAsset);
-    response = await algonaut.deleteAsset(newAsset);
-    console.log(response);
+        // deleteAsset
+        console.log("That was fun but I don't want to play with you anymore.");
+        console.log('Deleting asset: ' + newAsset);
+        response = await algonaut.deleteAsset(newAsset);
+        console.log(response);
+    } catch (error) {
+        console.error('Error testing asset code.');
+        console.error(error);
+    }
 
     // APP OPERATIONS
 
