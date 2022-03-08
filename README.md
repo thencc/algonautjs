@@ -81,6 +81,10 @@ Algonaut.js also supports use in a Node runtime (e.g. you can use it with the al
 
 and then use the librarys APIs the same way you do on the front end.
 
+## Testing
+
+Rudimentary tests done in `test/` dir. Run `node test.js` in there to see output. This references the CommonJS build, so make sure to run `npm run build` before testing if you make changes to Algonaut.
+
 ## Contributing
 
 TBD:

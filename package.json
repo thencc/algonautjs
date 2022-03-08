@@ -15,7 +15,7 @@
 		"build": "tsc; tsc --module CommonJS --outDir dist/cjs; node buildscripts/swap_sdk.js",
 		"build-test": "vite build test",
 		"dev": "vite serve test --port 8891",
-		"test": "echo \"Error: no test specified\" && exit 1",
+		"test": "node test/test.js",
 		"docs": "npx typedoc"
 	},
 	"keywords": [
