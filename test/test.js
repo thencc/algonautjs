@@ -69,13 +69,15 @@ if (!testAccountMnemonic) {
     // createAsset
     try {
         console.log('Let\'s try creating an asset.')
-        let asset = await algonaut.createAsset({
+        const assetArgs = {
             assetName: 'Presto Testo',
             symbol: 'TEST',
             metaBlock: 'This is a test of algonaut',
             decimals: 3,
             amount: 5,
-        })
+        };
+        console.log(assetArgs);
+        let asset = await algonaut.createAsset(assetArgs)
         console.log(asset); // this should be an ID
         let newAsset = parseInt(asset);
 
@@ -137,6 +139,7 @@ if (!testAccountMnemonic) {
     } catch (error) {
         console.error('Error testing asset code.');
         console.error(error);
+        process.exit(1);
     }
 
     // APP OPERATIONS
