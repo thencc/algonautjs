@@ -179,6 +179,30 @@ var errors = [];
 
     // APP OPERATIONS
     if (testApp) {
+        const ACCOUNT_APP = 51066775; // the account app from arts-council
+
+        // optInApp
+        try {
+            console.log('Opting into app ' + ACCOUNT_APP)
+            response = await algonaut.optInApp({
+                appIndex: ACCOUNT_APP,
+                appArgs: [
+                    'set_all',
+                    'Name',
+                    'Description of me',
+                    '',
+                    'https://example.com',
+                    '',
+                    'example@example.com'
+                ]
+            });
+            console.log(response);
+        } catch (e) {
+            errors.push('optInApp');
+            console.error('Error opting into app');
+            console.error(e);
+        }
+
         // closeOutApp
         try {
             console.log('Closing out of app: ' + ACCOUNT_APP)
@@ -198,29 +222,6 @@ var errors = [];
         } catch (e) {
             errors.push('closeOutApp');
             console.error('Error closing out of app');
-            console.error(e);
-        }
-
-        // optInApp
-        const ACCOUNT_APP = 51066775; // the account app from arts-council
-        try {
-            console.log('Opting into app ' + ACCOUNT_APP)
-            response = await algonaut.optInApp({
-                appIndex: ACCOUNT_APP,
-                appArgs: [
-                    'set_all',
-                    'Name',
-                    'Description of me',
-                    '',
-                    'https://example.com',
-                    '',
-                    'example@example.com'
-                ]
-            });
-            console.log(response);
-        } catch (e) {
-            errors.push('optInApp');
-            console.error('Error opting into app');
             console.error(e);
         }
 
