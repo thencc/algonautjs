@@ -58,8 +58,6 @@ var errors = [];
     console.log('The account is now: ');
     console.log(algonaut.account.addr);
 
-    // TODO: put code here that runs the below tests with WalletConnect if you pass an option to the script
-
     // getAccountInfo
     console.log('Getting account info for: ' + algonaut.account.addr);
     let accountInfo = await algonaut.getAccountInfo(algonaut.account.addr);
