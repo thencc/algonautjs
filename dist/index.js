@@ -291,13 +291,13 @@ export default class Algonaut {
             const ptx = await this.algodClient
                 .pendingTransactionInformation(txn.txID().toString())
                 .do();
-            assetID = ptx['asset-index'];
-            return assetID;
+            txStatus.createdIndex = ptx['asset-index'];
+            return txStatus;
         }
         catch (er) {
             console.log('transaction error');
             console.log(er);
-            return 'error!';
+            throw new Error(er);
         }
     }
     async atomicDeleteAsset(assetId) {
@@ -674,7 +674,7 @@ export default class Algonaut {
                         .pendingTransactionInformation(txId)
                         .do();
                     result.message = 'Created App ID: ' + transactionResponse['application-index'];
-                    result.index = transactionResponse['application-index'];
+                    result.createdIndex = transactionResponse['application-index'];
                     result.meta = transactionResponse;
                     result.txId = txId;
                     return result;

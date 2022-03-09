@@ -119,7 +119,7 @@ export default class Algonaut {
      * @param callbacks AlgonautTxnCallbacks
      * @returns asset index
     */
-    createAsset(args: AlgonautCreateAssetArguments, callbacks?: AlgonautTxnCallbacks): Promise<string>;
+    createAsset(args: AlgonautCreateAssetArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
     atomicDeleteAsset(assetId: number): Promise<AlgonautAtomicTransaction>;
     /**
      * Deletes asset
