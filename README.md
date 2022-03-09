@@ -83,7 +83,11 @@ and then use the librarys APIs the same way you do on the front end.
 
 ## Testing
 
-Rudimentary tests done in `test/` dir. Run `node test.js` in there to see output. This references the CommonJS build, so make sure to run `npm run build` before testing if you make changes to Algonaut.
+Rudimentary tests done in `test/` dir. 
+
+1. Create an .env file with `PURESTAKE_API_TOKEN` and `ALGONAUT_TEST_MNEMONIC` set.
+2. Run `npm run test`
+3. If you make changes to algonaut while testing, run `npm run build` before running tests.
 
 ## Contributing
 

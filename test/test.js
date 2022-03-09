@@ -1,6 +1,8 @@
 const { default: Algonaut } = require('../dist/cjs/index');
 const approvalProgram = require('./contract');
 const clearProgram = require('./contract-clear');
+const dotenv = require('dotenv');
+dotenv.config();
 
 console.log(approvalProgram);
 console.log(clearProgram);
