@@ -4,16 +4,16 @@ import { atob, Buffer } from 'buffer';
 import algosdkTypeRef from 'algosdk';
 import algosdk from 'algosdk/dist/browser/algosdk.min';
 
-import { 
-	AlgonautConfig, 
-	AlgonautWallet, 
-	AlgonautTransactionStatus, 
-	AlgonautAtomicTransaction, 
-	AlgonautTransactionFields, 
-	AlgonautAppState, 
-	AlgonautStateData, 
-	WalletConnectListener, 
-	AlgonautTxnCallbacks, 
+import {
+	AlgonautConfig,
+	AlgonautWallet,
+	AlgonautTransactionStatus,
+	AlgonautAtomicTransaction,
+	AlgonautTransactionFields,
+	AlgonautAppState,
+	AlgonautStateData,
+	WalletConnectListener,
+	AlgonautTxnCallbacks,
 	AlgonautContractSchema} from './AlgonautTypes';
 import * as sha512 from 'js-sha512';
 import * as CryptoJS from 'crypto-js';
@@ -372,6 +372,12 @@ export default class Algonaut {
 
 
 	// this is a bit harder with the algosdk api
+	// what we may want to do be more opinionated and have a standard local
+	// field we always set on apps when opted in
+
+	// OR maybe we check for HAS STATE which might check for local state
+	// of any kind on that app id?
+
 	// async isOptedIntoApp(account: string, appId: number): boolean {
 	// 	let optInState = false;
 
