@@ -4,9 +4,6 @@ const clearProgram = require('./contract-clear');
 const dotenv = require('dotenv');
 dotenv.config();
 
-console.log(approvalProgram);
-console.log(clearProgram);
-
 const algonaut = new Algonaut({
     BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
     LEDGER: 'TestNet',
@@ -205,28 +202,6 @@ var errors = [];
             console.error(e);
         }
 
-        // closeOutApp
-        try {
-            console.log('Closing out of app: ' + ACCOUNT_APP)
-            response = await algonaut.closeOutApp({
-                appIndex: ACCOUNT_APP,
-                appArgs: [
-                    'set_all',
-                    '',
-                    '',
-                    '',
-                    '',
-                    '',
-                    ''
-                ]
-            });
-            console.log(response);
-        } catch (e) {
-            errors.push('closeOutApp');
-            console.error('Error closing out of app');
-            console.error(e);
-        }
-
         // getAppLocalState
         try {
             console.log('Get local state of app: ' + ACCOUNT_APP);
@@ -259,6 +234,28 @@ var errors = [];
         } catch (e) {
             errors.push('callApp');
             console.error('Error calling app');
+            console.error(e);
+        }
+
+        // closeOutApp
+        try {
+            console.log('Closing out of app: ' + ACCOUNT_APP)
+            response = await algonaut.closeOutApp({
+                appIndex: ACCOUNT_APP,
+                appArgs: [
+                    'set_all',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    ''
+                ]
+            });
+            console.log(response);
+        } catch (e) {
+            errors.push('closeOutApp');
+            console.error('Error closing out of app');
             console.error(e);
         }
 
@@ -333,7 +330,7 @@ var errors = [];
         console.log('Skipping app tests');
     }
 
-    if (errors) {
+    if (errors.length > 0) {
         console.log('There were errors, check these:');
         console.log(errors);
     } else {
