@@ -4,11 +4,6 @@ const clearProgram = require('./contract-clear');
 const dotenv = require('dotenv');
 dotenv.config();
 
-console.log('Tests starting: here comes env');
-console.log(process.env);
-//console.log(approvalProgram);
-//console.log(clearProgram);
-
 const algonaut = new Algonaut({
 	BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
 	LEDGER: 'TestNet',
@@ -135,7 +130,7 @@ var errors = [];
 			console.log('Opted in? ' + optedIn);
 
 			console.log('Opting into asset: ' + newAsset);
-			response = await algonaut.optInAsset(newAsset);
+			let response = await algonaut.optInAsset(newAsset);
 			console.log(response);
 
 			console.log('Checking again if account is opted into asset ' + newAsset);
@@ -209,28 +204,6 @@ var errors = [];
 			console.error(e);
 		}
 
-		// closeOutApp
-		try {
-			console.log('Closing out of app: ' + ACCOUNT_APP);
-			response = await algonaut.closeOutApp({
-				appIndex: ACCOUNT_APP,
-				appArgs: [
-					'set_all',
-					'',
-					'',
-					'',
-					'',
-					'',
-					''
-				]
-			});
-			console.log(response);
-		} catch (e) {
-			errors.push('closeOutApp');
-			console.error('Error closing out of app');
-			console.error(e);
-		}
-
 		// getAppLocalState
 		try {
 			console.log('Get local state of app: ' + ACCOUNT_APP);
@@ -243,9 +216,6 @@ var errors = [];
 
 		// callApp
 		try {
-
-			console.log('Opt-in to new app');
-			response = await algonaut.optInApp({ appIndex: ACCOUNT_APP });
 			console.log('Calling app to update profile:');
 			response = await algonaut.callApp({
 				appIndex: ACCOUNT_APP,
@@ -266,6 +236,28 @@ var errors = [];
 		} catch (e) {
 			errors.push('callApp');
 			console.error('Error calling app');
+			console.error(e);
+		}
+
+		// closeOutApp
+		try {
+			console.log('Closing out of app: ' + ACCOUNT_APP);
+			response = await algonaut.closeOutApp({
+				appIndex: ACCOUNT_APP,
+				appArgs: [
+					'set_all',
+					'',
+					'',
+					'',
+					'',
+					'',
+					''
+				]
+			});
+			console.log(response);
+		} catch (e) {
+			errors.push('closeOutApp');
+			console.error('Error closing out of app');
 			console.error(e);
 		}
 
@@ -340,7 +332,7 @@ var errors = [];
 		console.log('Skipping app tests');
 	}
 
-	if (errors) {
+	if (errors.length > 0) {
 		console.log('There were errors, check these:');
 		console.log(errors);
 	} else {

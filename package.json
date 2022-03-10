@@ -53,6 +53,7 @@
 		"eslint-plugin-import": "^2.24.0",
 		"eslint-plugin-prettier": "^3.4.0",
 		"node-testing-server": "^1.5.2",
+		"open": "^8.4.0",
 		"prettier": "^2.4.1",
 		"typedoc": "^0.22.10",
 		"typescript": "^4.4.4",
