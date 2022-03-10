@@ -1,5 +1,5 @@
 import algosdkTypeRef from 'algosdk';
-import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields, AlgonautAppState, WalletConnectListener, AlgonautTxnCallbacks } from './AlgonautTypes';
+import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautAppState, WalletConnectListener, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments } from './AlgonautTypes';
 import { IInternalEvent } from '@walletconnect/types';
 declare global {
     interface Window {
@@ -76,9 +76,10 @@ export default class Algonaut {
     /**
      * General purpose method to await transaction confirmation
      * @param txId a string id of the transacion you want to watch
-     * @param limitDelta how many rounds to wait, defaults to
+     * @param limitDelta how many rounds to wait, defaults to 50
+     * @param log set to true if you'd like to see "waiting for confirmation" log messages
      */
-    waitForConfirmation(txId: string, limitDelta?: number): Promise<AlgonautTransactionStatus>;
+    waitForConfirmation(txId: string, limitDelta?: number, log?: boolean): Promise<AlgonautTransactionStatus>;
     /**
      * Creates a LogicSig from a base64 program string.  Note that this method does not COMPILE
      * the program, just builds an LSig from an already compiled base64 result!
@@ -86,16 +87,24 @@ export default class Algonaut {
      * @returns an algosdk LogicSigAccount
      */
     generateLogicSig(base64ProgramString: string): algosdkTypeRef.LogicSigAccount;
+    atomicOptInAsset(assetIndex: number): Promise<AlgonautAtomicTransaction>;
     /**
-     * Opt-in the current account for the a token or NFT ASA.
+     * Opt-in the current account for the a token or NFT Asset.
+     * @param assetIndex number of asset to opt-in to
+     * @param callbacks `AlgonautTxnCallbacks`, passed to {@link sendTransaction}
      * @returns Promise resolving to confirmed transaction or error
      */
-    optInApp(appIndex: number, appArgs: any[], optionalFields?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus>;
+    optInAsset(assetIndex: number, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
     /**
-     * Opt-in the current account for the a token or NFT ASA.
-     * @returns Promise resolving to confirmed transaction or error
+     * You can be opted into an asset but still have a zero balance. Use this call
+     * for cases where you just need to know the address's opt-in state
+     * @param assetId
+     * @returns
      */
-    optInASA(assetIndex: number): Promise<AlgonautTransactionStatus>;
+    isOptedIntoAsset(args: {
+        account: string;
+        assetId: number;
+    }): Promise<boolean>;
     /**
      * Sync function that returns a correctly-encoded argument array for
      * an algo transaction
@@ -105,19 +114,60 @@ export default class Algonaut {
      */
     encodeArguments(args: any[]): Uint8Array[];
     /**
-     * Create ASA
-     *
-     *
-     * TBD: move optional params
-     * into a params object, add freeze, clawback, etc
+     * Create asset
+     * @param args AlgonautCreateAssetArguments. Must pass `assetName`, `symbol`, `decimals`, `amount`.
+     * @param callbacks AlgonautTxnCallbacks
+     * @returns asset index
     */
-    createAsset(assetName: string, symbol: string, metaBlock: string, decimals: number, amount: number, assetURL?: string, defaultFrozen?: boolean, assetMetadataHash?: string): Promise<string>;
+    createAsset(args: AlgonautCreateAssetArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
+    atomicDeleteAsset(assetId: number): Promise<AlgonautAtomicTransaction>;
     /**
-     * Deletes an application from the blockchain
-     * @param appIndex - ID of application
+     * Deletes asset
+     * @param assetId Index of the ASA to delete
+     * @param callbacks optional AlgonautTxnCallbacks
      * @returns Promise resolving to confirmed transaction or error
      */
-    deleteApplication(appIndex: number): Promise<AlgonautTransactionStatus>;
+    deleteAsset(assetId: number, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
+    /**
+     * Creates send asset transaction.
+     *
+     * IMPORTANT: Before you can call this, the target account has to "opt-in"
+     * to the ASA index.  You can't just send ASAs to people blind!
+     *
+     * @param args - object containing `to`, `assetIndex`, and `amount` properties
+     * @returns Promise resolving to `AlgonautAtomicTransaction`
+     */
+    atomicSendAsset(args: AlgonautSendAssetArguments): Promise<AlgonautAtomicTransaction>;
+    /**
+     * Sends asset to an address.
+     *
+     * IMPORTANT: Before you can call this, the target account has to "opt-in"
+     * to the ASA index.  You can't just send ASAs to people blind!
+     *
+     * @param args - object containing `to`, `assetIndex`, and `amount` properties
+     * @param callbacks optional AlgonautTxnCallbacks
+     * @returns Promise resolving to confirmed transaction or error
+     */
+    sendAsset(args: AlgonautSendAssetArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
+    /**
+     * Get info about an asset
+     * @param assetIndex
+     * @returns
+     */
+    getAssetInfo(assetIndex: number): Promise<any>;
+    /**
+     * Creates transaction to opt into an app
+     * @param args AlgonautCallAppArgs
+     * @returns AlgonautAtomicTransaction
+     */
+    atomicOptInApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction>;
+    /**
+     * Opt-in the current account for an app.
+     * @param args Object containing `appIndex`, `appArgs`, and `optionalFields`
+     * @param callbacks optional AlgonautTxnCallbacks
+     * @returns Promise resolving to confirmed transaction or error
+     */
+    optInApp(args: AlgonautCallAppArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
     /**
      * Returns atomic transaction that deletes application
      * @param appIndex - ID of application
@@ -125,62 +175,35 @@ export default class Algonaut {
      */
     atomicDeleteApplication(appIndex: number): Promise<AlgonautAtomicTransaction>;
     /**
-     * Deletes ASA
-     * @param assetId Index of the ASA to delete
+     * Deletes an application from the blockchain
+     * @param appIndex - ID of application
+     * @param callbacks optional AlgonautTxnCallbacks
      * @returns Promise resolving to confirmed transaction or error
      */
-    deleteASA(assetId: number): Promise<AlgonautTransactionStatus>;
-    /**
-     * Sends ASA to an address.
-     *
-     * IMPORTANT: Before you can call this, the target account has to "opt-in"
-     * to the ASA index.  You can't just send ASAs to people blind!
-     *
-     * @param receiverAddress - the address to send to
-     * @param assetIndex - the index of the asset to send
-     * @param amount - how much to send (based on the ASAs decimal setting). So to send 1 token with a decimal setting of 3, this value should be 1000.
-     *
-     * @returns Promise resolving to confirmed transaction or error
-     *
-     */
-    sendASA(receiverAddress: string, assetIndex: number, amount: number | bigint): Promise<AlgonautTransactionStatus>;
+    deleteApplication(appIndex: number, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
+    atomicCallApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction>;
     /**
      * Call a "method" on a stateful contract.  In TEAL, you're really giving
      * an argument which branches to a specific place and reads the other args
-     * @param appIndex
-     * @param args an array of arguments for the call
-     * @param optionalFields an AlgonautTransactionFields object with
-     *  		  any additional fields you want to pass to this transaction
+     * @param args Object containing `appIndex`, `appArgs`, and `optionalFields` properties
      */
-    callApp(appIndex: number, args: any[], optionalFields?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus>;
-    /**
-     * Closes out the user's local state in an application.
-     * The opposite of {@link optInApp}.
-     * @param appIndex App to close out off
-     * @param appArgs App arguments
-     * @param optionalFields an AlgonautTransactionFields object with
-     *  		 			 any additional fields you want to pass to this transaction
-     * @returns Promise resolving to atomic transaction
-     */
-    closeOutApp(appIndex: number, appArgs: any[], optionalFields?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus | {
-        status: string;
-        message: any;
-        error: any;
-    } | {
-        status: string;
-        message: string;
-        error?: undefined;
-    }>;
+    callApp(args: AlgonautCallAppArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
+    atomicCallAppWithLSig(args: AlgonautLsigCallAppArguments): Promise<AlgonautAtomicTransaction>;
     /**
      * Returns an atomic transaction that closes out the user's local state in an application.
      * The opposite of {@link atomicOptInApp}.
-     * @param appIndex App to close out of
-     * @param appArgs App arguments
-     * @param optionalFields an AlgonautTransactionFields object with
-     *  		 			 any additional fields you want to pass to this transaction
+     * @param args Object containing `appIndex`, `appArgs`, and `optionalFields` properties
      * @returns Promise resolving to atomic transaction
      */
-    atomicCloseOutApp(appIndex: number, appArgs: any[], optionalFields?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
+    atomicCloseOutApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction>;
+    /**
+     * Closes out the user's local state in an application.
+     * The opposite of {@link optInApp}.
+     * @param args Object containing `appIndex`, `appArgs`, and `optionalFields` properties
+     * @param callbacks optional AlgonautTxnCallbacks
+     * @returns Promise resolving to atomic transaction
+     */
+    closeOutApp(args: AlgonautCallAppArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
     /**
      * Get an application's escrow account
      * @param appId - ID of application
@@ -195,74 +218,46 @@ export default class Algonaut {
      */
     getAppInfo(appId: number): Promise<AlgonautAppState>;
     /**
-     * Get info about an asset
-     * @param assetIndex
-     * @returns
-     */
-    getAssetInfo(assetIndex: number): Promise<any>;
-    /**
      * Create and deploy a new Smart Contract from TEAL code
      *
-     * @param tealApprovalCode
-     * @param tealClearCode
-     * @param args
-     * @param localInts
-     * @param localBytes
-     * @param globalInts
-     * @param globalBytes
-     * @param optionalFields
+     * @param args AlgonautDeployArguments
+     * @param callbacks optional AlgonautTxnCallbacks
      * @returns AlgonautTransactionStatus
      */
-    deployFromTeal(tealApprovalCode: string, tealClearCode: string, args: any[], localInts?: number, localBytes?: number, globalInts?: number, globalBytes?: number, optionalFields?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus>;
+    deployFromTeal(args: AlgonautDeployArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
     /**
      * Create an atomic transaction to deploy a
      * new Smart Contract from TEAL code
      *
-     * @param tealApprovalCode
-     * @param tealClearCode
-     * @param args
-     * @param localInts
-     * @param localBytes
-     * @param globalInts
-     * @param globalBytes
-     * @param optionalFields
+     * @param args AlgonautDeployArguments
      * @returns AlgonautAtomicTransaction
      */
-    atomicDeployFromTeal(tealApprovalCode: string, tealClearCode: string, args: any[], localInts?: number, localBytes?: number, globalInts?: number, globalBytes?: number, optionalFields?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
+    atomicDeployFromTeal(args: AlgonautDeployArguments): Promise<AlgonautAtomicTransaction>;
     /**
      * deploys a contract from an lsig account
      * keep in mind that the local and global byte and int values have caps,
      * 16 for local and 32 for global and that the cost of deploying the
      * app goes up based on how many of these slots you want to allocate
      *
-     * @param lsig
-     * @param tealApprovalCode
-     * @param tealClearCode
-     * @param noteText
-     * @param createArgs
-     * @param accounts
-     * @param localInts up to 16
-     * @param localBytes up to 16
-     * @param globalInts up to 32
-     * @param globalBytes up to 32
+     * @param args AlgonautLsigDeployArguments
      * @returns
      */
-    deployTealWithLSig(lsig: algosdkTypeRef.LogicSigAccount, tealApprovalCode: string, tealClearCode: string, noteText: string, createArgs: string[], accounts: string[], localInts: number, localBytes: number, globalInts: number, globalBytes: number): Promise<AlgonautTransactionStatus>;
+    deployTealWithLSig(args: AlgonautLsigDeployArguments): Promise<AlgonautTransactionStatus>;
     /**
      * Compiles TEAL source via [algodClient.compile](https://py-algorand-sdk.readthedocs.io/en/latest/algosdk/v2client/algod.html#algosdk.v2client.algod.AlgodClient.compile)
      * @param programSource source to compile
      * @returns Promise resolving to Buffer of compiled bytes
      */
     compileProgram(programSource: string): Promise<Uint8Array>;
+    atomicPayment(args: AlgonautPaymentArguments): Promise<AlgonautAtomicTransaction>;
     /**
-     * Sends ALGO from own account to `toAddress`.
+     * Sends ALGO from own account to `args.to`
      *
-     * @param toAddress - address to send to
-     * @param amount - amount of Algo to send
-     * @param note - note to attach to transaction
+     * @param args `AlgonautPaymentArgs` object containing `to`, `amount`, and optional `note`
+     * @param callbacks optional AlgonautTxnCallbacks
      * @returns Promise resolving to transaction status
      */
-    sendAlgo(toAddress: string, amount: number, note?: string): Promise<AlgonautTransactionStatus>;
+    sendAlgo(args: AlgonautPaymentArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
     /**
      * Fetch full account info for an account
      * @param address the accress to read info for
@@ -299,14 +294,16 @@ export default class Algonaut {
      * @param applicationIndex the applications index
      */
     getAppLocalState(applicationIndex: number): Promise<AlgonautAppState>;
-    atomicOptInApp(appIndex: number, appArgs: any[], optionalFields?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
-    atomicOptInASA(assetIndex: number): Promise<AlgonautAtomicTransaction>;
-    atomicCallApp(appIndex: number, args: any[], optionalFields?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
-    atomicCallAppWithLSig(appIndex: number, args: any[], logicSig: algosdkTypeRef.LogicSigAccount, optionalFields?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
-    atomicAssetTransfer(toAddress: string, amount: number | bigint, asset: number): Promise<AlgonautAtomicTransaction>;
-    atomicAssetTransferWithLSig(toAddress: string, amount: number | bigint, asset: number, logicSig: algosdkTypeRef.LogicSigAccount): Promise<AlgonautAtomicTransaction>;
-    atomicPayment(toAddress: string, amount: number | bigint, optionalTxParams?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
-    atomicPaymentWithLSig(toAddress: string, amount: number | bigint, logicSig: algosdkTypeRef.LogicSigAccount, optionalTxParams?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
+    atomicAssetTransferWithLSig(args: AlgonautLsigSendAssetArguments): Promise<AlgonautAtomicTransaction>;
+    atomicPaymentWithLSig(args: AlgonautLsigPaymentArguments): Promise<AlgonautAtomicTransaction>;
+    /**
+     * Sends a transaction or multiple through the correct channels, depending on signing mode.
+     * If no signing mode is set, we assume local signing.
+     * @param txnOrTxns Either an array of atomic transactions or a single transaction to sign
+     * @param callbacks Optional object with callbacks - `onSign`, `onSend`, and `onConfirm`
+     * @returns Promise resolving to AlgonautTransactionStatus
+     */
+    sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | algosdkTypeRef.Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
     /**
      * run atomic takes an array of transactions to run in order, each
      * of the atomic transaction methods needs to return an object containing
@@ -316,7 +313,19 @@ export default class Algonaut {
             atomicCallApp()]
      * @param transactions a Uint8Array of ALREADY SIGNED transactions
      */
-    sendAtomicTransaction(transactions: AlgonautAtomicTransaction[]): Promise<AlgonautTransactionStatus>;
+    sendAtomicTransaction(transactions: AlgonautAtomicTransaction[], callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
+    /**
+     * Sends one or multiple transactions via WalletConnect, prompting the user to approve transaction on their phone.
+     *
+     * @remarks
+     * Returns the results of `algodClient.pendingTransactionInformation` in `AlgonautTransactionStatus.meta`.
+     * This is used to get the `application-index` from a `atomicDeployFromTeal` function, among other things.
+     *
+     * @param walletTxns Array of transactions to send
+     * @param callbacks Transaction callbacks `{ onSign, onSend, onConfirm }`
+     * @returns Promise resolving to transaction status
+     */
+    sendWalletConnectTxns(walletTxns: AlgonautAtomicTransaction[], callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
     /**
      * Interally used to determine how to sign transactions on more generic functions (e.g. {@link deployFromTeal})
      * @returns true if we are signing transactions with WalletConnect, false otherwise
@@ -406,18 +415,6 @@ export default class Algonaut {
      * @param accounts Array of account address strings
      */
     onSessionUpdate(accounts: string[]): Promise<void>;
-    /**
-     * Sends one or multiple transactions via WalletConnect, prompting the user to approve transaction on their phone.
-     *
-     * @remarks
-     * Returns the results of `algodClient.pendingTransactionInformation` in `AlgonautTransactionStatus.meta`.
-     * This is used to get the `application-index` from a `atomicDeployFromTeal` function, among other things.
-     *
-     * @param walletTxns Array of transactions to send
-     * @param callbacks Transaction callbacks `{ onSign, onSend, onConfirm }`
-     * @returns Promise resolving to transaction status
-     */
-    sendWalletConnectTxns(walletTxns: any[], callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
     /**
      * Helper function to turn `globals` and `locals` array into more useful objects
      *

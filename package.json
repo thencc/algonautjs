@@ -15,7 +15,7 @@
 		"build": "tsc; tsc --module CommonJS --outDir dist/cjs; node buildscripts/swap_sdk.js",
 		"build-test": "vite build test",
 		"dev": "vite serve test --port 8891",
-		"test": "echo \"Error: no test specified\" && exit 1",
+		"test": "node test/test.js",
 		"docs": "npx typedoc"
 	},
 	"keywords": [
@@ -33,7 +33,7 @@
 		"@json-rpc-tools/utils": "^1.7.6",
 		"@walletconnect/client": "^1.6.5",
 		"algorand-walletconnect-qrcode-modal": "^1.6.1",
-		"algosdk": "^1.13.1",
+		"algosdk": "^1.14.0",
 		"base32-encode": "^2.0.0",
 		"buffer": "^6.0.3",
 		"crypto-js": "^4.1.1",
@@ -46,6 +46,7 @@
 		"@types/superagent": "^4.1.15",
 		"@typescript-eslint/eslint-plugin": "^5.13.0",
 		"@typescript-eslint/parser": "^5.13.0",
+		"dotenv": "^16.0.0",
 		"eslint": "^8.10.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-config-typescript": "^3.0.0",

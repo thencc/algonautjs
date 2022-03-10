@@ -81,6 +81,14 @@ Algonaut.js also supports use in a Node runtime (e.g. you can use it with the al
 
 and then use the librarys APIs the same way you do on the front end.
 
+## Testing
+
+Rudimentary tests done in `test/` dir. 
+
+1. Create an .env file with `PURESTAKE_API_TOKEN` and `ALGONAUT_TEST_MNEMONIC` set.
+2. Run `npm run test`
+3. If you make changes to algonaut while testing, run `npm run build` before running tests.
+
 ## Contributing
 
 TBD:
