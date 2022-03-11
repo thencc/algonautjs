@@ -4,16 +4,16 @@ import { atob, Buffer } from 'buffer';
 import algosdkTypeRef from 'algosdk';
 import algosdk from 'algosdk/dist/browser/algosdk.min';
 
-import { 
-	AlgonautConfig, 
-	AlgonautWallet, 
-	AlgonautTransactionStatus, 
-	AlgonautAtomicTransaction, 
-	AlgonautTransactionFields, 
-	AlgonautAppState, 
-	AlgonautStateData, 
-	WalletConnectListener, 
-	AlgonautTxnCallbacks, 
+import {
+	AlgonautConfig,
+	AlgonautWallet,
+	AlgonautTransactionStatus,
+	AlgonautAtomicTransaction,
+	AlgonautTransactionFields,
+	AlgonautAppState,
+	AlgonautStateData,
+	WalletConnectListener,
+	AlgonautTxnCallbacks,
 	AlgonautContractSchema,
 	AlgonautCreateAssetArguments,
 	AlgonautSendAssetArguments,
@@ -216,7 +216,7 @@ export default class Algonaut {
 	 * @param limitDelta how many rounds to wait, defaults to 50
 	 * @param log set to true if you'd like to see "waiting for confirmation" log messages
 	 */
-	async waitForConfirmation (txId: string, limitDelta?: number, log: boolean = false): Promise<AlgonautTransactionStatus> {
+	async waitForConfirmation (txId: string, limitDelta?: number, log = false): Promise<AlgonautTransactionStatus> {
 		let lastround = (await this.algodClient.status().do())['last-round'];
 		const limit = lastround + (limitDelta? limitDelta: 50);
 
@@ -246,7 +246,7 @@ export default class Algonaut {
 				console.log(
 					'Transaction confirmed in round ' + pendingInfo['confirmed-round']
 				);
-				
+
 				returnValue.txId = txId;
 				returnValue.status = 'success';
 				returnValue.message = 'Transaction confirmed in round ' + pendingInfo['confirmed-round'];
@@ -441,14 +441,14 @@ export default class Algonaut {
 		);
 
 		try {
-			let assetID = null;
+			const assetID = null;
 			const txStatus = await this.sendTransaction(txn, callbacks);
 
 			const ptx = await this.algodClient
 				.pendingTransactionInformation(txn.txID().toString())
 				.do();
 			txStatus.createdIndex = ptx['asset-index'];
-			
+
 			return txStatus;
 
 		} catch(er) {
@@ -587,7 +587,7 @@ export default class Algonaut {
 			//const txId = transaction.txID().toString();
 			return await this.sendTransaction(transaction, callbacks);
 		} else {
-			if (!this.account) throw new Error('No account set.')
+			if (!this.account) throw new Error('No account set.');
 			throw new Error('Must provide appIndex');
 		}
 	}
@@ -634,7 +634,7 @@ export default class Algonaut {
 		try {
 			const { transaction } = await this.atomicDeleteApplication(appIndex);
 			const txId = transaction.txID().toString();
-			
+
 			const status = await this.sendTransaction(transaction, callbacks);
 
 			// display results
@@ -767,7 +767,7 @@ export default class Algonaut {
 	async closeOutApp (args: AlgonautCallAppArguments, callbacks?: AlgonautTxnCallbacks) {
 		if (!this.account) throw new Error('There was no account!');
 		if (!args.appIndex) throw new Error('Must provide appIndex');
-		if (!args.appArgs.length) throw new Error('Must provide at least one appArgs');	
+		if (!args.appArgs.length) throw new Error('Must provide at least one appArgs');
 
 		const { transaction } = await this.atomicCloseOutApp(args);
 		return await this.sendTransaction(transaction, callbacks);
@@ -847,8 +847,8 @@ export default class Algonaut {
 		args: AlgonautDeployArguments,
 		callbacks?: AlgonautTxnCallbacks
 	): Promise<AlgonautTransactionStatus> {
-		if (args.optionalFields && 
-			args.optionalFields.note && 
+		if (args.optionalFields &&
+			args.optionalFields.note &&
 			args.optionalFields.note.length > 1023) {
 			console.warn('drat! your note is too long!');
 			throw new Error('Your note is too long');
@@ -1330,8 +1330,8 @@ export default class Algonaut {
 	}
 
 	/**
-	 * Sends a transaction or multiple through the correct channels, depending on signing mode. 
-	 * If no signing mode is set, we assume local signing. 
+	 * Sends a transaction or multiple through the correct channels, depending on signing mode.
+	 * If no signing mode is set, we assume local signing.
 	 * @param txnOrTxns Either an array of atomic transactions or a single transaction to sign
 	 * @param callbacks Optional object with callbacks - `onSign`, `onSend`, and `onConfirm`
 	 * @returns Promise resolving to AlgonautTransactionStatus
@@ -1344,10 +1344,10 @@ export default class Algonaut {
 				return await this.sendWalletConnectTxns(txnOrTxns, callbacks);
 			} else {
 				// we have an algosdkTypeRef.Transaction
-				return await this.sendWalletConnectTxns([{ 
+				return await this.sendWalletConnectTxns([{
 					transaction: txnOrTxns as algosdkTypeRef.Transaction,
 					transactionSigner: this.account,
-					isLogigSig: false 
+					isLogigSig: false
 				}], callbacks);
 			}
 		} else {
@@ -1355,7 +1355,7 @@ export default class Algonaut {
 			if (Array.isArray(txnOrTxns)) {
 				return await this.sendAtomicTransaction(txnOrTxns, callbacks);
 			} else if (txnOrTxns instanceof algosdkTypeRef.Transaction) {
-				let txn = txnOrTxns;
+				const txn = txnOrTxns;
 
 				if (!this.account || !this.account.sk) throw new Error('');
 				const signedTxn = txn.signTxn(this.account.sk);
@@ -1372,7 +1372,7 @@ export default class Algonaut {
 
 				return txStatus;
 			} else {
-				throw new Error('Local signed single-transactions should not be atomic')
+				throw new Error('Local signed single-transactions should not be atomic');
 			}
 		}
 	}
@@ -1425,8 +1425,8 @@ export default class Algonaut {
 			// Wait for transaction to be confirmed
 			const txStatus = await this.waitForConfirmation(tx.txId);
 			const transactionResponse = await this.algodClient
-					.pendingTransactionInformation(tx.txId)
-					.do();
+				.pendingTransactionInformation(tx.txId)
+				.do();
 			txStatus.meta = transactionResponse;
 
 			if (callbacks?.onConfirm) callbacks.onConfirm(txStatus);

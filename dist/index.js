@@ -202,6 +202,10 @@ export default class Algonaut {
         return await this.sendTransaction(transaction, callbacks);
     }
     // this is a bit harder with the algosdk api
+    // what we may want to do be more opinionated and have a standard local
+    // field we always set on apps when opted in
+    // OR maybe we check for HAS STATE which might check for local state
+    // of any kind on that app id?
     // async isOptedIntoApp(account: string, appId: number): boolean {
     // 	let optInState = false;
     // 	const accountInfo = await this.getAccountInfo(account);

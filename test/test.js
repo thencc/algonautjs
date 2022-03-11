@@ -23,6 +23,8 @@ const testAsset = true;
 const testApp = true;
 
 let response;
+let appState;
+let appId;
 
 // add function to this on error
 var errors = [];
@@ -207,7 +209,7 @@ var errors = [];
 		// getAppLocalState
 		try {
 			console.log('Get local state of app: ' + ACCOUNT_APP);
-			let appState = await algonaut.getAppLocalState(ACCOUNT_APP);
+			appState = await algonaut.getAppLocalState(ACCOUNT_APP);
 			console.log(JSON.stringify(appState, null, 2));
 		} catch (e) {
 			errors.push('getAppLocalState');
