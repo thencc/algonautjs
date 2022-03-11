@@ -1,9 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const buffer_1 = require("buffer");
-// the web build seems to me missing type defs for algosdk.Account
-// and a few other types so we use this ref to get them into the IDE
-const algosdk_1 = require("algosdk");
 const algosdk_min_1 = require("algosdk");
 const index_min_1 = require("@walletconnect/client/dist/umd/index.min");
 const algorand_walletconnect_qrcode_modal_1 = require("algorand-walletconnect-qrcode-modal");
@@ -112,7 +109,7 @@ class Algonaut {
         try {
             this.account = algosdk_min_1.default.mnemonicToSecretKey(mnemonic);
             if (algosdk_min_1.default.isValidAddress((_a = this.account) === null || _a === void 0 ? void 0 : _a.addr)) {
-                return this.account;
+                return this.account || false;
             }
         }
         catch (error) {
@@ -1049,7 +1046,7 @@ class Algonaut {
             if (Array.isArray(txnOrTxns)) {
                 return await this.sendAtomicTransaction(txnOrTxns, callbacks);
             }
-            else if (txnOrTxns instanceof algosdk_1.default.Transaction) {
+            else if (txnOrTxns instanceof algosdk_min_1.default.Transaction) {
                 const txn = txnOrTxns;
                 if (!this.account || !this.account.sk)
                     throw new Error('');
