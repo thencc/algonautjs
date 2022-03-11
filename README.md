@@ -52,9 +52,9 @@ Here again we are trying to account for the 90% use case, not every possible cas
 ```
 response = await algonaut.callApp(
   {
-		appIndex: 123456789,
-		appArgs: ['set_name', 'New Name']
-	}
+  appIndex: 123456789,
+    appArgs: ['set_name', 'New Name']
+  }
 );
  ```
 
