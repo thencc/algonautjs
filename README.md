@@ -49,7 +49,14 @@ Even the concept of Stateless contracts will be a curve climb for a lot of front
 
 Here again we are trying to account for the 90% use case, not every possible case.  The goal is simplicity and ease of use, understanding that there will always be those complex cases where you have to go down to the metal.
 
-``` i'm a Stateful and Stateless contract descriptor example ```
+```
+response = await algonaut.callApp(
+  {
+		appIndex: 123456789,
+		appArgs: ['set_name', 'New Name']
+	}
+);
+ ```
 
 ## Usage
 
@@ -83,7 +90,7 @@ and then use the librarys APIs the same way you do on the front end.
 
 ## Testing
 
-Rudimentary tests done in `test/` dir. 
+Rudimentary tests done in `test/` dir.
 
 1. Create an .env file with `PURESTAKE_API_TOKEN` and `ALGONAUT_TEST_MNEMONIC` set.
 2. Run `npm run test`
