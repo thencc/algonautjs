@@ -292,7 +292,7 @@ class Algonaut {
         // signing and sending "txn" allows "addr" to create an asset
         const txn = algosdk_min_1.default.makeAssetCreateTxnWithSuggestedParams(addr, note, totalIssuance, args.decimals, args.defaultFrozen, manager, reserve, freeze, clawback, args.symbol, args.assetName, args.assetURL, args.assetMetadataHash, params);
         try {
-            let assetID = null;
+            const assetID = null;
             const txStatus = await this.sendTransaction(txn, callbacks);
             const ptx = await this.algodClient
                 .pendingTransactionInformation(txn.txID().toString())
@@ -1050,7 +1050,7 @@ class Algonaut {
                 return await this.sendAtomicTransaction(txnOrTxns, callbacks);
             }
             else if (txnOrTxns instanceof algosdk_1.default.Transaction) {
-                let txn = txnOrTxns;
+                const txn = txnOrTxns;
                 if (!this.account || !this.account.sk)
                     throw new Error('');
                 const signedTxn = txn.signTxn(this.account.sk);
