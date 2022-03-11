@@ -14,7 +14,7 @@ We package, expose and depend on the JavaScript Algosdk.  It's there if you need
 
 To create an instance with a node and get ready to transact:
 
-```
+```js
 import AlgonautJS from 'algonaut.js';
 
 const algonaut = new AlgonautJS({
@@ -49,10 +49,10 @@ Even the concept of Stateless contracts will be a curve climb for a lot of front
 
 Here again we are trying to account for the 90% use case, not every possible case.  The goal is simplicity and ease of use, understanding that there will always be those complex cases where you have to go down to the metal.
 
-```
+```js
 response = await algonaut.callApp(
   {
-  appIndex: 123456789,
+    appIndex: 123456789,
     appArgs: ['set_name', 'New Name']
   }
 );
