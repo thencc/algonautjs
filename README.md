@@ -14,7 +14,7 @@ We package, expose and depend on the JavaScript Algosdk.  It's there if you need
 
 To create an instance with a node and get ready to transact:
 
-```
+```js
 import AlgonautJS from 'algonaut.js';
 
 const algonaut = new AlgonautJS({
@@ -32,12 +32,16 @@ algonaut.recoverAccount(a_mnemonic_phrase);
 
 One of the most powerful aspects of the Algorand chain is the ability to group transactions together and run them as one.  The API for this is, again, pretty hard to folow for your average FED.  With Algonaut.js, the aim is to make using this incredibly powerful API simple and intuitive:
 
-```
+```js
 // this transaction must pay and and then make a request to an Algorand Smart Contract in one transaction.
 // It must also include the asset index in the "assets" arg and an app index in the applications arg
 const status = await algonaut.sendAtomicTransaction([
-  await algonaut.atomicPayment(appAddress, 250000),
-  await algonaut.atomicCallApp(appIndex, ['get_bananas'], { applications: [ bananaPriceTicker ] , assets: [ bananaAsaIndex ] })
+  await algonaut.atomicPayment({ to: appAddress, amount: 250000 }),
+  await algonaut.atomicCallApp({
+    appIndex: appIndex, 
+    appArgs: ['get_bananas'], 
+    optionalFields: { applications: [ bananaPriceTicker ] , assets: [ bananaAsaIndex ] 
+  })
 ])
 ```
 
@@ -49,7 +53,7 @@ Even the concept of Stateless contracts will be a curve climb for a lot of front
 
 Here again we are trying to account for the 90% use case, not every possible case.  The goal is simplicity and ease of use, understanding that there will always be those complex cases where you have to go down to the metal.
 
-```
+```js
 response = await algonaut.callApp(
   {
   appIndex: 123456789,
@@ -78,13 +82,19 @@ const algonaut = new Algonaut({
 const account = algonaut.recoverAccount("a mnemonic phrase");
 algonaut.setAccount(account);
 
-const txnStatus = await algonaut.sendAlgo("toAddress", 1000, "a note for the transaction");
+const txnStatus = await algonaut.sendAlgo({ 
+  to: "toAddress", 
+  amount: 1000, 
+  optionalFields: { note: "a note for the transaction" 
+});
 console.log(txnStatus);
 ```
 
 Algonaut.js also supports use in a Node runtime (e.g. you can use it with the algob script to emulate what browser APIs might look like).  To do this, requore the CJS package like this
 
-```const { default: AlgonautJS } = require('algonaut.js/dist/cjs');```
+```js
+const { default: AlgonautJS } = require('algonaut.js/dist/cjs');
+```
 
 and then use the librarys APIs the same way you do on the front end.
 

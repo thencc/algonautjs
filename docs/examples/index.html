@@ -119,12 +119,15 @@ algonaut.connectAlgoWallet({
     </div>
     <div class="col-md-6">
 <pre><code>const txns = await algonaut.createWalletConnectTransactions([
-  await algonaut.atomicOptInApp(ACCOUNT_CONTRACT_ID, [
-    'set_all',
-    account.name,
-    account.bio || '',
-    account.avatar || ''
-  ])
+  await algonaut.atomicOptInApp({
+    appIndex: ACCOUNT_CONTRACT_ID, 
+    appArgs: [
+      'set_all',
+      account.name,
+      account.bio || '',
+      account.avatar || ''
+    ]
+  })
 ]);
 const response = await algonaut.sendWalletConnectTxns(txns);
 </code></pre>
