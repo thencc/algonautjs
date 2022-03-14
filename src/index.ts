@@ -23,7 +23,8 @@ import {
 	AlgonautLsigCallAppArguments,
 	AlgonautLsigSendAssetArguments,
 	AlgonautPaymentArguments,
-	AlgonautLsigPaymentArguments
+	AlgonautLsigPaymentArguments,
+	AlgonautUpdateAppArguments
 } from './AlgonautTypes';
 import * as sha512 from 'js-sha512';
 import * as CryptoJS from 'crypto-js';
@@ -1047,6 +1048,57 @@ export default class Algonaut {
 			console.error('Error deploying contract:');
 			throw new Error(er);
 		}
+	}
+
+	async atomicUpdateApp(args: AlgonautUpdateAppArguments): Promise<AlgonautAtomicTransaction> {
+		if (!this.account) throw new Error('Algonaut.js has no account loaded!');
+		if (args.optionalFields && args.optionalFields.note && args.optionalFields.note.length > 1023) {
+			throw new Error('Your NOTE is too long, it must be less thatn 1024 Bytes');
+		}
+
+		try {
+			const sender = this.account.addr;
+			const onComplete = algosdk.OnApplicationComplete.NoOpOC;
+			const params = await this.algodClient.getTransactionParams().do();
+
+			let approvalProgram = new Uint8Array();
+			let clearProgram = new Uint8Array();
+
+			approvalProgram = await this.compileProgram(args.tealApprovalCode);
+			clearProgram = await this.compileProgram(args.tealClearCode);
+
+			// create unsigned transaction
+			if (!approvalProgram ||  !clearProgram) {
+				throw new Error('Error: you must provide an approval program and a clear state program.');
+			}
+
+			const applicationCreateTransaction = algosdk.makeApplicationUpdateTxn(
+				sender,
+				params,
+				args.appIndex,
+				approvalProgram,
+				clearProgram,
+				this.encodeArguments(args.appArgs),
+				args.optionalFields?.accounts ? args.optionalFields.accounts : undefined,
+				args.optionalFields?.applications ? args.optionalFields.applications : undefined,
+				args.optionalFields?.assets ? args.optionalFields.assets : undefined,
+				args.optionalFields?.note ? new Uint8Array(Buffer.from(args.optionalFields.note, 'utf8'))  : undefined
+			);
+
+			return {
+				transaction: applicationCreateTransaction,
+				transactionSigner: this.account,
+				isLogigSig: false
+			};
+
+		} catch(er: any) {
+			throw new Error('There was an error creating the transaction');
+		}
+	}
+
+	async updateApp(args: AlgonautUpdateAppArguments): Promise<AlgonautTransactionStatus> {
+		const { transaction } = await this.atomicUpdateApp(args);
+		return await this.sendTransaction(transaction);
 	}
 
 	/**
