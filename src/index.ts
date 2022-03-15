@@ -1050,6 +1050,11 @@ export default class Algonaut {
 		}
 	}
 
+	/**
+	 * Updates an application with `algosdk.makeApplicationUpdateTxn`
+	 * @param args AlgonautUpdateAppArguments
+	 * @returns atomic transaction that updates the app
+	 */
 	async atomicUpdateApp(args: AlgonautUpdateAppArguments): Promise<AlgonautAtomicTransaction> {
 		if (!this.account) throw new Error('Algonaut.js has no account loaded!');
 		if (args.optionalFields && args.optionalFields.note && args.optionalFields.note.length > 1023) {
@@ -1096,9 +1101,15 @@ export default class Algonaut {
 		}
 	}
 
-	async updateApp(args: AlgonautUpdateAppArguments): Promise<AlgonautTransactionStatus> {
+	/**
+	 * Sends an update app transaction
+	 * @param args AlgonautUpdateAppArguments
+	 * @param callbacks optional callbacks: `onSign`, `onSend`, `onConfirm`
+	 * @returns transaction status
+	 */
+	async updateApp(args: AlgonautUpdateAppArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
 		const { transaction } = await this.atomicUpdateApp(args);
-		return await this.sendTransaction(transaction);
+		return await this.sendTransaction(transaction, callbacks);
 	}
 
 	/**

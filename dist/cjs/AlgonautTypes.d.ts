@@ -29,6 +29,7 @@ export interface AlgonautUpdateAppArguments {
     tealApprovalCode: string;
     tealClearCode: string;
     appArgs: any[];
+    schema: AlgonautContractSchema;
     optionalFields?: AlgonautTransactionFields;
 }
 export interface AlgonautLsigDeployArguments extends AlgonautDeployArguments {

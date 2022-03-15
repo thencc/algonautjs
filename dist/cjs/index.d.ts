@@ -243,8 +243,19 @@ export default class Algonaut {
      * @returns
      */
     deployTealWithLSig(args: AlgonautLsigDeployArguments): Promise<AlgonautTransactionStatus>;
+    /**
+     * Updates an application with `algosdk.makeApplicationUpdateTxn`
+     * @param args AlgonautUpdateAppArguments
+     * @returns atomic transaction that updates the app
+     */
     atomicUpdateApp(args: AlgonautUpdateAppArguments): Promise<AlgonautAtomicTransaction>;
-    updateApp(args: AlgonautUpdateAppArguments): Promise<AlgonautTransactionStatus>;
+    /**
+     * Sends an update app transaction
+     * @param args AlgonautUpdateAppArguments
+     * @param callbacks optional callbacks: `onSign`, `onSend`, `onConfirm`
+     * @returns transaction status
+     */
+    updateApp(args: AlgonautUpdateAppArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
     /**
      * Compiles TEAL source via [algodClient.compile](https://py-algorand-sdk.readthedocs.io/en/latest/algosdk/v2client/algod.html#algosdk.v2client.algod.AlgodClient.compile)
      * @param programSource source to compile

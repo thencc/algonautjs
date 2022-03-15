@@ -610,7 +610,6 @@ export default class Algonaut {
      */
     async getAppInfo(appId) {
         const info = await this.algodClient.getApplicationByID(appId).do();
-        console.log(info);
         // decode state
         const state = {
             hasState: true,
@@ -789,6 +788,11 @@ export default class Algonaut {
             throw new Error(er);
         }
     }
+    /**
+     * Updates an application with `algosdk.makeApplicationUpdateTxn`
+     * @param args AlgonautUpdateAppArguments
+     * @returns atomic transaction that updates the app
+     */
     async atomicUpdateApp(args) {
         var _a, _b, _c, _d;
         if (!this.account)
@@ -819,9 +823,15 @@ export default class Algonaut {
             throw new Error('There was an error creating the transaction');
         }
     }
-    async updateApp(args) {
+    /**
+     * Sends an update app transaction
+     * @param args AlgonautUpdateAppArguments
+     * @param callbacks optional callbacks: `onSign`, `onSend`, `onConfirm`
+     * @returns transaction status
+     */
+    async updateApp(args, callbacks) {
         const { transaction } = await this.atomicUpdateApp(args);
-        return await this.sendTransaction(transaction);
+        return await this.sendTransaction(transaction, callbacks);
     }
     /**
      * Compiles TEAL source via [algodClient.compile](https://py-algorand-sdk.readthedocs.io/en/latest/algosdk/v2client/algod.html#algosdk.v2client.algod.AlgodClient.compile)
