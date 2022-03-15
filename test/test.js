@@ -1,6 +1,9 @@
 const { default: Algonaut } = require('../dist/cjs/index');
 const approvalProgram = require('./contract');
 const clearProgram = require('./contract-clear');
+const accountv1 = require('./accountv1');
+const accountv2 = require('./accountv2');
+const accountClear = require('./account-clear');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -18,8 +21,8 @@ if (!testAccountMnemonic) {
 }
 
 // change these to include/exclude certain test blocks
-const testPayment = true;
-const testAsset = true;
+const testPayment = false;
+const testAsset = false;
 const testApp = true;
 
 let response;
@@ -267,22 +270,15 @@ var errors = [];
 			// deployFromTeal
 			console.log('Deploying a contract from TEAL');
 			const deployResult = await algonaut.deployFromTeal({
-				tealApprovalCode: approvalProgram,
-				tealClearCode: clearProgram,
-				appArgs: [
-					'A project title',
-					'A brief description',
-					'http://org.lala.woop/this_one',
-					49803676,
-					1
-				],
+				tealApprovalCode: accountv1,
+				tealClearCode: accountClear,
+				appArgs: [],
 				schema: {
-					localInts: 2,
-					localBytes: 2,
-					globalInts: 4,
-					globalBytes: 6
-				},
-				optionalFields: { note: 'a test' }
+					localInts: 4,
+					localBytes: 12,
+					globalInts: 1,
+					globalBytes: 1
+				}
 			});
 			console.log(deployResult);
 			console.log('App ID is: ' + deployResult.createdIndex);
@@ -305,6 +301,66 @@ var errors = [];
 				console.log(algonaut.getAppEscrowAccount(appId));
 			} catch (e) {
 				errors.push('getAppEscrowAccount');
+				console.error(e);
+			}
+
+			// getAppInfo
+			try {
+				console.log('Get app info:');
+				console.log(await algonaut.getAppInfo(appId));
+			} catch (e) {
+				errors.push('getAppInfo');
+				console.error(e);
+			}
+
+			// updateApp
+			console.log('the following call should fail:')
+			try {
+				let optIn = await algonaut.optInApp({ 
+					appIndex: appId,
+					appArgs: [
+						'set_all',
+						'Name',
+						'Description of me',
+						'',
+						'https://example.com',
+						'',
+						'example@example.com'
+					]
+				});
+				console.log(optIn);
+				let res = await algonaut.callApp({
+					appIndex: appId,
+					appArgs: ['version_test']
+				});
+			} catch (e) {
+				console.log(e);
+			}
+			
+			try {
+				console.log('updating the app now...');
+				const updateResult = await algonaut.updateApp({
+					appIndex: appId,
+					tealApprovalCode: accountv2,
+					tealClearCode: accountClear,
+					appArgs: []
+				});
+				console.log('updated app');
+				console.log(updateResult);
+			} catch (e) {
+				errors.push('updateApp');
+				console.error(e);
+			}
+
+			console.log('trying the call again on v2 contract');
+			try {
+				let res = await algonaut.callApp({
+					appIndex: appId,
+					appArgs: ['version_test']
+				});
+				console.log(res);
+			} catch (e) {
+				errors.push('updateApp_callApp');
 				console.error(e);
 			}
 

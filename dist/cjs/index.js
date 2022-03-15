@@ -612,6 +612,7 @@ class Algonaut {
      */
     async getAppInfo(appId) {
         const info = await this.algodClient.getApplicationByID(appId).do();
+        console.log(info);
         // decode state
         const state = {
             hasState: true,
@@ -789,6 +790,40 @@ class Algonaut {
             console.error('Error deploying contract:');
             throw new Error(er);
         }
+    }
+    async atomicUpdateApp(args) {
+        var _a, _b, _c, _d;
+        if (!this.account)
+            throw new Error('Algonaut.js has no account loaded!');
+        if (args.optionalFields && args.optionalFields.note && args.optionalFields.note.length > 1023) {
+            throw new Error('Your NOTE is too long, it must be less thatn 1024 Bytes');
+        }
+        try {
+            const sender = this.account.addr;
+            const onComplete = algosdk_min_1.default.OnApplicationComplete.NoOpOC;
+            const params = await this.algodClient.getTransactionParams().do();
+            let approvalProgram = new Uint8Array();
+            let clearProgram = new Uint8Array();
+            approvalProgram = await this.compileProgram(args.tealApprovalCode);
+            clearProgram = await this.compileProgram(args.tealClearCode);
+            // create unsigned transaction
+            if (!approvalProgram || !clearProgram) {
+                throw new Error('Error: you must provide an approval program and a clear state program.');
+            }
+            const applicationCreateTransaction = algosdk_min_1.default.makeApplicationUpdateTxn(sender, params, args.appIndex, approvalProgram, clearProgram, this.encodeArguments(args.appArgs), ((_a = args.optionalFields) === null || _a === void 0 ? void 0 : _a.accounts) ? args.optionalFields.accounts : undefined, ((_b = args.optionalFields) === null || _b === void 0 ? void 0 : _b.applications) ? args.optionalFields.applications : undefined, ((_c = args.optionalFields) === null || _c === void 0 ? void 0 : _c.assets) ? args.optionalFields.assets : undefined, ((_d = args.optionalFields) === null || _d === void 0 ? void 0 : _d.note) ? new Uint8Array(buffer_1.Buffer.from(args.optionalFields.note, 'utf8')) : undefined);
+            return {
+                transaction: applicationCreateTransaction,
+                transactionSigner: this.account,
+                isLogigSig: false
+            };
+        }
+        catch (er) {
+            throw new Error('There was an error creating the transaction');
+        }
+    }
+    async updateApp(args) {
+        const { transaction } = await this.atomicUpdateApp(args);
+        return await this.sendTransaction(transaction);
     }
     /**
      * Compiles TEAL source via [algodClient.compile](https://py-algorand-sdk.readthedocs.io/en/latest/algosdk/v2client/algod.html#algosdk.v2client.algod.AlgodClient.compile)

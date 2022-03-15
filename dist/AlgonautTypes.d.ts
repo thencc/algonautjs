@@ -24,6 +24,14 @@ export interface AlgonautDeployArguments {
     schema: AlgonautContractSchema;
     optionalFields?: AlgonautTransactionFields;
 }
+export interface AlgonautUpdateAppArguments {
+    appIndex: number;
+    tealApprovalCode: string;
+    tealClearCode: string;
+    appArgs: any[];
+    schema: AlgonautContractSchema;
+    optionalFields?: AlgonautTransactionFields;
+}
 export interface AlgonautLsigDeployArguments extends AlgonautDeployArguments {
     lsig: algosdk.LogicSigAccount;
     noteText?: string;
