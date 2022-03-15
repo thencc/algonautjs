@@ -1,7 +1,7 @@
 import { atob, Buffer } from 'buffer';
 // the web build seems to me missing type defs for algosdk.Account
 // and a few other types so we use this ref to get them into the IDE
-import algosdkTypeRef from 'algosdk';
+import type algosdkTypeRef from 'algosdk';
 import algosdk from 'algosdk/dist/browser/algosdk.min';
 
 import {
@@ -201,7 +201,7 @@ export default class Algonaut {
 		try {
 			this.account = algosdk.mnemonicToSecretKey(mnemonic);
 			if (algosdk.isValidAddress(this.account?.addr)) {
-				return this.account;
+				return this.account || false;
 			}
 		} catch (error) {
 			// should we throw an error here instead of returning false?
@@ -1417,11 +1417,11 @@ export default class Algonaut {
 			// assume local signing
 			if (Array.isArray(txnOrTxns)) {
 				return await this.sendAtomicTransaction(txnOrTxns, callbacks);
-			} else if (txnOrTxns instanceof algosdkTypeRef.Transaction) {
+			} else if (txnOrTxns instanceof algosdk.Transaction) {
 				const txn = txnOrTxns;
 
 				if (!this.account || !this.account.sk) throw new Error('');
-				const signedTxn = txn.signTxn(this.account.sk);
+				const signedTxn = (txn as algosdkTypeRef.Transaction).signTxn(this.account.sk);
 				if (callbacks?.onSign) callbacks.onSign(signedTxn);
 
 				const tx = await this.algodClient.sendRawTransaction(signedTxn).do();

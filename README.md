@@ -33,8 +33,9 @@ algonaut.recoverAccount(a_mnemonic_phrase);
 One of the most powerful aspects of the Algorand chain is the ability to group transactions together and run them as one.  The API for this is, again, pretty hard to folow for your average FED.  With Algonaut.js, the aim is to make using this incredibly powerful API simple and intuitive:
 
 ```js
-// this transaction must pay and and then make a request to an Algorand Smart Contract in one transaction.
-// It must also include the asset index in the "assets" arg and an app index in the applications arg
+// this transaction must pay and and then make a request to an Algorand Smart Contract
+// in one transaction. It must also include the asset index in the "assets" arg and an
+// app index in the applications arg
 const status = await algonaut.sendAtomicTransaction([
   await algonaut.atomicPayment({ to: appAddress, amount: 250000 }),
   await algonaut.atomicCallApp({
@@ -54,9 +55,9 @@ Even the concept of Stateless contracts will be a curve climb for a lot of front
 Here again we are trying to account for the 90% use case, not every possible case.  The goal is simplicity and ease of use, understanding that there will always be those complex cases where you have to go down to the metal.
 
 ```js
-response = await algonaut.callApp(
+const response = await algonaut.callApp(
   {
-  appIndex: 123456789,
+    appIndex: 123456789,
     appArgs: ['set_name', 'New Name']
   }
 );

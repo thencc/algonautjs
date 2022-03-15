@@ -1,4 +1,4 @@
-import algosdkTypeRef from 'algosdk';
+import type algosdkTypeRef from 'algosdk';
 import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautAppState, WalletConnectListener, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments } from './AlgonautTypes';
 import { IInternalEvent } from '@walletconnect/types';
 declare global {
@@ -436,7 +436,7 @@ export default class Algonaut {
      */
     stateArrayToObject(stateArray: object[]): any;
     fromBase64(encoded: string): string;
-    valueAsAddr(encoded: string): string;
+    valueAsAddr(encoded: string): any;
     decodeStateArray(stateArray: {
         key: string;
         value: {

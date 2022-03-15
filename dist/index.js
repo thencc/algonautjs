@@ -1,7 +1,4 @@
 import { Buffer } from 'buffer';
-// the web build seems to me missing type defs for algosdk.Account
-// and a few other types so we use this ref to get them into the IDE
-import algosdkTypeRef from 'algosdk';
 import algosdk from 'algosdk/dist/browser/algosdk.min';
 import WalletConnectMin from '@walletconnect/client/dist/umd/index.min';
 import QRCodeModal from 'algorand-walletconnect-qrcode-modal';
@@ -110,7 +107,7 @@ export default class Algonaut {
         try {
             this.account = algosdk.mnemonicToSecretKey(mnemonic);
             if (algosdk.isValidAddress((_a = this.account) === null || _a === void 0 ? void 0 : _a.addr)) {
-                return this.account;
+                return this.account || false;
             }
         }
         catch (error) {
@@ -1092,7 +1089,7 @@ export default class Algonaut {
             if (Array.isArray(txnOrTxns)) {
                 return await this.sendAtomicTransaction(txnOrTxns, callbacks);
             }
-            else if (txnOrTxns instanceof algosdkTypeRef.Transaction) {
+            else if (txnOrTxns instanceof algosdk.Transaction) {
                 const txn = txnOrTxns;
                 if (!this.account || !this.account.sk)
                     throw new Error('');
