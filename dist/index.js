@@ -266,12 +266,11 @@ export default class Algonaut {
         return encodedArgs;
     }
     /**
-     * Create asset
-     * @param args AlgonautCreateAssetArguments. Must pass `assetName`, `symbol`, `decimals`, `amount`.
-     * @param callbacks AlgonautTxnCallbacks
-     * @returns asset index
+     * Create asset transaction
+     * @param args {AlgonautCreateAssetArguments}  Must pass `assetName`, `symbol`, `decimals`, `amount`.
+     * @returns atomic txn to create asset
     */
-    async createAsset(args, callbacks) {
+    async atomicCreateAsset(args) {
         if (!args.metaBlock) {
             args.metaBlock = 'wot? wot wot?';
         }
@@ -299,6 +298,21 @@ export default class Algonaut {
         const params = await this.algodClient.getTransactionParams().do();
         // signing and sending "txn" allows "addr" to create an asset
         const txn = algosdk.makeAssetCreateTxnWithSuggestedParams(addr, note, totalIssuance, args.decimals, args.defaultFrozen, manager, reserve, freeze, clawback, args.symbol, args.assetName, args.assetURL, args.assetMetadataHash, params);
+        return {
+            transaction: txn,
+            transactionSigner: this.account,
+            isLogigSig: false
+        };
+    }
+    /**
+     * Create asset
+     * @param args AlgonautCreateAssetArguments. Must pass `assetName`, `symbol`, `decimals`, `amount`.
+     * @param callbacks AlgonautTxnCallbacks
+     * @returns asset index
+    */
+    async createAsset(args, callbacks) {
+        const atomicTxn = await this.atomicCreateAsset(args);
+        const txn = atomicTxn.transaction;
         try {
             const assetID = null;
             const txStatus = await this.sendTransaction(txn, callbacks);
@@ -640,7 +654,7 @@ export default class Algonaut {
      * @param callbacks optional AlgonautTxnCallbacks
      * @returns AlgonautTransactionStatus
      */
-    async deployFromTeal(args, callbacks) {
+    async createApp(args, callbacks) {
         var _a, _b, _c, _d;
         if (args.optionalFields &&
             args.optionalFields.note &&
@@ -662,21 +676,16 @@ export default class Algonaut {
             if (approvalProgram && clearProgram) {
                 const txn = algosdk.makeApplicationCreateTxn(sender, params, onComplete, approvalProgram, clearProgram, args.schema.localInts, args.schema.localBytes, args.schema.globalInts, args.schema.globalBytes, this.encodeArguments(args.appArgs), ((_a = args.optionalFields) === null || _a === void 0 ? void 0 : _a.accounts) ? args.optionalFields.accounts : undefined, ((_b = args.optionalFields) === null || _b === void 0 ? void 0 : _b.applications) ? args.optionalFields.applications : undefined, ((_c = args.optionalFields) === null || _c === void 0 ? void 0 : _c.assets) ? args.optionalFields.assets : undefined, ((_d = args.optionalFields) === null || _d === void 0 ? void 0 : _d.note) ? new Uint8Array(Buffer.from(args.optionalFields.note, 'utf8')) : undefined);
                 const txId = txn.txID().toString();
-                if (this.usingWalletConnect()) {
-                    throw new Error('cannot deploy contracts from wallet connect yet. TODO!!');
-                }
-                else {
-                    // Wait for confirmation
-                    const result = await this.sendTransaction(txn, callbacks);
-                    const transactionResponse = await this.algodClient
-                        .pendingTransactionInformation(txId)
-                        .do();
-                    result.message = 'Created App ID: ' + transactionResponse['application-index'];
-                    result.createdIndex = transactionResponse['application-index'];
-                    result.meta = transactionResponse;
-                    result.txId = txId;
-                    return result;
-                }
+                // Wait for confirmation
+                const result = await this.sendTransaction(txn, callbacks);
+                const transactionResponse = await this.algodClient
+                    .pendingTransactionInformation(txId)
+                    .do();
+                result.message = 'Created App ID: ' + transactionResponse['application-index'];
+                result.createdIndex = transactionResponse['application-index'];
+                result.meta = transactionResponse;
+                result.txId = txId;
+                return result;
             }
             else {
                 throw new Error('could not compile teal code');
@@ -693,7 +702,7 @@ export default class Algonaut {
      * @param args AlgonautDeployArguments
      * @returns AlgonautAtomicTransaction
      */
-    async atomicDeployFromTeal(args) {
+    async atomicCreateApp(args) {
         var _a, _b, _c, _d;
         if (args.optionalFields && args.optionalFields.note && args.optionalFields.note.length > 1023) {
             throw new Error('Your NOTE is too long, it must be less thatn 1024 Bytes');

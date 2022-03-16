@@ -115,6 +115,12 @@ export default class Algonaut {
      */
     encodeArguments(args: any[]): Uint8Array[];
     /**
+     * Create asset transaction
+     * @param args {AlgonautCreateAssetArguments}  Must pass `assetName`, `symbol`, `decimals`, `amount`.
+     * @returns atomic txn to create asset
+    */
+    atomicCreateAsset(args: AlgonautCreateAssetArguments): Promise<AlgonautAtomicTransaction>;
+    /**
      * Create asset
      * @param args AlgonautCreateAssetArguments. Must pass `assetName`, `symbol`, `decimals`, `amount`.
      * @param callbacks AlgonautTxnCallbacks
@@ -225,7 +231,7 @@ export default class Algonaut {
      * @param callbacks optional AlgonautTxnCallbacks
      * @returns AlgonautTransactionStatus
      */
-    deployFromTeal(args: AlgonautDeployArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
+    createApp(args: AlgonautDeployArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
     /**
      * Create an atomic transaction to deploy a
      * new Smart Contract from TEAL code
@@ -233,7 +239,7 @@ export default class Algonaut {
      * @param args AlgonautDeployArguments
      * @returns AlgonautAtomicTransaction
      */
-    atomicDeployFromTeal(args: AlgonautDeployArguments): Promise<AlgonautAtomicTransaction>;
+    atomicCreateApp(args: AlgonautDeployArguments): Promise<AlgonautAtomicTransaction>;
     /**
      * deploys a contract from an lsig account
      * keep in mind that the local and global byte and int values have caps,

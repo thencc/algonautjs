@@ -388,17 +388,12 @@ export default class Algonaut {
 		return encodedArgs;
 	}
 
-
 	/**
-	 * Create asset
-	 * @param args AlgonautCreateAssetArguments. Must pass `assetName`, `symbol`, `decimals`, `amount`.
-	 * @param callbacks AlgonautTxnCallbacks
-	 * @returns asset index
+	 * Create asset transaction
+	 * @param args {AlgonautCreateAssetArguments}  Must pass `assetName`, `symbol`, `decimals`, `amount`.
+	 * @returns atomic txn to create asset
 	*/
-	async createAsset(
-		args: AlgonautCreateAssetArguments,
-		callbacks?: AlgonautTxnCallbacks
-	): Promise<AlgonautTransactionStatus> {
+	async atomicCreateAsset(args: AlgonautCreateAssetArguments): Promise<AlgonautAtomicTransaction> {
 		if (!args.metaBlock) {
 			args.metaBlock = 'wot? wot wot?';
 		}
@@ -448,6 +443,27 @@ export default class Algonaut {
 			args.assetMetadataHash,
 			params
 		);
+
+		return {
+			transaction: txn,
+			transactionSigner: this.account,
+			isLogigSig: false
+		};
+	}
+
+
+	/**
+	 * Create asset
+	 * @param args AlgonautCreateAssetArguments. Must pass `assetName`, `symbol`, `decimals`, `amount`.
+	 * @param callbacks AlgonautTxnCallbacks
+	 * @returns asset index
+	*/
+	async createAsset(
+		args: AlgonautCreateAssetArguments,
+		callbacks?: AlgonautTxnCallbacks
+	): Promise<AlgonautTransactionStatus> {
+		const atomicTxn = await this.atomicCreateAsset(args);
+		const txn = atomicTxn.transaction;
 
 		try {
 			const assetID = null;
@@ -805,7 +821,7 @@ export default class Algonaut {
 	async getAppInfo(appId: number): Promise<AlgonautAppState> {
 
 		const info = await this.algodClient.getApplicationByID(appId).do();
-		
+
 		// decode state
 		const state = {
 			hasState: true,
@@ -830,7 +846,7 @@ export default class Algonaut {
 	 * @param callbacks optional AlgonautTxnCallbacks
 	 * @returns AlgonautTransactionStatus
 	 */
-	async deployFromTeal (
+	async createApp (
 		args: AlgonautDeployArguments,
 		callbacks?: AlgonautTxnCallbacks
 	): Promise<AlgonautTransactionStatus> {
@@ -874,21 +890,17 @@ export default class Algonaut {
 				);
 				const txId = txn.txID().toString();
 
-				if (this.usingWalletConnect()) {
-					throw new Error('cannot deploy contracts from wallet connect yet. TODO!!');
-				} else {
-					// Wait for confirmation
-					const result = await this.sendTransaction(txn, callbacks);
-					const transactionResponse = await this.algodClient
-						.pendingTransactionInformation(txId)
-						.do();
+				// Wait for confirmation
+				const result = await this.sendTransaction(txn, callbacks);
+				const transactionResponse = await this.algodClient
+					.pendingTransactionInformation(txId)
+					.do();
 
-					result.message = 'Created App ID: ' + transactionResponse['application-index'];
-					result.createdIndex = transactionResponse['application-index'];
-					result.meta = transactionResponse;
-					result.txId = txId;
-					return result;
-				}
+				result.message = 'Created App ID: ' + transactionResponse['application-index'];
+				result.createdIndex = transactionResponse['application-index'];
+				result.meta = transactionResponse;
+				result.txId = txId;
+				return result;
 
 			} else {
 				throw new Error('could not compile teal code');
@@ -906,7 +918,7 @@ export default class Algonaut {
 	 * @param args AlgonautDeployArguments
 	 * @returns AlgonautAtomicTransaction
 	 */
-	async atomicDeployFromTeal (args: AlgonautDeployArguments): Promise<AlgonautAtomicTransaction> {
+	async atomicCreateApp (args: AlgonautDeployArguments): Promise<AlgonautAtomicTransaction> {
 		if (args.optionalFields && args.optionalFields.note && args.optionalFields.note.length > 1023) {
 			throw new Error('Your NOTE is too long, it must be less thatn 1024 Bytes');
 		} else if (this.account) {

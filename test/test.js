@@ -21,8 +21,8 @@ if (!testAccountMnemonic) {
 }
 
 // change these to include/exclude certain test blocks
-const testPayment = false;
-const testAsset = false;
+const testPayment = true;
+const testAsset = true;
 const testApp = true;
 
 let response;
@@ -267,9 +267,9 @@ var errors = [];
 		}
 
 		try {
-			// deployFromTeal
+			// createApp
 			console.log('Deploying a contract from TEAL');
-			const deployResult = await algonaut.deployFromTeal({
+			const deployResult = await algonaut.createApp({
 				tealApprovalCode: accountv1,
 				tealClearCode: accountClear,
 				appArgs: [],
@@ -283,7 +283,7 @@ var errors = [];
 			console.log(deployResult);
 			console.log('App ID is: ' + deployResult.createdIndex);
 			appId = deployResult.createdIndex;
-			if (!appId) errors.push('deployFromTeal');
+			if (!appId) errors.push('createApp');
 
 			// getAppGlobalState
 			try {
