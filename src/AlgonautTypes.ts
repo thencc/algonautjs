@@ -35,7 +35,7 @@ export interface AlgonautUpdateAppArguments {
 	tealApprovalCode: string;
 	tealClearCode: string;
 	appArgs: any[];
-	schema: AlgonautContractSchema;
+	//schema: AlgonautContractSchema;
 	optionalFields?: AlgonautTransactionFields;
 	//lease: Uint8Array;
 	//rekeyTo: string;
