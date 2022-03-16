@@ -1420,8 +1420,15 @@ export default class Algonaut {
 			// assume local signing
 			if (Array.isArray(txnOrTxns)) {
 				return await this.sendAtomicTransaction(txnOrTxns, callbacks);
-			} else if (txnOrTxns instanceof algosdk.Transaction) {
-				const txn = txnOrTxns;
+			} else {
+				let txn: algosdkTypeRef.Transaction;
+				if (txnOrTxns && (txnOrTxns as any).transaction) {
+					// sent an atomic Transaction
+					txn = (txnOrTxns as AlgonautAtomicTransaction).transaction;
+				} else {
+					// assume a transaction
+					txn = txnOrTxns as algosdkTypeRef.Transaction;
+				}
 
 				if (!this.account || !this.account.sk) throw new Error('');
 				const signedTxn = (txn as algosdkTypeRef.Transaction).signTxn(this.account.sk);
@@ -1437,8 +1444,6 @@ export default class Algonaut {
 				if (callbacks?.onConfirm) callbacks.onConfirm(signedTxn);
 
 				return txStatus;
-			} else {
-				throw new Error('Local signed single-transactions should not be atomic');
 			}
 		}
 	}
