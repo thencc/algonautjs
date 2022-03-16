@@ -16,6 +16,7 @@ class Algonaut {
      * import Algonaut from 'algonaut.js';
      * const algonaut = new Algonaut({
      *	 BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
+     *	 INDEX_SERVER: 'https://testnet-algorand.api.purestake.io/idx2'
      *	 LEDGER: 'TestNet',
      *	 PORT: '',
      *	 API_TOKEN: { 'X-API-Key': 'YOUR_API_TOKEN' }
@@ -25,6 +26,7 @@ class Algonaut {
      * @param config config object
      */
     constructor(config) {
+        this.indexerClient = undefined;
         this.account = undefined;
         this.address = undefined;
         this.sKey = undefined;
@@ -42,7 +44,12 @@ class Algonaut {
         };
         this.config = config;
         this.algodClient = new algosdk_min_1.default.Algodv2(config.API_TOKEN, config.BASE_SERVER, config.PORT);
-        this.indexerClient = new algosdk_min_1.default.Indexer(config.API_TOKEN, config.BASE_SERVER, config.PORT);
+        if (config.INDEX_SERVER) {
+            this.indexerClient = new algosdk_min_1.default.Indexer(config.API_TOKEN, config.INDEX_SERVER, config.PORT);
+        }
+        else {
+            console.warn('No indexer configured because INDEX_SERVER was not provided.');
+        }
         this.sdk = algosdk_min_1.default;
     }
     /**
@@ -623,24 +630,8 @@ class Algonaut {
             creatorAddress: info.params.creator,
             index: appId
         };
-        for (let n = 0; n < info['params']['global-state'].length; n++) {
-            const stateItem = info['params']['global-state'][n];
-            const key = buffer_1.Buffer.from(stateItem.key, 'base64').toString();
-            const type = stateItem.value.type;
-            let value = undefined;
-            let valueAsAddr = '';
-            if (type == 1) {
-                value = buffer_1.Buffer.from(stateItem.value.bytes, 'base64').toString();
-                valueAsAddr = algosdk_min_1.default.encodeAddress(buffer_1.Buffer.from(stateItem.value.bytes, 'base64'));
-            }
-            else if (stateItem.value.type == 2) {
-                value = stateItem.value.uint;
-            }
-            state.globals.push({
-                key: key,
-                value: value || '',
-                address: valueAsAddr
-            });
+        if (info.params['global-state']) {
+            state.globals = this.decodeStateArray(info.params['global-state']);
         }
         return state;
     }
@@ -931,52 +922,18 @@ class Algonaut {
         return 'this is not done yet';
     }
     /**
-     *
+     * Gets global state for an application.
      * @param applicationIndex - the applications index
+     * @returns {object} object representing global state
      */
-    async getAppGlobalState(applicationIndex, creatorAddress) {
-        //! if you are reading an ADDRESS, you must do this:
-        // const addy = algosdk.encodeAddress(Buffer.from(stateItem.value.bytes, 'base64'));
-        const state = {
-            hasState: false,
-            globals: [],
-            locals: [],
-            creatorAddress: '',
-            index: applicationIndex
-        };
-        // read state
-        // can we detect addresses values and auto-convert them?
-        // maybe a 32-byte field gets an address field added?
-        const accountInfoResponse = await this.algodClient
-            .accountInformation(creatorAddress)
-            .do();
-        //console.log(accountInfoResponse);
-        for (let i = 0; i < accountInfoResponse['created-apps'].length; i++) {
-            if (accountInfoResponse['created-apps'][i].id == applicationIndex) {
-                //console.log('Found Application');
-                state.hasState = true;
-                for (let n = 0; n < accountInfoResponse['created-apps'][i]['params']['global-state'].length; n++) {
-                    const stateItem = accountInfoResponse['created-apps'][i]['params']['global-state'][n];
-                    const key = buffer_1.Buffer.from(stateItem.key, 'base64').toString();
-                    const type = stateItem.value.type;
-                    let value = undefined;
-                    let valueAsAddr = '';
-                    if (type == 1) {
-                        value = buffer_1.Buffer.from(stateItem.value.bytes, 'base64').toString();
-                        valueAsAddr = algosdk_min_1.default.encodeAddress(buffer_1.Buffer.from(stateItem.value.bytes, 'base64'));
-                    }
-                    else if (stateItem.value.type == 2) {
-                        value = stateItem.value.uint;
-                    }
-                    state.globals.push({
-                        key: key,
-                        value: value || '',
-                        address: valueAsAddr
-                    });
-                }
-            }
+    async getAppGlobalState(applicationIndex) {
+        const info = await this.getAppInfo(applicationIndex);
+        if (info.hasState) {
+            return this.stateArrayToObject(info.globals);
         }
-        return state;
+        else {
+            return {};
+        }
     }
     /**
      *
@@ -1097,8 +1054,16 @@ class Algonaut {
             if (Array.isArray(txnOrTxns)) {
                 return await this.sendAtomicTransaction(txnOrTxns, callbacks);
             }
-            else if (txnOrTxns instanceof algosdk_min_1.default.Transaction) {
-                const txn = txnOrTxns;
+            else {
+                let txn;
+                if (txnOrTxns && txnOrTxns.transaction) {
+                    // sent an atomic Transaction
+                    txn = txnOrTxns.transaction;
+                }
+                else {
+                    // assume a transaction
+                    txn = txnOrTxns;
+                }
                 if (!this.account || !this.account.sk)
                     throw new Error('');
                 const signedTxn = txn.signTxn(this.account.sk);
@@ -1113,9 +1078,6 @@ class Algonaut {
                 if (callbacks === null || callbacks === void 0 ? void 0 : callbacks.onConfirm)
                     callbacks.onConfirm(signedTxn);
                 return txStatus;
-            }
-            else {
-                throw new Error('Local signed single-transactions should not be atomic');
             }
         }
     }

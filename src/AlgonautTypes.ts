@@ -3,7 +3,7 @@ import algosdk from 'algosdk';
 
 export type AlgonautConfig = {
 	BASE_SERVER: string;
-	INDEX_SERVER: string;
+	INDEX_SERVER?: string; // optional, but helpful
 	LEDGER: string;
 	PORT: string;
 	API_TOKEN: any;

@@ -8,7 +8,7 @@ declare global {
 }
 export default class Algonaut {
     algodClient: algosdkTypeRef.Algodv2;
-    indexerClient: algosdkTypeRef.Indexer;
+    indexerClient: algosdkTypeRef.Indexer | undefined;
     account: algosdkTypeRef.Account | undefined;
     address: string | undefined;
     sKey: Uint8Array | undefined;
@@ -34,6 +34,7 @@ export default class Algonaut {
      * import Algonaut from 'algonaut.js';
      * const algonaut = new Algonaut({
      *	 BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
+     *	 INDEX_SERVER: 'https://testnet-algorand.api.purestake.io/idx2'
      *	 LEDGER: 'TestNet',
      *	 PORT: '',
      *	 API_TOKEN: { 'X-API-Key': 'YOUR_API_TOKEN' }
@@ -298,10 +299,11 @@ export default class Algonaut {
      */
     accountHasTokens(address: string, assetIndex: number): Promise<any>;
     /**
-     *
+     * Gets global state for an application.
      * @param applicationIndex - the applications index
+     * @returns {object} object representing global state
      */
-    getAppGlobalState(applicationIndex: number, creatorAddress: string): Promise<AlgonautAppState>;
+    getAppGlobalState(applicationIndex: number): Promise<object>;
     /**
      *
      * @param applicationIndex the applications index

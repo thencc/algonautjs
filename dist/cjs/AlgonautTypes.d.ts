@@ -1,6 +1,7 @@
 import algosdk from 'algosdk';
 export declare type AlgonautConfig = {
     BASE_SERVER: string;
+    INDEX_SERVER?: string;
     LEDGER: string;
     PORT: string;
     API_TOKEN: any;

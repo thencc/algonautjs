@@ -34,7 +34,7 @@ import WalletConnect from '@walletconnect/client';
 import { IInternalEvent } from '@walletconnect/types';
 import QRCodeModal from 'algorand-walletconnect-qrcode-modal';
 import { formatJsonRpcRequest } from '@json-rpc-tools/utils';
-import { encode } from 'hi-base32';
+import { decode, encode } from 'hi-base32';
 
 /*
 
@@ -88,7 +88,7 @@ export default class Algonaut {
 
 	// TBD: add algo wallet for mobile
 	algodClient: algosdkTypeRef.Algodv2;
-	indexerClient: algosdkTypeRef.Indexer;
+	indexerClient = undefined as undefined | algosdkTypeRef.Indexer;
 	account = undefined as undefined | algosdkTypeRef.Account;
 	address = undefined as undefined | string;
 	sKey = undefined as undefined | Uint8Array;
@@ -128,7 +128,11 @@ export default class Algonaut {
 
 		this.config = config;
 		this.algodClient = new algosdk.Algodv2(config.API_TOKEN, config.BASE_SERVER, config.PORT);
-		this.indexerClient = new algosdk.Indexer(config.API_TOKEN, config.INDEX_SERVER, config.PORT);
+		if (config.INDEX_SERVER) {
+			this.indexerClient = new algosdk.Indexer(config.API_TOKEN, config.INDEX_SERVER, config.PORT);
+		} else {
+			console.warn('No indexer configured because INDEX_SERVER was not provided.');
+		}
 
 		this.sdk = algosdk;
 
@@ -801,7 +805,7 @@ export default class Algonaut {
 	async getAppInfo(appId: number): Promise<AlgonautAppState> {
 
 		const info = await this.algodClient.getApplicationByID(appId).do();
-
+		
 		// decode state
 		const state = {
 			hasState: true,
@@ -810,31 +814,9 @@ export default class Algonaut {
 			creatorAddress: info.params.creator,
 			index: appId
 		} as AlgonautAppState;
-		for (let n = 0;
-			n < info['params']['global-state'].length;
-			n++) {
 
-			const stateItem = info['params']['global-state'][n];
-
-			const key = Buffer.from(stateItem.key, 'base64').toString();
-			const type = stateItem.value.type;
-			let value = undefined as undefined | string | number;
-			let valueAsAddr = '';
-
-			if (type == 1) {
-				value = Buffer.from(stateItem.value.bytes, 'base64').toString();
-				valueAsAddr = algosdk.encodeAddress(Buffer.from(stateItem.value.bytes, 'base64'));
-
-			} else if (stateItem.value.type == 2) {
-				value = stateItem.value.uint;
-			}
-
-			state.globals.push({
-				key: key,
-				value: value || '',
-				address: valueAsAddr
-			});
-
+		if (info.params['global-state']) {
+			state.globals = this.decodeStateArray(info.params['global-state']);
 		}
 
 		return state;
@@ -1223,71 +1205,20 @@ export default class Algonaut {
 	}
 
 	/**
-	 *
+	 * Gets global state for an application.
 	 * @param applicationIndex - the applications index
+	 * @returns {object} object representing global state
 	 */
-	async getAppGlobalState(applicationIndex: number, creatorAddress: string): Promise<AlgonautAppState> {
-
-		//! if you are reading an ADDRESS, you must do this:
-		// const addy = algosdk.encodeAddress(Buffer.from(stateItem.value.bytes, 'base64'));
-
-		const state = {
-			hasState: false,
-			globals: [],
-			locals: [],
-			creatorAddress: '',
-			index: applicationIndex
-		} as AlgonautAppState;
-
-		// read state
-
-		// can we detect addresses values and auto-convert them?
-		// maybe a 32-byte field gets an address field added?
-
-		const accountInfoResponse = await this.algodClient
-			.accountInformation(creatorAddress)
-			.do();
-
-		//console.log(accountInfoResponse);
-
-		for (let i = 0; i < accountInfoResponse['created-apps'].length; i++) {
-			if (accountInfoResponse['created-apps'][i].id == applicationIndex) {
-				//console.log('Found Application');
-
-				state.hasState = true;
-
-				for (let n = 0;
-					n < accountInfoResponse['created-apps'][i]['params']['global-state'].length;
-					n++) {
-
-					const stateItem =
-							accountInfoResponse['created-apps'][i]['params']['global-state'][n];
-
-					const key = Buffer.from(stateItem.key, 'base64').toString();
-					const type = stateItem.value.type;
-					let value = undefined as undefined | string | number;
-					let valueAsAddr = '';
-
-					if (type == 1) {
-						value = Buffer.from(stateItem.value.bytes, 'base64').toString();
-						valueAsAddr = algosdk.encodeAddress(Buffer.from(stateItem.value.bytes, 'base64'));
-
-					} else if (stateItem.value.type == 2) {
-						value = stateItem.value.uint;
-					}
-
-					state.globals.push({
-						key: key,
-						value: value || '',
-						address: valueAsAddr
-					});
-
-				}
-			}
+	async getAppGlobalState(applicationIndex: number): Promise<object> {
+		const info = await this.getAppInfo(applicationIndex);
+		if (info.hasState) {
+			return this.stateArrayToObject(info.globals);
+		} else {
+			return {};
 		}
-
-		return state;
 	}
+
+
 
 	/**
 	 *
