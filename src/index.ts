@@ -158,6 +158,7 @@ export default class Algonaut {
 	setAccount(account: algosdkTypeRef.Account): void {
 		this.account = account;
 		this.address = account.addr;
+		if (this.config) this.config.SIGNING_MODE = 'local';
 		this.mnemonic = algosdk.secretKeyToMnemonic(account.sk);
 	}
 
@@ -170,6 +171,7 @@ export default class Algonaut {
 			addr: address,
 			sk: new Uint8Array([])
 		};
+		if (this.config) this.config.SIGNING_MODE = 'walletconnect';
 	}
 
 	/**
@@ -203,6 +205,7 @@ export default class Algonaut {
 			if (algosdk.isValidAddress(this.account?.addr)) {
 				return this.account || false;
 			}
+			if (this.config) this.config.SIGNING_MODE = 'local';
 		} catch (error) {
 			// should we throw an error here instead of returning false?
 			console.log(error);
