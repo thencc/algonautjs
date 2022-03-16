@@ -69,6 +69,8 @@ class Algonaut {
     setAccount(account) {
         this.account = account;
         this.address = account.addr;
+        if (this.config)
+            this.config.SIGNING_MODE = 'local';
         this.mnemonic = algosdk_min_1.default.secretKeyToMnemonic(account.sk);
     }
     /**
@@ -80,6 +82,8 @@ class Algonaut {
             addr: address,
             sk: new Uint8Array([])
         };
+        if (this.config)
+            this.config.SIGNING_MODE = 'walletconnect';
     }
     /**
      * Creates a wallet address + mnemonic from account's secret key
@@ -111,6 +115,8 @@ class Algonaut {
             if (algosdk_min_1.default.isValidAddress((_a = this.account) === null || _a === void 0 ? void 0 : _a.addr)) {
                 return this.account || false;
             }
+            if (this.config)
+                this.config.SIGNING_MODE = 'local';
         }
         catch (error) {
             // should we throw an error here instead of returning false?
