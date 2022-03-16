@@ -3,6 +3,7 @@ import algosdk from 'algosdk';
 
 export type AlgonautConfig = {
 	BASE_SERVER: string;
+	INDEX_SERVER: string;
 	LEDGER: string;
 	PORT: string;
 	API_TOKEN: any;
@@ -57,7 +58,7 @@ export interface AlgonautAppState {
 export interface AlgonautCallAppArguments {
 	appIndex: number;
 	appArgs: any[];
-	optionalFields?: AlgonautTransactionFields; 
+	optionalFields?: AlgonautTransactionFields;
 }
 
 export interface AlgonautLsigCallAppArguments extends AlgonautCallAppArguments{
