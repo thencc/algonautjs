@@ -115,6 +115,7 @@ export default class Algonaut {
 	 * import Algonaut from 'algonaut.js';
 	 * const algonaut = new Algonaut({
 	 *	 BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
+	 *	 INDEX_SERVER: 'https://testnet-algorand.api.purestake.io/idx2'
 	 *	 LEDGER: 'TestNet',
 	 *	 PORT: '',
 	 *	 API_TOKEN: { 'X-API-Key': 'YOUR_API_TOKEN' }
@@ -126,8 +127,8 @@ export default class Algonaut {
 	constructor(config: AlgonautConfig) {
 
 		this.config = config;
-		this.algodClient = new algosdk.Algodv2(config.API_TOKEN, config.BASE_SERVER,  config.PORT);
-		this.indexerClient = new algosdk.Indexer(config.API_TOKEN, config.BASE_SERVER,  config.PORT);
+		this.algodClient = new algosdk.Algodv2(config.API_TOKEN, config.BASE_SERVER, config.PORT);
+		this.indexerClient = new algosdk.Indexer(config.API_TOKEN, config.INDEX_SERVER, config.PORT);
 
 		this.sdk = algosdk;
 
