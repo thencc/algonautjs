@@ -1221,12 +1221,12 @@ export default class Algonaut {
 	 * @param applicationIndex - the applications index
 	 * @returns {object} object representing global state
 	 */
-	async getAppGlobalState(applicationIndex: number): Promise<object> {
+	async getAppGlobalState(applicationIndex: number): Promise<any> {
 		const info = await this.getAppInfo(applicationIndex);
 		if (info.hasState) {
 			return this.stateArrayToObject(info.globals);
 		} else {
-			return {};
+			return {} as any;
 		}
 	}
 
@@ -1857,7 +1857,7 @@ export default class Algonaut {
 	 * @param stateArray State array returned from functions like {@link getAppInfo}
 	 * @returns A more useful object: `{ array[0].key: array[0].value, array[1].key: array[1].value, ... }`
 	 */
-	stateArrayToObject (stateArray: object[]) {
+	stateArrayToObject (stateArray: object[]): any {
 		const stateObj = {} as any;
 		stateArray.forEach((value: any) => {
 			if (value.key) stateObj[value.key] = value.value || null;

@@ -309,7 +309,7 @@ export default class Algonaut {
      * @param applicationIndex - the applications index
      * @returns {object} object representing global state
      */
-    getAppGlobalState(applicationIndex: number): Promise<object>;
+    getAppGlobalState(applicationIndex: number): Promise<any>;
     /**
      *
      * @param applicationIndex the applications index
