@@ -1041,21 +1041,26 @@ class Algonaut {
      * @returns Promise resolving to AlgonautTransactionStatus
      */
     async sendTransaction(txnOrTxns, callbacks) {
-        var _a;
         if (!this.account)
             throw new Error('There is no account');
-        if (((_a = this.config) === null || _a === void 0 ? void 0 : _a.SIGNING_MODE) && this.config.SIGNING_MODE === 'walletconnect') {
+        if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === 'walletconnect') {
             // walletconnect must be sent as atomic transactions
             if (Array.isArray(txnOrTxns)) {
                 return await this.sendWalletConnectTxns(txnOrTxns, callbacks);
             }
             else {
-                // we have an algosdkTypeRef.Transaction
-                return await this.sendWalletConnectTxns([{
-                        transaction: txnOrTxns,
-                        transactionSigner: this.account,
-                        isLogigSig: false
-                    }], callbacks);
+                if (txnOrTxns.transaction) {
+                    // we were sent an AlgonautAtomicTransaction
+                    return await this.sendWalletConnectTxns([txnOrTxns], callbacks);
+                }
+                else {
+                    // we were sent an algosdk.Transaction
+                    return await this.sendWalletConnectTxns([{
+                            transaction: txnOrTxns,
+                            transactionSigner: this.account,
+                            isLogigSig: false
+                        }], callbacks);
+                }
             }
         }
         else {

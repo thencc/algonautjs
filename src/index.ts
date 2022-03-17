@@ -1348,17 +1348,22 @@ export default class Algonaut {
 	 */
 	async sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | algosdkTypeRef.Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
 		if (!this.account) throw new Error('There is no account');
-		if (this.config?.SIGNING_MODE && this.config.SIGNING_MODE === 'walletconnect') {
+		if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === 'walletconnect') {
 			// walletconnect must be sent as atomic transactions
 			if (Array.isArray(txnOrTxns)) {
 				return await this.sendWalletConnectTxns(txnOrTxns, callbacks);
 			} else {
-				// we have an algosdkTypeRef.Transaction
-				return await this.sendWalletConnectTxns([{
-					transaction: txnOrTxns as algosdkTypeRef.Transaction,
-					transactionSigner: this.account,
-					isLogigSig: false
-				}], callbacks);
+				if ((txnOrTxns as any).transaction) {
+					// we were sent an AlgonautAtomicTransaction
+					return await this.sendWalletConnectTxns([(txnOrTxns as AlgonautAtomicTransaction)], callbacks);
+				} else {
+					// we were sent an algosdk.Transaction
+					return await this.sendWalletConnectTxns([{
+						transaction: txnOrTxns as algosdkTypeRef.Transaction,
+						transactionSigner: this.account,
+						isLogigSig: false
+					}], callbacks);
+				}
 			}
 		} else {
 			// assume local signing
