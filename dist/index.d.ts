@@ -1,4 +1,4 @@
-import type algosdkTypeRef from 'algosdk';
+import algosdk from 'algosdk';
 import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautAppState, WalletConnectListener, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments } from './AlgonautTypes';
 import { IInternalEvent } from '@walletconnect/types';
 declare global {
@@ -7,14 +7,14 @@ declare global {
     }
 }
 export default class Algonaut {
-    algodClient: algosdkTypeRef.Algodv2;
-    indexerClient: algosdkTypeRef.Indexer | undefined;
-    account: algosdkTypeRef.Account | undefined;
+    algodClient: algosdk.Algodv2;
+    indexerClient: algosdk.Indexer | undefined;
+    account: algosdk.Account | undefined;
     address: string | undefined;
     sKey: Uint8Array | undefined;
     mnemonic: string | undefined;
     config: AlgonautConfig | undefined;
-    sdk: typeof algosdkTypeRef | undefined;
+    sdk: typeof algosdk | undefined;
     uiLoading: boolean;
     walletConnect: {
         connected: boolean;
@@ -57,7 +57,7 @@ export default class Algonaut {
      * if you already have an account, set it here
      * @param account an algosdk account already created
      */
-    setAccount(account: algosdkTypeRef.Account): void;
+    setAccount(account: algosdk.Account): void;
     /**
      * Sets account connected via WalletConnect
      * @param address account address
@@ -73,7 +73,7 @@ export default class Algonaut {
      * @param mnemonic Mnemonic associated with Algonaut account
      * @returns If mnemonic is valid, returns account. Otherwise, returns false.
      */
-    recoverAccount(mnemonic: string): algosdkTypeRef.Account | boolean;
+    recoverAccount(mnemonic: string): algosdk.Account | boolean;
     /**
      * General purpose method to await transaction confirmation
      * @param txId a string id of the transacion you want to watch
@@ -87,7 +87,7 @@ export default class Algonaut {
      * @param base64ProgramString
      * @returns an algosdk LogicSigAccount
      */
-    generateLogicSig(base64ProgramString: string): algosdkTypeRef.LogicSigAccount;
+    generateLogicSig(base64ProgramString: string): algosdk.LogicSigAccount;
     atomicOptInAsset(assetIndex: number): Promise<AlgonautAtomicTransaction>;
     /**
      * Opt-in the current account for the a token or NFT Asset.
@@ -324,7 +324,7 @@ export default class Algonaut {
      * @param callbacks Optional object with callbacks - `onSign`, `onSend`, and `onConfirm`
      * @returns Promise resolving to AlgonautTransactionStatus
      */
-    sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | algosdkTypeRef.Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
+    sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | algosdk.Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
     /**
      * run atomic takes an array of transactions to run in order, each
      * of the atomic transaction methods needs to return an object containing
@@ -358,7 +358,7 @@ export default class Algonaut {
      * @param transactions one or more atomic transaction objects
      * @returns an array of Transactions
      */
-    createWalletConnectTransactions(transactions: AlgonautAtomicTransaction[]): Promise<algosdkTypeRef.Transaction[]>;
+    createWalletConnectTransactions(transactions: AlgonautAtomicTransaction[]): Promise<algosdk.Transaction[]>;
     /**********************************************/
     /***** Below are the Algo Signer APIs *********/
     /**********************************************/

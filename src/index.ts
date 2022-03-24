@@ -1,7 +1,6 @@
 import { Buffer } from 'buffer';
 // the web build seems to me missing type defs for algosdk.Account
 // and a few other types so we use this ref to get them into the IDE
-import type algosdkTypeRef from 'algosdk';
 import algosdk from 'algosdk';
 
 import {
@@ -86,14 +85,14 @@ declare global {
 export default class Algonaut {
 
 	// TBD: add algo wallet for mobile
-	algodClient: algosdkTypeRef.Algodv2;
-	indexerClient = undefined as undefined | algosdkTypeRef.Indexer;
-	account = undefined as undefined | algosdkTypeRef.Account;
+	algodClient: algosdk.Algodv2;
+	indexerClient = undefined as undefined | algosdk.Indexer;
+	account = undefined as undefined | algosdk.Account;
 	address = undefined as undefined | string;
 	sKey = undefined as undefined | Uint8Array;
 	mnemonic = undefined as undefined | string;
 	config = undefined as undefined | AlgonautConfig;
-	sdk = undefined as undefined | typeof algosdkTypeRef;
+	sdk = undefined as undefined | typeof algosdk;
 	uiLoading = false;
 	walletConnect = {
 		connected: false,
@@ -159,7 +158,7 @@ export default class Algonaut {
 	 * if you already have an account, set it here
 	 * @param account an algosdk account already created
 	 */
-	setAccount(account: algosdkTypeRef.Account): void {
+	setAccount(account: algosdk.Account): void {
 		this.account = account;
 		this.address = account.addr;
 		if (this.config) this.config.SIGNING_MODE = 'local';
@@ -203,7 +202,7 @@ export default class Algonaut {
 	 * @param mnemonic Mnemonic associated with Algonaut account
 	 * @returns If mnemonic is valid, returns account. Otherwise, returns false.
 	 */
-	recoverAccount(mnemonic: string): algosdkTypeRef.Account | boolean {
+	recoverAccount(mnemonic: string): algosdk.Account | boolean {
 		try {
 			this.account = algosdk.mnemonicToSecretKey(mnemonic);
 			if (algosdk.isValidAddress(this.account?.addr)) {
@@ -275,7 +274,7 @@ export default class Algonaut {
 	 * @param base64ProgramString
 	 * @returns an algosdk LogicSigAccount
 	 */
-	generateLogicSig(base64ProgramString: string): algosdkTypeRef.LogicSigAccount {
+	generateLogicSig(base64ProgramString: string): algosdk.LogicSigAccount {
 		const program = new Uint8Array(
 			Buffer.from(base64ProgramString, 'base64')
 		);
@@ -1345,7 +1344,7 @@ export default class Algonaut {
 	 * @param callbacks Optional object with callbacks - `onSign`, `onSend`, and `onConfirm`
 	 * @returns Promise resolving to AlgonautTransactionStatus
 	 */
-	async sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | algosdkTypeRef.Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
+	async sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | algosdk.Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
 		if (!this.account) throw new Error('There is no account');
 		if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === 'walletconnect') {
 			// walletconnect must be sent as atomic transactions
@@ -1358,7 +1357,7 @@ export default class Algonaut {
 				} else {
 					// we were sent an algosdk.Transaction
 					return await this.sendWalletConnectTxns([{
-						transaction: txnOrTxns as algosdkTypeRef.Transaction,
+						transaction: txnOrTxns as algosdk.Transaction,
 						transactionSigner: this.account,
 						isLogigSig: false
 					}], callbacks);
@@ -1369,17 +1368,17 @@ export default class Algonaut {
 			if (Array.isArray(txnOrTxns)) {
 				return await this.sendAtomicTransaction(txnOrTxns, callbacks);
 			} else {
-				let txn: algosdkTypeRef.Transaction;
+				let txn: algosdk.Transaction;
 				if (txnOrTxns && (txnOrTxns as any).transaction) {
 					// sent an atomic Transaction
 					txn = (txnOrTxns as AlgonautAtomicTransaction).transaction;
 				} else {
 					// assume a transaction
-					txn = txnOrTxns as algosdkTypeRef.Transaction;
+					txn = txnOrTxns as algosdk.Transaction;
 				}
 
 				if (!this.account || !this.account.sk) throw new Error('');
-				const signedTxn = (txn as algosdkTypeRef.Transaction).signTxn(this.account.sk);
+				const signedTxn = (txn as algosdk.Transaction).signTxn(this.account.sk);
 				if (callbacks?.onSign) callbacks.onSign(signedTxn);
 
 				const tx = await this.algodClient.sendRawTransaction(signedTxn).do();
@@ -1410,7 +1409,7 @@ export default class Algonaut {
 
 		try {
 
-			const txns = [] as algosdkTypeRef.Transaction[];
+			const txns = [] as algosdk.Transaction[];
 			const signed = [] as Uint8Array[];
 			transactions.forEach((txn: AlgonautAtomicTransaction) => {
 				txns.push(txn.transaction);
@@ -1427,9 +1426,9 @@ export default class Algonaut {
 					blob: Uint8Array;
 				};
 				if (txn.isLogigSig) {
-					signedTx = algosdk.signLogicSigTransaction(txnGroup[i], txn.transactionSigner as algosdkTypeRef.LogicSigAccount);
+					signedTx = algosdk.signLogicSigTransaction(txnGroup[i], txn.transactionSigner as algosdk.LogicSigAccount);
 				} else {
-					signedTx = algosdk.signTransaction(txnGroup[i], (txn.transactionSigner as algosdkTypeRef.Account).sk);
+					signedTx = algosdk.signTransaction(txnGroup[i], (txn.transactionSigner as algosdk.Account).sk);
 				}
 				signed.push(signedTx.blob);
 			});
@@ -1568,11 +1567,11 @@ export default class Algonaut {
 	 * @param transactions one or more atomic transaction objects
 	 * @returns an array of Transactions
 	 */
-	async createWalletConnectTransactions(transactions: AlgonautAtomicTransaction[]): Promise<algosdkTypeRef.Transaction[]> {
+	async createWalletConnectTransactions(transactions: AlgonautAtomicTransaction[]): Promise<algosdk.Transaction[]> {
 
 
 		//console.log('start wc transaction builder');
-		const txns = [] as algosdkTypeRef.Transaction[];
+		const txns = [] as algosdk.Transaction[];
 		transactions.forEach((txn: AlgonautAtomicTransaction) => {
 			txns.push(txn.transaction);
 		});
