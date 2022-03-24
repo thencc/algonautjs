@@ -5,3 +5,4 @@ test/.env
 .env
 algo.config.ts
 src/contracts/priv
+**/dist
