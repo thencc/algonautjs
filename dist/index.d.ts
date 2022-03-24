@@ -444,7 +444,7 @@ export default class Algonaut {
      */
     stateArrayToObject(stateArray: object[]): any;
     fromBase64(encoded: string): string;
-    valueAsAddr(encoded: string): any;
+    valueAsAddr(encoded: string): string;
     decodeStateArray(stateArray: {
         key: string;
         value: {
