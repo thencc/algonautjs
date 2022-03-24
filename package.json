@@ -16,7 +16,6 @@
 		"README.md"
 	],
 	"scripts": {
-		"dev": "ts-node src/index.ts",
 		"link": "npm link",
 		"build": "rm -rf dist && run-s build:*",
 		"build:cjs": "node ./esbuild.cjs.js",

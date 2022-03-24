@@ -29,7 +29,6 @@ import {
 import * as sha512 from 'js-sha512';
 import * as CryptoJS from 'crypto-js';
 
-import WalletConnectMin from '@walletconnect/client/dist/umd/index.min';
 import WalletConnect from '@walletconnect/client';
 import { IInternalEvent } from '@walletconnect/types';
 import QRCodeModal from 'algorand-walletconnect-qrcode-modal';
@@ -1723,9 +1722,8 @@ export default class Algonaut {
 
 		const bridge = 'https://bridge.walletconnect.org';
 
-		this.walletConnect.connector = new WalletConnectMin({
+		this.walletConnect.connector = new WalletConnect({
 			bridge,
-			apiKey: '4067ab2454244fb39835bfeafc285c8d',
 			qrcodeModal: QRCodeModal
 		});
 
