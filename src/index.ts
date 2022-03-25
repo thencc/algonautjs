@@ -1,8 +1,7 @@
-import { atob, Buffer } from 'buffer';
+import { Buffer } from 'buffer';
 // the web build seems to me missing type defs for algosdk.Account
 // and a few other types so we use this ref to get them into the IDE
-import type algosdkTypeRef from 'algosdk';
-import algosdk from 'algosdk/dist/browser/algosdk.min';
+import algosdk from 'algosdk';
 
 import {
 	AlgonautConfig,
@@ -29,7 +28,6 @@ import {
 import * as sha512 from 'js-sha512';
 import * as CryptoJS from 'crypto-js';
 
-import WalletConnectMin from '@walletconnect/client/dist/umd/index.min';
 import WalletConnect from '@walletconnect/client';
 import { IInternalEvent } from '@walletconnect/types';
 import QRCodeModal from 'algorand-walletconnect-qrcode-modal';
@@ -87,14 +85,14 @@ declare global {
 export default class Algonaut {
 
 	// TBD: add algo wallet for mobile
-	algodClient: algosdkTypeRef.Algodv2;
-	indexerClient = undefined as undefined | algosdkTypeRef.Indexer;
-	account = undefined as undefined | algosdkTypeRef.Account;
+	algodClient: algosdk.Algodv2;
+	indexerClient = undefined as undefined | algosdk.Indexer;
+	account = undefined as undefined | algosdk.Account;
 	address = undefined as undefined | string;
 	sKey = undefined as undefined | Uint8Array;
 	mnemonic = undefined as undefined | string;
 	config = undefined as undefined | AlgonautConfig;
-	sdk = undefined as undefined | typeof algosdkTypeRef;
+	sdk = undefined as undefined | typeof algosdk;
 	uiLoading = false;
 	walletConnect = {
 		connected: false,
@@ -160,7 +158,7 @@ export default class Algonaut {
 	 * if you already have an account, set it here
 	 * @param account an algosdk account already created
 	 */
-	setAccount(account: algosdkTypeRef.Account): void {
+	setAccount(account: algosdk.Account): void {
 		this.account = account;
 		this.address = account.addr;
 		if (this.config) this.config.SIGNING_MODE = 'local';
@@ -204,7 +202,7 @@ export default class Algonaut {
 	 * @param mnemonic Mnemonic associated with Algonaut account
 	 * @returns If mnemonic is valid, returns account. Otherwise, returns false.
 	 */
-	recoverAccount(mnemonic: string): algosdkTypeRef.Account|boolean {
+	recoverAccount(mnemonic: string): algosdk.Account | boolean {
 		try {
 			this.account = algosdk.mnemonicToSecretKey(mnemonic);
 			if (algosdk.isValidAddress(this.account?.addr)) {
@@ -225,9 +223,9 @@ export default class Algonaut {
 	 * @param limitDelta how many rounds to wait, defaults to 50
 	 * @param log set to true if you'd like to see "waiting for confirmation" log messages
 	 */
-	async waitForConfirmation (txId: string, limitDelta?: number, log = false): Promise<AlgonautTransactionStatus> {
+	async waitForConfirmation(txId: string, limitDelta?: number, log = false): Promise<AlgonautTransactionStatus> {
 		let lastround = (await this.algodClient.status().do())['last-round'];
-		const limit = lastround + (limitDelta? limitDelta: 50);
+		const limit = lastround + (limitDelta ? limitDelta : 50);
 
 		const returnValue = {
 			status: 'fail',
@@ -276,7 +274,7 @@ export default class Algonaut {
 	 * @param base64ProgramString
 	 * @returns an algosdk LogicSigAccount
 	 */
-	generateLogicSig(base64ProgramString: string): algosdkTypeRef.LogicSigAccount {
+	generateLogicSig(base64ProgramString: string): algosdk.LogicSigAccount {
 		const program = new Uint8Array(
 			Buffer.from(base64ProgramString, 'base64')
 		);
@@ -350,7 +348,7 @@ export default class Algonaut {
 	 * @param assetId
 	 * @returns
 	 */
-	async isOptedIntoAsset(args: {account: string, assetId: number}): Promise<boolean> {
+	async isOptedIntoAsset(args: { account: string, assetId: number }): Promise<boolean> {
 		let optInState = false;
 
 		const accountInfo = await this.getAccountInfo(args.account);
@@ -476,7 +474,7 @@ export default class Algonaut {
 
 			return txStatus;
 
-		} catch(er) {
+		} catch (er) {
 			console.log('transaction error');
 			console.log(er);
 			throw new Error(er as any);
@@ -508,7 +506,7 @@ export default class Algonaut {
 	 * @param callbacks optional AlgonautTxnCallbacks
 	 * @returns Promise resolving to confirmed transaction or error
 	 */
-	async deleteAsset(assetId: number, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>  {
+	async deleteAsset(assetId: number, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
 		const { transaction } = await this.atomicDeleteAsset(assetId);
 		return await this.sendTransaction(transaction, callbacks);
 	}
@@ -563,7 +561,7 @@ export default class Algonaut {
 	 * @param assetIndex
 	 * @returns
 	 */
-	 async getAssetInfo(assetIndex: number): Promise<any> {
+	async getAssetInfo(assetIndex: number): Promise<any> {
 		const info = await this.algodClient.getAssetByID(assetIndex).do();
 		return info;
 	}
@@ -573,7 +571,7 @@ export default class Algonaut {
 	 * @param args AlgonautCallAppArgs
 	 * @returns AlgonautAtomicTransaction
 	 */
-	 async atomicOptInApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
+	async atomicOptInApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
 		if (this.account && args.appIndex) {
 
 			const sender = this.account.addr;
@@ -622,7 +620,7 @@ export default class Algonaut {
 	 * @param appIndex - ID of application
 	 * @returns Promise resolving to atomic transaction that deletes application
 	 */
-	 async atomicDeleteApplication(appIndex: number): Promise<AlgonautAtomicTransaction> {
+	async atomicDeleteApplication(appIndex: number): Promise<AlgonautAtomicTransaction> {
 
 		if (this.account && appIndex) {
 			try {
@@ -639,7 +637,7 @@ export default class Algonaut {
 					isLogigSig: false
 				};
 
-			} catch(e: any) {
+			} catch (e: any) {
 				throw new Error(e);
 			}
 		} else {
@@ -675,13 +673,13 @@ export default class Algonaut {
 				txId
 			};
 
-		} catch(e: any) {
+		} catch (e: any) {
 			console.log(e);
 			throw new Error(e.response?.text);
 		}
 	}
 
-	async atomicCallApp (args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
+	async atomicCallApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
 
 		if (this.account && args.appIndex && args.appArgs.length) {
 
@@ -713,7 +711,7 @@ export default class Algonaut {
 	 * an argument which branches to a specific place and reads the other args
 	 * @param args Object containing `appIndex`, `appArgs`, and `optionalFields` properties
 	 */
-	async callApp (args: AlgonautCallAppArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
+	async callApp(args: AlgonautCallAppArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
 		if (!this.account) throw new Error('There was no account!');
 		if (!args.appIndex) throw new Error('Must provide appIndex');
 		if (!args.appArgs.length) throw new Error('Must provide at least one appArgs');
@@ -722,7 +720,7 @@ export default class Algonaut {
 		return await this.sendTransaction(transaction, callbacks);
 	}
 
-	async atomicCallAppWithLSig (args: AlgonautLsigCallAppArguments): Promise<AlgonautAtomicTransaction> {
+	async atomicCallAppWithLSig(args: AlgonautLsigCallAppArguments): Promise<AlgonautAtomicTransaction> {
 
 		if (this.account && args.appIndex && args.appArgs.length) {
 			const processedArgs = this.encodeArguments(args.appArgs);
@@ -754,7 +752,7 @@ export default class Algonaut {
 	 * @param args Object containing `appIndex`, `appArgs`, and `optionalFields` properties
 	 * @returns Promise resolving to atomic transaction
 	 */
-	 async atomicCloseOutApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
+	async atomicCloseOutApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
 		if (this.account && args.appIndex && args.appArgs.length) {
 			try {
 				const params = await this.algodClient.getTransactionParams().do();
@@ -789,7 +787,7 @@ export default class Algonaut {
 	 * @param callbacks optional AlgonautTxnCallbacks
 	 * @returns Promise resolving to atomic transaction
 	 */
-	async closeOutApp (args: AlgonautCallAppArguments, callbacks?: AlgonautTxnCallbacks) {
+	async closeOutApp(args: AlgonautCallAppArguments, callbacks?: AlgonautTxnCallbacks) {
 		if (!this.account) throw new Error('There was no account!');
 		if (!args.appIndex) throw new Error('Must provide appIndex');
 		if (!args.appArgs.length) throw new Error('Must provide at least one appArgs');
@@ -846,7 +844,7 @@ export default class Algonaut {
 	 * @param callbacks optional AlgonautTxnCallbacks
 	 * @returns AlgonautTransactionStatus
 	 */
-	async createApp (
+	async createApp(
 		args: AlgonautDeployArguments,
 		callbacks?: AlgonautTxnCallbacks
 	): Promise<AlgonautTransactionStatus> {
@@ -886,7 +884,7 @@ export default class Algonaut {
 					args.optionalFields?.accounts ? args.optionalFields.accounts : undefined,
 					args.optionalFields?.applications ? args.optionalFields.applications : undefined,
 					args.optionalFields?.assets ? args.optionalFields.assets : undefined,
-					args.optionalFields?.note ? new Uint8Array(Buffer.from(args.optionalFields.note, 'utf8'))  : undefined
+					args.optionalFields?.note ? new Uint8Array(Buffer.from(args.optionalFields.note, 'utf8')) : undefined
 				);
 				const txId = txn.txID().toString();
 
@@ -906,7 +904,7 @@ export default class Algonaut {
 				throw new Error('could not compile teal code');
 			}
 
-		} catch(er: any) {
+		} catch (er: any) {
 			throw new Error(er.message);
 		}
 	}
@@ -918,7 +916,7 @@ export default class Algonaut {
 	 * @param args AlgonautDeployArguments
 	 * @returns AlgonautAtomicTransaction
 	 */
-	async atomicCreateApp (args: AlgonautDeployArguments): Promise<AlgonautAtomicTransaction> {
+	async atomicCreateApp(args: AlgonautDeployArguments): Promise<AlgonautAtomicTransaction> {
 		if (args.optionalFields && args.optionalFields.note && args.optionalFields.note.length > 1023) {
 			throw new Error('Your NOTE is too long, it must be less thatn 1024 Bytes');
 		} else if (this.account) {
@@ -934,7 +932,7 @@ export default class Algonaut {
 				clearProgram = await this.compileProgram(args.tealClearCode);
 
 				// create unsigned transaction
-				if (!approvalProgram ||  !clearProgram) {
+				if (!approvalProgram || !clearProgram) {
 					throw new Error('Error: you must provide an approval program and a clear state program.');
 				}
 
@@ -952,7 +950,7 @@ export default class Algonaut {
 					args.optionalFields?.accounts ? args.optionalFields.accounts : undefined,
 					args.optionalFields?.applications ? args.optionalFields.applications : undefined,
 					args.optionalFields?.assets ? args.optionalFields.assets : undefined,
-					args.optionalFields?.note ? new Uint8Array(Buffer.from(args.optionalFields.note, 'utf8'))  : undefined
+					args.optionalFields?.note ? new Uint8Array(Buffer.from(args.optionalFields.note, 'utf8')) : undefined
 				);
 
 				return {
@@ -961,7 +959,7 @@ export default class Algonaut {
 					isLogigSig: false
 				};
 
-			} catch(er: any) {
+			} catch (er: any) {
 				throw new Error('There was an error creating the transaction');
 			}
 		} else {
@@ -979,7 +977,7 @@ export default class Algonaut {
 	 * @param args AlgonautLsigDeployArguments
 	 * @returns
 	 */
-	async deployTealWithLSig (
+	async deployTealWithLSig(
 		args: AlgonautLsigDeployArguments
 	): Promise<AlgonautTransactionStatus> {
 		if (args.noteText && args.noteText.length > 511) {
@@ -1071,7 +1069,7 @@ export default class Algonaut {
 			clearProgram = await this.compileProgram(args.tealClearCode);
 
 			// create unsigned transaction
-			if (!approvalProgram ||  !clearProgram) {
+			if (!approvalProgram || !clearProgram) {
 				throw new Error('Error: you must provide an approval program and a clear state program.');
 			}
 
@@ -1085,7 +1083,7 @@ export default class Algonaut {
 				args.optionalFields?.accounts ? args.optionalFields.accounts : undefined,
 				args.optionalFields?.applications ? args.optionalFields.applications : undefined,
 				args.optionalFields?.assets ? args.optionalFields.assets : undefined,
-				args.optionalFields?.note ? new Uint8Array(Buffer.from(args.optionalFields.note, 'utf8'))  : undefined
+				args.optionalFields?.note ? new Uint8Array(Buffer.from(args.optionalFields.note, 'utf8')) : undefined
 			);
 
 			return {
@@ -1094,7 +1092,7 @@ export default class Algonaut {
 				isLogigSig: false
 			};
 
-		} catch(er: any) {
+		} catch (er: any) {
 			throw new Error('There was an error creating the transaction');
 		}
 	}
@@ -1115,7 +1113,7 @@ export default class Algonaut {
 	 * @param programSource source to compile
 	 * @returns Promise resolving to Buffer of compiled bytes
 	 */
-	async compileProgram (programSource: string): Promise<Uint8Array> {
+	async compileProgram(programSource: string): Promise<Uint8Array> {
 		const encoder = new TextEncoder();
 		const programBytes = encoder.encode(programSource);
 		const compileResponse = await this.algodClient.compile(programBytes).do();
@@ -1346,7 +1344,7 @@ export default class Algonaut {
 	 * @param callbacks Optional object with callbacks - `onSign`, `onSend`, and `onConfirm`
 	 * @returns Promise resolving to AlgonautTransactionStatus
 	 */
-	async sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | algosdkTypeRef.Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
+	async sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | algosdk.Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
 		if (!this.account) throw new Error('There is no account');
 		if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === 'walletconnect') {
 			// walletconnect must be sent as atomic transactions
@@ -1359,7 +1357,7 @@ export default class Algonaut {
 				} else {
 					// we were sent an algosdk.Transaction
 					return await this.sendWalletConnectTxns([{
-						transaction: txnOrTxns as algosdkTypeRef.Transaction,
+						transaction: txnOrTxns as algosdk.Transaction,
 						transactionSigner: this.account,
 						isLogigSig: false
 					}], callbacks);
@@ -1370,17 +1368,17 @@ export default class Algonaut {
 			if (Array.isArray(txnOrTxns)) {
 				return await this.sendAtomicTransaction(txnOrTxns, callbacks);
 			} else {
-				let txn: algosdkTypeRef.Transaction;
+				let txn: algosdk.Transaction;
 				if (txnOrTxns && (txnOrTxns as any).transaction) {
 					// sent an atomic Transaction
 					txn = (txnOrTxns as AlgonautAtomicTransaction).transaction;
 				} else {
 					// assume a transaction
-					txn = txnOrTxns as algosdkTypeRef.Transaction;
+					txn = txnOrTxns as algosdk.Transaction;
 				}
 
 				if (!this.account || !this.account.sk) throw new Error('');
-				const signedTxn = (txn as algosdkTypeRef.Transaction).signTxn(this.account.sk);
+				const signedTxn = (txn as algosdk.Transaction).signTxn(this.account.sk);
 				if (callbacks?.onSign) callbacks.onSign(signedTxn);
 
 				const tx = await this.algodClient.sendRawTransaction(signedTxn).do();
@@ -1411,7 +1409,7 @@ export default class Algonaut {
 
 		try {
 
-			const txns = [] as algosdkTypeRef.Transaction[];
+			const txns = [] as algosdk.Transaction[];
 			const signed = [] as Uint8Array[];
 			transactions.forEach((txn: AlgonautAtomicTransaction) => {
 				txns.push(txn.transaction);
@@ -1428,9 +1426,9 @@ export default class Algonaut {
 					blob: Uint8Array;
 				};
 				if (txn.isLogigSig) {
-					signedTx = algosdk.signLogicSigTransaction(txnGroup[i], txn.transactionSigner as algosdkTypeRef.LogicSigAccount);
+					signedTx = algosdk.signLogicSigTransaction(txnGroup[i], txn.transactionSigner as algosdk.LogicSigAccount);
 				} else {
-					signedTx = algosdk.signTransaction(txnGroup[i], (txn.transactionSigner as algosdkTypeRef.Account).sk);
+					signedTx = algosdk.signTransaction(txnGroup[i], (txn.transactionSigner as algosdk.Account).sk);
 				}
 				signed.push(signedTx.blob);
 			});
@@ -1470,7 +1468,7 @@ export default class Algonaut {
 	 * @param callbacks Transaction callbacks `{ onSign, onSend, onConfirm }`
 	 * @returns Promise resolving to transaction status
 	 */
-	 async sendWalletConnectTxns(walletTxns: AlgonautAtomicTransaction[], callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
+	async sendWalletConnectTxns(walletTxns: AlgonautAtomicTransaction[], callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
 
 		if (this.walletConnect.connected) {
 			let txns = walletTxns.map(txn => txn.transaction);
@@ -1503,7 +1501,7 @@ export default class Algonaut {
 			let result: any;
 			try {
 				result = await this.walletConnect.connector.sendCustomRequest(request);
-			} catch(er) {
+			} catch (er) {
 				throw new Error('You canceled the transaction');
 			}
 
@@ -1524,7 +1522,7 @@ export default class Algonaut {
 				let tx: any;
 				try {
 					tx = await this.algodClient.sendRawTransaction(signedPartialTxns).do();
-				} catch(er: any) {
+				} catch (er: any) {
 					tx = er;
 					console.error('Error sending raw transaction');
 					throw new Error(er);
@@ -1569,11 +1567,11 @@ export default class Algonaut {
 	 * @param transactions one or more atomic transaction objects
 	 * @returns an array of Transactions
 	 */
-	async createWalletConnectTransactions(transactions: AlgonautAtomicTransaction[]): Promise<algosdkTypeRef.Transaction[]> {
+	async createWalletConnectTransactions(transactions: AlgonautAtomicTransaction[]): Promise<algosdk.Transaction[]> {
 
 
 		//console.log('start wc transaction builder');
-		const txns = [] as algosdkTypeRef.Transaction[];
+		const txns = [] as algosdk.Transaction[];
 		transactions.forEach((txn: AlgonautAtomicTransaction) => {
 			txns.push(txn.transaction);
 		});
@@ -1719,13 +1717,12 @@ export default class Algonaut {
 		console.log('connecting wallet: ');
 
 		// 4067ab2454244fb39835bfeafc285c8d
-		if (! clientListener) clientListener = undefined;
+		if (!clientListener) clientListener = undefined;
 
 		const bridge = 'https://bridge.walletconnect.org';
 
-		this.walletConnect.connector = new WalletConnectMin({
+		this.walletConnect.connector = new WalletConnect({
 			bridge,
-			apiKey: '4067ab2454244fb39835bfeafc285c8d',
 			qrcodeModal: QRCodeModal
 		});
 
@@ -1862,7 +1859,7 @@ export default class Algonaut {
 	 * @param stateArray State array returned from functions like {@link getAppInfo}
 	 * @returns A more useful object: `{ array[0].key: array[0].value, array[1].key: array[1].value, ... }`
 	 */
-	stateArrayToObject (stateArray: object[]): any {
+	stateArrayToObject(stateArray: object[]): any {
 		const stateObj = {} as any;
 		stateArray.forEach((value: any) => {
 			if (value.key) stateObj[value.key] = value.value || null;
@@ -1870,15 +1867,15 @@ export default class Algonaut {
 		return stateObj;
 	}
 
-	fromBase64 (encoded: string) {
+	fromBase64(encoded: string) {
 		return Buffer.from(encoded, 'base64').toString();
 	}
 
-	valueAsAddr (encoded: string) {
+	valueAsAddr(encoded: string) {
 		return algosdk.encodeAddress(Buffer.from(encoded, 'base64'));
 	}
 
-	decodeStateArray (stateArray: { key: string, value: { bytes: string, type: number, uint: number }}[]) {
+	decodeStateArray(stateArray: { key: string, value: { bytes: string, type: number, uint: number } }[]) {
 		const result: any[] = [];
 
 		for (let n = 0;
@@ -1917,7 +1914,7 @@ export default class Algonaut {
 	 * Function to determine if the AlgoSigner extension is installed.
 	 * @returns true if `window.AlgoSigner` is defined
 	 */
-	 isAlgoSignerInstalled(): boolean {
+	isAlgoSignerInstalled(): boolean {
 		return typeof window.AlgoSigner !== 'undefined';
 	}
 
