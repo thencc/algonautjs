@@ -1,6 +1,6 @@
 # Algonaut.js
 
-FYI - README docs need an update...
+FYI - README docs need an update....
 
 [Examples](https://thencc.github.io/algonautjs/examples/) | [API Docs](https://thencc.github.io/algonautjs/docs/)
 
