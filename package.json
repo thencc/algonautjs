@@ -21,8 +21,8 @@
 		"build:cjs": "node ./esbuild.cjs.js",
 		"build:esm": "node ./esbuild.esm.js",
 		"build:types": "tsc --emitDeclarationOnly --outDir dist",
+		"build:docs": "npx typedoc",
 		"test": "node test/test.js",
-		"docs": "npx typedoc",
 		"xbuild-test": "vite build test",
 		"xdev": "vite serve test --port 8891"
 	},
