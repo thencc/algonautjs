@@ -1,8 +1,5 @@
 import { Buffer } from 'buffer';
-// the web build seems to me missing type defs for algosdk.Account
-// and a few other types so we use this ref to get them into the IDE
 import algosdk from 'algosdk';
-
 import {
 	AlgonautConfig,
 	AlgonautWallet,
