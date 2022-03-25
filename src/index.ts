@@ -28,7 +28,8 @@ import {
 import * as sha512 from 'js-sha512';
 import * as CryptoJS from 'crypto-js';
 
-import WalletConnect from '@walletconnect/client';
+// import umd because somehow walletconnect messes up... (maybe bad package.json "module" field or esm build)
+import WalletConnect from '@walletconnect/client/dist/umd/index.min.js'; // umd work in node + browser
 import { IInternalEvent } from '@walletconnect/types';
 import QRCodeModal from 'algorand-walletconnect-qrcode-modal';
 import { formatJsonRpcRequest } from '@json-rpc-tools/utils';
@@ -96,7 +97,7 @@ export default class Algonaut {
 	uiLoading = false;
 	walletConnect = {
 		connected: false,
-		connector: undefined as any,
+		connector: undefined as undefined | WalletConnect,
 		accounts: [] as any[],
 		address: '',
 		assets: [] as any[],
@@ -1500,7 +1501,7 @@ export default class Algonaut {
 			// this will fail if they cancel... we think
 			let result: any;
 			try {
-				result = await this.walletConnect.connector.sendCustomRequest(request);
+				result = await this.walletConnect.connector?.sendCustomRequest(request);
 			} catch (er) {
 				throw new Error('You canceled the transaction');
 			}
@@ -1721,10 +1722,11 @@ export default class Algonaut {
 
 		const bridge = 'https://bridge.walletconnect.org';
 
-		this.walletConnect.connector = new WalletConnect({
+		const wcConnector = new WalletConnect({
 			bridge,
 			qrcodeModal: QRCodeModal
 		});
+		this.walletConnect.connector = wcConnector;
 
 		//console.log('connector created');
 		//console.log(this.walletConnect.connector);

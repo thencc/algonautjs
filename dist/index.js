@@ -25,7 +25,7 @@ __export(src_exports, {
 module.exports = __toCommonJS(src_exports);
 var import_buffer = require("buffer");
 var import_algosdk = __toESM(require("algosdk"));
-var import_client = __toESM(require("@walletconnect/client"));
+var import_index_min = __toESM(require("@walletconnect/client/dist/umd/index.min.js"));
 var import_algorand_walletconnect_qrcode_modal = __toESM(require("algorand-walletconnect-qrcode-modal"));
 var import_utils = require("@json-rpc-tools/utils");
 class Algonaut {
@@ -810,7 +810,7 @@ class Algonaut {
       const request = (0, import_utils.formatJsonRpcRequest)("algo_signTxn", requestParams);
       let result;
       try {
-        result = await this.walletConnect.connector.sendCustomRequest(request);
+        result = await this.walletConnect.connector?.sendCustomRequest(request);
       } catch (er) {
         throw new Error("You canceled the transaction");
       }
@@ -919,10 +919,11 @@ class Algonaut {
     if (!clientListener)
       clientListener = void 0;
     const bridge = "https://bridge.walletconnect.org";
-    this.walletConnect.connector = new import_client.default({
+    const wcConnector = new import_index_min.default({
       bridge,
       qrcodeModal: import_algorand_walletconnect_qrcode_modal.default
     });
+    this.walletConnect.connector = wcConnector;
     if (!this.walletConnect.connector.connected) {
       this.walletConnect.connector.createSession();
     }
