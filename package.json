@@ -21,11 +21,10 @@
 		"build:cjs": "node ./esbuild.cjs.js",
 		"build:esm": "node ./esbuild.esm.js",
 		"build:types": "tsc --emitDeclarationOnly --outDir dist",
-		"xbuild": "tsc; tsc --module CommonJS --outDir dist/cjs; node buildscripts/swap_sdk.js",
-		"xbuild-test": "vite build test",
-		"xdev": "vite serve test --port 8891",
 		"test": "node test/test.js",
-		"docs": "npx typedoc"
+		"docs": "npx typedoc",
+		"xbuild-test": "vite build test",
+		"xdev": "vite serve test --port 8891"
 	},
 	"keywords": [
 		"algo",
