@@ -28,6 +28,8 @@ var import_algosdk = __toESM(require("algosdk"));
 var import_index_min = __toESM(require("@walletconnect/client/dist/umd/index.min.js"));
 var import_algorand_walletconnect_qrcode_modal = __toESM(require("algorand-walletconnect-qrcode-modal"));
 var import_utils = require("@json-rpc-tools/utils");
+var import_utils2 = require("@walletconnect/utils");
+var wcReqAF = 0;
 class Algonaut {
   algodClient;
   indexerClient = void 0;
@@ -915,7 +917,6 @@ class Algonaut {
     }
   }
   async connectAlgoWallet(clientListener) {
-    console.log("connectAlgoWallet");
     if (!clientListener)
       clientListener = void 0;
     const bridge = "https://bridge.walletconnect.org";
@@ -926,7 +927,7 @@ class Algonaut {
     this.walletConnect.connector = wcConnector;
     if (!this.walletConnect.connector.connected) {
       this.walletConnect.connector.createSession();
-      console.log("session created");
+      this.startReqAF();
     }
     this.subscribeToEvents(clientListener);
   }
@@ -935,7 +936,6 @@ class Algonaut {
       return;
     }
     this.walletConnect.connector.on("session_update", async (error, payload) => {
-      console.log('connector.on("session_update")');
       if (error) {
         throw error;
       }
@@ -945,7 +945,6 @@ class Algonaut {
       this.onSessionUpdate(accounts);
     });
     this.walletConnect.connector.on("connect", (error, payload) => {
-      console.log('connector.on("connect")');
       if (error) {
         throw error;
       }
@@ -954,7 +953,6 @@ class Algonaut {
       this.onConnect(payload);
     });
     this.walletConnect.connector.on("disconnect", (error, payload) => {
-      console.log('connector.on("disconnect")');
       if (error) {
         console.log(payload);
         throw error;
@@ -985,20 +983,37 @@ class Algonaut {
     console.log("reset app called");
     console.log("TBD!");
   }
+  startReqAF() {
+    if ((0, import_utils2.isBrowser)() && (0, import_utils2.isMobile)()) {
+      const keepAlive = () => {
+        wcReqAF = requestAnimationFrame(keepAlive);
+      };
+      requestAnimationFrame(keepAlive);
+    }
+  }
+  stopReqAF() {
+    if (wcReqAF) {
+      cancelAnimationFrame(wcReqAF);
+      wcReqAF = 0;
+    } else {
+      console.log("no wcReqAF to cancel");
+    }
+  }
   async onConnect(payload) {
-    console.log("onConnect");
     const { accounts } = payload.params[0];
     const address = accounts[0];
     this.setWalletConnectAccount(address);
     this.walletConnect.connected = true;
     this.walletConnect.accounts = accounts;
     this.walletConnect.address = address;
+    this.stopReqAF();
   }
   onDisconnect() {
     this.walletConnect.connected = false;
     this.walletConnect.accounts = [];
     this.walletConnect.address = "";
     this.account = void 0;
+    this.stopReqAF();
   }
   async onSessionUpdate(accounts) {
     this.walletConnect.address = accounts[0];

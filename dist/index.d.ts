@@ -423,6 +423,8 @@ export default class Algonaut {
     killSession(): Promise<void>;
     chainUpdate(newChain: any): Promise<void>;
     resetApp(): Promise<void>;
+    startReqAF(): void;
+    stopReqAF(): void;
     /**
      * Function called upon connection to WalletConnect. Sets account in AlgonautJS via {@link setWalletConnectAccount}.
      * @param payload Event payload, containing an array of account addresses
