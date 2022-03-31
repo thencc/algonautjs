@@ -1,5 +1,7 @@
 # Algonaut.js
 
+FYI - README docs need an update....
+
 [Examples](https://thencc.github.io/algonautjs/examples/) | [API Docs](https://thencc.github.io/algonautjs/docs/)
 
 Algonaut.js is designed to be a front end developer friendly and browser friendly library to facilitate intuitive transactions on the Algorand network.  Algorand is incredibly fast, powerful and secure, but it's early days and the tooling is still a little intense.
@@ -39,9 +41,9 @@ One of the most powerful aspects of the Algorand chain is the ability to group t
 const status = await algonaut.sendAtomicTransaction([
   await algonaut.atomicPayment({ to: appAddress, amount: 250000 }),
   await algonaut.atomicCallApp({
-    appIndex: appIndex, 
-    appArgs: ['get_bananas'], 
-    optionalFields: { applications: [ bananaPriceTicker ] , assets: [ bananaAsaIndex ] 
+    appIndex: appIndex,
+    appArgs: ['get_bananas'],
+    optionalFields: { applications: [ bananaPriceTicker ] , assets: [ bananaAsaIndex ]
   })
 ])
 ```
@@ -83,10 +85,10 @@ const algonaut = new Algonaut({
 const account = algonaut.recoverAccount("a mnemonic phrase");
 algonaut.setAccount(account);
 
-const txnStatus = await algonaut.sendAlgo({ 
-  to: "toAddress", 
-  amount: 1000, 
-  optionalFields: { note: "a note for the transaction" 
+const txnStatus = await algonaut.sendAlgo({
+  to: "toAddress",
+  amount: 1000,
+  optionalFields: { note: "a note for the transaction"
 });
 console.log(txnStatus);
 ```
