@@ -11,9 +11,6 @@ var __require = /* @__PURE__ */ ((x3) => typeof require !== "undefined" ? requir
     return require.apply(this, arguments);
   throw new Error('Dynamic require of "' + x3 + '" is not supported');
 });
-var __esm = (fn, res) => function __init() {
-  return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
-};
 var __commonJS = (cb, mod) => function __require2() {
   return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
 };
@@ -29,8 +26,8 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
+var __reExport = (target, mod, secondTarget) => (__copyProps(target, mod, "default"), secondTarget && __copyProps(secondTarget, mod, "default"));
 var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target, mod));
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // node_modules/base64-js/index.js
 var require_base64_js = __commonJS({
@@ -367,8 +364,8 @@ var require_buffer = __commonJS({
     }
     function fromArrayView(arrayView) {
       if (isInstance(arrayView, Uint8Array)) {
-        const copy = new Uint8Array(arrayView);
-        return fromArrayBuffer(copy.buffer, copy.byteOffset, copy.byteLength);
+        const copy2 = new Uint8Array(arrayView);
+        return fromArrayBuffer(copy2.buffer, copy2.byteOffset, copy2.byteLength);
       }
       return fromArrayLike(arrayView);
     }
@@ -422,7 +419,7 @@ var require_buffer = __commonJS({
       }
       return Buffer3.alloc(+length);
     }
-    Buffer3.isBuffer = function isBuffer(b2) {
+    Buffer3.isBuffer = function isBuffer3(b2) {
       return b2 != null && b2._isBuffer === true && b2 !== Buffer3.prototype;
     };
     Buffer3.compare = function compare(a3, b2) {
@@ -1532,7 +1529,7 @@ var require_buffer = __commonJS({
     Buffer3.prototype.writeDoubleBE = function writeDoubleBE(value, offset, noAssert) {
       return writeDouble(this, value, offset, false, noAssert);
     };
-    Buffer3.prototype.copy = function copy(target, targetStart, start, end) {
+    Buffer3.prototype.copy = function copy2(target, targetStart, start, end) {
       if (!Buffer3.isBuffer(target))
         throw new TypeError("argument should be a Buffer");
       if (!start)
@@ -15654,4174 +15651,6 @@ var require_algosdk_min = __commonJS({
   }
 });
 
-// node_modules/@walletconnect/client/dist/umd/index.min.js
-var require_index_min = __commonJS({
-  "node_modules/@walletconnect/client/dist/umd/index.min.js"(exports2, module2) {
-    !function(t3, e3) {
-      typeof exports2 == "object" && typeof module2 == "object" ? module2.exports = e3() : typeof define == "function" && define.amd ? define("WalletConnect", [], e3) : typeof exports2 == "object" ? exports2.WalletConnect = e3() : t3.WalletConnect = e3();
-    }(exports2, function() {
-      return function(t3) {
-        var e3 = {};
-        function r3(n2) {
-          if (e3[n2])
-            return e3[n2].exports;
-          var i3 = e3[n2] = { i: n2, l: false, exports: {} };
-          return t3[n2].call(i3.exports, i3, i3.exports, r3), i3.l = true, i3.exports;
-        }
-        return r3.m = t3, r3.c = e3, r3.d = function(t4, e4, n2) {
-          r3.o(t4, e4) || Object.defineProperty(t4, e4, { enumerable: true, get: n2 });
-        }, r3.r = function(t4) {
-          typeof Symbol != "undefined" && Symbol.toStringTag && Object.defineProperty(t4, Symbol.toStringTag, { value: "Module" }), Object.defineProperty(t4, "__esModule", { value: true });
-        }, r3.t = function(t4, e4) {
-          if (1 & e4 && (t4 = r3(t4)), 8 & e4)
-            return t4;
-          if (4 & e4 && typeof t4 == "object" && t4 && t4.__esModule)
-            return t4;
-          var n2 = /* @__PURE__ */ Object.create(null);
-          if (r3.r(n2), Object.defineProperty(n2, "default", { enumerable: true, value: t4 }), 2 & e4 && typeof t4 != "string")
-            for (var i3 in t4)
-              r3.d(n2, i3, function(e5) {
-                return t4[e5];
-              }.bind(null, i3));
-          return n2;
-        }, r3.n = function(t4) {
-          var e4 = t4 && t4.__esModule ? function() {
-            return t4.default;
-          } : function() {
-            return t4;
-          };
-          return r3.d(e4, "a", e4), e4;
-        }, r3.o = function(t4, e4) {
-          return Object.prototype.hasOwnProperty.call(t4, e4);
-        }, r3.p = "", r3(r3.s = 42);
-      }([function(t3, e3, r3) {
-        "use strict";
-        (function(t4) {
-          r3.d(e3, "f", function() {
-            return u3;
-          }), r3.d(e3, "g", function() {
-            return a3;
-          }), r3.d(e3, "i", function() {
-            return h3;
-          }), r3.d(e3, "h", function() {
-            return c3;
-          }), r3.d(e3, "b", function() {
-            return f3;
-          }), r3.d(e3, "c", function() {
-            return l3;
-          }), r3.d(e3, "e", function() {
-            return d3;
-          }), r3.d(e3, "d", function() {
-            return p3;
-          }), r3.d(e3, "o", function() {
-            return m3;
-          }), r3.d(e3, "n", function() {
-            return g3;
-          }), r3.d(e3, "p", function() {
-            return y3;
-          }), r3.d(e3, "A", function() {
-            return v3;
-          }), r3.d(e3, "z", function() {
-            return w4;
-          }), r3.d(e3, "B", function() {
-            return _4;
-          }), r3.d(e3, "v", function() {
-            return b2;
-          }), r3.d(e3, "u", function() {
-            return M3;
-          }), r3.d(e3, "s", function() {
-            return k3;
-          }), r3.d(e3, "r", function() {
-            return A4;
-          }), r3.d(e3, "t", function() {
-            return I3;
-          }), r3.d(e3, "q", function() {
-            return E4;
-          }), r3.d(e3, "m", function() {
-            return R2;
-          }), r3.d(e3, "l", function() {
-            return T4;
-          }), r3.d(e3, "k", function() {
-            return j3;
-          }), r3.d(e3, "j", function() {
-            return x3;
-          }), r3.d(e3, "x", function() {
-            return P3;
-          }), r3.d(e3, "a", function() {
-            return U2;
-          }), r3.d(e3, "y", function() {
-            return N3;
-          }), r3.d(e3, "w", function() {
-            return q3;
-          });
-          var n2 = r3(14), i3 = r3.n(n2), o3 = r3(37), s3 = r3.n(o3);
-          function u3(t5) {
-            return new Uint8Array(t5);
-          }
-          function a3(t5, e4 = false) {
-            const r4 = t5.toString("hex");
-            return e4 ? U2(r4) : r4;
-          }
-          function h3(t5) {
-            return t5.toString("utf8");
-          }
-          function c3(t5) {
-            return t5.readUIntBE(0, t5.length);
-          }
-          function f3(t5) {
-            return s3()(t5);
-          }
-          function l3(t5, e4 = false) {
-            return a3(f3(t5), e4);
-          }
-          function d3(t5) {
-            return h3(f3(t5));
-          }
-          function p3(t5) {
-            return c3(f3(t5));
-          }
-          function m3(e4) {
-            return t4.from(P3(e4), "hex");
-          }
-          function g3(t5) {
-            return u3(m3(t5));
-          }
-          function y3(t5) {
-            return h3(m3(t5));
-          }
-          function v3(e4) {
-            return t4.from(e4, "utf8");
-          }
-          function w4(t5) {
-            return u3(v3(t5));
-          }
-          function _4(t5, e4 = false) {
-            return a3(v3(t5), e4);
-          }
-          function b2(t5) {
-            return f3(O2(S2(t5)));
-          }
-          function M3(t5) {
-            return O2(S2(t5));
-          }
-          function S2(t5) {
-            return B2((t5 >>> 0).toString(2));
-          }
-          function O2(t5) {
-            return new Uint8Array(C3(t5).map((t6) => parseInt(t6, 2)));
-          }
-          function k3(t5, e4) {
-            return !(typeof t5 != "string" || !t5.match(/^0x[0-9A-Fa-f]*$/)) && (!e4 || t5.length === 2 + 2 * e4);
-          }
-          function A4(e4) {
-            return t4.isBuffer(e4);
-          }
-          function I3(t5) {
-            return i3.a.strict(t5) && !A4(t5);
-          }
-          function E4(t5) {
-            return !I3(t5) && !A4(t5) && t5.byteLength !== void 0;
-          }
-          function R2(t5) {
-            return A4(t5) ? "buffer" : I3(t5) ? "typed-array" : E4(t5) ? "array-buffer" : Array.isArray(t5) ? "array" : typeof t5;
-          }
-          function T4(t5) {
-            return function(t6) {
-              return !(typeof t6 != "string" || !new RegExp(/^[01]+$/).test(t6)) && t6.length % 8 == 0;
-            }(t5) ? "binary" : k3(t5) ? "hex" : "utf8";
-          }
-          function j3(...e4) {
-            return t4.concat(e4);
-          }
-          function x3(...t5) {
-            let e4 = [];
-            return t5.forEach((t6) => e4 = e4.concat(Array.from(t6))), new Uint8Array([...e4]);
-          }
-          function C3(t5, e4 = 8) {
-            const r4 = B2(t5).match(new RegExp(`.{${e4}}`, "gi"));
-            return Array.from(r4 || []);
-          }
-          function B2(t5, e4 = 8, r4 = "0") {
-            return function(t6, e5, r5 = "0") {
-              return L3(t6, e5, true, r5);
-            }(t5, function(t6, e5 = 8) {
-              const r5 = t6 % e5;
-              return r5 ? (t6 - r5) / e5 * e5 + e5 : t6;
-            }(t5.length, e4), r4);
-          }
-          function P3(t5) {
-            return t5.replace(/^0x/, "");
-          }
-          function U2(t5) {
-            return t5.startsWith("0x") ? t5 : "0x" + t5;
-          }
-          function N3(t5) {
-            return (t5 = B2(t5 = P3(t5), 2)) && (t5 = U2(t5)), t5;
-          }
-          function q3(t5) {
-            const e4 = t5.startsWith("0x");
-            return t5 = (t5 = P3(t5)).startsWith("0") ? t5.substring(1) : t5, e4 ? U2(t5) : t5;
-          }
-          function L3(t5, e4, r4, n3 = "0") {
-            const i4 = e4 - t5.length;
-            let o4 = t5;
-            if (i4 > 0) {
-              const e5 = n3.repeat(i4);
-              o4 = r4 ? e5 + t5 : t5 + e5;
-            }
-            return o4;
-          }
-        }).call(this, r3(16).Buffer);
-      }, function(t3, e3, r3) {
-        "use strict";
-        var n2 = r3(35), i3 = r3(5), o3 = r3(36);
-        function s3(t4) {
-          return Object(o3.a)(t4);
-        }
-        function u3() {
-          const t4 = s3();
-          return t4 && t4.os ? t4.os : void 0;
-        }
-        function a3() {
-          return !!u3() && (function() {
-            const t4 = u3();
-            return !!t4 && t4.toLowerCase().includes("android");
-          }() || function() {
-            const t4 = u3();
-            return !!t4 && (t4.toLowerCase().includes("ios") || t4.toLowerCase().includes("mac") && navigator.maxTouchPoints > 1);
-          }());
-        }
-        function h3() {
-          return !function() {
-            const t4 = s3();
-            return !(!t4 || !t4.name) && t4.name.toLowerCase() === "node";
-          }() && !!c3();
-        }
-        i3.getFromWindow, i3.getFromWindowOrThrow, i3.getDocumentOrThrow, i3.getDocument, i3.getNavigatorOrThrow;
-        const c3 = i3.getNavigator, f3 = (i3.getLocationOrThrow, i3.getLocation), l3 = (i3.getCryptoOrThrow, i3.getCrypto, i3.getLocalStorageOrThrow, i3.getLocalStorage);
-        function d3() {
-          return n2.getWindowMetadata();
-        }
-        const p3 = function(t4) {
-          if (typeof t4 != "string")
-            throw new Error("Cannot safe json parse value of type " + typeof t4);
-          try {
-            return JSON.parse(t4);
-          } catch (e4) {
-            return t4;
-          }
-        }, m3 = function(t4) {
-          return typeof t4 == "string" ? t4 : JSON.stringify(t4);
-        };
-        function g3(t4, e4) {
-          const r4 = m3(e4), n3 = l3();
-          n3 && n3.setItem(t4, r4);
-        }
-        function y3(t4) {
-          let e4 = null, r4 = null;
-          const n3 = l3();
-          return n3 && (r4 = n3.getItem(t4)), e4 = r4 ? p3(r4) : r4, e4;
-        }
-        function v3(t4) {
-          const e4 = l3();
-          e4 && e4.removeItem(t4);
-        }
-        const w4 = ["session_request", "session_update", "exchange_key", "connect", "disconnect", "display_uri", "modal_closed", "transport_open", "transport_close", "transport_error"], _4 = ["eth_sendTransaction", "eth_signTransaction", "eth_sign", "eth_signTypedData", "eth_signTypedData_v1", "eth_signTypedData_v2", "eth_signTypedData_v3", "eth_signTypedData_v4", "personal_sign", "wallet_addEthereumChain", "wallet_switchEthereumChain", "wallet_getPermissions", "wallet_requestPermissions", "wallet_registerOnboarding", "wallet_watchAsset", "wallet_scanQRCode"];
-        var b2 = r3(11), M3 = r3.n(b2), S2 = r3(0);
-        function O2(t4) {
-          return S2.b(new Uint8Array(t4));
-        }
-        function k3(t4, e4) {
-          return S2.c(new Uint8Array(t4), !e4);
-        }
-        function A4(t4) {
-          return S2.f(t4).buffer;
-        }
-        function I3(t4) {
-          return S2.n(t4).buffer;
-        }
-        function E4(t4, e4) {
-          const r4 = S2.x(S2.y(new M3.a(t4).toString(16)));
-          return e4 ? r4 : S2.a(r4);
-        }
-        var R2 = r3(38);
-        function T4(t4) {
-          return S2.y(t4);
-        }
-        const j3 = r3(39).payloadId;
-        function x3() {
-          return ((t4, e4) => {
-            for (e4 = t4 = ""; t4++ < 36; e4 += 51 * t4 & 52 ? (15 ^ t4 ? 8 ^ Math.random() * (20 ^ t4 ? 16 : 4) : 4).toString(16) : "-")
-              ;
-            return e4;
-          })();
-        }
-        function C3(t4, e4) {
-          return S2.s(t4, e4);
-        }
-        function B2(t4) {
-          return t4.method !== void 0;
-        }
-        function P3(t4) {
-          return t4.result !== void 0;
-        }
-        function U2(t4) {
-          return t4.error !== void 0;
-        }
-        function N3(t4) {
-          return t4.event !== void 0;
-        }
-        function q3(t4) {
-          return w4.includes(t4) || t4.startsWith("wc_");
-        }
-        function L3(t4) {
-          return !!t4.method.startsWith("wc_") || !_4.includes(t4.method);
-        }
-        function D3(t4) {
-          t4 = Object(S2.x)(t4.toLowerCase());
-          const e4 = Object(S2.x)(Object(R2.keccak_256)((r4 = t4, S2.A(r4))));
-          var r4;
-          let n3 = "";
-          for (let r5 = 0; r5 < t4.length; r5++)
-            parseInt(e4[r5], 16) > 7 ? n3 += t4[r5].toUpperCase() : n3 += t4[r5];
-          return Object(S2.a)(n3);
-        }
-        function W2(t4) {
-          var e4, r4, n3;
-          return (n3 = t4) && n3.length && !C3(t4[0]) && (t4[0] = (e4 = t4[0], S2.B(e4, !r4))), t4;
-        }
-        function F3(t4) {
-          if (t4.type !== void 0 && t4.type !== "0")
-            return t4;
-          if (t4.from === void 0 || (!(e4 = t4.from) || e4.toLowerCase().substring(0, 2) !== "0x" || !/^(0x)?[0-9a-f]{40}$/i.test(e4) || !/^(0x)?[0-9a-f]{40}$/.test(e4) && !/^(0x)?[0-9A-F]{40}$/.test(e4) && e4 !== D3(e4)))
-            throw new Error("Transaction object must include a valid 'from' value.");
-          var e4;
-          function r4(t5) {
-            let e5 = t5;
-            var r5;
-            return (typeof t5 == "number" || typeof t5 == "string" && !function(t6) {
-              return t6 === "" || typeof t6 == "string" && t6.trim() === "";
-            }(t5)) && (C3(t5) ? typeof t5 == "string" && (e5 = T4(t5)) : e5 = E4(t5)), typeof e5 == "string" && (r5 = e5, e5 = S2.w(S2.a(r5))), e5;
-          }
-          const n3 = { from: T4(t4.from), to: t4.to === void 0 ? "" : T4(t4.to), gasPrice: t4.gasPrice === void 0 ? "" : r4(t4.gasPrice), gas: t4.gas === void 0 ? t4.gasLimit === void 0 ? "" : r4(t4.gasLimit) : r4(t4.gas), value: t4.value === void 0 ? "" : r4(t4.value), nonce: t4.nonce === void 0 ? "" : r4(t4.nonce), data: t4.data === void 0 ? "" : T4(t4.data) || "0x" }, i4 = ["gasPrice", "gas", "value", "nonce"];
-          return Object.keys(n3).forEach((t5) => {
-            !n3[t5].trim().length && i4.includes(t5) && delete n3[t5];
-          }), n3;
-        }
-        function Y2(t4) {
-          const e4 = t4.message || "Failed or Rejected Request";
-          let r4 = -32e3;
-          if (t4 && !t4.code)
-            switch (e4) {
-              case "Parse error":
-                r4 = -32700;
-                break;
-              case "Invalid request":
-                r4 = -32600;
-                break;
-              case "Method not found":
-                r4 = -32601;
-                break;
-              case "Invalid params":
-                r4 = -32602;
-                break;
-              case "Internal error":
-                r4 = -32603;
-                break;
-              default:
-                r4 = -32e3;
-            }
-          return { code: r4, message: e4 };
-        }
-        var z3 = r3(15);
-        function J2(t4) {
-          const e4 = t4.indexOf("?") !== -1 ? t4.indexOf("?") : void 0;
-          return e4 !== void 0 ? t4.substr(e4) : "";
-        }
-        function $3(t4, e4) {
-          let r4 = Z2(t4);
-          return r4 = Object.assign(Object.assign({}, r4), e4), t4 = function(t5) {
-            return z3.stringify(t5);
-          }(r4);
-        }
-        function Z2(t4) {
-          return z3.parse(t4);
-        }
-        function K3(t4) {
-          return t4.bridge !== void 0;
-        }
-        function V2(t4) {
-          const e4 = t4.indexOf(":"), r4 = t4.indexOf("?") !== -1 ? t4.indexOf("?") : void 0, n3 = t4.substring(0, e4);
-          const i4 = function(t5) {
-            const e5 = t5.split("@");
-            return { handshakeTopic: e5[0], version: parseInt(e5[1], 10) };
-          }(t4.substring(e4 + 1, r4));
-          const o4 = function(t5) {
-            const e5 = Z2(t5);
-            return { key: e5.key || "", bridge: e5.bridge || "" };
-          }(r4 !== void 0 ? t4.substr(r4) : "");
-          return Object.assign(Object.assign({ protocol: n3 }, i4), o4);
-        }
-        r3.d(e3, "g", function() {
-          return s3;
-        }), r3.d(e3, "r", function() {
-          return a3;
-        }), r3.d(e3, "m", function() {
-          return h3;
-        }), r3.d(e3, "k", function() {
-          return f3;
-        }), r3.d(e3, "i", function() {
-          return d3;
-        }), r3.d(e3, "B", function() {
-          return g3;
-        }), r3.d(e3, "j", function() {
-          return y3;
-        }), r3.d(e3, "A", function() {
-          return v3;
-        }), r3.d(e3, "v", function() {
-          return "WALLETCONNECT_DEEPLINK_CHOICE";
-        }), r3.d(e3, "C", function() {
-          return _4;
-        }), r3.d(e3, "b", function() {
-          return O2;
-        }), r3.d(e3, "c", function() {
-          return k3;
-        }), r3.d(e3, "d", function() {
-          return A4;
-        }), r3.d(e3, "e", function() {
-          return I3;
-        }), r3.d(e3, "f", function() {
-          return E4;
-        }), r3.d(e3, "w", function() {
-          return W2;
-        }), r3.d(e3, "x", function() {
-          return F3;
-        }), r3.d(e3, "z", function() {
-          return j3;
-        }), r3.d(e3, "D", function() {
-          return x3;
-        }), r3.d(e3, "h", function() {
-          return Y2;
-        }), r3.d(e3, "u", function() {
-          return K3;
-        }), r3.d(e3, "y", function() {
-          return V2;
-        }), r3.d(e3, "l", function() {
-          return J2;
-        }), r3.d(e3, "a", function() {
-          return $3;
-        }), r3.d(e3, "o", function() {
-          return B2;
-        }), r3.d(e3, "q", function() {
-          return P3;
-        }), r3.d(e3, "p", function() {
-          return U2;
-        }), r3.d(e3, "n", function() {
-          return N3;
-        }), r3.d(e3, "s", function() {
-          return q3;
-        }), r3.d(e3, "t", function() {
-          return L3;
-        });
-      }, function(t3, e3, r3) {
-        "use strict";
-        r3.d(e3, "b", function() {
-          return 256;
-        }), r3.d(e3, "g", function() {
-          return 256;
-        }), r3.d(e3, "a", function() {
-          return "AES-CBC";
-        }), r3.d(e3, "f", function() {
-          return "SHA-256";
-        }), r3.d(e3, "e", function() {
-          return "HMAC";
-        }), r3.d(e3, "i", function() {
-          return "SHA-256";
-        }), r3.d(e3, "j", function() {
-          return "SHA-512";
-        }), r3.d(e3, "h", function() {
-          return 512;
-        }), r3.d(e3, "d", function() {
-          return "encrypt";
-        }), r3.d(e3, "c", function() {
-          return "decrypt";
-        }), r3.d(e3, "k", function() {
-          return "sign";
-        }), r3.d(e3, "l", function() {
-          return "verify";
-        });
-      }, function(t3, e3, r3) {
-        "use strict";
-        r3.d(e3, "a", function() {
-          return n2;
-        }), r3.d(e3, "c", function() {
-          return i3;
-        }), r3.d(e3, "b", function() {
-          return o3;
-        }), r3.d(e3, "d", function() {
-          return s3;
-        }), r3.d(e3, "e", function() {
-          return u3;
-        });
-        const n2 = "INTERNAL_ERROR", i3 = "SERVER_ERROR", o3 = [-32700, -32600, -32601, -32602, -32603], s3 = [-32e3, -32099], u3 = { PARSE_ERROR: { code: -32700, message: "Parse error" }, INVALID_REQUEST: { code: -32600, message: "Invalid Request" }, METHOD_NOT_FOUND: { code: -32601, message: "Method not found" }, INVALID_PARAMS: { code: -32602, message: "Invalid params" }, [n2]: { code: -32603, message: "Internal error" }, [i3]: { code: -32e3, message: "Server error" } };
-      }, function(t3, e3, r3) {
-        "use strict";
-        var n2 = this && this.__createBinding || (Object.create ? function(t4, e4, r4, n3) {
-          n3 === void 0 && (n3 = r4), Object.defineProperty(t4, n3, { enumerable: true, get: function() {
-            return e4[r4];
-          } });
-        } : function(t4, e4, r4, n3) {
-          n3 === void 0 && (n3 = r4), t4[n3] = e4[r4];
-        }), i3 = this && this.__exportStar || function(t4, e4) {
-          for (var r4 in t4)
-            r4 === "default" || e4.hasOwnProperty(r4) || n2(e4, t4, r4);
-        };
-        Object.defineProperty(e3, "__esModule", { value: true }), i3(r3(50), e3), i3(r3(51), e3);
-      }, function(t3, e3, r3) {
-        "use strict";
-        function n2(t4) {
-          let e4 = void 0;
-          return typeof window != "undefined" && window[t4] !== void 0 && (e4 = window[t4]), e4;
-        }
-        function i3(t4) {
-          const e4 = n2(t4);
-          if (!e4)
-            throw new Error(t4 + " is not defined in Window");
-          return e4;
-        }
-        Object.defineProperty(e3, "__esModule", { value: true }), e3.getLocalStorage = e3.getLocalStorageOrThrow = e3.getCrypto = e3.getCryptoOrThrow = e3.getLocation = e3.getLocationOrThrow = e3.getNavigator = e3.getNavigatorOrThrow = e3.getDocument = e3.getDocumentOrThrow = e3.getFromWindowOrThrow = e3.getFromWindow = void 0, e3.getFromWindow = n2, e3.getFromWindowOrThrow = i3, e3.getDocumentOrThrow = function() {
-          return i3("document");
-        }, e3.getDocument = function() {
-          return n2("document");
-        }, e3.getNavigatorOrThrow = function() {
-          return i3("navigator");
-        }, e3.getNavigator = function() {
-          return n2("navigator");
-        }, e3.getLocationOrThrow = function() {
-          return i3("location");
-        }, e3.getLocation = function() {
-          return n2("location");
-        }, e3.getCryptoOrThrow = function() {
-          return i3("crypto");
-        }, e3.getCrypto = function() {
-          return n2("crypto");
-        }, e3.getLocalStorageOrThrow = function() {
-          return i3("localStorage");
-        }, e3.getLocalStorage = function() {
-          return n2("localStorage");
-        };
-      }, function(t3, e3, r3) {
-        "use strict";
-        r3.d(e3, "b", function() {
-          return s3;
-        }), r3.d(e3, "a", function() {
-          return u3;
-        }), r3.d(e3, "c", function() {
-          return a3;
-        }), r3.d(e3, "d", function() {
-          return h3;
-        }), r3.d(e3, "e", function() {
-          return c3;
-        }), r3.d(e3, "f", function() {
-          return f3;
-        });
-        var n2 = r3(4), i3 = r3(2);
-        async function o3(t4, e4 = i3.a) {
-          return n2.getSubtleCrypto().importKey("raw", t4, function(t5) {
-            return t5 === i3.a ? { length: i3.b, name: i3.a } : { hash: { name: i3.f }, name: i3.e };
-          }(e4), true, function(t5) {
-            return t5 === i3.a ? [i3.d, i3.c] : [i3.k, i3.l];
-          }(e4));
-        }
-        async function s3(t4, e4, r4) {
-          const s4 = n2.getSubtleCrypto(), u4 = await o3(e4, i3.a), a4 = await s4.encrypt({ iv: t4, name: i3.a }, u4, r4);
-          return new Uint8Array(a4);
-        }
-        async function u3(t4, e4, r4) {
-          const s4 = n2.getSubtleCrypto(), u4 = await o3(e4, i3.a), a4 = await s4.decrypt({ iv: t4, name: i3.a }, u4, r4);
-          return new Uint8Array(a4);
-        }
-        async function a3(t4, e4) {
-          const r4 = n2.getSubtleCrypto(), s4 = await o3(t4, i3.e), u4 = await r4.sign({ length: i3.g, name: i3.e }, s4, e4);
-          return new Uint8Array(u4);
-        }
-        async function h3(t4, e4) {
-          const r4 = n2.getSubtleCrypto(), s4 = await o3(t4, i3.e), u4 = await r4.sign({ length: i3.h, name: i3.e }, s4, e4);
-          return new Uint8Array(u4);
-        }
-        async function c3(t4) {
-          const e4 = n2.getSubtleCrypto(), r4 = await e4.digest({ name: i3.i }, t4);
-          return new Uint8Array(r4);
-        }
-        async function f3(t4) {
-          const e4 = n2.getSubtleCrypto(), r4 = await e4.digest({ name: i3.j }, t4);
-          return new Uint8Array(r4);
-        }
-      }, function(t3, e3, r3) {
-        "use strict";
-        r3.d(e3, "c", function() {
-          return i3;
-        }), r3.d(e3, "a", function() {
-          return o3;
-        }), r3.d(e3, "b", function() {
-          return s3;
-        });
-        var n2 = r3(3);
-        function i3(t4) {
-          return n2.b.includes(t4);
-        }
-        function o3(t4) {
-          return Object.keys(n2.e).includes(t4) ? n2.e[t4] : n2.e[n2.a];
-        }
-        function s3(t4) {
-          const e4 = Object.values(n2.e).find((e5) => e5.code === t4);
-          return e4 || n2.e[n2.a];
-        }
-      }, function(t3, e3, r3) {
-        "use strict";
-        var n2 = r3(27);
-        r3.d(e3, "randomBytes", function() {
-          return n2.a;
-        });
-        var i3 = r3(28);
-        r3.d(e3, "aesCbcDecrypt", function() {
-          return i3.a;
-        }), r3.d(e3, "aesCbcEncrypt", function() {
-          return i3.b;
-        });
-        var o3 = r3(29);
-        r3.d(e3, "hmacSha256Sign", function() {
-          return o3.a;
-        });
-        r3(34), r3(10), r3(2);
-      }, function(t3, e3, r3) {
-        "use strict";
-        r3.d(e3, "a", function() {
-          return n2;
-        });
-        class n2 {
-        }
-      }, function(t3, e3, r3) {
-        "use strict";
-        var n2 = r3(30);
-        r3.o(n2, "isConstantTime") && r3.d(e3, "isConstantTime", function() {
-          return n2.isConstantTime;
-        });
-        r3(31);
-        var i3 = r3(32);
-        r3.o(i3, "isConstantTime") && r3.d(e3, "isConstantTime", function() {
-          return i3.isConstantTime;
-        });
-        var o3 = r3(33);
-        r3.d(e3, "isConstantTime", function() {
-          return o3.a;
-        });
-      }, function(t3, e3, r3) {
-        (function(t4) {
-          !function(t5, e4) {
-            "use strict";
-            function n2(t6, e5) {
-              if (!t6)
-                throw new Error(e5 || "Assertion failed");
-            }
-            function i3(t6, e5) {
-              t6.super_ = e5;
-              var r4 = function() {
-              };
-              r4.prototype = e5.prototype, t6.prototype = new r4(), t6.prototype.constructor = t6;
-            }
-            function o3(t6, e5, r4) {
-              if (o3.isBN(t6))
-                return t6;
-              this.negative = 0, this.words = null, this.length = 0, this.red = null, t6 !== null && (e5 !== "le" && e5 !== "be" || (r4 = e5, e5 = 10), this._init(t6 || 0, e5 || 10, r4 || "be"));
-            }
-            var s3;
-            typeof t5 == "object" ? t5.exports = o3 : e4.BN = o3, o3.BN = o3, o3.wordSize = 26;
-            try {
-              s3 = r3(45).Buffer;
-            } catch (t6) {
-            }
-            function u3(t6, e5, r4) {
-              for (var n3 = 0, i4 = Math.min(t6.length, r4), o4 = e5; o4 < i4; o4++) {
-                var s4 = t6.charCodeAt(o4) - 48;
-                n3 <<= 4, n3 |= s4 >= 49 && s4 <= 54 ? s4 - 49 + 10 : s4 >= 17 && s4 <= 22 ? s4 - 17 + 10 : 15 & s4;
-              }
-              return n3;
-            }
-            function a3(t6, e5, r4, n3) {
-              for (var i4 = 0, o4 = Math.min(t6.length, r4), s4 = e5; s4 < o4; s4++) {
-                var u4 = t6.charCodeAt(s4) - 48;
-                i4 *= n3, i4 += u4 >= 49 ? u4 - 49 + 10 : u4 >= 17 ? u4 - 17 + 10 : u4;
-              }
-              return i4;
-            }
-            o3.isBN = function(t6) {
-              return t6 instanceof o3 || t6 !== null && typeof t6 == "object" && t6.constructor.wordSize === o3.wordSize && Array.isArray(t6.words);
-            }, o3.max = function(t6, e5) {
-              return t6.cmp(e5) > 0 ? t6 : e5;
-            }, o3.min = function(t6, e5) {
-              return t6.cmp(e5) < 0 ? t6 : e5;
-            }, o3.prototype._init = function(t6, e5, r4) {
-              if (typeof t6 == "number")
-                return this._initNumber(t6, e5, r4);
-              if (typeof t6 == "object")
-                return this._initArray(t6, e5, r4);
-              e5 === "hex" && (e5 = 16), n2(e5 === (0 | e5) && e5 >= 2 && e5 <= 36);
-              var i4 = 0;
-              (t6 = t6.toString().replace(/\s+/g, ""))[0] === "-" && i4++, e5 === 16 ? this._parseHex(t6, i4) : this._parseBase(t6, e5, i4), t6[0] === "-" && (this.negative = 1), this.strip(), r4 === "le" && this._initArray(this.toArray(), e5, r4);
-            }, o3.prototype._initNumber = function(t6, e5, r4) {
-              t6 < 0 && (this.negative = 1, t6 = -t6), t6 < 67108864 ? (this.words = [67108863 & t6], this.length = 1) : t6 < 4503599627370496 ? (this.words = [67108863 & t6, t6 / 67108864 & 67108863], this.length = 2) : (n2(t6 < 9007199254740992), this.words = [67108863 & t6, t6 / 67108864 & 67108863, 1], this.length = 3), r4 === "le" && this._initArray(this.toArray(), e5, r4);
-            }, o3.prototype._initArray = function(t6, e5, r4) {
-              if (n2(typeof t6.length == "number"), t6.length <= 0)
-                return this.words = [0], this.length = 1, this;
-              this.length = Math.ceil(t6.length / 3), this.words = new Array(this.length);
-              for (var i4 = 0; i4 < this.length; i4++)
-                this.words[i4] = 0;
-              var o4, s4, u4 = 0;
-              if (r4 === "be")
-                for (i4 = t6.length - 1, o4 = 0; i4 >= 0; i4 -= 3)
-                  s4 = t6[i4] | t6[i4 - 1] << 8 | t6[i4 - 2] << 16, this.words[o4] |= s4 << u4 & 67108863, this.words[o4 + 1] = s4 >>> 26 - u4 & 67108863, (u4 += 24) >= 26 && (u4 -= 26, o4++);
-              else if (r4 === "le")
-                for (i4 = 0, o4 = 0; i4 < t6.length; i4 += 3)
-                  s4 = t6[i4] | t6[i4 + 1] << 8 | t6[i4 + 2] << 16, this.words[o4] |= s4 << u4 & 67108863, this.words[o4 + 1] = s4 >>> 26 - u4 & 67108863, (u4 += 24) >= 26 && (u4 -= 26, o4++);
-              return this.strip();
-            }, o3.prototype._parseHex = function(t6, e5) {
-              this.length = Math.ceil((t6.length - e5) / 6), this.words = new Array(this.length);
-              for (var r4 = 0; r4 < this.length; r4++)
-                this.words[r4] = 0;
-              var n3, i4, o4 = 0;
-              for (r4 = t6.length - 6, n3 = 0; r4 >= e5; r4 -= 6)
-                i4 = u3(t6, r4, r4 + 6), this.words[n3] |= i4 << o4 & 67108863, this.words[n3 + 1] |= i4 >>> 26 - o4 & 4194303, (o4 += 24) >= 26 && (o4 -= 26, n3++);
-              r4 + 6 !== e5 && (i4 = u3(t6, e5, r4 + 6), this.words[n3] |= i4 << o4 & 67108863, this.words[n3 + 1] |= i4 >>> 26 - o4 & 4194303), this.strip();
-            }, o3.prototype._parseBase = function(t6, e5, r4) {
-              this.words = [0], this.length = 1;
-              for (var n3 = 0, i4 = 1; i4 <= 67108863; i4 *= e5)
-                n3++;
-              n3--, i4 = i4 / e5 | 0;
-              for (var o4 = t6.length - r4, s4 = o4 % n3, u4 = Math.min(o4, o4 - s4) + r4, h4 = 0, c4 = r4; c4 < u4; c4 += n3)
-                h4 = a3(t6, c4, c4 + n3, e5), this.imuln(i4), this.words[0] + h4 < 67108864 ? this.words[0] += h4 : this._iaddn(h4);
-              if (s4 !== 0) {
-                var f4 = 1;
-                for (h4 = a3(t6, c4, t6.length, e5), c4 = 0; c4 < s4; c4++)
-                  f4 *= e5;
-                this.imuln(f4), this.words[0] + h4 < 67108864 ? this.words[0] += h4 : this._iaddn(h4);
-              }
-            }, o3.prototype.copy = function(t6) {
-              t6.words = new Array(this.length);
-              for (var e5 = 0; e5 < this.length; e5++)
-                t6.words[e5] = this.words[e5];
-              t6.length = this.length, t6.negative = this.negative, t6.red = this.red;
-            }, o3.prototype.clone = function() {
-              var t6 = new o3(null);
-              return this.copy(t6), t6;
-            }, o3.prototype._expand = function(t6) {
-              for (; this.length < t6; )
-                this.words[this.length++] = 0;
-              return this;
-            }, o3.prototype.strip = function() {
-              for (; this.length > 1 && this.words[this.length - 1] === 0; )
-                this.length--;
-              return this._normSign();
-            }, o3.prototype._normSign = function() {
-              return this.length === 1 && this.words[0] === 0 && (this.negative = 0), this;
-            }, o3.prototype.inspect = function() {
-              return (this.red ? "<BN-R: " : "<BN: ") + this.toString(16) + ">";
-            };
-            var h3 = ["", "0", "00", "000", "0000", "00000", "000000", "0000000", "00000000", "000000000", "0000000000", "00000000000", "000000000000", "0000000000000", "00000000000000", "000000000000000", "0000000000000000", "00000000000000000", "000000000000000000", "0000000000000000000", "00000000000000000000", "000000000000000000000", "0000000000000000000000", "00000000000000000000000", "000000000000000000000000", "0000000000000000000000000"], c3 = [0, 0, 25, 16, 12, 11, 10, 9, 8, 8, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], f3 = [0, 0, 33554432, 43046721, 16777216, 48828125, 60466176, 40353607, 16777216, 43046721, 1e7, 19487171, 35831808, 62748517, 7529536, 11390625, 16777216, 24137569, 34012224, 47045881, 64e6, 4084101, 5153632, 6436343, 7962624, 9765625, 11881376, 14348907, 17210368, 20511149, 243e5, 28629151, 33554432, 39135393, 45435424, 52521875, 60466176];
-            function l3(t6, e5, r4) {
-              r4.negative = e5.negative ^ t6.negative;
-              var n3 = t6.length + e5.length | 0;
-              r4.length = n3, n3 = n3 - 1 | 0;
-              var i4 = 0 | t6.words[0], o4 = 0 | e5.words[0], s4 = i4 * o4, u4 = 67108863 & s4, a4 = s4 / 67108864 | 0;
-              r4.words[0] = u4;
-              for (var h4 = 1; h4 < n3; h4++) {
-                for (var c4 = a4 >>> 26, f4 = 67108863 & a4, l4 = Math.min(h4, e5.length - 1), d4 = Math.max(0, h4 - t6.length + 1); d4 <= l4; d4++) {
-                  var p4 = h4 - d4 | 0;
-                  c4 += (s4 = (i4 = 0 | t6.words[p4]) * (o4 = 0 | e5.words[d4]) + f4) / 67108864 | 0, f4 = 67108863 & s4;
-                }
-                r4.words[h4] = 0 | f4, a4 = 0 | c4;
-              }
-              return a4 !== 0 ? r4.words[h4] = 0 | a4 : r4.length--, r4.strip();
-            }
-            o3.prototype.toString = function(t6, e5) {
-              var r4;
-              if (e5 = 0 | e5 || 1, (t6 = t6 || 10) === 16 || t6 === "hex") {
-                r4 = "";
-                for (var i4 = 0, o4 = 0, s4 = 0; s4 < this.length; s4++) {
-                  var u4 = this.words[s4], a4 = (16777215 & (u4 << i4 | o4)).toString(16);
-                  r4 = (o4 = u4 >>> 24 - i4 & 16777215) !== 0 || s4 !== this.length - 1 ? h3[6 - a4.length] + a4 + r4 : a4 + r4, (i4 += 2) >= 26 && (i4 -= 26, s4--);
-                }
-                for (o4 !== 0 && (r4 = o4.toString(16) + r4); r4.length % e5 != 0; )
-                  r4 = "0" + r4;
-                return this.negative !== 0 && (r4 = "-" + r4), r4;
-              }
-              if (t6 === (0 | t6) && t6 >= 2 && t6 <= 36) {
-                var l4 = c3[t6], d4 = f3[t6];
-                r4 = "";
-                var p4 = this.clone();
-                for (p4.negative = 0; !p4.isZero(); ) {
-                  var m4 = p4.modn(d4).toString(t6);
-                  r4 = (p4 = p4.idivn(d4)).isZero() ? m4 + r4 : h3[l4 - m4.length] + m4 + r4;
-                }
-                for (this.isZero() && (r4 = "0" + r4); r4.length % e5 != 0; )
-                  r4 = "0" + r4;
-                return this.negative !== 0 && (r4 = "-" + r4), r4;
-              }
-              n2(false, "Base should be between 2 and 36");
-            }, o3.prototype.toNumber = function() {
-              var t6 = this.words[0];
-              return this.length === 2 ? t6 += 67108864 * this.words[1] : this.length === 3 && this.words[2] === 1 ? t6 += 4503599627370496 + 67108864 * this.words[1] : this.length > 2 && n2(false, "Number can only safely store up to 53 bits"), this.negative !== 0 ? -t6 : t6;
-            }, o3.prototype.toJSON = function() {
-              return this.toString(16);
-            }, o3.prototype.toBuffer = function(t6, e5) {
-              return n2(s3 !== void 0), this.toArrayLike(s3, t6, e5);
-            }, o3.prototype.toArray = function(t6, e5) {
-              return this.toArrayLike(Array, t6, e5);
-            }, o3.prototype.toArrayLike = function(t6, e5, r4) {
-              var i4 = this.byteLength(), o4 = r4 || Math.max(1, i4);
-              n2(i4 <= o4, "byte array longer than desired length"), n2(o4 > 0, "Requested array length <= 0"), this.strip();
-              var s4, u4, a4 = e5 === "le", h4 = new t6(o4), c4 = this.clone();
-              if (a4) {
-                for (u4 = 0; !c4.isZero(); u4++)
-                  s4 = c4.andln(255), c4.iushrn(8), h4[u4] = s4;
-                for (; u4 < o4; u4++)
-                  h4[u4] = 0;
-              } else {
-                for (u4 = 0; u4 < o4 - i4; u4++)
-                  h4[u4] = 0;
-                for (u4 = 0; !c4.isZero(); u4++)
-                  s4 = c4.andln(255), c4.iushrn(8), h4[o4 - u4 - 1] = s4;
-              }
-              return h4;
-            }, Math.clz32 ? o3.prototype._countBits = function(t6) {
-              return 32 - Math.clz32(t6);
-            } : o3.prototype._countBits = function(t6) {
-              var e5 = t6, r4 = 0;
-              return e5 >= 4096 && (r4 += 13, e5 >>>= 13), e5 >= 64 && (r4 += 7, e5 >>>= 7), e5 >= 8 && (r4 += 4, e5 >>>= 4), e5 >= 2 && (r4 += 2, e5 >>>= 2), r4 + e5;
-            }, o3.prototype._zeroBits = function(t6) {
-              if (t6 === 0)
-                return 26;
-              var e5 = t6, r4 = 0;
-              return (8191 & e5) == 0 && (r4 += 13, e5 >>>= 13), (127 & e5) == 0 && (r4 += 7, e5 >>>= 7), (15 & e5) == 0 && (r4 += 4, e5 >>>= 4), (3 & e5) == 0 && (r4 += 2, e5 >>>= 2), (1 & e5) == 0 && r4++, r4;
-            }, o3.prototype.bitLength = function() {
-              var t6 = this.words[this.length - 1], e5 = this._countBits(t6);
-              return 26 * (this.length - 1) + e5;
-            }, o3.prototype.zeroBits = function() {
-              if (this.isZero())
-                return 0;
-              for (var t6 = 0, e5 = 0; e5 < this.length; e5++) {
-                var r4 = this._zeroBits(this.words[e5]);
-                if (t6 += r4, r4 !== 26)
-                  break;
-              }
-              return t6;
-            }, o3.prototype.byteLength = function() {
-              return Math.ceil(this.bitLength() / 8);
-            }, o3.prototype.toTwos = function(t6) {
-              return this.negative !== 0 ? this.abs().inotn(t6).iaddn(1) : this.clone();
-            }, o3.prototype.fromTwos = function(t6) {
-              return this.testn(t6 - 1) ? this.notn(t6).iaddn(1).ineg() : this.clone();
-            }, o3.prototype.isNeg = function() {
-              return this.negative !== 0;
-            }, o3.prototype.neg = function() {
-              return this.clone().ineg();
-            }, o3.prototype.ineg = function() {
-              return this.isZero() || (this.negative ^= 1), this;
-            }, o3.prototype.iuor = function(t6) {
-              for (; this.length < t6.length; )
-                this.words[this.length++] = 0;
-              for (var e5 = 0; e5 < t6.length; e5++)
-                this.words[e5] = this.words[e5] | t6.words[e5];
-              return this.strip();
-            }, o3.prototype.ior = function(t6) {
-              return n2((this.negative | t6.negative) == 0), this.iuor(t6);
-            }, o3.prototype.or = function(t6) {
-              return this.length > t6.length ? this.clone().ior(t6) : t6.clone().ior(this);
-            }, o3.prototype.uor = function(t6) {
-              return this.length > t6.length ? this.clone().iuor(t6) : t6.clone().iuor(this);
-            }, o3.prototype.iuand = function(t6) {
-              var e5;
-              e5 = this.length > t6.length ? t6 : this;
-              for (var r4 = 0; r4 < e5.length; r4++)
-                this.words[r4] = this.words[r4] & t6.words[r4];
-              return this.length = e5.length, this.strip();
-            }, o3.prototype.iand = function(t6) {
-              return n2((this.negative | t6.negative) == 0), this.iuand(t6);
-            }, o3.prototype.and = function(t6) {
-              return this.length > t6.length ? this.clone().iand(t6) : t6.clone().iand(this);
-            }, o3.prototype.uand = function(t6) {
-              return this.length > t6.length ? this.clone().iuand(t6) : t6.clone().iuand(this);
-            }, o3.prototype.iuxor = function(t6) {
-              var e5, r4;
-              this.length > t6.length ? (e5 = this, r4 = t6) : (e5 = t6, r4 = this);
-              for (var n3 = 0; n3 < r4.length; n3++)
-                this.words[n3] = e5.words[n3] ^ r4.words[n3];
-              if (this !== e5)
-                for (; n3 < e5.length; n3++)
-                  this.words[n3] = e5.words[n3];
-              return this.length = e5.length, this.strip();
-            }, o3.prototype.ixor = function(t6) {
-              return n2((this.negative | t6.negative) == 0), this.iuxor(t6);
-            }, o3.prototype.xor = function(t6) {
-              return this.length > t6.length ? this.clone().ixor(t6) : t6.clone().ixor(this);
-            }, o3.prototype.uxor = function(t6) {
-              return this.length > t6.length ? this.clone().iuxor(t6) : t6.clone().iuxor(this);
-            }, o3.prototype.inotn = function(t6) {
-              n2(typeof t6 == "number" && t6 >= 0);
-              var e5 = 0 | Math.ceil(t6 / 26), r4 = t6 % 26;
-              this._expand(e5), r4 > 0 && e5--;
-              for (var i4 = 0; i4 < e5; i4++)
-                this.words[i4] = 67108863 & ~this.words[i4];
-              return r4 > 0 && (this.words[i4] = ~this.words[i4] & 67108863 >> 26 - r4), this.strip();
-            }, o3.prototype.notn = function(t6) {
-              return this.clone().inotn(t6);
-            }, o3.prototype.setn = function(t6, e5) {
-              n2(typeof t6 == "number" && t6 >= 0);
-              var r4 = t6 / 26 | 0, i4 = t6 % 26;
-              return this._expand(r4 + 1), this.words[r4] = e5 ? this.words[r4] | 1 << i4 : this.words[r4] & ~(1 << i4), this.strip();
-            }, o3.prototype.iadd = function(t6) {
-              var e5, r4, n3;
-              if (this.negative !== 0 && t6.negative === 0)
-                return this.negative = 0, e5 = this.isub(t6), this.negative ^= 1, this._normSign();
-              if (this.negative === 0 && t6.negative !== 0)
-                return t6.negative = 0, e5 = this.isub(t6), t6.negative = 1, e5._normSign();
-              this.length > t6.length ? (r4 = this, n3 = t6) : (r4 = t6, n3 = this);
-              for (var i4 = 0, o4 = 0; o4 < n3.length; o4++)
-                e5 = (0 | r4.words[o4]) + (0 | n3.words[o4]) + i4, this.words[o4] = 67108863 & e5, i4 = e5 >>> 26;
-              for (; i4 !== 0 && o4 < r4.length; o4++)
-                e5 = (0 | r4.words[o4]) + i4, this.words[o4] = 67108863 & e5, i4 = e5 >>> 26;
-              if (this.length = r4.length, i4 !== 0)
-                this.words[this.length] = i4, this.length++;
-              else if (r4 !== this)
-                for (; o4 < r4.length; o4++)
-                  this.words[o4] = r4.words[o4];
-              return this;
-            }, o3.prototype.add = function(t6) {
-              var e5;
-              return t6.negative !== 0 && this.negative === 0 ? (t6.negative = 0, e5 = this.sub(t6), t6.negative ^= 1, e5) : t6.negative === 0 && this.negative !== 0 ? (this.negative = 0, e5 = t6.sub(this), this.negative = 1, e5) : this.length > t6.length ? this.clone().iadd(t6) : t6.clone().iadd(this);
-            }, o3.prototype.isub = function(t6) {
-              if (t6.negative !== 0) {
-                t6.negative = 0;
-                var e5 = this.iadd(t6);
-                return t6.negative = 1, e5._normSign();
-              }
-              if (this.negative !== 0)
-                return this.negative = 0, this.iadd(t6), this.negative = 1, this._normSign();
-              var r4, n3, i4 = this.cmp(t6);
-              if (i4 === 0)
-                return this.negative = 0, this.length = 1, this.words[0] = 0, this;
-              i4 > 0 ? (r4 = this, n3 = t6) : (r4 = t6, n3 = this);
-              for (var o4 = 0, s4 = 0; s4 < n3.length; s4++)
-                o4 = (e5 = (0 | r4.words[s4]) - (0 | n3.words[s4]) + o4) >> 26, this.words[s4] = 67108863 & e5;
-              for (; o4 !== 0 && s4 < r4.length; s4++)
-                o4 = (e5 = (0 | r4.words[s4]) + o4) >> 26, this.words[s4] = 67108863 & e5;
-              if (o4 === 0 && s4 < r4.length && r4 !== this)
-                for (; s4 < r4.length; s4++)
-                  this.words[s4] = r4.words[s4];
-              return this.length = Math.max(this.length, s4), r4 !== this && (this.negative = 1), this.strip();
-            }, o3.prototype.sub = function(t6) {
-              return this.clone().isub(t6);
-            };
-            var d3 = function(t6, e5, r4) {
-              var n3, i4, o4, s4 = t6.words, u4 = e5.words, a4 = r4.words, h4 = 0, c4 = 0 | s4[0], f4 = 8191 & c4, l4 = c4 >>> 13, d4 = 0 | s4[1], p4 = 8191 & d4, m4 = d4 >>> 13, g4 = 0 | s4[2], y4 = 8191 & g4, v4 = g4 >>> 13, w5 = 0 | s4[3], _5 = 8191 & w5, b3 = w5 >>> 13, M4 = 0 | s4[4], S3 = 8191 & M4, O2 = M4 >>> 13, k3 = 0 | s4[5], A4 = 8191 & k3, I3 = k3 >>> 13, E4 = 0 | s4[6], R2 = 8191 & E4, T4 = E4 >>> 13, j3 = 0 | s4[7], x3 = 8191 & j3, C3 = j3 >>> 13, B2 = 0 | s4[8], P3 = 8191 & B2, U2 = B2 >>> 13, N3 = 0 | s4[9], q3 = 8191 & N3, L3 = N3 >>> 13, D3 = 0 | u4[0], W2 = 8191 & D3, F3 = D3 >>> 13, Y2 = 0 | u4[1], z3 = 8191 & Y2, J2 = Y2 >>> 13, $3 = 0 | u4[2], Z2 = 8191 & $3, K3 = $3 >>> 13, V2 = 0 | u4[3], H3 = 8191 & V2, Q2 = V2 >>> 13, X2 = 0 | u4[4], G2 = 8191 & X2, tt = X2 >>> 13, et = 0 | u4[5], rt = 8191 & et, nt = et >>> 13, it = 0 | u4[6], ot = 8191 & it, st = it >>> 13, ut = 0 | u4[7], at = 8191 & ut, ht = ut >>> 13, ct = 0 | u4[8], ft = 8191 & ct, lt = ct >>> 13, dt = 0 | u4[9], pt = 8191 & dt, mt = dt >>> 13;
-              r4.negative = t6.negative ^ e5.negative, r4.length = 19;
-              var gt = (h4 + (n3 = Math.imul(f4, W2)) | 0) + ((8191 & (i4 = (i4 = Math.imul(f4, F3)) + Math.imul(l4, W2) | 0)) << 13) | 0;
-              h4 = ((o4 = Math.imul(l4, F3)) + (i4 >>> 13) | 0) + (gt >>> 26) | 0, gt &= 67108863, n3 = Math.imul(p4, W2), i4 = (i4 = Math.imul(p4, F3)) + Math.imul(m4, W2) | 0, o4 = Math.imul(m4, F3);
-              var yt = (h4 + (n3 = n3 + Math.imul(f4, z3) | 0) | 0) + ((8191 & (i4 = (i4 = i4 + Math.imul(f4, J2) | 0) + Math.imul(l4, z3) | 0)) << 13) | 0;
-              h4 = ((o4 = o4 + Math.imul(l4, J2) | 0) + (i4 >>> 13) | 0) + (yt >>> 26) | 0, yt &= 67108863, n3 = Math.imul(y4, W2), i4 = (i4 = Math.imul(y4, F3)) + Math.imul(v4, W2) | 0, o4 = Math.imul(v4, F3), n3 = n3 + Math.imul(p4, z3) | 0, i4 = (i4 = i4 + Math.imul(p4, J2) | 0) + Math.imul(m4, z3) | 0, o4 = o4 + Math.imul(m4, J2) | 0;
-              var vt = (h4 + (n3 = n3 + Math.imul(f4, Z2) | 0) | 0) + ((8191 & (i4 = (i4 = i4 + Math.imul(f4, K3) | 0) + Math.imul(l4, Z2) | 0)) << 13) | 0;
-              h4 = ((o4 = o4 + Math.imul(l4, K3) | 0) + (i4 >>> 13) | 0) + (vt >>> 26) | 0, vt &= 67108863, n3 = Math.imul(_5, W2), i4 = (i4 = Math.imul(_5, F3)) + Math.imul(b3, W2) | 0, o4 = Math.imul(b3, F3), n3 = n3 + Math.imul(y4, z3) | 0, i4 = (i4 = i4 + Math.imul(y4, J2) | 0) + Math.imul(v4, z3) | 0, o4 = o4 + Math.imul(v4, J2) | 0, n3 = n3 + Math.imul(p4, Z2) | 0, i4 = (i4 = i4 + Math.imul(p4, K3) | 0) + Math.imul(m4, Z2) | 0, o4 = o4 + Math.imul(m4, K3) | 0;
-              var wt = (h4 + (n3 = n3 + Math.imul(f4, H3) | 0) | 0) + ((8191 & (i4 = (i4 = i4 + Math.imul(f4, Q2) | 0) + Math.imul(l4, H3) | 0)) << 13) | 0;
-              h4 = ((o4 = o4 + Math.imul(l4, Q2) | 0) + (i4 >>> 13) | 0) + (wt >>> 26) | 0, wt &= 67108863, n3 = Math.imul(S3, W2), i4 = (i4 = Math.imul(S3, F3)) + Math.imul(O2, W2) | 0, o4 = Math.imul(O2, F3), n3 = n3 + Math.imul(_5, z3) | 0, i4 = (i4 = i4 + Math.imul(_5, J2) | 0) + Math.imul(b3, z3) | 0, o4 = o4 + Math.imul(b3, J2) | 0, n3 = n3 + Math.imul(y4, Z2) | 0, i4 = (i4 = i4 + Math.imul(y4, K3) | 0) + Math.imul(v4, Z2) | 0, o4 = o4 + Math.imul(v4, K3) | 0, n3 = n3 + Math.imul(p4, H3) | 0, i4 = (i4 = i4 + Math.imul(p4, Q2) | 0) + Math.imul(m4, H3) | 0, o4 = o4 + Math.imul(m4, Q2) | 0;
-              var _t = (h4 + (n3 = n3 + Math.imul(f4, G2) | 0) | 0) + ((8191 & (i4 = (i4 = i4 + Math.imul(f4, tt) | 0) + Math.imul(l4, G2) | 0)) << 13) | 0;
-              h4 = ((o4 = o4 + Math.imul(l4, tt) | 0) + (i4 >>> 13) | 0) + (_t >>> 26) | 0, _t &= 67108863, n3 = Math.imul(A4, W2), i4 = (i4 = Math.imul(A4, F3)) + Math.imul(I3, W2) | 0, o4 = Math.imul(I3, F3), n3 = n3 + Math.imul(S3, z3) | 0, i4 = (i4 = i4 + Math.imul(S3, J2) | 0) + Math.imul(O2, z3) | 0, o4 = o4 + Math.imul(O2, J2) | 0, n3 = n3 + Math.imul(_5, Z2) | 0, i4 = (i4 = i4 + Math.imul(_5, K3) | 0) + Math.imul(b3, Z2) | 0, o4 = o4 + Math.imul(b3, K3) | 0, n3 = n3 + Math.imul(y4, H3) | 0, i4 = (i4 = i4 + Math.imul(y4, Q2) | 0) + Math.imul(v4, H3) | 0, o4 = o4 + Math.imul(v4, Q2) | 0, n3 = n3 + Math.imul(p4, G2) | 0, i4 = (i4 = i4 + Math.imul(p4, tt) | 0) + Math.imul(m4, G2) | 0, o4 = o4 + Math.imul(m4, tt) | 0;
-              var bt = (h4 + (n3 = n3 + Math.imul(f4, rt) | 0) | 0) + ((8191 & (i4 = (i4 = i4 + Math.imul(f4, nt) | 0) + Math.imul(l4, rt) | 0)) << 13) | 0;
-              h4 = ((o4 = o4 + Math.imul(l4, nt) | 0) + (i4 >>> 13) | 0) + (bt >>> 26) | 0, bt &= 67108863, n3 = Math.imul(R2, W2), i4 = (i4 = Math.imul(R2, F3)) + Math.imul(T4, W2) | 0, o4 = Math.imul(T4, F3), n3 = n3 + Math.imul(A4, z3) | 0, i4 = (i4 = i4 + Math.imul(A4, J2) | 0) + Math.imul(I3, z3) | 0, o4 = o4 + Math.imul(I3, J2) | 0, n3 = n3 + Math.imul(S3, Z2) | 0, i4 = (i4 = i4 + Math.imul(S3, K3) | 0) + Math.imul(O2, Z2) | 0, o4 = o4 + Math.imul(O2, K3) | 0, n3 = n3 + Math.imul(_5, H3) | 0, i4 = (i4 = i4 + Math.imul(_5, Q2) | 0) + Math.imul(b3, H3) | 0, o4 = o4 + Math.imul(b3, Q2) | 0, n3 = n3 + Math.imul(y4, G2) | 0, i4 = (i4 = i4 + Math.imul(y4, tt) | 0) + Math.imul(v4, G2) | 0, o4 = o4 + Math.imul(v4, tt) | 0, n3 = n3 + Math.imul(p4, rt) | 0, i4 = (i4 = i4 + Math.imul(p4, nt) | 0) + Math.imul(m4, rt) | 0, o4 = o4 + Math.imul(m4, nt) | 0;
-              var Mt = (h4 + (n3 = n3 + Math.imul(f4, ot) | 0) | 0) + ((8191 & (i4 = (i4 = i4 + Math.imul(f4, st) | 0) + Math.imul(l4, ot) | 0)) << 13) | 0;
-              h4 = ((o4 = o4 + Math.imul(l4, st) | 0) + (i4 >>> 13) | 0) + (Mt >>> 26) | 0, Mt &= 67108863, n3 = Math.imul(x3, W2), i4 = (i4 = Math.imul(x3, F3)) + Math.imul(C3, W2) | 0, o4 = Math.imul(C3, F3), n3 = n3 + Math.imul(R2, z3) | 0, i4 = (i4 = i4 + Math.imul(R2, J2) | 0) + Math.imul(T4, z3) | 0, o4 = o4 + Math.imul(T4, J2) | 0, n3 = n3 + Math.imul(A4, Z2) | 0, i4 = (i4 = i4 + Math.imul(A4, K3) | 0) + Math.imul(I3, Z2) | 0, o4 = o4 + Math.imul(I3, K3) | 0, n3 = n3 + Math.imul(S3, H3) | 0, i4 = (i4 = i4 + Math.imul(S3, Q2) | 0) + Math.imul(O2, H3) | 0, o4 = o4 + Math.imul(O2, Q2) | 0, n3 = n3 + Math.imul(_5, G2) | 0, i4 = (i4 = i4 + Math.imul(_5, tt) | 0) + Math.imul(b3, G2) | 0, o4 = o4 + Math.imul(b3, tt) | 0, n3 = n3 + Math.imul(y4, rt) | 0, i4 = (i4 = i4 + Math.imul(y4, nt) | 0) + Math.imul(v4, rt) | 0, o4 = o4 + Math.imul(v4, nt) | 0, n3 = n3 + Math.imul(p4, ot) | 0, i4 = (i4 = i4 + Math.imul(p4, st) | 0) + Math.imul(m4, ot) | 0, o4 = o4 + Math.imul(m4, st) | 0;
-              var St = (h4 + (n3 = n3 + Math.imul(f4, at) | 0) | 0) + ((8191 & (i4 = (i4 = i4 + Math.imul(f4, ht) | 0) + Math.imul(l4, at) | 0)) << 13) | 0;
-              h4 = ((o4 = o4 + Math.imul(l4, ht) | 0) + (i4 >>> 13) | 0) + (St >>> 26) | 0, St &= 67108863, n3 = Math.imul(P3, W2), i4 = (i4 = Math.imul(P3, F3)) + Math.imul(U2, W2) | 0, o4 = Math.imul(U2, F3), n3 = n3 + Math.imul(x3, z3) | 0, i4 = (i4 = i4 + Math.imul(x3, J2) | 0) + Math.imul(C3, z3) | 0, o4 = o4 + Math.imul(C3, J2) | 0, n3 = n3 + Math.imul(R2, Z2) | 0, i4 = (i4 = i4 + Math.imul(R2, K3) | 0) + Math.imul(T4, Z2) | 0, o4 = o4 + Math.imul(T4, K3) | 0, n3 = n3 + Math.imul(A4, H3) | 0, i4 = (i4 = i4 + Math.imul(A4, Q2) | 0) + Math.imul(I3, H3) | 0, o4 = o4 + Math.imul(I3, Q2) | 0, n3 = n3 + Math.imul(S3, G2) | 0, i4 = (i4 = i4 + Math.imul(S3, tt) | 0) + Math.imul(O2, G2) | 0, o4 = o4 + Math.imul(O2, tt) | 0, n3 = n3 + Math.imul(_5, rt) | 0, i4 = (i4 = i4 + Math.imul(_5, nt) | 0) + Math.imul(b3, rt) | 0, o4 = o4 + Math.imul(b3, nt) | 0, n3 = n3 + Math.imul(y4, ot) | 0, i4 = (i4 = i4 + Math.imul(y4, st) | 0) + Math.imul(v4, ot) | 0, o4 = o4 + Math.imul(v4, st) | 0, n3 = n3 + Math.imul(p4, at) | 0, i4 = (i4 = i4 + Math.imul(p4, ht) | 0) + Math.imul(m4, at) | 0, o4 = o4 + Math.imul(m4, ht) | 0;
-              var Ot = (h4 + (n3 = n3 + Math.imul(f4, ft) | 0) | 0) + ((8191 & (i4 = (i4 = i4 + Math.imul(f4, lt) | 0) + Math.imul(l4, ft) | 0)) << 13) | 0;
-              h4 = ((o4 = o4 + Math.imul(l4, lt) | 0) + (i4 >>> 13) | 0) + (Ot >>> 26) | 0, Ot &= 67108863, n3 = Math.imul(q3, W2), i4 = (i4 = Math.imul(q3, F3)) + Math.imul(L3, W2) | 0, o4 = Math.imul(L3, F3), n3 = n3 + Math.imul(P3, z3) | 0, i4 = (i4 = i4 + Math.imul(P3, J2) | 0) + Math.imul(U2, z3) | 0, o4 = o4 + Math.imul(U2, J2) | 0, n3 = n3 + Math.imul(x3, Z2) | 0, i4 = (i4 = i4 + Math.imul(x3, K3) | 0) + Math.imul(C3, Z2) | 0, o4 = o4 + Math.imul(C3, K3) | 0, n3 = n3 + Math.imul(R2, H3) | 0, i4 = (i4 = i4 + Math.imul(R2, Q2) | 0) + Math.imul(T4, H3) | 0, o4 = o4 + Math.imul(T4, Q2) | 0, n3 = n3 + Math.imul(A4, G2) | 0, i4 = (i4 = i4 + Math.imul(A4, tt) | 0) + Math.imul(I3, G2) | 0, o4 = o4 + Math.imul(I3, tt) | 0, n3 = n3 + Math.imul(S3, rt) | 0, i4 = (i4 = i4 + Math.imul(S3, nt) | 0) + Math.imul(O2, rt) | 0, o4 = o4 + Math.imul(O2, nt) | 0, n3 = n3 + Math.imul(_5, ot) | 0, i4 = (i4 = i4 + Math.imul(_5, st) | 0) + Math.imul(b3, ot) | 0, o4 = o4 + Math.imul(b3, st) | 0, n3 = n3 + Math.imul(y4, at) | 0, i4 = (i4 = i4 + Math.imul(y4, ht) | 0) + Math.imul(v4, at) | 0, o4 = o4 + Math.imul(v4, ht) | 0, n3 = n3 + Math.imul(p4, ft) | 0, i4 = (i4 = i4 + Math.imul(p4, lt) | 0) + Math.imul(m4, ft) | 0, o4 = o4 + Math.imul(m4, lt) | 0;
-              var kt = (h4 + (n3 = n3 + Math.imul(f4, pt) | 0) | 0) + ((8191 & (i4 = (i4 = i4 + Math.imul(f4, mt) | 0) + Math.imul(l4, pt) | 0)) << 13) | 0;
-              h4 = ((o4 = o4 + Math.imul(l4, mt) | 0) + (i4 >>> 13) | 0) + (kt >>> 26) | 0, kt &= 67108863, n3 = Math.imul(q3, z3), i4 = (i4 = Math.imul(q3, J2)) + Math.imul(L3, z3) | 0, o4 = Math.imul(L3, J2), n3 = n3 + Math.imul(P3, Z2) | 0, i4 = (i4 = i4 + Math.imul(P3, K3) | 0) + Math.imul(U2, Z2) | 0, o4 = o4 + Math.imul(U2, K3) | 0, n3 = n3 + Math.imul(x3, H3) | 0, i4 = (i4 = i4 + Math.imul(x3, Q2) | 0) + Math.imul(C3, H3) | 0, o4 = o4 + Math.imul(C3, Q2) | 0, n3 = n3 + Math.imul(R2, G2) | 0, i4 = (i4 = i4 + Math.imul(R2, tt) | 0) + Math.imul(T4, G2) | 0, o4 = o4 + Math.imul(T4, tt) | 0, n3 = n3 + Math.imul(A4, rt) | 0, i4 = (i4 = i4 + Math.imul(A4, nt) | 0) + Math.imul(I3, rt) | 0, o4 = o4 + Math.imul(I3, nt) | 0, n3 = n3 + Math.imul(S3, ot) | 0, i4 = (i4 = i4 + Math.imul(S3, st) | 0) + Math.imul(O2, ot) | 0, o4 = o4 + Math.imul(O2, st) | 0, n3 = n3 + Math.imul(_5, at) | 0, i4 = (i4 = i4 + Math.imul(_5, ht) | 0) + Math.imul(b3, at) | 0, o4 = o4 + Math.imul(b3, ht) | 0, n3 = n3 + Math.imul(y4, ft) | 0, i4 = (i4 = i4 + Math.imul(y4, lt) | 0) + Math.imul(v4, ft) | 0, o4 = o4 + Math.imul(v4, lt) | 0;
-              var At = (h4 + (n3 = n3 + Math.imul(p4, pt) | 0) | 0) + ((8191 & (i4 = (i4 = i4 + Math.imul(p4, mt) | 0) + Math.imul(m4, pt) | 0)) << 13) | 0;
-              h4 = ((o4 = o4 + Math.imul(m4, mt) | 0) + (i4 >>> 13) | 0) + (At >>> 26) | 0, At &= 67108863, n3 = Math.imul(q3, Z2), i4 = (i4 = Math.imul(q3, K3)) + Math.imul(L3, Z2) | 0, o4 = Math.imul(L3, K3), n3 = n3 + Math.imul(P3, H3) | 0, i4 = (i4 = i4 + Math.imul(P3, Q2) | 0) + Math.imul(U2, H3) | 0, o4 = o4 + Math.imul(U2, Q2) | 0, n3 = n3 + Math.imul(x3, G2) | 0, i4 = (i4 = i4 + Math.imul(x3, tt) | 0) + Math.imul(C3, G2) | 0, o4 = o4 + Math.imul(C3, tt) | 0, n3 = n3 + Math.imul(R2, rt) | 0, i4 = (i4 = i4 + Math.imul(R2, nt) | 0) + Math.imul(T4, rt) | 0, o4 = o4 + Math.imul(T4, nt) | 0, n3 = n3 + Math.imul(A4, ot) | 0, i4 = (i4 = i4 + Math.imul(A4, st) | 0) + Math.imul(I3, ot) | 0, o4 = o4 + Math.imul(I3, st) | 0, n3 = n3 + Math.imul(S3, at) | 0, i4 = (i4 = i4 + Math.imul(S3, ht) | 0) + Math.imul(O2, at) | 0, o4 = o4 + Math.imul(O2, ht) | 0, n3 = n3 + Math.imul(_5, ft) | 0, i4 = (i4 = i4 + Math.imul(_5, lt) | 0) + Math.imul(b3, ft) | 0, o4 = o4 + Math.imul(b3, lt) | 0;
-              var It = (h4 + (n3 = n3 + Math.imul(y4, pt) | 0) | 0) + ((8191 & (i4 = (i4 = i4 + Math.imul(y4, mt) | 0) + Math.imul(v4, pt) | 0)) << 13) | 0;
-              h4 = ((o4 = o4 + Math.imul(v4, mt) | 0) + (i4 >>> 13) | 0) + (It >>> 26) | 0, It &= 67108863, n3 = Math.imul(q3, H3), i4 = (i4 = Math.imul(q3, Q2)) + Math.imul(L3, H3) | 0, o4 = Math.imul(L3, Q2), n3 = n3 + Math.imul(P3, G2) | 0, i4 = (i4 = i4 + Math.imul(P3, tt) | 0) + Math.imul(U2, G2) | 0, o4 = o4 + Math.imul(U2, tt) | 0, n3 = n3 + Math.imul(x3, rt) | 0, i4 = (i4 = i4 + Math.imul(x3, nt) | 0) + Math.imul(C3, rt) | 0, o4 = o4 + Math.imul(C3, nt) | 0, n3 = n3 + Math.imul(R2, ot) | 0, i4 = (i4 = i4 + Math.imul(R2, st) | 0) + Math.imul(T4, ot) | 0, o4 = o4 + Math.imul(T4, st) | 0, n3 = n3 + Math.imul(A4, at) | 0, i4 = (i4 = i4 + Math.imul(A4, ht) | 0) + Math.imul(I3, at) | 0, o4 = o4 + Math.imul(I3, ht) | 0, n3 = n3 + Math.imul(S3, ft) | 0, i4 = (i4 = i4 + Math.imul(S3, lt) | 0) + Math.imul(O2, ft) | 0, o4 = o4 + Math.imul(O2, lt) | 0;
-              var Et = (h4 + (n3 = n3 + Math.imul(_5, pt) | 0) | 0) + ((8191 & (i4 = (i4 = i4 + Math.imul(_5, mt) | 0) + Math.imul(b3, pt) | 0)) << 13) | 0;
-              h4 = ((o4 = o4 + Math.imul(b3, mt) | 0) + (i4 >>> 13) | 0) + (Et >>> 26) | 0, Et &= 67108863, n3 = Math.imul(q3, G2), i4 = (i4 = Math.imul(q3, tt)) + Math.imul(L3, G2) | 0, o4 = Math.imul(L3, tt), n3 = n3 + Math.imul(P3, rt) | 0, i4 = (i4 = i4 + Math.imul(P3, nt) | 0) + Math.imul(U2, rt) | 0, o4 = o4 + Math.imul(U2, nt) | 0, n3 = n3 + Math.imul(x3, ot) | 0, i4 = (i4 = i4 + Math.imul(x3, st) | 0) + Math.imul(C3, ot) | 0, o4 = o4 + Math.imul(C3, st) | 0, n3 = n3 + Math.imul(R2, at) | 0, i4 = (i4 = i4 + Math.imul(R2, ht) | 0) + Math.imul(T4, at) | 0, o4 = o4 + Math.imul(T4, ht) | 0, n3 = n3 + Math.imul(A4, ft) | 0, i4 = (i4 = i4 + Math.imul(A4, lt) | 0) + Math.imul(I3, ft) | 0, o4 = o4 + Math.imul(I3, lt) | 0;
-              var Rt = (h4 + (n3 = n3 + Math.imul(S3, pt) | 0) | 0) + ((8191 & (i4 = (i4 = i4 + Math.imul(S3, mt) | 0) + Math.imul(O2, pt) | 0)) << 13) | 0;
-              h4 = ((o4 = o4 + Math.imul(O2, mt) | 0) + (i4 >>> 13) | 0) + (Rt >>> 26) | 0, Rt &= 67108863, n3 = Math.imul(q3, rt), i4 = (i4 = Math.imul(q3, nt)) + Math.imul(L3, rt) | 0, o4 = Math.imul(L3, nt), n3 = n3 + Math.imul(P3, ot) | 0, i4 = (i4 = i4 + Math.imul(P3, st) | 0) + Math.imul(U2, ot) | 0, o4 = o4 + Math.imul(U2, st) | 0, n3 = n3 + Math.imul(x3, at) | 0, i4 = (i4 = i4 + Math.imul(x3, ht) | 0) + Math.imul(C3, at) | 0, o4 = o4 + Math.imul(C3, ht) | 0, n3 = n3 + Math.imul(R2, ft) | 0, i4 = (i4 = i4 + Math.imul(R2, lt) | 0) + Math.imul(T4, ft) | 0, o4 = o4 + Math.imul(T4, lt) | 0;
-              var Tt = (h4 + (n3 = n3 + Math.imul(A4, pt) | 0) | 0) + ((8191 & (i4 = (i4 = i4 + Math.imul(A4, mt) | 0) + Math.imul(I3, pt) | 0)) << 13) | 0;
-              h4 = ((o4 = o4 + Math.imul(I3, mt) | 0) + (i4 >>> 13) | 0) + (Tt >>> 26) | 0, Tt &= 67108863, n3 = Math.imul(q3, ot), i4 = (i4 = Math.imul(q3, st)) + Math.imul(L3, ot) | 0, o4 = Math.imul(L3, st), n3 = n3 + Math.imul(P3, at) | 0, i4 = (i4 = i4 + Math.imul(P3, ht) | 0) + Math.imul(U2, at) | 0, o4 = o4 + Math.imul(U2, ht) | 0, n3 = n3 + Math.imul(x3, ft) | 0, i4 = (i4 = i4 + Math.imul(x3, lt) | 0) + Math.imul(C3, ft) | 0, o4 = o4 + Math.imul(C3, lt) | 0;
-              var jt = (h4 + (n3 = n3 + Math.imul(R2, pt) | 0) | 0) + ((8191 & (i4 = (i4 = i4 + Math.imul(R2, mt) | 0) + Math.imul(T4, pt) | 0)) << 13) | 0;
-              h4 = ((o4 = o4 + Math.imul(T4, mt) | 0) + (i4 >>> 13) | 0) + (jt >>> 26) | 0, jt &= 67108863, n3 = Math.imul(q3, at), i4 = (i4 = Math.imul(q3, ht)) + Math.imul(L3, at) | 0, o4 = Math.imul(L3, ht), n3 = n3 + Math.imul(P3, ft) | 0, i4 = (i4 = i4 + Math.imul(P3, lt) | 0) + Math.imul(U2, ft) | 0, o4 = o4 + Math.imul(U2, lt) | 0;
-              var xt = (h4 + (n3 = n3 + Math.imul(x3, pt) | 0) | 0) + ((8191 & (i4 = (i4 = i4 + Math.imul(x3, mt) | 0) + Math.imul(C3, pt) | 0)) << 13) | 0;
-              h4 = ((o4 = o4 + Math.imul(C3, mt) | 0) + (i4 >>> 13) | 0) + (xt >>> 26) | 0, xt &= 67108863, n3 = Math.imul(q3, ft), i4 = (i4 = Math.imul(q3, lt)) + Math.imul(L3, ft) | 0, o4 = Math.imul(L3, lt);
-              var Ct = (h4 + (n3 = n3 + Math.imul(P3, pt) | 0) | 0) + ((8191 & (i4 = (i4 = i4 + Math.imul(P3, mt) | 0) + Math.imul(U2, pt) | 0)) << 13) | 0;
-              h4 = ((o4 = o4 + Math.imul(U2, mt) | 0) + (i4 >>> 13) | 0) + (Ct >>> 26) | 0, Ct &= 67108863;
-              var Bt = (h4 + (n3 = Math.imul(q3, pt)) | 0) + ((8191 & (i4 = (i4 = Math.imul(q3, mt)) + Math.imul(L3, pt) | 0)) << 13) | 0;
-              return h4 = ((o4 = Math.imul(L3, mt)) + (i4 >>> 13) | 0) + (Bt >>> 26) | 0, Bt &= 67108863, a4[0] = gt, a4[1] = yt, a4[2] = vt, a4[3] = wt, a4[4] = _t, a4[5] = bt, a4[6] = Mt, a4[7] = St, a4[8] = Ot, a4[9] = kt, a4[10] = At, a4[11] = It, a4[12] = Et, a4[13] = Rt, a4[14] = Tt, a4[15] = jt, a4[16] = xt, a4[17] = Ct, a4[18] = Bt, h4 !== 0 && (a4[19] = h4, r4.length++), r4;
-            };
-            function p3(t6, e5, r4) {
-              return new m3().mulp(t6, e5, r4);
-            }
-            function m3(t6, e5) {
-              this.x = t6, this.y = e5;
-            }
-            Math.imul || (d3 = l3), o3.prototype.mulTo = function(t6, e5) {
-              var r4 = this.length + t6.length;
-              return this.length === 10 && t6.length === 10 ? d3(this, t6, e5) : r4 < 63 ? l3(this, t6, e5) : r4 < 1024 ? function(t7, e6, r5) {
-                r5.negative = e6.negative ^ t7.negative, r5.length = t7.length + e6.length;
-                for (var n3 = 0, i4 = 0, o4 = 0; o4 < r5.length - 1; o4++) {
-                  var s4 = i4;
-                  i4 = 0;
-                  for (var u4 = 67108863 & n3, a4 = Math.min(o4, e6.length - 1), h4 = Math.max(0, o4 - t7.length + 1); h4 <= a4; h4++) {
-                    var c4 = o4 - h4, f4 = (0 | t7.words[c4]) * (0 | e6.words[h4]), l4 = 67108863 & f4;
-                    u4 = 67108863 & (l4 = l4 + u4 | 0), i4 += (s4 = (s4 = s4 + (f4 / 67108864 | 0) | 0) + (l4 >>> 26) | 0) >>> 26, s4 &= 67108863;
-                  }
-                  r5.words[o4] = u4, n3 = s4, s4 = i4;
-                }
-                return n3 !== 0 ? r5.words[o4] = n3 : r5.length--, r5.strip();
-              }(this, t6, e5) : p3(this, t6, e5);
-            }, m3.prototype.makeRBT = function(t6) {
-              for (var e5 = new Array(t6), r4 = o3.prototype._countBits(t6) - 1, n3 = 0; n3 < t6; n3++)
-                e5[n3] = this.revBin(n3, r4, t6);
-              return e5;
-            }, m3.prototype.revBin = function(t6, e5, r4) {
-              if (t6 === 0 || t6 === r4 - 1)
-                return t6;
-              for (var n3 = 0, i4 = 0; i4 < e5; i4++)
-                n3 |= (1 & t6) << e5 - i4 - 1, t6 >>= 1;
-              return n3;
-            }, m3.prototype.permute = function(t6, e5, r4, n3, i4, o4) {
-              for (var s4 = 0; s4 < o4; s4++)
-                n3[s4] = e5[t6[s4]], i4[s4] = r4[t6[s4]];
-            }, m3.prototype.transform = function(t6, e5, r4, n3, i4, o4) {
-              this.permute(o4, t6, e5, r4, n3, i4);
-              for (var s4 = 1; s4 < i4; s4 <<= 1)
-                for (var u4 = s4 << 1, a4 = Math.cos(2 * Math.PI / u4), h4 = Math.sin(2 * Math.PI / u4), c4 = 0; c4 < i4; c4 += u4)
-                  for (var f4 = a4, l4 = h4, d4 = 0; d4 < s4; d4++) {
-                    var p4 = r4[c4 + d4], m4 = n3[c4 + d4], g4 = r4[c4 + d4 + s4], y4 = n3[c4 + d4 + s4], v4 = f4 * g4 - l4 * y4;
-                    y4 = f4 * y4 + l4 * g4, g4 = v4, r4[c4 + d4] = p4 + g4, n3[c4 + d4] = m4 + y4, r4[c4 + d4 + s4] = p4 - g4, n3[c4 + d4 + s4] = m4 - y4, d4 !== u4 && (v4 = a4 * f4 - h4 * l4, l4 = a4 * l4 + h4 * f4, f4 = v4);
-                  }
-            }, m3.prototype.guessLen13b = function(t6, e5) {
-              var r4 = 1 | Math.max(e5, t6), n3 = 1 & r4, i4 = 0;
-              for (r4 = r4 / 2 | 0; r4; r4 >>>= 1)
-                i4++;
-              return 1 << i4 + 1 + n3;
-            }, m3.prototype.conjugate = function(t6, e5, r4) {
-              if (!(r4 <= 1))
-                for (var n3 = 0; n3 < r4 / 2; n3++) {
-                  var i4 = t6[n3];
-                  t6[n3] = t6[r4 - n3 - 1], t6[r4 - n3 - 1] = i4, i4 = e5[n3], e5[n3] = -e5[r4 - n3 - 1], e5[r4 - n3 - 1] = -i4;
-                }
-            }, m3.prototype.normalize13b = function(t6, e5) {
-              for (var r4 = 0, n3 = 0; n3 < e5 / 2; n3++) {
-                var i4 = 8192 * Math.round(t6[2 * n3 + 1] / e5) + Math.round(t6[2 * n3] / e5) + r4;
-                t6[n3] = 67108863 & i4, r4 = i4 < 67108864 ? 0 : i4 / 67108864 | 0;
-              }
-              return t6;
-            }, m3.prototype.convert13b = function(t6, e5, r4, i4) {
-              for (var o4 = 0, s4 = 0; s4 < e5; s4++)
-                o4 += 0 | t6[s4], r4[2 * s4] = 8191 & o4, o4 >>>= 13, r4[2 * s4 + 1] = 8191 & o4, o4 >>>= 13;
-              for (s4 = 2 * e5; s4 < i4; ++s4)
-                r4[s4] = 0;
-              n2(o4 === 0), n2((-8192 & o4) == 0);
-            }, m3.prototype.stub = function(t6) {
-              for (var e5 = new Array(t6), r4 = 0; r4 < t6; r4++)
-                e5[r4] = 0;
-              return e5;
-            }, m3.prototype.mulp = function(t6, e5, r4) {
-              var n3 = 2 * this.guessLen13b(t6.length, e5.length), i4 = this.makeRBT(n3), o4 = this.stub(n3), s4 = new Array(n3), u4 = new Array(n3), a4 = new Array(n3), h4 = new Array(n3), c4 = new Array(n3), f4 = new Array(n3), l4 = r4.words;
-              l4.length = n3, this.convert13b(t6.words, t6.length, s4, n3), this.convert13b(e5.words, e5.length, h4, n3), this.transform(s4, o4, u4, a4, n3, i4), this.transform(h4, o4, c4, f4, n3, i4);
-              for (var d4 = 0; d4 < n3; d4++) {
-                var p4 = u4[d4] * c4[d4] - a4[d4] * f4[d4];
-                a4[d4] = u4[d4] * f4[d4] + a4[d4] * c4[d4], u4[d4] = p4;
-              }
-              return this.conjugate(u4, a4, n3), this.transform(u4, a4, l4, o4, n3, i4), this.conjugate(l4, o4, n3), this.normalize13b(l4, n3), r4.negative = t6.negative ^ e5.negative, r4.length = t6.length + e5.length, r4.strip();
-            }, o3.prototype.mul = function(t6) {
-              var e5 = new o3(null);
-              return e5.words = new Array(this.length + t6.length), this.mulTo(t6, e5);
-            }, o3.prototype.mulf = function(t6) {
-              var e5 = new o3(null);
-              return e5.words = new Array(this.length + t6.length), p3(this, t6, e5);
-            }, o3.prototype.imul = function(t6) {
-              return this.clone().mulTo(t6, this);
-            }, o3.prototype.imuln = function(t6) {
-              n2(typeof t6 == "number"), n2(t6 < 67108864);
-              for (var e5 = 0, r4 = 0; r4 < this.length; r4++) {
-                var i4 = (0 | this.words[r4]) * t6, o4 = (67108863 & i4) + (67108863 & e5);
-                e5 >>= 26, e5 += i4 / 67108864 | 0, e5 += o4 >>> 26, this.words[r4] = 67108863 & o4;
-              }
-              return e5 !== 0 && (this.words[r4] = e5, this.length++), this;
-            }, o3.prototype.muln = function(t6) {
-              return this.clone().imuln(t6);
-            }, o3.prototype.sqr = function() {
-              return this.mul(this);
-            }, o3.prototype.isqr = function() {
-              return this.imul(this.clone());
-            }, o3.prototype.pow = function(t6) {
-              var e5 = function(t7) {
-                for (var e6 = new Array(t7.bitLength()), r5 = 0; r5 < e6.length; r5++) {
-                  var n4 = r5 / 26 | 0, i5 = r5 % 26;
-                  e6[r5] = (t7.words[n4] & 1 << i5) >>> i5;
-                }
-                return e6;
-              }(t6);
-              if (e5.length === 0)
-                return new o3(1);
-              for (var r4 = this, n3 = 0; n3 < e5.length && e5[n3] === 0; n3++, r4 = r4.sqr())
-                ;
-              if (++n3 < e5.length)
-                for (var i4 = r4.sqr(); n3 < e5.length; n3++, i4 = i4.sqr())
-                  e5[n3] !== 0 && (r4 = r4.mul(i4));
-              return r4;
-            }, o3.prototype.iushln = function(t6) {
-              n2(typeof t6 == "number" && t6 >= 0);
-              var e5, r4 = t6 % 26, i4 = (t6 - r4) / 26, o4 = 67108863 >>> 26 - r4 << 26 - r4;
-              if (r4 !== 0) {
-                var s4 = 0;
-                for (e5 = 0; e5 < this.length; e5++) {
-                  var u4 = this.words[e5] & o4, a4 = (0 | this.words[e5]) - u4 << r4;
-                  this.words[e5] = a4 | s4, s4 = u4 >>> 26 - r4;
-                }
-                s4 && (this.words[e5] = s4, this.length++);
-              }
-              if (i4 !== 0) {
-                for (e5 = this.length - 1; e5 >= 0; e5--)
-                  this.words[e5 + i4] = this.words[e5];
-                for (e5 = 0; e5 < i4; e5++)
-                  this.words[e5] = 0;
-                this.length += i4;
-              }
-              return this.strip();
-            }, o3.prototype.ishln = function(t6) {
-              return n2(this.negative === 0), this.iushln(t6);
-            }, o3.prototype.iushrn = function(t6, e5, r4) {
-              var i4;
-              n2(typeof t6 == "number" && t6 >= 0), i4 = e5 ? (e5 - e5 % 26) / 26 : 0;
-              var o4 = t6 % 26, s4 = Math.min((t6 - o4) / 26, this.length), u4 = 67108863 ^ 67108863 >>> o4 << o4, a4 = r4;
-              if (i4 -= s4, i4 = Math.max(0, i4), a4) {
-                for (var h4 = 0; h4 < s4; h4++)
-                  a4.words[h4] = this.words[h4];
-                a4.length = s4;
-              }
-              if (s4 === 0)
-                ;
-              else if (this.length > s4)
-                for (this.length -= s4, h4 = 0; h4 < this.length; h4++)
-                  this.words[h4] = this.words[h4 + s4];
-              else
-                this.words[0] = 0, this.length = 1;
-              var c4 = 0;
-              for (h4 = this.length - 1; h4 >= 0 && (c4 !== 0 || h4 >= i4); h4--) {
-                var f4 = 0 | this.words[h4];
-                this.words[h4] = c4 << 26 - o4 | f4 >>> o4, c4 = f4 & u4;
-              }
-              return a4 && c4 !== 0 && (a4.words[a4.length++] = c4), this.length === 0 && (this.words[0] = 0, this.length = 1), this.strip();
-            }, o3.prototype.ishrn = function(t6, e5, r4) {
-              return n2(this.negative === 0), this.iushrn(t6, e5, r4);
-            }, o3.prototype.shln = function(t6) {
-              return this.clone().ishln(t6);
-            }, o3.prototype.ushln = function(t6) {
-              return this.clone().iushln(t6);
-            }, o3.prototype.shrn = function(t6) {
-              return this.clone().ishrn(t6);
-            }, o3.prototype.ushrn = function(t6) {
-              return this.clone().iushrn(t6);
-            }, o3.prototype.testn = function(t6) {
-              n2(typeof t6 == "number" && t6 >= 0);
-              var e5 = t6 % 26, r4 = (t6 - e5) / 26, i4 = 1 << e5;
-              return !(this.length <= r4) && !!(this.words[r4] & i4);
-            }, o3.prototype.imaskn = function(t6) {
-              n2(typeof t6 == "number" && t6 >= 0);
-              var e5 = t6 % 26, r4 = (t6 - e5) / 26;
-              if (n2(this.negative === 0, "imaskn works only with positive numbers"), this.length <= r4)
-                return this;
-              if (e5 !== 0 && r4++, this.length = Math.min(r4, this.length), e5 !== 0) {
-                var i4 = 67108863 ^ 67108863 >>> e5 << e5;
-                this.words[this.length - 1] &= i4;
-              }
-              return this.strip();
-            }, o3.prototype.maskn = function(t6) {
-              return this.clone().imaskn(t6);
-            }, o3.prototype.iaddn = function(t6) {
-              return n2(typeof t6 == "number"), n2(t6 < 67108864), t6 < 0 ? this.isubn(-t6) : this.negative !== 0 ? this.length === 1 && (0 | this.words[0]) < t6 ? (this.words[0] = t6 - (0 | this.words[0]), this.negative = 0, this) : (this.negative = 0, this.isubn(t6), this.negative = 1, this) : this._iaddn(t6);
-            }, o3.prototype._iaddn = function(t6) {
-              this.words[0] += t6;
-              for (var e5 = 0; e5 < this.length && this.words[e5] >= 67108864; e5++)
-                this.words[e5] -= 67108864, e5 === this.length - 1 ? this.words[e5 + 1] = 1 : this.words[e5 + 1]++;
-              return this.length = Math.max(this.length, e5 + 1), this;
-            }, o3.prototype.isubn = function(t6) {
-              if (n2(typeof t6 == "number"), n2(t6 < 67108864), t6 < 0)
-                return this.iaddn(-t6);
-              if (this.negative !== 0)
-                return this.negative = 0, this.iaddn(t6), this.negative = 1, this;
-              if (this.words[0] -= t6, this.length === 1 && this.words[0] < 0)
-                this.words[0] = -this.words[0], this.negative = 1;
-              else
-                for (var e5 = 0; e5 < this.length && this.words[e5] < 0; e5++)
-                  this.words[e5] += 67108864, this.words[e5 + 1] -= 1;
-              return this.strip();
-            }, o3.prototype.addn = function(t6) {
-              return this.clone().iaddn(t6);
-            }, o3.prototype.subn = function(t6) {
-              return this.clone().isubn(t6);
-            }, o3.prototype.iabs = function() {
-              return this.negative = 0, this;
-            }, o3.prototype.abs = function() {
-              return this.clone().iabs();
-            }, o3.prototype._ishlnsubmul = function(t6, e5, r4) {
-              var i4, o4, s4 = t6.length + r4;
-              this._expand(s4);
-              var u4 = 0;
-              for (i4 = 0; i4 < t6.length; i4++) {
-                o4 = (0 | this.words[i4 + r4]) + u4;
-                var a4 = (0 | t6.words[i4]) * e5;
-                u4 = ((o4 -= 67108863 & a4) >> 26) - (a4 / 67108864 | 0), this.words[i4 + r4] = 67108863 & o4;
-              }
-              for (; i4 < this.length - r4; i4++)
-                u4 = (o4 = (0 | this.words[i4 + r4]) + u4) >> 26, this.words[i4 + r4] = 67108863 & o4;
-              if (u4 === 0)
-                return this.strip();
-              for (n2(u4 === -1), u4 = 0, i4 = 0; i4 < this.length; i4++)
-                u4 = (o4 = -(0 | this.words[i4]) + u4) >> 26, this.words[i4] = 67108863 & o4;
-              return this.negative = 1, this.strip();
-            }, o3.prototype._wordDiv = function(t6, e5) {
-              var r4 = (this.length, t6.length), n3 = this.clone(), i4 = t6, s4 = 0 | i4.words[i4.length - 1];
-              (r4 = 26 - this._countBits(s4)) !== 0 && (i4 = i4.ushln(r4), n3.iushln(r4), s4 = 0 | i4.words[i4.length - 1]);
-              var u4, a4 = n3.length - i4.length;
-              if (e5 !== "mod") {
-                (u4 = new o3(null)).length = a4 + 1, u4.words = new Array(u4.length);
-                for (var h4 = 0; h4 < u4.length; h4++)
-                  u4.words[h4] = 0;
-              }
-              var c4 = n3.clone()._ishlnsubmul(i4, 1, a4);
-              c4.negative === 0 && (n3 = c4, u4 && (u4.words[a4] = 1));
-              for (var f4 = a4 - 1; f4 >= 0; f4--) {
-                var l4 = 67108864 * (0 | n3.words[i4.length + f4]) + (0 | n3.words[i4.length + f4 - 1]);
-                for (l4 = Math.min(l4 / s4 | 0, 67108863), n3._ishlnsubmul(i4, l4, f4); n3.negative !== 0; )
-                  l4--, n3.negative = 0, n3._ishlnsubmul(i4, 1, f4), n3.isZero() || (n3.negative ^= 1);
-                u4 && (u4.words[f4] = l4);
-              }
-              return u4 && u4.strip(), n3.strip(), e5 !== "div" && r4 !== 0 && n3.iushrn(r4), { div: u4 || null, mod: n3 };
-            }, o3.prototype.divmod = function(t6, e5, r4) {
-              return n2(!t6.isZero()), this.isZero() ? { div: new o3(0), mod: new o3(0) } : this.negative !== 0 && t6.negative === 0 ? (u4 = this.neg().divmod(t6, e5), e5 !== "mod" && (i4 = u4.div.neg()), e5 !== "div" && (s4 = u4.mod.neg(), r4 && s4.negative !== 0 && s4.iadd(t6)), { div: i4, mod: s4 }) : this.negative === 0 && t6.negative !== 0 ? (u4 = this.divmod(t6.neg(), e5), e5 !== "mod" && (i4 = u4.div.neg()), { div: i4, mod: u4.mod }) : (this.negative & t6.negative) != 0 ? (u4 = this.neg().divmod(t6.neg(), e5), e5 !== "div" && (s4 = u4.mod.neg(), r4 && s4.negative !== 0 && s4.isub(t6)), { div: u4.div, mod: s4 }) : t6.length > this.length || this.cmp(t6) < 0 ? { div: new o3(0), mod: this } : t6.length === 1 ? e5 === "div" ? { div: this.divn(t6.words[0]), mod: null } : e5 === "mod" ? { div: null, mod: new o3(this.modn(t6.words[0])) } : { div: this.divn(t6.words[0]), mod: new o3(this.modn(t6.words[0])) } : this._wordDiv(t6, e5);
-              var i4, s4, u4;
-            }, o3.prototype.div = function(t6) {
-              return this.divmod(t6, "div", false).div;
-            }, o3.prototype.mod = function(t6) {
-              return this.divmod(t6, "mod", false).mod;
-            }, o3.prototype.umod = function(t6) {
-              return this.divmod(t6, "mod", true).mod;
-            }, o3.prototype.divRound = function(t6) {
-              var e5 = this.divmod(t6);
-              if (e5.mod.isZero())
-                return e5.div;
-              var r4 = e5.div.negative !== 0 ? e5.mod.isub(t6) : e5.mod, n3 = t6.ushrn(1), i4 = t6.andln(1), o4 = r4.cmp(n3);
-              return o4 < 0 || i4 === 1 && o4 === 0 ? e5.div : e5.div.negative !== 0 ? e5.div.isubn(1) : e5.div.iaddn(1);
-            }, o3.prototype.modn = function(t6) {
-              n2(t6 <= 67108863);
-              for (var e5 = (1 << 26) % t6, r4 = 0, i4 = this.length - 1; i4 >= 0; i4--)
-                r4 = (e5 * r4 + (0 | this.words[i4])) % t6;
-              return r4;
-            }, o3.prototype.idivn = function(t6) {
-              n2(t6 <= 67108863);
-              for (var e5 = 0, r4 = this.length - 1; r4 >= 0; r4--) {
-                var i4 = (0 | this.words[r4]) + 67108864 * e5;
-                this.words[r4] = i4 / t6 | 0, e5 = i4 % t6;
-              }
-              return this.strip();
-            }, o3.prototype.divn = function(t6) {
-              return this.clone().idivn(t6);
-            }, o3.prototype.egcd = function(t6) {
-              n2(t6.negative === 0), n2(!t6.isZero());
-              var e5 = this, r4 = t6.clone();
-              e5 = e5.negative !== 0 ? e5.umod(t6) : e5.clone();
-              for (var i4 = new o3(1), s4 = new o3(0), u4 = new o3(0), a4 = new o3(1), h4 = 0; e5.isEven() && r4.isEven(); )
-                e5.iushrn(1), r4.iushrn(1), ++h4;
-              for (var c4 = r4.clone(), f4 = e5.clone(); !e5.isZero(); ) {
-                for (var l4 = 0, d4 = 1; (e5.words[0] & d4) == 0 && l4 < 26; ++l4, d4 <<= 1)
-                  ;
-                if (l4 > 0)
-                  for (e5.iushrn(l4); l4-- > 0; )
-                    (i4.isOdd() || s4.isOdd()) && (i4.iadd(c4), s4.isub(f4)), i4.iushrn(1), s4.iushrn(1);
-                for (var p4 = 0, m4 = 1; (r4.words[0] & m4) == 0 && p4 < 26; ++p4, m4 <<= 1)
-                  ;
-                if (p4 > 0)
-                  for (r4.iushrn(p4); p4-- > 0; )
-                    (u4.isOdd() || a4.isOdd()) && (u4.iadd(c4), a4.isub(f4)), u4.iushrn(1), a4.iushrn(1);
-                e5.cmp(r4) >= 0 ? (e5.isub(r4), i4.isub(u4), s4.isub(a4)) : (r4.isub(e5), u4.isub(i4), a4.isub(s4));
-              }
-              return { a: u4, b: a4, gcd: r4.iushln(h4) };
-            }, o3.prototype._invmp = function(t6) {
-              n2(t6.negative === 0), n2(!t6.isZero());
-              var e5 = this, r4 = t6.clone();
-              e5 = e5.negative !== 0 ? e5.umod(t6) : e5.clone();
-              for (var i4, s4 = new o3(1), u4 = new o3(0), a4 = r4.clone(); e5.cmpn(1) > 0 && r4.cmpn(1) > 0; ) {
-                for (var h4 = 0, c4 = 1; (e5.words[0] & c4) == 0 && h4 < 26; ++h4, c4 <<= 1)
-                  ;
-                if (h4 > 0)
-                  for (e5.iushrn(h4); h4-- > 0; )
-                    s4.isOdd() && s4.iadd(a4), s4.iushrn(1);
-                for (var f4 = 0, l4 = 1; (r4.words[0] & l4) == 0 && f4 < 26; ++f4, l4 <<= 1)
-                  ;
-                if (f4 > 0)
-                  for (r4.iushrn(f4); f4-- > 0; )
-                    u4.isOdd() && u4.iadd(a4), u4.iushrn(1);
-                e5.cmp(r4) >= 0 ? (e5.isub(r4), s4.isub(u4)) : (r4.isub(e5), u4.isub(s4));
-              }
-              return (i4 = e5.cmpn(1) === 0 ? s4 : u4).cmpn(0) < 0 && i4.iadd(t6), i4;
-            }, o3.prototype.gcd = function(t6) {
-              if (this.isZero())
-                return t6.abs();
-              if (t6.isZero())
-                return this.abs();
-              var e5 = this.clone(), r4 = t6.clone();
-              e5.negative = 0, r4.negative = 0;
-              for (var n3 = 0; e5.isEven() && r4.isEven(); n3++)
-                e5.iushrn(1), r4.iushrn(1);
-              for (; ; ) {
-                for (; e5.isEven(); )
-                  e5.iushrn(1);
-                for (; r4.isEven(); )
-                  r4.iushrn(1);
-                var i4 = e5.cmp(r4);
-                if (i4 < 0) {
-                  var o4 = e5;
-                  e5 = r4, r4 = o4;
-                } else if (i4 === 0 || r4.cmpn(1) === 0)
-                  break;
-                e5.isub(r4);
-              }
-              return r4.iushln(n3);
-            }, o3.prototype.invm = function(t6) {
-              return this.egcd(t6).a.umod(t6);
-            }, o3.prototype.isEven = function() {
-              return (1 & this.words[0]) == 0;
-            }, o3.prototype.isOdd = function() {
-              return (1 & this.words[0]) == 1;
-            }, o3.prototype.andln = function(t6) {
-              return this.words[0] & t6;
-            }, o3.prototype.bincn = function(t6) {
-              n2(typeof t6 == "number");
-              var e5 = t6 % 26, r4 = (t6 - e5) / 26, i4 = 1 << e5;
-              if (this.length <= r4)
-                return this._expand(r4 + 1), this.words[r4] |= i4, this;
-              for (var o4 = i4, s4 = r4; o4 !== 0 && s4 < this.length; s4++) {
-                var u4 = 0 | this.words[s4];
-                o4 = (u4 += o4) >>> 26, u4 &= 67108863, this.words[s4] = u4;
-              }
-              return o4 !== 0 && (this.words[s4] = o4, this.length++), this;
-            }, o3.prototype.isZero = function() {
-              return this.length === 1 && this.words[0] === 0;
-            }, o3.prototype.cmpn = function(t6) {
-              var e5, r4 = t6 < 0;
-              if (this.negative !== 0 && !r4)
-                return -1;
-              if (this.negative === 0 && r4)
-                return 1;
-              if (this.strip(), this.length > 1)
-                e5 = 1;
-              else {
-                r4 && (t6 = -t6), n2(t6 <= 67108863, "Number is too big");
-                var i4 = 0 | this.words[0];
-                e5 = i4 === t6 ? 0 : i4 < t6 ? -1 : 1;
-              }
-              return this.negative !== 0 ? 0 | -e5 : e5;
-            }, o3.prototype.cmp = function(t6) {
-              if (this.negative !== 0 && t6.negative === 0)
-                return -1;
-              if (this.negative === 0 && t6.negative !== 0)
-                return 1;
-              var e5 = this.ucmp(t6);
-              return this.negative !== 0 ? 0 | -e5 : e5;
-            }, o3.prototype.ucmp = function(t6) {
-              if (this.length > t6.length)
-                return 1;
-              if (this.length < t6.length)
-                return -1;
-              for (var e5 = 0, r4 = this.length - 1; r4 >= 0; r4--) {
-                var n3 = 0 | this.words[r4], i4 = 0 | t6.words[r4];
-                if (n3 !== i4) {
-                  n3 < i4 ? e5 = -1 : n3 > i4 && (e5 = 1);
-                  break;
-                }
-              }
-              return e5;
-            }, o3.prototype.gtn = function(t6) {
-              return this.cmpn(t6) === 1;
-            }, o3.prototype.gt = function(t6) {
-              return this.cmp(t6) === 1;
-            }, o3.prototype.gten = function(t6) {
-              return this.cmpn(t6) >= 0;
-            }, o3.prototype.gte = function(t6) {
-              return this.cmp(t6) >= 0;
-            }, o3.prototype.ltn = function(t6) {
-              return this.cmpn(t6) === -1;
-            }, o3.prototype.lt = function(t6) {
-              return this.cmp(t6) === -1;
-            }, o3.prototype.lten = function(t6) {
-              return this.cmpn(t6) <= 0;
-            }, o3.prototype.lte = function(t6) {
-              return this.cmp(t6) <= 0;
-            }, o3.prototype.eqn = function(t6) {
-              return this.cmpn(t6) === 0;
-            }, o3.prototype.eq = function(t6) {
-              return this.cmp(t6) === 0;
-            }, o3.red = function(t6) {
-              return new M3(t6);
-            }, o3.prototype.toRed = function(t6) {
-              return n2(!this.red, "Already a number in reduction context"), n2(this.negative === 0, "red works only with positives"), t6.convertTo(this)._forceRed(t6);
-            }, o3.prototype.fromRed = function() {
-              return n2(this.red, "fromRed works only with numbers in reduction context"), this.red.convertFrom(this);
-            }, o3.prototype._forceRed = function(t6) {
-              return this.red = t6, this;
-            }, o3.prototype.forceRed = function(t6) {
-              return n2(!this.red, "Already a number in reduction context"), this._forceRed(t6);
-            }, o3.prototype.redAdd = function(t6) {
-              return n2(this.red, "redAdd works only with red numbers"), this.red.add(this, t6);
-            }, o3.prototype.redIAdd = function(t6) {
-              return n2(this.red, "redIAdd works only with red numbers"), this.red.iadd(this, t6);
-            }, o3.prototype.redSub = function(t6) {
-              return n2(this.red, "redSub works only with red numbers"), this.red.sub(this, t6);
-            }, o3.prototype.redISub = function(t6) {
-              return n2(this.red, "redISub works only with red numbers"), this.red.isub(this, t6);
-            }, o3.prototype.redShl = function(t6) {
-              return n2(this.red, "redShl works only with red numbers"), this.red.shl(this, t6);
-            }, o3.prototype.redMul = function(t6) {
-              return n2(this.red, "redMul works only with red numbers"), this.red._verify2(this, t6), this.red.mul(this, t6);
-            }, o3.prototype.redIMul = function(t6) {
-              return n2(this.red, "redMul works only with red numbers"), this.red._verify2(this, t6), this.red.imul(this, t6);
-            }, o3.prototype.redSqr = function() {
-              return n2(this.red, "redSqr works only with red numbers"), this.red._verify1(this), this.red.sqr(this);
-            }, o3.prototype.redISqr = function() {
-              return n2(this.red, "redISqr works only with red numbers"), this.red._verify1(this), this.red.isqr(this);
-            }, o3.prototype.redSqrt = function() {
-              return n2(this.red, "redSqrt works only with red numbers"), this.red._verify1(this), this.red.sqrt(this);
-            }, o3.prototype.redInvm = function() {
-              return n2(this.red, "redInvm works only with red numbers"), this.red._verify1(this), this.red.invm(this);
-            }, o3.prototype.redNeg = function() {
-              return n2(this.red, "redNeg works only with red numbers"), this.red._verify1(this), this.red.neg(this);
-            }, o3.prototype.redPow = function(t6) {
-              return n2(this.red && !t6.red, "redPow(normalNum)"), this.red._verify1(this), this.red.pow(this, t6);
-            };
-            var g3 = { k256: null, p224: null, p192: null, p25519: null };
-            function y3(t6, e5) {
-              this.name = t6, this.p = new o3(e5, 16), this.n = this.p.bitLength(), this.k = new o3(1).iushln(this.n).isub(this.p), this.tmp = this._tmp();
-            }
-            function v3() {
-              y3.call(this, "k256", "ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff fffffffe fffffc2f");
-            }
-            function w4() {
-              y3.call(this, "p224", "ffffffff ffffffff ffffffff ffffffff 00000000 00000000 00000001");
-            }
-            function _4() {
-              y3.call(this, "p192", "ffffffff ffffffff ffffffff fffffffe ffffffff ffffffff");
-            }
-            function b2() {
-              y3.call(this, "25519", "7fffffffffffffff ffffffffffffffff ffffffffffffffff ffffffffffffffed");
-            }
-            function M3(t6) {
-              if (typeof t6 == "string") {
-                var e5 = o3._prime(t6);
-                this.m = e5.p, this.prime = e5;
-              } else
-                n2(t6.gtn(1), "modulus must be greater than 1"), this.m = t6, this.prime = null;
-            }
-            function S2(t6) {
-              M3.call(this, t6), this.shift = this.m.bitLength(), this.shift % 26 != 0 && (this.shift += 26 - this.shift % 26), this.r = new o3(1).iushln(this.shift), this.r2 = this.imod(this.r.sqr()), this.rinv = this.r._invmp(this.m), this.minv = this.rinv.mul(this.r).isubn(1).div(this.m), this.minv = this.minv.umod(this.r), this.minv = this.r.sub(this.minv);
-            }
-            y3.prototype._tmp = function() {
-              var t6 = new o3(null);
-              return t6.words = new Array(Math.ceil(this.n / 13)), t6;
-            }, y3.prototype.ireduce = function(t6) {
-              var e5, r4 = t6;
-              do {
-                this.split(r4, this.tmp), e5 = (r4 = (r4 = this.imulK(r4)).iadd(this.tmp)).bitLength();
-              } while (e5 > this.n);
-              var n3 = e5 < this.n ? -1 : r4.ucmp(this.p);
-              return n3 === 0 ? (r4.words[0] = 0, r4.length = 1) : n3 > 0 ? r4.isub(this.p) : r4.strip(), r4;
-            }, y3.prototype.split = function(t6, e5) {
-              t6.iushrn(this.n, 0, e5);
-            }, y3.prototype.imulK = function(t6) {
-              return t6.imul(this.k);
-            }, i3(v3, y3), v3.prototype.split = function(t6, e5) {
-              for (var r4 = Math.min(t6.length, 9), n3 = 0; n3 < r4; n3++)
-                e5.words[n3] = t6.words[n3];
-              if (e5.length = r4, t6.length <= 9)
-                return t6.words[0] = 0, void (t6.length = 1);
-              var i4 = t6.words[9];
-              for (e5.words[e5.length++] = 4194303 & i4, n3 = 10; n3 < t6.length; n3++) {
-                var o4 = 0 | t6.words[n3];
-                t6.words[n3 - 10] = (4194303 & o4) << 4 | i4 >>> 22, i4 = o4;
-              }
-              i4 >>>= 22, t6.words[n3 - 10] = i4, i4 === 0 && t6.length > 10 ? t6.length -= 10 : t6.length -= 9;
-            }, v3.prototype.imulK = function(t6) {
-              t6.words[t6.length] = 0, t6.words[t6.length + 1] = 0, t6.length += 2;
-              for (var e5 = 0, r4 = 0; r4 < t6.length; r4++) {
-                var n3 = 0 | t6.words[r4];
-                e5 += 977 * n3, t6.words[r4] = 67108863 & e5, e5 = 64 * n3 + (e5 / 67108864 | 0);
-              }
-              return t6.words[t6.length - 1] === 0 && (t6.length--, t6.words[t6.length - 1] === 0 && t6.length--), t6;
-            }, i3(w4, y3), i3(_4, y3), i3(b2, y3), b2.prototype.imulK = function(t6) {
-              for (var e5 = 0, r4 = 0; r4 < t6.length; r4++) {
-                var n3 = 19 * (0 | t6.words[r4]) + e5, i4 = 67108863 & n3;
-                n3 >>>= 26, t6.words[r4] = i4, e5 = n3;
-              }
-              return e5 !== 0 && (t6.words[t6.length++] = e5), t6;
-            }, o3._prime = function(t6) {
-              if (g3[t6])
-                return g3[t6];
-              var e5;
-              if (t6 === "k256")
-                e5 = new v3();
-              else if (t6 === "p224")
-                e5 = new w4();
-              else if (t6 === "p192")
-                e5 = new _4();
-              else {
-                if (t6 !== "p25519")
-                  throw new Error("Unknown prime " + t6);
-                e5 = new b2();
-              }
-              return g3[t6] = e5, e5;
-            }, M3.prototype._verify1 = function(t6) {
-              n2(t6.negative === 0, "red works only with positives"), n2(t6.red, "red works only with red numbers");
-            }, M3.prototype._verify2 = function(t6, e5) {
-              n2((t6.negative | e5.negative) == 0, "red works only with positives"), n2(t6.red && t6.red === e5.red, "red works only with red numbers");
-            }, M3.prototype.imod = function(t6) {
-              return this.prime ? this.prime.ireduce(t6)._forceRed(this) : t6.umod(this.m)._forceRed(this);
-            }, M3.prototype.neg = function(t6) {
-              return t6.isZero() ? t6.clone() : this.m.sub(t6)._forceRed(this);
-            }, M3.prototype.add = function(t6, e5) {
-              this._verify2(t6, e5);
-              var r4 = t6.add(e5);
-              return r4.cmp(this.m) >= 0 && r4.isub(this.m), r4._forceRed(this);
-            }, M3.prototype.iadd = function(t6, e5) {
-              this._verify2(t6, e5);
-              var r4 = t6.iadd(e5);
-              return r4.cmp(this.m) >= 0 && r4.isub(this.m), r4;
-            }, M3.prototype.sub = function(t6, e5) {
-              this._verify2(t6, e5);
-              var r4 = t6.sub(e5);
-              return r4.cmpn(0) < 0 && r4.iadd(this.m), r4._forceRed(this);
-            }, M3.prototype.isub = function(t6, e5) {
-              this._verify2(t6, e5);
-              var r4 = t6.isub(e5);
-              return r4.cmpn(0) < 0 && r4.iadd(this.m), r4;
-            }, M3.prototype.shl = function(t6, e5) {
-              return this._verify1(t6), this.imod(t6.ushln(e5));
-            }, M3.prototype.imul = function(t6, e5) {
-              return this._verify2(t6, e5), this.imod(t6.imul(e5));
-            }, M3.prototype.mul = function(t6, e5) {
-              return this._verify2(t6, e5), this.imod(t6.mul(e5));
-            }, M3.prototype.isqr = function(t6) {
-              return this.imul(t6, t6.clone());
-            }, M3.prototype.sqr = function(t6) {
-              return this.mul(t6, t6);
-            }, M3.prototype.sqrt = function(t6) {
-              if (t6.isZero())
-                return t6.clone();
-              var e5 = this.m.andln(3);
-              if (n2(e5 % 2 == 1), e5 === 3) {
-                var r4 = this.m.add(new o3(1)).iushrn(2);
-                return this.pow(t6, r4);
-              }
-              for (var i4 = this.m.subn(1), s4 = 0; !i4.isZero() && i4.andln(1) === 0; )
-                s4++, i4.iushrn(1);
-              n2(!i4.isZero());
-              var u4 = new o3(1).toRed(this), a4 = u4.redNeg(), h4 = this.m.subn(1).iushrn(1), c4 = this.m.bitLength();
-              for (c4 = new o3(2 * c4 * c4).toRed(this); this.pow(c4, h4).cmp(a4) !== 0; )
-                c4.redIAdd(a4);
-              for (var f4 = this.pow(c4, i4), l4 = this.pow(t6, i4.addn(1).iushrn(1)), d4 = this.pow(t6, i4), p4 = s4; d4.cmp(u4) !== 0; ) {
-                for (var m4 = d4, g4 = 0; m4.cmp(u4) !== 0; g4++)
-                  m4 = m4.redSqr();
-                n2(g4 < p4);
-                var y4 = this.pow(f4, new o3(1).iushln(p4 - g4 - 1));
-                l4 = l4.redMul(y4), f4 = y4.redSqr(), d4 = d4.redMul(f4), p4 = g4;
-              }
-              return l4;
-            }, M3.prototype.invm = function(t6) {
-              var e5 = t6._invmp(this.m);
-              return e5.negative !== 0 ? (e5.negative = 0, this.imod(e5).redNeg()) : this.imod(e5);
-            }, M3.prototype.pow = function(t6, e5) {
-              if (e5.isZero())
-                return new o3(1).toRed(this);
-              if (e5.cmpn(1) === 0)
-                return t6.clone();
-              var r4 = new Array(16);
-              r4[0] = new o3(1).toRed(this), r4[1] = t6;
-              for (var n3 = 2; n3 < r4.length; n3++)
-                r4[n3] = this.mul(r4[n3 - 1], t6);
-              var i4 = r4[0], s4 = 0, u4 = 0, a4 = e5.bitLength() % 26;
-              for (a4 === 0 && (a4 = 26), n3 = e5.length - 1; n3 >= 0; n3--) {
-                for (var h4 = e5.words[n3], c4 = a4 - 1; c4 >= 0; c4--) {
-                  var f4 = h4 >> c4 & 1;
-                  i4 !== r4[0] && (i4 = this.sqr(i4)), f4 !== 0 || s4 !== 0 ? (s4 <<= 1, s4 |= f4, (++u4 === 4 || n3 === 0 && c4 === 0) && (i4 = this.mul(i4, r4[s4]), u4 = 0, s4 = 0)) : u4 = 0;
-                }
-                a4 = 26;
-              }
-              return i4;
-            }, M3.prototype.convertTo = function(t6) {
-              var e5 = t6.umod(this.m);
-              return e5 === t6 ? e5.clone() : e5;
-            }, M3.prototype.convertFrom = function(t6) {
-              var e5 = t6.clone();
-              return e5.red = null, e5;
-            }, o3.mont = function(t6) {
-              return new S2(t6);
-            }, i3(S2, M3), S2.prototype.convertTo = function(t6) {
-              return this.imod(t6.ushln(this.shift));
-            }, S2.prototype.convertFrom = function(t6) {
-              var e5 = this.imod(t6.mul(this.rinv));
-              return e5.red = null, e5;
-            }, S2.prototype.imul = function(t6, e5) {
-              if (t6.isZero() || e5.isZero())
-                return t6.words[0] = 0, t6.length = 1, t6;
-              var r4 = t6.imul(e5), n3 = r4.maskn(this.shift).mul(this.minv).imaskn(this.shift).mul(this.m), i4 = r4.isub(n3).iushrn(this.shift), o4 = i4;
-              return i4.cmp(this.m) >= 0 ? o4 = i4.isub(this.m) : i4.cmpn(0) < 0 && (o4 = i4.iadd(this.m)), o4._forceRed(this);
-            }, S2.prototype.mul = function(t6, e5) {
-              if (t6.isZero() || e5.isZero())
-                return new o3(0)._forceRed(this);
-              var r4 = t6.mul(e5), n3 = r4.maskn(this.shift).mul(this.minv).imaskn(this.shift).mul(this.m), i4 = r4.isub(n3).iushrn(this.shift), s4 = i4;
-              return i4.cmp(this.m) >= 0 ? s4 = i4.isub(this.m) : i4.cmpn(0) < 0 && (s4 = i4.iadd(this.m)), s4._forceRed(this);
-            }, S2.prototype.invm = function(t6) {
-              return this.imod(t6._invmp(this.m).mul(this.r2))._forceRed(this);
-            };
-          }(t4, this);
-        }).call(this, r3(44)(t3));
-      }, function(t3, e3) {
-        var r3;
-        r3 = function() {
-          return this;
-        }();
-        try {
-          r3 = r3 || new Function("return this")();
-        } catch (t4) {
-          typeof window == "object" && (r3 = window);
-        }
-        t3.exports = r3;
-      }, function(t3, e3) {
-        var r3, n2, i3 = t3.exports = {};
-        function o3() {
-          throw new Error("setTimeout has not been defined");
-        }
-        function s3() {
-          throw new Error("clearTimeout has not been defined");
-        }
-        function u3(t4) {
-          if (r3 === setTimeout)
-            return setTimeout(t4, 0);
-          if ((r3 === o3 || !r3) && setTimeout)
-            return r3 = setTimeout, setTimeout(t4, 0);
-          try {
-            return r3(t4, 0);
-          } catch (e4) {
-            try {
-              return r3.call(null, t4, 0);
-            } catch (e5) {
-              return r3.call(this, t4, 0);
-            }
-          }
-        }
-        !function() {
-          try {
-            r3 = typeof setTimeout == "function" ? setTimeout : o3;
-          } catch (t4) {
-            r3 = o3;
-          }
-          try {
-            n2 = typeof clearTimeout == "function" ? clearTimeout : s3;
-          } catch (t4) {
-            n2 = s3;
-          }
-        }();
-        var a3, h3 = [], c3 = false, f3 = -1;
-        function l3() {
-          c3 && a3 && (c3 = false, a3.length ? h3 = a3.concat(h3) : f3 = -1, h3.length && d3());
-        }
-        function d3() {
-          if (!c3) {
-            var t4 = u3(l3);
-            c3 = true;
-            for (var e4 = h3.length; e4; ) {
-              for (a3 = h3, h3 = []; ++f3 < e4; )
-                a3 && a3[f3].run();
-              f3 = -1, e4 = h3.length;
-            }
-            a3 = null, c3 = false, function(t5) {
-              if (n2 === clearTimeout)
-                return clearTimeout(t5);
-              if ((n2 === s3 || !n2) && clearTimeout)
-                return n2 = clearTimeout, clearTimeout(t5);
-              try {
-                n2(t5);
-              } catch (e5) {
-                try {
-                  return n2.call(null, t5);
-                } catch (e6) {
-                  return n2.call(this, t5);
-                }
-              }
-            }(t4);
-          }
-        }
-        function p3(t4, e4) {
-          this.fun = t4, this.array = e4;
-        }
-        function m3() {
-        }
-        i3.nextTick = function(t4) {
-          var e4 = new Array(arguments.length - 1);
-          if (arguments.length > 1)
-            for (var r4 = 1; r4 < arguments.length; r4++)
-              e4[r4 - 1] = arguments[r4];
-          h3.push(new p3(t4, e4)), h3.length !== 1 || c3 || u3(d3);
-        }, p3.prototype.run = function() {
-          this.fun.apply(null, this.array);
-        }, i3.title = "browser", i3.browser = true, i3.env = {}, i3.argv = [], i3.version = "", i3.versions = {}, i3.on = m3, i3.addListener = m3, i3.once = m3, i3.off = m3, i3.removeListener = m3, i3.removeAllListeners = m3, i3.emit = m3, i3.prependListener = m3, i3.prependOnceListener = m3, i3.listeners = function(t4) {
-          return [];
-        }, i3.binding = function(t4) {
-          throw new Error("process.binding is not supported");
-        }, i3.cwd = function() {
-          return "/";
-        }, i3.chdir = function(t4) {
-          throw new Error("process.chdir is not supported");
-        }, i3.umask = function() {
-          return 0;
-        };
-      }, function(t3, e3) {
-        t3.exports = i3, i3.strict = o3, i3.loose = s3;
-        var r3 = Object.prototype.toString, n2 = { "[object Int8Array]": true, "[object Int16Array]": true, "[object Int32Array]": true, "[object Uint8Array]": true, "[object Uint8ClampedArray]": true, "[object Uint16Array]": true, "[object Uint32Array]": true, "[object Float32Array]": true, "[object Float64Array]": true };
-        function i3(t4) {
-          return o3(t4) || s3(t4);
-        }
-        function o3(t4) {
-          return t4 instanceof Int8Array || t4 instanceof Int16Array || t4 instanceof Int32Array || t4 instanceof Uint8Array || t4 instanceof Uint8ClampedArray || t4 instanceof Uint16Array || t4 instanceof Uint32Array || t4 instanceof Float32Array || t4 instanceof Float64Array;
-        }
-        function s3(t4) {
-          return n2[r3.call(t4)];
-        }
-      }, function(t3, e3, r3) {
-        "use strict";
-        const n2 = r3(52), i3 = r3(53), o3 = r3(54);
-        function s3(t4) {
-          if (typeof t4 != "string" || t4.length !== 1)
-            throw new TypeError("arrayFormatSeparator must be single character string");
-        }
-        function u3(t4, e4) {
-          return e4.encode ? e4.strict ? n2(t4) : encodeURIComponent(t4) : t4;
-        }
-        function a3(t4, e4) {
-          return e4.decode ? i3(t4) : t4;
-        }
-        function h3(t4) {
-          const e4 = t4.indexOf("#");
-          return e4 !== -1 && (t4 = t4.slice(0, e4)), t4;
-        }
-        function c3(t4) {
-          const e4 = (t4 = h3(t4)).indexOf("?");
-          return e4 === -1 ? "" : t4.slice(e4 + 1);
-        }
-        function f3(t4, e4) {
-          return e4.parseNumbers && !Number.isNaN(Number(t4)) && typeof t4 == "string" && t4.trim() !== "" ? t4 = Number(t4) : !e4.parseBooleans || t4 === null || t4.toLowerCase() !== "true" && t4.toLowerCase() !== "false" || (t4 = t4.toLowerCase() === "true"), t4;
-        }
-        function l3(t4, e4) {
-          s3((e4 = Object.assign({ decode: true, sort: true, arrayFormat: "none", arrayFormatSeparator: ",", parseNumbers: false, parseBooleans: false }, e4)).arrayFormatSeparator);
-          const r4 = function(t5) {
-            let e5;
-            switch (t5.arrayFormat) {
-              case "index":
-                return (t6, r5, n4) => {
-                  e5 = /\[(\d*)\]$/.exec(t6), t6 = t6.replace(/\[\d*\]$/, ""), e5 ? (n4[t6] === void 0 && (n4[t6] = {}), n4[t6][e5[1]] = r5) : n4[t6] = r5;
-                };
-              case "bracket":
-                return (t6, r5, n4) => {
-                  e5 = /(\[\])$/.exec(t6), t6 = t6.replace(/\[\]$/, ""), e5 ? n4[t6] !== void 0 ? n4[t6] = [].concat(n4[t6], r5) : n4[t6] = [r5] : n4[t6] = r5;
-                };
-              case "comma":
-              case "separator":
-                return (e6, r5, n4) => {
-                  const i4 = typeof r5 == "string" && r5.split("").indexOf(t5.arrayFormatSeparator) > -1 ? r5.split(t5.arrayFormatSeparator).map((e7) => a3(e7, t5)) : r5 === null ? r5 : a3(r5, t5);
-                  n4[e6] = i4;
-                };
-              default:
-                return (t6, e6, r5) => {
-                  r5[t6] !== void 0 ? r5[t6] = [].concat(r5[t6], e6) : r5[t6] = e6;
-                };
-            }
-          }(e4), n3 = /* @__PURE__ */ Object.create(null);
-          if (typeof t4 != "string")
-            return n3;
-          if (!(t4 = t4.trim().replace(/^[?#&]/, "")))
-            return n3;
-          for (const i4 of t4.split("&")) {
-            let [t5, s4] = o3(e4.decode ? i4.replace(/\+/g, " ") : i4, "=");
-            s4 = s4 === void 0 ? null : ["comma", "separator"].includes(e4.arrayFormat) ? s4 : a3(s4, e4), r4(a3(t5, e4), s4, n3);
-          }
-          for (const t5 of Object.keys(n3)) {
-            const r5 = n3[t5];
-            if (typeof r5 == "object" && r5 !== null)
-              for (const t6 of Object.keys(r5))
-                r5[t6] = f3(r5[t6], e4);
-            else
-              n3[t5] = f3(r5, e4);
-          }
-          return e4.sort === false ? n3 : (e4.sort === true ? Object.keys(n3).sort() : Object.keys(n3).sort(e4.sort)).reduce((t5, e5) => {
-            const r5 = n3[e5];
-            return Boolean(r5) && typeof r5 == "object" && !Array.isArray(r5) ? t5[e5] = function t6(e6) {
-              return Array.isArray(e6) ? e6.sort() : typeof e6 == "object" ? t6(Object.keys(e6)).sort((t7, e7) => Number(t7) - Number(e7)).map((t7) => e6[t7]) : e6;
-            }(r5) : t5[e5] = r5, t5;
-          }, /* @__PURE__ */ Object.create(null));
-        }
-        e3.extract = c3, e3.parse = l3, e3.stringify = (t4, e4) => {
-          if (!t4)
-            return "";
-          s3((e4 = Object.assign({ encode: true, strict: true, arrayFormat: "none", arrayFormatSeparator: "," }, e4)).arrayFormatSeparator);
-          const r4 = (r5) => e4.skipNull && t4[r5] == null || e4.skipEmptyString && t4[r5] === "", n3 = function(t5) {
-            switch (t5.arrayFormat) {
-              case "index":
-                return (e5) => (r5, n4) => {
-                  const i5 = r5.length;
-                  return n4 === void 0 || t5.skipNull && n4 === null || t5.skipEmptyString && n4 === "" ? r5 : n4 === null ? [...r5, [u3(e5, t5), "[", i5, "]"].join("")] : [...r5, [u3(e5, t5), "[", u3(i5, t5), "]=", u3(n4, t5)].join("")];
-                };
-              case "bracket":
-                return (e5) => (r5, n4) => n4 === void 0 || t5.skipNull && n4 === null || t5.skipEmptyString && n4 === "" ? r5 : n4 === null ? [...r5, [u3(e5, t5), "[]"].join("")] : [...r5, [u3(e5, t5), "[]=", u3(n4, t5)].join("")];
-              case "comma":
-              case "separator":
-                return (e5) => (r5, n4) => n4 == null || n4.length === 0 ? r5 : r5.length === 0 ? [[u3(e5, t5), "=", u3(n4, t5)].join("")] : [[r5, u3(n4, t5)].join(t5.arrayFormatSeparator)];
-              default:
-                return (e5) => (r5, n4) => n4 === void 0 || t5.skipNull && n4 === null || t5.skipEmptyString && n4 === "" ? r5 : n4 === null ? [...r5, u3(e5, t5)] : [...r5, [u3(e5, t5), "=", u3(n4, t5)].join("")];
-            }
-          }(e4), i4 = {};
-          for (const e5 of Object.keys(t4))
-            r4(e5) || (i4[e5] = t4[e5]);
-          const o4 = Object.keys(i4);
-          return e4.sort !== false && o4.sort(e4.sort), o4.map((r5) => {
-            const i5 = t4[r5];
-            return i5 === void 0 ? "" : i5 === null ? u3(r5, e4) : Array.isArray(i5) ? i5.reduce(n3(r5), []).join("&") : u3(r5, e4) + "=" + u3(i5, e4);
-          }).filter((t5) => t5.length > 0).join("&");
-        }, e3.parseUrl = (t4, e4) => {
-          e4 = Object.assign({ decode: true }, e4);
-          const [r4, n3] = o3(t4, "#");
-          return Object.assign({ url: r4.split("?")[0] || "", query: l3(c3(t4), e4) }, e4 && e4.parseFragmentIdentifier && n3 ? { fragmentIdentifier: a3(n3, e4) } : {});
-        }, e3.stringifyUrl = (t4, r4) => {
-          r4 = Object.assign({ encode: true, strict: true }, r4);
-          const n3 = h3(t4.url).split("?")[0] || "", i4 = e3.extract(t4.url), o4 = e3.parse(i4, { sort: false }), s4 = Object.assign(o4, t4.query);
-          let a4 = e3.stringify(s4, r4);
-          a4 && (a4 = "?" + a4);
-          let c4 = function(t5) {
-            let e4 = "";
-            const r5 = t5.indexOf("#");
-            return r5 !== -1 && (e4 = t5.slice(r5)), e4;
-          }(t4.url);
-          return t4.fragmentIdentifier && (c4 = "#" + u3(t4.fragmentIdentifier, r4)), `${n3}${a4}${c4}`;
-        };
-      }, function(t3, e3, r3) {
-        "use strict";
-        (function(t4) {
-          var n2 = r3(46), i3 = r3(47), o3 = r3(48);
-          function s3() {
-            return a3.TYPED_ARRAY_SUPPORT ? 2147483647 : 1073741823;
-          }
-          function u3(t5, e4) {
-            if (s3() < e4)
-              throw new RangeError("Invalid typed array length");
-            return a3.TYPED_ARRAY_SUPPORT ? (t5 = new Uint8Array(e4)).__proto__ = a3.prototype : (t5 === null && (t5 = new a3(e4)), t5.length = e4), t5;
-          }
-          function a3(t5, e4, r4) {
-            if (!(a3.TYPED_ARRAY_SUPPORT || this instanceof a3))
-              return new a3(t5, e4, r4);
-            if (typeof t5 == "number") {
-              if (typeof e4 == "string")
-                throw new Error("If encoding is specified then the first argument must be a string");
-              return f3(this, t5);
-            }
-            return h3(this, t5, e4, r4);
-          }
-          function h3(t5, e4, r4, n3) {
-            if (typeof e4 == "number")
-              throw new TypeError('"value" argument must not be a number');
-            return typeof ArrayBuffer != "undefined" && e4 instanceof ArrayBuffer ? function(t6, e5, r5, n4) {
-              if (e5.byteLength, r5 < 0 || e5.byteLength < r5)
-                throw new RangeError("'offset' is out of bounds");
-              if (e5.byteLength < r5 + (n4 || 0))
-                throw new RangeError("'length' is out of bounds");
-              e5 = r5 === void 0 && n4 === void 0 ? new Uint8Array(e5) : n4 === void 0 ? new Uint8Array(e5, r5) : new Uint8Array(e5, r5, n4);
-              a3.TYPED_ARRAY_SUPPORT ? (t6 = e5).__proto__ = a3.prototype : t6 = l3(t6, e5);
-              return t6;
-            }(t5, e4, r4, n3) : typeof e4 == "string" ? function(t6, e5, r5) {
-              typeof r5 == "string" && r5 !== "" || (r5 = "utf8");
-              if (!a3.isEncoding(r5))
-                throw new TypeError('"encoding" must be a valid string encoding');
-              var n4 = 0 | p3(e5, r5), i4 = (t6 = u3(t6, n4)).write(e5, r5);
-              i4 !== n4 && (t6 = t6.slice(0, i4));
-              return t6;
-            }(t5, e4, r4) : function(t6, e5) {
-              if (a3.isBuffer(e5)) {
-                var r5 = 0 | d3(e5.length);
-                return (t6 = u3(t6, r5)).length === 0 || e5.copy(t6, 0, 0, r5), t6;
-              }
-              if (e5) {
-                if (typeof ArrayBuffer != "undefined" && e5.buffer instanceof ArrayBuffer || "length" in e5)
-                  return typeof e5.length != "number" || (n4 = e5.length) != n4 ? u3(t6, 0) : l3(t6, e5);
-                if (e5.type === "Buffer" && o3(e5.data))
-                  return l3(t6, e5.data);
-              }
-              var n4;
-              throw new TypeError("First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object.");
-            }(t5, e4);
-          }
-          function c3(t5) {
-            if (typeof t5 != "number")
-              throw new TypeError('"size" argument must be a number');
-            if (t5 < 0)
-              throw new RangeError('"size" argument must not be negative');
-          }
-          function f3(t5, e4) {
-            if (c3(e4), t5 = u3(t5, e4 < 0 ? 0 : 0 | d3(e4)), !a3.TYPED_ARRAY_SUPPORT)
-              for (var r4 = 0; r4 < e4; ++r4)
-                t5[r4] = 0;
-            return t5;
-          }
-          function l3(t5, e4) {
-            var r4 = e4.length < 0 ? 0 : 0 | d3(e4.length);
-            t5 = u3(t5, r4);
-            for (var n3 = 0; n3 < r4; n3 += 1)
-              t5[n3] = 255 & e4[n3];
-            return t5;
-          }
-          function d3(t5) {
-            if (t5 >= s3())
-              throw new RangeError("Attempt to allocate Buffer larger than maximum size: 0x" + s3().toString(16) + " bytes");
-            return 0 | t5;
-          }
-          function p3(t5, e4) {
-            if (a3.isBuffer(t5))
-              return t5.length;
-            if (typeof ArrayBuffer != "undefined" && typeof ArrayBuffer.isView == "function" && (ArrayBuffer.isView(t5) || t5 instanceof ArrayBuffer))
-              return t5.byteLength;
-            typeof t5 != "string" && (t5 = "" + t5);
-            var r4 = t5.length;
-            if (r4 === 0)
-              return 0;
-            for (var n3 = false; ; )
-              switch (e4) {
-                case "ascii":
-                case "latin1":
-                case "binary":
-                  return r4;
-                case "utf8":
-                case "utf-8":
-                case void 0:
-                  return D3(t5).length;
-                case "ucs2":
-                case "ucs-2":
-                case "utf16le":
-                case "utf-16le":
-                  return 2 * r4;
-                case "hex":
-                  return r4 >>> 1;
-                case "base64":
-                  return W2(t5).length;
-                default:
-                  if (n3)
-                    return D3(t5).length;
-                  e4 = ("" + e4).toLowerCase(), n3 = true;
-              }
-          }
-          function m3(t5, e4, r4) {
-            var n3 = false;
-            if ((e4 === void 0 || e4 < 0) && (e4 = 0), e4 > this.length)
-              return "";
-            if ((r4 === void 0 || r4 > this.length) && (r4 = this.length), r4 <= 0)
-              return "";
-            if ((r4 >>>= 0) <= (e4 >>>= 0))
-              return "";
-            for (t5 || (t5 = "utf8"); ; )
-              switch (t5) {
-                case "hex":
-                  return R2(this, e4, r4);
-                case "utf8":
-                case "utf-8":
-                  return A4(this, e4, r4);
-                case "ascii":
-                  return I3(this, e4, r4);
-                case "latin1":
-                case "binary":
-                  return E4(this, e4, r4);
-                case "base64":
-                  return k3(this, e4, r4);
-                case "ucs2":
-                case "ucs-2":
-                case "utf16le":
-                case "utf-16le":
-                  return T4(this, e4, r4);
-                default:
-                  if (n3)
-                    throw new TypeError("Unknown encoding: " + t5);
-                  t5 = (t5 + "").toLowerCase(), n3 = true;
-              }
-          }
-          function g3(t5, e4, r4) {
-            var n3 = t5[e4];
-            t5[e4] = t5[r4], t5[r4] = n3;
-          }
-          function y3(t5, e4, r4, n3, i4) {
-            if (t5.length === 0)
-              return -1;
-            if (typeof r4 == "string" ? (n3 = r4, r4 = 0) : r4 > 2147483647 ? r4 = 2147483647 : r4 < -2147483648 && (r4 = -2147483648), r4 = +r4, isNaN(r4) && (r4 = i4 ? 0 : t5.length - 1), r4 < 0 && (r4 = t5.length + r4), r4 >= t5.length) {
-              if (i4)
-                return -1;
-              r4 = t5.length - 1;
-            } else if (r4 < 0) {
-              if (!i4)
-                return -1;
-              r4 = 0;
-            }
-            if (typeof e4 == "string" && (e4 = a3.from(e4, n3)), a3.isBuffer(e4))
-              return e4.length === 0 ? -1 : v3(t5, e4, r4, n3, i4);
-            if (typeof e4 == "number")
-              return e4 &= 255, a3.TYPED_ARRAY_SUPPORT && typeof Uint8Array.prototype.indexOf == "function" ? i4 ? Uint8Array.prototype.indexOf.call(t5, e4, r4) : Uint8Array.prototype.lastIndexOf.call(t5, e4, r4) : v3(t5, [e4], r4, n3, i4);
-            throw new TypeError("val must be string, number or Buffer");
-          }
-          function v3(t5, e4, r4, n3, i4) {
-            var o4, s4 = 1, u4 = t5.length, a4 = e4.length;
-            if (n3 !== void 0 && ((n3 = String(n3).toLowerCase()) === "ucs2" || n3 === "ucs-2" || n3 === "utf16le" || n3 === "utf-16le")) {
-              if (t5.length < 2 || e4.length < 2)
-                return -1;
-              s4 = 2, u4 /= 2, a4 /= 2, r4 /= 2;
-            }
-            function h4(t6, e5) {
-              return s4 === 1 ? t6[e5] : t6.readUInt16BE(e5 * s4);
-            }
-            if (i4) {
-              var c4 = -1;
-              for (o4 = r4; o4 < u4; o4++)
-                if (h4(t5, o4) === h4(e4, c4 === -1 ? 0 : o4 - c4)) {
-                  if (c4 === -1 && (c4 = o4), o4 - c4 + 1 === a4)
-                    return c4 * s4;
-                } else
-                  c4 !== -1 && (o4 -= o4 - c4), c4 = -1;
-            } else
-              for (r4 + a4 > u4 && (r4 = u4 - a4), o4 = r4; o4 >= 0; o4--) {
-                for (var f4 = true, l4 = 0; l4 < a4; l4++)
-                  if (h4(t5, o4 + l4) !== h4(e4, l4)) {
-                    f4 = false;
-                    break;
-                  }
-                if (f4)
-                  return o4;
-              }
-            return -1;
-          }
-          function w4(t5, e4, r4, n3) {
-            r4 = Number(r4) || 0;
-            var i4 = t5.length - r4;
-            n3 ? (n3 = Number(n3)) > i4 && (n3 = i4) : n3 = i4;
-            var o4 = e4.length;
-            if (o4 % 2 != 0)
-              throw new TypeError("Invalid hex string");
-            n3 > o4 / 2 && (n3 = o4 / 2);
-            for (var s4 = 0; s4 < n3; ++s4) {
-              var u4 = parseInt(e4.substr(2 * s4, 2), 16);
-              if (isNaN(u4))
-                return s4;
-              t5[r4 + s4] = u4;
-            }
-            return s4;
-          }
-          function _4(t5, e4, r4, n3) {
-            return F3(D3(e4, t5.length - r4), t5, r4, n3);
-          }
-          function b2(t5, e4, r4, n3) {
-            return F3(function(t6) {
-              for (var e5 = [], r5 = 0; r5 < t6.length; ++r5)
-                e5.push(255 & t6.charCodeAt(r5));
-              return e5;
-            }(e4), t5, r4, n3);
-          }
-          function M3(t5, e4, r4, n3) {
-            return b2(t5, e4, r4, n3);
-          }
-          function S2(t5, e4, r4, n3) {
-            return F3(W2(e4), t5, r4, n3);
-          }
-          function O2(t5, e4, r4, n3) {
-            return F3(function(t6, e5) {
-              for (var r5, n4, i4, o4 = [], s4 = 0; s4 < t6.length && !((e5 -= 2) < 0); ++s4)
-                r5 = t6.charCodeAt(s4), n4 = r5 >> 8, i4 = r5 % 256, o4.push(i4), o4.push(n4);
-              return o4;
-            }(e4, t5.length - r4), t5, r4, n3);
-          }
-          function k3(t5, e4, r4) {
-            return e4 === 0 && r4 === t5.length ? n2.fromByteArray(t5) : n2.fromByteArray(t5.slice(e4, r4));
-          }
-          function A4(t5, e4, r4) {
-            r4 = Math.min(t5.length, r4);
-            for (var n3 = [], i4 = e4; i4 < r4; ) {
-              var o4, s4, u4, a4, h4 = t5[i4], c4 = null, f4 = h4 > 239 ? 4 : h4 > 223 ? 3 : h4 > 191 ? 2 : 1;
-              if (i4 + f4 <= r4)
-                switch (f4) {
-                  case 1:
-                    h4 < 128 && (c4 = h4);
-                    break;
-                  case 2:
-                    (192 & (o4 = t5[i4 + 1])) == 128 && (a4 = (31 & h4) << 6 | 63 & o4) > 127 && (c4 = a4);
-                    break;
-                  case 3:
-                    o4 = t5[i4 + 1], s4 = t5[i4 + 2], (192 & o4) == 128 && (192 & s4) == 128 && (a4 = (15 & h4) << 12 | (63 & o4) << 6 | 63 & s4) > 2047 && (a4 < 55296 || a4 > 57343) && (c4 = a4);
-                    break;
-                  case 4:
-                    o4 = t5[i4 + 1], s4 = t5[i4 + 2], u4 = t5[i4 + 3], (192 & o4) == 128 && (192 & s4) == 128 && (192 & u4) == 128 && (a4 = (15 & h4) << 18 | (63 & o4) << 12 | (63 & s4) << 6 | 63 & u4) > 65535 && a4 < 1114112 && (c4 = a4);
-                }
-              c4 === null ? (c4 = 65533, f4 = 1) : c4 > 65535 && (c4 -= 65536, n3.push(c4 >>> 10 & 1023 | 55296), c4 = 56320 | 1023 & c4), n3.push(c4), i4 += f4;
-            }
-            return function(t6) {
-              var e5 = t6.length;
-              if (e5 <= 4096)
-                return String.fromCharCode.apply(String, t6);
-              var r5 = "", n4 = 0;
-              for (; n4 < e5; )
-                r5 += String.fromCharCode.apply(String, t6.slice(n4, n4 += 4096));
-              return r5;
-            }(n3);
-          }
-          e3.Buffer = a3, e3.SlowBuffer = function(t5) {
-            +t5 != t5 && (t5 = 0);
-            return a3.alloc(+t5);
-          }, e3.INSPECT_MAX_BYTES = 50, a3.TYPED_ARRAY_SUPPORT = t4.TYPED_ARRAY_SUPPORT !== void 0 ? t4.TYPED_ARRAY_SUPPORT : function() {
-            try {
-              var t5 = new Uint8Array(1);
-              return t5.__proto__ = { __proto__: Uint8Array.prototype, foo: function() {
-                return 42;
-              } }, t5.foo() === 42 && typeof t5.subarray == "function" && t5.subarray(1, 1).byteLength === 0;
-            } catch (t6) {
-              return false;
-            }
-          }(), e3.kMaxLength = s3(), a3.poolSize = 8192, a3._augment = function(t5) {
-            return t5.__proto__ = a3.prototype, t5;
-          }, a3.from = function(t5, e4, r4) {
-            return h3(null, t5, e4, r4);
-          }, a3.TYPED_ARRAY_SUPPORT && (a3.prototype.__proto__ = Uint8Array.prototype, a3.__proto__ = Uint8Array, typeof Symbol != "undefined" && Symbol.species && a3[Symbol.species] === a3 && Object.defineProperty(a3, Symbol.species, { value: null, configurable: true })), a3.alloc = function(t5, e4, r4) {
-            return function(t6, e5, r5, n3) {
-              return c3(e5), e5 <= 0 ? u3(t6, e5) : r5 !== void 0 ? typeof n3 == "string" ? u3(t6, e5).fill(r5, n3) : u3(t6, e5).fill(r5) : u3(t6, e5);
-            }(null, t5, e4, r4);
-          }, a3.allocUnsafe = function(t5) {
-            return f3(null, t5);
-          }, a3.allocUnsafeSlow = function(t5) {
-            return f3(null, t5);
-          }, a3.isBuffer = function(t5) {
-            return !(t5 == null || !t5._isBuffer);
-          }, a3.compare = function(t5, e4) {
-            if (!a3.isBuffer(t5) || !a3.isBuffer(e4))
-              throw new TypeError("Arguments must be Buffers");
-            if (t5 === e4)
-              return 0;
-            for (var r4 = t5.length, n3 = e4.length, i4 = 0, o4 = Math.min(r4, n3); i4 < o4; ++i4)
-              if (t5[i4] !== e4[i4]) {
-                r4 = t5[i4], n3 = e4[i4];
-                break;
-              }
-            return r4 < n3 ? -1 : n3 < r4 ? 1 : 0;
-          }, a3.isEncoding = function(t5) {
-            switch (String(t5).toLowerCase()) {
-              case "hex":
-              case "utf8":
-              case "utf-8":
-              case "ascii":
-              case "latin1":
-              case "binary":
-              case "base64":
-              case "ucs2":
-              case "ucs-2":
-              case "utf16le":
-              case "utf-16le":
-                return true;
-              default:
-                return false;
-            }
-          }, a3.concat = function(t5, e4) {
-            if (!o3(t5))
-              throw new TypeError('"list" argument must be an Array of Buffers');
-            if (t5.length === 0)
-              return a3.alloc(0);
-            var r4;
-            if (e4 === void 0)
-              for (e4 = 0, r4 = 0; r4 < t5.length; ++r4)
-                e4 += t5[r4].length;
-            var n3 = a3.allocUnsafe(e4), i4 = 0;
-            for (r4 = 0; r4 < t5.length; ++r4) {
-              var s4 = t5[r4];
-              if (!a3.isBuffer(s4))
-                throw new TypeError('"list" argument must be an Array of Buffers');
-              s4.copy(n3, i4), i4 += s4.length;
-            }
-            return n3;
-          }, a3.byteLength = p3, a3.prototype._isBuffer = true, a3.prototype.swap16 = function() {
-            var t5 = this.length;
-            if (t5 % 2 != 0)
-              throw new RangeError("Buffer size must be a multiple of 16-bits");
-            for (var e4 = 0; e4 < t5; e4 += 2)
-              g3(this, e4, e4 + 1);
-            return this;
-          }, a3.prototype.swap32 = function() {
-            var t5 = this.length;
-            if (t5 % 4 != 0)
-              throw new RangeError("Buffer size must be a multiple of 32-bits");
-            for (var e4 = 0; e4 < t5; e4 += 4)
-              g3(this, e4, e4 + 3), g3(this, e4 + 1, e4 + 2);
-            return this;
-          }, a3.prototype.swap64 = function() {
-            var t5 = this.length;
-            if (t5 % 8 != 0)
-              throw new RangeError("Buffer size must be a multiple of 64-bits");
-            for (var e4 = 0; e4 < t5; e4 += 8)
-              g3(this, e4, e4 + 7), g3(this, e4 + 1, e4 + 6), g3(this, e4 + 2, e4 + 5), g3(this, e4 + 3, e4 + 4);
-            return this;
-          }, a3.prototype.toString = function() {
-            var t5 = 0 | this.length;
-            return t5 === 0 ? "" : arguments.length === 0 ? A4(this, 0, t5) : m3.apply(this, arguments);
-          }, a3.prototype.equals = function(t5) {
-            if (!a3.isBuffer(t5))
-              throw new TypeError("Argument must be a Buffer");
-            return this === t5 || a3.compare(this, t5) === 0;
-          }, a3.prototype.inspect = function() {
-            var t5 = "", r4 = e3.INSPECT_MAX_BYTES;
-            return this.length > 0 && (t5 = this.toString("hex", 0, r4).match(/.{2}/g).join(" "), this.length > r4 && (t5 += " ... ")), "<Buffer " + t5 + ">";
-          }, a3.prototype.compare = function(t5, e4, r4, n3, i4) {
-            if (!a3.isBuffer(t5))
-              throw new TypeError("Argument must be a Buffer");
-            if (e4 === void 0 && (e4 = 0), r4 === void 0 && (r4 = t5 ? t5.length : 0), n3 === void 0 && (n3 = 0), i4 === void 0 && (i4 = this.length), e4 < 0 || r4 > t5.length || n3 < 0 || i4 > this.length)
-              throw new RangeError("out of range index");
-            if (n3 >= i4 && e4 >= r4)
-              return 0;
-            if (n3 >= i4)
-              return -1;
-            if (e4 >= r4)
-              return 1;
-            if (this === t5)
-              return 0;
-            for (var o4 = (i4 >>>= 0) - (n3 >>>= 0), s4 = (r4 >>>= 0) - (e4 >>>= 0), u4 = Math.min(o4, s4), h4 = this.slice(n3, i4), c4 = t5.slice(e4, r4), f4 = 0; f4 < u4; ++f4)
-              if (h4[f4] !== c4[f4]) {
-                o4 = h4[f4], s4 = c4[f4];
-                break;
-              }
-            return o4 < s4 ? -1 : s4 < o4 ? 1 : 0;
-          }, a3.prototype.includes = function(t5, e4, r4) {
-            return this.indexOf(t5, e4, r4) !== -1;
-          }, a3.prototype.indexOf = function(t5, e4, r4) {
-            return y3(this, t5, e4, r4, true);
-          }, a3.prototype.lastIndexOf = function(t5, e4, r4) {
-            return y3(this, t5, e4, r4, false);
-          }, a3.prototype.write = function(t5, e4, r4, n3) {
-            if (e4 === void 0)
-              n3 = "utf8", r4 = this.length, e4 = 0;
-            else if (r4 === void 0 && typeof e4 == "string")
-              n3 = e4, r4 = this.length, e4 = 0;
-            else {
-              if (!isFinite(e4))
-                throw new Error("Buffer.write(string, encoding, offset[, length]) is no longer supported");
-              e4 |= 0, isFinite(r4) ? (r4 |= 0, n3 === void 0 && (n3 = "utf8")) : (n3 = r4, r4 = void 0);
-            }
-            var i4 = this.length - e4;
-            if ((r4 === void 0 || r4 > i4) && (r4 = i4), t5.length > 0 && (r4 < 0 || e4 < 0) || e4 > this.length)
-              throw new RangeError("Attempt to write outside buffer bounds");
-            n3 || (n3 = "utf8");
-            for (var o4 = false; ; )
-              switch (n3) {
-                case "hex":
-                  return w4(this, t5, e4, r4);
-                case "utf8":
-                case "utf-8":
-                  return _4(this, t5, e4, r4);
-                case "ascii":
-                  return b2(this, t5, e4, r4);
-                case "latin1":
-                case "binary":
-                  return M3(this, t5, e4, r4);
-                case "base64":
-                  return S2(this, t5, e4, r4);
-                case "ucs2":
-                case "ucs-2":
-                case "utf16le":
-                case "utf-16le":
-                  return O2(this, t5, e4, r4);
-                default:
-                  if (o4)
-                    throw new TypeError("Unknown encoding: " + n3);
-                  n3 = ("" + n3).toLowerCase(), o4 = true;
-              }
-          }, a3.prototype.toJSON = function() {
-            return { type: "Buffer", data: Array.prototype.slice.call(this._arr || this, 0) };
-          };
-          function I3(t5, e4, r4) {
-            var n3 = "";
-            r4 = Math.min(t5.length, r4);
-            for (var i4 = e4; i4 < r4; ++i4)
-              n3 += String.fromCharCode(127 & t5[i4]);
-            return n3;
-          }
-          function E4(t5, e4, r4) {
-            var n3 = "";
-            r4 = Math.min(t5.length, r4);
-            for (var i4 = e4; i4 < r4; ++i4)
-              n3 += String.fromCharCode(t5[i4]);
-            return n3;
-          }
-          function R2(t5, e4, r4) {
-            var n3 = t5.length;
-            (!e4 || e4 < 0) && (e4 = 0), (!r4 || r4 < 0 || r4 > n3) && (r4 = n3);
-            for (var i4 = "", o4 = e4; o4 < r4; ++o4)
-              i4 += L3(t5[o4]);
-            return i4;
-          }
-          function T4(t5, e4, r4) {
-            for (var n3 = t5.slice(e4, r4), i4 = "", o4 = 0; o4 < n3.length; o4 += 2)
-              i4 += String.fromCharCode(n3[o4] + 256 * n3[o4 + 1]);
-            return i4;
-          }
-          function j3(t5, e4, r4) {
-            if (t5 % 1 != 0 || t5 < 0)
-              throw new RangeError("offset is not uint");
-            if (t5 + e4 > r4)
-              throw new RangeError("Trying to access beyond buffer length");
-          }
-          function x3(t5, e4, r4, n3, i4, o4) {
-            if (!a3.isBuffer(t5))
-              throw new TypeError('"buffer" argument must be a Buffer instance');
-            if (e4 > i4 || e4 < o4)
-              throw new RangeError('"value" argument is out of bounds');
-            if (r4 + n3 > t5.length)
-              throw new RangeError("Index out of range");
-          }
-          function C3(t5, e4, r4, n3) {
-            e4 < 0 && (e4 = 65535 + e4 + 1);
-            for (var i4 = 0, o4 = Math.min(t5.length - r4, 2); i4 < o4; ++i4)
-              t5[r4 + i4] = (e4 & 255 << 8 * (n3 ? i4 : 1 - i4)) >>> 8 * (n3 ? i4 : 1 - i4);
-          }
-          function B2(t5, e4, r4, n3) {
-            e4 < 0 && (e4 = 4294967295 + e4 + 1);
-            for (var i4 = 0, o4 = Math.min(t5.length - r4, 4); i4 < o4; ++i4)
-              t5[r4 + i4] = e4 >>> 8 * (n3 ? i4 : 3 - i4) & 255;
-          }
-          function P3(t5, e4, r4, n3, i4, o4) {
-            if (r4 + n3 > t5.length)
-              throw new RangeError("Index out of range");
-            if (r4 < 0)
-              throw new RangeError("Index out of range");
-          }
-          function U2(t5, e4, r4, n3, o4) {
-            return o4 || P3(t5, 0, r4, 4), i3.write(t5, e4, r4, n3, 23, 4), r4 + 4;
-          }
-          function N3(t5, e4, r4, n3, o4) {
-            return o4 || P3(t5, 0, r4, 8), i3.write(t5, e4, r4, n3, 52, 8), r4 + 8;
-          }
-          a3.prototype.slice = function(t5, e4) {
-            var r4, n3 = this.length;
-            if ((t5 = ~~t5) < 0 ? (t5 += n3) < 0 && (t5 = 0) : t5 > n3 && (t5 = n3), (e4 = e4 === void 0 ? n3 : ~~e4) < 0 ? (e4 += n3) < 0 && (e4 = 0) : e4 > n3 && (e4 = n3), e4 < t5 && (e4 = t5), a3.TYPED_ARRAY_SUPPORT)
-              (r4 = this.subarray(t5, e4)).__proto__ = a3.prototype;
-            else {
-              var i4 = e4 - t5;
-              r4 = new a3(i4, void 0);
-              for (var o4 = 0; o4 < i4; ++o4)
-                r4[o4] = this[o4 + t5];
-            }
-            return r4;
-          }, a3.prototype.readUIntLE = function(t5, e4, r4) {
-            t5 |= 0, e4 |= 0, r4 || j3(t5, e4, this.length);
-            for (var n3 = this[t5], i4 = 1, o4 = 0; ++o4 < e4 && (i4 *= 256); )
-              n3 += this[t5 + o4] * i4;
-            return n3;
-          }, a3.prototype.readUIntBE = function(t5, e4, r4) {
-            t5 |= 0, e4 |= 0, r4 || j3(t5, e4, this.length);
-            for (var n3 = this[t5 + --e4], i4 = 1; e4 > 0 && (i4 *= 256); )
-              n3 += this[t5 + --e4] * i4;
-            return n3;
-          }, a3.prototype.readUInt8 = function(t5, e4) {
-            return e4 || j3(t5, 1, this.length), this[t5];
-          }, a3.prototype.readUInt16LE = function(t5, e4) {
-            return e4 || j3(t5, 2, this.length), this[t5] | this[t5 + 1] << 8;
-          }, a3.prototype.readUInt16BE = function(t5, e4) {
-            return e4 || j3(t5, 2, this.length), this[t5] << 8 | this[t5 + 1];
-          }, a3.prototype.readUInt32LE = function(t5, e4) {
-            return e4 || j3(t5, 4, this.length), (this[t5] | this[t5 + 1] << 8 | this[t5 + 2] << 16) + 16777216 * this[t5 + 3];
-          }, a3.prototype.readUInt32BE = function(t5, e4) {
-            return e4 || j3(t5, 4, this.length), 16777216 * this[t5] + (this[t5 + 1] << 16 | this[t5 + 2] << 8 | this[t5 + 3]);
-          }, a3.prototype.readIntLE = function(t5, e4, r4) {
-            t5 |= 0, e4 |= 0, r4 || j3(t5, e4, this.length);
-            for (var n3 = this[t5], i4 = 1, o4 = 0; ++o4 < e4 && (i4 *= 256); )
-              n3 += this[t5 + o4] * i4;
-            return n3 >= (i4 *= 128) && (n3 -= Math.pow(2, 8 * e4)), n3;
-          }, a3.prototype.readIntBE = function(t5, e4, r4) {
-            t5 |= 0, e4 |= 0, r4 || j3(t5, e4, this.length);
-            for (var n3 = e4, i4 = 1, o4 = this[t5 + --n3]; n3 > 0 && (i4 *= 256); )
-              o4 += this[t5 + --n3] * i4;
-            return o4 >= (i4 *= 128) && (o4 -= Math.pow(2, 8 * e4)), o4;
-          }, a3.prototype.readInt8 = function(t5, e4) {
-            return e4 || j3(t5, 1, this.length), 128 & this[t5] ? -1 * (255 - this[t5] + 1) : this[t5];
-          }, a3.prototype.readInt16LE = function(t5, e4) {
-            e4 || j3(t5, 2, this.length);
-            var r4 = this[t5] | this[t5 + 1] << 8;
-            return 32768 & r4 ? 4294901760 | r4 : r4;
-          }, a3.prototype.readInt16BE = function(t5, e4) {
-            e4 || j3(t5, 2, this.length);
-            var r4 = this[t5 + 1] | this[t5] << 8;
-            return 32768 & r4 ? 4294901760 | r4 : r4;
-          }, a3.prototype.readInt32LE = function(t5, e4) {
-            return e4 || j3(t5, 4, this.length), this[t5] | this[t5 + 1] << 8 | this[t5 + 2] << 16 | this[t5 + 3] << 24;
-          }, a3.prototype.readInt32BE = function(t5, e4) {
-            return e4 || j3(t5, 4, this.length), this[t5] << 24 | this[t5 + 1] << 16 | this[t5 + 2] << 8 | this[t5 + 3];
-          }, a3.prototype.readFloatLE = function(t5, e4) {
-            return e4 || j3(t5, 4, this.length), i3.read(this, t5, true, 23, 4);
-          }, a3.prototype.readFloatBE = function(t5, e4) {
-            return e4 || j3(t5, 4, this.length), i3.read(this, t5, false, 23, 4);
-          }, a3.prototype.readDoubleLE = function(t5, e4) {
-            return e4 || j3(t5, 8, this.length), i3.read(this, t5, true, 52, 8);
-          }, a3.prototype.readDoubleBE = function(t5, e4) {
-            return e4 || j3(t5, 8, this.length), i3.read(this, t5, false, 52, 8);
-          }, a3.prototype.writeUIntLE = function(t5, e4, r4, n3) {
-            (t5 = +t5, e4 |= 0, r4 |= 0, n3) || x3(this, t5, e4, r4, Math.pow(2, 8 * r4) - 1, 0);
-            var i4 = 1, o4 = 0;
-            for (this[e4] = 255 & t5; ++o4 < r4 && (i4 *= 256); )
-              this[e4 + o4] = t5 / i4 & 255;
-            return e4 + r4;
-          }, a3.prototype.writeUIntBE = function(t5, e4, r4, n3) {
-            (t5 = +t5, e4 |= 0, r4 |= 0, n3) || x3(this, t5, e4, r4, Math.pow(2, 8 * r4) - 1, 0);
-            var i4 = r4 - 1, o4 = 1;
-            for (this[e4 + i4] = 255 & t5; --i4 >= 0 && (o4 *= 256); )
-              this[e4 + i4] = t5 / o4 & 255;
-            return e4 + r4;
-          }, a3.prototype.writeUInt8 = function(t5, e4, r4) {
-            return t5 = +t5, e4 |= 0, r4 || x3(this, t5, e4, 1, 255, 0), a3.TYPED_ARRAY_SUPPORT || (t5 = Math.floor(t5)), this[e4] = 255 & t5, e4 + 1;
-          }, a3.prototype.writeUInt16LE = function(t5, e4, r4) {
-            return t5 = +t5, e4 |= 0, r4 || x3(this, t5, e4, 2, 65535, 0), a3.TYPED_ARRAY_SUPPORT ? (this[e4] = 255 & t5, this[e4 + 1] = t5 >>> 8) : C3(this, t5, e4, true), e4 + 2;
-          }, a3.prototype.writeUInt16BE = function(t5, e4, r4) {
-            return t5 = +t5, e4 |= 0, r4 || x3(this, t5, e4, 2, 65535, 0), a3.TYPED_ARRAY_SUPPORT ? (this[e4] = t5 >>> 8, this[e4 + 1] = 255 & t5) : C3(this, t5, e4, false), e4 + 2;
-          }, a3.prototype.writeUInt32LE = function(t5, e4, r4) {
-            return t5 = +t5, e4 |= 0, r4 || x3(this, t5, e4, 4, 4294967295, 0), a3.TYPED_ARRAY_SUPPORT ? (this[e4 + 3] = t5 >>> 24, this[e4 + 2] = t5 >>> 16, this[e4 + 1] = t5 >>> 8, this[e4] = 255 & t5) : B2(this, t5, e4, true), e4 + 4;
-          }, a3.prototype.writeUInt32BE = function(t5, e4, r4) {
-            return t5 = +t5, e4 |= 0, r4 || x3(this, t5, e4, 4, 4294967295, 0), a3.TYPED_ARRAY_SUPPORT ? (this[e4] = t5 >>> 24, this[e4 + 1] = t5 >>> 16, this[e4 + 2] = t5 >>> 8, this[e4 + 3] = 255 & t5) : B2(this, t5, e4, false), e4 + 4;
-          }, a3.prototype.writeIntLE = function(t5, e4, r4, n3) {
-            if (t5 = +t5, e4 |= 0, !n3) {
-              var i4 = Math.pow(2, 8 * r4 - 1);
-              x3(this, t5, e4, r4, i4 - 1, -i4);
-            }
-            var o4 = 0, s4 = 1, u4 = 0;
-            for (this[e4] = 255 & t5; ++o4 < r4 && (s4 *= 256); )
-              t5 < 0 && u4 === 0 && this[e4 + o4 - 1] !== 0 && (u4 = 1), this[e4 + o4] = (t5 / s4 >> 0) - u4 & 255;
-            return e4 + r4;
-          }, a3.prototype.writeIntBE = function(t5, e4, r4, n3) {
-            if (t5 = +t5, e4 |= 0, !n3) {
-              var i4 = Math.pow(2, 8 * r4 - 1);
-              x3(this, t5, e4, r4, i4 - 1, -i4);
-            }
-            var o4 = r4 - 1, s4 = 1, u4 = 0;
-            for (this[e4 + o4] = 255 & t5; --o4 >= 0 && (s4 *= 256); )
-              t5 < 0 && u4 === 0 && this[e4 + o4 + 1] !== 0 && (u4 = 1), this[e4 + o4] = (t5 / s4 >> 0) - u4 & 255;
-            return e4 + r4;
-          }, a3.prototype.writeInt8 = function(t5, e4, r4) {
-            return t5 = +t5, e4 |= 0, r4 || x3(this, t5, e4, 1, 127, -128), a3.TYPED_ARRAY_SUPPORT || (t5 = Math.floor(t5)), t5 < 0 && (t5 = 255 + t5 + 1), this[e4] = 255 & t5, e4 + 1;
-          }, a3.prototype.writeInt16LE = function(t5, e4, r4) {
-            return t5 = +t5, e4 |= 0, r4 || x3(this, t5, e4, 2, 32767, -32768), a3.TYPED_ARRAY_SUPPORT ? (this[e4] = 255 & t5, this[e4 + 1] = t5 >>> 8) : C3(this, t5, e4, true), e4 + 2;
-          }, a3.prototype.writeInt16BE = function(t5, e4, r4) {
-            return t5 = +t5, e4 |= 0, r4 || x3(this, t5, e4, 2, 32767, -32768), a3.TYPED_ARRAY_SUPPORT ? (this[e4] = t5 >>> 8, this[e4 + 1] = 255 & t5) : C3(this, t5, e4, false), e4 + 2;
-          }, a3.prototype.writeInt32LE = function(t5, e4, r4) {
-            return t5 = +t5, e4 |= 0, r4 || x3(this, t5, e4, 4, 2147483647, -2147483648), a3.TYPED_ARRAY_SUPPORT ? (this[e4] = 255 & t5, this[e4 + 1] = t5 >>> 8, this[e4 + 2] = t5 >>> 16, this[e4 + 3] = t5 >>> 24) : B2(this, t5, e4, true), e4 + 4;
-          }, a3.prototype.writeInt32BE = function(t5, e4, r4) {
-            return t5 = +t5, e4 |= 0, r4 || x3(this, t5, e4, 4, 2147483647, -2147483648), t5 < 0 && (t5 = 4294967295 + t5 + 1), a3.TYPED_ARRAY_SUPPORT ? (this[e4] = t5 >>> 24, this[e4 + 1] = t5 >>> 16, this[e4 + 2] = t5 >>> 8, this[e4 + 3] = 255 & t5) : B2(this, t5, e4, false), e4 + 4;
-          }, a3.prototype.writeFloatLE = function(t5, e4, r4) {
-            return U2(this, t5, e4, true, r4);
-          }, a3.prototype.writeFloatBE = function(t5, e4, r4) {
-            return U2(this, t5, e4, false, r4);
-          }, a3.prototype.writeDoubleLE = function(t5, e4, r4) {
-            return N3(this, t5, e4, true, r4);
-          }, a3.prototype.writeDoubleBE = function(t5, e4, r4) {
-            return N3(this, t5, e4, false, r4);
-          }, a3.prototype.copy = function(t5, e4, r4, n3) {
-            if (r4 || (r4 = 0), n3 || n3 === 0 || (n3 = this.length), e4 >= t5.length && (e4 = t5.length), e4 || (e4 = 0), n3 > 0 && n3 < r4 && (n3 = r4), n3 === r4)
-              return 0;
-            if (t5.length === 0 || this.length === 0)
-              return 0;
-            if (e4 < 0)
-              throw new RangeError("targetStart out of bounds");
-            if (r4 < 0 || r4 >= this.length)
-              throw new RangeError("sourceStart out of bounds");
-            if (n3 < 0)
-              throw new RangeError("sourceEnd out of bounds");
-            n3 > this.length && (n3 = this.length), t5.length - e4 < n3 - r4 && (n3 = t5.length - e4 + r4);
-            var i4, o4 = n3 - r4;
-            if (this === t5 && r4 < e4 && e4 < n3)
-              for (i4 = o4 - 1; i4 >= 0; --i4)
-                t5[i4 + e4] = this[i4 + r4];
-            else if (o4 < 1e3 || !a3.TYPED_ARRAY_SUPPORT)
-              for (i4 = 0; i4 < o4; ++i4)
-                t5[i4 + e4] = this[i4 + r4];
-            else
-              Uint8Array.prototype.set.call(t5, this.subarray(r4, r4 + o4), e4);
-            return o4;
-          }, a3.prototype.fill = function(t5, e4, r4, n3) {
-            if (typeof t5 == "string") {
-              if (typeof e4 == "string" ? (n3 = e4, e4 = 0, r4 = this.length) : typeof r4 == "string" && (n3 = r4, r4 = this.length), t5.length === 1) {
-                var i4 = t5.charCodeAt(0);
-                i4 < 256 && (t5 = i4);
-              }
-              if (n3 !== void 0 && typeof n3 != "string")
-                throw new TypeError("encoding must be a string");
-              if (typeof n3 == "string" && !a3.isEncoding(n3))
-                throw new TypeError("Unknown encoding: " + n3);
-            } else
-              typeof t5 == "number" && (t5 &= 255);
-            if (e4 < 0 || this.length < e4 || this.length < r4)
-              throw new RangeError("Out of range index");
-            if (r4 <= e4)
-              return this;
-            var o4;
-            if (e4 >>>= 0, r4 = r4 === void 0 ? this.length : r4 >>> 0, t5 || (t5 = 0), typeof t5 == "number")
-              for (o4 = e4; o4 < r4; ++o4)
-                this[o4] = t5;
-            else {
-              var s4 = a3.isBuffer(t5) ? t5 : D3(new a3(t5, n3).toString()), u4 = s4.length;
-              for (o4 = 0; o4 < r4 - e4; ++o4)
-                this[o4 + e4] = s4[o4 % u4];
-            }
-            return this;
-          };
-          var q3 = /[^+\/0-9A-Za-z-_]/g;
-          function L3(t5) {
-            return t5 < 16 ? "0" + t5.toString(16) : t5.toString(16);
-          }
-          function D3(t5, e4) {
-            var r4;
-            e4 = e4 || 1 / 0;
-            for (var n3 = t5.length, i4 = null, o4 = [], s4 = 0; s4 < n3; ++s4) {
-              if ((r4 = t5.charCodeAt(s4)) > 55295 && r4 < 57344) {
-                if (!i4) {
-                  if (r4 > 56319) {
-                    (e4 -= 3) > -1 && o4.push(239, 191, 189);
-                    continue;
-                  }
-                  if (s4 + 1 === n3) {
-                    (e4 -= 3) > -1 && o4.push(239, 191, 189);
-                    continue;
-                  }
-                  i4 = r4;
-                  continue;
-                }
-                if (r4 < 56320) {
-                  (e4 -= 3) > -1 && o4.push(239, 191, 189), i4 = r4;
-                  continue;
-                }
-                r4 = 65536 + (i4 - 55296 << 10 | r4 - 56320);
-              } else
-                i4 && (e4 -= 3) > -1 && o4.push(239, 191, 189);
-              if (i4 = null, r4 < 128) {
-                if ((e4 -= 1) < 0)
-                  break;
-                o4.push(r4);
-              } else if (r4 < 2048) {
-                if ((e4 -= 2) < 0)
-                  break;
-                o4.push(r4 >> 6 | 192, 63 & r4 | 128);
-              } else if (r4 < 65536) {
-                if ((e4 -= 3) < 0)
-                  break;
-                o4.push(r4 >> 12 | 224, r4 >> 6 & 63 | 128, 63 & r4 | 128);
-              } else {
-                if (!(r4 < 1114112))
-                  throw new Error("Invalid code point");
-                if ((e4 -= 4) < 0)
-                  break;
-                o4.push(r4 >> 18 | 240, r4 >> 12 & 63 | 128, r4 >> 6 & 63 | 128, 63 & r4 | 128);
-              }
-            }
-            return o4;
-          }
-          function W2(t5) {
-            return n2.toByteArray(function(t6) {
-              if ((t6 = function(t7) {
-                return t7.trim ? t7.trim() : t7.replace(/^\s+|\s+$/g, "");
-              }(t6).replace(q3, "")).length < 2)
-                return "";
-              for (; t6.length % 4 != 0; )
-                t6 += "=";
-              return t6;
-            }(t5));
-          }
-          function F3(t5, e4, r4, n3) {
-            for (var i4 = 0; i4 < n3 && !(i4 + r4 >= e4.length || i4 >= t5.length); ++i4)
-              e4[i4 + r4] = t5[i4];
-            return i4;
-          }
-        }).call(this, r3(12));
-      }, function(t3, e3, r3) {
-        "use strict";
-        var n2 = r3(4);
-        r3.o(n2, "payloadId") && r3.d(e3, "payloadId", function() {
-          return n2.payloadId;
-        });
-        n2.isNode;
-      }, function(t3, e3, r3) {
-        "use strict";
-        r3.d(e3, "a", function() {
-          return n2;
-        });
-        r3(7), r3(3);
-        function n2() {
-          return Date.now() * Math.pow(10, 3) + Math.floor(Math.random() * Math.pow(10, 3));
-        }
-      }, function(t3, e3, r3) {
-        "use strict";
-      }, function(t3, e3, r3) {
-        "use strict";
-        r3(21);
-      }, function(t3, e3, r3) {
-        "use strict";
-        r3(22), r3(9), r3(23), r3(24);
-      }, function(t3, e3) {
-      }, function(t3, e3, r3) {
-        "use strict";
-        var n2 = r3(9);
-        n2.a;
-        n2.a;
-      }, function(t3, e3) {
-      }, function(t3, e3, r3) {
-        "use strict";
-      }, function(t3, e3, r3) {
-        "use strict";
-      }, function(t3, e3, r3) {
-        "use strict";
-        r3.d(e3, "a", function() {
-          return i3;
-        });
-        var n2 = r3(4);
-        function i3(t4) {
-          return n2.getBrowerCrypto().getRandomValues(new Uint8Array(t4));
-        }
-      }, function(t3, e3, r3) {
-        "use strict";
-        r3.d(e3, "b", function() {
-          return i3;
-        }), r3.d(e3, "a", function() {
-          return o3;
-        });
-        var n2 = r3(6);
-        function i3(t4, e4, r4) {
-          return Object(n2.b)(t4, e4, r4);
-        }
-        function o3(t4, e4, r4) {
-          return Object(n2.a)(t4, e4, r4);
-        }
-      }, function(t3, e3, r3) {
-        "use strict";
-        r3.d(e3, "a", function() {
-          return i3;
-        });
-        var n2 = r3(6);
-        r3(10);
-        async function i3(t4, e4) {
-          return await Object(n2.c)(t4, e4);
-        }
-      }, function(t3, e3, r3) {
-        "use strict";
-        var n2 = r3(4);
-        r3.o(n2, "isConstantTime") && r3.d(e3, "isConstantTime", function() {
-          return n2.isConstantTime;
-        });
-      }, function(t3, e3, r3) {
-        "use strict";
-      }, function(t3, e3) {
-      }, function(t3, e3, r3) {
-        "use strict";
-        function n2(t4, e4) {
-          if (t4.length !== e4.length)
-            return false;
-          let r4 = 0;
-          for (let n3 = 0; n3 < t4.length; n3++)
-            r4 |= t4[n3] ^ e4[n3];
-          return r4 === 0;
-        }
-        r3.d(e3, "a", function() {
-          return n2;
-        });
-      }, function(t3, e3, r3) {
-        "use strict";
-        r3(6);
-      }, function(t3, e3, r3) {
-        "use strict";
-        Object.defineProperty(e3, "__esModule", { value: true }), e3.getWindowMetadata = void 0;
-        const n2 = r3(5);
-        e3.getWindowMetadata = function() {
-          let t4, e4;
-          try {
-            t4 = n2.getDocumentOrThrow(), e4 = n2.getLocationOrThrow();
-          } catch (t5) {
-            return null;
-          }
-          function r4(...e5) {
-            const r5 = t4.getElementsByTagName("meta");
-            for (let t5 = 0; t5 < r5.length; t5++) {
-              const n3 = r5[t5], i4 = ["itemprop", "property", "name"].map((t6) => n3.getAttribute(t6)).filter((t6) => !!t6 && e5.includes(t6));
-              if (i4.length && i4) {
-                const t6 = n3.getAttribute("content");
-                if (t6)
-                  return t6;
-              }
-            }
-            return "";
-          }
-          const i3 = function() {
-            let e5 = r4("name", "og:site_name", "og:title", "twitter:title");
-            return e5 || (e5 = t4.title), e5;
-          }();
-          return { description: r4("description", "og:description", "twitter:description", "keywords"), url: e4.origin, icons: function() {
-            const r5 = t4.getElementsByTagName("link"), n3 = [];
-            for (let t5 = 0; t5 < r5.length; t5++) {
-              const i4 = r5[t5], o3 = i4.getAttribute("rel");
-              if (o3 && o3.toLowerCase().indexOf("icon") > -1) {
-                const t6 = i4.getAttribute("href");
-                if (t6)
-                  if (t6.toLowerCase().indexOf("https:") === -1 && t6.toLowerCase().indexOf("http:") === -1 && t6.indexOf("//") !== 0) {
-                    let r6 = e4.protocol + "//" + e4.host;
-                    if (t6.indexOf("/") === 0)
-                      r6 += t6;
-                    else {
-                      const n4 = e4.pathname.split("/");
-                      n4.pop();
-                      r6 += n4.join("/") + "/" + t6;
-                    }
-                    n3.push(r6);
-                  } else if (t6.indexOf("//") === 0) {
-                    const r6 = e4.protocol + t6;
-                    n3.push(r6);
-                  } else
-                    n3.push(t6);
-              }
-            }
-            return n3;
-          }(), name: i3 };
-        };
-      }, function(t3, e3, r3) {
-        "use strict";
-        (function(t4) {
-          r3.d(e3, "a", function() {
-            return l3;
-          });
-          var n2 = function() {
-            for (var t5 = 0, e4 = 0, r4 = arguments.length; e4 < r4; e4++)
-              t5 += arguments[e4].length;
-            var n3 = Array(t5), i4 = 0;
-            for (e4 = 0; e4 < r4; e4++)
-              for (var o4 = arguments[e4], s4 = 0, u4 = o4.length; s4 < u4; s4++, i4++)
-                n3[i4] = o4[s4];
-            return n3;
-          }, i3 = function(t5, e4, r4) {
-            this.name = t5, this.version = e4, this.os = r4, this.type = "browser";
-          }, o3 = function(e4) {
-            this.version = e4, this.type = "node", this.name = "node", this.os = t4.platform;
-          }, s3 = function(t5, e4, r4, n3) {
-            this.name = t5, this.version = e4, this.os = r4, this.bot = n3, this.type = "bot-device";
-          }, u3 = function() {
-            this.type = "bot", this.bot = true, this.name = "bot", this.version = null, this.os = null;
-          }, a3 = function() {
-            this.type = "react-native", this.name = "react-native", this.version = null, this.os = null;
-          }, h3 = /(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask\ Jeeves\/Teoma|ia_archiver)/, c3 = [["aol", /AOLShield\/([0-9\._]+)/], ["edge", /Edge\/([0-9\._]+)/], ["edge-ios", /EdgiOS\/([0-9\._]+)/], ["yandexbrowser", /YaBrowser\/([0-9\._]+)/], ["kakaotalk", /KAKAOTALK\s([0-9\.]+)/], ["samsung", /SamsungBrowser\/([0-9\.]+)/], ["silk", /\bSilk\/([0-9._-]+)\b/], ["miui", /MiuiBrowser\/([0-9\.]+)$/], ["beaker", /BeakerBrowser\/([0-9\.]+)/], ["edge-chromium", /EdgA?\/([0-9\.]+)/], ["chromium-webview", /(?!Chrom.*OPR)wv\).*Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/], ["chrome", /(?!Chrom.*OPR)Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/], ["phantomjs", /PhantomJS\/([0-9\.]+)(:?\s|$)/], ["crios", /CriOS\/([0-9\.]+)(:?\s|$)/], ["firefox", /Firefox\/([0-9\.]+)(?:\s|$)/], ["fxios", /FxiOS\/([0-9\.]+)/], ["opera-mini", /Opera Mini.*Version\/([0-9\.]+)/], ["opera", /Opera\/([0-9\.]+)(?:\s|$)/], ["opera", /OPR\/([0-9\.]+)(:?\s|$)/], ["ie", /Trident\/7\.0.*rv\:([0-9\.]+).*\).*Gecko$/], ["ie", /MSIE\s([0-9\.]+);.*Trident\/[4-7].0/], ["ie", /MSIE\s(7\.0)/], ["bb10", /BB10;\sTouch.*Version\/([0-9\.]+)/], ["android", /Android\s([0-9\.]+)/], ["ios", /Version\/([0-9\._]+).*Mobile.*Safari.*/], ["safari", /Version\/([0-9\._]+).*Safari/], ["facebook", /FBAV\/([0-9\.]+)/], ["instagram", /Instagram\s([0-9\.]+)/], ["ios-webview", /AppleWebKit\/([0-9\.]+).*Mobile/], ["ios-webview", /AppleWebKit\/([0-9\.]+).*Gecko\)$/], ["searchbot", /alexa|bot|crawl(er|ing)|facebookexternalhit|feedburner|google web preview|nagios|postrank|pingdom|slurp|spider|yahoo!|yandex/]], f3 = [["iOS", /iP(hone|od|ad)/], ["Android OS", /Android/], ["BlackBerry OS", /BlackBerry|BB10/], ["Windows Mobile", /IEMobile/], ["Amazon OS", /Kindle/], ["Windows 3.11", /Win16/], ["Windows 95", /(Windows 95)|(Win95)|(Windows_95)/], ["Windows 98", /(Windows 98)|(Win98)/], ["Windows 2000", /(Windows NT 5.0)|(Windows 2000)/], ["Windows XP", /(Windows NT 5.1)|(Windows XP)/], ["Windows Server 2003", /(Windows NT 5.2)/], ["Windows Vista", /(Windows NT 6.0)/], ["Windows 7", /(Windows NT 6.1)/], ["Windows 8", /(Windows NT 6.2)/], ["Windows 8.1", /(Windows NT 6.3)/], ["Windows 10", /(Windows NT 10.0)/], ["Windows ME", /Windows ME/], ["Open BSD", /OpenBSD/], ["Sun OS", /SunOS/], ["Chrome OS", /CrOS/], ["Linux", /(Linux)|(X11)/], ["Mac OS", /(Mac_PowerPC)|(Macintosh)/], ["QNX", /QNX/], ["BeOS", /BeOS/], ["OS/2", /OS\/2/]];
-          function l3(e4) {
-            return e4 ? p3(e4) : typeof document == "undefined" && typeof navigator != "undefined" && navigator.product === "ReactNative" ? new a3() : typeof navigator != "undefined" ? p3(navigator.userAgent) : t4 !== void 0 && t4.version ? new o3(t4.version.slice(1)) : null;
-          }
-          function d3(t5) {
-            return t5 !== "" && c3.reduce(function(e4, r4) {
-              var n3 = r4[0], i4 = r4[1];
-              if (e4)
-                return e4;
-              var o4 = i4.exec(t5);
-              return !!o4 && [n3, o4];
-            }, false);
-          }
-          function p3(t5) {
-            var e4 = d3(t5);
-            if (!e4)
-              return null;
-            var r4 = e4[0], o4 = e4[1];
-            if (r4 === "searchbot")
-              return new u3();
-            var a4 = o4[1] && o4[1].split(/[._]/).slice(0, 3);
-            a4 ? a4.length < 3 && (a4 = n2(a4, function(t6) {
-              for (var e5 = [], r5 = 0; r5 < t6; r5++)
-                e5.push("0");
-              return e5;
-            }(3 - a4.length))) : a4 = [];
-            var c4 = a4.join("."), l4 = function(t6) {
-              for (var e5 = 0, r5 = f3.length; e5 < r5; e5++) {
-                var n3 = f3[e5], i4 = n3[0];
-                if (n3[1].exec(t6))
-                  return i4;
-              }
-              return null;
-            }(t5), p4 = h3.exec(t5);
-            return p4 && p4[1] ? new s3(r4, c4, l4, p4[1]) : new i3(r4, c4, l4);
-          }
-        }).call(this, r3(13));
-      }, function(t3, e3, r3) {
-        (function(e4) {
-          var n2 = r3(14).strict;
-          t3.exports = function(t4) {
-            if (n2(t4)) {
-              var r4 = e4.from(t4.buffer);
-              return t4.byteLength !== t4.buffer.byteLength && (r4 = r4.slice(t4.byteOffset, t4.byteOffset + t4.byteLength)), r4;
-            }
-            return e4.from(t4);
-          };
-        }).call(this, r3(16).Buffer);
-      }, function(t3, e3, r3) {
-        (function(n2, i3) {
-          var o3;
-          !function() {
-            "use strict";
-            var s3 = "input is invalid type", u3 = typeof window == "object", a3 = u3 ? window : {};
-            a3.JS_SHA3_NO_WINDOW && (u3 = false);
-            var h3 = !u3 && typeof self == "object";
-            !a3.JS_SHA3_NO_NODE_JS && typeof n2 == "object" && n2.versions && n2.versions.node ? a3 = i3 : h3 && (a3 = self);
-            var c3 = !a3.JS_SHA3_NO_COMMON_JS && typeof t3 == "object" && t3.exports, f3 = r3(49), l3 = !a3.JS_SHA3_NO_ARRAY_BUFFER && typeof ArrayBuffer != "undefined", d3 = "0123456789abcdef".split(""), p3 = [4, 1024, 262144, 67108864], m3 = [0, 8, 16, 24], g3 = [1, 0, 32898, 0, 32906, 2147483648, 2147516416, 2147483648, 32907, 0, 2147483649, 0, 2147516545, 2147483648, 32777, 2147483648, 138, 0, 136, 0, 2147516425, 0, 2147483658, 0, 2147516555, 0, 139, 2147483648, 32905, 2147483648, 32771, 2147483648, 32770, 2147483648, 128, 2147483648, 32778, 0, 2147483658, 2147483648, 2147516545, 2147483648, 32896, 2147483648, 2147483649, 0, 2147516424, 2147483648], y3 = [224, 256, 384, 512], v3 = [128, 256], w4 = ["hex", "buffer", "arrayBuffer", "array", "digest"], _4 = { 128: 168, 256: 136 };
-            !a3.JS_SHA3_NO_NODE_JS && Array.isArray || (Array.isArray = function(t4) {
-              return Object.prototype.toString.call(t4) === "[object Array]";
-            }), !l3 || !a3.JS_SHA3_NO_ARRAY_BUFFER_IS_VIEW && ArrayBuffer.isView || (ArrayBuffer.isView = function(t4) {
-              return typeof t4 == "object" && t4.buffer && t4.buffer.constructor === ArrayBuffer;
-            });
-            for (var b2 = function(t4, e4, r4) {
-              return function(n3) {
-                return new U2(t4, e4, t4).update(n3)[r4]();
-              };
-            }, M3 = function(t4, e4, r4) {
-              return function(n3, i4) {
-                return new U2(t4, e4, i4).update(n3)[r4]();
-              };
-            }, S2 = function(t4, e4, r4) {
-              return function(e5, n3, i4, o4) {
-                return E4["cshake" + t4].update(e5, n3, i4, o4)[r4]();
-              };
-            }, O2 = function(t4, e4, r4) {
-              return function(e5, n3, i4, o4) {
-                return E4["kmac" + t4].update(e5, n3, i4, o4)[r4]();
-              };
-            }, k3 = function(t4, e4, r4, n3) {
-              for (var i4 = 0; i4 < w4.length; ++i4) {
-                var o4 = w4[i4];
-                t4[o4] = e4(r4, n3, o4);
-              }
-              return t4;
-            }, A4 = function(t4, e4) {
-              var r4 = b2(t4, e4, "hex");
-              return r4.create = function() {
-                return new U2(t4, e4, t4);
-              }, r4.update = function(t5) {
-                return r4.create().update(t5);
-              }, k3(r4, b2, t4, e4);
-            }, I3 = [{ name: "keccak", padding: [1, 256, 65536, 16777216], bits: y3, createMethod: A4 }, { name: "sha3", padding: [6, 1536, 393216, 100663296], bits: y3, createMethod: A4 }, { name: "shake", padding: [31, 7936, 2031616, 520093696], bits: v3, createMethod: function(t4, e4) {
-              var r4 = M3(t4, e4, "hex");
-              return r4.create = function(r5) {
-                return new U2(t4, e4, r5);
-              }, r4.update = function(t5, e5) {
-                return r4.create(e5).update(t5);
-              }, k3(r4, M3, t4, e4);
-            } }, { name: "cshake", padding: p3, bits: v3, createMethod: function(t4, e4) {
-              var r4 = _4[t4], n3 = S2(t4, 0, "hex");
-              return n3.create = function(n4, i4, o4) {
-                return i4 || o4 ? new U2(t4, e4, n4).bytepad([i4, o4], r4) : E4["shake" + t4].create(n4);
-              }, n3.update = function(t5, e5, r5, i4) {
-                return n3.create(e5, r5, i4).update(t5);
-              }, k3(n3, S2, t4, e4);
-            } }, { name: "kmac", padding: p3, bits: v3, createMethod: function(t4, e4) {
-              var r4 = _4[t4], n3 = O2(t4, 0, "hex");
-              return n3.create = function(n4, i4, o4) {
-                return new N3(t4, e4, i4).bytepad(["KMAC", o4], r4).bytepad([n4], r4);
-              }, n3.update = function(t5, e5, r5, i4) {
-                return n3.create(t5, r5, i4).update(e5);
-              }, k3(n3, O2, t4, e4);
-            } }], E4 = {}, R2 = [], T4 = 0; T4 < I3.length; ++T4)
-              for (var j3 = I3[T4], x3 = j3.bits, C3 = 0; C3 < x3.length; ++C3) {
-                var B2 = j3.name + "_" + x3[C3];
-                if (R2.push(B2), E4[B2] = j3.createMethod(x3[C3], j3.padding), j3.name !== "sha3") {
-                  var P3 = j3.name + x3[C3];
-                  R2.push(P3), E4[P3] = E4[B2];
-                }
-              }
-            function U2(t4, e4, r4) {
-              this.blocks = [], this.s = [], this.padding = e4, this.outputBits = r4, this.reset = true, this.finalized = false, this.block = 0, this.start = 0, this.blockCount = 1600 - (t4 << 1) >> 5, this.byteCount = this.blockCount << 2, this.outputBlocks = r4 >> 5, this.extraBytes = (31 & r4) >> 3;
-              for (var n3 = 0; n3 < 50; ++n3)
-                this.s[n3] = 0;
-            }
-            function N3(t4, e4, r4) {
-              U2.call(this, t4, e4, r4);
-            }
-            U2.prototype.update = function(t4) {
-              if (this.finalized)
-                throw new Error("finalize already called");
-              var e4, r4 = typeof t4;
-              if (r4 !== "string") {
-                if (r4 !== "object")
-                  throw new Error(s3);
-                if (t4 === null)
-                  throw new Error(s3);
-                if (l3 && t4.constructor === ArrayBuffer)
-                  t4 = new Uint8Array(t4);
-                else if (!(Array.isArray(t4) || l3 && ArrayBuffer.isView(t4)))
-                  throw new Error(s3);
-                e4 = true;
-              }
-              for (var n3, i4, o4 = this.blocks, u4 = this.byteCount, a4 = t4.length, h4 = this.blockCount, c4 = 0, f4 = this.s; c4 < a4; ) {
-                if (this.reset)
-                  for (this.reset = false, o4[0] = this.block, n3 = 1; n3 < h4 + 1; ++n3)
-                    o4[n3] = 0;
-                if (e4)
-                  for (n3 = this.start; c4 < a4 && n3 < u4; ++c4)
-                    o4[n3 >> 2] |= t4[c4] << m3[3 & n3++];
-                else
-                  for (n3 = this.start; c4 < a4 && n3 < u4; ++c4)
-                    (i4 = t4.charCodeAt(c4)) < 128 ? o4[n3 >> 2] |= i4 << m3[3 & n3++] : i4 < 2048 ? (o4[n3 >> 2] |= (192 | i4 >> 6) << m3[3 & n3++], o4[n3 >> 2] |= (128 | 63 & i4) << m3[3 & n3++]) : i4 < 55296 || i4 >= 57344 ? (o4[n3 >> 2] |= (224 | i4 >> 12) << m3[3 & n3++], o4[n3 >> 2] |= (128 | i4 >> 6 & 63) << m3[3 & n3++], o4[n3 >> 2] |= (128 | 63 & i4) << m3[3 & n3++]) : (i4 = 65536 + ((1023 & i4) << 10 | 1023 & t4.charCodeAt(++c4)), o4[n3 >> 2] |= (240 | i4 >> 18) << m3[3 & n3++], o4[n3 >> 2] |= (128 | i4 >> 12 & 63) << m3[3 & n3++], o4[n3 >> 2] |= (128 | i4 >> 6 & 63) << m3[3 & n3++], o4[n3 >> 2] |= (128 | 63 & i4) << m3[3 & n3++]);
-                if (this.lastByteIndex = n3, n3 >= u4) {
-                  for (this.start = n3 - u4, this.block = o4[h4], n3 = 0; n3 < h4; ++n3)
-                    f4[n3] ^= o4[n3];
-                  q3(f4), this.reset = true;
-                } else
-                  this.start = n3;
-              }
-              return this;
-            }, U2.prototype.encode = function(t4, e4) {
-              var r4 = 255 & t4, n3 = 1, i4 = [r4];
-              for (r4 = 255 & (t4 >>= 8); r4 > 0; )
-                i4.unshift(r4), r4 = 255 & (t4 >>= 8), ++n3;
-              return e4 ? i4.push(n3) : i4.unshift(n3), this.update(i4), i4.length;
-            }, U2.prototype.encodeString = function(t4) {
-              var e4, r4 = typeof t4;
-              if (r4 !== "string") {
-                if (r4 !== "object")
-                  throw new Error(s3);
-                if (t4 === null)
-                  throw new Error(s3);
-                if (l3 && t4.constructor === ArrayBuffer)
-                  t4 = new Uint8Array(t4);
-                else if (!(Array.isArray(t4) || l3 && ArrayBuffer.isView(t4)))
-                  throw new Error(s3);
-                e4 = true;
-              }
-              var n3 = 0, i4 = t4.length;
-              if (e4)
-                n3 = i4;
-              else
-                for (var o4 = 0; o4 < t4.length; ++o4) {
-                  var u4 = t4.charCodeAt(o4);
-                  u4 < 128 ? n3 += 1 : u4 < 2048 ? n3 += 2 : u4 < 55296 || u4 >= 57344 ? n3 += 3 : (u4 = 65536 + ((1023 & u4) << 10 | 1023 & t4.charCodeAt(++o4)), n3 += 4);
-                }
-              return n3 += this.encode(8 * n3), this.update(t4), n3;
-            }, U2.prototype.bytepad = function(t4, e4) {
-              for (var r4 = this.encode(e4), n3 = 0; n3 < t4.length; ++n3)
-                r4 += this.encodeString(t4[n3]);
-              var i4 = e4 - r4 % e4, o4 = [];
-              return o4.length = i4, this.update(o4), this;
-            }, U2.prototype.finalize = function() {
-              if (!this.finalized) {
-                this.finalized = true;
-                var t4 = this.blocks, e4 = this.lastByteIndex, r4 = this.blockCount, n3 = this.s;
-                if (t4[e4 >> 2] |= this.padding[3 & e4], this.lastByteIndex === this.byteCount)
-                  for (t4[0] = t4[r4], e4 = 1; e4 < r4 + 1; ++e4)
-                    t4[e4] = 0;
-                for (t4[r4 - 1] |= 2147483648, e4 = 0; e4 < r4; ++e4)
-                  n3[e4] ^= t4[e4];
-                q3(n3);
-              }
-            }, U2.prototype.toString = U2.prototype.hex = function() {
-              this.finalize();
-              for (var t4, e4 = this.blockCount, r4 = this.s, n3 = this.outputBlocks, i4 = this.extraBytes, o4 = 0, s4 = 0, u4 = ""; s4 < n3; ) {
-                for (o4 = 0; o4 < e4 && s4 < n3; ++o4, ++s4)
-                  t4 = r4[o4], u4 += d3[t4 >> 4 & 15] + d3[15 & t4] + d3[t4 >> 12 & 15] + d3[t4 >> 8 & 15] + d3[t4 >> 20 & 15] + d3[t4 >> 16 & 15] + d3[t4 >> 28 & 15] + d3[t4 >> 24 & 15];
-                s4 % e4 == 0 && (q3(r4), o4 = 0);
-              }
-              return i4 && (t4 = r4[o4], u4 += d3[t4 >> 4 & 15] + d3[15 & t4], i4 > 1 && (u4 += d3[t4 >> 12 & 15] + d3[t4 >> 8 & 15]), i4 > 2 && (u4 += d3[t4 >> 20 & 15] + d3[t4 >> 16 & 15])), u4;
-            }, U2.prototype.arrayBuffer = function() {
-              this.finalize();
-              var t4, e4 = this.blockCount, r4 = this.s, n3 = this.outputBlocks, i4 = this.extraBytes, o4 = 0, s4 = 0, u4 = this.outputBits >> 3;
-              t4 = i4 ? new ArrayBuffer(n3 + 1 << 2) : new ArrayBuffer(u4);
-              for (var a4 = new Uint32Array(t4); s4 < n3; ) {
-                for (o4 = 0; o4 < e4 && s4 < n3; ++o4, ++s4)
-                  a4[s4] = r4[o4];
-                s4 % e4 == 0 && q3(r4);
-              }
-              return i4 && (a4[o4] = r4[o4], t4 = t4.slice(0, u4)), t4;
-            }, U2.prototype.buffer = U2.prototype.arrayBuffer, U2.prototype.digest = U2.prototype.array = function() {
-              this.finalize();
-              for (var t4, e4, r4 = this.blockCount, n3 = this.s, i4 = this.outputBlocks, o4 = this.extraBytes, s4 = 0, u4 = 0, a4 = []; u4 < i4; ) {
-                for (s4 = 0; s4 < r4 && u4 < i4; ++s4, ++u4)
-                  t4 = u4 << 2, e4 = n3[s4], a4[t4] = 255 & e4, a4[t4 + 1] = e4 >> 8 & 255, a4[t4 + 2] = e4 >> 16 & 255, a4[t4 + 3] = e4 >> 24 & 255;
-                u4 % r4 == 0 && q3(n3);
-              }
-              return o4 && (t4 = u4 << 2, e4 = n3[s4], a4[t4] = 255 & e4, o4 > 1 && (a4[t4 + 1] = e4 >> 8 & 255), o4 > 2 && (a4[t4 + 2] = e4 >> 16 & 255)), a4;
-            }, N3.prototype = new U2(), N3.prototype.finalize = function() {
-              return this.encode(this.outputBits, true), U2.prototype.finalize.call(this);
-            };
-            var q3 = function(t4) {
-              var e4, r4, n3, i4, o4, s4, u4, a4, h4, c4, f4, l4, d4, p4, m4, y4, v4, w5, _5, b3, M4, S3, O3, k4, A5, I4, E5, R3, T5, j4, x4, C4, B3, P4, U3, N4, q4, L3, D3, W2, F3, Y2, z3, J2, $3, Z2, K3, V2, H3, Q2, X2, G2, tt, et, rt, nt, it, ot, st, ut, at, ht, ct;
-              for (n3 = 0; n3 < 48; n3 += 2)
-                i4 = t4[0] ^ t4[10] ^ t4[20] ^ t4[30] ^ t4[40], o4 = t4[1] ^ t4[11] ^ t4[21] ^ t4[31] ^ t4[41], s4 = t4[2] ^ t4[12] ^ t4[22] ^ t4[32] ^ t4[42], u4 = t4[3] ^ t4[13] ^ t4[23] ^ t4[33] ^ t4[43], a4 = t4[4] ^ t4[14] ^ t4[24] ^ t4[34] ^ t4[44], h4 = t4[5] ^ t4[15] ^ t4[25] ^ t4[35] ^ t4[45], c4 = t4[6] ^ t4[16] ^ t4[26] ^ t4[36] ^ t4[46], f4 = t4[7] ^ t4[17] ^ t4[27] ^ t4[37] ^ t4[47], e4 = (l4 = t4[8] ^ t4[18] ^ t4[28] ^ t4[38] ^ t4[48]) ^ (s4 << 1 | u4 >>> 31), r4 = (d4 = t4[9] ^ t4[19] ^ t4[29] ^ t4[39] ^ t4[49]) ^ (u4 << 1 | s4 >>> 31), t4[0] ^= e4, t4[1] ^= r4, t4[10] ^= e4, t4[11] ^= r4, t4[20] ^= e4, t4[21] ^= r4, t4[30] ^= e4, t4[31] ^= r4, t4[40] ^= e4, t4[41] ^= r4, e4 = i4 ^ (a4 << 1 | h4 >>> 31), r4 = o4 ^ (h4 << 1 | a4 >>> 31), t4[2] ^= e4, t4[3] ^= r4, t4[12] ^= e4, t4[13] ^= r4, t4[22] ^= e4, t4[23] ^= r4, t4[32] ^= e4, t4[33] ^= r4, t4[42] ^= e4, t4[43] ^= r4, e4 = s4 ^ (c4 << 1 | f4 >>> 31), r4 = u4 ^ (f4 << 1 | c4 >>> 31), t4[4] ^= e4, t4[5] ^= r4, t4[14] ^= e4, t4[15] ^= r4, t4[24] ^= e4, t4[25] ^= r4, t4[34] ^= e4, t4[35] ^= r4, t4[44] ^= e4, t4[45] ^= r4, e4 = a4 ^ (l4 << 1 | d4 >>> 31), r4 = h4 ^ (d4 << 1 | l4 >>> 31), t4[6] ^= e4, t4[7] ^= r4, t4[16] ^= e4, t4[17] ^= r4, t4[26] ^= e4, t4[27] ^= r4, t4[36] ^= e4, t4[37] ^= r4, t4[46] ^= e4, t4[47] ^= r4, e4 = c4 ^ (i4 << 1 | o4 >>> 31), r4 = f4 ^ (o4 << 1 | i4 >>> 31), t4[8] ^= e4, t4[9] ^= r4, t4[18] ^= e4, t4[19] ^= r4, t4[28] ^= e4, t4[29] ^= r4, t4[38] ^= e4, t4[39] ^= r4, t4[48] ^= e4, t4[49] ^= r4, p4 = t4[0], m4 = t4[1], Z2 = t4[11] << 4 | t4[10] >>> 28, K3 = t4[10] << 4 | t4[11] >>> 28, R3 = t4[20] << 3 | t4[21] >>> 29, T5 = t4[21] << 3 | t4[20] >>> 29, ut = t4[31] << 9 | t4[30] >>> 23, at = t4[30] << 9 | t4[31] >>> 23, Y2 = t4[40] << 18 | t4[41] >>> 14, z3 = t4[41] << 18 | t4[40] >>> 14, P4 = t4[2] << 1 | t4[3] >>> 31, U3 = t4[3] << 1 | t4[2] >>> 31, y4 = t4[13] << 12 | t4[12] >>> 20, v4 = t4[12] << 12 | t4[13] >>> 20, V2 = t4[22] << 10 | t4[23] >>> 22, H3 = t4[23] << 10 | t4[22] >>> 22, j4 = t4[33] << 13 | t4[32] >>> 19, x4 = t4[32] << 13 | t4[33] >>> 19, ht = t4[42] << 2 | t4[43] >>> 30, ct = t4[43] << 2 | t4[42] >>> 30, et = t4[5] << 30 | t4[4] >>> 2, rt = t4[4] << 30 | t4[5] >>> 2, N4 = t4[14] << 6 | t4[15] >>> 26, q4 = t4[15] << 6 | t4[14] >>> 26, w5 = t4[25] << 11 | t4[24] >>> 21, _5 = t4[24] << 11 | t4[25] >>> 21, Q2 = t4[34] << 15 | t4[35] >>> 17, X2 = t4[35] << 15 | t4[34] >>> 17, C4 = t4[45] << 29 | t4[44] >>> 3, B3 = t4[44] << 29 | t4[45] >>> 3, k4 = t4[6] << 28 | t4[7] >>> 4, A5 = t4[7] << 28 | t4[6] >>> 4, nt = t4[17] << 23 | t4[16] >>> 9, it = t4[16] << 23 | t4[17] >>> 9, L3 = t4[26] << 25 | t4[27] >>> 7, D3 = t4[27] << 25 | t4[26] >>> 7, b3 = t4[36] << 21 | t4[37] >>> 11, M4 = t4[37] << 21 | t4[36] >>> 11, G2 = t4[47] << 24 | t4[46] >>> 8, tt = t4[46] << 24 | t4[47] >>> 8, J2 = t4[8] << 27 | t4[9] >>> 5, $3 = t4[9] << 27 | t4[8] >>> 5, I4 = t4[18] << 20 | t4[19] >>> 12, E5 = t4[19] << 20 | t4[18] >>> 12, ot = t4[29] << 7 | t4[28] >>> 25, st = t4[28] << 7 | t4[29] >>> 25, W2 = t4[38] << 8 | t4[39] >>> 24, F3 = t4[39] << 8 | t4[38] >>> 24, S3 = t4[48] << 14 | t4[49] >>> 18, O3 = t4[49] << 14 | t4[48] >>> 18, t4[0] = p4 ^ ~y4 & w5, t4[1] = m4 ^ ~v4 & _5, t4[10] = k4 ^ ~I4 & R3, t4[11] = A5 ^ ~E5 & T5, t4[20] = P4 ^ ~N4 & L3, t4[21] = U3 ^ ~q4 & D3, t4[30] = J2 ^ ~Z2 & V2, t4[31] = $3 ^ ~K3 & H3, t4[40] = et ^ ~nt & ot, t4[41] = rt ^ ~it & st, t4[2] = y4 ^ ~w5 & b3, t4[3] = v4 ^ ~_5 & M4, t4[12] = I4 ^ ~R3 & j4, t4[13] = E5 ^ ~T5 & x4, t4[22] = N4 ^ ~L3 & W2, t4[23] = q4 ^ ~D3 & F3, t4[32] = Z2 ^ ~V2 & Q2, t4[33] = K3 ^ ~H3 & X2, t4[42] = nt ^ ~ot & ut, t4[43] = it ^ ~st & at, t4[4] = w5 ^ ~b3 & S3, t4[5] = _5 ^ ~M4 & O3, t4[14] = R3 ^ ~j4 & C4, t4[15] = T5 ^ ~x4 & B3, t4[24] = L3 ^ ~W2 & Y2, t4[25] = D3 ^ ~F3 & z3, t4[34] = V2 ^ ~Q2 & G2, t4[35] = H3 ^ ~X2 & tt, t4[44] = ot ^ ~ut & ht, t4[45] = st ^ ~at & ct, t4[6] = b3 ^ ~S3 & p4, t4[7] = M4 ^ ~O3 & m4, t4[16] = j4 ^ ~C4 & k4, t4[17] = x4 ^ ~B3 & A5, t4[26] = W2 ^ ~Y2 & P4, t4[27] = F3 ^ ~z3 & U3, t4[36] = Q2 ^ ~G2 & J2, t4[37] = X2 ^ ~tt & $3, t4[46] = ut ^ ~ht & et, t4[47] = at ^ ~ct & rt, t4[8] = S3 ^ ~p4 & y4, t4[9] = O3 ^ ~m4 & v4, t4[18] = C4 ^ ~k4 & I4, t4[19] = B3 ^ ~A5 & E5, t4[28] = Y2 ^ ~P4 & N4, t4[29] = z3 ^ ~U3 & q4, t4[38] = G2 ^ ~J2 & Z2, t4[39] = tt ^ ~$3 & K3, t4[48] = ht ^ ~et & nt, t4[49] = ct ^ ~rt & it, t4[0] ^= g3[n3], t4[1] ^= g3[n3 + 1];
-            };
-            if (c3)
-              t3.exports = E4;
-            else {
-              for (T4 = 0; T4 < R2.length; ++T4)
-                a3[R2[T4]] = E4[R2[T4]];
-              f3 && ((o3 = function() {
-                return E4;
-              }.call(e3, r3, e3, t3)) === void 0 || (t3.exports = o3));
-            }
-          }();
-        }).call(this, r3(13), r3(12));
-      }, function(t3, e3, r3) {
-        "use strict";
-        r3(3), r3(7);
-        var n2 = r3(17);
-        r3.o(n2, "payloadId") && r3.d(e3, "payloadId", function() {
-          return n2.payloadId;
-        });
-        var i3 = r3(18);
-        r3.d(e3, "payloadId", function() {
-          return i3.a;
-        });
-        r3(19), r3(20), r3(25), r3(26);
-      }, function(t3, e3, r3) {
-        "use strict";
-        (function(t4) {
-          var n2 = r3(1), i3 = r3(41);
-          const o3 = t4.WebSocket !== void 0 ? t4.WebSocket : r3(55);
-          e3.a = class {
-            constructor(t5) {
-              if (this.opts = t5, this._queue = [], this._events = [], this._subscriptions = [], this._protocol = t5.protocol, this._version = t5.version, this._url = "", this._netMonitor = null, this._socket = null, this._nextSocket = null, this._subscriptions = t5.subscriptions || [], this._netMonitor = t5.netMonitor || new i3.a(), !t5.url || typeof t5.url != "string")
-                throw new Error("Missing or invalid WebSocket url");
-              this._url = t5.url, this._netMonitor.on("online", () => this._socketCreate());
-            }
-            set readyState(t5) {
-            }
-            get readyState() {
-              return this._socket ? this._socket.readyState : -1;
-            }
-            set connecting(t5) {
-            }
-            get connecting() {
-              return this.readyState === 0;
-            }
-            set connected(t5) {
-            }
-            get connected() {
-              return this.readyState === 1;
-            }
-            set closing(t5) {
-            }
-            get closing() {
-              return this.readyState === 2;
-            }
-            set closed(t5) {
-            }
-            get closed() {
-              return this.readyState === 3;
-            }
-            open() {
-              this._socketCreate();
-            }
-            close() {
-              this._socketClose();
-            }
-            send(t5, e4, r4) {
-              if (!e4 || typeof e4 != "string")
-                throw new Error("Missing or invalid topic field");
-              this._socketSend({ topic: e4, type: "pub", payload: t5, silent: !!r4 });
-            }
-            subscribe(t5) {
-              this._socketSend({ topic: t5, type: "sub", payload: "", silent: true });
-            }
-            on(t5, e4) {
-              this._events.push({ event: t5, callback: e4 });
-            }
-            _socketCreate() {
-              if (this._nextSocket)
-                return;
-              const t5 = function(t6, e4, r4) {
-                var i4, o4;
-                const s3 = (t6.startsWith("https") ? t6.replace("https", "wss") : t6.startsWith("http") ? t6.replace("http", "ws") : t6).split("?"), u3 = Object(n2.m)() ? { protocol: e4, version: r4, env: "browser", host: ((i4 = Object(n2.k)()) === null || i4 === void 0 ? void 0 : i4.host) || "" } : { protocol: e4, version: r4, env: ((o4 = Object(n2.g)()) === null || o4 === void 0 ? void 0 : o4.name) || "" }, a3 = Object(n2.a)(Object(n2.l)(s3[1] || ""), u3);
-                return s3[0] + "?" + a3;
-              }(this._url, this._protocol, this._version);
-              if (this._nextSocket = new o3(t5), !this._nextSocket)
-                throw new Error("Failed to create socket");
-              this._nextSocket.onmessage = (t6) => this._socketReceive(t6), this._nextSocket.onopen = () => this._socketOpen(), this._nextSocket.onerror = (t6) => this._socketError(t6), this._nextSocket.onclose = () => {
-                setTimeout(() => {
-                  this._nextSocket = null, this._socketCreate();
-                }, 1e3);
-              };
-            }
-            _socketOpen() {
-              this._socketClose(), this._socket = this._nextSocket, this._nextSocket = null, this._queueSubscriptions(), this._pushQueue();
-            }
-            _socketClose() {
-              this._socket && (this._socket.onclose = () => {
-              }, this._socket.close());
-            }
-            _socketSend(t5) {
-              const e4 = JSON.stringify(t5);
-              this._socket && this._socket.readyState === 1 ? this._socket.send(e4) : (this._setToQueue(t5), this._socketCreate());
-            }
-            async _socketReceive(t5) {
-              let e4;
-              try {
-                e4 = JSON.parse(t5.data);
-              } catch (t6) {
-                return;
-              }
-              if (this._socketSend({ topic: e4.topic, type: "ack", payload: "", silent: true }), this._socket && this._socket.readyState === 1) {
-                const t6 = this._events.filter((t7) => t7.event === "message");
-                t6 && t6.length && t6.forEach((t7) => t7.callback(e4));
-              }
-            }
-            _socketError(t5) {
-              const e4 = this._events.filter((t6) => t6.event === "error");
-              e4 && e4.length && e4.forEach((e5) => e5.callback(t5));
-            }
-            _queueSubscriptions() {
-              this._subscriptions.forEach((t5) => this._queue.push({ topic: t5, type: "sub", payload: "", silent: true })), this._subscriptions = this.opts.subscriptions || [];
-            }
-            _setToQueue(t5) {
-              this._queue.push(t5);
-            }
-            _pushQueue() {
-              this._queue.forEach((t5) => this._socketSend(t5)), this._queue = [];
-            }
-          };
-        }).call(this, r3(12));
-      }, function(t3, e3, r3) {
-        "use strict";
-        e3.a = class {
-          constructor() {
-            this._eventEmitters = [], typeof window != "undefined" && window.addEventListener !== void 0 && (window.addEventListener("online", () => this.trigger("online")), window.addEventListener("offline", () => this.trigger("offline")));
-          }
-          on(t4, e4) {
-            this._eventEmitters.push({ event: t4, callback: e4 });
-          }
-          trigger(t4) {
-            let e4 = [];
-            t4 && (e4 = this._eventEmitters.filter((e5) => e5.event === t4)), e4.forEach((t5) => {
-              t5.callback();
-            });
-          }
-        };
-      }, function(t3, e3, r3) {
-        "use strict";
-        Object.defineProperty(e3, "__esModule", { value: true });
-        const n2 = r3(43), i3 = n2.__importDefault(r3(57)), o3 = n2.__importStar(r3(56));
-        class s3 extends i3.default {
-          constructor(t4, e4) {
-            super({ cryptoLib: o3, connectorOpts: t4, pushServerOpts: e4 });
-          }
-        }
-        e3.default = s3;
-      }, function(t3, e3, r3) {
-        "use strict";
-        r3.r(e3), r3.d(e3, "__extends", function() {
-          return i3;
-        }), r3.d(e3, "__assign", function() {
-          return o3;
-        }), r3.d(e3, "__rest", function() {
-          return s3;
-        }), r3.d(e3, "__decorate", function() {
-          return u3;
-        }), r3.d(e3, "__param", function() {
-          return a3;
-        }), r3.d(e3, "__metadata", function() {
-          return h3;
-        }), r3.d(e3, "__awaiter", function() {
-          return c3;
-        }), r3.d(e3, "__generator", function() {
-          return f3;
-        }), r3.d(e3, "__exportStar", function() {
-          return l3;
-        }), r3.d(e3, "__values", function() {
-          return d3;
-        }), r3.d(e3, "__read", function() {
-          return p3;
-        }), r3.d(e3, "__spread", function() {
-          return m3;
-        }), r3.d(e3, "__await", function() {
-          return g3;
-        }), r3.d(e3, "__asyncGenerator", function() {
-          return y3;
-        }), r3.d(e3, "__asyncDelegator", function() {
-          return v3;
-        }), r3.d(e3, "__asyncValues", function() {
-          return w4;
-        }), r3.d(e3, "__makeTemplateObject", function() {
-          return _4;
-        }), r3.d(e3, "__importStar", function() {
-          return b2;
-        }), r3.d(e3, "__importDefault", function() {
-          return M3;
-        });
-        var n2 = function(t4, e4) {
-          return (n2 = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(t5, e5) {
-            t5.__proto__ = e5;
-          } || function(t5, e5) {
-            for (var r4 in e5)
-              e5.hasOwnProperty(r4) && (t5[r4] = e5[r4]);
-          })(t4, e4);
-        };
-        function i3(t4, e4) {
-          function r4() {
-            this.constructor = t4;
-          }
-          n2(t4, e4), t4.prototype = e4 === null ? Object.create(e4) : (r4.prototype = e4.prototype, new r4());
-        }
-        var o3 = function() {
-          return (o3 = Object.assign || function(t4) {
-            for (var e4, r4 = 1, n3 = arguments.length; r4 < n3; r4++)
-              for (var i4 in e4 = arguments[r4])
-                Object.prototype.hasOwnProperty.call(e4, i4) && (t4[i4] = e4[i4]);
-            return t4;
-          }).apply(this, arguments);
-        };
-        function s3(t4, e4) {
-          var r4 = {};
-          for (var n3 in t4)
-            Object.prototype.hasOwnProperty.call(t4, n3) && e4.indexOf(n3) < 0 && (r4[n3] = t4[n3]);
-          if (t4 != null && typeof Object.getOwnPropertySymbols == "function") {
-            var i4 = 0;
-            for (n3 = Object.getOwnPropertySymbols(t4); i4 < n3.length; i4++)
-              e4.indexOf(n3[i4]) < 0 && (r4[n3[i4]] = t4[n3[i4]]);
-          }
-          return r4;
-        }
-        function u3(t4, e4, r4, n3) {
-          var i4, o4 = arguments.length, s4 = o4 < 3 ? e4 : n3 === null ? n3 = Object.getOwnPropertyDescriptor(e4, r4) : n3;
-          if (typeof Reflect == "object" && typeof Reflect.decorate == "function")
-            s4 = Reflect.decorate(t4, e4, r4, n3);
-          else
-            for (var u4 = t4.length - 1; u4 >= 0; u4--)
-              (i4 = t4[u4]) && (s4 = (o4 < 3 ? i4(s4) : o4 > 3 ? i4(e4, r4, s4) : i4(e4, r4)) || s4);
-          return o4 > 3 && s4 && Object.defineProperty(e4, r4, s4), s4;
-        }
-        function a3(t4, e4) {
-          return function(r4, n3) {
-            e4(r4, n3, t4);
-          };
-        }
-        function h3(t4, e4) {
-          if (typeof Reflect == "object" && typeof Reflect.metadata == "function")
-            return Reflect.metadata(t4, e4);
-        }
-        function c3(t4, e4, r4, n3) {
-          return new (r4 || (r4 = Promise))(function(i4, o4) {
-            function s4(t5) {
-              try {
-                a4(n3.next(t5));
-              } catch (t6) {
-                o4(t6);
-              }
-            }
-            function u4(t5) {
-              try {
-                a4(n3.throw(t5));
-              } catch (t6) {
-                o4(t6);
-              }
-            }
-            function a4(t5) {
-              t5.done ? i4(t5.value) : new r4(function(e5) {
-                e5(t5.value);
-              }).then(s4, u4);
-            }
-            a4((n3 = n3.apply(t4, e4 || [])).next());
-          });
-        }
-        function f3(t4, e4) {
-          var r4, n3, i4, o4, s4 = { label: 0, sent: function() {
-            if (1 & i4[0])
-              throw i4[1];
-            return i4[1];
-          }, trys: [], ops: [] };
-          return o4 = { next: u4(0), throw: u4(1), return: u4(2) }, typeof Symbol == "function" && (o4[Symbol.iterator] = function() {
-            return this;
-          }), o4;
-          function u4(o5) {
-            return function(u5) {
-              return function(o6) {
-                if (r4)
-                  throw new TypeError("Generator is already executing.");
-                for (; s4; )
-                  try {
-                    if (r4 = 1, n3 && (i4 = 2 & o6[0] ? n3.return : o6[0] ? n3.throw || ((i4 = n3.return) && i4.call(n3), 0) : n3.next) && !(i4 = i4.call(n3, o6[1])).done)
-                      return i4;
-                    switch (n3 = 0, i4 && (o6 = [2 & o6[0], i4.value]), o6[0]) {
-                      case 0:
-                      case 1:
-                        i4 = o6;
-                        break;
-                      case 4:
-                        return s4.label++, { value: o6[1], done: false };
-                      case 5:
-                        s4.label++, n3 = o6[1], o6 = [0];
-                        continue;
-                      case 7:
-                        o6 = s4.ops.pop(), s4.trys.pop();
-                        continue;
-                      default:
-                        if (!(i4 = s4.trys, (i4 = i4.length > 0 && i4[i4.length - 1]) || o6[0] !== 6 && o6[0] !== 2)) {
-                          s4 = 0;
-                          continue;
-                        }
-                        if (o6[0] === 3 && (!i4 || o6[1] > i4[0] && o6[1] < i4[3])) {
-                          s4.label = o6[1];
-                          break;
-                        }
-                        if (o6[0] === 6 && s4.label < i4[1]) {
-                          s4.label = i4[1], i4 = o6;
-                          break;
-                        }
-                        if (i4 && s4.label < i4[2]) {
-                          s4.label = i4[2], s4.ops.push(o6);
-                          break;
-                        }
-                        i4[2] && s4.ops.pop(), s4.trys.pop();
-                        continue;
-                    }
-                    o6 = e4.call(t4, s4);
-                  } catch (t5) {
-                    o6 = [6, t5], n3 = 0;
-                  } finally {
-                    r4 = i4 = 0;
-                  }
-                if (5 & o6[0])
-                  throw o6[1];
-                return { value: o6[0] ? o6[1] : void 0, done: true };
-              }([o5, u5]);
-            };
-          }
-        }
-        function l3(t4, e4) {
-          for (var r4 in t4)
-            e4.hasOwnProperty(r4) || (e4[r4] = t4[r4]);
-        }
-        function d3(t4) {
-          var e4 = typeof Symbol == "function" && t4[Symbol.iterator], r4 = 0;
-          return e4 ? e4.call(t4) : { next: function() {
-            return t4 && r4 >= t4.length && (t4 = void 0), { value: t4 && t4[r4++], done: !t4 };
-          } };
-        }
-        function p3(t4, e4) {
-          var r4 = typeof Symbol == "function" && t4[Symbol.iterator];
-          if (!r4)
-            return t4;
-          var n3, i4, o4 = r4.call(t4), s4 = [];
-          try {
-            for (; (e4 === void 0 || e4-- > 0) && !(n3 = o4.next()).done; )
-              s4.push(n3.value);
-          } catch (t5) {
-            i4 = { error: t5 };
-          } finally {
-            try {
-              n3 && !n3.done && (r4 = o4.return) && r4.call(o4);
-            } finally {
-              if (i4)
-                throw i4.error;
-            }
-          }
-          return s4;
-        }
-        function m3() {
-          for (var t4 = [], e4 = 0; e4 < arguments.length; e4++)
-            t4 = t4.concat(p3(arguments[e4]));
-          return t4;
-        }
-        function g3(t4) {
-          return this instanceof g3 ? (this.v = t4, this) : new g3(t4);
-        }
-        function y3(t4, e4, r4) {
-          if (!Symbol.asyncIterator)
-            throw new TypeError("Symbol.asyncIterator is not defined.");
-          var n3, i4 = r4.apply(t4, e4 || []), o4 = [];
-          return n3 = {}, s4("next"), s4("throw"), s4("return"), n3[Symbol.asyncIterator] = function() {
-            return this;
-          }, n3;
-          function s4(t5) {
-            i4[t5] && (n3[t5] = function(e5) {
-              return new Promise(function(r5, n4) {
-                o4.push([t5, e5, r5, n4]) > 1 || u4(t5, e5);
-              });
-            });
-          }
-          function u4(t5, e5) {
-            try {
-              (r5 = i4[t5](e5)).value instanceof g3 ? Promise.resolve(r5.value.v).then(a4, h4) : c4(o4[0][2], r5);
-            } catch (t6) {
-              c4(o4[0][3], t6);
-            }
-            var r5;
-          }
-          function a4(t5) {
-            u4("next", t5);
-          }
-          function h4(t5) {
-            u4("throw", t5);
-          }
-          function c4(t5, e5) {
-            t5(e5), o4.shift(), o4.length && u4(o4[0][0], o4[0][1]);
-          }
-        }
-        function v3(t4) {
-          var e4, r4;
-          return e4 = {}, n3("next"), n3("throw", function(t5) {
-            throw t5;
-          }), n3("return"), e4[Symbol.iterator] = function() {
-            return this;
-          }, e4;
-          function n3(n4, i4) {
-            e4[n4] = t4[n4] ? function(e5) {
-              return (r4 = !r4) ? { value: g3(t4[n4](e5)), done: n4 === "return" } : i4 ? i4(e5) : e5;
-            } : i4;
-          }
-        }
-        function w4(t4) {
-          if (!Symbol.asyncIterator)
-            throw new TypeError("Symbol.asyncIterator is not defined.");
-          var e4, r4 = t4[Symbol.asyncIterator];
-          return r4 ? r4.call(t4) : (t4 = d3(t4), e4 = {}, n3("next"), n3("throw"), n3("return"), e4[Symbol.asyncIterator] = function() {
-            return this;
-          }, e4);
-          function n3(r5) {
-            e4[r5] = t4[r5] && function(e5) {
-              return new Promise(function(n4, i4) {
-                (function(t5, e6, r6, n5) {
-                  Promise.resolve(n5).then(function(e7) {
-                    t5({ value: e7, done: r6 });
-                  }, e6);
-                })(n4, i4, (e5 = t4[r5](e5)).done, e5.value);
-              });
-            };
-          }
-        }
-        function _4(t4, e4) {
-          return Object.defineProperty ? Object.defineProperty(t4, "raw", { value: e4 }) : t4.raw = e4, t4;
-        }
-        function b2(t4) {
-          if (t4 && t4.__esModule)
-            return t4;
-          var e4 = {};
-          if (t4 != null)
-            for (var r4 in t4)
-              Object.hasOwnProperty.call(t4, r4) && (e4[r4] = t4[r4]);
-          return e4.default = t4, e4;
-        }
-        function M3(t4) {
-          return t4 && t4.__esModule ? t4 : { default: t4 };
-        }
-      }, function(t3, e3) {
-        t3.exports = function(t4) {
-          return t4.webpackPolyfill || (t4.deprecate = function() {
-          }, t4.paths = [], t4.children || (t4.children = []), Object.defineProperty(t4, "loaded", { enumerable: true, get: function() {
-            return t4.l;
-          } }), Object.defineProperty(t4, "id", { enumerable: true, get: function() {
-            return t4.i;
-          } }), t4.webpackPolyfill = 1), t4;
-        };
-      }, function(t3, e3) {
-      }, function(t3, e3, r3) {
-        "use strict";
-        e3.byteLength = function(t4) {
-          var e4 = h3(t4), r4 = e4[0], n3 = e4[1];
-          return 3 * (r4 + n3) / 4 - n3;
-        }, e3.toByteArray = function(t4) {
-          var e4, r4, n3 = h3(t4), s4 = n3[0], u4 = n3[1], a4 = new o3(function(t5, e5, r5) {
-            return 3 * (e5 + r5) / 4 - r5;
-          }(0, s4, u4)), c4 = 0, f3 = u4 > 0 ? s4 - 4 : s4;
-          for (r4 = 0; r4 < f3; r4 += 4)
-            e4 = i3[t4.charCodeAt(r4)] << 18 | i3[t4.charCodeAt(r4 + 1)] << 12 | i3[t4.charCodeAt(r4 + 2)] << 6 | i3[t4.charCodeAt(r4 + 3)], a4[c4++] = e4 >> 16 & 255, a4[c4++] = e4 >> 8 & 255, a4[c4++] = 255 & e4;
-          u4 === 2 && (e4 = i3[t4.charCodeAt(r4)] << 2 | i3[t4.charCodeAt(r4 + 1)] >> 4, a4[c4++] = 255 & e4);
-          u4 === 1 && (e4 = i3[t4.charCodeAt(r4)] << 10 | i3[t4.charCodeAt(r4 + 1)] << 4 | i3[t4.charCodeAt(r4 + 2)] >> 2, a4[c4++] = e4 >> 8 & 255, a4[c4++] = 255 & e4);
-          return a4;
-        }, e3.fromByteArray = function(t4) {
-          for (var e4, r4 = t4.length, i4 = r4 % 3, o4 = [], s4 = 0, u4 = r4 - i4; s4 < u4; s4 += 16383)
-            o4.push(c3(t4, s4, s4 + 16383 > u4 ? u4 : s4 + 16383));
-          i4 === 1 ? (e4 = t4[r4 - 1], o4.push(n2[e4 >> 2] + n2[e4 << 4 & 63] + "==")) : i4 === 2 && (e4 = (t4[r4 - 2] << 8) + t4[r4 - 1], o4.push(n2[e4 >> 10] + n2[e4 >> 4 & 63] + n2[e4 << 2 & 63] + "="));
-          return o4.join("");
-        };
-        for (var n2 = [], i3 = [], o3 = typeof Uint8Array != "undefined" ? Uint8Array : Array, s3 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", u3 = 0, a3 = s3.length; u3 < a3; ++u3)
-          n2[u3] = s3[u3], i3[s3.charCodeAt(u3)] = u3;
-        function h3(t4) {
-          var e4 = t4.length;
-          if (e4 % 4 > 0)
-            throw new Error("Invalid string. Length must be a multiple of 4");
-          var r4 = t4.indexOf("=");
-          return r4 === -1 && (r4 = e4), [r4, r4 === e4 ? 0 : 4 - r4 % 4];
-        }
-        function c3(t4, e4, r4) {
-          for (var i4, o4, s4 = [], u4 = e4; u4 < r4; u4 += 3)
-            i4 = (t4[u4] << 16 & 16711680) + (t4[u4 + 1] << 8 & 65280) + (255 & t4[u4 + 2]), s4.push(n2[(o4 = i4) >> 18 & 63] + n2[o4 >> 12 & 63] + n2[o4 >> 6 & 63] + n2[63 & o4]);
-          return s4.join("");
-        }
-        i3["-".charCodeAt(0)] = 62, i3["_".charCodeAt(0)] = 63;
-      }, function(t3, e3) {
-        e3.read = function(t4, e4, r3, n2, i3) {
-          var o3, s3, u3 = 8 * i3 - n2 - 1, a3 = (1 << u3) - 1, h3 = a3 >> 1, c3 = -7, f3 = r3 ? i3 - 1 : 0, l3 = r3 ? -1 : 1, d3 = t4[e4 + f3];
-          for (f3 += l3, o3 = d3 & (1 << -c3) - 1, d3 >>= -c3, c3 += u3; c3 > 0; o3 = 256 * o3 + t4[e4 + f3], f3 += l3, c3 -= 8)
-            ;
-          for (s3 = o3 & (1 << -c3) - 1, o3 >>= -c3, c3 += n2; c3 > 0; s3 = 256 * s3 + t4[e4 + f3], f3 += l3, c3 -= 8)
-            ;
-          if (o3 === 0)
-            o3 = 1 - h3;
-          else {
-            if (o3 === a3)
-              return s3 ? NaN : 1 / 0 * (d3 ? -1 : 1);
-            s3 += Math.pow(2, n2), o3 -= h3;
-          }
-          return (d3 ? -1 : 1) * s3 * Math.pow(2, o3 - n2);
-        }, e3.write = function(t4, e4, r3, n2, i3, o3) {
-          var s3, u3, a3, h3 = 8 * o3 - i3 - 1, c3 = (1 << h3) - 1, f3 = c3 >> 1, l3 = i3 === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0, d3 = n2 ? 0 : o3 - 1, p3 = n2 ? 1 : -1, m3 = e4 < 0 || e4 === 0 && 1 / e4 < 0 ? 1 : 0;
-          for (e4 = Math.abs(e4), isNaN(e4) || e4 === 1 / 0 ? (u3 = isNaN(e4) ? 1 : 0, s3 = c3) : (s3 = Math.floor(Math.log(e4) / Math.LN2), e4 * (a3 = Math.pow(2, -s3)) < 1 && (s3--, a3 *= 2), (e4 += s3 + f3 >= 1 ? l3 / a3 : l3 * Math.pow(2, 1 - f3)) * a3 >= 2 && (s3++, a3 /= 2), s3 + f3 >= c3 ? (u3 = 0, s3 = c3) : s3 + f3 >= 1 ? (u3 = (e4 * a3 - 1) * Math.pow(2, i3), s3 += f3) : (u3 = e4 * Math.pow(2, f3 - 1) * Math.pow(2, i3), s3 = 0)); i3 >= 8; t4[r3 + d3] = 255 & u3, d3 += p3, u3 /= 256, i3 -= 8)
-            ;
-          for (s3 = s3 << i3 | u3, h3 += i3; h3 > 0; t4[r3 + d3] = 255 & s3, d3 += p3, s3 /= 256, h3 -= 8)
-            ;
-          t4[r3 + d3 - p3] |= 128 * m3;
-        };
-      }, function(t3, e3) {
-        var r3 = {}.toString;
-        t3.exports = Array.isArray || function(t4) {
-          return r3.call(t4) == "[object Array]";
-        };
-      }, function(t3, e3) {
-        (function(e4) {
-          t3.exports = e4;
-        }).call(this, {});
-      }, function(t3, e3, r3) {
-        "use strict";
-        (function(t4) {
-          function r4() {
-            return (t4 == null ? void 0 : t4.crypto) || (t4 == null ? void 0 : t4.msCrypto) || {};
-          }
-          function n2() {
-            const t5 = r4();
-            return t5.subtle || t5.webkitSubtle;
-          }
-          Object.defineProperty(e3, "__esModule", { value: true }), e3.isBrowserCryptoAvailable = e3.getSubtleCrypto = e3.getBrowerCrypto = void 0, e3.getBrowerCrypto = r4, e3.getSubtleCrypto = n2, e3.isBrowserCryptoAvailable = function() {
-            return !!r4() && !!n2();
-          };
-        }).call(this, r3(12));
-      }, function(t3, e3, r3) {
-        "use strict";
-        (function(t4) {
-          function r4() {
-            return typeof document == "undefined" && typeof navigator != "undefined" && navigator.product === "ReactNative";
-          }
-          function n2() {
-            return t4 !== void 0 && t4.versions !== void 0 && t4.versions.node !== void 0;
-          }
-          Object.defineProperty(e3, "__esModule", { value: true }), e3.isBrowser = e3.isNode = e3.isReactNative = void 0, e3.isReactNative = r4, e3.isNode = n2, e3.isBrowser = function() {
-            return !r4() && !n2();
-          };
-        }).call(this, r3(13));
-      }, function(t3, e3, r3) {
-        "use strict";
-        t3.exports = (t4) => encodeURIComponent(t4).replace(/[!'()*]/g, (t5) => "%" + t5.charCodeAt(0).toString(16).toUpperCase());
-      }, function(t3, e3, r3) {
-        "use strict";
-        var n2 = new RegExp("%[a-f0-9]{2}", "gi"), i3 = new RegExp("(%[a-f0-9]{2})+", "gi");
-        function o3(t4, e4) {
-          try {
-            return decodeURIComponent(t4.join(""));
-          } catch (t5) {
-          }
-          if (t4.length === 1)
-            return t4;
-          e4 = e4 || 1;
-          var r4 = t4.slice(0, e4), n3 = t4.slice(e4);
-          return Array.prototype.concat.call([], o3(r4), o3(n3));
-        }
-        function s3(t4) {
-          try {
-            return decodeURIComponent(t4);
-          } catch (i4) {
-            for (var e4 = t4.match(n2), r4 = 1; r4 < e4.length; r4++)
-              e4 = (t4 = o3(e4, r4).join("")).match(n2);
-            return t4;
-          }
-        }
-        t3.exports = function(t4) {
-          if (typeof t4 != "string")
-            throw new TypeError("Expected `encodedURI` to be of type `string`, got `" + typeof t4 + "`");
-          try {
-            return t4 = t4.replace(/\+/g, " "), decodeURIComponent(t4);
-          } catch (e4) {
-            return function(t5) {
-              for (var e5 = { "%FE%FF": "\uFFFD\uFFFD", "%FF%FE": "\uFFFD\uFFFD" }, r4 = i3.exec(t5); r4; ) {
-                try {
-                  e5[r4[0]] = decodeURIComponent(r4[0]);
-                } catch (t6) {
-                  var n3 = s3(r4[0]);
-                  n3 !== r4[0] && (e5[r4[0]] = n3);
-                }
-                r4 = i3.exec(t5);
-              }
-              e5["%C2"] = "\uFFFD";
-              for (var o4 = Object.keys(e5), u3 = 0; u3 < o4.length; u3++) {
-                var a3 = o4[u3];
-                t5 = t5.replace(new RegExp(a3, "g"), e5[a3]);
-              }
-              return t5;
-            }(t4);
-          }
-        };
-      }, function(t3, e3, r3) {
-        "use strict";
-        t3.exports = (t4, e4) => {
-          if (typeof t4 != "string" || typeof e4 != "string")
-            throw new TypeError("Expected the arguments to be of type `string`");
-          if (e4 === "")
-            return [t4];
-          const r4 = t4.indexOf(e4);
-          return r4 === -1 ? [t4] : [t4.slice(0, r4), t4.slice(r4 + e4.length)];
-        };
-      }, function(t3, e3, r3) {
-        "use strict";
-        t3.exports = function() {
-          throw new Error("ws does not work in the browser. Browser clients must use the native WebSocket object");
-        };
-      }, function(t3, e3, r3) {
-        "use strict";
-        r3.r(e3), r3.d(e3, "generateKey", function() {
-          return s3;
-        }), r3.d(e3, "verifyHmac", function() {
-          return u3;
-        }), r3.d(e3, "encrypt", function() {
-          return a3;
-        }), r3.d(e3, "decrypt", function() {
-          return h3;
-        });
-        var n2 = r3(8), i3 = r3(0), o3 = r3(1);
-        async function s3(t4) {
-          const e4 = (t4 || 256) / 8, r4 = n2.randomBytes(e4);
-          return Object(o3.d)(i3.b(r4));
-        }
-        async function u3(t4, e4) {
-          const r4 = i3.n(t4.data), o4 = i3.n(t4.iv), s4 = i3.n(t4.hmac), u4 = i3.c(s4, false), a4 = i3.j(r4, o4), h4 = await n2.hmacSha256Sign(e4, a4), c3 = i3.c(h4, false);
-          return i3.x(u4) === i3.x(c3);
-        }
-        async function a3(t4, e4, r4) {
-          const u4 = i3.f(Object(o3.b)(e4)), a4 = r4 || await s3(128), h4 = i3.f(Object(o3.b)(a4)), c3 = i3.c(h4, false), f3 = JSON.stringify(t4), l3 = i3.z(f3), d3 = await n2.aesCbcEncrypt(h4, u4, l3), p3 = i3.c(d3, false), m3 = i3.j(d3, h4), g3 = await n2.hmacSha256Sign(u4, m3);
-          return { data: p3, hmac: i3.c(g3, false), iv: c3 };
-        }
-        async function h3(t4, e4) {
-          const r4 = i3.f(Object(o3.b)(e4));
-          if (!r4)
-            throw new Error("Missing key: required for decryption");
-          if (!await u3(t4, r4))
-            return null;
-          const s4 = i3.n(t4.data), a4 = i3.n(t4.iv), h4 = await n2.aesCbcDecrypt(a4, r4, s4), c3 = i3.e(h4);
-          let f3;
-          try {
-            f3 = JSON.parse(c3);
-          } catch (t5) {
-            return null;
-          }
-          return f3;
-        }
-      }, function(t3, e3, r3) {
-        "use strict";
-        r3.r(e3);
-        var n2 = r3(1), i3 = r3(40);
-        var o3 = class {
-          constructor() {
-            this._eventEmitters = [];
-          }
-          subscribe(t4) {
-            this._eventEmitters.push(t4);
-          }
-          unsubscribe(t4) {
-            this._eventEmitters = this._eventEmitters.filter((e4) => e4.event !== t4);
-          }
-          trigger(t4) {
-            let e4, r4 = [];
-            e4 = Object(n2.o)(t4) ? t4.method : Object(n2.q)(t4) || Object(n2.p)(t4) ? "response:" + t4.id : Object(n2.n)(t4) ? t4.event : "", e4 && (r4 = this._eventEmitters.filter((t5) => t5.event === e4)), r4 && r4.length || Object(n2.s)(e4) || Object(n2.n)(e4) || (r4 = this._eventEmitters.filter((t5) => t5.event === "call_request")), r4.forEach((e5) => {
-              if (Object(n2.p)(t4)) {
-                const r5 = new Error(t4.error.message);
-                e5.callback(r5, null);
-              } else
-                e5.callback(null, t4);
-            });
-          }
-        };
-        var s3 = class {
-          constructor(t4 = "walletconnect") {
-            this.storageId = t4;
-          }
-          getSession() {
-            let t4 = null;
-            const e4 = Object(n2.j)(this.storageId);
-            return e4 && Object(n2.u)(e4) && (t4 = e4), t4;
-          }
-          setSession(t4) {
-            return Object(n2.B)(this.storageId, t4), t4;
-          }
-          removeSession() {
-            Object(n2.A)(this.storageId);
-          }
-        };
-        const u3 = "abcdefghijklmnopqrstuvwxyz0123456789".split("").map((t4) => `https://${t4}.bridge.walletconnect.org`);
-        function a3() {
-          return u3[Math.floor(Math.random() * u3.length)];
-        }
-        e3.default = class {
-          constructor(t4) {
-            if (this.protocol = "wc", this.version = 1, this._bridge = "", this._key = null, this._clientId = "", this._clientMeta = null, this._peerId = "", this._peerMeta = null, this._handshakeId = 0, this._handshakeTopic = "", this._connected = false, this._accounts = [], this._chainId = 0, this._networkId = 0, this._rpcUrl = "", this._eventManager = new o3(), this._clientMeta = Object(n2.i)() || t4.connectorOpts.clientMeta || null, this._cryptoLib = t4.cryptoLib, this._sessionStorage = t4.sessionStorage || new s3(t4.connectorOpts.storageId), this._qrcodeModal = t4.connectorOpts.qrcodeModal, this._qrcodeModalOptions = t4.connectorOpts.qrcodeModalOptions, this._signingMethods = [...n2.C, ...t4.connectorOpts.signingMethods || []], !t4.connectorOpts.bridge && !t4.connectorOpts.uri && !t4.connectorOpts.session)
-              throw new Error("Missing one of the required parameters: bridge / uri / session");
-            var e4;
-            t4.connectorOpts.bridge && (this.bridge = function(t5) {
-              return function(t6) {
-                return function(t7) {
-                  let e5 = t7.indexOf("//") > -1 ? t7.split("/")[2] : t7.split("/")[0];
-                  return e5 = e5.split(":")[0], e5 = e5.split("?")[0], e5;
-                }(t6).split(".").slice(-2).join(".");
-              }(t5) === "walletconnect.org";
-            }(e4 = t4.connectorOpts.bridge) ? a3() : e4), t4.connectorOpts.uri && (this.uri = t4.connectorOpts.uri);
-            const r4 = t4.connectorOpts.session || this._getStorageSession();
-            r4 && (this.session = r4), this.handshakeId && this._subscribeToSessionResponse(this.handshakeId, "Session request rejected"), this._transport = t4.transport || new i3.a({ protocol: this.protocol, version: this.version, url: this.bridge, subscriptions: [this.clientId] }), this._subscribeToInternalEvents(), this._initTransport(), t4.connectorOpts.uri && this._subscribeToSessionRequest(), t4.pushServerOpts && this._registerPushServer(t4.pushServerOpts);
-          }
-          set bridge(t4) {
-            t4 && (this._bridge = t4);
-          }
-          get bridge() {
-            return this._bridge;
-          }
-          set key(t4) {
-            if (!t4)
-              return;
-            const e4 = Object(n2.e)(t4);
-            this._key = e4;
-          }
-          get key() {
-            if (this._key) {
-              return Object(n2.c)(this._key, true);
-            }
-            return "";
-          }
-          set clientId(t4) {
-            t4 && (this._clientId = t4);
-          }
-          get clientId() {
-            let t4 = this._clientId;
-            return t4 || (t4 = this._clientId = Object(n2.D)()), this._clientId;
-          }
-          set peerId(t4) {
-            t4 && (this._peerId = t4);
-          }
-          get peerId() {
-            return this._peerId;
-          }
-          set clientMeta(t4) {
-          }
-          get clientMeta() {
-            let t4 = this._clientMeta;
-            return t4 || (t4 = this._clientMeta = Object(n2.i)()), t4;
-          }
-          set peerMeta(t4) {
-            this._peerMeta = t4;
-          }
-          get peerMeta() {
-            return this._peerMeta;
-          }
-          set handshakeTopic(t4) {
-            t4 && (this._handshakeTopic = t4);
-          }
-          get handshakeTopic() {
-            return this._handshakeTopic;
-          }
-          set handshakeId(t4) {
-            t4 && (this._handshakeId = t4);
-          }
-          get handshakeId() {
-            return this._handshakeId;
-          }
-          get uri() {
-            return this._formatUri();
-          }
-          set uri(t4) {
-            if (!t4)
-              return;
-            const { handshakeTopic: e4, bridge: r4, key: n3 } = this._parseUri(t4);
-            this.handshakeTopic = e4, this.bridge = r4, this.key = n3;
-          }
-          set chainId(t4) {
-            this._chainId = t4;
-          }
-          get chainId() {
-            return this._chainId;
-          }
-          set networkId(t4) {
-            this._networkId = t4;
-          }
-          get networkId() {
-            return this._networkId;
-          }
-          set accounts(t4) {
-            this._accounts = t4;
-          }
-          get accounts() {
-            return this._accounts;
-          }
-          set rpcUrl(t4) {
-            this._rpcUrl = t4;
-          }
-          get rpcUrl() {
-            return this._rpcUrl;
-          }
-          set connected(t4) {
-          }
-          get connected() {
-            return this._connected;
-          }
-          set pending(t4) {
-          }
-          get pending() {
-            return !!this._handshakeTopic;
-          }
-          get session() {
-            return { connected: this.connected, accounts: this.accounts, chainId: this.chainId, bridge: this.bridge, key: this.key, clientId: this.clientId, clientMeta: this.clientMeta, peerId: this.peerId, peerMeta: this.peerMeta, handshakeId: this.handshakeId, handshakeTopic: this.handshakeTopic };
-          }
-          set session(t4) {
-            t4 && (this._connected = t4.connected, this.accounts = t4.accounts, this.chainId = t4.chainId, this.bridge = t4.bridge, this.key = t4.key, this.clientId = t4.clientId, this.clientMeta = t4.clientMeta, this.peerId = t4.peerId, this.peerMeta = t4.peerMeta, this.handshakeId = t4.handshakeId, this.handshakeTopic = t4.handshakeTopic);
-          }
-          on(t4, e4) {
-            const r4 = { event: t4, callback: e4 };
-            this._eventManager.subscribe(r4);
-          }
-          off(t4) {
-            this._eventManager.unsubscribe(t4);
-          }
-          async createInstantRequest(t4) {
-            this._key = await this._generateKey();
-            const e4 = this._formatRequest({ method: "wc_instantRequest", params: [{ peerId: this.clientId, peerMeta: this.clientMeta, request: this._formatRequest(t4) }] });
-            this.handshakeId = e4.id, this.handshakeTopic = Object(n2.D)(), this._eventManager.trigger({ event: "display_uri", params: [this.uri] }), this.on("modal_closed", () => {
-              throw new Error("User close QRCode Modal");
-            });
-            const r4 = () => {
-              this.killSession();
-            };
-            try {
-              const t5 = await this._sendCallRequest(e4);
-              return t5 && r4(), t5;
-            } catch (t5) {
-              throw r4(), t5;
-            }
-          }
-          async connect(t4) {
-            if (!this._qrcodeModal)
-              throw new Error("QRCode Modal not provided");
-            return this.connected ? { chainId: this.chainId, accounts: this.accounts } : (await this.createSession(t4), new Promise(async (t5, e4) => {
-              this.on("modal_closed", () => e4(new Error("User close QRCode Modal"))), this.on("connect", (r4, n3) => {
-                if (r4)
-                  return e4(r4);
-                t5(n3.params[0]);
-              });
-            }));
-          }
-          async createSession(t4) {
-            if (this._connected)
-              throw new Error("Session currently connected");
-            if (this.pending)
-              return;
-            this._key = await this._generateKey();
-            const e4 = this._formatRequest({ method: "wc_sessionRequest", params: [{ peerId: this.clientId, peerMeta: this.clientMeta, chainId: t4 && t4.chainId ? t4.chainId : null }] });
-            this.handshakeId = e4.id, this.handshakeTopic = Object(n2.D)(), this._sendSessionRequest(e4, "Session update rejected", { topic: this.handshakeTopic }), this._eventManager.trigger({ event: "display_uri", params: [this.uri] });
-          }
-          approveSession(t4) {
-            if (this._connected)
-              throw new Error("Session currently connected");
-            this.chainId = t4.chainId, this.accounts = t4.accounts, this.networkId = t4.networkId || 0, this.rpcUrl = t4.rpcUrl || "";
-            const e4 = { approved: true, chainId: this.chainId, networkId: this.networkId, accounts: this.accounts, rpcUrl: this.rpcUrl, peerId: this.clientId, peerMeta: this.clientMeta }, r4 = { id: this.handshakeId, jsonrpc: "2.0", result: e4 };
-            this._sendResponse(r4), this._connected = true, this._setStorageSession(), this._eventManager.trigger({ event: "connect", params: [{ peerId: this.peerId, peerMeta: this.peerMeta, chainId: this.chainId, accounts: this.accounts }] });
-          }
-          rejectSession(t4) {
-            if (this._connected)
-              throw new Error("Session currently connected");
-            const e4 = t4 && t4.message ? t4.message : "Session Rejected", r4 = this._formatResponse({ id: this.handshakeId, error: { message: e4 } });
-            this._sendResponse(r4), this._connected = false, this._eventManager.trigger({ event: "disconnect", params: [{ message: e4 }] }), this._removeStorageSession();
-          }
-          updateSession(t4) {
-            if (!this._connected)
-              throw new Error("Session currently disconnected");
-            this.chainId = t4.chainId, this.accounts = t4.accounts, this.networkId = t4.networkId || 0, this.rpcUrl = t4.rpcUrl || "";
-            const e4 = { approved: true, chainId: this.chainId, networkId: this.networkId, accounts: this.accounts, rpcUrl: this.rpcUrl }, r4 = this._formatRequest({ method: "wc_sessionUpdate", params: [e4] });
-            this._sendSessionRequest(r4, "Session update rejected"), this._eventManager.trigger({ event: "session_update", params: [{ chainId: this.chainId, accounts: this.accounts }] }), this._manageStorageSession();
-          }
-          async killSession(t4) {
-            const e4 = t4 ? t4.message : "Session Disconnected", r4 = this._formatRequest({ method: "wc_sessionUpdate", params: [{ approved: false, chainId: null, networkId: null, accounts: null }] });
-            await this._sendRequest(r4), this._handleSessionDisconnect(e4);
-          }
-          async sendTransaction(t4) {
-            if (!this._connected)
-              throw new Error("Session currently disconnected");
-            const e4 = Object(n2.x)(t4), r4 = this._formatRequest({ method: "eth_sendTransaction", params: [e4] });
-            return await this._sendCallRequest(r4);
-          }
-          async signTransaction(t4) {
-            if (!this._connected)
-              throw new Error("Session currently disconnected");
-            const e4 = Object(n2.x)(t4), r4 = this._formatRequest({ method: "eth_signTransaction", params: [e4] });
-            return await this._sendCallRequest(r4);
-          }
-          async signMessage(t4) {
-            if (!this._connected)
-              throw new Error("Session currently disconnected");
-            const e4 = this._formatRequest({ method: "eth_sign", params: t4 });
-            return await this._sendCallRequest(e4);
-          }
-          async signPersonalMessage(t4) {
-            if (!this._connected)
-              throw new Error("Session currently disconnected");
-            t4 = Object(n2.w)(t4);
-            const e4 = this._formatRequest({ method: "personal_sign", params: t4 });
-            return await this._sendCallRequest(e4);
-          }
-          async signTypedData(t4) {
-            if (!this._connected)
-              throw new Error("Session currently disconnected");
-            const e4 = this._formatRequest({ method: "eth_signTypedData", params: t4 });
-            return await this._sendCallRequest(e4);
-          }
-          async updateChain(t4) {
-            if (!this._connected)
-              throw new Error("Session currently disconnected");
-            const e4 = this._formatRequest({ method: "wallet_updateChain", params: [t4] });
-            return await this._sendCallRequest(e4);
-          }
-          unsafeSend(t4, e4) {
-            return this._sendRequest(t4, e4), this._eventManager.trigger({ event: "call_request_sent", params: [{ request: t4, options: e4 }] }), new Promise((e5, r4) => {
-              this._subscribeToResponse(t4.id, (t5, n3) => {
-                if (t5)
-                  r4(t5);
-                else {
-                  if (!n3)
-                    throw new Error("Missing JSON RPC response");
-                  e5(n3);
-                }
-              });
-            });
-          }
-          async sendCustomRequest(t4, e4) {
-            if (!this._connected)
-              throw new Error("Session currently disconnected");
-            switch (t4.method) {
-              case "eth_accounts":
-                return this.accounts;
-              case "eth_chainId":
-                return Object(n2.f)(this.chainId);
-              case "eth_sendTransaction":
-              case "eth_signTransaction":
-                t4.params && (t4.params[0] = Object(n2.x)(t4.params[0]));
-                break;
-              case "personal_sign":
-                t4.params && (t4.params = Object(n2.w)(t4.params));
-            }
-            const r4 = this._formatRequest(t4);
-            return await this._sendCallRequest(r4, e4);
-          }
-          approveRequest(t4) {
-            if (!Object(n2.q)(t4))
-              throw new Error('JSON-RPC success response must include "result" field');
-            {
-              const e4 = this._formatResponse(t4);
-              this._sendResponse(e4);
-            }
-          }
-          rejectRequest(t4) {
-            if (!Object(n2.p)(t4))
-              throw new Error('JSON-RPC error response must include "error" field');
-            {
-              const e4 = this._formatResponse(t4);
-              this._sendResponse(e4);
-            }
-          }
-          transportClose() {
-            this._transport.close();
-          }
-          async _sendRequest(t4, e4) {
-            const r4 = this._formatRequest(t4), i4 = await this._encrypt(r4), o4 = (e4 == null ? void 0 : e4.topic) !== void 0 ? e4.topic : this.peerId, s4 = JSON.stringify(i4), u4 = (e4 == null ? void 0 : e4.forcePushNotification) !== void 0 ? !e4.forcePushNotification : Object(n2.t)(r4);
-            this._transport.send(s4, o4, u4);
-          }
-          async _sendResponse(t4) {
-            const e4 = await this._encrypt(t4), r4 = this.peerId, n3 = JSON.stringify(e4);
-            this._transport.send(n3, r4, true);
-          }
-          async _sendSessionRequest(t4, e4, r4) {
-            this._sendRequest(t4, r4), this._subscribeToSessionResponse(t4.id, e4);
-          }
-          _sendCallRequest(t4, e4) {
-            return this._sendRequest(t4, e4), this._eventManager.trigger({ event: "call_request_sent", params: [{ request: t4, options: e4 }] }), this._subscribeToCallResponse(t4.id);
-          }
-          _formatRequest(t4) {
-            if (t4.method === void 0)
-              throw new Error('JSON RPC request must have valid "method" value');
-            return { id: t4.id === void 0 ? Object(n2.z)() : t4.id, jsonrpc: "2.0", method: t4.method, params: t4.params === void 0 ? [] : t4.params };
-          }
-          _formatResponse(t4) {
-            if (t4.id === void 0)
-              throw new Error('JSON RPC request must have valid "id" value');
-            const e4 = { id: t4.id, jsonrpc: "2.0" };
-            if (Object(n2.p)(t4)) {
-              const r4 = Object(n2.h)(t4.error);
-              return Object.assign(Object.assign(Object.assign({}, e4), t4), { error: r4 });
-            }
-            if (Object(n2.q)(t4)) {
-              return Object.assign(Object.assign({}, e4), t4);
-            }
-            throw new Error("JSON RPC response format is invalid");
-          }
-          _handleSessionDisconnect(t4) {
-            const e4 = t4 || "Session Disconnected";
-            this._connected || (this._qrcodeModal && this._qrcodeModal.close(), Object(n2.A)(n2.v)), this._connected && (this._connected = false), this._handshakeId && (this._handshakeId = 0), this._handshakeTopic && (this._handshakeTopic = ""), this._peerId && (this._peerId = ""), this._eventManager.trigger({ event: "disconnect", params: [{ message: e4 }] }), this._removeStorageSession(), this.transportClose();
-          }
-          _handleSessionResponse(t4, e4) {
-            e4 && e4.approved ? (this._connected ? (e4.chainId && (this.chainId = e4.chainId), e4.accounts && (this.accounts = e4.accounts), this._eventManager.trigger({ event: "session_update", params: [{ chainId: this.chainId, accounts: this.accounts }] })) : (this._connected = true, e4.chainId && (this.chainId = e4.chainId), e4.accounts && (this.accounts = e4.accounts), e4.peerId && !this.peerId && (this.peerId = e4.peerId), e4.peerMeta && !this.peerMeta && (this.peerMeta = e4.peerMeta), this._eventManager.trigger({ event: "connect", params: [{ peerId: this.peerId, peerMeta: this.peerMeta, chainId: this.chainId, accounts: this.accounts }] })), this._manageStorageSession()) : this._handleSessionDisconnect(t4);
-          }
-          async _handleIncomingMessages(t4) {
-            if (![this.clientId, this.handshakeTopic].includes(t4.topic))
-              return;
-            let e4;
-            try {
-              e4 = JSON.parse(t4.payload);
-            } catch (t5) {
-              return;
-            }
-            const r4 = await this._decrypt(e4);
-            r4 && this._eventManager.trigger(r4);
-          }
-          _subscribeToSessionRequest() {
-            this._transport.subscribe(this.handshakeTopic);
-          }
-          _subscribeToResponse(t4, e4) {
-            this.on("response:" + t4, e4);
-          }
-          _subscribeToSessionResponse(t4, e4) {
-            this._subscribeToResponse(t4, (t5, r4) => {
-              t5 ? this._handleSessionResponse(t5.message) : r4.result ? this._handleSessionResponse(e4, r4.result) : r4.error && r4.error.message ? this._handleSessionResponse(r4.error.message) : this._handleSessionResponse(e4);
-            });
-          }
-          _subscribeToCallResponse(t4) {
-            return new Promise((e4, r4) => {
-              this._subscribeToResponse(t4, (t5, n3) => {
-                t5 ? r4(t5) : n3.result ? e4(n3.result) : n3.error && n3.error.message ? r4(new Error(n3.error.message)) : r4(new Error("JSON RPC response format is invalid"));
-              });
-            });
-          }
-          _subscribeToInternalEvents() {
-            this.on("display_uri", () => {
-              this._qrcodeModal && this._qrcodeModal.open(this.uri, () => {
-                this._eventManager.trigger({ event: "modal_closed", params: [] });
-              }, this._qrcodeModalOptions);
-            }), this.on("connect", () => {
-              this._qrcodeModal && this._qrcodeModal.close();
-            }), this.on("call_request_sent", (t4, e4) => {
-              const { request: r4 } = e4.params[0];
-              if (Object(n2.r)() && this._signingMethods.includes(r4.method)) {
-                const t5 = Object(n2.j)(n2.v);
-                t5 && (window.location.href = t5.href);
-              }
-            }), this.on("wc_sessionRequest", (t4, e4) => {
-              t4 && this._eventManager.trigger({ event: "error", params: [{ code: "SESSION_REQUEST_ERROR", message: t4.toString() }] }), this.handshakeId = e4.id, this.peerId = e4.params[0].peerId, this.peerMeta = e4.params[0].peerMeta;
-              const r4 = Object.assign(Object.assign({}, e4), { method: "session_request" });
-              this._eventManager.trigger(r4);
-            }), this.on("wc_sessionUpdate", (t4, e4) => {
-              t4 && this._handleSessionResponse(t4.message), this._handleSessionResponse("Session disconnected", e4.params[0]);
-            });
-          }
-          _initTransport() {
-            this._transport.on("message", (t4) => this._handleIncomingMessages(t4)), this._transport.on("open", () => this._eventManager.trigger({ event: "transport_open", params: [] })), this._transport.on("close", () => this._eventManager.trigger({ event: "transport_close", params: [] })), this._transport.on("error", () => this._eventManager.trigger({ event: "transport_error", params: ["Websocket connection failed"] })), this._transport.open();
-          }
-          _formatUri() {
-            return `${this.protocol}:${this.handshakeTopic}@${this.version}?bridge=${encodeURIComponent(this.bridge)}&key=${this.key}`;
-          }
-          _parseUri(t4) {
-            const e4 = Object(n2.y)(t4);
-            if (e4.protocol === this.protocol) {
-              if (!e4.handshakeTopic)
-                throw Error("Invalid or missing handshakeTopic parameter value");
-              const t5 = e4.handshakeTopic;
-              if (!e4.bridge)
-                throw Error("Invalid or missing bridge url parameter value");
-              const r4 = decodeURIComponent(e4.bridge);
-              if (!e4.key)
-                throw Error("Invalid or missing key parameter value");
-              return { handshakeTopic: t5, bridge: r4, key: e4.key };
-            }
-            throw new Error("URI format is invalid");
-          }
-          async _generateKey() {
-            if (this._cryptoLib) {
-              return await this._cryptoLib.generateKey();
-            }
-            return null;
-          }
-          async _encrypt(t4) {
-            const e4 = this._key;
-            if (this._cryptoLib && e4) {
-              return await this._cryptoLib.encrypt(t4, e4);
-            }
-            return null;
-          }
-          async _decrypt(t4) {
-            const e4 = this._key;
-            if (this._cryptoLib && e4) {
-              return await this._cryptoLib.decrypt(t4, e4);
-            }
-            return null;
-          }
-          _getStorageSession() {
-            let t4 = null;
-            return this._sessionStorage && (t4 = this._sessionStorage.getSession()), t4;
-          }
-          _setStorageSession() {
-            this._sessionStorage && this._sessionStorage.setSession(this.session);
-          }
-          _removeStorageSession() {
-            this._sessionStorage && this._sessionStorage.removeSession();
-          }
-          _manageStorageSession() {
-            this._connected ? this._setStorageSession() : this._removeStorageSession();
-          }
-          _registerPushServer(t4) {
-            if (!t4.url || typeof t4.url != "string")
-              throw Error("Invalid or missing pushServerOpts.url parameter value");
-            if (!t4.type || typeof t4.type != "string")
-              throw Error("Invalid or missing pushServerOpts.type parameter value");
-            if (!t4.token || typeof t4.token != "string")
-              throw Error("Invalid or missing pushServerOpts.token parameter value");
-            const e4 = { bridge: this.bridge, topic: this.clientId, type: t4.type, token: t4.token, peerName: "", language: t4.language || "" };
-            this.on("connect", async (r4, n3) => {
-              if (r4)
-                throw r4;
-              if (t4.peerMeta) {
-                const t5 = n3.params[0].peerMeta.name;
-                e4.peerName = t5;
-              }
-              try {
-                const r5 = await fetch(t4.url + "/new", { method: "POST", headers: { Accept: "application/json", "Content-Type": "application/json" }, body: JSON.stringify(e4) });
-                if (!(await r5.json()).success)
-                  throw Error("Failed to register in Push Server");
-              } catch (r5) {
-                throw Error("Failed to register in Push Server");
-              }
-            });
-          }
-        };
-      }]);
-    });
-  }
-});
-
 // node_modules/@walletconnect/window-getters/dist/cjs/index.js
 var require_cjs = __commonJS({
   "node_modules/@walletconnect/window-getters/dist/cjs/index.js"(exports2) {
@@ -19982,419 +15811,3979 @@ var require_cjs2 = __commonJS({
   }
 });
 
-// node_modules/detect-browser/es/index.js
-function detect(userAgent) {
-  if (!!userAgent) {
-    return parseUserAgent(userAgent);
+// (disabled):node_modules/buffer/index.js
+var require_buffer2 = __commonJS({
+  "(disabled):node_modules/buffer/index.js"() {
   }
-  if (typeof document === "undefined" && typeof navigator !== "undefined" && navigator.product === "ReactNative") {
-    return new ReactNativeInfo();
+});
+
+// node_modules/bn.js/lib/bn.js
+var require_bn = __commonJS({
+  "node_modules/bn.js/lib/bn.js"(exports2, module2) {
+    (function(module3, exports3) {
+      "use strict";
+      function assert3(val, msg) {
+        if (!val)
+          throw new Error(msg || "Assertion failed");
+      }
+      function inherits(ctor, superCtor) {
+        ctor.super_ = superCtor;
+        var TempCtor = function() {
+        };
+        TempCtor.prototype = superCtor.prototype;
+        ctor.prototype = new TempCtor();
+        ctor.prototype.constructor = ctor;
+      }
+      function BN2(number, base, endian) {
+        if (BN2.isBN(number)) {
+          return number;
+        }
+        this.negative = 0;
+        this.words = null;
+        this.length = 0;
+        this.red = null;
+        if (number !== null) {
+          if (base === "le" || base === "be") {
+            endian = base;
+            base = 10;
+          }
+          this._init(number || 0, base || 10, endian || "be");
+        }
+      }
+      if (typeof module3 === "object") {
+        module3.exports = BN2;
+      } else {
+        exports3.BN = BN2;
+      }
+      BN2.BN = BN2;
+      BN2.wordSize = 26;
+      var Buffer3;
+      try {
+        Buffer3 = require_buffer2().Buffer;
+      } catch (e3) {
+      }
+      BN2.isBN = function isBN(num) {
+        if (num instanceof BN2) {
+          return true;
+        }
+        return num !== null && typeof num === "object" && num.constructor.wordSize === BN2.wordSize && Array.isArray(num.words);
+      };
+      BN2.max = function max(left, right) {
+        if (left.cmp(right) > 0)
+          return left;
+        return right;
+      };
+      BN2.min = function min(left, right) {
+        if (left.cmp(right) < 0)
+          return left;
+        return right;
+      };
+      BN2.prototype._init = function init(number, base, endian) {
+        if (typeof number === "number") {
+          return this._initNumber(number, base, endian);
+        }
+        if (typeof number === "object") {
+          return this._initArray(number, base, endian);
+        }
+        if (base === "hex") {
+          base = 16;
+        }
+        assert3(base === (base | 0) && base >= 2 && base <= 36);
+        number = number.toString().replace(/\s+/g, "");
+        var start = 0;
+        if (number[0] === "-") {
+          start++;
+        }
+        if (base === 16) {
+          this._parseHex(number, start);
+        } else {
+          this._parseBase(number, base, start);
+        }
+        if (number[0] === "-") {
+          this.negative = 1;
+        }
+        this.strip();
+        if (endian !== "le")
+          return;
+        this._initArray(this.toArray(), base, endian);
+      };
+      BN2.prototype._initNumber = function _initNumber(number, base, endian) {
+        if (number < 0) {
+          this.negative = 1;
+          number = -number;
+        }
+        if (number < 67108864) {
+          this.words = [number & 67108863];
+          this.length = 1;
+        } else if (number < 4503599627370496) {
+          this.words = [
+            number & 67108863,
+            number / 67108864 & 67108863
+          ];
+          this.length = 2;
+        } else {
+          assert3(number < 9007199254740992);
+          this.words = [
+            number & 67108863,
+            number / 67108864 & 67108863,
+            1
+          ];
+          this.length = 3;
+        }
+        if (endian !== "le")
+          return;
+        this._initArray(this.toArray(), base, endian);
+      };
+      BN2.prototype._initArray = function _initArray(number, base, endian) {
+        assert3(typeof number.length === "number");
+        if (number.length <= 0) {
+          this.words = [0];
+          this.length = 1;
+          return this;
+        }
+        this.length = Math.ceil(number.length / 3);
+        this.words = new Array(this.length);
+        for (var i3 = 0; i3 < this.length; i3++) {
+          this.words[i3] = 0;
+        }
+        var j3, w4;
+        var off = 0;
+        if (endian === "be") {
+          for (i3 = number.length - 1, j3 = 0; i3 >= 0; i3 -= 3) {
+            w4 = number[i3] | number[i3 - 1] << 8 | number[i3 - 2] << 16;
+            this.words[j3] |= w4 << off & 67108863;
+            this.words[j3 + 1] = w4 >>> 26 - off & 67108863;
+            off += 24;
+            if (off >= 26) {
+              off -= 26;
+              j3++;
+            }
+          }
+        } else if (endian === "le") {
+          for (i3 = 0, j3 = 0; i3 < number.length; i3 += 3) {
+            w4 = number[i3] | number[i3 + 1] << 8 | number[i3 + 2] << 16;
+            this.words[j3] |= w4 << off & 67108863;
+            this.words[j3 + 1] = w4 >>> 26 - off & 67108863;
+            off += 24;
+            if (off >= 26) {
+              off -= 26;
+              j3++;
+            }
+          }
+        }
+        return this.strip();
+      };
+      function parseHex(str, start, end) {
+        var r3 = 0;
+        var len = Math.min(str.length, end);
+        for (var i3 = start; i3 < len; i3++) {
+          var c3 = str.charCodeAt(i3) - 48;
+          r3 <<= 4;
+          if (c3 >= 49 && c3 <= 54) {
+            r3 |= c3 - 49 + 10;
+          } else if (c3 >= 17 && c3 <= 22) {
+            r3 |= c3 - 17 + 10;
+          } else {
+            r3 |= c3 & 15;
+          }
+        }
+        return r3;
+      }
+      BN2.prototype._parseHex = function _parseHex(number, start) {
+        this.length = Math.ceil((number.length - start) / 6);
+        this.words = new Array(this.length);
+        for (var i3 = 0; i3 < this.length; i3++) {
+          this.words[i3] = 0;
+        }
+        var j3, w4;
+        var off = 0;
+        for (i3 = number.length - 6, j3 = 0; i3 >= start; i3 -= 6) {
+          w4 = parseHex(number, i3, i3 + 6);
+          this.words[j3] |= w4 << off & 67108863;
+          this.words[j3 + 1] |= w4 >>> 26 - off & 4194303;
+          off += 24;
+          if (off >= 26) {
+            off -= 26;
+            j3++;
+          }
+        }
+        if (i3 + 6 !== start) {
+          w4 = parseHex(number, start, i3 + 6);
+          this.words[j3] |= w4 << off & 67108863;
+          this.words[j3 + 1] |= w4 >>> 26 - off & 4194303;
+        }
+        this.strip();
+      };
+      function parseBase(str, start, end, mul) {
+        var r3 = 0;
+        var len = Math.min(str.length, end);
+        for (var i3 = start; i3 < len; i3++) {
+          var c3 = str.charCodeAt(i3) - 48;
+          r3 *= mul;
+          if (c3 >= 49) {
+            r3 += c3 - 49 + 10;
+          } else if (c3 >= 17) {
+            r3 += c3 - 17 + 10;
+          } else {
+            r3 += c3;
+          }
+        }
+        return r3;
+      }
+      BN2.prototype._parseBase = function _parseBase(number, base, start) {
+        this.words = [0];
+        this.length = 1;
+        for (var limbLen = 0, limbPow = 1; limbPow <= 67108863; limbPow *= base) {
+          limbLen++;
+        }
+        limbLen--;
+        limbPow = limbPow / base | 0;
+        var total = number.length - start;
+        var mod = total % limbLen;
+        var end = Math.min(total, total - mod) + start;
+        var word = 0;
+        for (var i3 = start; i3 < end; i3 += limbLen) {
+          word = parseBase(number, i3, i3 + limbLen, base);
+          this.imuln(limbPow);
+          if (this.words[0] + word < 67108864) {
+            this.words[0] += word;
+          } else {
+            this._iaddn(word);
+          }
+        }
+        if (mod !== 0) {
+          var pow = 1;
+          word = parseBase(number, i3, number.length, base);
+          for (i3 = 0; i3 < mod; i3++) {
+            pow *= base;
+          }
+          this.imuln(pow);
+          if (this.words[0] + word < 67108864) {
+            this.words[0] += word;
+          } else {
+            this._iaddn(word);
+          }
+        }
+      };
+      BN2.prototype.copy = function copy2(dest) {
+        dest.words = new Array(this.length);
+        for (var i3 = 0; i3 < this.length; i3++) {
+          dest.words[i3] = this.words[i3];
+        }
+        dest.length = this.length;
+        dest.negative = this.negative;
+        dest.red = this.red;
+      };
+      BN2.prototype.clone = function clone() {
+        var r3 = new BN2(null);
+        this.copy(r3);
+        return r3;
+      };
+      BN2.prototype._expand = function _expand(size) {
+        while (this.length < size) {
+          this.words[this.length++] = 0;
+        }
+        return this;
+      };
+      BN2.prototype.strip = function strip() {
+        while (this.length > 1 && this.words[this.length - 1] === 0) {
+          this.length--;
+        }
+        return this._normSign();
+      };
+      BN2.prototype._normSign = function _normSign() {
+        if (this.length === 1 && this.words[0] === 0) {
+          this.negative = 0;
+        }
+        return this;
+      };
+      BN2.prototype.inspect = function inspect() {
+        return (this.red ? "<BN-R: " : "<BN: ") + this.toString(16) + ">";
+      };
+      var zeros = [
+        "",
+        "0",
+        "00",
+        "000",
+        "0000",
+        "00000",
+        "000000",
+        "0000000",
+        "00000000",
+        "000000000",
+        "0000000000",
+        "00000000000",
+        "000000000000",
+        "0000000000000",
+        "00000000000000",
+        "000000000000000",
+        "0000000000000000",
+        "00000000000000000",
+        "000000000000000000",
+        "0000000000000000000",
+        "00000000000000000000",
+        "000000000000000000000",
+        "0000000000000000000000",
+        "00000000000000000000000",
+        "000000000000000000000000",
+        "0000000000000000000000000"
+      ];
+      var groupSizes = [
+        0,
+        0,
+        25,
+        16,
+        12,
+        11,
+        10,
+        9,
+        8,
+        8,
+        7,
+        7,
+        7,
+        7,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ];
+      var groupBases = [
+        0,
+        0,
+        33554432,
+        43046721,
+        16777216,
+        48828125,
+        60466176,
+        40353607,
+        16777216,
+        43046721,
+        1e7,
+        19487171,
+        35831808,
+        62748517,
+        7529536,
+        11390625,
+        16777216,
+        24137569,
+        34012224,
+        47045881,
+        64e6,
+        4084101,
+        5153632,
+        6436343,
+        7962624,
+        9765625,
+        11881376,
+        14348907,
+        17210368,
+        20511149,
+        243e5,
+        28629151,
+        33554432,
+        39135393,
+        45435424,
+        52521875,
+        60466176
+      ];
+      BN2.prototype.toString = function toString(base, padding) {
+        base = base || 10;
+        padding = padding | 0 || 1;
+        var out;
+        if (base === 16 || base === "hex") {
+          out = "";
+          var off = 0;
+          var carry = 0;
+          for (var i3 = 0; i3 < this.length; i3++) {
+            var w4 = this.words[i3];
+            var word = ((w4 << off | carry) & 16777215).toString(16);
+            carry = w4 >>> 24 - off & 16777215;
+            if (carry !== 0 || i3 !== this.length - 1) {
+              out = zeros[6 - word.length] + word + out;
+            } else {
+              out = word + out;
+            }
+            off += 2;
+            if (off >= 26) {
+              off -= 26;
+              i3--;
+            }
+          }
+          if (carry !== 0) {
+            out = carry.toString(16) + out;
+          }
+          while (out.length % padding !== 0) {
+            out = "0" + out;
+          }
+          if (this.negative !== 0) {
+            out = "-" + out;
+          }
+          return out;
+        }
+        if (base === (base | 0) && base >= 2 && base <= 36) {
+          var groupSize = groupSizes[base];
+          var groupBase = groupBases[base];
+          out = "";
+          var c3 = this.clone();
+          c3.negative = 0;
+          while (!c3.isZero()) {
+            var r3 = c3.modn(groupBase).toString(base);
+            c3 = c3.idivn(groupBase);
+            if (!c3.isZero()) {
+              out = zeros[groupSize - r3.length] + r3 + out;
+            } else {
+              out = r3 + out;
+            }
+          }
+          if (this.isZero()) {
+            out = "0" + out;
+          }
+          while (out.length % padding !== 0) {
+            out = "0" + out;
+          }
+          if (this.negative !== 0) {
+            out = "-" + out;
+          }
+          return out;
+        }
+        assert3(false, "Base should be between 2 and 36");
+      };
+      BN2.prototype.toNumber = function toNumber() {
+        var ret = this.words[0];
+        if (this.length === 2) {
+          ret += this.words[1] * 67108864;
+        } else if (this.length === 3 && this.words[2] === 1) {
+          ret += 4503599627370496 + this.words[1] * 67108864;
+        } else if (this.length > 2) {
+          assert3(false, "Number can only safely store up to 53 bits");
+        }
+        return this.negative !== 0 ? -ret : ret;
+      };
+      BN2.prototype.toJSON = function toJSON() {
+        return this.toString(16);
+      };
+      BN2.prototype.toBuffer = function toBuffer(endian, length) {
+        assert3(typeof Buffer3 !== "undefined");
+        return this.toArrayLike(Buffer3, endian, length);
+      };
+      BN2.prototype.toArray = function toArray(endian, length) {
+        return this.toArrayLike(Array, endian, length);
+      };
+      BN2.prototype.toArrayLike = function toArrayLike(ArrayType, endian, length) {
+        var byteLength = this.byteLength();
+        var reqLength = length || Math.max(1, byteLength);
+        assert3(byteLength <= reqLength, "byte array longer than desired length");
+        assert3(reqLength > 0, "Requested array length <= 0");
+        this.strip();
+        var littleEndian = endian === "le";
+        var res = new ArrayType(reqLength);
+        var b2, i3;
+        var q3 = this.clone();
+        if (!littleEndian) {
+          for (i3 = 0; i3 < reqLength - byteLength; i3++) {
+            res[i3] = 0;
+          }
+          for (i3 = 0; !q3.isZero(); i3++) {
+            b2 = q3.andln(255);
+            q3.iushrn(8);
+            res[reqLength - i3 - 1] = b2;
+          }
+        } else {
+          for (i3 = 0; !q3.isZero(); i3++) {
+            b2 = q3.andln(255);
+            q3.iushrn(8);
+            res[i3] = b2;
+          }
+          for (; i3 < reqLength; i3++) {
+            res[i3] = 0;
+          }
+        }
+        return res;
+      };
+      if (Math.clz32) {
+        BN2.prototype._countBits = function _countBits(w4) {
+          return 32 - Math.clz32(w4);
+        };
+      } else {
+        BN2.prototype._countBits = function _countBits(w4) {
+          var t3 = w4;
+          var r3 = 0;
+          if (t3 >= 4096) {
+            r3 += 13;
+            t3 >>>= 13;
+          }
+          if (t3 >= 64) {
+            r3 += 7;
+            t3 >>>= 7;
+          }
+          if (t3 >= 8) {
+            r3 += 4;
+            t3 >>>= 4;
+          }
+          if (t3 >= 2) {
+            r3 += 2;
+            t3 >>>= 2;
+          }
+          return r3 + t3;
+        };
+      }
+      BN2.prototype._zeroBits = function _zeroBits(w4) {
+        if (w4 === 0)
+          return 26;
+        var t3 = w4;
+        var r3 = 0;
+        if ((t3 & 8191) === 0) {
+          r3 += 13;
+          t3 >>>= 13;
+        }
+        if ((t3 & 127) === 0) {
+          r3 += 7;
+          t3 >>>= 7;
+        }
+        if ((t3 & 15) === 0) {
+          r3 += 4;
+          t3 >>>= 4;
+        }
+        if ((t3 & 3) === 0) {
+          r3 += 2;
+          t3 >>>= 2;
+        }
+        if ((t3 & 1) === 0) {
+          r3++;
+        }
+        return r3;
+      };
+      BN2.prototype.bitLength = function bitLength() {
+        var w4 = this.words[this.length - 1];
+        var hi = this._countBits(w4);
+        return (this.length - 1) * 26 + hi;
+      };
+      function toBitArray(num) {
+        var w4 = new Array(num.bitLength());
+        for (var bit = 0; bit < w4.length; bit++) {
+          var off = bit / 26 | 0;
+          var wbit = bit % 26;
+          w4[bit] = (num.words[off] & 1 << wbit) >>> wbit;
+        }
+        return w4;
+      }
+      BN2.prototype.zeroBits = function zeroBits() {
+        if (this.isZero())
+          return 0;
+        var r3 = 0;
+        for (var i3 = 0; i3 < this.length; i3++) {
+          var b2 = this._zeroBits(this.words[i3]);
+          r3 += b2;
+          if (b2 !== 26)
+            break;
+        }
+        return r3;
+      };
+      BN2.prototype.byteLength = function byteLength() {
+        return Math.ceil(this.bitLength() / 8);
+      };
+      BN2.prototype.toTwos = function toTwos(width) {
+        if (this.negative !== 0) {
+          return this.abs().inotn(width).iaddn(1);
+        }
+        return this.clone();
+      };
+      BN2.prototype.fromTwos = function fromTwos(width) {
+        if (this.testn(width - 1)) {
+          return this.notn(width).iaddn(1).ineg();
+        }
+        return this.clone();
+      };
+      BN2.prototype.isNeg = function isNeg() {
+        return this.negative !== 0;
+      };
+      BN2.prototype.neg = function neg() {
+        return this.clone().ineg();
+      };
+      BN2.prototype.ineg = function ineg() {
+        if (!this.isZero()) {
+          this.negative ^= 1;
+        }
+        return this;
+      };
+      BN2.prototype.iuor = function iuor(num) {
+        while (this.length < num.length) {
+          this.words[this.length++] = 0;
+        }
+        for (var i3 = 0; i3 < num.length; i3++) {
+          this.words[i3] = this.words[i3] | num.words[i3];
+        }
+        return this.strip();
+      };
+      BN2.prototype.ior = function ior(num) {
+        assert3((this.negative | num.negative) === 0);
+        return this.iuor(num);
+      };
+      BN2.prototype.or = function or(num) {
+        if (this.length > num.length)
+          return this.clone().ior(num);
+        return num.clone().ior(this);
+      };
+      BN2.prototype.uor = function uor(num) {
+        if (this.length > num.length)
+          return this.clone().iuor(num);
+        return num.clone().iuor(this);
+      };
+      BN2.prototype.iuand = function iuand(num) {
+        var b2;
+        if (this.length > num.length) {
+          b2 = num;
+        } else {
+          b2 = this;
+        }
+        for (var i3 = 0; i3 < b2.length; i3++) {
+          this.words[i3] = this.words[i3] & num.words[i3];
+        }
+        this.length = b2.length;
+        return this.strip();
+      };
+      BN2.prototype.iand = function iand(num) {
+        assert3((this.negative | num.negative) === 0);
+        return this.iuand(num);
+      };
+      BN2.prototype.and = function and(num) {
+        if (this.length > num.length)
+          return this.clone().iand(num);
+        return num.clone().iand(this);
+      };
+      BN2.prototype.uand = function uand(num) {
+        if (this.length > num.length)
+          return this.clone().iuand(num);
+        return num.clone().iuand(this);
+      };
+      BN2.prototype.iuxor = function iuxor(num) {
+        var a3;
+        var b2;
+        if (this.length > num.length) {
+          a3 = this;
+          b2 = num;
+        } else {
+          a3 = num;
+          b2 = this;
+        }
+        for (var i3 = 0; i3 < b2.length; i3++) {
+          this.words[i3] = a3.words[i3] ^ b2.words[i3];
+        }
+        if (this !== a3) {
+          for (; i3 < a3.length; i3++) {
+            this.words[i3] = a3.words[i3];
+          }
+        }
+        this.length = a3.length;
+        return this.strip();
+      };
+      BN2.prototype.ixor = function ixor(num) {
+        assert3((this.negative | num.negative) === 0);
+        return this.iuxor(num);
+      };
+      BN2.prototype.xor = function xor(num) {
+        if (this.length > num.length)
+          return this.clone().ixor(num);
+        return num.clone().ixor(this);
+      };
+      BN2.prototype.uxor = function uxor(num) {
+        if (this.length > num.length)
+          return this.clone().iuxor(num);
+        return num.clone().iuxor(this);
+      };
+      BN2.prototype.inotn = function inotn(width) {
+        assert3(typeof width === "number" && width >= 0);
+        var bytesNeeded = Math.ceil(width / 26) | 0;
+        var bitsLeft = width % 26;
+        this._expand(bytesNeeded);
+        if (bitsLeft > 0) {
+          bytesNeeded--;
+        }
+        for (var i3 = 0; i3 < bytesNeeded; i3++) {
+          this.words[i3] = ~this.words[i3] & 67108863;
+        }
+        if (bitsLeft > 0) {
+          this.words[i3] = ~this.words[i3] & 67108863 >> 26 - bitsLeft;
+        }
+        return this.strip();
+      };
+      BN2.prototype.notn = function notn(width) {
+        return this.clone().inotn(width);
+      };
+      BN2.prototype.setn = function setn(bit, val) {
+        assert3(typeof bit === "number" && bit >= 0);
+        var off = bit / 26 | 0;
+        var wbit = bit % 26;
+        this._expand(off + 1);
+        if (val) {
+          this.words[off] = this.words[off] | 1 << wbit;
+        } else {
+          this.words[off] = this.words[off] & ~(1 << wbit);
+        }
+        return this.strip();
+      };
+      BN2.prototype.iadd = function iadd(num) {
+        var r3;
+        if (this.negative !== 0 && num.negative === 0) {
+          this.negative = 0;
+          r3 = this.isub(num);
+          this.negative ^= 1;
+          return this._normSign();
+        } else if (this.negative === 0 && num.negative !== 0) {
+          num.negative = 0;
+          r3 = this.isub(num);
+          num.negative = 1;
+          return r3._normSign();
+        }
+        var a3, b2;
+        if (this.length > num.length) {
+          a3 = this;
+          b2 = num;
+        } else {
+          a3 = num;
+          b2 = this;
+        }
+        var carry = 0;
+        for (var i3 = 0; i3 < b2.length; i3++) {
+          r3 = (a3.words[i3] | 0) + (b2.words[i3] | 0) + carry;
+          this.words[i3] = r3 & 67108863;
+          carry = r3 >>> 26;
+        }
+        for (; carry !== 0 && i3 < a3.length; i3++) {
+          r3 = (a3.words[i3] | 0) + carry;
+          this.words[i3] = r3 & 67108863;
+          carry = r3 >>> 26;
+        }
+        this.length = a3.length;
+        if (carry !== 0) {
+          this.words[this.length] = carry;
+          this.length++;
+        } else if (a3 !== this) {
+          for (; i3 < a3.length; i3++) {
+            this.words[i3] = a3.words[i3];
+          }
+        }
+        return this;
+      };
+      BN2.prototype.add = function add(num) {
+        var res;
+        if (num.negative !== 0 && this.negative === 0) {
+          num.negative = 0;
+          res = this.sub(num);
+          num.negative ^= 1;
+          return res;
+        } else if (num.negative === 0 && this.negative !== 0) {
+          this.negative = 0;
+          res = num.sub(this);
+          this.negative = 1;
+          return res;
+        }
+        if (this.length > num.length)
+          return this.clone().iadd(num);
+        return num.clone().iadd(this);
+      };
+      BN2.prototype.isub = function isub(num) {
+        if (num.negative !== 0) {
+          num.negative = 0;
+          var r3 = this.iadd(num);
+          num.negative = 1;
+          return r3._normSign();
+        } else if (this.negative !== 0) {
+          this.negative = 0;
+          this.iadd(num);
+          this.negative = 1;
+          return this._normSign();
+        }
+        var cmp = this.cmp(num);
+        if (cmp === 0) {
+          this.negative = 0;
+          this.length = 1;
+          this.words[0] = 0;
+          return this;
+        }
+        var a3, b2;
+        if (cmp > 0) {
+          a3 = this;
+          b2 = num;
+        } else {
+          a3 = num;
+          b2 = this;
+        }
+        var carry = 0;
+        for (var i3 = 0; i3 < b2.length; i3++) {
+          r3 = (a3.words[i3] | 0) - (b2.words[i3] | 0) + carry;
+          carry = r3 >> 26;
+          this.words[i3] = r3 & 67108863;
+        }
+        for (; carry !== 0 && i3 < a3.length; i3++) {
+          r3 = (a3.words[i3] | 0) + carry;
+          carry = r3 >> 26;
+          this.words[i3] = r3 & 67108863;
+        }
+        if (carry === 0 && i3 < a3.length && a3 !== this) {
+          for (; i3 < a3.length; i3++) {
+            this.words[i3] = a3.words[i3];
+          }
+        }
+        this.length = Math.max(this.length, i3);
+        if (a3 !== this) {
+          this.negative = 1;
+        }
+        return this.strip();
+      };
+      BN2.prototype.sub = function sub(num) {
+        return this.clone().isub(num);
+      };
+      function smallMulTo(self2, num, out) {
+        out.negative = num.negative ^ self2.negative;
+        var len = self2.length + num.length | 0;
+        out.length = len;
+        len = len - 1 | 0;
+        var a3 = self2.words[0] | 0;
+        var b2 = num.words[0] | 0;
+        var r3 = a3 * b2;
+        var lo = r3 & 67108863;
+        var carry = r3 / 67108864 | 0;
+        out.words[0] = lo;
+        for (var k3 = 1; k3 < len; k3++) {
+          var ncarry = carry >>> 26;
+          var rword = carry & 67108863;
+          var maxJ = Math.min(k3, num.length - 1);
+          for (var j3 = Math.max(0, k3 - self2.length + 1); j3 <= maxJ; j3++) {
+            var i3 = k3 - j3 | 0;
+            a3 = self2.words[i3] | 0;
+            b2 = num.words[j3] | 0;
+            r3 = a3 * b2 + rword;
+            ncarry += r3 / 67108864 | 0;
+            rword = r3 & 67108863;
+          }
+          out.words[k3] = rword | 0;
+          carry = ncarry | 0;
+        }
+        if (carry !== 0) {
+          out.words[k3] = carry | 0;
+        } else {
+          out.length--;
+        }
+        return out.strip();
+      }
+      var comb10MulTo = function comb10MulTo2(self2, num, out) {
+        var a3 = self2.words;
+        var b2 = num.words;
+        var o3 = out.words;
+        var c3 = 0;
+        var lo;
+        var mid;
+        var hi;
+        var a0 = a3[0] | 0;
+        var al0 = a0 & 8191;
+        var ah0 = a0 >>> 13;
+        var a1 = a3[1] | 0;
+        var al1 = a1 & 8191;
+        var ah1 = a1 >>> 13;
+        var a22 = a3[2] | 0;
+        var al2 = a22 & 8191;
+        var ah2 = a22 >>> 13;
+        var a32 = a3[3] | 0;
+        var al3 = a32 & 8191;
+        var ah3 = a32 >>> 13;
+        var a4 = a3[4] | 0;
+        var al4 = a4 & 8191;
+        var ah4 = a4 >>> 13;
+        var a5 = a3[5] | 0;
+        var al5 = a5 & 8191;
+        var ah5 = a5 >>> 13;
+        var a6 = a3[6] | 0;
+        var al6 = a6 & 8191;
+        var ah6 = a6 >>> 13;
+        var a7 = a3[7] | 0;
+        var al7 = a7 & 8191;
+        var ah7 = a7 >>> 13;
+        var a8 = a3[8] | 0;
+        var al8 = a8 & 8191;
+        var ah8 = a8 >>> 13;
+        var a9 = a3[9] | 0;
+        var al9 = a9 & 8191;
+        var ah9 = a9 >>> 13;
+        var b0 = b2[0] | 0;
+        var bl0 = b0 & 8191;
+        var bh0 = b0 >>> 13;
+        var b1 = b2[1] | 0;
+        var bl1 = b1 & 8191;
+        var bh1 = b1 >>> 13;
+        var b22 = b2[2] | 0;
+        var bl2 = b22 & 8191;
+        var bh2 = b22 >>> 13;
+        var b3 = b2[3] | 0;
+        var bl3 = b3 & 8191;
+        var bh3 = b3 >>> 13;
+        var b4 = b2[4] | 0;
+        var bl4 = b4 & 8191;
+        var bh4 = b4 >>> 13;
+        var b5 = b2[5] | 0;
+        var bl5 = b5 & 8191;
+        var bh5 = b5 >>> 13;
+        var b6 = b2[6] | 0;
+        var bl6 = b6 & 8191;
+        var bh6 = b6 >>> 13;
+        var b7 = b2[7] | 0;
+        var bl7 = b7 & 8191;
+        var bh7 = b7 >>> 13;
+        var b8 = b2[8] | 0;
+        var bl8 = b8 & 8191;
+        var bh8 = b8 >>> 13;
+        var b9 = b2[9] | 0;
+        var bl9 = b9 & 8191;
+        var bh9 = b9 >>> 13;
+        out.negative = self2.negative ^ num.negative;
+        out.length = 19;
+        lo = Math.imul(al0, bl0);
+        mid = Math.imul(al0, bh0);
+        mid = mid + Math.imul(ah0, bl0) | 0;
+        hi = Math.imul(ah0, bh0);
+        var w0 = (c3 + lo | 0) + ((mid & 8191) << 13) | 0;
+        c3 = (hi + (mid >>> 13) | 0) + (w0 >>> 26) | 0;
+        w0 &= 67108863;
+        lo = Math.imul(al1, bl0);
+        mid = Math.imul(al1, bh0);
+        mid = mid + Math.imul(ah1, bl0) | 0;
+        hi = Math.imul(ah1, bh0);
+        lo = lo + Math.imul(al0, bl1) | 0;
+        mid = mid + Math.imul(al0, bh1) | 0;
+        mid = mid + Math.imul(ah0, bl1) | 0;
+        hi = hi + Math.imul(ah0, bh1) | 0;
+        var w1 = (c3 + lo | 0) + ((mid & 8191) << 13) | 0;
+        c3 = (hi + (mid >>> 13) | 0) + (w1 >>> 26) | 0;
+        w1 &= 67108863;
+        lo = Math.imul(al2, bl0);
+        mid = Math.imul(al2, bh0);
+        mid = mid + Math.imul(ah2, bl0) | 0;
+        hi = Math.imul(ah2, bh0);
+        lo = lo + Math.imul(al1, bl1) | 0;
+        mid = mid + Math.imul(al1, bh1) | 0;
+        mid = mid + Math.imul(ah1, bl1) | 0;
+        hi = hi + Math.imul(ah1, bh1) | 0;
+        lo = lo + Math.imul(al0, bl2) | 0;
+        mid = mid + Math.imul(al0, bh2) | 0;
+        mid = mid + Math.imul(ah0, bl2) | 0;
+        hi = hi + Math.imul(ah0, bh2) | 0;
+        var w22 = (c3 + lo | 0) + ((mid & 8191) << 13) | 0;
+        c3 = (hi + (mid >>> 13) | 0) + (w22 >>> 26) | 0;
+        w22 &= 67108863;
+        lo = Math.imul(al3, bl0);
+        mid = Math.imul(al3, bh0);
+        mid = mid + Math.imul(ah3, bl0) | 0;
+        hi = Math.imul(ah3, bh0);
+        lo = lo + Math.imul(al2, bl1) | 0;
+        mid = mid + Math.imul(al2, bh1) | 0;
+        mid = mid + Math.imul(ah2, bl1) | 0;
+        hi = hi + Math.imul(ah2, bh1) | 0;
+        lo = lo + Math.imul(al1, bl2) | 0;
+        mid = mid + Math.imul(al1, bh2) | 0;
+        mid = mid + Math.imul(ah1, bl2) | 0;
+        hi = hi + Math.imul(ah1, bh2) | 0;
+        lo = lo + Math.imul(al0, bl3) | 0;
+        mid = mid + Math.imul(al0, bh3) | 0;
+        mid = mid + Math.imul(ah0, bl3) | 0;
+        hi = hi + Math.imul(ah0, bh3) | 0;
+        var w32 = (c3 + lo | 0) + ((mid & 8191) << 13) | 0;
+        c3 = (hi + (mid >>> 13) | 0) + (w32 >>> 26) | 0;
+        w32 &= 67108863;
+        lo = Math.imul(al4, bl0);
+        mid = Math.imul(al4, bh0);
+        mid = mid + Math.imul(ah4, bl0) | 0;
+        hi = Math.imul(ah4, bh0);
+        lo = lo + Math.imul(al3, bl1) | 0;
+        mid = mid + Math.imul(al3, bh1) | 0;
+        mid = mid + Math.imul(ah3, bl1) | 0;
+        hi = hi + Math.imul(ah3, bh1) | 0;
+        lo = lo + Math.imul(al2, bl2) | 0;
+        mid = mid + Math.imul(al2, bh2) | 0;
+        mid = mid + Math.imul(ah2, bl2) | 0;
+        hi = hi + Math.imul(ah2, bh2) | 0;
+        lo = lo + Math.imul(al1, bl3) | 0;
+        mid = mid + Math.imul(al1, bh3) | 0;
+        mid = mid + Math.imul(ah1, bl3) | 0;
+        hi = hi + Math.imul(ah1, bh3) | 0;
+        lo = lo + Math.imul(al0, bl4) | 0;
+        mid = mid + Math.imul(al0, bh4) | 0;
+        mid = mid + Math.imul(ah0, bl4) | 0;
+        hi = hi + Math.imul(ah0, bh4) | 0;
+        var w4 = (c3 + lo | 0) + ((mid & 8191) << 13) | 0;
+        c3 = (hi + (mid >>> 13) | 0) + (w4 >>> 26) | 0;
+        w4 &= 67108863;
+        lo = Math.imul(al5, bl0);
+        mid = Math.imul(al5, bh0);
+        mid = mid + Math.imul(ah5, bl0) | 0;
+        hi = Math.imul(ah5, bh0);
+        lo = lo + Math.imul(al4, bl1) | 0;
+        mid = mid + Math.imul(al4, bh1) | 0;
+        mid = mid + Math.imul(ah4, bl1) | 0;
+        hi = hi + Math.imul(ah4, bh1) | 0;
+        lo = lo + Math.imul(al3, bl2) | 0;
+        mid = mid + Math.imul(al3, bh2) | 0;
+        mid = mid + Math.imul(ah3, bl2) | 0;
+        hi = hi + Math.imul(ah3, bh2) | 0;
+        lo = lo + Math.imul(al2, bl3) | 0;
+        mid = mid + Math.imul(al2, bh3) | 0;
+        mid = mid + Math.imul(ah2, bl3) | 0;
+        hi = hi + Math.imul(ah2, bh3) | 0;
+        lo = lo + Math.imul(al1, bl4) | 0;
+        mid = mid + Math.imul(al1, bh4) | 0;
+        mid = mid + Math.imul(ah1, bl4) | 0;
+        hi = hi + Math.imul(ah1, bh4) | 0;
+        lo = lo + Math.imul(al0, bl5) | 0;
+        mid = mid + Math.imul(al0, bh5) | 0;
+        mid = mid + Math.imul(ah0, bl5) | 0;
+        hi = hi + Math.imul(ah0, bh5) | 0;
+        var w5 = (c3 + lo | 0) + ((mid & 8191) << 13) | 0;
+        c3 = (hi + (mid >>> 13) | 0) + (w5 >>> 26) | 0;
+        w5 &= 67108863;
+        lo = Math.imul(al6, bl0);
+        mid = Math.imul(al6, bh0);
+        mid = mid + Math.imul(ah6, bl0) | 0;
+        hi = Math.imul(ah6, bh0);
+        lo = lo + Math.imul(al5, bl1) | 0;
+        mid = mid + Math.imul(al5, bh1) | 0;
+        mid = mid + Math.imul(ah5, bl1) | 0;
+        hi = hi + Math.imul(ah5, bh1) | 0;
+        lo = lo + Math.imul(al4, bl2) | 0;
+        mid = mid + Math.imul(al4, bh2) | 0;
+        mid = mid + Math.imul(ah4, bl2) | 0;
+        hi = hi + Math.imul(ah4, bh2) | 0;
+        lo = lo + Math.imul(al3, bl3) | 0;
+        mid = mid + Math.imul(al3, bh3) | 0;
+        mid = mid + Math.imul(ah3, bl3) | 0;
+        hi = hi + Math.imul(ah3, bh3) | 0;
+        lo = lo + Math.imul(al2, bl4) | 0;
+        mid = mid + Math.imul(al2, bh4) | 0;
+        mid = mid + Math.imul(ah2, bl4) | 0;
+        hi = hi + Math.imul(ah2, bh4) | 0;
+        lo = lo + Math.imul(al1, bl5) | 0;
+        mid = mid + Math.imul(al1, bh5) | 0;
+        mid = mid + Math.imul(ah1, bl5) | 0;
+        hi = hi + Math.imul(ah1, bh5) | 0;
+        lo = lo + Math.imul(al0, bl6) | 0;
+        mid = mid + Math.imul(al0, bh6) | 0;
+        mid = mid + Math.imul(ah0, bl6) | 0;
+        hi = hi + Math.imul(ah0, bh6) | 0;
+        var w6 = (c3 + lo | 0) + ((mid & 8191) << 13) | 0;
+        c3 = (hi + (mid >>> 13) | 0) + (w6 >>> 26) | 0;
+        w6 &= 67108863;
+        lo = Math.imul(al7, bl0);
+        mid = Math.imul(al7, bh0);
+        mid = mid + Math.imul(ah7, bl0) | 0;
+        hi = Math.imul(ah7, bh0);
+        lo = lo + Math.imul(al6, bl1) | 0;
+        mid = mid + Math.imul(al6, bh1) | 0;
+        mid = mid + Math.imul(ah6, bl1) | 0;
+        hi = hi + Math.imul(ah6, bh1) | 0;
+        lo = lo + Math.imul(al5, bl2) | 0;
+        mid = mid + Math.imul(al5, bh2) | 0;
+        mid = mid + Math.imul(ah5, bl2) | 0;
+        hi = hi + Math.imul(ah5, bh2) | 0;
+        lo = lo + Math.imul(al4, bl3) | 0;
+        mid = mid + Math.imul(al4, bh3) | 0;
+        mid = mid + Math.imul(ah4, bl3) | 0;
+        hi = hi + Math.imul(ah4, bh3) | 0;
+        lo = lo + Math.imul(al3, bl4) | 0;
+        mid = mid + Math.imul(al3, bh4) | 0;
+        mid = mid + Math.imul(ah3, bl4) | 0;
+        hi = hi + Math.imul(ah3, bh4) | 0;
+        lo = lo + Math.imul(al2, bl5) | 0;
+        mid = mid + Math.imul(al2, bh5) | 0;
+        mid = mid + Math.imul(ah2, bl5) | 0;
+        hi = hi + Math.imul(ah2, bh5) | 0;
+        lo = lo + Math.imul(al1, bl6) | 0;
+        mid = mid + Math.imul(al1, bh6) | 0;
+        mid = mid + Math.imul(ah1, bl6) | 0;
+        hi = hi + Math.imul(ah1, bh6) | 0;
+        lo = lo + Math.imul(al0, bl7) | 0;
+        mid = mid + Math.imul(al0, bh7) | 0;
+        mid = mid + Math.imul(ah0, bl7) | 0;
+        hi = hi + Math.imul(ah0, bh7) | 0;
+        var w7 = (c3 + lo | 0) + ((mid & 8191) << 13) | 0;
+        c3 = (hi + (mid >>> 13) | 0) + (w7 >>> 26) | 0;
+        w7 &= 67108863;
+        lo = Math.imul(al8, bl0);
+        mid = Math.imul(al8, bh0);
+        mid = mid + Math.imul(ah8, bl0) | 0;
+        hi = Math.imul(ah8, bh0);
+        lo = lo + Math.imul(al7, bl1) | 0;
+        mid = mid + Math.imul(al7, bh1) | 0;
+        mid = mid + Math.imul(ah7, bl1) | 0;
+        hi = hi + Math.imul(ah7, bh1) | 0;
+        lo = lo + Math.imul(al6, bl2) | 0;
+        mid = mid + Math.imul(al6, bh2) | 0;
+        mid = mid + Math.imul(ah6, bl2) | 0;
+        hi = hi + Math.imul(ah6, bh2) | 0;
+        lo = lo + Math.imul(al5, bl3) | 0;
+        mid = mid + Math.imul(al5, bh3) | 0;
+        mid = mid + Math.imul(ah5, bl3) | 0;
+        hi = hi + Math.imul(ah5, bh3) | 0;
+        lo = lo + Math.imul(al4, bl4) | 0;
+        mid = mid + Math.imul(al4, bh4) | 0;
+        mid = mid + Math.imul(ah4, bl4) | 0;
+        hi = hi + Math.imul(ah4, bh4) | 0;
+        lo = lo + Math.imul(al3, bl5) | 0;
+        mid = mid + Math.imul(al3, bh5) | 0;
+        mid = mid + Math.imul(ah3, bl5) | 0;
+        hi = hi + Math.imul(ah3, bh5) | 0;
+        lo = lo + Math.imul(al2, bl6) | 0;
+        mid = mid + Math.imul(al2, bh6) | 0;
+        mid = mid + Math.imul(ah2, bl6) | 0;
+        hi = hi + Math.imul(ah2, bh6) | 0;
+        lo = lo + Math.imul(al1, bl7) | 0;
+        mid = mid + Math.imul(al1, bh7) | 0;
+        mid = mid + Math.imul(ah1, bl7) | 0;
+        hi = hi + Math.imul(ah1, bh7) | 0;
+        lo = lo + Math.imul(al0, bl8) | 0;
+        mid = mid + Math.imul(al0, bh8) | 0;
+        mid = mid + Math.imul(ah0, bl8) | 0;
+        hi = hi + Math.imul(ah0, bh8) | 0;
+        var w8 = (c3 + lo | 0) + ((mid & 8191) << 13) | 0;
+        c3 = (hi + (mid >>> 13) | 0) + (w8 >>> 26) | 0;
+        w8 &= 67108863;
+        lo = Math.imul(al9, bl0);
+        mid = Math.imul(al9, bh0);
+        mid = mid + Math.imul(ah9, bl0) | 0;
+        hi = Math.imul(ah9, bh0);
+        lo = lo + Math.imul(al8, bl1) | 0;
+        mid = mid + Math.imul(al8, bh1) | 0;
+        mid = mid + Math.imul(ah8, bl1) | 0;
+        hi = hi + Math.imul(ah8, bh1) | 0;
+        lo = lo + Math.imul(al7, bl2) | 0;
+        mid = mid + Math.imul(al7, bh2) | 0;
+        mid = mid + Math.imul(ah7, bl2) | 0;
+        hi = hi + Math.imul(ah7, bh2) | 0;
+        lo = lo + Math.imul(al6, bl3) | 0;
+        mid = mid + Math.imul(al6, bh3) | 0;
+        mid = mid + Math.imul(ah6, bl3) | 0;
+        hi = hi + Math.imul(ah6, bh3) | 0;
+        lo = lo + Math.imul(al5, bl4) | 0;
+        mid = mid + Math.imul(al5, bh4) | 0;
+        mid = mid + Math.imul(ah5, bl4) | 0;
+        hi = hi + Math.imul(ah5, bh4) | 0;
+        lo = lo + Math.imul(al4, bl5) | 0;
+        mid = mid + Math.imul(al4, bh5) | 0;
+        mid = mid + Math.imul(ah4, bl5) | 0;
+        hi = hi + Math.imul(ah4, bh5) | 0;
+        lo = lo + Math.imul(al3, bl6) | 0;
+        mid = mid + Math.imul(al3, bh6) | 0;
+        mid = mid + Math.imul(ah3, bl6) | 0;
+        hi = hi + Math.imul(ah3, bh6) | 0;
+        lo = lo + Math.imul(al2, bl7) | 0;
+        mid = mid + Math.imul(al2, bh7) | 0;
+        mid = mid + Math.imul(ah2, bl7) | 0;
+        hi = hi + Math.imul(ah2, bh7) | 0;
+        lo = lo + Math.imul(al1, bl8) | 0;
+        mid = mid + Math.imul(al1, bh8) | 0;
+        mid = mid + Math.imul(ah1, bl8) | 0;
+        hi = hi + Math.imul(ah1, bh8) | 0;
+        lo = lo + Math.imul(al0, bl9) | 0;
+        mid = mid + Math.imul(al0, bh9) | 0;
+        mid = mid + Math.imul(ah0, bl9) | 0;
+        hi = hi + Math.imul(ah0, bh9) | 0;
+        var w9 = (c3 + lo | 0) + ((mid & 8191) << 13) | 0;
+        c3 = (hi + (mid >>> 13) | 0) + (w9 >>> 26) | 0;
+        w9 &= 67108863;
+        lo = Math.imul(al9, bl1);
+        mid = Math.imul(al9, bh1);
+        mid = mid + Math.imul(ah9, bl1) | 0;
+        hi = Math.imul(ah9, bh1);
+        lo = lo + Math.imul(al8, bl2) | 0;
+        mid = mid + Math.imul(al8, bh2) | 0;
+        mid = mid + Math.imul(ah8, bl2) | 0;
+        hi = hi + Math.imul(ah8, bh2) | 0;
+        lo = lo + Math.imul(al7, bl3) | 0;
+        mid = mid + Math.imul(al7, bh3) | 0;
+        mid = mid + Math.imul(ah7, bl3) | 0;
+        hi = hi + Math.imul(ah7, bh3) | 0;
+        lo = lo + Math.imul(al6, bl4) | 0;
+        mid = mid + Math.imul(al6, bh4) | 0;
+        mid = mid + Math.imul(ah6, bl4) | 0;
+        hi = hi + Math.imul(ah6, bh4) | 0;
+        lo = lo + Math.imul(al5, bl5) | 0;
+        mid = mid + Math.imul(al5, bh5) | 0;
+        mid = mid + Math.imul(ah5, bl5) | 0;
+        hi = hi + Math.imul(ah5, bh5) | 0;
+        lo = lo + Math.imul(al4, bl6) | 0;
+        mid = mid + Math.imul(al4, bh6) | 0;
+        mid = mid + Math.imul(ah4, bl6) | 0;
+        hi = hi + Math.imul(ah4, bh6) | 0;
+        lo = lo + Math.imul(al3, bl7) | 0;
+        mid = mid + Math.imul(al3, bh7) | 0;
+        mid = mid + Math.imul(ah3, bl7) | 0;
+        hi = hi + Math.imul(ah3, bh7) | 0;
+        lo = lo + Math.imul(al2, bl8) | 0;
+        mid = mid + Math.imul(al2, bh8) | 0;
+        mid = mid + Math.imul(ah2, bl8) | 0;
+        hi = hi + Math.imul(ah2, bh8) | 0;
+        lo = lo + Math.imul(al1, bl9) | 0;
+        mid = mid + Math.imul(al1, bh9) | 0;
+        mid = mid + Math.imul(ah1, bl9) | 0;
+        hi = hi + Math.imul(ah1, bh9) | 0;
+        var w10 = (c3 + lo | 0) + ((mid & 8191) << 13) | 0;
+        c3 = (hi + (mid >>> 13) | 0) + (w10 >>> 26) | 0;
+        w10 &= 67108863;
+        lo = Math.imul(al9, bl2);
+        mid = Math.imul(al9, bh2);
+        mid = mid + Math.imul(ah9, bl2) | 0;
+        hi = Math.imul(ah9, bh2);
+        lo = lo + Math.imul(al8, bl3) | 0;
+        mid = mid + Math.imul(al8, bh3) | 0;
+        mid = mid + Math.imul(ah8, bl3) | 0;
+        hi = hi + Math.imul(ah8, bh3) | 0;
+        lo = lo + Math.imul(al7, bl4) | 0;
+        mid = mid + Math.imul(al7, bh4) | 0;
+        mid = mid + Math.imul(ah7, bl4) | 0;
+        hi = hi + Math.imul(ah7, bh4) | 0;
+        lo = lo + Math.imul(al6, bl5) | 0;
+        mid = mid + Math.imul(al6, bh5) | 0;
+        mid = mid + Math.imul(ah6, bl5) | 0;
+        hi = hi + Math.imul(ah6, bh5) | 0;
+        lo = lo + Math.imul(al5, bl6) | 0;
+        mid = mid + Math.imul(al5, bh6) | 0;
+        mid = mid + Math.imul(ah5, bl6) | 0;
+        hi = hi + Math.imul(ah5, bh6) | 0;
+        lo = lo + Math.imul(al4, bl7) | 0;
+        mid = mid + Math.imul(al4, bh7) | 0;
+        mid = mid + Math.imul(ah4, bl7) | 0;
+        hi = hi + Math.imul(ah4, bh7) | 0;
+        lo = lo + Math.imul(al3, bl8) | 0;
+        mid = mid + Math.imul(al3, bh8) | 0;
+        mid = mid + Math.imul(ah3, bl8) | 0;
+        hi = hi + Math.imul(ah3, bh8) | 0;
+        lo = lo + Math.imul(al2, bl9) | 0;
+        mid = mid + Math.imul(al2, bh9) | 0;
+        mid = mid + Math.imul(ah2, bl9) | 0;
+        hi = hi + Math.imul(ah2, bh9) | 0;
+        var w11 = (c3 + lo | 0) + ((mid & 8191) << 13) | 0;
+        c3 = (hi + (mid >>> 13) | 0) + (w11 >>> 26) | 0;
+        w11 &= 67108863;
+        lo = Math.imul(al9, bl3);
+        mid = Math.imul(al9, bh3);
+        mid = mid + Math.imul(ah9, bl3) | 0;
+        hi = Math.imul(ah9, bh3);
+        lo = lo + Math.imul(al8, bl4) | 0;
+        mid = mid + Math.imul(al8, bh4) | 0;
+        mid = mid + Math.imul(ah8, bl4) | 0;
+        hi = hi + Math.imul(ah8, bh4) | 0;
+        lo = lo + Math.imul(al7, bl5) | 0;
+        mid = mid + Math.imul(al7, bh5) | 0;
+        mid = mid + Math.imul(ah7, bl5) | 0;
+        hi = hi + Math.imul(ah7, bh5) | 0;
+        lo = lo + Math.imul(al6, bl6) | 0;
+        mid = mid + Math.imul(al6, bh6) | 0;
+        mid = mid + Math.imul(ah6, bl6) | 0;
+        hi = hi + Math.imul(ah6, bh6) | 0;
+        lo = lo + Math.imul(al5, bl7) | 0;
+        mid = mid + Math.imul(al5, bh7) | 0;
+        mid = mid + Math.imul(ah5, bl7) | 0;
+        hi = hi + Math.imul(ah5, bh7) | 0;
+        lo = lo + Math.imul(al4, bl8) | 0;
+        mid = mid + Math.imul(al4, bh8) | 0;
+        mid = mid + Math.imul(ah4, bl8) | 0;
+        hi = hi + Math.imul(ah4, bh8) | 0;
+        lo = lo + Math.imul(al3, bl9) | 0;
+        mid = mid + Math.imul(al3, bh9) | 0;
+        mid = mid + Math.imul(ah3, bl9) | 0;
+        hi = hi + Math.imul(ah3, bh9) | 0;
+        var w12 = (c3 + lo | 0) + ((mid & 8191) << 13) | 0;
+        c3 = (hi + (mid >>> 13) | 0) + (w12 >>> 26) | 0;
+        w12 &= 67108863;
+        lo = Math.imul(al9, bl4);
+        mid = Math.imul(al9, bh4);
+        mid = mid + Math.imul(ah9, bl4) | 0;
+        hi = Math.imul(ah9, bh4);
+        lo = lo + Math.imul(al8, bl5) | 0;
+        mid = mid + Math.imul(al8, bh5) | 0;
+        mid = mid + Math.imul(ah8, bl5) | 0;
+        hi = hi + Math.imul(ah8, bh5) | 0;
+        lo = lo + Math.imul(al7, bl6) | 0;
+        mid = mid + Math.imul(al7, bh6) | 0;
+        mid = mid + Math.imul(ah7, bl6) | 0;
+        hi = hi + Math.imul(ah7, bh6) | 0;
+        lo = lo + Math.imul(al6, bl7) | 0;
+        mid = mid + Math.imul(al6, bh7) | 0;
+        mid = mid + Math.imul(ah6, bl7) | 0;
+        hi = hi + Math.imul(ah6, bh7) | 0;
+        lo = lo + Math.imul(al5, bl8) | 0;
+        mid = mid + Math.imul(al5, bh8) | 0;
+        mid = mid + Math.imul(ah5, bl8) | 0;
+        hi = hi + Math.imul(ah5, bh8) | 0;
+        lo = lo + Math.imul(al4, bl9) | 0;
+        mid = mid + Math.imul(al4, bh9) | 0;
+        mid = mid + Math.imul(ah4, bl9) | 0;
+        hi = hi + Math.imul(ah4, bh9) | 0;
+        var w13 = (c3 + lo | 0) + ((mid & 8191) << 13) | 0;
+        c3 = (hi + (mid >>> 13) | 0) + (w13 >>> 26) | 0;
+        w13 &= 67108863;
+        lo = Math.imul(al9, bl5);
+        mid = Math.imul(al9, bh5);
+        mid = mid + Math.imul(ah9, bl5) | 0;
+        hi = Math.imul(ah9, bh5);
+        lo = lo + Math.imul(al8, bl6) | 0;
+        mid = mid + Math.imul(al8, bh6) | 0;
+        mid = mid + Math.imul(ah8, bl6) | 0;
+        hi = hi + Math.imul(ah8, bh6) | 0;
+        lo = lo + Math.imul(al7, bl7) | 0;
+        mid = mid + Math.imul(al7, bh7) | 0;
+        mid = mid + Math.imul(ah7, bl7) | 0;
+        hi = hi + Math.imul(ah7, bh7) | 0;
+        lo = lo + Math.imul(al6, bl8) | 0;
+        mid = mid + Math.imul(al6, bh8) | 0;
+        mid = mid + Math.imul(ah6, bl8) | 0;
+        hi = hi + Math.imul(ah6, bh8) | 0;
+        lo = lo + Math.imul(al5, bl9) | 0;
+        mid = mid + Math.imul(al5, bh9) | 0;
+        mid = mid + Math.imul(ah5, bl9) | 0;
+        hi = hi + Math.imul(ah5, bh9) | 0;
+        var w14 = (c3 + lo | 0) + ((mid & 8191) << 13) | 0;
+        c3 = (hi + (mid >>> 13) | 0) + (w14 >>> 26) | 0;
+        w14 &= 67108863;
+        lo = Math.imul(al9, bl6);
+        mid = Math.imul(al9, bh6);
+        mid = mid + Math.imul(ah9, bl6) | 0;
+        hi = Math.imul(ah9, bh6);
+        lo = lo + Math.imul(al8, bl7) | 0;
+        mid = mid + Math.imul(al8, bh7) | 0;
+        mid = mid + Math.imul(ah8, bl7) | 0;
+        hi = hi + Math.imul(ah8, bh7) | 0;
+        lo = lo + Math.imul(al7, bl8) | 0;
+        mid = mid + Math.imul(al7, bh8) | 0;
+        mid = mid + Math.imul(ah7, bl8) | 0;
+        hi = hi + Math.imul(ah7, bh8) | 0;
+        lo = lo + Math.imul(al6, bl9) | 0;
+        mid = mid + Math.imul(al6, bh9) | 0;
+        mid = mid + Math.imul(ah6, bl9) | 0;
+        hi = hi + Math.imul(ah6, bh9) | 0;
+        var w15 = (c3 + lo | 0) + ((mid & 8191) << 13) | 0;
+        c3 = (hi + (mid >>> 13) | 0) + (w15 >>> 26) | 0;
+        w15 &= 67108863;
+        lo = Math.imul(al9, bl7);
+        mid = Math.imul(al9, bh7);
+        mid = mid + Math.imul(ah9, bl7) | 0;
+        hi = Math.imul(ah9, bh7);
+        lo = lo + Math.imul(al8, bl8) | 0;
+        mid = mid + Math.imul(al8, bh8) | 0;
+        mid = mid + Math.imul(ah8, bl8) | 0;
+        hi = hi + Math.imul(ah8, bh8) | 0;
+        lo = lo + Math.imul(al7, bl9) | 0;
+        mid = mid + Math.imul(al7, bh9) | 0;
+        mid = mid + Math.imul(ah7, bl9) | 0;
+        hi = hi + Math.imul(ah7, bh9) | 0;
+        var w16 = (c3 + lo | 0) + ((mid & 8191) << 13) | 0;
+        c3 = (hi + (mid >>> 13) | 0) + (w16 >>> 26) | 0;
+        w16 &= 67108863;
+        lo = Math.imul(al9, bl8);
+        mid = Math.imul(al9, bh8);
+        mid = mid + Math.imul(ah9, bl8) | 0;
+        hi = Math.imul(ah9, bh8);
+        lo = lo + Math.imul(al8, bl9) | 0;
+        mid = mid + Math.imul(al8, bh9) | 0;
+        mid = mid + Math.imul(ah8, bl9) | 0;
+        hi = hi + Math.imul(ah8, bh9) | 0;
+        var w17 = (c3 + lo | 0) + ((mid & 8191) << 13) | 0;
+        c3 = (hi + (mid >>> 13) | 0) + (w17 >>> 26) | 0;
+        w17 &= 67108863;
+        lo = Math.imul(al9, bl9);
+        mid = Math.imul(al9, bh9);
+        mid = mid + Math.imul(ah9, bl9) | 0;
+        hi = Math.imul(ah9, bh9);
+        var w18 = (c3 + lo | 0) + ((mid & 8191) << 13) | 0;
+        c3 = (hi + (mid >>> 13) | 0) + (w18 >>> 26) | 0;
+        w18 &= 67108863;
+        o3[0] = w0;
+        o3[1] = w1;
+        o3[2] = w22;
+        o3[3] = w32;
+        o3[4] = w4;
+        o3[5] = w5;
+        o3[6] = w6;
+        o3[7] = w7;
+        o3[8] = w8;
+        o3[9] = w9;
+        o3[10] = w10;
+        o3[11] = w11;
+        o3[12] = w12;
+        o3[13] = w13;
+        o3[14] = w14;
+        o3[15] = w15;
+        o3[16] = w16;
+        o3[17] = w17;
+        o3[18] = w18;
+        if (c3 !== 0) {
+          o3[19] = c3;
+          out.length++;
+        }
+        return out;
+      };
+      if (!Math.imul) {
+        comb10MulTo = smallMulTo;
+      }
+      function bigMulTo(self2, num, out) {
+        out.negative = num.negative ^ self2.negative;
+        out.length = self2.length + num.length;
+        var carry = 0;
+        var hncarry = 0;
+        for (var k3 = 0; k3 < out.length - 1; k3++) {
+          var ncarry = hncarry;
+          hncarry = 0;
+          var rword = carry & 67108863;
+          var maxJ = Math.min(k3, num.length - 1);
+          for (var j3 = Math.max(0, k3 - self2.length + 1); j3 <= maxJ; j3++) {
+            var i3 = k3 - j3;
+            var a3 = self2.words[i3] | 0;
+            var b2 = num.words[j3] | 0;
+            var r3 = a3 * b2;
+            var lo = r3 & 67108863;
+            ncarry = ncarry + (r3 / 67108864 | 0) | 0;
+            lo = lo + rword | 0;
+            rword = lo & 67108863;
+            ncarry = ncarry + (lo >>> 26) | 0;
+            hncarry += ncarry >>> 26;
+            ncarry &= 67108863;
+          }
+          out.words[k3] = rword;
+          carry = ncarry;
+          ncarry = hncarry;
+        }
+        if (carry !== 0) {
+          out.words[k3] = carry;
+        } else {
+          out.length--;
+        }
+        return out.strip();
+      }
+      function jumboMulTo(self2, num, out) {
+        var fftm = new FFTM();
+        return fftm.mulp(self2, num, out);
+      }
+      BN2.prototype.mulTo = function mulTo(num, out) {
+        var res;
+        var len = this.length + num.length;
+        if (this.length === 10 && num.length === 10) {
+          res = comb10MulTo(this, num, out);
+        } else if (len < 63) {
+          res = smallMulTo(this, num, out);
+        } else if (len < 1024) {
+          res = bigMulTo(this, num, out);
+        } else {
+          res = jumboMulTo(this, num, out);
+        }
+        return res;
+      };
+      function FFTM(x3, y3) {
+        this.x = x3;
+        this.y = y3;
+      }
+      FFTM.prototype.makeRBT = function makeRBT(N3) {
+        var t3 = new Array(N3);
+        var l3 = BN2.prototype._countBits(N3) - 1;
+        for (var i3 = 0; i3 < N3; i3++) {
+          t3[i3] = this.revBin(i3, l3, N3);
+        }
+        return t3;
+      };
+      FFTM.prototype.revBin = function revBin(x3, l3, N3) {
+        if (x3 === 0 || x3 === N3 - 1)
+          return x3;
+        var rb = 0;
+        for (var i3 = 0; i3 < l3; i3++) {
+          rb |= (x3 & 1) << l3 - i3 - 1;
+          x3 >>= 1;
+        }
+        return rb;
+      };
+      FFTM.prototype.permute = function permute(rbt, rws, iws, rtws, itws, N3) {
+        for (var i3 = 0; i3 < N3; i3++) {
+          rtws[i3] = rws[rbt[i3]];
+          itws[i3] = iws[rbt[i3]];
+        }
+      };
+      FFTM.prototype.transform = function transform(rws, iws, rtws, itws, N3, rbt) {
+        this.permute(rbt, rws, iws, rtws, itws, N3);
+        for (var s3 = 1; s3 < N3; s3 <<= 1) {
+          var l3 = s3 << 1;
+          var rtwdf = Math.cos(2 * Math.PI / l3);
+          var itwdf = Math.sin(2 * Math.PI / l3);
+          for (var p3 = 0; p3 < N3; p3 += l3) {
+            var rtwdf_ = rtwdf;
+            var itwdf_ = itwdf;
+            for (var j3 = 0; j3 < s3; j3++) {
+              var re = rtws[p3 + j3];
+              var ie = itws[p3 + j3];
+              var ro = rtws[p3 + j3 + s3];
+              var io = itws[p3 + j3 + s3];
+              var rx = rtwdf_ * ro - itwdf_ * io;
+              io = rtwdf_ * io + itwdf_ * ro;
+              ro = rx;
+              rtws[p3 + j3] = re + ro;
+              itws[p3 + j3] = ie + io;
+              rtws[p3 + j3 + s3] = re - ro;
+              itws[p3 + j3 + s3] = ie - io;
+              if (j3 !== l3) {
+                rx = rtwdf * rtwdf_ - itwdf * itwdf_;
+                itwdf_ = rtwdf * itwdf_ + itwdf * rtwdf_;
+                rtwdf_ = rx;
+              }
+            }
+          }
+        }
+      };
+      FFTM.prototype.guessLen13b = function guessLen13b(n2, m3) {
+        var N3 = Math.max(m3, n2) | 1;
+        var odd = N3 & 1;
+        var i3 = 0;
+        for (N3 = N3 / 2 | 0; N3; N3 = N3 >>> 1) {
+          i3++;
+        }
+        return 1 << i3 + 1 + odd;
+      };
+      FFTM.prototype.conjugate = function conjugate(rws, iws, N3) {
+        if (N3 <= 1)
+          return;
+        for (var i3 = 0; i3 < N3 / 2; i3++) {
+          var t3 = rws[i3];
+          rws[i3] = rws[N3 - i3 - 1];
+          rws[N3 - i3 - 1] = t3;
+          t3 = iws[i3];
+          iws[i3] = -iws[N3 - i3 - 1];
+          iws[N3 - i3 - 1] = -t3;
+        }
+      };
+      FFTM.prototype.normalize13b = function normalize13b(ws, N3) {
+        var carry = 0;
+        for (var i3 = 0; i3 < N3 / 2; i3++) {
+          var w4 = Math.round(ws[2 * i3 + 1] / N3) * 8192 + Math.round(ws[2 * i3] / N3) + carry;
+          ws[i3] = w4 & 67108863;
+          if (w4 < 67108864) {
+            carry = 0;
+          } else {
+            carry = w4 / 67108864 | 0;
+          }
+        }
+        return ws;
+      };
+      FFTM.prototype.convert13b = function convert13b(ws, len, rws, N3) {
+        var carry = 0;
+        for (var i3 = 0; i3 < len; i3++) {
+          carry = carry + (ws[i3] | 0);
+          rws[2 * i3] = carry & 8191;
+          carry = carry >>> 13;
+          rws[2 * i3 + 1] = carry & 8191;
+          carry = carry >>> 13;
+        }
+        for (i3 = 2 * len; i3 < N3; ++i3) {
+          rws[i3] = 0;
+        }
+        assert3(carry === 0);
+        assert3((carry & ~8191) === 0);
+      };
+      FFTM.prototype.stub = function stub(N3) {
+        var ph = new Array(N3);
+        for (var i3 = 0; i3 < N3; i3++) {
+          ph[i3] = 0;
+        }
+        return ph;
+      };
+      FFTM.prototype.mulp = function mulp(x3, y3, out) {
+        var N3 = 2 * this.guessLen13b(x3.length, y3.length);
+        var rbt = this.makeRBT(N3);
+        var _4 = this.stub(N3);
+        var rws = new Array(N3);
+        var rwst = new Array(N3);
+        var iwst = new Array(N3);
+        var nrws = new Array(N3);
+        var nrwst = new Array(N3);
+        var niwst = new Array(N3);
+        var rmws = out.words;
+        rmws.length = N3;
+        this.convert13b(x3.words, x3.length, rws, N3);
+        this.convert13b(y3.words, y3.length, nrws, N3);
+        this.transform(rws, _4, rwst, iwst, N3, rbt);
+        this.transform(nrws, _4, nrwst, niwst, N3, rbt);
+        for (var i3 = 0; i3 < N3; i3++) {
+          var rx = rwst[i3] * nrwst[i3] - iwst[i3] * niwst[i3];
+          iwst[i3] = rwst[i3] * niwst[i3] + iwst[i3] * nrwst[i3];
+          rwst[i3] = rx;
+        }
+        this.conjugate(rwst, iwst, N3);
+        this.transform(rwst, iwst, rmws, _4, N3, rbt);
+        this.conjugate(rmws, _4, N3);
+        this.normalize13b(rmws, N3);
+        out.negative = x3.negative ^ y3.negative;
+        out.length = x3.length + y3.length;
+        return out.strip();
+      };
+      BN2.prototype.mul = function mul(num) {
+        var out = new BN2(null);
+        out.words = new Array(this.length + num.length);
+        return this.mulTo(num, out);
+      };
+      BN2.prototype.mulf = function mulf(num) {
+        var out = new BN2(null);
+        out.words = new Array(this.length + num.length);
+        return jumboMulTo(this, num, out);
+      };
+      BN2.prototype.imul = function imul(num) {
+        return this.clone().mulTo(num, this);
+      };
+      BN2.prototype.imuln = function imuln(num) {
+        assert3(typeof num === "number");
+        assert3(num < 67108864);
+        var carry = 0;
+        for (var i3 = 0; i3 < this.length; i3++) {
+          var w4 = (this.words[i3] | 0) * num;
+          var lo = (w4 & 67108863) + (carry & 67108863);
+          carry >>= 26;
+          carry += w4 / 67108864 | 0;
+          carry += lo >>> 26;
+          this.words[i3] = lo & 67108863;
+        }
+        if (carry !== 0) {
+          this.words[i3] = carry;
+          this.length++;
+        }
+        return this;
+      };
+      BN2.prototype.muln = function muln(num) {
+        return this.clone().imuln(num);
+      };
+      BN2.prototype.sqr = function sqr() {
+        return this.mul(this);
+      };
+      BN2.prototype.isqr = function isqr() {
+        return this.imul(this.clone());
+      };
+      BN2.prototype.pow = function pow(num) {
+        var w4 = toBitArray(num);
+        if (w4.length === 0)
+          return new BN2(1);
+        var res = this;
+        for (var i3 = 0; i3 < w4.length; i3++, res = res.sqr()) {
+          if (w4[i3] !== 0)
+            break;
+        }
+        if (++i3 < w4.length) {
+          for (var q3 = res.sqr(); i3 < w4.length; i3++, q3 = q3.sqr()) {
+            if (w4[i3] === 0)
+              continue;
+            res = res.mul(q3);
+          }
+        }
+        return res;
+      };
+      BN2.prototype.iushln = function iushln(bits) {
+        assert3(typeof bits === "number" && bits >= 0);
+        var r3 = bits % 26;
+        var s3 = (bits - r3) / 26;
+        var carryMask = 67108863 >>> 26 - r3 << 26 - r3;
+        var i3;
+        if (r3 !== 0) {
+          var carry = 0;
+          for (i3 = 0; i3 < this.length; i3++) {
+            var newCarry = this.words[i3] & carryMask;
+            var c3 = (this.words[i3] | 0) - newCarry << r3;
+            this.words[i3] = c3 | carry;
+            carry = newCarry >>> 26 - r3;
+          }
+          if (carry) {
+            this.words[i3] = carry;
+            this.length++;
+          }
+        }
+        if (s3 !== 0) {
+          for (i3 = this.length - 1; i3 >= 0; i3--) {
+            this.words[i3 + s3] = this.words[i3];
+          }
+          for (i3 = 0; i3 < s3; i3++) {
+            this.words[i3] = 0;
+          }
+          this.length += s3;
+        }
+        return this.strip();
+      };
+      BN2.prototype.ishln = function ishln(bits) {
+        assert3(this.negative === 0);
+        return this.iushln(bits);
+      };
+      BN2.prototype.iushrn = function iushrn(bits, hint, extended) {
+        assert3(typeof bits === "number" && bits >= 0);
+        var h3;
+        if (hint) {
+          h3 = (hint - hint % 26) / 26;
+        } else {
+          h3 = 0;
+        }
+        var r3 = bits % 26;
+        var s3 = Math.min((bits - r3) / 26, this.length);
+        var mask = 67108863 ^ 67108863 >>> r3 << r3;
+        var maskedWords = extended;
+        h3 -= s3;
+        h3 = Math.max(0, h3);
+        if (maskedWords) {
+          for (var i3 = 0; i3 < s3; i3++) {
+            maskedWords.words[i3] = this.words[i3];
+          }
+          maskedWords.length = s3;
+        }
+        if (s3 === 0) {
+        } else if (this.length > s3) {
+          this.length -= s3;
+          for (i3 = 0; i3 < this.length; i3++) {
+            this.words[i3] = this.words[i3 + s3];
+          }
+        } else {
+          this.words[0] = 0;
+          this.length = 1;
+        }
+        var carry = 0;
+        for (i3 = this.length - 1; i3 >= 0 && (carry !== 0 || i3 >= h3); i3--) {
+          var word = this.words[i3] | 0;
+          this.words[i3] = carry << 26 - r3 | word >>> r3;
+          carry = word & mask;
+        }
+        if (maskedWords && carry !== 0) {
+          maskedWords.words[maskedWords.length++] = carry;
+        }
+        if (this.length === 0) {
+          this.words[0] = 0;
+          this.length = 1;
+        }
+        return this.strip();
+      };
+      BN2.prototype.ishrn = function ishrn(bits, hint, extended) {
+        assert3(this.negative === 0);
+        return this.iushrn(bits, hint, extended);
+      };
+      BN2.prototype.shln = function shln(bits) {
+        return this.clone().ishln(bits);
+      };
+      BN2.prototype.ushln = function ushln(bits) {
+        return this.clone().iushln(bits);
+      };
+      BN2.prototype.shrn = function shrn(bits) {
+        return this.clone().ishrn(bits);
+      };
+      BN2.prototype.ushrn = function ushrn(bits) {
+        return this.clone().iushrn(bits);
+      };
+      BN2.prototype.testn = function testn(bit) {
+        assert3(typeof bit === "number" && bit >= 0);
+        var r3 = bit % 26;
+        var s3 = (bit - r3) / 26;
+        var q3 = 1 << r3;
+        if (this.length <= s3)
+          return false;
+        var w4 = this.words[s3];
+        return !!(w4 & q3);
+      };
+      BN2.prototype.imaskn = function imaskn(bits) {
+        assert3(typeof bits === "number" && bits >= 0);
+        var r3 = bits % 26;
+        var s3 = (bits - r3) / 26;
+        assert3(this.negative === 0, "imaskn works only with positive numbers");
+        if (this.length <= s3) {
+          return this;
+        }
+        if (r3 !== 0) {
+          s3++;
+        }
+        this.length = Math.min(s3, this.length);
+        if (r3 !== 0) {
+          var mask = 67108863 ^ 67108863 >>> r3 << r3;
+          this.words[this.length - 1] &= mask;
+        }
+        return this.strip();
+      };
+      BN2.prototype.maskn = function maskn(bits) {
+        return this.clone().imaskn(bits);
+      };
+      BN2.prototype.iaddn = function iaddn(num) {
+        assert3(typeof num === "number");
+        assert3(num < 67108864);
+        if (num < 0)
+          return this.isubn(-num);
+        if (this.negative !== 0) {
+          if (this.length === 1 && (this.words[0] | 0) < num) {
+            this.words[0] = num - (this.words[0] | 0);
+            this.negative = 0;
+            return this;
+          }
+          this.negative = 0;
+          this.isubn(num);
+          this.negative = 1;
+          return this;
+        }
+        return this._iaddn(num);
+      };
+      BN2.prototype._iaddn = function _iaddn(num) {
+        this.words[0] += num;
+        for (var i3 = 0; i3 < this.length && this.words[i3] >= 67108864; i3++) {
+          this.words[i3] -= 67108864;
+          if (i3 === this.length - 1) {
+            this.words[i3 + 1] = 1;
+          } else {
+            this.words[i3 + 1]++;
+          }
+        }
+        this.length = Math.max(this.length, i3 + 1);
+        return this;
+      };
+      BN2.prototype.isubn = function isubn(num) {
+        assert3(typeof num === "number");
+        assert3(num < 67108864);
+        if (num < 0)
+          return this.iaddn(-num);
+        if (this.negative !== 0) {
+          this.negative = 0;
+          this.iaddn(num);
+          this.negative = 1;
+          return this;
+        }
+        this.words[0] -= num;
+        if (this.length === 1 && this.words[0] < 0) {
+          this.words[0] = -this.words[0];
+          this.negative = 1;
+        } else {
+          for (var i3 = 0; i3 < this.length && this.words[i3] < 0; i3++) {
+            this.words[i3] += 67108864;
+            this.words[i3 + 1] -= 1;
+          }
+        }
+        return this.strip();
+      };
+      BN2.prototype.addn = function addn(num) {
+        return this.clone().iaddn(num);
+      };
+      BN2.prototype.subn = function subn(num) {
+        return this.clone().isubn(num);
+      };
+      BN2.prototype.iabs = function iabs() {
+        this.negative = 0;
+        return this;
+      };
+      BN2.prototype.abs = function abs() {
+        return this.clone().iabs();
+      };
+      BN2.prototype._ishlnsubmul = function _ishlnsubmul(num, mul, shift) {
+        var len = num.length + shift;
+        var i3;
+        this._expand(len);
+        var w4;
+        var carry = 0;
+        for (i3 = 0; i3 < num.length; i3++) {
+          w4 = (this.words[i3 + shift] | 0) + carry;
+          var right = (num.words[i3] | 0) * mul;
+          w4 -= right & 67108863;
+          carry = (w4 >> 26) - (right / 67108864 | 0);
+          this.words[i3 + shift] = w4 & 67108863;
+        }
+        for (; i3 < this.length - shift; i3++) {
+          w4 = (this.words[i3 + shift] | 0) + carry;
+          carry = w4 >> 26;
+          this.words[i3 + shift] = w4 & 67108863;
+        }
+        if (carry === 0)
+          return this.strip();
+        assert3(carry === -1);
+        carry = 0;
+        for (i3 = 0; i3 < this.length; i3++) {
+          w4 = -(this.words[i3] | 0) + carry;
+          carry = w4 >> 26;
+          this.words[i3] = w4 & 67108863;
+        }
+        this.negative = 1;
+        return this.strip();
+      };
+      BN2.prototype._wordDiv = function _wordDiv(num, mode) {
+        var shift = this.length - num.length;
+        var a3 = this.clone();
+        var b2 = num;
+        var bhi = b2.words[b2.length - 1] | 0;
+        var bhiBits = this._countBits(bhi);
+        shift = 26 - bhiBits;
+        if (shift !== 0) {
+          b2 = b2.ushln(shift);
+          a3.iushln(shift);
+          bhi = b2.words[b2.length - 1] | 0;
+        }
+        var m3 = a3.length - b2.length;
+        var q3;
+        if (mode !== "mod") {
+          q3 = new BN2(null);
+          q3.length = m3 + 1;
+          q3.words = new Array(q3.length);
+          for (var i3 = 0; i3 < q3.length; i3++) {
+            q3.words[i3] = 0;
+          }
+        }
+        var diff = a3.clone()._ishlnsubmul(b2, 1, m3);
+        if (diff.negative === 0) {
+          a3 = diff;
+          if (q3) {
+            q3.words[m3] = 1;
+          }
+        }
+        for (var j3 = m3 - 1; j3 >= 0; j3--) {
+          var qj = (a3.words[b2.length + j3] | 0) * 67108864 + (a3.words[b2.length + j3 - 1] | 0);
+          qj = Math.min(qj / bhi | 0, 67108863);
+          a3._ishlnsubmul(b2, qj, j3);
+          while (a3.negative !== 0) {
+            qj--;
+            a3.negative = 0;
+            a3._ishlnsubmul(b2, 1, j3);
+            if (!a3.isZero()) {
+              a3.negative ^= 1;
+            }
+          }
+          if (q3) {
+            q3.words[j3] = qj;
+          }
+        }
+        if (q3) {
+          q3.strip();
+        }
+        a3.strip();
+        if (mode !== "div" && shift !== 0) {
+          a3.iushrn(shift);
+        }
+        return {
+          div: q3 || null,
+          mod: a3
+        };
+      };
+      BN2.prototype.divmod = function divmod(num, mode, positive) {
+        assert3(!num.isZero());
+        if (this.isZero()) {
+          return {
+            div: new BN2(0),
+            mod: new BN2(0)
+          };
+        }
+        var div, mod, res;
+        if (this.negative !== 0 && num.negative === 0) {
+          res = this.neg().divmod(num, mode);
+          if (mode !== "mod") {
+            div = res.div.neg();
+          }
+          if (mode !== "div") {
+            mod = res.mod.neg();
+            if (positive && mod.negative !== 0) {
+              mod.iadd(num);
+            }
+          }
+          return {
+            div,
+            mod
+          };
+        }
+        if (this.negative === 0 && num.negative !== 0) {
+          res = this.divmod(num.neg(), mode);
+          if (mode !== "mod") {
+            div = res.div.neg();
+          }
+          return {
+            div,
+            mod: res.mod
+          };
+        }
+        if ((this.negative & num.negative) !== 0) {
+          res = this.neg().divmod(num.neg(), mode);
+          if (mode !== "div") {
+            mod = res.mod.neg();
+            if (positive && mod.negative !== 0) {
+              mod.isub(num);
+            }
+          }
+          return {
+            div: res.div,
+            mod
+          };
+        }
+        if (num.length > this.length || this.cmp(num) < 0) {
+          return {
+            div: new BN2(0),
+            mod: this
+          };
+        }
+        if (num.length === 1) {
+          if (mode === "div") {
+            return {
+              div: this.divn(num.words[0]),
+              mod: null
+            };
+          }
+          if (mode === "mod") {
+            return {
+              div: null,
+              mod: new BN2(this.modn(num.words[0]))
+            };
+          }
+          return {
+            div: this.divn(num.words[0]),
+            mod: new BN2(this.modn(num.words[0]))
+          };
+        }
+        return this._wordDiv(num, mode);
+      };
+      BN2.prototype.div = function div(num) {
+        return this.divmod(num, "div", false).div;
+      };
+      BN2.prototype.mod = function mod(num) {
+        return this.divmod(num, "mod", false).mod;
+      };
+      BN2.prototype.umod = function umod(num) {
+        return this.divmod(num, "mod", true).mod;
+      };
+      BN2.prototype.divRound = function divRound(num) {
+        var dm = this.divmod(num);
+        if (dm.mod.isZero())
+          return dm.div;
+        var mod = dm.div.negative !== 0 ? dm.mod.isub(num) : dm.mod;
+        var half = num.ushrn(1);
+        var r22 = num.andln(1);
+        var cmp = mod.cmp(half);
+        if (cmp < 0 || r22 === 1 && cmp === 0)
+          return dm.div;
+        return dm.div.negative !== 0 ? dm.div.isubn(1) : dm.div.iaddn(1);
+      };
+      BN2.prototype.modn = function modn(num) {
+        assert3(num <= 67108863);
+        var p3 = (1 << 26) % num;
+        var acc = 0;
+        for (var i3 = this.length - 1; i3 >= 0; i3--) {
+          acc = (p3 * acc + (this.words[i3] | 0)) % num;
+        }
+        return acc;
+      };
+      BN2.prototype.idivn = function idivn(num) {
+        assert3(num <= 67108863);
+        var carry = 0;
+        for (var i3 = this.length - 1; i3 >= 0; i3--) {
+          var w4 = (this.words[i3] | 0) + carry * 67108864;
+          this.words[i3] = w4 / num | 0;
+          carry = w4 % num;
+        }
+        return this.strip();
+      };
+      BN2.prototype.divn = function divn(num) {
+        return this.clone().idivn(num);
+      };
+      BN2.prototype.egcd = function egcd(p3) {
+        assert3(p3.negative === 0);
+        assert3(!p3.isZero());
+        var x3 = this;
+        var y3 = p3.clone();
+        if (x3.negative !== 0) {
+          x3 = x3.umod(p3);
+        } else {
+          x3 = x3.clone();
+        }
+        var A4 = new BN2(1);
+        var B2 = new BN2(0);
+        var C3 = new BN2(0);
+        var D3 = new BN2(1);
+        var g3 = 0;
+        while (x3.isEven() && y3.isEven()) {
+          x3.iushrn(1);
+          y3.iushrn(1);
+          ++g3;
+        }
+        var yp = y3.clone();
+        var xp = x3.clone();
+        while (!x3.isZero()) {
+          for (var i3 = 0, im = 1; (x3.words[0] & im) === 0 && i3 < 26; ++i3, im <<= 1)
+            ;
+          if (i3 > 0) {
+            x3.iushrn(i3);
+            while (i3-- > 0) {
+              if (A4.isOdd() || B2.isOdd()) {
+                A4.iadd(yp);
+                B2.isub(xp);
+              }
+              A4.iushrn(1);
+              B2.iushrn(1);
+            }
+          }
+          for (var j3 = 0, jm = 1; (y3.words[0] & jm) === 0 && j3 < 26; ++j3, jm <<= 1)
+            ;
+          if (j3 > 0) {
+            y3.iushrn(j3);
+            while (j3-- > 0) {
+              if (C3.isOdd() || D3.isOdd()) {
+                C3.iadd(yp);
+                D3.isub(xp);
+              }
+              C3.iushrn(1);
+              D3.iushrn(1);
+            }
+          }
+          if (x3.cmp(y3) >= 0) {
+            x3.isub(y3);
+            A4.isub(C3);
+            B2.isub(D3);
+          } else {
+            y3.isub(x3);
+            C3.isub(A4);
+            D3.isub(B2);
+          }
+        }
+        return {
+          a: C3,
+          b: D3,
+          gcd: y3.iushln(g3)
+        };
+      };
+      BN2.prototype._invmp = function _invmp(p3) {
+        assert3(p3.negative === 0);
+        assert3(!p3.isZero());
+        var a3 = this;
+        var b2 = p3.clone();
+        if (a3.negative !== 0) {
+          a3 = a3.umod(p3);
+        } else {
+          a3 = a3.clone();
+        }
+        var x1 = new BN2(1);
+        var x22 = new BN2(0);
+        var delta = b2.clone();
+        while (a3.cmpn(1) > 0 && b2.cmpn(1) > 0) {
+          for (var i3 = 0, im = 1; (a3.words[0] & im) === 0 && i3 < 26; ++i3, im <<= 1)
+            ;
+          if (i3 > 0) {
+            a3.iushrn(i3);
+            while (i3-- > 0) {
+              if (x1.isOdd()) {
+                x1.iadd(delta);
+              }
+              x1.iushrn(1);
+            }
+          }
+          for (var j3 = 0, jm = 1; (b2.words[0] & jm) === 0 && j3 < 26; ++j3, jm <<= 1)
+            ;
+          if (j3 > 0) {
+            b2.iushrn(j3);
+            while (j3-- > 0) {
+              if (x22.isOdd()) {
+                x22.iadd(delta);
+              }
+              x22.iushrn(1);
+            }
+          }
+          if (a3.cmp(b2) >= 0) {
+            a3.isub(b2);
+            x1.isub(x22);
+          } else {
+            b2.isub(a3);
+            x22.isub(x1);
+          }
+        }
+        var res;
+        if (a3.cmpn(1) === 0) {
+          res = x1;
+        } else {
+          res = x22;
+        }
+        if (res.cmpn(0) < 0) {
+          res.iadd(p3);
+        }
+        return res;
+      };
+      BN2.prototype.gcd = function gcd(num) {
+        if (this.isZero())
+          return num.abs();
+        if (num.isZero())
+          return this.abs();
+        var a3 = this.clone();
+        var b2 = num.clone();
+        a3.negative = 0;
+        b2.negative = 0;
+        for (var shift = 0; a3.isEven() && b2.isEven(); shift++) {
+          a3.iushrn(1);
+          b2.iushrn(1);
+        }
+        do {
+          while (a3.isEven()) {
+            a3.iushrn(1);
+          }
+          while (b2.isEven()) {
+            b2.iushrn(1);
+          }
+          var r3 = a3.cmp(b2);
+          if (r3 < 0) {
+            var t3 = a3;
+            a3 = b2;
+            b2 = t3;
+          } else if (r3 === 0 || b2.cmpn(1) === 0) {
+            break;
+          }
+          a3.isub(b2);
+        } while (true);
+        return b2.iushln(shift);
+      };
+      BN2.prototype.invm = function invm(num) {
+        return this.egcd(num).a.umod(num);
+      };
+      BN2.prototype.isEven = function isEven() {
+        return (this.words[0] & 1) === 0;
+      };
+      BN2.prototype.isOdd = function isOdd() {
+        return (this.words[0] & 1) === 1;
+      };
+      BN2.prototype.andln = function andln(num) {
+        return this.words[0] & num;
+      };
+      BN2.prototype.bincn = function bincn(bit) {
+        assert3(typeof bit === "number");
+        var r3 = bit % 26;
+        var s3 = (bit - r3) / 26;
+        var q3 = 1 << r3;
+        if (this.length <= s3) {
+          this._expand(s3 + 1);
+          this.words[s3] |= q3;
+          return this;
+        }
+        var carry = q3;
+        for (var i3 = s3; carry !== 0 && i3 < this.length; i3++) {
+          var w4 = this.words[i3] | 0;
+          w4 += carry;
+          carry = w4 >>> 26;
+          w4 &= 67108863;
+          this.words[i3] = w4;
+        }
+        if (carry !== 0) {
+          this.words[i3] = carry;
+          this.length++;
+        }
+        return this;
+      };
+      BN2.prototype.isZero = function isZero() {
+        return this.length === 1 && this.words[0] === 0;
+      };
+      BN2.prototype.cmpn = function cmpn(num) {
+        var negative = num < 0;
+        if (this.negative !== 0 && !negative)
+          return -1;
+        if (this.negative === 0 && negative)
+          return 1;
+        this.strip();
+        var res;
+        if (this.length > 1) {
+          res = 1;
+        } else {
+          if (negative) {
+            num = -num;
+          }
+          assert3(num <= 67108863, "Number is too big");
+          var w4 = this.words[0] | 0;
+          res = w4 === num ? 0 : w4 < num ? -1 : 1;
+        }
+        if (this.negative !== 0)
+          return -res | 0;
+        return res;
+      };
+      BN2.prototype.cmp = function cmp(num) {
+        if (this.negative !== 0 && num.negative === 0)
+          return -1;
+        if (this.negative === 0 && num.negative !== 0)
+          return 1;
+        var res = this.ucmp(num);
+        if (this.negative !== 0)
+          return -res | 0;
+        return res;
+      };
+      BN2.prototype.ucmp = function ucmp(num) {
+        if (this.length > num.length)
+          return 1;
+        if (this.length < num.length)
+          return -1;
+        var res = 0;
+        for (var i3 = this.length - 1; i3 >= 0; i3--) {
+          var a3 = this.words[i3] | 0;
+          var b2 = num.words[i3] | 0;
+          if (a3 === b2)
+            continue;
+          if (a3 < b2) {
+            res = -1;
+          } else if (a3 > b2) {
+            res = 1;
+          }
+          break;
+        }
+        return res;
+      };
+      BN2.prototype.gtn = function gtn(num) {
+        return this.cmpn(num) === 1;
+      };
+      BN2.prototype.gt = function gt(num) {
+        return this.cmp(num) === 1;
+      };
+      BN2.prototype.gten = function gten(num) {
+        return this.cmpn(num) >= 0;
+      };
+      BN2.prototype.gte = function gte(num) {
+        return this.cmp(num) >= 0;
+      };
+      BN2.prototype.ltn = function ltn(num) {
+        return this.cmpn(num) === -1;
+      };
+      BN2.prototype.lt = function lt(num) {
+        return this.cmp(num) === -1;
+      };
+      BN2.prototype.lten = function lten(num) {
+        return this.cmpn(num) <= 0;
+      };
+      BN2.prototype.lte = function lte(num) {
+        return this.cmp(num) <= 0;
+      };
+      BN2.prototype.eqn = function eqn(num) {
+        return this.cmpn(num) === 0;
+      };
+      BN2.prototype.eq = function eq(num) {
+        return this.cmp(num) === 0;
+      };
+      BN2.red = function red(num) {
+        return new Red(num);
+      };
+      BN2.prototype.toRed = function toRed(ctx) {
+        assert3(!this.red, "Already a number in reduction context");
+        assert3(this.negative === 0, "red works only with positives");
+        return ctx.convertTo(this)._forceRed(ctx);
+      };
+      BN2.prototype.fromRed = function fromRed() {
+        assert3(this.red, "fromRed works only with numbers in reduction context");
+        return this.red.convertFrom(this);
+      };
+      BN2.prototype._forceRed = function _forceRed(ctx) {
+        this.red = ctx;
+        return this;
+      };
+      BN2.prototype.forceRed = function forceRed(ctx) {
+        assert3(!this.red, "Already a number in reduction context");
+        return this._forceRed(ctx);
+      };
+      BN2.prototype.redAdd = function redAdd(num) {
+        assert3(this.red, "redAdd works only with red numbers");
+        return this.red.add(this, num);
+      };
+      BN2.prototype.redIAdd = function redIAdd(num) {
+        assert3(this.red, "redIAdd works only with red numbers");
+        return this.red.iadd(this, num);
+      };
+      BN2.prototype.redSub = function redSub(num) {
+        assert3(this.red, "redSub works only with red numbers");
+        return this.red.sub(this, num);
+      };
+      BN2.prototype.redISub = function redISub(num) {
+        assert3(this.red, "redISub works only with red numbers");
+        return this.red.isub(this, num);
+      };
+      BN2.prototype.redShl = function redShl(num) {
+        assert3(this.red, "redShl works only with red numbers");
+        return this.red.shl(this, num);
+      };
+      BN2.prototype.redMul = function redMul(num) {
+        assert3(this.red, "redMul works only with red numbers");
+        this.red._verify2(this, num);
+        return this.red.mul(this, num);
+      };
+      BN2.prototype.redIMul = function redIMul(num) {
+        assert3(this.red, "redMul works only with red numbers");
+        this.red._verify2(this, num);
+        return this.red.imul(this, num);
+      };
+      BN2.prototype.redSqr = function redSqr() {
+        assert3(this.red, "redSqr works only with red numbers");
+        this.red._verify1(this);
+        return this.red.sqr(this);
+      };
+      BN2.prototype.redISqr = function redISqr() {
+        assert3(this.red, "redISqr works only with red numbers");
+        this.red._verify1(this);
+        return this.red.isqr(this);
+      };
+      BN2.prototype.redSqrt = function redSqrt() {
+        assert3(this.red, "redSqrt works only with red numbers");
+        this.red._verify1(this);
+        return this.red.sqrt(this);
+      };
+      BN2.prototype.redInvm = function redInvm() {
+        assert3(this.red, "redInvm works only with red numbers");
+        this.red._verify1(this);
+        return this.red.invm(this);
+      };
+      BN2.prototype.redNeg = function redNeg() {
+        assert3(this.red, "redNeg works only with red numbers");
+        this.red._verify1(this);
+        return this.red.neg(this);
+      };
+      BN2.prototype.redPow = function redPow(num) {
+        assert3(this.red && !num.red, "redPow(normalNum)");
+        this.red._verify1(this);
+        return this.red.pow(this, num);
+      };
+      var primes = {
+        k256: null,
+        p224: null,
+        p192: null,
+        p25519: null
+      };
+      function MPrime(name, p3) {
+        this.name = name;
+        this.p = new BN2(p3, 16);
+        this.n = this.p.bitLength();
+        this.k = new BN2(1).iushln(this.n).isub(this.p);
+        this.tmp = this._tmp();
+      }
+      MPrime.prototype._tmp = function _tmp() {
+        var tmp = new BN2(null);
+        tmp.words = new Array(Math.ceil(this.n / 13));
+        return tmp;
+      };
+      MPrime.prototype.ireduce = function ireduce(num) {
+        var r3 = num;
+        var rlen;
+        do {
+          this.split(r3, this.tmp);
+          r3 = this.imulK(r3);
+          r3 = r3.iadd(this.tmp);
+          rlen = r3.bitLength();
+        } while (rlen > this.n);
+        var cmp = rlen < this.n ? -1 : r3.ucmp(this.p);
+        if (cmp === 0) {
+          r3.words[0] = 0;
+          r3.length = 1;
+        } else if (cmp > 0) {
+          r3.isub(this.p);
+        } else {
+          r3.strip();
+        }
+        return r3;
+      };
+      MPrime.prototype.split = function split(input, out) {
+        input.iushrn(this.n, 0, out);
+      };
+      MPrime.prototype.imulK = function imulK(num) {
+        return num.imul(this.k);
+      };
+      function K256() {
+        MPrime.call(this, "k256", "ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff fffffffe fffffc2f");
+      }
+      inherits(K256, MPrime);
+      K256.prototype.split = function split(input, output) {
+        var mask = 4194303;
+        var outLen = Math.min(input.length, 9);
+        for (var i3 = 0; i3 < outLen; i3++) {
+          output.words[i3] = input.words[i3];
+        }
+        output.length = outLen;
+        if (input.length <= 9) {
+          input.words[0] = 0;
+          input.length = 1;
+          return;
+        }
+        var prev = input.words[9];
+        output.words[output.length++] = prev & mask;
+        for (i3 = 10; i3 < input.length; i3++) {
+          var next = input.words[i3] | 0;
+          input.words[i3 - 10] = (next & mask) << 4 | prev >>> 22;
+          prev = next;
+        }
+        prev >>>= 22;
+        input.words[i3 - 10] = prev;
+        if (prev === 0 && input.length > 10) {
+          input.length -= 10;
+        } else {
+          input.length -= 9;
+        }
+      };
+      K256.prototype.imulK = function imulK(num) {
+        num.words[num.length] = 0;
+        num.words[num.length + 1] = 0;
+        num.length += 2;
+        var lo = 0;
+        for (var i3 = 0; i3 < num.length; i3++) {
+          var w4 = num.words[i3] | 0;
+          lo += w4 * 977;
+          num.words[i3] = lo & 67108863;
+          lo = w4 * 64 + (lo / 67108864 | 0);
+        }
+        if (num.words[num.length - 1] === 0) {
+          num.length--;
+          if (num.words[num.length - 1] === 0) {
+            num.length--;
+          }
+        }
+        return num;
+      };
+      function P224() {
+        MPrime.call(this, "p224", "ffffffff ffffffff ffffffff ffffffff 00000000 00000000 00000001");
+      }
+      inherits(P224, MPrime);
+      function P192() {
+        MPrime.call(this, "p192", "ffffffff ffffffff ffffffff fffffffe ffffffff ffffffff");
+      }
+      inherits(P192, MPrime);
+      function P25519() {
+        MPrime.call(this, "25519", "7fffffffffffffff ffffffffffffffff ffffffffffffffff ffffffffffffffed");
+      }
+      inherits(P25519, MPrime);
+      P25519.prototype.imulK = function imulK(num) {
+        var carry = 0;
+        for (var i3 = 0; i3 < num.length; i3++) {
+          var hi = (num.words[i3] | 0) * 19 + carry;
+          var lo = hi & 67108863;
+          hi >>>= 26;
+          num.words[i3] = lo;
+          carry = hi;
+        }
+        if (carry !== 0) {
+          num.words[num.length++] = carry;
+        }
+        return num;
+      };
+      BN2._prime = function prime(name) {
+        if (primes[name])
+          return primes[name];
+        var prime2;
+        if (name === "k256") {
+          prime2 = new K256();
+        } else if (name === "p224") {
+          prime2 = new P224();
+        } else if (name === "p192") {
+          prime2 = new P192();
+        } else if (name === "p25519") {
+          prime2 = new P25519();
+        } else {
+          throw new Error("Unknown prime " + name);
+        }
+        primes[name] = prime2;
+        return prime2;
+      };
+      function Red(m3) {
+        if (typeof m3 === "string") {
+          var prime = BN2._prime(m3);
+          this.m = prime.p;
+          this.prime = prime;
+        } else {
+          assert3(m3.gtn(1), "modulus must be greater than 1");
+          this.m = m3;
+          this.prime = null;
+        }
+      }
+      Red.prototype._verify1 = function _verify1(a3) {
+        assert3(a3.negative === 0, "red works only with positives");
+        assert3(a3.red, "red works only with red numbers");
+      };
+      Red.prototype._verify2 = function _verify2(a3, b2) {
+        assert3((a3.negative | b2.negative) === 0, "red works only with positives");
+        assert3(a3.red && a3.red === b2.red, "red works only with red numbers");
+      };
+      Red.prototype.imod = function imod(a3) {
+        if (this.prime)
+          return this.prime.ireduce(a3)._forceRed(this);
+        return a3.umod(this.m)._forceRed(this);
+      };
+      Red.prototype.neg = function neg(a3) {
+        if (a3.isZero()) {
+          return a3.clone();
+        }
+        return this.m.sub(a3)._forceRed(this);
+      };
+      Red.prototype.add = function add(a3, b2) {
+        this._verify2(a3, b2);
+        var res = a3.add(b2);
+        if (res.cmp(this.m) >= 0) {
+          res.isub(this.m);
+        }
+        return res._forceRed(this);
+      };
+      Red.prototype.iadd = function iadd(a3, b2) {
+        this._verify2(a3, b2);
+        var res = a3.iadd(b2);
+        if (res.cmp(this.m) >= 0) {
+          res.isub(this.m);
+        }
+        return res;
+      };
+      Red.prototype.sub = function sub(a3, b2) {
+        this._verify2(a3, b2);
+        var res = a3.sub(b2);
+        if (res.cmpn(0) < 0) {
+          res.iadd(this.m);
+        }
+        return res._forceRed(this);
+      };
+      Red.prototype.isub = function isub(a3, b2) {
+        this._verify2(a3, b2);
+        var res = a3.isub(b2);
+        if (res.cmpn(0) < 0) {
+          res.iadd(this.m);
+        }
+        return res;
+      };
+      Red.prototype.shl = function shl(a3, num) {
+        this._verify1(a3);
+        return this.imod(a3.ushln(num));
+      };
+      Red.prototype.imul = function imul(a3, b2) {
+        this._verify2(a3, b2);
+        return this.imod(a3.imul(b2));
+      };
+      Red.prototype.mul = function mul(a3, b2) {
+        this._verify2(a3, b2);
+        return this.imod(a3.mul(b2));
+      };
+      Red.prototype.isqr = function isqr(a3) {
+        return this.imul(a3, a3.clone());
+      };
+      Red.prototype.sqr = function sqr(a3) {
+        return this.mul(a3, a3);
+      };
+      Red.prototype.sqrt = function sqrt(a3) {
+        if (a3.isZero())
+          return a3.clone();
+        var mod3 = this.m.andln(3);
+        assert3(mod3 % 2 === 1);
+        if (mod3 === 3) {
+          var pow = this.m.add(new BN2(1)).iushrn(2);
+          return this.pow(a3, pow);
+        }
+        var q3 = this.m.subn(1);
+        var s3 = 0;
+        while (!q3.isZero() && q3.andln(1) === 0) {
+          s3++;
+          q3.iushrn(1);
+        }
+        assert3(!q3.isZero());
+        var one = new BN2(1).toRed(this);
+        var nOne = one.redNeg();
+        var lpow = this.m.subn(1).iushrn(1);
+        var z3 = this.m.bitLength();
+        z3 = new BN2(2 * z3 * z3).toRed(this);
+        while (this.pow(z3, lpow).cmp(nOne) !== 0) {
+          z3.redIAdd(nOne);
+        }
+        var c3 = this.pow(z3, q3);
+        var r3 = this.pow(a3, q3.addn(1).iushrn(1));
+        var t3 = this.pow(a3, q3);
+        var m3 = s3;
+        while (t3.cmp(one) !== 0) {
+          var tmp = t3;
+          for (var i3 = 0; tmp.cmp(one) !== 0; i3++) {
+            tmp = tmp.redSqr();
+          }
+          assert3(i3 < m3);
+          var b2 = this.pow(c3, new BN2(1).iushln(m3 - i3 - 1));
+          r3 = r3.redMul(b2);
+          c3 = b2.redSqr();
+          t3 = t3.redMul(c3);
+          m3 = i3;
+        }
+        return r3;
+      };
+      Red.prototype.invm = function invm(a3) {
+        var inv = a3._invmp(this.m);
+        if (inv.negative !== 0) {
+          inv.negative = 0;
+          return this.imod(inv).redNeg();
+        } else {
+          return this.imod(inv);
+        }
+      };
+      Red.prototype.pow = function pow(a3, num) {
+        if (num.isZero())
+          return new BN2(1).toRed(this);
+        if (num.cmpn(1) === 0)
+          return a3.clone();
+        var windowSize = 4;
+        var wnd = new Array(1 << windowSize);
+        wnd[0] = new BN2(1).toRed(this);
+        wnd[1] = a3;
+        for (var i3 = 2; i3 < wnd.length; i3++) {
+          wnd[i3] = this.mul(wnd[i3 - 1], a3);
+        }
+        var res = wnd[0];
+        var current = 0;
+        var currentLen = 0;
+        var start = num.bitLength() % 26;
+        if (start === 0) {
+          start = 26;
+        }
+        for (i3 = num.length - 1; i3 >= 0; i3--) {
+          var word = num.words[i3];
+          for (var j3 = start - 1; j3 >= 0; j3--) {
+            var bit = word >> j3 & 1;
+            if (res !== wnd[0]) {
+              res = this.sqr(res);
+            }
+            if (bit === 0 && current === 0) {
+              currentLen = 0;
+              continue;
+            }
+            current <<= 1;
+            current |= bit;
+            currentLen++;
+            if (currentLen !== windowSize && (i3 !== 0 || j3 !== 0))
+              continue;
+            res = this.mul(res, wnd[current]);
+            currentLen = 0;
+            current = 0;
+          }
+          start = 26;
+        }
+        return res;
+      };
+      Red.prototype.convertTo = function convertTo(num) {
+        var r3 = num.umod(this.m);
+        return r3 === num ? r3.clone() : r3;
+      };
+      Red.prototype.convertFrom = function convertFrom(num) {
+        var res = num.clone();
+        res.red = null;
+        return res;
+      };
+      BN2.mont = function mont(num) {
+        return new Mont(num);
+      };
+      function Mont(m3) {
+        Red.call(this, m3);
+        this.shift = this.m.bitLength();
+        if (this.shift % 26 !== 0) {
+          this.shift += 26 - this.shift % 26;
+        }
+        this.r = new BN2(1).iushln(this.shift);
+        this.r2 = this.imod(this.r.sqr());
+        this.rinv = this.r._invmp(this.m);
+        this.minv = this.rinv.mul(this.r).isubn(1).div(this.m);
+        this.minv = this.minv.umod(this.r);
+        this.minv = this.r.sub(this.minv);
+      }
+      inherits(Mont, Red);
+      Mont.prototype.convertTo = function convertTo(num) {
+        return this.imod(num.ushln(this.shift));
+      };
+      Mont.prototype.convertFrom = function convertFrom(num) {
+        var r3 = this.imod(num.mul(this.rinv));
+        r3.red = null;
+        return r3;
+      };
+      Mont.prototype.imul = function imul(a3, b2) {
+        if (a3.isZero() || b2.isZero()) {
+          a3.words[0] = 0;
+          a3.length = 1;
+          return a3;
+        }
+        var t3 = a3.imul(b2);
+        var c3 = t3.maskn(this.shift).mul(this.minv).imaskn(this.shift).mul(this.m);
+        var u3 = t3.isub(c3).iushrn(this.shift);
+        var res = u3;
+        if (u3.cmp(this.m) >= 0) {
+          res = u3.isub(this.m);
+        } else if (u3.cmpn(0) < 0) {
+          res = u3.iadd(this.m);
+        }
+        return res._forceRed(this);
+      };
+      Mont.prototype.mul = function mul(a3, b2) {
+        if (a3.isZero() || b2.isZero())
+          return new BN2(0)._forceRed(this);
+        var t3 = a3.mul(b2);
+        var c3 = t3.maskn(this.shift).mul(this.minv).imaskn(this.shift).mul(this.m);
+        var u3 = t3.isub(c3).iushrn(this.shift);
+        var res = u3;
+        if (u3.cmp(this.m) >= 0) {
+          res = u3.isub(this.m);
+        } else if (u3.cmpn(0) < 0) {
+          res = u3.iadd(this.m);
+        }
+        return res._forceRed(this);
+      };
+      Mont.prototype.invm = function invm(a3) {
+        var res = this.imod(a3._invmp(this.m).mul(this.r2));
+        return res._forceRed(this);
+      };
+    })(typeof module2 === "undefined" || module2, exports2);
   }
-  if (typeof navigator !== "undefined") {
-    return parseUserAgent(navigator.userAgent);
-  }
-  return getNodeVersion();
-}
-function matchUserAgent(ua) {
-  return ua !== "" && userAgentRules.reduce(function(matched, _a) {
-    var browser = _a[0], regex = _a[1];
-    if (matched) {
-      return matched;
-    }
-    var uaMatch = regex.exec(ua);
-    return !!uaMatch && [browser, uaMatch];
-  }, false);
-}
-function browserName(ua) {
-  var data = matchUserAgent(ua);
-  return data ? data[0] : null;
-}
-function parseUserAgent(ua) {
-  var matchedRule = matchUserAgent(ua);
-  if (!matchedRule) {
-    return null;
-  }
-  var name = matchedRule[0], match = matchedRule[1];
-  if (name === "searchbot") {
-    return new BotInfo();
-  }
-  var versionParts = match[1] && match[1].split(/[._]/).slice(0, 3);
-  if (versionParts) {
-    if (versionParts.length < REQUIRED_VERSION_PARTS) {
-      versionParts = __spreadArrays(versionParts, createVersionParts(REQUIRED_VERSION_PARTS - versionParts.length));
-    }
-  } else {
-    versionParts = [];
-  }
-  var version = versionParts.join(".");
-  var os = detectOS(ua);
-  var searchBotMatch = SEARCHBOT_OS_REGEX.exec(ua);
-  if (searchBotMatch && searchBotMatch[1]) {
-    return new SearchBotDeviceInfo(name, version, os, searchBotMatch[1]);
-  }
-  return new BrowserInfo(name, version, os);
-}
-function detectOS(ua) {
-  for (var ii = 0, count = operatingSystemRules.length; ii < count; ii++) {
-    var _a = operatingSystemRules[ii], os = _a[0], regex = _a[1];
-    var match = regex.exec(ua);
-    if (match) {
-      return os;
-    }
-  }
-  return null;
-}
-function getNodeVersion() {
-  var isNode2 = typeof process !== "undefined" && process.version;
-  return isNode2 ? new NodeInfo(process.version.slice(1)) : null;
-}
-function createVersionParts(count) {
-  var output = [];
-  for (var ii = 0; ii < count; ii++) {
-    output.push("0");
-  }
-  return output;
-}
-var __spreadArrays, BrowserInfo, NodeInfo, SearchBotDeviceInfo, BotInfo, ReactNativeInfo, SEARCHBOX_UA_REGEX, SEARCHBOT_OS_REGEX, REQUIRED_VERSION_PARTS, userAgentRules, operatingSystemRules;
-var init_es = __esm({
-  "node_modules/detect-browser/es/index.js"() {
-    __spreadArrays = function() {
-      for (var s3 = 0, i3 = 0, il = arguments.length; i3 < il; i3++)
-        s3 += arguments[i3].length;
-      for (var r3 = Array(s3), k3 = 0, i3 = 0; i3 < il; i3++)
-        for (var a3 = arguments[i3], j3 = 0, jl = a3.length; j3 < jl; j3++, k3++)
-          r3[k3] = a3[j3];
-      return r3;
+});
+
+// node_modules/is-typedarray/index.js
+var require_is_typedarray = __commonJS({
+  "node_modules/is-typedarray/index.js"(exports2, module2) {
+    module2.exports = isTypedArray3;
+    isTypedArray3.strict = isStrictTypedArray;
+    isTypedArray3.loose = isLooseTypedArray;
+    var toString = Object.prototype.toString;
+    var names = {
+      "[object Int8Array]": true,
+      "[object Int16Array]": true,
+      "[object Int32Array]": true,
+      "[object Uint8Array]": true,
+      "[object Uint8ClampedArray]": true,
+      "[object Uint16Array]": true,
+      "[object Uint32Array]": true,
+      "[object Float32Array]": true,
+      "[object Float64Array]": true
     };
-    BrowserInfo = function() {
-      function BrowserInfo2(name, version, os) {
-        this.name = name;
-        this.version = version;
-        this.os = os;
-        this.type = "browser";
+    function isTypedArray3(arr) {
+      return isStrictTypedArray(arr) || isLooseTypedArray(arr);
+    }
+    function isStrictTypedArray(arr) {
+      return arr instanceof Int8Array || arr instanceof Int16Array || arr instanceof Int32Array || arr instanceof Uint8Array || arr instanceof Uint8ClampedArray || arr instanceof Uint16Array || arr instanceof Uint32Array || arr instanceof Float32Array || arr instanceof Float64Array;
+    }
+    function isLooseTypedArray(arr) {
+      return names[toString.call(arr)];
+    }
+  }
+});
+
+// node_modules/typedarray-to-buffer/index.js
+var require_typedarray_to_buffer = __commonJS({
+  "node_modules/typedarray-to-buffer/index.js"(exports2, module2) {
+    var isTypedArray3 = require_is_typedarray().strict;
+    module2.exports = function typedarrayToBuffer(arr) {
+      if (isTypedArray3(arr)) {
+        var buf = Buffer.from(arr.buffer);
+        if (arr.byteLength !== arr.buffer.byteLength) {
+          buf = buf.slice(arr.byteOffset, arr.byteOffset + arr.byteLength);
+        }
+        return buf;
+      } else {
+        return Buffer.from(arr);
       }
-      return BrowserInfo2;
-    }();
-    NodeInfo = function() {
-      function NodeInfo2(version) {
-        this.version = version;
-        this.type = "node";
-        this.name = "node";
-        this.os = process.platform;
+    };
+  }
+});
+
+// node_modules/js-sha3/src/sha3.js
+var require_sha32 = __commonJS({
+  "node_modules/js-sha3/src/sha3.js"(exports2, module2) {
+    (function() {
+      "use strict";
+      var INPUT_ERROR = "input is invalid type";
+      var FINALIZE_ERROR = "finalize already called";
+      var WINDOW2 = typeof window === "object";
+      var root2 = WINDOW2 ? window : {};
+      if (root2.JS_SHA3_NO_WINDOW) {
+        WINDOW2 = false;
       }
-      return NodeInfo2;
-    }();
-    SearchBotDeviceInfo = function() {
-      function SearchBotDeviceInfo2(name, version, os, bot) {
-        this.name = name;
-        this.version = version;
-        this.os = os;
-        this.bot = bot;
-        this.type = "bot-device";
+      var WEB_WORKER2 = !WINDOW2 && typeof self === "object";
+      var NODE_JS2 = !root2.JS_SHA3_NO_NODE_JS && typeof process === "object" && process.versions && process.versions.node;
+      if (NODE_JS2) {
+        root2 = global;
+      } else if (WEB_WORKER2) {
+        root2 = self;
       }
-      return SearchBotDeviceInfo2;
-    }();
-    BotInfo = function() {
-      function BotInfo2() {
-        this.type = "bot";
-        this.bot = true;
-        this.name = "bot";
-        this.version = null;
-        this.os = null;
+      var COMMON_JS2 = !root2.JS_SHA3_NO_COMMON_JS && typeof module2 === "object" && module2.exports;
+      var AMD2 = typeof define === "function" && define.amd;
+      var ARRAY_BUFFER2 = !root2.JS_SHA3_NO_ARRAY_BUFFER && typeof ArrayBuffer !== "undefined";
+      var HEX_CHARS2 = "0123456789abcdef".split("");
+      var SHAKE_PADDING = [31, 7936, 2031616, 520093696];
+      var CSHAKE_PADDING = [4, 1024, 262144, 67108864];
+      var KECCAK_PADDING = [1, 256, 65536, 16777216];
+      var PADDING2 = [6, 1536, 393216, 100663296];
+      var SHIFT2 = [0, 8, 16, 24];
+      var RC = [
+        1,
+        0,
+        32898,
+        0,
+        32906,
+        2147483648,
+        2147516416,
+        2147483648,
+        32907,
+        0,
+        2147483649,
+        0,
+        2147516545,
+        2147483648,
+        32777,
+        2147483648,
+        138,
+        0,
+        136,
+        0,
+        2147516425,
+        0,
+        2147483658,
+        0,
+        2147516555,
+        0,
+        139,
+        2147483648,
+        32905,
+        2147483648,
+        32771,
+        2147483648,
+        32770,
+        2147483648,
+        128,
+        2147483648,
+        32778,
+        0,
+        2147483658,
+        2147483648,
+        2147516545,
+        2147483648,
+        32896,
+        2147483648,
+        2147483649,
+        0,
+        2147516424,
+        2147483648
+      ];
+      var BITS = [224, 256, 384, 512];
+      var SHAKE_BITS = [128, 256];
+      var OUTPUT_TYPES2 = ["hex", "buffer", "arrayBuffer", "array", "digest"];
+      var CSHAKE_BYTEPAD = {
+        "128": 168,
+        "256": 136
+      };
+      if (root2.JS_SHA3_NO_NODE_JS || !Array.isArray) {
+        Array.isArray = function(obj) {
+          return Object.prototype.toString.call(obj) === "[object Array]";
+        };
       }
-      return BotInfo2;
-    }();
-    ReactNativeInfo = function() {
-      function ReactNativeInfo2() {
-        this.type = "react-native";
-        this.name = "react-native";
-        this.version = null;
-        this.os = null;
+      if (ARRAY_BUFFER2 && (root2.JS_SHA3_NO_ARRAY_BUFFER_IS_VIEW || !ArrayBuffer.isView)) {
+        ArrayBuffer.isView = function(obj) {
+          return typeof obj === "object" && obj.buffer && obj.buffer.constructor === ArrayBuffer;
+        };
       }
-      return ReactNativeInfo2;
-    }();
-    SEARCHBOX_UA_REGEX = /alexa|bot|crawl(er|ing)|facebookexternalhit|feedburner|google web preview|nagios|postrank|pingdom|slurp|spider|yahoo!|yandex/;
-    SEARCHBOT_OS_REGEX = /(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask\ Jeeves\/Teoma|ia_archiver)/;
-    REQUIRED_VERSION_PARTS = 3;
-    userAgentRules = [
-      ["aol", /AOLShield\/([0-9\._]+)/],
-      ["edge", /Edge\/([0-9\._]+)/],
-      ["edge-ios", /EdgiOS\/([0-9\._]+)/],
-      ["yandexbrowser", /YaBrowser\/([0-9\._]+)/],
-      ["kakaotalk", /KAKAOTALK\s([0-9\.]+)/],
-      ["samsung", /SamsungBrowser\/([0-9\.]+)/],
-      ["silk", /\bSilk\/([0-9._-]+)\b/],
-      ["miui", /MiuiBrowser\/([0-9\.]+)$/],
-      ["beaker", /BeakerBrowser\/([0-9\.]+)/],
-      ["edge-chromium", /EdgA?\/([0-9\.]+)/],
-      [
-        "chromium-webview",
-        /(?!Chrom.*OPR)wv\).*Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/
-      ],
-      ["chrome", /(?!Chrom.*OPR)Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/],
-      ["phantomjs", /PhantomJS\/([0-9\.]+)(:?\s|$)/],
-      ["crios", /CriOS\/([0-9\.]+)(:?\s|$)/],
-      ["firefox", /Firefox\/([0-9\.]+)(?:\s|$)/],
-      ["fxios", /FxiOS\/([0-9\.]+)/],
-      ["opera-mini", /Opera Mini.*Version\/([0-9\.]+)/],
-      ["opera", /Opera\/([0-9\.]+)(?:\s|$)/],
-      ["opera", /OPR\/([0-9\.]+)(:?\s|$)/],
-      ["ie", /Trident\/7\.0.*rv\:([0-9\.]+).*\).*Gecko$/],
-      ["ie", /MSIE\s([0-9\.]+);.*Trident\/[4-7].0/],
-      ["ie", /MSIE\s(7\.0)/],
-      ["bb10", /BB10;\sTouch.*Version\/([0-9\.]+)/],
-      ["android", /Android\s([0-9\.]+)/],
-      ["ios", /Version\/([0-9\._]+).*Mobile.*Safari.*/],
-      ["safari", /Version\/([0-9\._]+).*Safari/],
-      ["facebook", /FBAV\/([0-9\.]+)/],
-      ["instagram", /Instagram\s([0-9\.]+)/],
-      ["ios-webview", /AppleWebKit\/([0-9\.]+).*Mobile/],
-      ["ios-webview", /AppleWebKit\/([0-9\.]+).*Gecko\)$/],
-      ["searchbot", SEARCHBOX_UA_REGEX]
-    ];
-    operatingSystemRules = [
-      ["iOS", /iP(hone|od|ad)/],
-      ["Android OS", /Android/],
-      ["BlackBerry OS", /BlackBerry|BB10/],
-      ["Windows Mobile", /IEMobile/],
-      ["Amazon OS", /Kindle/],
-      ["Windows 3.11", /Win16/],
-      ["Windows 95", /(Windows 95)|(Win95)|(Windows_95)/],
-      ["Windows 98", /(Windows 98)|(Win98)/],
-      ["Windows 2000", /(Windows NT 5.0)|(Windows 2000)/],
-      ["Windows XP", /(Windows NT 5.1)|(Windows XP)/],
-      ["Windows Server 2003", /(Windows NT 5.2)/],
-      ["Windows Vista", /(Windows NT 6.0)/],
-      ["Windows 7", /(Windows NT 6.1)/],
-      ["Windows 8", /(Windows NT 6.2)/],
-      ["Windows 8.1", /(Windows NT 6.3)/],
-      ["Windows 10", /(Windows NT 10.0)/],
-      ["Windows ME", /Windows ME/],
-      ["Open BSD", /OpenBSD/],
-      ["Sun OS", /SunOS/],
-      ["Chrome OS", /CrOS/],
-      ["Linux", /(Linux)|(X11)/],
-      ["Mac OS", /(Mac_PowerPC)|(Macintosh)/],
-      ["QNX", /QNX/],
-      ["BeOS", /BeOS/],
-      ["OS/2", /OS\/2/]
-    ];
+      var createOutputMethod2 = function(bits2, padding, outputType) {
+        return function(message) {
+          return new Keccak(bits2, padding, bits2).update(message)[outputType]();
+        };
+      };
+      var createShakeOutputMethod = function(bits2, padding, outputType) {
+        return function(message, outputBits) {
+          return new Keccak(bits2, padding, outputBits).update(message)[outputType]();
+        };
+      };
+      var createCshakeOutputMethod = function(bits2, padding, outputType) {
+        return function(message, outputBits, n2, s3) {
+          return methods["cshake" + bits2].update(message, outputBits, n2, s3)[outputType]();
+        };
+      };
+      var createKmacOutputMethod = function(bits2, padding, outputType) {
+        return function(key, message, outputBits, s3) {
+          return methods["kmac" + bits2].update(key, message, outputBits, s3)[outputType]();
+        };
+      };
+      var createOutputMethods = function(method2, createMethod3, bits2, padding) {
+        for (var i4 = 0; i4 < OUTPUT_TYPES2.length; ++i4) {
+          var type = OUTPUT_TYPES2[i4];
+          method2[type] = createMethod3(bits2, padding, type);
+        }
+        return method2;
+      };
+      var createMethod2 = function(bits2, padding) {
+        var method2 = createOutputMethod2(bits2, padding, "hex");
+        method2.create = function() {
+          return new Keccak(bits2, padding, bits2);
+        };
+        method2.update = function(message) {
+          return method2.create().update(message);
+        };
+        return createOutputMethods(method2, createOutputMethod2, bits2, padding);
+      };
+      var createShakeMethod = function(bits2, padding) {
+        var method2 = createShakeOutputMethod(bits2, padding, "hex");
+        method2.create = function(outputBits) {
+          return new Keccak(bits2, padding, outputBits);
+        };
+        method2.update = function(message, outputBits) {
+          return method2.create(outputBits).update(message);
+        };
+        return createOutputMethods(method2, createShakeOutputMethod, bits2, padding);
+      };
+      var createCshakeMethod = function(bits2, padding) {
+        var w4 = CSHAKE_BYTEPAD[bits2];
+        var method2 = createCshakeOutputMethod(bits2, padding, "hex");
+        method2.create = function(outputBits, n2, s3) {
+          if (!n2 && !s3) {
+            return methods["shake" + bits2].create(outputBits);
+          } else {
+            return new Keccak(bits2, padding, outputBits).bytepad([n2, s3], w4);
+          }
+        };
+        method2.update = function(message, outputBits, n2, s3) {
+          return method2.create(outputBits, n2, s3).update(message);
+        };
+        return createOutputMethods(method2, createCshakeOutputMethod, bits2, padding);
+      };
+      var createKmacMethod = function(bits2, padding) {
+        var w4 = CSHAKE_BYTEPAD[bits2];
+        var method2 = createKmacOutputMethod(bits2, padding, "hex");
+        method2.create = function(key, outputBits, s3) {
+          return new Kmac(bits2, padding, outputBits).bytepad(["KMAC", s3], w4).bytepad([key], w4);
+        };
+        method2.update = function(key, message, outputBits, s3) {
+          return method2.create(key, outputBits, s3).update(message);
+        };
+        return createOutputMethods(method2, createKmacOutputMethod, bits2, padding);
+      };
+      var algorithms = [
+        { name: "keccak", padding: KECCAK_PADDING, bits: BITS, createMethod: createMethod2 },
+        { name: "sha3", padding: PADDING2, bits: BITS, createMethod: createMethod2 },
+        { name: "shake", padding: SHAKE_PADDING, bits: SHAKE_BITS, createMethod: createShakeMethod },
+        { name: "cshake", padding: CSHAKE_PADDING, bits: SHAKE_BITS, createMethod: createCshakeMethod },
+        { name: "kmac", padding: CSHAKE_PADDING, bits: SHAKE_BITS, createMethod: createKmacMethod }
+      ];
+      var methods = {}, methodNames = [];
+      for (var i3 = 0; i3 < algorithms.length; ++i3) {
+        var algorithm2 = algorithms[i3];
+        var bits = algorithm2.bits;
+        for (var j3 = 0; j3 < bits.length; ++j3) {
+          var methodName = algorithm2.name + "_" + bits[j3];
+          methodNames.push(methodName);
+          methods[methodName] = algorithm2.createMethod(bits[j3], algorithm2.padding);
+          if (algorithm2.name !== "sha3") {
+            var newMethodName = algorithm2.name + bits[j3];
+            methodNames.push(newMethodName);
+            methods[newMethodName] = methods[methodName];
+          }
+        }
+      }
+      function Keccak(bits2, padding, outputBits) {
+        this.blocks = [];
+        this.s = [];
+        this.padding = padding;
+        this.outputBits = outputBits;
+        this.reset = true;
+        this.finalized = false;
+        this.block = 0;
+        this.start = 0;
+        this.blockCount = 1600 - (bits2 << 1) >> 5;
+        this.byteCount = this.blockCount << 2;
+        this.outputBlocks = outputBits >> 5;
+        this.extraBytes = (outputBits & 31) >> 3;
+        for (var i4 = 0; i4 < 50; ++i4) {
+          this.s[i4] = 0;
+        }
+      }
+      Keccak.prototype.update = function(message) {
+        if (this.finalized) {
+          throw new Error(FINALIZE_ERROR);
+        }
+        var notString, type = typeof message;
+        if (type !== "string") {
+          if (type === "object") {
+            if (message === null) {
+              throw new Error(INPUT_ERROR);
+            } else if (ARRAY_BUFFER2 && message.constructor === ArrayBuffer) {
+              message = new Uint8Array(message);
+            } else if (!Array.isArray(message)) {
+              if (!ARRAY_BUFFER2 || !ArrayBuffer.isView(message)) {
+                throw new Error(INPUT_ERROR);
+              }
+            }
+          } else {
+            throw new Error(INPUT_ERROR);
+          }
+          notString = true;
+        }
+        var blocks2 = this.blocks, byteCount = this.byteCount, length = message.length, blockCount = this.blockCount, index2 = 0, s3 = this.s, i4, code;
+        while (index2 < length) {
+          if (this.reset) {
+            this.reset = false;
+            blocks2[0] = this.block;
+            for (i4 = 1; i4 < blockCount + 1; ++i4) {
+              blocks2[i4] = 0;
+            }
+          }
+          if (notString) {
+            for (i4 = this.start; index2 < length && i4 < byteCount; ++index2) {
+              blocks2[i4 >> 2] |= message[index2] << SHIFT2[i4++ & 3];
+            }
+          } else {
+            for (i4 = this.start; index2 < length && i4 < byteCount; ++index2) {
+              code = message.charCodeAt(index2);
+              if (code < 128) {
+                blocks2[i4 >> 2] |= code << SHIFT2[i4++ & 3];
+              } else if (code < 2048) {
+                blocks2[i4 >> 2] |= (192 | code >> 6) << SHIFT2[i4++ & 3];
+                blocks2[i4 >> 2] |= (128 | code & 63) << SHIFT2[i4++ & 3];
+              } else if (code < 55296 || code >= 57344) {
+                blocks2[i4 >> 2] |= (224 | code >> 12) << SHIFT2[i4++ & 3];
+                blocks2[i4 >> 2] |= (128 | code >> 6 & 63) << SHIFT2[i4++ & 3];
+                blocks2[i4 >> 2] |= (128 | code & 63) << SHIFT2[i4++ & 3];
+              } else {
+                code = 65536 + ((code & 1023) << 10 | message.charCodeAt(++index2) & 1023);
+                blocks2[i4 >> 2] |= (240 | code >> 18) << SHIFT2[i4++ & 3];
+                blocks2[i4 >> 2] |= (128 | code >> 12 & 63) << SHIFT2[i4++ & 3];
+                blocks2[i4 >> 2] |= (128 | code >> 6 & 63) << SHIFT2[i4++ & 3];
+                blocks2[i4 >> 2] |= (128 | code & 63) << SHIFT2[i4++ & 3];
+              }
+            }
+          }
+          this.lastByteIndex = i4;
+          if (i4 >= byteCount) {
+            this.start = i4 - byteCount;
+            this.block = blocks2[blockCount];
+            for (i4 = 0; i4 < blockCount; ++i4) {
+              s3[i4] ^= blocks2[i4];
+            }
+            f3(s3);
+            this.reset = true;
+          } else {
+            this.start = i4;
+          }
+        }
+        return this;
+      };
+      Keccak.prototype.encode = function(x3, right) {
+        var o3 = x3 & 255, n2 = 1;
+        var bytes = [o3];
+        x3 = x3 >> 8;
+        o3 = x3 & 255;
+        while (o3 > 0) {
+          bytes.unshift(o3);
+          x3 = x3 >> 8;
+          o3 = x3 & 255;
+          ++n2;
+        }
+        if (right) {
+          bytes.push(n2);
+        } else {
+          bytes.unshift(n2);
+        }
+        this.update(bytes);
+        return bytes.length;
+      };
+      Keccak.prototype.encodeString = function(str) {
+        var notString, type = typeof str;
+        if (type !== "string") {
+          if (type === "object") {
+            if (str === null) {
+              throw new Error(INPUT_ERROR);
+            } else if (ARRAY_BUFFER2 && str.constructor === ArrayBuffer) {
+              str = new Uint8Array(str);
+            } else if (!Array.isArray(str)) {
+              if (!ARRAY_BUFFER2 || !ArrayBuffer.isView(str)) {
+                throw new Error(INPUT_ERROR);
+              }
+            }
+          } else {
+            throw new Error(INPUT_ERROR);
+          }
+          notString = true;
+        }
+        var bytes = 0, length = str.length;
+        if (notString) {
+          bytes = length;
+        } else {
+          for (var i4 = 0; i4 < str.length; ++i4) {
+            var code = str.charCodeAt(i4);
+            if (code < 128) {
+              bytes += 1;
+            } else if (code < 2048) {
+              bytes += 2;
+            } else if (code < 55296 || code >= 57344) {
+              bytes += 3;
+            } else {
+              code = 65536 + ((code & 1023) << 10 | str.charCodeAt(++i4) & 1023);
+              bytes += 4;
+            }
+          }
+        }
+        bytes += this.encode(bytes * 8);
+        this.update(str);
+        return bytes;
+      };
+      Keccak.prototype.bytepad = function(strs, w4) {
+        var bytes = this.encode(w4);
+        for (var i4 = 0; i4 < strs.length; ++i4) {
+          bytes += this.encodeString(strs[i4]);
+        }
+        var paddingBytes = w4 - bytes % w4;
+        var zeros = [];
+        zeros.length = paddingBytes;
+        this.update(zeros);
+        return this;
+      };
+      Keccak.prototype.finalize = function() {
+        if (this.finalized) {
+          return;
+        }
+        this.finalized = true;
+        var blocks2 = this.blocks, i4 = this.lastByteIndex, blockCount = this.blockCount, s3 = this.s;
+        blocks2[i4 >> 2] |= this.padding[i4 & 3];
+        if (this.lastByteIndex === this.byteCount) {
+          blocks2[0] = blocks2[blockCount];
+          for (i4 = 1; i4 < blockCount + 1; ++i4) {
+            blocks2[i4] = 0;
+          }
+        }
+        blocks2[blockCount - 1] |= 2147483648;
+        for (i4 = 0; i4 < blockCount; ++i4) {
+          s3[i4] ^= blocks2[i4];
+        }
+        f3(s3);
+      };
+      Keccak.prototype.toString = Keccak.prototype.hex = function() {
+        this.finalize();
+        var blockCount = this.blockCount, s3 = this.s, outputBlocks = this.outputBlocks, extraBytes = this.extraBytes, i4 = 0, j4 = 0;
+        var hex = "", block;
+        while (j4 < outputBlocks) {
+          for (i4 = 0; i4 < blockCount && j4 < outputBlocks; ++i4, ++j4) {
+            block = s3[i4];
+            hex += HEX_CHARS2[block >> 4 & 15] + HEX_CHARS2[block & 15] + HEX_CHARS2[block >> 12 & 15] + HEX_CHARS2[block >> 8 & 15] + HEX_CHARS2[block >> 20 & 15] + HEX_CHARS2[block >> 16 & 15] + HEX_CHARS2[block >> 28 & 15] + HEX_CHARS2[block >> 24 & 15];
+          }
+          if (j4 % blockCount === 0) {
+            f3(s3);
+            i4 = 0;
+          }
+        }
+        if (extraBytes) {
+          block = s3[i4];
+          hex += HEX_CHARS2[block >> 4 & 15] + HEX_CHARS2[block & 15];
+          if (extraBytes > 1) {
+            hex += HEX_CHARS2[block >> 12 & 15] + HEX_CHARS2[block >> 8 & 15];
+          }
+          if (extraBytes > 2) {
+            hex += HEX_CHARS2[block >> 20 & 15] + HEX_CHARS2[block >> 16 & 15];
+          }
+        }
+        return hex;
+      };
+      Keccak.prototype.arrayBuffer = function() {
+        this.finalize();
+        var blockCount = this.blockCount, s3 = this.s, outputBlocks = this.outputBlocks, extraBytes = this.extraBytes, i4 = 0, j4 = 0;
+        var bytes = this.outputBits >> 3;
+        var buffer;
+        if (extraBytes) {
+          buffer = new ArrayBuffer(outputBlocks + 1 << 2);
+        } else {
+          buffer = new ArrayBuffer(bytes);
+        }
+        var array = new Uint32Array(buffer);
+        while (j4 < outputBlocks) {
+          for (i4 = 0; i4 < blockCount && j4 < outputBlocks; ++i4, ++j4) {
+            array[j4] = s3[i4];
+          }
+          if (j4 % blockCount === 0) {
+            f3(s3);
+          }
+        }
+        if (extraBytes) {
+          array[i4] = s3[i4];
+          buffer = buffer.slice(0, bytes);
+        }
+        return buffer;
+      };
+      Keccak.prototype.buffer = Keccak.prototype.arrayBuffer;
+      Keccak.prototype.digest = Keccak.prototype.array = function() {
+        this.finalize();
+        var blockCount = this.blockCount, s3 = this.s, outputBlocks = this.outputBlocks, extraBytes = this.extraBytes, i4 = 0, j4 = 0;
+        var array = [], offset, block;
+        while (j4 < outputBlocks) {
+          for (i4 = 0; i4 < blockCount && j4 < outputBlocks; ++i4, ++j4) {
+            offset = j4 << 2;
+            block = s3[i4];
+            array[offset] = block & 255;
+            array[offset + 1] = block >> 8 & 255;
+            array[offset + 2] = block >> 16 & 255;
+            array[offset + 3] = block >> 24 & 255;
+          }
+          if (j4 % blockCount === 0) {
+            f3(s3);
+          }
+        }
+        if (extraBytes) {
+          offset = j4 << 2;
+          block = s3[i4];
+          array[offset] = block & 255;
+          if (extraBytes > 1) {
+            array[offset + 1] = block >> 8 & 255;
+          }
+          if (extraBytes > 2) {
+            array[offset + 2] = block >> 16 & 255;
+          }
+        }
+        return array;
+      };
+      function Kmac(bits2, padding, outputBits) {
+        Keccak.call(this, bits2, padding, outputBits);
+      }
+      Kmac.prototype = new Keccak();
+      Kmac.prototype.finalize = function() {
+        this.encode(this.outputBits, true);
+        return Keccak.prototype.finalize.call(this);
+      };
+      var f3 = function(s3) {
+        var h3, l3, n2, c0, c1, c22, c3, c4, c5, c6, c7, c8, c9, b0, b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15, b16, b17, b18, b19, b20, b21, b22, b23, b24, b25, b26, b27, b28, b29, b30, b31, b32, b33, b34, b35, b36, b37, b38, b39, b40, b41, b42, b43, b44, b45, b46, b47, b48, b49;
+        for (n2 = 0; n2 < 48; n2 += 2) {
+          c0 = s3[0] ^ s3[10] ^ s3[20] ^ s3[30] ^ s3[40];
+          c1 = s3[1] ^ s3[11] ^ s3[21] ^ s3[31] ^ s3[41];
+          c22 = s3[2] ^ s3[12] ^ s3[22] ^ s3[32] ^ s3[42];
+          c3 = s3[3] ^ s3[13] ^ s3[23] ^ s3[33] ^ s3[43];
+          c4 = s3[4] ^ s3[14] ^ s3[24] ^ s3[34] ^ s3[44];
+          c5 = s3[5] ^ s3[15] ^ s3[25] ^ s3[35] ^ s3[45];
+          c6 = s3[6] ^ s3[16] ^ s3[26] ^ s3[36] ^ s3[46];
+          c7 = s3[7] ^ s3[17] ^ s3[27] ^ s3[37] ^ s3[47];
+          c8 = s3[8] ^ s3[18] ^ s3[28] ^ s3[38] ^ s3[48];
+          c9 = s3[9] ^ s3[19] ^ s3[29] ^ s3[39] ^ s3[49];
+          h3 = c8 ^ (c22 << 1 | c3 >>> 31);
+          l3 = c9 ^ (c3 << 1 | c22 >>> 31);
+          s3[0] ^= h3;
+          s3[1] ^= l3;
+          s3[10] ^= h3;
+          s3[11] ^= l3;
+          s3[20] ^= h3;
+          s3[21] ^= l3;
+          s3[30] ^= h3;
+          s3[31] ^= l3;
+          s3[40] ^= h3;
+          s3[41] ^= l3;
+          h3 = c0 ^ (c4 << 1 | c5 >>> 31);
+          l3 = c1 ^ (c5 << 1 | c4 >>> 31);
+          s3[2] ^= h3;
+          s3[3] ^= l3;
+          s3[12] ^= h3;
+          s3[13] ^= l3;
+          s3[22] ^= h3;
+          s3[23] ^= l3;
+          s3[32] ^= h3;
+          s3[33] ^= l3;
+          s3[42] ^= h3;
+          s3[43] ^= l3;
+          h3 = c22 ^ (c6 << 1 | c7 >>> 31);
+          l3 = c3 ^ (c7 << 1 | c6 >>> 31);
+          s3[4] ^= h3;
+          s3[5] ^= l3;
+          s3[14] ^= h3;
+          s3[15] ^= l3;
+          s3[24] ^= h3;
+          s3[25] ^= l3;
+          s3[34] ^= h3;
+          s3[35] ^= l3;
+          s3[44] ^= h3;
+          s3[45] ^= l3;
+          h3 = c4 ^ (c8 << 1 | c9 >>> 31);
+          l3 = c5 ^ (c9 << 1 | c8 >>> 31);
+          s3[6] ^= h3;
+          s3[7] ^= l3;
+          s3[16] ^= h3;
+          s3[17] ^= l3;
+          s3[26] ^= h3;
+          s3[27] ^= l3;
+          s3[36] ^= h3;
+          s3[37] ^= l3;
+          s3[46] ^= h3;
+          s3[47] ^= l3;
+          h3 = c6 ^ (c0 << 1 | c1 >>> 31);
+          l3 = c7 ^ (c1 << 1 | c0 >>> 31);
+          s3[8] ^= h3;
+          s3[9] ^= l3;
+          s3[18] ^= h3;
+          s3[19] ^= l3;
+          s3[28] ^= h3;
+          s3[29] ^= l3;
+          s3[38] ^= h3;
+          s3[39] ^= l3;
+          s3[48] ^= h3;
+          s3[49] ^= l3;
+          b0 = s3[0];
+          b1 = s3[1];
+          b32 = s3[11] << 4 | s3[10] >>> 28;
+          b33 = s3[10] << 4 | s3[11] >>> 28;
+          b14 = s3[20] << 3 | s3[21] >>> 29;
+          b15 = s3[21] << 3 | s3[20] >>> 29;
+          b46 = s3[31] << 9 | s3[30] >>> 23;
+          b47 = s3[30] << 9 | s3[31] >>> 23;
+          b28 = s3[40] << 18 | s3[41] >>> 14;
+          b29 = s3[41] << 18 | s3[40] >>> 14;
+          b20 = s3[2] << 1 | s3[3] >>> 31;
+          b21 = s3[3] << 1 | s3[2] >>> 31;
+          b2 = s3[13] << 12 | s3[12] >>> 20;
+          b3 = s3[12] << 12 | s3[13] >>> 20;
+          b34 = s3[22] << 10 | s3[23] >>> 22;
+          b35 = s3[23] << 10 | s3[22] >>> 22;
+          b16 = s3[33] << 13 | s3[32] >>> 19;
+          b17 = s3[32] << 13 | s3[33] >>> 19;
+          b48 = s3[42] << 2 | s3[43] >>> 30;
+          b49 = s3[43] << 2 | s3[42] >>> 30;
+          b40 = s3[5] << 30 | s3[4] >>> 2;
+          b41 = s3[4] << 30 | s3[5] >>> 2;
+          b22 = s3[14] << 6 | s3[15] >>> 26;
+          b23 = s3[15] << 6 | s3[14] >>> 26;
+          b4 = s3[25] << 11 | s3[24] >>> 21;
+          b5 = s3[24] << 11 | s3[25] >>> 21;
+          b36 = s3[34] << 15 | s3[35] >>> 17;
+          b37 = s3[35] << 15 | s3[34] >>> 17;
+          b18 = s3[45] << 29 | s3[44] >>> 3;
+          b19 = s3[44] << 29 | s3[45] >>> 3;
+          b10 = s3[6] << 28 | s3[7] >>> 4;
+          b11 = s3[7] << 28 | s3[6] >>> 4;
+          b42 = s3[17] << 23 | s3[16] >>> 9;
+          b43 = s3[16] << 23 | s3[17] >>> 9;
+          b24 = s3[26] << 25 | s3[27] >>> 7;
+          b25 = s3[27] << 25 | s3[26] >>> 7;
+          b6 = s3[36] << 21 | s3[37] >>> 11;
+          b7 = s3[37] << 21 | s3[36] >>> 11;
+          b38 = s3[47] << 24 | s3[46] >>> 8;
+          b39 = s3[46] << 24 | s3[47] >>> 8;
+          b30 = s3[8] << 27 | s3[9] >>> 5;
+          b31 = s3[9] << 27 | s3[8] >>> 5;
+          b12 = s3[18] << 20 | s3[19] >>> 12;
+          b13 = s3[19] << 20 | s3[18] >>> 12;
+          b44 = s3[29] << 7 | s3[28] >>> 25;
+          b45 = s3[28] << 7 | s3[29] >>> 25;
+          b26 = s3[38] << 8 | s3[39] >>> 24;
+          b27 = s3[39] << 8 | s3[38] >>> 24;
+          b8 = s3[48] << 14 | s3[49] >>> 18;
+          b9 = s3[49] << 14 | s3[48] >>> 18;
+          s3[0] = b0 ^ ~b2 & b4;
+          s3[1] = b1 ^ ~b3 & b5;
+          s3[10] = b10 ^ ~b12 & b14;
+          s3[11] = b11 ^ ~b13 & b15;
+          s3[20] = b20 ^ ~b22 & b24;
+          s3[21] = b21 ^ ~b23 & b25;
+          s3[30] = b30 ^ ~b32 & b34;
+          s3[31] = b31 ^ ~b33 & b35;
+          s3[40] = b40 ^ ~b42 & b44;
+          s3[41] = b41 ^ ~b43 & b45;
+          s3[2] = b2 ^ ~b4 & b6;
+          s3[3] = b3 ^ ~b5 & b7;
+          s3[12] = b12 ^ ~b14 & b16;
+          s3[13] = b13 ^ ~b15 & b17;
+          s3[22] = b22 ^ ~b24 & b26;
+          s3[23] = b23 ^ ~b25 & b27;
+          s3[32] = b32 ^ ~b34 & b36;
+          s3[33] = b33 ^ ~b35 & b37;
+          s3[42] = b42 ^ ~b44 & b46;
+          s3[43] = b43 ^ ~b45 & b47;
+          s3[4] = b4 ^ ~b6 & b8;
+          s3[5] = b5 ^ ~b7 & b9;
+          s3[14] = b14 ^ ~b16 & b18;
+          s3[15] = b15 ^ ~b17 & b19;
+          s3[24] = b24 ^ ~b26 & b28;
+          s3[25] = b25 ^ ~b27 & b29;
+          s3[34] = b34 ^ ~b36 & b38;
+          s3[35] = b35 ^ ~b37 & b39;
+          s3[44] = b44 ^ ~b46 & b48;
+          s3[45] = b45 ^ ~b47 & b49;
+          s3[6] = b6 ^ ~b8 & b0;
+          s3[7] = b7 ^ ~b9 & b1;
+          s3[16] = b16 ^ ~b18 & b10;
+          s3[17] = b17 ^ ~b19 & b11;
+          s3[26] = b26 ^ ~b28 & b20;
+          s3[27] = b27 ^ ~b29 & b21;
+          s3[36] = b36 ^ ~b38 & b30;
+          s3[37] = b37 ^ ~b39 & b31;
+          s3[46] = b46 ^ ~b48 & b40;
+          s3[47] = b47 ^ ~b49 & b41;
+          s3[8] = b8 ^ ~b0 & b2;
+          s3[9] = b9 ^ ~b1 & b3;
+          s3[18] = b18 ^ ~b10 & b12;
+          s3[19] = b19 ^ ~b11 & b13;
+          s3[28] = b28 ^ ~b20 & b22;
+          s3[29] = b29 ^ ~b21 & b23;
+          s3[38] = b38 ^ ~b30 & b32;
+          s3[39] = b39 ^ ~b31 & b33;
+          s3[48] = b48 ^ ~b40 & b42;
+          s3[49] = b49 ^ ~b41 & b43;
+          s3[0] ^= RC[n2];
+          s3[1] ^= RC[n2 + 1];
+        }
+      };
+      if (COMMON_JS2) {
+        module2.exports = methods;
+      } else {
+        for (i3 = 0; i3 < methodNames.length; ++i3) {
+          root2[methodNames[i3]] = methods[methodNames[i3]];
+        }
+        if (AMD2) {
+          define(function() {
+            return methods;
+          });
+        }
+      }
+    })();
   }
 });
 
-// node_modules/@walletconnect/browser-utils/dist/esm/browser.js
-function detectEnv(userAgent) {
-  return detect(userAgent);
-}
-function detectOS2() {
-  const env = detectEnv();
-  return env && env.os ? env.os : void 0;
-}
-function isAndroid() {
-  const os = detectOS2();
-  return os ? os.toLowerCase().includes("android") : false;
-}
-function isIOS() {
-  const os = detectOS2();
-  return os ? os.toLowerCase().includes("ios") || os.toLowerCase().includes("mac") && navigator.maxTouchPoints > 1 : false;
-}
-function isMobile() {
-  const os = detectOS2();
-  return os ? isAndroid() || isIOS() : false;
-}
-function isNode() {
-  const env = detectEnv();
-  const result = env && env.name ? env.name.toLowerCase() === "node" : false;
-  return result;
-}
-function isBrowser() {
-  const result = !isNode() && !!getNavigator();
-  return result;
-}
-function getClientMeta() {
-  return windowMetadata.getWindowMetadata();
-}
-var windowMetadata, windowGetters, getFromWindow, getFromWindowOrThrow, getDocumentOrThrow, getDocument, getNavigatorOrThrow, getNavigator, getLocationOrThrow, getLocation, getCryptoOrThrow, getCrypto, getLocalStorageOrThrow, getLocalStorage;
-var init_browser = __esm({
-  "node_modules/@walletconnect/browser-utils/dist/esm/browser.js"() {
-    windowMetadata = __toESM(require_cjs2());
-    windowGetters = __toESM(require_cjs());
-    init_es();
-    getFromWindow = windowGetters.getFromWindow;
-    getFromWindowOrThrow = windowGetters.getFromWindowOrThrow;
-    getDocumentOrThrow = windowGetters.getDocumentOrThrow;
-    getDocument = windowGetters.getDocument;
-    getNavigatorOrThrow = windowGetters.getNavigatorOrThrow;
-    getNavigator = windowGetters.getNavigator;
-    getLocationOrThrow = windowGetters.getLocationOrThrow;
-    getLocation = windowGetters.getLocation;
-    getCryptoOrThrow = windowGetters.getCryptoOrThrow;
-    getCrypto = windowGetters.getCrypto;
-    getLocalStorageOrThrow = windowGetters.getLocalStorageOrThrow;
-    getLocalStorage = windowGetters.getLocalStorage;
+// node_modules/@walletconnect/environment/dist/cjs/crypto.js
+var require_crypto2 = __commonJS({
+  "node_modules/@walletconnect/environment/dist/cjs/crypto.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.isBrowserCryptoAvailable = exports2.getSubtleCrypto = exports2.getBrowerCrypto = void 0;
+    function getBrowerCrypto2() {
+      return (global === null || global === void 0 ? void 0 : global.crypto) || (global === null || global === void 0 ? void 0 : global.msCrypto) || {};
+    }
+    exports2.getBrowerCrypto = getBrowerCrypto2;
+    function getSubtleCrypto2() {
+      const browserCrypto = getBrowerCrypto2();
+      return browserCrypto.subtle || browserCrypto.webkitSubtle;
+    }
+    exports2.getSubtleCrypto = getSubtleCrypto2;
+    function isBrowserCryptoAvailable() {
+      return !!getBrowerCrypto2() && !!getSubtleCrypto2();
+    }
+    exports2.isBrowserCryptoAvailable = isBrowserCryptoAvailable;
   }
 });
 
-// node_modules/@walletconnect/safe-json/dist/esm/index.js
-function safeJsonParse(value) {
-  if (typeof value !== "string") {
-    throw new Error(`Cannot safe json parse value of type ${typeof value}`);
-  }
-  try {
-    return JSON.parse(value);
-  } catch (_a) {
-    return value;
-  }
-}
-function safeJsonStringify(value) {
-  return typeof value === "string" ? value : JSON.stringify(value);
-}
-var init_esm = __esm({
-  "node_modules/@walletconnect/safe-json/dist/esm/index.js"() {
-  }
-});
-
-// node_modules/@walletconnect/browser-utils/dist/esm/json.js
-var safeJsonParse2, safeJsonStringify2;
-var init_json = __esm({
-  "node_modules/@walletconnect/browser-utils/dist/esm/json.js"() {
-    init_esm();
-    safeJsonParse2 = safeJsonParse;
-    safeJsonStringify2 = safeJsonStringify;
+// node_modules/@walletconnect/environment/dist/cjs/env.js
+var require_env = __commonJS({
+  "node_modules/@walletconnect/environment/dist/cjs/env.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.isBrowser = exports2.isNode = exports2.isReactNative = void 0;
+    function isReactNative() {
+      return typeof document === "undefined" && typeof navigator !== "undefined" && navigator.product === "ReactNative";
+    }
+    exports2.isReactNative = isReactNative;
+    function isNode4() {
+      return typeof process !== "undefined" && typeof process.versions !== "undefined" && typeof process.versions.node !== "undefined";
+    }
+    exports2.isNode = isNode4;
+    function isBrowser2() {
+      return !isReactNative() && !isNode4();
+    }
+    exports2.isBrowser = isBrowser2;
   }
 });
 
-// node_modules/@walletconnect/browser-utils/dist/esm/local.js
-function setLocal(key, data) {
-  const raw = safeJsonStringify2(data);
-  const local = getLocalStorage();
-  if (local) {
-    local.setItem(key, raw);
-  }
-}
-function getLocal(key) {
-  let data = null;
-  let raw = null;
-  const local = getLocalStorage();
-  if (local) {
-    raw = local.getItem(key);
-  }
-  data = raw ? safeJsonParse2(raw) : raw;
-  return data;
-}
-function removeLocal(key) {
-  const local = getLocalStorage();
-  if (local) {
-    local.removeItem(key);
-  }
-}
-var init_local = __esm({
-  "node_modules/@walletconnect/browser-utils/dist/esm/local.js"() {
-    init_json();
-    init_browser();
+// node_modules/@walletconnect/environment/dist/cjs/index.js
+var require_cjs3 = __commonJS({
+  "node_modules/@walletconnect/environment/dist/cjs/index.js"(exports2) {
+    "use strict";
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o3, m3, k3, k22) {
+      if (k22 === void 0)
+        k22 = k3;
+      Object.defineProperty(o3, k22, { enumerable: true, get: function() {
+        return m3[k3];
+      } });
+    } : function(o3, m3, k3, k22) {
+      if (k22 === void 0)
+        k22 = k3;
+      o3[k22] = m3[k3];
+    });
+    var __exportStar = exports2 && exports2.__exportStar || function(m3, exports3) {
+      for (var p3 in m3)
+        if (p3 !== "default" && !exports3.hasOwnProperty(p3))
+          __createBinding(exports3, m3, p3);
+    };
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    __exportStar(require_crypto2(), exports2);
+    __exportStar(require_env(), exports2);
   }
 });
 
-// node_modules/@walletconnect/browser-utils/dist/esm/mobile.js
-function formatIOSMobile(uri, entry) {
-  const encodedUri = encodeURIComponent(uri);
-  return entry.universalLink ? `${entry.universalLink}/wc?uri=${encodedUri}` : entry.deepLink ? `${entry.deepLink}${entry.deepLink.endsWith(":") ? "//" : "/"}wc?uri=${encodedUri}` : "";
-}
-function saveMobileLinkInfo(data) {
-  const focusUri = data.href.split("?")[0];
-  setLocal(mobileLinkChoiceKey, Object.assign(Object.assign({}, data), { href: focusUri }));
-}
-function getMobileRegistryEntry(registry, name) {
-  return registry.filter((entry) => entry.name.toLowerCase().includes(name.toLowerCase()))[0];
-}
-function getMobileLinkRegistry(registry, whitelist) {
-  let links = registry;
-  if (whitelist) {
-    links = whitelist.map((name) => getMobileRegistryEntry(registry, name)).filter(Boolean);
-  }
-  return links;
-}
-var mobileLinkChoiceKey;
-var init_mobile = __esm({
-  "node_modules/@walletconnect/browser-utils/dist/esm/mobile.js"() {
-    init_local();
-    mobileLinkChoiceKey = "WALLETCONNECT_DEEPLINK_CHOICE";
+// node_modules/strict-uri-encode/index.js
+var require_strict_uri_encode = __commonJS({
+  "node_modules/strict-uri-encode/index.js"(exports2, module2) {
+    "use strict";
+    module2.exports = (str) => encodeURIComponent(str).replace(/[!'()*]/g, (x3) => `%${x3.charCodeAt(0).toString(16).toUpperCase()}`);
   }
 });
 
-// node_modules/@walletconnect/browser-utils/dist/esm/registry.js
-function getWalletRegistryUrl() {
-  return API_URL + "/api/v2/wallets";
-}
-function getDappRegistryUrl() {
-  return API_URL + "/api/v2/dapps";
-}
-function formatMobileRegistryEntry(entry, platform = "mobile") {
-  var _a;
-  return {
-    name: entry.name || "",
-    shortName: entry.metadata.shortName || "",
-    color: entry.metadata.colors.primary || "",
-    logo: (_a = entry.image_url.sm) !== null && _a !== void 0 ? _a : "",
-    universalLink: entry[platform].universal || "",
-    deepLink: entry[platform].native || ""
-  };
-}
-function formatMobileRegistry(registry, platform = "mobile") {
-  return Object.values(registry).filter((entry) => !!entry[platform].universal || !!entry[platform].native).map((entry) => formatMobileRegistryEntry(entry, platform));
-}
-var API_URL;
-var init_registry = __esm({
-  "node_modules/@walletconnect/browser-utils/dist/esm/registry.js"() {
-    API_URL = "https://registry.walletconnect.com";
+// node_modules/decode-uri-component/index.js
+var require_decode_uri_component = __commonJS({
+  "node_modules/decode-uri-component/index.js"(exports2, module2) {
+    "use strict";
+    var token = "%[a-f0-9]{2}";
+    var singleMatcher = new RegExp(token, "gi");
+    var multiMatcher = new RegExp("(" + token + ")+", "gi");
+    function decodeComponents(components, split) {
+      try {
+        return decodeURIComponent(components.join(""));
+      } catch (err) {
+      }
+      if (components.length === 1) {
+        return components;
+      }
+      split = split || 1;
+      var left = components.slice(0, split);
+      var right = components.slice(split);
+      return Array.prototype.concat.call([], decodeComponents(left), decodeComponents(right));
+    }
+    function decode2(input) {
+      try {
+        return decodeURIComponent(input);
+      } catch (err) {
+        var tokens = input.match(singleMatcher);
+        for (var i3 = 1; i3 < tokens.length; i3++) {
+          input = decodeComponents(tokens, i3).join("");
+          tokens = input.match(singleMatcher);
+        }
+        return input;
+      }
+    }
+    function customDecodeURIComponent(input) {
+      var replaceMap = {
+        "%FE%FF": "\uFFFD\uFFFD",
+        "%FF%FE": "\uFFFD\uFFFD"
+      };
+      var match = multiMatcher.exec(input);
+      while (match) {
+        try {
+          replaceMap[match[0]] = decodeURIComponent(match[0]);
+        } catch (err) {
+          var result = decode2(match[0]);
+          if (result !== match[0]) {
+            replaceMap[match[0]] = result;
+          }
+        }
+        match = multiMatcher.exec(input);
+      }
+      replaceMap["%C2"] = "\uFFFD";
+      var entries = Object.keys(replaceMap);
+      for (var i3 = 0; i3 < entries.length; i3++) {
+        var key = entries[i3];
+        input = input.replace(new RegExp(key, "g"), replaceMap[key]);
+      }
+      return input;
+    }
+    module2.exports = function(encodedURI) {
+      if (typeof encodedURI !== "string") {
+        throw new TypeError("Expected `encodedURI` to be of type `string`, got `" + typeof encodedURI + "`");
+      }
+      try {
+        encodedURI = encodedURI.replace(/\+/g, " ");
+        return decodeURIComponent(encodedURI);
+      } catch (err) {
+        return customDecodeURIComponent(encodedURI);
+      }
+    };
   }
 });
 
-// node_modules/@walletconnect/browser-utils/dist/esm/index.js
-var esm_exports2 = {};
-__export(esm_exports2, {
-  detectEnv: () => detectEnv,
-  detectOS: () => detectOS2,
-  formatIOSMobile: () => formatIOSMobile,
-  formatMobileRegistry: () => formatMobileRegistry,
-  formatMobileRegistryEntry: () => formatMobileRegistryEntry,
-  getClientMeta: () => getClientMeta,
-  getCrypto: () => getCrypto,
-  getCryptoOrThrow: () => getCryptoOrThrow,
-  getDappRegistryUrl: () => getDappRegistryUrl,
-  getDocument: () => getDocument,
-  getDocumentOrThrow: () => getDocumentOrThrow,
-  getFromWindow: () => getFromWindow,
-  getFromWindowOrThrow: () => getFromWindowOrThrow,
-  getLocal: () => getLocal,
-  getLocalStorage: () => getLocalStorage,
-  getLocalStorageOrThrow: () => getLocalStorageOrThrow,
-  getLocation: () => getLocation,
-  getLocationOrThrow: () => getLocationOrThrow,
-  getMobileLinkRegistry: () => getMobileLinkRegistry,
-  getMobileRegistryEntry: () => getMobileRegistryEntry,
-  getNavigator: () => getNavigator,
-  getNavigatorOrThrow: () => getNavigatorOrThrow,
-  getWalletRegistryUrl: () => getWalletRegistryUrl,
-  isAndroid: () => isAndroid,
-  isBrowser: () => isBrowser,
-  isIOS: () => isIOS,
-  isMobile: () => isMobile,
-  isNode: () => isNode,
-  mobileLinkChoiceKey: () => mobileLinkChoiceKey,
-  removeLocal: () => removeLocal,
-  safeJsonParse: () => safeJsonParse2,
-  safeJsonStringify: () => safeJsonStringify2,
-  saveMobileLinkInfo: () => saveMobileLinkInfo,
-  setLocal: () => setLocal
+// node_modules/split-on-first/index.js
+var require_split_on_first = __commonJS({
+  "node_modules/split-on-first/index.js"(exports2, module2) {
+    "use strict";
+    module2.exports = (string, separator) => {
+      if (!(typeof string === "string" && typeof separator === "string")) {
+        throw new TypeError("Expected the arguments to be of type `string`");
+      }
+      if (separator === "") {
+        return [string];
+      }
+      const separatorIndex = string.indexOf(separator);
+      if (separatorIndex === -1) {
+        return [string];
+      }
+      return [
+        string.slice(0, separatorIndex),
+        string.slice(separatorIndex + separator.length)
+      ];
+    };
+  }
 });
-var init_esm2 = __esm({
-  "node_modules/@walletconnect/browser-utils/dist/esm/index.js"() {
-    init_browser();
-    init_json();
-    init_local();
-    init_mobile();
-    init_registry();
+
+// node_modules/query-string/index.js
+var require_query_string = __commonJS({
+  "node_modules/query-string/index.js"(exports2) {
+    "use strict";
+    var strictUriEncode = require_strict_uri_encode();
+    var decodeComponent = require_decode_uri_component();
+    var splitOnFirst = require_split_on_first();
+    var isNullOrUndefined = (value) => value === null || value === void 0;
+    function encoderForArrayFormat(options) {
+      switch (options.arrayFormat) {
+        case "index":
+          return (key) => (result, value) => {
+            const index2 = result.length;
+            if (value === void 0 || options.skipNull && value === null || options.skipEmptyString && value === "") {
+              return result;
+            }
+            if (value === null) {
+              return [...result, [encode2(key, options), "[", index2, "]"].join("")];
+            }
+            return [
+              ...result,
+              [encode2(key, options), "[", encode2(index2, options), "]=", encode2(value, options)].join("")
+            ];
+          };
+        case "bracket":
+          return (key) => (result, value) => {
+            if (value === void 0 || options.skipNull && value === null || options.skipEmptyString && value === "") {
+              return result;
+            }
+            if (value === null) {
+              return [...result, [encode2(key, options), "[]"].join("")];
+            }
+            return [...result, [encode2(key, options), "[]=", encode2(value, options)].join("")];
+          };
+        case "comma":
+        case "separator":
+          return (key) => (result, value) => {
+            if (value === null || value === void 0 || value.length === 0) {
+              return result;
+            }
+            if (result.length === 0) {
+              return [[encode2(key, options), "=", encode2(value, options)].join("")];
+            }
+            return [[result, encode2(value, options)].join(options.arrayFormatSeparator)];
+          };
+        default:
+          return (key) => (result, value) => {
+            if (value === void 0 || options.skipNull && value === null || options.skipEmptyString && value === "") {
+              return result;
+            }
+            if (value === null) {
+              return [...result, encode2(key, options)];
+            }
+            return [...result, [encode2(key, options), "=", encode2(value, options)].join("")];
+          };
+      }
+    }
+    function parserForArrayFormat(options) {
+      let result;
+      switch (options.arrayFormat) {
+        case "index":
+          return (key, value, accumulator) => {
+            result = /\[(\d*)\]$/.exec(key);
+            key = key.replace(/\[\d*\]$/, "");
+            if (!result) {
+              accumulator[key] = value;
+              return;
+            }
+            if (accumulator[key] === void 0) {
+              accumulator[key] = {};
+            }
+            accumulator[key][result[1]] = value;
+          };
+        case "bracket":
+          return (key, value, accumulator) => {
+            result = /(\[\])$/.exec(key);
+            key = key.replace(/\[\]$/, "");
+            if (!result) {
+              accumulator[key] = value;
+              return;
+            }
+            if (accumulator[key] === void 0) {
+              accumulator[key] = [value];
+              return;
+            }
+            accumulator[key] = [].concat(accumulator[key], value);
+          };
+        case "comma":
+        case "separator":
+          return (key, value, accumulator) => {
+            const isArray = typeof value === "string" && value.split("").indexOf(options.arrayFormatSeparator) > -1;
+            const newValue = isArray ? value.split(options.arrayFormatSeparator).map((item) => decode2(item, options)) : value === null ? value : decode2(value, options);
+            accumulator[key] = newValue;
+          };
+        default:
+          return (key, value, accumulator) => {
+            if (accumulator[key] === void 0) {
+              accumulator[key] = value;
+              return;
+            }
+            accumulator[key] = [].concat(accumulator[key], value);
+          };
+      }
+    }
+    function validateArrayFormatSeparator(value) {
+      if (typeof value !== "string" || value.length !== 1) {
+        throw new TypeError("arrayFormatSeparator must be single character string");
+      }
+    }
+    function encode2(value, options) {
+      if (options.encode) {
+        return options.strict ? strictUriEncode(value) : encodeURIComponent(value);
+      }
+      return value;
+    }
+    function decode2(value, options) {
+      if (options.decode) {
+        return decodeComponent(value);
+      }
+      return value;
+    }
+    function keysSorter(input) {
+      if (Array.isArray(input)) {
+        return input.sort();
+      }
+      if (typeof input === "object") {
+        return keysSorter(Object.keys(input)).sort((a3, b2) => Number(a3) - Number(b2)).map((key) => input[key]);
+      }
+      return input;
+    }
+    function removeHash(input) {
+      const hashStart = input.indexOf("#");
+      if (hashStart !== -1) {
+        input = input.slice(0, hashStart);
+      }
+      return input;
+    }
+    function getHash(url) {
+      let hash = "";
+      const hashStart = url.indexOf("#");
+      if (hashStart !== -1) {
+        hash = url.slice(hashStart);
+      }
+      return hash;
+    }
+    function extract(input) {
+      input = removeHash(input);
+      const queryStart = input.indexOf("?");
+      if (queryStart === -1) {
+        return "";
+      }
+      return input.slice(queryStart + 1);
+    }
+    function parseValue(value, options) {
+      if (options.parseNumbers && !Number.isNaN(Number(value)) && (typeof value === "string" && value.trim() !== "")) {
+        value = Number(value);
+      } else if (options.parseBooleans && value !== null && (value.toLowerCase() === "true" || value.toLowerCase() === "false")) {
+        value = value.toLowerCase() === "true";
+      }
+      return value;
+    }
+    function parse2(input, options) {
+      options = Object.assign({
+        decode: true,
+        sort: true,
+        arrayFormat: "none",
+        arrayFormatSeparator: ",",
+        parseNumbers: false,
+        parseBooleans: false
+      }, options);
+      validateArrayFormatSeparator(options.arrayFormatSeparator);
+      const formatter = parserForArrayFormat(options);
+      const ret = /* @__PURE__ */ Object.create(null);
+      if (typeof input !== "string") {
+        return ret;
+      }
+      input = input.trim().replace(/^[?#&]/, "");
+      if (!input) {
+        return ret;
+      }
+      for (const param of input.split("&")) {
+        let [key, value] = splitOnFirst(options.decode ? param.replace(/\+/g, " ") : param, "=");
+        value = value === void 0 ? null : ["comma", "separator"].includes(options.arrayFormat) ? value : decode2(value, options);
+        formatter(decode2(key, options), value, ret);
+      }
+      for (const key of Object.keys(ret)) {
+        const value = ret[key];
+        if (typeof value === "object" && value !== null) {
+          for (const k3 of Object.keys(value)) {
+            value[k3] = parseValue(value[k3], options);
+          }
+        } else {
+          ret[key] = parseValue(value, options);
+        }
+      }
+      if (options.sort === false) {
+        return ret;
+      }
+      return (options.sort === true ? Object.keys(ret).sort() : Object.keys(ret).sort(options.sort)).reduce((result, key) => {
+        const value = ret[key];
+        if (Boolean(value) && typeof value === "object" && !Array.isArray(value)) {
+          result[key] = keysSorter(value);
+        } else {
+          result[key] = value;
+        }
+        return result;
+      }, /* @__PURE__ */ Object.create(null));
+    }
+    exports2.extract = extract;
+    exports2.parse = parse2;
+    exports2.stringify = (object, options) => {
+      if (!object) {
+        return "";
+      }
+      options = Object.assign({
+        encode: true,
+        strict: true,
+        arrayFormat: "none",
+        arrayFormatSeparator: ","
+      }, options);
+      validateArrayFormatSeparator(options.arrayFormatSeparator);
+      const shouldFilter = (key) => options.skipNull && isNullOrUndefined(object[key]) || options.skipEmptyString && object[key] === "";
+      const formatter = encoderForArrayFormat(options);
+      const objectCopy = {};
+      for (const key of Object.keys(object)) {
+        if (!shouldFilter(key)) {
+          objectCopy[key] = object[key];
+        }
+      }
+      const keys = Object.keys(objectCopy);
+      if (options.sort !== false) {
+        keys.sort(options.sort);
+      }
+      return keys.map((key) => {
+        const value = object[key];
+        if (value === void 0) {
+          return "";
+        }
+        if (value === null) {
+          return encode2(key, options);
+        }
+        if (Array.isArray(value)) {
+          return value.reduce(formatter(key), []).join("&");
+        }
+        return encode2(key, options) + "=" + encode2(value, options);
+      }).filter((x3) => x3.length > 0).join("&");
+    };
+    exports2.parseUrl = (input, options) => {
+      options = Object.assign({
+        decode: true
+      }, options);
+      const [url, hash] = splitOnFirst(input, "#");
+      return Object.assign({
+        url: url.split("?")[0] || "",
+        query: parse2(extract(input), options)
+      }, options && options.parseFragmentIdentifier && hash ? { fragmentIdentifier: decode2(hash, options) } : {});
+    };
+    exports2.stringifyUrl = (input, options) => {
+      options = Object.assign({
+        encode: true,
+        strict: true
+      }, options);
+      const url = removeHash(input.url).split("?")[0] || "";
+      const queryFromUrl = exports2.extract(input.url);
+      const parsedQueryFromUrl = exports2.parse(queryFromUrl, { sort: false });
+      const query = Object.assign(parsedQueryFromUrl, input.query);
+      let queryString = exports2.stringify(query, options);
+      if (queryString) {
+        queryString = `?${queryString}`;
+      }
+      let hash = getHash(input.url);
+      if (input.fragmentIdentifier) {
+        hash = `#${encode2(input.fragmentIdentifier, options)}`;
+      }
+      return `${url}${queryString}${hash}`;
+    };
+  }
+});
+
+// node_modules/ws/browser.js
+var require_browser = __commonJS({
+  "node_modules/ws/browser.js"(exports2, module2) {
+    "use strict";
+    module2.exports = function() {
+      throw new Error("ws does not work in the browser. Browser clients must use the native WebSocket object");
+    };
   }
 });
 
@@ -20700,7 +20089,7 @@ var require_typedarray_buffer = __commonJS({
       }
       return newBuf;
     };
-    Buffer3.prototype.copy = function copy(target, targetStart, start, end) {
+    Buffer3.prototype.copy = function copy2(target, targetStart, start, end) {
       if (!start)
         start = 0;
       if (!end && end !== 0)
@@ -20811,7 +20200,7 @@ var require_typedarray_buffer = __commonJS({
     };
     Buffer3.byteLength = byteLength;
     Buffer3.prototype._isBuffer = true;
-    Buffer3.isBuffer = function isBuffer(b2) {
+    Buffer3.isBuffer = function isBuffer3(b2) {
       return !!(b2 != null && b2._isBuffer);
     };
     module2.exports.alloc = function(size) {
@@ -20958,9 +20347,9 @@ var require_bit_buffer = __commonJS({
       this.length = 0;
     }
     BitBuffer.prototype = {
-      get: function(index) {
-        var bufIndex = Math.floor(index / 8);
-        return (this.buffer[bufIndex] >>> 7 - index % 8 & 1) === 1;
+      get: function(index2) {
+        var bufIndex = Math.floor(index2 / 8);
+        return (this.buffer[bufIndex] >>> 7 - index2 % 8 & 1) === 1;
       },
       put: function(num, length) {
         for (var i3 = 0; i3 < length; i3++) {
@@ -20998,10 +20387,10 @@ var require_bit_matrix = __commonJS({
       this.reservedBit = BufferUtil.alloc(size * size);
     }
     BitMatrix.prototype.set = function(row, col, value, reserved) {
-      var index = row * this.size + col;
-      this.data[index] = value;
+      var index2 = row * this.size + col;
+      this.data[index2] = value;
       if (reserved)
-        this.reservedBit[index] = true;
+        this.reservedBit[index2] = true;
     };
     BitMatrix.prototype.get = function(row, col) {
       return this.data[row * this.size + col];
@@ -21651,7 +21040,7 @@ var require_polynomial = __commonJS({
 });
 
 // node_modules/qrcode/node_modules/buffer/index.js
-var require_buffer2 = __commonJS({
+var require_buffer3 = __commonJS({
   "node_modules/qrcode/node_modules/buffer/index.js"(exports2) {
     "use strict";
     var base64 = require_base64_js();
@@ -21804,8 +21193,8 @@ var require_buffer2 = __commonJS({
     }
     function fromArrayView(arrayView) {
       if (isInstance(arrayView, Uint8Array)) {
-        var copy = new Uint8Array(arrayView);
-        return fromArrayBuffer(copy.buffer, copy.byteOffset, copy.byteLength);
+        var copy2 = new Uint8Array(arrayView);
+        return fromArrayBuffer(copy2.buffer, copy2.byteOffset, copy2.byteLength);
       }
       return fromArrayLike(arrayView);
     }
@@ -21859,7 +21248,7 @@ var require_buffer2 = __commonJS({
       }
       return Buffer3.alloc(+length);
     }
-    Buffer3.isBuffer = function isBuffer(b2) {
+    Buffer3.isBuffer = function isBuffer3(b2) {
       return b2 != null && b2._isBuffer === true && b2 !== Buffer3.prototype;
     };
     Buffer3.compare = function compare(a3, b2) {
@@ -22868,7 +22257,7 @@ var require_buffer2 = __commonJS({
     Buffer3.prototype.writeDoubleBE = function writeDoubleBE(value, offset, noAssert) {
       return writeDouble(this, value, offset, false, noAssert);
     };
-    Buffer3.prototype.copy = function copy(target, targetStart, start, end) {
+    Buffer3.prototype.copy = function copy2(target, targetStart, start, end) {
       if (!Buffer3.isBuffer(target))
         throw new TypeError("argument should be a Buffer");
       if (!start)
@@ -23083,7 +22472,7 @@ var require_reed_solomon_encoder = __commonJS({
   "node_modules/qrcode/lib/core/reed-solomon-encoder.js"(exports2, module2) {
     var BufferUtil = require_typedarray_buffer();
     var Polynomial = require_polynomial();
-    var Buffer3 = require_buffer2().Buffer;
+    var Buffer3 = require_buffer3().Buffer;
     function ReedSolomonEncoder(degree) {
       this.genPoly = void 0;
       this.degree = degree;
@@ -23542,11 +22931,11 @@ var require_dijkstra = __commonJS({
         var predecessors = {};
         var costs = {};
         costs[s3] = 0;
-        var open = dijkstra.PriorityQueue.make();
-        open.push(s3, 0);
+        var open2 = dijkstra.PriorityQueue.make();
+        open2.push(s3, 0);
         var closest, u3, v3, cost_of_s_to_u, adjacent_nodes, cost_of_e, cost_of_s_to_u_plus_cost_of_e, cost_of_s_to_v, first_visit;
-        while (!open.empty()) {
-          closest = open.pop();
+        while (!open2.empty()) {
+          closest = open2.pop();
           u3 = closest.value;
           cost_of_s_to_u = closest.cost;
           adjacent_nodes = graph[u3] || {};
@@ -23558,7 +22947,7 @@ var require_dijkstra = __commonJS({
               first_visit = typeof costs[v3] === "undefined";
               if (first_visit || cost_of_s_to_v > cost_of_s_to_u_plus_cost_of_e) {
                 costs[v3] = cost_of_s_to_u_plus_cost_of_e;
-                open.push(v3, cost_of_s_to_u_plus_cost_of_e);
+                open2.push(v3, cost_of_s_to_u_plus_cost_of_e);
                 predecessors[v3] = u3;
               }
             }
@@ -23984,18 +23373,18 @@ var require_qrcode = __commonJS({
         maxDataSize = Math.max(maxDataSize, dataSize);
       }
       var data = BufferUtil.alloc(totalCodewords);
-      var index = 0;
+      var index2 = 0;
       var i3, r3;
       for (i3 = 0; i3 < maxDataSize; i3++) {
         for (r3 = 0; r3 < ecTotalBlocks; r3++) {
           if (i3 < dcData[r3].length) {
-            data[index++] = dcData[r3][i3];
+            data[index2++] = dcData[r3][i3];
           }
         }
       }
       for (i3 = 0; i3 < ecCount; i3++) {
         for (r3 = 0; r3 < ecTotalBlocks; r3++) {
-          data[index++] = ecData[r3][i3];
+          data[index2++] = ecData[r3][i3];
         }
       }
       return data;
@@ -24266,10 +23655,10 @@ var require_svg_tag = __commonJS({
 });
 
 // node_modules/qrcode/lib/browser.js
-var require_browser = __commonJS({
+var require_browser2 = __commonJS({
   "node_modules/qrcode/lib/browser.js"(exports2) {
     var canPromise = require_can_promise();
-    var QRCode = require_qrcode();
+    var QRCode2 = require_qrcode();
     var CanvasRenderer = require_canvas();
     var SvgRenderer = require_svg_tag();
     function renderCanvas(renderFunc, canvas, text, opts, cb) {
@@ -24312,7 +23701,7 @@ var require_browser = __commonJS({
         }
         return new Promise(function(resolve, reject) {
           try {
-            var data2 = QRCode.create(text, opts);
+            var data2 = QRCode2.create(text, opts);
             resolve(renderFunc(data2, canvas, opts));
           } catch (e3) {
             reject(e3);
@@ -24320,13 +23709,13 @@ var require_browser = __commonJS({
         });
       }
       try {
-        var data = QRCode.create(text, opts);
+        var data = QRCode2.create(text, opts);
         cb(null, renderFunc(data, canvas, opts));
       } catch (e3) {
         cb(e3);
       }
     }
-    exports2.create = QRCode.create;
+    exports2.create = QRCode2.create;
     exports2.toCanvas = renderCanvas.bind(null, CanvasRenderer.render);
     exports2.toDataURL = renderCanvas.bind(null, CanvasRenderer.renderToDataURL);
     exports2.toString = renderCanvas.bind(null, function(data, _4, opts) {
@@ -24387,7 +23776,7 @@ var require_copy_to_clipboard = __commonJS({
       var copyKey = (/mac os x/i.test(navigator.userAgent) ? "\u2318" : "Ctrl") + "+C";
       return message.replace(/#{\s*key\s*}/g, copyKey);
     }
-    function copy(text, options) {
+    function copy2(text, options) {
       var debug, message, reselectPrevious, range, selection, mark, success = false;
       if (!options) {
         options = {};
@@ -24464,1387 +23853,7 @@ var require_copy_to_clipboard = __commonJS({
       }
       return success;
     }
-    module2.exports = copy;
-  }
-});
-
-// node_modules/preact/dist/preact.module.js
-function a(n2, l3) {
-  for (var u3 in l3)
-    n2[u3] = l3[u3];
-  return n2;
-}
-function v(n2) {
-  var l3 = n2.parentNode;
-  l3 && l3.removeChild(n2);
-}
-function h(n2, l3, u3) {
-  var i3, t3 = arguments, r3 = {};
-  for (i3 in l3)
-    i3 !== "key" && i3 !== "ref" && (r3[i3] = l3[i3]);
-  if (arguments.length > 3)
-    for (u3 = [u3], i3 = 3; i3 < arguments.length; i3++)
-      u3.push(t3[i3]);
-  if (u3 != null && (r3.children = u3), typeof n2 == "function" && n2.defaultProps != null)
-    for (i3 in n2.defaultProps)
-      r3[i3] === void 0 && (r3[i3] = n2.defaultProps[i3]);
-  return p(n2, r3, l3 && l3.key, l3 && l3.ref, null);
-}
-function p(l3, u3, i3, t3, r3) {
-  var o3 = { type: l3, props: u3, key: i3, ref: t3, __k: null, __: null, __b: 0, __e: null, __d: void 0, __c: null, constructor: void 0, __v: r3 };
-  return r3 == null && (o3.__v = o3), n.vnode && n.vnode(o3), o3;
-}
-function y() {
-  return {};
-}
-function d(n2) {
-  return n2.children;
-}
-function m(n2, l3) {
-  this.props = n2, this.context = l3;
-}
-function w(n2, l3) {
-  if (l3 == null)
-    return n2.__ ? w(n2.__, n2.__.__k.indexOf(n2) + 1) : null;
-  for (var u3; l3 < n2.__k.length; l3++)
-    if ((u3 = n2.__k[l3]) != null && u3.__e != null)
-      return u3.__e;
-  return typeof n2.type == "function" ? w(n2) : null;
-}
-function k(n2) {
-  var l3, u3;
-  if ((n2 = n2.__) != null && n2.__c != null) {
-    for (n2.__e = n2.__c.base = null, l3 = 0; l3 < n2.__k.length; l3++)
-      if ((u3 = n2.__k[l3]) != null && u3.__e != null) {
-        n2.__e = n2.__c.base = u3.__e;
-        break;
-      }
-    return k(n2);
-  }
-}
-function g(l3) {
-  (!l3.__d && (l3.__d = true) && u.push(l3) && !i++ || r !== n.debounceRendering) && ((r = n.debounceRendering) || t)(_);
-}
-function _() {
-  for (var n2; i = u.length; )
-    n2 = u.sort(function(n3, l3) {
-      return n3.__v.__b - l3.__v.__b;
-    }), u = [], n2.some(function(n3) {
-      var l3, u3, i3, t3, r3, o3, f3;
-      n3.__d && (o3 = (r3 = (l3 = n3).__v).__e, (f3 = l3.__P) && (u3 = [], (i3 = a({}, r3)).__v = i3, t3 = A(f3, r3, i3, l3.__n, f3.ownerSVGElement !== void 0, null, u3, o3 == null ? w(r3) : o3), T(u3, r3), t3 != o3 && k(r3)));
-    });
-}
-function b(n2, l3, u3, i3, t3, r3, o3, f3, s3) {
-  var a3, h3, p3, y3, d3, m3, k3, g3 = u3 && u3.__k || c, _4 = g3.length;
-  if (f3 == e && (f3 = r3 != null ? r3[0] : _4 ? w(u3, 0) : null), a3 = 0, l3.__k = x(l3.__k, function(u4) {
-    if (u4 != null) {
-      if (u4.__ = l3, u4.__b = l3.__b + 1, (p3 = g3[a3]) === null || p3 && u4.key == p3.key && u4.type === p3.type)
-        g3[a3] = void 0;
-      else
-        for (h3 = 0; h3 < _4; h3++) {
-          if ((p3 = g3[h3]) && u4.key == p3.key && u4.type === p3.type) {
-            g3[h3] = void 0;
-            break;
-          }
-          p3 = null;
-        }
-      if (y3 = A(n2, u4, p3 = p3 || e, i3, t3, r3, o3, f3, s3), (h3 = u4.ref) && p3.ref != h3 && (k3 || (k3 = []), p3.ref && k3.push(p3.ref, null, u4), k3.push(h3, u4.__c || y3, u4)), y3 != null) {
-        var c3;
-        if (m3 == null && (m3 = y3), u4.__d !== void 0)
-          c3 = u4.__d, u4.__d = void 0;
-        else if (r3 == p3 || y3 != f3 || y3.parentNode == null) {
-          n:
-            if (f3 == null || f3.parentNode !== n2)
-              n2.appendChild(y3), c3 = null;
-            else {
-              for (d3 = f3, h3 = 0; (d3 = d3.nextSibling) && h3 < _4; h3 += 2)
-                if (d3 == y3)
-                  break n;
-              n2.insertBefore(y3, f3), c3 = f3;
-            }
-          l3.type == "option" && (n2.value = "");
-        }
-        f3 = c3 !== void 0 ? c3 : y3.nextSibling, typeof l3.type == "function" && (l3.__d = f3);
-      } else
-        f3 && p3.__e == f3 && f3.parentNode != n2 && (f3 = w(p3));
-    }
-    return a3++, u4;
-  }), l3.__e = m3, r3 != null && typeof l3.type != "function")
-    for (a3 = r3.length; a3--; )
-      r3[a3] != null && v(r3[a3]);
-  for (a3 = _4; a3--; )
-    g3[a3] != null && D(g3[a3], g3[a3]);
-  if (k3)
-    for (a3 = 0; a3 < k3.length; a3++)
-      j(k3[a3], k3[++a3], k3[++a3]);
-}
-function x(n2, l3, u3) {
-  if (u3 == null && (u3 = []), n2 == null || typeof n2 == "boolean")
-    l3 && u3.push(l3(null));
-  else if (Array.isArray(n2))
-    for (var i3 = 0; i3 < n2.length; i3++)
-      x(n2[i3], l3, u3);
-  else
-    u3.push(l3 ? l3(typeof n2 == "string" || typeof n2 == "number" ? p(null, n2, null, null, n2) : n2.__e != null || n2.__c != null ? p(n2.type, n2.props, n2.key, null, n2.__v) : n2) : n2);
-  return u3;
-}
-function P(n2, l3, u3, i3, t3) {
-  var r3;
-  for (r3 in u3)
-    r3 === "children" || r3 === "key" || r3 in l3 || N(n2, r3, null, u3[r3], i3);
-  for (r3 in l3)
-    t3 && typeof l3[r3] != "function" || r3 === "children" || r3 === "key" || r3 === "value" || r3 === "checked" || u3[r3] === l3[r3] || N(n2, r3, l3[r3], u3[r3], i3);
-}
-function C(n2, l3, u3) {
-  l3[0] === "-" ? n2.setProperty(l3, u3) : n2[l3] = typeof u3 == "number" && s.test(l3) === false ? u3 + "px" : u3 == null ? "" : u3;
-}
-function N(n2, l3, u3, i3, t3) {
-  var r3, o3, f3, e3, c3;
-  if (t3 ? l3 === "className" && (l3 = "class") : l3 === "class" && (l3 = "className"), l3 === "style")
-    if (r3 = n2.style, typeof u3 == "string")
-      r3.cssText = u3;
-    else {
-      if (typeof i3 == "string" && (r3.cssText = "", i3 = null), i3)
-        for (e3 in i3)
-          u3 && e3 in u3 || C(r3, e3, "");
-      if (u3)
-        for (c3 in u3)
-          i3 && u3[c3] === i3[c3] || C(r3, c3, u3[c3]);
-    }
-  else
-    l3[0] === "o" && l3[1] === "n" ? (o3 = l3 !== (l3 = l3.replace(/Capture$/, "")), f3 = l3.toLowerCase(), l3 = (f3 in n2 ? f3 : l3).slice(2), u3 ? (i3 || n2.addEventListener(l3, z, o3), (n2.l || (n2.l = {}))[l3] = u3) : n2.removeEventListener(l3, z, o3)) : l3 !== "list" && l3 !== "tagName" && l3 !== "form" && l3 !== "type" && l3 !== "size" && !t3 && l3 in n2 ? n2[l3] = u3 == null ? "" : u3 : typeof u3 != "function" && l3 !== "dangerouslySetInnerHTML" && (l3 !== (l3 = l3.replace(/^xlink:?/, "")) ? u3 == null || u3 === false ? n2.removeAttributeNS("http://www.w3.org/1999/xlink", l3.toLowerCase()) : n2.setAttributeNS("http://www.w3.org/1999/xlink", l3.toLowerCase(), u3) : u3 == null || u3 === false && !/^ar/.test(l3) ? n2.removeAttribute(l3) : n2.setAttribute(l3, u3));
-}
-function z(l3) {
-  this.l[l3.type](n.event ? n.event(l3) : l3);
-}
-function A(l3, u3, i3, t3, r3, o3, f3, e3, c3) {
-  var s3, v3, h3, p3, y3, w4, k3, g3, _4, x3, P3 = u3.type;
-  if (u3.constructor !== void 0)
-    return null;
-  (s3 = n.__b) && s3(u3);
-  try {
-    n:
-      if (typeof P3 == "function") {
-        if (g3 = u3.props, _4 = (s3 = P3.contextType) && t3[s3.__c], x3 = s3 ? _4 ? _4.props.value : s3.__ : t3, i3.__c ? k3 = (v3 = u3.__c = i3.__c).__ = v3.__E : ("prototype" in P3 && P3.prototype.render ? u3.__c = v3 = new P3(g3, x3) : (u3.__c = v3 = new m(g3, x3), v3.constructor = P3, v3.render = E), _4 && _4.sub(v3), v3.props = g3, v3.state || (v3.state = {}), v3.context = x3, v3.__n = t3, h3 = v3.__d = true, v3.__h = []), v3.__s == null && (v3.__s = v3.state), P3.getDerivedStateFromProps != null && (v3.__s == v3.state && (v3.__s = a({}, v3.__s)), a(v3.__s, P3.getDerivedStateFromProps(g3, v3.__s))), p3 = v3.props, y3 = v3.state, h3)
-          P3.getDerivedStateFromProps == null && v3.componentWillMount != null && v3.componentWillMount(), v3.componentDidMount != null && v3.__h.push(v3.componentDidMount);
-        else {
-          if (P3.getDerivedStateFromProps == null && g3 !== p3 && v3.componentWillReceiveProps != null && v3.componentWillReceiveProps(g3, x3), !v3.__e && v3.shouldComponentUpdate != null && v3.shouldComponentUpdate(g3, v3.__s, x3) === false || u3.__v === i3.__v && !v3.__) {
-            for (v3.props = g3, v3.state = v3.__s, u3.__v !== i3.__v && (v3.__d = false), v3.__v = u3, u3.__e = i3.__e, u3.__k = i3.__k, v3.__h.length && f3.push(v3), s3 = 0; s3 < u3.__k.length; s3++)
-              u3.__k[s3] && (u3.__k[s3].__ = u3);
-            break n;
-          }
-          v3.componentWillUpdate != null && v3.componentWillUpdate(g3, v3.__s, x3), v3.componentDidUpdate != null && v3.__h.push(function() {
-            v3.componentDidUpdate(p3, y3, w4);
-          });
-        }
-        v3.context = x3, v3.props = g3, v3.state = v3.__s, (s3 = n.__r) && s3(u3), v3.__d = false, v3.__v = u3, v3.__P = l3, s3 = v3.render(v3.props, v3.state, v3.context), u3.__k = s3 != null && s3.type == d && s3.key == null ? s3.props.children : Array.isArray(s3) ? s3 : [s3], v3.getChildContext != null && (t3 = a(a({}, t3), v3.getChildContext())), h3 || v3.getSnapshotBeforeUpdate == null || (w4 = v3.getSnapshotBeforeUpdate(p3, y3)), b(l3, u3, i3, t3, r3, o3, f3, e3, c3), v3.base = u3.__e, v3.__h.length && f3.push(v3), k3 && (v3.__E = v3.__ = null), v3.__e = false;
-      } else
-        o3 == null && u3.__v === i3.__v ? (u3.__k = i3.__k, u3.__e = i3.__e) : u3.__e = $(i3.__e, u3, i3, t3, r3, o3, f3, c3);
-    (s3 = n.diffed) && s3(u3);
-  } catch (l4) {
-    u3.__v = null, n.__e(l4, u3, i3);
-  }
-  return u3.__e;
-}
-function T(l3, u3) {
-  n.__c && n.__c(u3, l3), l3.some(function(u4) {
-    try {
-      l3 = u4.__h, u4.__h = [], l3.some(function(n2) {
-        n2.call(u4);
-      });
-    } catch (l4) {
-      n.__e(l4, u4.__v);
-    }
-  });
-}
-function $(n2, l3, u3, i3, t3, r3, o3, f3) {
-  var s3, a3, v3, h3, p3, y3 = u3.props, d3 = l3.props;
-  if (t3 = l3.type === "svg" || t3, r3 != null) {
-    for (s3 = 0; s3 < r3.length; s3++)
-      if ((a3 = r3[s3]) != null && ((l3.type === null ? a3.nodeType === 3 : a3.localName === l3.type) || n2 == a3)) {
-        n2 = a3, r3[s3] = null;
-        break;
-      }
-  }
-  if (n2 == null) {
-    if (l3.type === null)
-      return document.createTextNode(d3);
-    n2 = t3 ? document.createElementNS("http://www.w3.org/2000/svg", l3.type) : document.createElement(l3.type, d3.is && { is: d3.is }), r3 = null, f3 = false;
-  }
-  if (l3.type === null)
-    y3 !== d3 && n2.data != d3 && (n2.data = d3);
-  else {
-    if (r3 != null && (r3 = c.slice.call(n2.childNodes)), v3 = (y3 = u3.props || e).dangerouslySetInnerHTML, h3 = d3.dangerouslySetInnerHTML, !f3) {
-      if (y3 === e)
-        for (y3 = {}, p3 = 0; p3 < n2.attributes.length; p3++)
-          y3[n2.attributes[p3].name] = n2.attributes[p3].value;
-      (h3 || v3) && (h3 && v3 && h3.__html == v3.__html || (n2.innerHTML = h3 && h3.__html || ""));
-    }
-    P(n2, d3, y3, t3, f3), h3 ? l3.__k = [] : (l3.__k = l3.props.children, b(n2, l3, u3, i3, l3.type !== "foreignObject" && t3, r3, o3, e, f3)), f3 || ("value" in d3 && (s3 = d3.value) !== void 0 && s3 !== n2.value && N(n2, "value", s3, y3.value, false), "checked" in d3 && (s3 = d3.checked) !== void 0 && s3 !== n2.checked && N(n2, "checked", s3, y3.checked, false));
-  }
-  return n2;
-}
-function j(l3, u3, i3) {
-  try {
-    typeof l3 == "function" ? l3(u3) : l3.current = u3;
-  } catch (l4) {
-    n.__e(l4, i3);
-  }
-}
-function D(l3, u3, i3) {
-  var t3, r3, o3;
-  if (n.unmount && n.unmount(l3), (t3 = l3.ref) && (t3.current && t3.current !== l3.__e || j(t3, null, u3)), i3 || typeof l3.type == "function" || (i3 = (r3 = l3.__e) != null), l3.__e = l3.__d = void 0, (t3 = l3.__c) != null) {
-    if (t3.componentWillUnmount)
-      try {
-        t3.componentWillUnmount();
-      } catch (l4) {
-        n.__e(l4, u3);
-      }
-    t3.base = t3.__P = null;
-  }
-  if (t3 = l3.__k)
-    for (o3 = 0; o3 < t3.length; o3++)
-      t3[o3] && D(t3[o3], u3, i3);
-  r3 != null && v(r3);
-}
-function E(n2, l3, u3) {
-  return this.constructor(n2, u3);
-}
-function H(l3, u3, i3) {
-  var t3, r3, f3;
-  n.__ && n.__(l3, u3), r3 = (t3 = i3 === o) ? null : i3 && i3.__k || u3.__k, l3 = h(d, null, [l3]), f3 = [], A(u3, (t3 ? u3 : i3 || u3).__k = l3, r3 || e, e, u3.ownerSVGElement !== void 0, i3 && !t3 ? [i3] : r3 ? null : c.slice.call(u3.childNodes), f3, i3 || e, t3), T(f3, l3);
-}
-function I(n2, l3) {
-  H(n2, l3, o);
-}
-function L(n2, l3) {
-  var u3, i3;
-  for (i3 in l3 = a(a({}, n2.props), l3), arguments.length > 2 && (l3.children = c.slice.call(arguments, 2)), u3 = {}, l3)
-    i3 !== "key" && i3 !== "ref" && (u3[i3] = l3[i3]);
-  return p(n2.type, u3, l3.key || n2.key, l3.ref || n2.ref, null);
-}
-function M(n2) {
-  var l3 = {}, u3 = { __c: "__cC" + f++, __: n2, Consumer: function(n3, l4) {
-    return n3.children(l4);
-  }, Provider: function(n3) {
-    var i3, t3 = this;
-    return this.getChildContext || (i3 = [], this.getChildContext = function() {
-      return l3[u3.__c] = t3, l3;
-    }, this.shouldComponentUpdate = function(n4) {
-      t3.props.value !== n4.value && i3.some(function(l4) {
-        l4.context = n4.value, g(l4);
-      });
-    }, this.sub = function(n4) {
-      i3.push(n4);
-      var l4 = n4.componentWillUnmount;
-      n4.componentWillUnmount = function() {
-        i3.splice(i3.indexOf(n4), 1), l4 && l4.call(n4);
-      };
-    }), n3.children;
-  } };
-  return u3.Consumer.contextType = u3, u3.Provider.__ = u3, u3;
-}
-var n, l, u, i, t, r, o, f, e, c, s;
-var init_preact_module = __esm({
-  "node_modules/preact/dist/preact.module.js"() {
-    e = {}, c = [], s = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord/i;
-    n = { __e: function(n2, l3) {
-      for (var u3, i3; l3 = l3.__; )
-        if ((u3 = l3.__c) && !u3.__)
-          try {
-            if (u3.constructor && u3.constructor.getDerivedStateFromError != null && (i3 = true, u3.setState(u3.constructor.getDerivedStateFromError(n2))), u3.componentDidCatch != null && (i3 = true, u3.componentDidCatch(n2)), i3)
-              return g(u3.__E = u3);
-          } catch (l4) {
-            n2 = l4;
-          }
-      throw n2;
-    } }, l = function(n2) {
-      return n2 != null && n2.constructor === void 0;
-    }, m.prototype.setState = function(n2, l3) {
-      var u3;
-      u3 = this.__s !== this.state ? this.__s : this.__s = a({}, this.state), typeof n2 == "function" && (n2 = n2(u3, this.props)), n2 && a(u3, n2), n2 != null && this.__v && (l3 && this.__h.push(l3), g(this));
-    }, m.prototype.forceUpdate = function(n2) {
-      this.__v && (this.__e = true, n2 && this.__h.push(n2), g(this));
-    }, m.prototype.render = d, u = [], i = 0, t = typeof Promise == "function" ? Promise.prototype.then.bind(Promise.resolve()) : setTimeout, o = e, f = 0;
-  }
-});
-
-// node_modules/preact/hooks/dist/hooks.module.js
-function v2(t3, r3) {
-  n.__h && n.__h(u2, t3, i2 || r3), i2 = 0;
-  var o3 = u2.__H || (u2.__H = { __: [], __h: [] });
-  return t3 >= o3.__.length && o3.__.push({}), o3.__[t3];
-}
-function m2(n2) {
-  return i2 = 1, p2(E2, n2);
-}
-function p2(n2, r3, i3) {
-  var o3 = v2(t2++, 2);
-  return o3.__c || (o3.__c = u2, o3.__ = [i3 ? i3(r3) : E2(void 0, r3), function(t3) {
-    var u3 = n2(o3.__[0], t3);
-    o3.__[0] !== u3 && (o3.__[0] = u3, o3.__c.setState({}));
-  }]), o3.__;
-}
-function l2(r3, i3) {
-  var o3 = v2(t2++, 3);
-  !n.__s && x2(o3.__H, i3) && (o3.__ = r3, o3.__H = i3, u2.__H.__h.push(o3));
-}
-function y2(r3, i3) {
-  var o3 = v2(t2++, 4);
-  !n.__s && x2(o3.__H, i3) && (o3.__ = r3, o3.__H = i3, u2.__h.push(o3));
-}
-function d2(n2) {
-  return i2 = 5, h2(function() {
-    return { current: n2 };
-  }, []);
-}
-function s2(n2, t3, u3) {
-  i2 = 6, y2(function() {
-    typeof n2 == "function" ? n2(t3()) : n2 && (n2.current = t3());
-  }, u3 == null ? u3 : u3.concat(n2));
-}
-function h2(n2, u3) {
-  var r3 = v2(t2++, 7);
-  return x2(r3.__H, u3) ? (r3.__H = u3, r3.__h = n2, r3.__ = n2()) : r3.__;
-}
-function T2(n2, t3) {
-  return i2 = 8, h2(function() {
-    return n2;
-  }, t3);
-}
-function w2(n2) {
-  var r3 = u2.context[n2.__c], i3 = v2(t2++, 9);
-  return i3.__c = n2, r3 ? (i3.__ == null && (i3.__ = true, r3.sub(u2)), r3.props.value) : n2.__;
-}
-function A2(t3, u3) {
-  n.useDebugValue && n.useDebugValue(u3 ? u3(t3) : t3);
-}
-function F(n2) {
-  var r3 = v2(t2++, 10), i3 = m2();
-  return r3.__ = n2, u2.componentDidCatch || (u2.componentDidCatch = function(n3) {
-    r3.__ && r3.__(n3), i3[1](n3);
-  }), [i3[0], function() {
-    i3[1](void 0);
-  }];
-}
-function _2() {
-  o2.some(function(t3) {
-    if (t3.__P)
-      try {
-        t3.__H.__h.forEach(g2), t3.__H.__h.forEach(q), t3.__H.__h = [];
-      } catch (u3) {
-        return t3.__H.__h = [], n.__e(u3, t3.__v), true;
-      }
-  }), o2 = [];
-}
-function g2(n2) {
-  n2.t && n2.t();
-}
-function q(n2) {
-  var t3 = n2.__();
-  typeof t3 == "function" && (n2.t = t3);
-}
-function x2(n2, t3) {
-  return !n2 || t3.some(function(t4, u3) {
-    return t4 !== n2[u3];
-  });
-}
-function E2(n2, t3) {
-  return typeof t3 == "function" ? t3(n2) : t3;
-}
-var t2, u2, r2, i2, o2, c2, f2, e2, a2;
-var init_hooks_module = __esm({
-  "node_modules/preact/hooks/dist/hooks.module.js"() {
-    init_preact_module();
-    i2 = 0, o2 = [], c2 = n.__r, f2 = n.diffed, e2 = n.__c, a2 = n.unmount;
-    n.__r = function(n2) {
-      c2 && c2(n2), t2 = 0, (u2 = n2.__c).__H && (u2.__H.__h.forEach(g2), u2.__H.__h.forEach(q), u2.__H.__h = []);
-    }, n.diffed = function(t3) {
-      f2 && f2(t3);
-      var u3 = t3.__c;
-      if (u3) {
-        var i3 = u3.__H;
-        i3 && i3.__h.length && (o2.push(u3) !== 1 && r2 === n.requestAnimationFrame || ((r2 = n.requestAnimationFrame) || function(n2) {
-          var t4, u4 = function() {
-            clearTimeout(r3), cancelAnimationFrame(t4), setTimeout(n2);
-          }, r3 = setTimeout(u4, 100);
-          typeof window != "undefined" && (t4 = requestAnimationFrame(u4));
-        })(_2));
-      }
-    }, n.__c = function(t3, u3) {
-      u3.some(function(t4) {
-        try {
-          t4.__h.forEach(g2), t4.__h = t4.__h.filter(function(n2) {
-            return !n2.__ || q(n2);
-          });
-        } catch (r3) {
-          u3.some(function(n2) {
-            n2.__h && (n2.__h = []);
-          }), u3 = [], n.__e(r3, t4.__v);
-        }
-      }), e2 && e2(t3, u3);
-    }, n.unmount = function(t3) {
-      a2 && a2(t3);
-      var u3 = t3.__c;
-      if (u3) {
-        var r3 = u3.__H;
-        if (r3)
-          try {
-            r3.__.forEach(function(n2) {
-              return n2.t && n2.t();
-            });
-          } catch (t4) {
-            n.__e(t4, u3.__v);
-          }
-      }
-    };
-  }
-});
-
-// node_modules/preact/compat/dist/compat.module.js
-var compat_module_exports = {};
-__export(compat_module_exports, {
-  Children: () => R,
-  Component: () => m,
-  Fragment: () => d,
-  PureComponent: () => C2,
-  Suspense: () => U,
-  SuspenseList: () => O,
-  cloneElement: () => K2,
-  createContext: () => M,
-  createElement: () => h,
-  createFactory: () => G,
-  createPortal: () => z2,
-  createRef: () => y,
-  default: () => compat_module_default,
-  findDOMNode: () => X,
-  forwardRef: () => S,
-  hydrate: () => V,
-  isValidElement: () => J,
-  lazy: () => L2,
-  memo: () => _3,
-  render: () => T3,
-  unmountComponentAtNode: () => Q,
-  unstable_batchedUpdates: () => Y,
-  useCallback: () => T2,
-  useContext: () => w2,
-  useDebugValue: () => A2,
-  useEffect: () => l2,
-  useErrorBoundary: () => F,
-  useImperativeHandle: () => s2,
-  useLayoutEffect: () => y2,
-  useMemo: () => h2,
-  useReducer: () => p2,
-  useRef: () => d2,
-  useState: () => m2,
-  version: () => B
-});
-function E3(n2, t3) {
-  for (var e3 in t3)
-    n2[e3] = t3[e3];
-  return n2;
-}
-function w3(n2, t3) {
-  for (var e3 in n2)
-    if (e3 !== "__source" && !(e3 in t3))
-      return true;
-  for (var r3 in t3)
-    if (r3 !== "__source" && n2[r3] !== t3[r3])
-      return true;
-  return false;
-}
-function _3(n2, t3) {
-  function e3(n3) {
-    var e4 = this.props.ref, r4 = e4 == n3.ref;
-    return !r4 && e4 && (e4.call ? e4(null) : e4.current = null), t3 ? !t3(this.props, n3) || !r4 : w3(this.props, n3);
-  }
-  function r3(t4) {
-    return this.shouldComponentUpdate = e3, h(n2, E3({}, t4));
-  }
-  return r3.prototype.isReactComponent = true, r3.displayName = "Memo(" + (n2.displayName || n2.name) + ")", r3.t = true, r3;
-}
-function S(n2) {
-  function t3(t4) {
-    var e3 = E3({}, t4);
-    return delete e3.ref, n2(e3, t4.ref);
-  }
-  return t3.prototype.isReactComponent = t3.t = true, t3.displayName = "ForwardRef(" + (n2.displayName || n2.name) + ")", t3;
-}
-function N2(n2) {
-  return n2 && ((n2 = E3({}, n2)).__c = null, n2.__k = n2.__k && n2.__k.map(N2)), n2;
-}
-function U() {
-  this.__u = 0, this.o = null, this.__b = null;
-}
-function M2(n2) {
-  var t3 = n2.__.__c;
-  return t3 && t3.u && t3.u(n2);
-}
-function L2(n2) {
-  var t3, e3, r3;
-  function o3(o4) {
-    if (t3 || (t3 = n2()).then(function(n3) {
-      e3 = n3.default || n3;
-    }, function(n3) {
-      r3 = n3;
-    }), r3)
-      throw r3;
-    if (!e3)
-      throw t3;
-    return h(e3, o4);
-  }
-  return o3.displayName = "Lazy", o3.t = true, o3;
-}
-function O() {
-  this.i = null, this.l = null;
-}
-function j2(n2) {
-  var t3 = this, e3 = n2.container, r3 = h(W, { context: t3.context }, n2.vnode);
-  return t3.s && t3.s !== e3 && (t3.v.parentNode && t3.s.removeChild(t3.v), D(t3.h), t3.p = false), n2.vnode ? t3.p ? (e3.__k = t3.__k, H(r3, e3), t3.__k = e3.__k) : (t3.v = document.createTextNode(""), I("", e3), e3.appendChild(t3.v), t3.p = true, t3.s = e3, H(r3, e3, t3.v), t3.__k = t3.v.__k) : t3.p && (t3.v.parentNode && t3.s.removeChild(t3.v), D(t3.h)), t3.h = r3, t3.componentWillUnmount = function() {
-    t3.v.parentNode && t3.s.removeChild(t3.v), D(t3.h);
-  }, null;
-}
-function z2(n2, t3) {
-  return h(j2, { vnode: n2, container: t3 });
-}
-function T3(n2, t3, e3) {
-  if (t3.__k == null)
-    for (; t3.firstChild; )
-      t3.removeChild(t3.firstChild);
-  return H(n2, t3), typeof e3 == "function" && e3(), n2 ? n2.__c : null;
-}
-function V(n2, t3, e3) {
-  return I(n2, t3), typeof e3 == "function" && e3(), n2 ? n2.__c : null;
-}
-function I2(n2, t3) {
-  n2["UNSAFE_" + t3] && !n2[t3] && Object.defineProperty(n2, t3, { configurable: false, get: function() {
-    return this["UNSAFE_" + t3];
-  }, set: function(n3) {
-    this["UNSAFE_" + t3] = n3;
-  } });
-}
-function G(n2) {
-  return h.bind(null, n2);
-}
-function J(n2) {
-  return !!n2 && n2.$$typeof === H2;
-}
-function K2(n2) {
-  return J(n2) ? L.apply(null, arguments) : n2;
-}
-function Q(n2) {
-  return !!n2.__k && (H(null, n2), true);
-}
-function X(n2) {
-  return n2 && (n2.base || n2.nodeType === 1 && n2) || null;
-}
-var C2, A3, k2, R, F2, P2, W, D2, H2, Z, $2, q2, B, Y, compat_module_default;
-var init_compat_module = __esm({
-  "node_modules/preact/compat/dist/compat.module.js"() {
-    init_hooks_module();
-    init_hooks_module();
-    init_preact_module();
-    init_preact_module();
-    C2 = function(n2) {
-      var t3, e3;
-      function r3(t4) {
-        var e4;
-        return (e4 = n2.call(this, t4) || this).isPureReactComponent = true, e4;
-      }
-      return e3 = n2, (t3 = r3).prototype = Object.create(e3.prototype), t3.prototype.constructor = t3, t3.__proto__ = e3, r3.prototype.shouldComponentUpdate = function(n3, t4) {
-        return w3(this.props, n3) || w3(this.state, t4);
-      }, r3;
-    }(m);
-    A3 = n.__b;
-    n.__b = function(n2) {
-      n2.type && n2.type.t && n2.ref && (n2.props.ref = n2.ref, n2.ref = null), A3 && A3(n2);
-    };
-    k2 = function(n2, t3) {
-      return n2 ? x(n2).reduce(function(n3, e3, r3) {
-        return n3.concat(t3(e3, r3));
-      }, []) : null;
-    }, R = { map: k2, forEach: k2, count: function(n2) {
-      return n2 ? x(n2).length : 0;
-    }, only: function(n2) {
-      if ((n2 = x(n2)).length !== 1)
-        throw new Error("Children.only() expects only one child.");
-      return n2[0];
-    }, toArray: x }, F2 = n.__e;
-    n.__e = function(n2, t3, e3) {
-      if (n2.then) {
-        for (var r3, o3 = t3; o3 = o3.__; )
-          if ((r3 = o3.__c) && r3.__c)
-            return r3.__c(n2, t3.__c);
-      }
-      F2(n2, t3, e3);
-    }, (U.prototype = new m()).__c = function(n2, t3) {
-      var e3 = this;
-      e3.o == null && (e3.o = []), e3.o.push(t3);
-      var r3 = M2(e3.__v), o3 = false, u3 = function() {
-        o3 || (o3 = true, r3 ? r3(i3) : i3());
-      };
-      t3.__c = t3.componentWillUnmount, t3.componentWillUnmount = function() {
-        u3(), t3.__c && t3.__c();
-      };
-      var i3 = function() {
-        var n3;
-        if (!--e3.__u)
-          for (e3.__v.__k[0] = e3.state.u, e3.setState({ u: e3.__b = null }); n3 = e3.o.pop(); )
-            n3.forceUpdate();
-      };
-      e3.__u++ || e3.setState({ u: e3.__b = e3.__v.__k[0] }), n2.then(u3, u3);
-    }, U.prototype.render = function(n2, t3) {
-      return this.__b && (this.__v.__k[0] = N2(this.__b), this.__b = null), [h(m, null, t3.u ? null : n2.children), t3.u && n2.fallback];
-    };
-    P2 = function(n2, t3, e3) {
-      if (++e3[1] === e3[0] && n2.l.delete(t3), n2.props.revealOrder && (n2.props.revealOrder[0] !== "t" || !n2.l.size))
-        for (e3 = n2.i; e3; ) {
-          for (; e3.length > 3; )
-            e3.pop()();
-          if (e3[1] < e3[0])
-            break;
-          n2.i = e3 = e3[2];
-        }
-    };
-    (O.prototype = new m()).u = function(n2) {
-      var t3 = this, e3 = M2(t3.__v), r3 = t3.l.get(n2);
-      return r3[0]++, function(o3) {
-        var u3 = function() {
-          t3.props.revealOrder ? (r3.push(o3), P2(t3, n2, r3)) : o3();
-        };
-        e3 ? e3(u3) : u3();
-      };
-    }, O.prototype.render = function(n2) {
-      this.i = null, this.l = /* @__PURE__ */ new Map();
-      var t3 = x(n2.children);
-      n2.revealOrder && n2.revealOrder[0] === "b" && t3.reverse();
-      for (var e3 = t3.length; e3--; )
-        this.l.set(t3[e3], this.i = [1, 0, this.i]);
-      return n2.children;
-    }, O.prototype.componentDidUpdate = O.prototype.componentDidMount = function() {
-      var n2 = this;
-      n2.l.forEach(function(t3, e3) {
-        P2(n2, e3, t3);
-      });
-    };
-    W = function() {
-      function n2() {
-      }
-      var t3 = n2.prototype;
-      return t3.getChildContext = function() {
-        return this.props.context;
-      }, t3.render = function(n3) {
-        return n3.children;
-      }, n2;
-    }();
-    D2 = /^(?:accent|alignment|arabic|baseline|cap|clip(?!PathU)|color|fill|flood|font|glyph(?!R)|horiz|marker(?!H|W|U)|overline|paint|stop|strikethrough|stroke|text(?!L)|underline|unicode|units|v|vector|vert|word|writing|x(?!C))[A-Z]/;
-    m.prototype.isReactComponent = {};
-    H2 = typeof Symbol != "undefined" && Symbol.for && Symbol.for("react.element") || 60103;
-    Z = n.event;
-    n.event = function(n2) {
-      Z && (n2 = Z(n2)), n2.persist = function() {
-      };
-      var t3 = false, e3 = false, r3 = n2.stopPropagation;
-      n2.stopPropagation = function() {
-        r3.call(n2), t3 = true;
-      };
-      var o3 = n2.preventDefault;
-      return n2.preventDefault = function() {
-        o3.call(n2), e3 = true;
-      }, n2.isPropagationStopped = function() {
-        return t3;
-      }, n2.isDefaultPrevented = function() {
-        return e3;
-      }, n2.nativeEvent = n2;
-    };
-    $2 = { configurable: true, get: function() {
-      return this.class;
-    } }, q2 = n.vnode;
-    n.vnode = function(n2) {
-      n2.$$typeof = H2;
-      var t3 = n2.type, e3 = n2.props;
-      if (t3) {
-        if (e3.class != e3.className && ($2.enumerable = "className" in e3, e3.className != null && (e3.class = e3.className), Object.defineProperty(e3, "className", $2)), typeof t3 != "function") {
-          var r3, o3, u3;
-          for (u3 in e3.defaultValue && e3.value !== void 0 && (e3.value || e3.value === 0 || (e3.value = e3.defaultValue), delete e3.defaultValue), Array.isArray(e3.value) && e3.multiple && t3 === "select" && (x(e3.children).forEach(function(n3) {
-            e3.value.indexOf(n3.props.value) != -1 && (n3.props.selected = true);
-          }), delete e3.value), e3)
-            if (r3 = D2.test(u3))
-              break;
-          if (r3)
-            for (u3 in o3 = n2.props = {}, e3)
-              o3[D2.test(u3) ? u3.replace(/[A-Z0-9]/, "-$&").toLowerCase() : u3] = e3[u3];
-        }
-        !function(t4) {
-          var e4 = n2.type, r4 = n2.props;
-          if (r4 && typeof e4 == "string") {
-            var o4 = {};
-            for (var u4 in r4)
-              /^on(Ani|Tra|Tou)/.test(u4) && (r4[u4.toLowerCase()] = r4[u4], delete r4[u4]), o4[u4.toLowerCase()] = u4;
-            if (o4.ondoubleclick && (r4.ondblclick = r4[o4.ondoubleclick], delete r4[o4.ondoubleclick]), o4.onbeforeinput && (r4.onbeforeinput = r4[o4.onbeforeinput], delete r4[o4.onbeforeinput]), o4.onchange && (e4 === "textarea" || e4.toLowerCase() === "input" && !/^fil|che|ra/i.test(r4.type))) {
-              var i3 = o4.oninput || "oninput";
-              r4[i3] || (r4[i3] = r4[o4.onchange], delete r4[o4.onchange]);
-            }
-          }
-        }(), typeof t3 == "function" && !t3.m && t3.prototype && (I2(t3.prototype, "componentWillMount"), I2(t3.prototype, "componentWillReceiveProps"), I2(t3.prototype, "componentWillUpdate"), t3.m = true);
-      }
-      q2 && q2(n2);
-    };
-    B = "16.8.0";
-    Y = function(n2, t3) {
-      return n2(t3);
-    };
-    compat_module_default = { useState: m2, useReducer: p2, useEffect: l2, useLayoutEffect: y2, useRef: d2, useImperativeHandle: s2, useMemo: h2, useCallback: T2, useContext: w2, useDebugValue: A2, version: "16.8.0", Children: R, render: T3, hydrate: T3, unmountComponentAtNode: Q, createPortal: z2, createElement: h, createContext: M, createFactory: G, cloneElement: K2, createRef: y, Fragment: d, isValidElement: J, findDOMNode: X, Component: m, PureComponent: C2, memo: _3, forwardRef: S, unstable_batchedUpdates: Y, Suspense: U, SuspenseList: O, lazy: L2 };
-  }
-});
-
-// node_modules/algorand-walletconnect-qrcode-modal/dist/cjs/index.js
-var require_cjs3 = __commonJS({
-  "node_modules/algorand-walletconnect-qrcode-modal/dist/cjs/index.js"(exports2, module2) {
-    function _interopDefault(ex) {
-      return ex && typeof ex === "object" && "default" in ex ? ex["default"] : ex;
-    }
-    var browserUtils = (init_esm2(), __toCommonJS(esm_exports2));
-    var QRCode = _interopDefault(require_browser());
-    var copy = _interopDefault(require_copy_to_clipboard());
-    var React = (init_compat_module(), __toCommonJS(compat_module_exports));
-    function open(uri) {
-      QRCode.toString(uri, {
-        type: "terminal"
-      }).then(console.log);
-    }
-    var WALLETCONNECT_STYLE_SHEET = ':root {\n  --animation-duration: 300ms;\n}\n\n@keyframes fadeIn {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 1;\n  }\n}\n\n@keyframes fadeOut {\n  from {\n    opacity: 1;\n  }\n  to {\n    opacity: 0;\n  }\n}\n\n.animated {\n  animation-duration: var(--animation-duration);\n  animation-fill-mode: both;\n}\n\n.fadeIn {\n  animation-name: fadeIn;\n}\n\n.fadeOut {\n  animation-name: fadeOut;\n}\n\n#walletconnect-wrapper {\n  -webkit-user-select: none;\n  align-items: center;\n  display: flex;\n  height: 100%;\n  justify-content: center;\n  left: 0;\n  pointer-events: none;\n  position: fixed;\n  top: 0;\n  user-select: none;\n  width: 100%;\n  z-index: 99999999999999;\n}\n\n.walletconnect-modal__headerLogo {\n  height: 21px;\n}\n\n.walletconnect-modal__header p {\n  color: #ffffff;\n  font-size: 20px;\n  font-weight: 600;\n  margin: 0;\n  align-items: flex-start;\n  display: flex;\n  flex: 1;\n  margin-left: 5px;\n}\n\n.walletconnect-modal__close__wrapper {\n  position: absolute;\n  top: 0px;\n  right: 0px;\n  z-index: 10000;\n  background: white;\n  border-radius: 26px;\n  padding: 6px;\n  box-sizing: border-box;\n  width: 26px;\n  height: 26px;\n  cursor: pointer;\n}\n\n.walletconnect-modal__close__icon {\n  position: relative;\n  top: 7px;\n  right: 0;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  transform: rotate(45deg);\n}\n\n.walletconnect-modal__close__line1 {\n  position: absolute;\n  width: 100%;\n  border: 1px solid rgb(48, 52, 59);\n}\n\n.walletconnect-modal__close__line2 {\n  position: absolute;\n  width: 100%;\n  border: 1px solid rgb(48, 52, 59);\n  transform: rotate(90deg);\n}\n\n.walletconnect-qrcode__base {\n  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);\n  background: rgba(37, 41, 46, 0.95);\n  height: 100%;\n  left: 0;\n  pointer-events: auto;\n  position: fixed;\n  top: 0;\n  transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);\n  width: 100%;\n  will-change: opacity;\n  padding: 40px;\n  box-sizing: border-box;\n}\n\n.walletconnect-qrcode__text {\n  color: rgba(60, 66, 82, 0.6);\n  font-size: 16px;\n  font-weight: 600;\n  letter-spacing: 0;\n  line-height: 1.1875em;\n  margin: 10px 0 20px 0;\n  text-align: center;\n  width: 100%;\n}\n\n@media only screen and (max-width: 768px) {\n  .walletconnect-qrcode__text {\n    font-size: 4vw;\n  }\n}\n\n@media only screen and (max-width: 320px) {\n  .walletconnect-qrcode__text {\n    font-size: 14px;\n  }\n}\n\n.walletconnect-qrcode__image {\n  width: calc(100% - 30px);\n  box-sizing: border-box;\n  cursor: none;\n  margin: 0 auto;\n}\n\n.walletconnect-qrcode__notification {\n  position: absolute;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  font-size: 16px;\n  padding: 16px 20px;\n  border-radius: 16px;\n  text-align: center;\n  transition: all 0.1s ease-in-out;\n  background: white;\n  color: black;\n  margin-bottom: -60px;\n  opacity: 0;\n}\n\n.walletconnect-qrcode__notification.notification__show {\n  opacity: 1;\n}\n\n@media only screen and (max-width: 768px) {\n  .walletconnect-modal__header {\n    height: 130px;\n  }\n  .walletconnect-modal__base {\n    overflow: auto;\n  }\n}\n\n@media only screen and (min-device-width: 415px) and (max-width: 768px) {\n  #content {\n    max-width: 768px;\n    box-sizing: border-box;\n  }\n}\n\n@media only screen and (min-width: 375px) and (max-width: 415px) {\n  #content {\n    max-width: 414px;\n    box-sizing: border-box;\n  }\n}\n\n@media only screen and (min-width: 320px) and (max-width: 375px) {\n  #content {\n    max-width: 375px;\n    box-sizing: border-box;\n  }\n}\n\n@media only screen and (max-width: 320px) {\n  #content {\n    max-width: 320px;\n    box-sizing: border-box;\n  }\n}\n\n.walletconnect-modal__base {\n  -webkit-font-smoothing: antialiased;\n  background: #ffffff;\n  border-radius: 24px;\n  box-shadow: 0 10px 50px 5px rgba(0, 0, 0, 0.4);\n  font-family: ui-rounded, "SF Pro Rounded", "SF Pro Text", medium-content-sans-serif-font,\n    -apple-system, BlinkMacSystemFont, ui-sans-serif, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,\n    "Open Sans", "Helvetica Neue", sans-serif;\n  margin-top: 41px;\n  padding: 24px 24px 22px;\n  pointer-events: auto;\n  position: relative;\n  text-align: center;\n  transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);\n  will-change: transform;\n  overflow: visible;\n  transform: translateY(-50%);\n  top: 50%;\n  max-width: 500px;\n  margin: auto;\n}\n\n@media only screen and (max-width: 320px) {\n  .walletconnect-modal__base {\n    padding: 24px 12px;\n  }\n}\n\n.walletconnect-modal__base .hidden {\n  transform: translateY(150%);\n  transition: 0.125s cubic-bezier(0.4, 0, 1, 1);\n}\n\n.walletconnect-modal__header {\n  align-items: center;\n  display: flex;\n  height: 26px;\n  left: 0;\n  justify-content: space-between;\n  position: absolute;\n  top: -42px;\n  width: 100%;\n}\n\n.walletconnect-modal__base .wc-logo {\n  align-items: center;\n  display: flex;\n  height: 26px;\n  margin-top: 15px;\n  padding-bottom: 15px;\n  pointer-events: auto;\n}\n\n.walletconnect-modal__base .wc-logo div {\n  background-color: #3399ff;\n  height: 21px;\n  margin-right: 5px;\n  mask-image: url("images/wc-logo.svg") center no-repeat;\n  width: 32px;\n}\n\n.walletconnect-modal__base .wc-logo p {\n  color: #ffffff;\n  font-size: 20px;\n  font-weight: 600;\n  margin: 0;\n}\n\n.walletconnect-modal__base h2 {\n  color: rgba(60, 66, 82, 0.6);\n  font-size: 16px;\n  font-weight: 600;\n  letter-spacing: 0;\n  line-height: 1.1875em;\n  margin: 0 0 19px 0;\n  text-align: center;\n  width: 100%;\n}\n\n.walletconnect-modal__base__row {\n  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);\n  align-items: center;\n  border-radius: 20px;\n  cursor: pointer;\n  display: flex;\n  height: 56px;\n  justify-content: space-between;\n  padding: 0 15px;\n  position: relative;\n  margin: 0px 0px 8px;\n  text-align: left;\n  transition: 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);\n  will-change: transform;\n  text-decoration: none;\n}\n\n.walletconnect-modal__base__row:hover {\n  background: rgba(60, 66, 82, 0.06);\n}\n\n.walletconnect-modal__base__row:active {\n  background: rgba(60, 66, 82, 0.06);\n  transform: scale(0.975);\n  transition: 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);\n}\n\n.walletconnect-modal__base__row__h3 {\n  color: #25292e;\n  font-size: 20px;\n  font-weight: 700;\n  margin: 0;\n  padding-bottom: 3px;\n}\n\n.walletconnect-modal__base__row__right {\n  align-items: center;\n  display: flex;\n  justify-content: center;\n}\n\n.walletconnect-modal__base__row__right__app-icon {\n  border-radius: 8px;\n  height: 34px;\n  margin: 0 11px 2px 0;\n  width: 34px;\n  background-size: 100%;\n  box-shadow: 0 4px 12px 0 rgba(37, 41, 46, 0.25);\n}\n\n.walletconnect-modal__base__row__right__caret {\n  height: 18px;\n  opacity: 0.3;\n  transition: 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);\n  width: 8px;\n  will-change: opacity;\n}\n\n.walletconnect-modal__base__row:hover .caret,\n.walletconnect-modal__base__row:active .caret {\n  opacity: 0.6;\n}\n\n.walletconnect-modal__mobile__toggle {\n  width: 80%;\n  display: flex;\n  margin: 0 auto;\n  position: relative;\n  overflow: hidden;\n  border-radius: 8px;\n  margin-bottom: 18px;\n  background: #d4d5d9;\n}\n\n.walletconnect-modal__single_wallet {\n  display: flex;\n  justify-content: center;\n  margin-top: 7px;\n  margin-bottom: 18px;\n}\n\n.walletconnect-modal__single_wallet a {\n  cursor: pointer;\n  color: rgb(64, 153, 255);\n  font-size: 21px;\n  font-weight: 800;\n  text-decoration: none !important;\n  margin: 0 auto;\n}\n\n.walletconnect-modal__mobile__toggle_selector {\n  width: calc(50% - 8px);\n  background: white;\n  position: absolute;\n  border-radius: 5px;\n  height: calc(100% - 8px);\n  top: 4px;\n  transition: all 0.2s ease-in-out;\n  transform: translate3d(4px, 0, 0);\n}\n\n.walletconnect-modal__mobile__toggle.right__selected .walletconnect-modal__mobile__toggle_selector {\n  transform: translate3d(calc(100% + 12px), 0, 0);\n}\n\n.walletconnect-modal__mobile__toggle a {\n  font-size: 12px;\n  width: 50%;\n  text-align: center;\n  padding: 8px;\n  margin: 0;\n  font-weight: 600;\n  z-index: 1;\n}\n\n.walletconnect-modal__footer {\n  display: flex;\n  justify-content: center;\n  margin-top: 20px;\n}\n\n@media only screen and (max-width: 768px) {\n  .walletconnect-modal__footer {\n    margin-top: 5vw;\n  }\n}\n\n.walletconnect-modal__footer a {\n  cursor: pointer;\n  color: #898d97;\n  font-size: 15px;\n  margin: 0 auto;\n}\n\n@media only screen and (max-width: 320px) {\n  .walletconnect-modal__footer a {\n    font-size: 14px;\n  }\n}\n\n.walletconnect-connect__buttons__wrapper {\n  max-height: 44vh;\n}\n\n.walletconnect-connect__buttons__wrapper__android {\n  margin: 50% 0;\n}\n\n.walletconnect-connect__buttons__wrapper__wrap {\n  display: grid;\n  grid-template-columns: repeat(4, 1fr);\n  margin: 10px 0;\n}\n\n@media only screen and (min-width: 768px) {\n  .walletconnect-connect__buttons__wrapper__wrap {\n    margin-top: 40px;\n  }\n}\n\n.walletconnect-connect__button {\n  background-color: rgb(64, 153, 255);\n  padding: 12px;\n  border-radius: 8px;\n  text-decoration: none;\n  color: rgb(255, 255, 255);\n  font-weight: 500;\n}\n\n.walletconnect-connect__button__icon_anchor {\n  cursor: pointer;\n  display: flex;\n  justify-content: flex-start;\n  align-items: center;\n  margin: 8px;\n  width: 42px;\n  justify-self: center;\n  flex-direction: column;\n  text-decoration: none !important;\n}\n\n@media only screen and (max-width: 320px) {\n  .walletconnect-connect__button__icon_anchor {\n    margin: 4px;\n  }\n}\n\n.walletconnect-connect__button__icon {\n  border-radius: 10px;\n  height: 42px;\n  margin: 0;\n  width: 42px;\n  background-size: cover !important;\n  box-shadow: 0 4px 12px 0 rgba(37, 41, 46, 0.25);\n}\n\n.walletconnect-connect__button__text {\n  color: #424952;\n  font-size: 2.7vw;\n  text-decoration: none !important;\n  padding: 0;\n  margin-top: 1.8vw;\n  font-weight: 600;\n}\n\n@media only screen and (min-width: 768px) {\n  .walletconnect-connect__button__text {\n    font-size: 16px;\n    margin-top: 12px;\n  }\n}\n\n.walletconnect-search__input {\n  border: none;\n  background: #d4d5d9;\n  border-style: none;\n  padding: 8px 16px;\n  outline: none;\n  font-style: normal;\n  font-stretch: normal;\n  font-size: 16px;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: left;\n  border-radius: 8px;\n  width: calc(100% - 16px);\n  margin: 0;\n  margin-bottom: 8px;\n}\n';
-    var WALLETCONNECT_LOGO_SVG_URL = "data:image/svg+xml,%3Csvg height='185' viewBox='0 0 300 185' width='300' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m61.4385429 36.2562612c48.9112241-47.8881663 128.2119871-47.8881663 177.1232091 0l5.886545 5.7634174c2.445561 2.3944081 2.445561 6.2765112 0 8.6709204l-20.136695 19.715503c-1.222781 1.1972051-3.2053 1.1972051-4.428081 0l-8.100584-7.9311479c-34.121692-33.4079817-89.443886-33.4079817-123.5655788 0l-8.6750562 8.4936051c-1.2227816 1.1972041-3.205301 1.1972041-4.4280806 0l-20.1366949-19.7155031c-2.4455612-2.3944092-2.4455612-6.2765122 0-8.6709204zm218.7677961 40.7737449 17.921697 17.546897c2.445549 2.3943969 2.445563 6.2764769.000031 8.6708899l-80.810171 79.121134c-2.445544 2.394426-6.410582 2.394453-8.85616.000062-.00001-.00001-.000022-.000022-.000032-.000032l-57.354143-56.154572c-.61139-.598602-1.60265-.598602-2.21404 0-.000004.000004-.000007.000008-.000011.000011l-57.3529212 56.154531c-2.4455368 2.394432-6.4105755 2.394472-8.8561612.000087-.0000143-.000014-.0000296-.000028-.0000449-.000044l-80.81241943-79.122185c-2.44556021-2.394408-2.44556021-6.2765115 0-8.6709197l17.92172963-17.5468673c2.4455602-2.3944082 6.4105989-2.3944082 8.8561602 0l57.3549775 56.155357c.6113908.598602 1.602649.598602 2.2140398 0 .0000092-.000009.0000174-.000017.0000265-.000024l57.3521031-56.155333c2.445505-2.3944633 6.410544-2.3945531 8.856161-.0002.000034.0000336.000068.0000673.000101.000101l57.354902 56.155432c.61139.598601 1.60265.598601 2.21404 0l57.353975-56.1543249c2.445561-2.3944092 6.410599-2.3944092 8.85616 0z' fill='%233b99fc'/%3E%3C/svg%3E";
-    var WALLETCONNECT_HEADER_TEXT = "WalletConnect";
-    var ANIMATION_DURATION = 300;
-    var DEFAULT_BUTTON_COLOR = "rgb(64, 153, 255)";
-    var WALLETCONNECT_WRAPPER_ID = "walletconnect-wrapper";
-    var WALLETCONNECT_STYLE_ID = "walletconnect-style-sheet";
-    var WALLETCONNECT_MODAL_ID = "walletconnect-qrcode-modal";
-    var WALLETCONNECT_CLOSE_BUTTON_ID = "walletconnect-qrcode-close";
-    var WALLETCONNECT_CTA_TEXT_ID = "walletconnect-qrcode-text";
-    var WALLETCONNECT_CONNECT_BUTTON_ID = "walletconnect-connect-button";
-    function Header(props) {
-      return React.createElement("div", {
-        className: "walletconnect-modal__header"
-      }, React.createElement("img", {
-        src: WALLETCONNECT_LOGO_SVG_URL,
-        className: "walletconnect-modal__headerLogo"
-      }), React.createElement("p", null, WALLETCONNECT_HEADER_TEXT), React.createElement("div", {
-        className: "walletconnect-modal__close__wrapper",
-        onClick: props.onClose
-      }, React.createElement("div", {
-        id: WALLETCONNECT_CLOSE_BUTTON_ID,
-        className: "walletconnect-modal__close__icon"
-      }, React.createElement("div", {
-        className: "walletconnect-modal__close__line1"
-      }), React.createElement("div", {
-        className: "walletconnect-modal__close__line2"
-      }))));
-    }
-    function ConnectButton(props) {
-      return React.createElement("a", {
-        className: "walletconnect-connect__button",
-        href: props.href,
-        id: WALLETCONNECT_CONNECT_BUTTON_ID + "-" + props.name,
-        onClick: props.onClick,
-        rel: "noopener noreferrer",
-        style: {
-          backgroundColor: props.color
-        },
-        target: "_blank"
-      }, props.name);
-    }
-    var CARET_SVG_URL = "data:image/svg+xml,%3Csvg fill='none' height='18' viewBox='0 0 8 18' width='8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath clip-rule='evenodd' d='m.586301.213898c-.435947.33907-.5144813.967342-.175411 1.403292l4.87831 6.27212c.28087.36111.28087.86677 0 1.22788l-4.878311 6.27211c-.33907.436-.260536 1.0642.175412 1.4033.435949.3391 1.064219.2605 1.403289-.1754l4.87832-6.2721c.84259-1.08336.84259-2.60034 0-3.68367l-4.87832-6.27212c-.33907-.4359474-.96734-.514482-1.403289-.175412z' fill='%233c4252' fill-rule='evenodd'/%3E%3C/svg%3E";
-    function WalletButton(props) {
-      var color = props.color;
-      var href = props.href;
-      var name = props.name;
-      var logo = props.logo;
-      var onClick = props.onClick;
-      return React.createElement("a", {
-        className: "walletconnect-modal__base__row",
-        href,
-        onClick,
-        rel: "noopener noreferrer",
-        target: "_blank"
-      }, React.createElement("h3", {
-        className: "walletconnect-modal__base__row__h3"
-      }, name), React.createElement("div", {
-        className: "walletconnect-modal__base__row__right"
-      }, React.createElement("div", {
-        className: "walletconnect-modal__base__row__right__app-icon",
-        style: {
-          background: "url('" + logo + "') " + color,
-          backgroundSize: "100%"
-        }
-      }), React.createElement("img", {
-        src: CARET_SVG_URL,
-        className: "walletconnect-modal__base__row__right__caret"
-      })));
-    }
-    function WalletIcon(props) {
-      var color = props.color;
-      var href = props.href;
-      var name = props.name;
-      var logo = props.logo;
-      var onClick = props.onClick;
-      var fontSize = window.innerWidth < 768 ? (name.length > 8 ? 2.5 : 2.7) + "vw" : "inherit";
-      return React.createElement("a", {
-        className: "walletconnect-connect__button__icon_anchor",
-        href,
-        onClick,
-        rel: "noopener noreferrer",
-        target: "_blank"
-      }, React.createElement("div", {
-        className: "walletconnect-connect__button__icon",
-        style: {
-          background: "url('" + logo + "') " + color,
-          backgroundSize: "100%"
-        }
-      }), React.createElement("div", {
-        style: {
-          fontSize
-        },
-        className: "walletconnect-connect__button__text"
-      }, name));
-    }
-    var GRID_MIN_COUNT = 5;
-    var LINKS_PER_PAGE = 12;
-    function LinkDisplay(props) {
-      var android = browserUtils.isAndroid();
-      var ref = React.useState("");
-      var input = ref[0];
-      var setInput = ref[1];
-      var ref$1 = React.useState("");
-      var filter = ref$1[0];
-      var setFilter = ref$1[1];
-      var ref$2 = React.useState(1);
-      var page = ref$2[0];
-      var setPage = ref$2[1];
-      var links = filter ? props.links.filter(function(link) {
-        return link.name.toLowerCase().includes(filter.toLowerCase());
-      }) : props.links;
-      var errorMessage = props.errorMessage;
-      var grid = filter || links.length > GRID_MIN_COUNT;
-      var pages = Math.ceil(links.length / LINKS_PER_PAGE);
-      var range = [(page - 1) * LINKS_PER_PAGE + 1, page * LINKS_PER_PAGE];
-      var pageLinks = links.length ? links.filter(function(_4, index2) {
-        return index2 + 1 >= range[0] && index2 + 1 <= range[1];
-      }) : [];
-      var hasPaging = !!(!android && pages > 1);
-      var filterTimeout = void 0;
-      function handleInput(e3) {
-        setInput(e3.target.value);
-        clearTimeout(filterTimeout);
-        if (e3.target.value) {
-          filterTimeout = setTimeout(function() {
-            setFilter(e3.target.value);
-            setPage(1);
-          }, 1e3);
-        } else {
-          setInput("");
-          setFilter("");
-          setPage(1);
-        }
-      }
-      return React.createElement("div", null, React.createElement("p", {
-        id: WALLETCONNECT_CTA_TEXT_ID,
-        className: "walletconnect-qrcode__text"
-      }, android ? props.text.connect_mobile_wallet : props.text.choose_preferred_wallet), !android && React.createElement("input", {
-        className: "walletconnect-search__input",
-        placeholder: "Search",
-        value: input,
-        onChange: handleInput
-      }), React.createElement("div", {
-        className: "walletconnect-connect__buttons__wrapper" + (android ? "__android" : grid && links.length ? "__wrap" : "")
-      }, !android ? pageLinks.length ? pageLinks.map(function(entry) {
-        var color = entry.color;
-        var name = entry.name;
-        var shortName = entry.shortName;
-        var logo = entry.logo;
-        var href = browserUtils.formatIOSMobile(props.uri, entry);
-        var handleClickIOS = React.useCallback(function() {
-          browserUtils.saveMobileLinkInfo({
-            name,
-            href
-          });
-        }, [pageLinks]);
-        return !grid ? React.createElement(WalletButton, {
-          color,
-          href,
-          name,
-          logo,
-          onClick: handleClickIOS
-        }) : React.createElement(WalletIcon, {
-          color,
-          href,
-          name: shortName || name,
-          logo,
-          onClick: handleClickIOS
-        });
-      }) : React.createElement(React.Fragment, null, React.createElement("p", null, errorMessage.length ? props.errorMessage : !!props.links.length && !links.length ? props.text.no_wallets_found : props.text.loading)) : React.createElement(ConnectButton, {
-        name: props.text.connect,
-        color: DEFAULT_BUTTON_COLOR,
-        href: props.uri,
-        onClick: React.useCallback(function() {
-          browserUtils.saveMobileLinkInfo({
-            name: "Unknown",
-            href: props.uri
-          });
-        }, [])
-      })), hasPaging && React.createElement("div", {
-        className: "walletconnect-modal__footer"
-      }, Array(pages).fill(0).map(function(_4, index2) {
-        var pageNumber = index2 + 1;
-        var selected = page === pageNumber;
-        return React.createElement("a", {
-          style: {
-            margin: "auto 10px",
-            fontWeight: selected ? "bold" : "normal"
-          },
-          onClick: function() {
-            return setPage(pageNumber);
-          }
-        }, pageNumber);
-      })));
-    }
-    function Notification(props) {
-      var show = !!props.message.trim();
-      return React.createElement("div", {
-        className: "walletconnect-qrcode__notification" + (show ? " notification__show" : "")
-      }, props.message);
-    }
-    var formatQRCodeImage = function(data) {
-      try {
-        var result = "";
-        return Promise.resolve(QRCode.toString(data, {
-          margin: 0,
-          type: "svg"
-        })).then(function(dataString) {
-          if (typeof dataString === "string") {
-            result = dataString.replace("<svg", '<svg class="walletconnect-qrcode__image"');
-          }
-          return result;
-        });
-      } catch (e3) {
-        return Promise.reject(e3);
-      }
-    };
-    function QRCodeDisplay(props) {
-      var ref = React.useState("");
-      var notification = ref[0];
-      var setNotification = ref[1];
-      var ref$1 = React.useState("");
-      var svg = ref$1[0];
-      var setSvg = ref$1[1];
-      React.useEffect(function() {
-        try {
-          return Promise.resolve(formatQRCodeImage(props.uri)).then(function(_formatQRCodeImage) {
-            setSvg(_formatQRCodeImage);
-          });
-        } catch (e3) {
-          Promise.reject(e3);
-        }
-      }, []);
-      var copyToClipboard = function() {
-        var success = copy(props.uri);
-        if (success) {
-          setNotification(props.text.copied_to_clipboard);
-          setInterval(function() {
-            return setNotification("");
-          }, 1200);
-        } else {
-          setNotification("Error");
-          setInterval(function() {
-            return setNotification("");
-          }, 1200);
-        }
-      };
-      return React.createElement("div", null, React.createElement("p", {
-        id: WALLETCONNECT_CTA_TEXT_ID,
-        className: "walletconnect-qrcode__text"
-      }, props.text.scan_qrcode_with_wallet), React.createElement("div", {
-        dangerouslySetInnerHTML: {
-          __html: svg
-        }
-      }), React.createElement("div", {
-        className: "walletconnect-modal__footer"
-      }, React.createElement("a", {
-        onClick: copyToClipboard
-      }, props.text.copy_to_clipboard)), React.createElement(Notification, {
-        message: notification
-      }));
-    }
-    var officialAlgorandWallet = {
-      id: "23138217b046ae8d9d07e62b3337fb288c4445f92f64be067809cd0a8f9454b9",
-      name: "Pera Wallet",
-      homepage: "https://perawallet.app",
-      chains: ["algorand"],
-      image_id: "1765f9aa-f99e-414e-826b-6b570d480999",
-      image_url: {
-        sm: "https://algorand-app.s3.amazonaws.com/app-icons/Pera-walletconnect-128.png",
-        md: "https://algorand-app.s3.amazonaws.com/app-icons/Pera-walletconnect-128.png",
-        lg: "https://algorand-app.s3.amazonaws.com/app-icons/Pera-walletconnect-128.png"
-      },
-      app: {
-        browser: "",
-        ios: "https://apps.apple.com/us/app/algorand-wallet/id1459898525",
-        android: "https://play.google.com/store/apps/details?id=com.algorand.android",
-        mac: "",
-        windows: "",
-        linux: ""
-      },
-      mobile: {
-        native: "algorand-wc:",
-        universal: ""
-      },
-      desktop: {
-        native: "",
-        universal: ""
-      },
-      metadata: {
-        shortName: "Pera Wallet",
-        colors: {
-          primary: "rgb(255, 238, 85)",
-          secondary: ""
-        }
-      }
-    };
-    var registry = {};
-    registry[officialAlgorandWallet.id] = officialAlgorandWallet;
-    function Modal(props) {
-      var android = browserUtils.isAndroid();
-      var mobile = browserUtils.isMobile();
-      var whitelist = mobile ? props.qrcodeModalOptions && props.qrcodeModalOptions.mobileLinks ? props.qrcodeModalOptions.mobileLinks : void 0 : props.qrcodeModalOptions && props.qrcodeModalOptions.desktopLinks ? props.qrcodeModalOptions.desktopLinks : void 0;
-      var ref = React.useState(false);
-      var loading = ref[0];
-      var setLoading = ref[1];
-      var ref$1 = React.useState(false);
-      var fetched = ref$1[0];
-      var setFetched = ref$1[1];
-      var ref$2 = React.useState(!mobile);
-      var displayQRCode = ref$2[0];
-      var setDisplayQRCode = ref$2[1];
-      var displayProps = {
-        mobile,
-        text: props.text,
-        uri: props.uri,
-        qrcodeModalOptions: props.qrcodeModalOptions
-      };
-      var ref$3 = React.useState("");
-      var singleLinkHref = ref$3[0];
-      var setSingleLinkHref = ref$3[1];
-      var ref$4 = React.useState(false);
-      var hasSingleLink = ref$4[0];
-      var setHasSingleLink = ref$4[1];
-      var ref$5 = React.useState([]);
-      var links = ref$5[0];
-      var setLinks = ref$5[1];
-      var ref$6 = React.useState("");
-      var errorMessage = ref$6[0];
-      var setErrorMessage = ref$6[1];
-      var getLinksIfNeeded = function() {
-        if (fetched || loading || whitelist && !whitelist.length || links.length > 0) {
-          return;
-        }
-        React.useEffect(function() {
-          var initLinks = function() {
-            try {
-              if (android) {
-                return Promise.resolve();
-              }
-              setLoading(true);
-              try {
-                var platform = mobile ? "mobile" : "desktop";
-                var _links = browserUtils.getMobileLinkRegistry(browserUtils.formatMobileRegistry(registry, platform), whitelist);
-                setLoading(false);
-                setFetched(true);
-                setErrorMessage(!_links.length ? props.text.no_supported_wallets : "");
-                setLinks(_links);
-                var hasSingleLink2 = _links.length === 1;
-                if (hasSingleLink2) {
-                  setSingleLinkHref(browserUtils.formatIOSMobile(props.uri, _links[0]));
-                  setDisplayQRCode(true);
-                }
-                setHasSingleLink(hasSingleLink2);
-              } catch (e3) {
-                setLoading(false);
-                setFetched(true);
-                setErrorMessage(props.text.something_went_wrong);
-                console.error(e3);
-              }
-              return Promise.resolve();
-            } catch (e3) {
-              return Promise.reject(e3);
-            }
-          };
-          initLinks();
-        });
-      };
-      getLinksIfNeeded();
-      var rightSelected = mobile ? displayQRCode : !displayQRCode;
-      return React.createElement("div", {
-        id: WALLETCONNECT_MODAL_ID,
-        className: "walletconnect-qrcode__base animated fadeIn"
-      }, React.createElement("div", {
-        className: "walletconnect-modal__base"
-      }, React.createElement(Header, {
-        onClose: props.onClose
-      }), hasSingleLink && displayQRCode ? React.createElement("div", {
-        className: "walletconnect-modal__single_wallet"
-      }, React.createElement("a", {
-        onClick: function() {
-          return browserUtils.saveMobileLinkInfo({
-            name: links[0].name,
-            href: singleLinkHref
-          });
-        },
-        href: singleLinkHref,
-        rel: "noopener noreferrer",
-        target: "_blank"
-      }, props.text.connect_with + " " + (hasSingleLink ? links[0].name : "") + " \u203A")) : android || loading || !loading && links.length ? React.createElement("div", {
-        className: "walletconnect-modal__mobile__toggle" + (rightSelected ? " right__selected" : "")
-      }, React.createElement("div", {
-        className: "walletconnect-modal__mobile__toggle_selector"
-      }), mobile ? React.createElement(React.Fragment, null, React.createElement("a", {
-        onClick: function() {
-          return setDisplayQRCode(false), getLinksIfNeeded();
-        }
-      }, props.text.mobile), React.createElement("a", {
-        onClick: function() {
-          return setDisplayQRCode(true);
-        }
-      }, props.text.qrcode)) : React.createElement(React.Fragment, null, React.createElement("a", {
-        onClick: function() {
-          return setDisplayQRCode(true);
-        }
-      }, props.text.qrcode), React.createElement("a", {
-        onClick: function() {
-          return setDisplayQRCode(false), getLinksIfNeeded();
-        }
-      }, props.text.desktop))) : null, React.createElement("div", null, displayQRCode || !android && !loading && !links.length ? React.createElement(QRCodeDisplay, Object.assign({}, displayProps)) : React.createElement(LinkDisplay, Object.assign({}, displayProps, {
-        links,
-        errorMessage
-      })))));
-    }
-    var de = {
-      choose_preferred_wallet: "W\xE4hle bevorzugte Wallet",
-      connect_mobile_wallet: "Verbinde mit Mobile Wallet",
-      scan_qrcode_with_wallet: "Scanne den QR-code mit einer WalletConnect kompatiblen Wallet",
-      connect: "Verbinden",
-      qrcode: "QR-Code",
-      mobile: "Mobile",
-      desktop: "Desktop",
-      copy_to_clipboard: "In die Zwischenablage kopieren",
-      copied_to_clipboard: "In die Zwischenablage kopiert!",
-      connect_with: "Verbinden mit Hilfe von",
-      loading: "Laden...",
-      something_went_wrong: "Etwas ist schief gelaufen",
-      no_supported_wallets: "Es gibt noch keine unterst\xFCtzten Wallet",
-      no_wallets_found: "keine Wallet gefunden"
-    };
-    var en = {
-      choose_preferred_wallet: "Choose your preferred wallet",
-      connect_mobile_wallet: "Connect to Mobile Wallet",
-      scan_qrcode_with_wallet: "Scan QR code with a WalletConnect-compatible wallet",
-      connect: "Connect",
-      qrcode: "QR Code",
-      mobile: "Mobile",
-      desktop: "Desktop",
-      copy_to_clipboard: "Copy to clipboard",
-      copied_to_clipboard: "Copied to clipboard!",
-      connect_with: "Connect with",
-      loading: "Loading...",
-      something_went_wrong: "Something went wrong",
-      no_supported_wallets: "There are no supported wallets yet",
-      no_wallets_found: "No wallets found"
-    };
-    var es = {
-      choose_preferred_wallet: "Elige tu billetera preferida",
-      connect_mobile_wallet: "Conectar a billetera m\xF3vil",
-      scan_qrcode_with_wallet: "Escanea el c\xF3digo QR con una billetera compatible con WalletConnect",
-      connect: "Conectar",
-      qrcode: "C\xF3digo QR",
-      mobile: "M\xF3vil",
-      desktop: "Desktop",
-      copy_to_clipboard: "Copiar",
-      copied_to_clipboard: "Copiado!",
-      connect_with: "Conectar mediante",
-      loading: "Cargando...",
-      something_went_wrong: "Algo sali\xF3 mal",
-      no_supported_wallets: "Todav\xEDa no hay billeteras compatibles",
-      no_wallets_found: "No se encontraron billeteras"
-    };
-    var fr = {
-      choose_preferred_wallet: "Choisissez votre portefeuille pr\xE9f\xE9r\xE9",
-      connect_mobile_wallet: "Se connecter au portefeuille mobile",
-      scan_qrcode_with_wallet: "Scannez le QR code avec un portefeuille compatible WalletConnect",
-      connect: "Se connecter",
-      qrcode: "QR Code",
-      mobile: "Mobile",
-      desktop: "Desktop",
-      copy_to_clipboard: "Copier",
-      copied_to_clipboard: "Copi\xE9!",
-      connect_with: "Connectez-vous \xE0 l'aide de",
-      loading: "Chargement...",
-      something_went_wrong: "Quelque chose a mal tourn\xE9",
-      no_supported_wallets: "Il n'y a pas encore de portefeuilles pris en charge",
-      no_wallets_found: "Aucun portefeuille trouv\xE9"
-    };
-    var ko = {
-      choose_preferred_wallet: "\uC6D0\uD558\uB294 \uC9C0\uAC11\uC744 \uC120\uD0DD\uD558\uC138\uC694",
-      connect_mobile_wallet: "\uBAA8\uBC14\uC77C \uC9C0\uAC11\uACFC \uC5F0\uACB0",
-      scan_qrcode_with_wallet: "WalletConnect \uC9C0\uC6D0 \uC9C0\uAC11\uC5D0\uC11C QR\uCF54\uB4DC\uB97C \uC2A4\uCE94\uD558\uC138\uC694",
-      connect: "\uC5F0\uACB0",
-      qrcode: "QR \uCF54\uB4DC",
-      mobile: "\uBAA8\uBC14\uC77C",
-      desktop: "\uB370\uC2A4\uD06C\uD0D1",
-      copy_to_clipboard: "\uD074\uB9BD\uBCF4\uB4DC\uC5D0 \uBCF5\uC0AC",
-      copied_to_clipboard: "\uD074\uB9BD\uBCF4\uB4DC\uC5D0 \uBCF5\uC0AC\uB418\uC5C8\uC2B5\uB2C8\uB2E4!",
-      connect_with: "\uC640 \uC5F0\uACB0\uD558\uB2E4",
-      loading: "\uB85C\uB4DC \uC911...",
-      something_went_wrong: "\uBB38\uC81C\uAC00 \uBC1C\uC0DD\uD588\uC2B5\uB2C8\uB2E4.",
-      no_supported_wallets: "\uC544\uC9C1 \uC9C0\uC6D0\uB418\uB294 \uC9C0\uAC11\uC774 \uC5C6\uC2B5\uB2C8\uB2E4",
-      no_wallets_found: "\uC9C0\uAC11\uC744 \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4"
-    };
-    var pt = {
-      choose_preferred_wallet: "Escolha sua carteira preferida",
-      connect_mobile_wallet: "Conectar-se \xE0 carteira m\xF3vel",
-      scan_qrcode_with_wallet: "Ler o c\xF3digo QR com uma carteira compat\xEDvel com WalletConnect",
-      connect: "Conectar",
-      qrcode: "C\xF3digo QR",
-      mobile: "M\xF3vel",
-      desktop: "Desktop",
-      copy_to_clipboard: "Copiar",
-      copied_to_clipboard: "Copiado!",
-      connect_with: "Ligar por meio de",
-      loading: "Carregamento...",
-      something_went_wrong: "Algo correu mal",
-      no_supported_wallets: "Ainda n\xE3o h\xE1 carteiras suportadas",
-      no_wallets_found: "Nenhuma carteira encontrada"
-    };
-    var zh = {
-      choose_preferred_wallet: "\u9009\u62E9\u4F60\u7684\u94B1\u5305",
-      connect_mobile_wallet: "\u8FDE\u63A5\u81F3\u79FB\u52A8\u7AEF\u94B1\u5305",
-      scan_qrcode_with_wallet: "\u4F7F\u7528\u517C\u5BB9 WalletConnect \u7684\u94B1\u5305\u626B\u63CF\u4E8C\u7EF4\u7801",
-      connect: "\u8FDE\u63A5",
-      qrcode: "\u4E8C\u7EF4\u7801",
-      mobile: "\u79FB\u52A8",
-      desktop: "\u684C\u9762",
-      copy_to_clipboard: "\u590D\u5236\u5230\u526A\u8D34\u677F",
-      copied_to_clipboard: "\u590D\u5236\u5230\u526A\u8D34\u677F\u6210\u529F\uFF01",
-      connect_with: "\u901A\u8FC7\u4EE5\u4E0B\u65B9\u5F0F\u8FDE\u63A5",
-      loading: "\u6B63\u5728\u52A0\u8F7D...",
-      something_went_wrong: "\u51FA\u4E86\u95EE\u9898",
-      no_supported_wallets: "\u76EE\u524D\u8FD8\u6CA1\u6709\u652F\u6301\u7684\u94B1\u5305",
-      no_wallets_found: "\u6CA1\u6709\u627E\u5230\u94B1\u5305"
-    };
-    var fa = {
-      choose_preferred_wallet: "\u06A9\u06CC\u0641 \u067E\u0648\u0644 \u0645\u0648\u0631\u062F \u0646\u0638\u0631 \u062E\u0648\u062F \u0631\u0627 \u0627\u0646\u062A\u062E\u0627\u0628 \u06A9\u0646\u06CC\u062F",
-      connect_mobile_wallet: "\u0628\u0647 \u06A9\u06CC\u0641 \u067E\u0648\u0644 \u0645\u0648\u0628\u0627\u06CC\u0644 \u0648\u0635\u0644 \u0634\u0648\u06CC\u062F",
-      scan_qrcode_with_wallet: "\u06A9\u062F QR \u0631\u0627 \u0628\u0627 \u06CC\u06A9 \u06A9\u06CC\u0641 \u067E\u0648\u0644 \u0633\u0627\u0632\u06AF\u0627\u0631 \u0628\u0627 WalletConnect \u0627\u0633\u06A9\u0646 \u06A9\u0646\u06CC\u062F",
-      connect: "\u0627\u062A\u0635\u0627\u0644",
-      qrcode: "\u06A9\u062F QR",
-      mobile: "\u0633\u06CC\u0627\u0631",
-      desktop: "\u062F\u0633\u06A9\u062A\u0627\u067E",
-      copy_to_clipboard: "\u06A9\u067E\u06CC \u0628\u0647 \u06A9\u0644\u06CC\u067E \u0628\u0648\u0631\u062F",
-      copied_to_clipboard: "\u062F\u0631 \u06A9\u0644\u06CC\u067E \u0628\u0648\u0631\u062F \u06A9\u067E\u06CC \u0634\u062F!",
-      connect_with: "\u0627\u0631\u062A\u0628\u0627\u0637 \u0628\u0627",
-      loading: "...\u0628\u0627\u0631\u06AF\u0630\u0627\u0631\u06CC",
-      something_went_wrong: "\u0645\u0634\u06A9\u0644\u06CC \u067E\u06CC\u0634 \u0622\u0645\u062F",
-      no_supported_wallets: "\u0647\u0646\u0648\u0632 \u0647\u06CC\u0686 \u06A9\u06CC\u0641 \u067E\u0648\u0644 \u067E\u0634\u062A\u06CC\u0628\u0627\u0646\u06CC \u0634\u062F\u0647 \u0627\u06CC \u0648\u062C\u0648\u062F \u0646\u062F\u0627\u0631\u062F",
-      no_wallets_found: "\u0647\u06CC\u0686 \u06A9\u06CC\u0641 \u067E\u0648\u0644\u06CC \u067E\u06CC\u062F\u0627 \u0646\u0634\u062F"
-    };
-    var languages = {
-      de,
-      en,
-      es,
-      fr,
-      ko,
-      pt,
-      zh,
-      fa
-    };
-    function injectStyleSheet() {
-      var doc = browserUtils.getDocumentOrThrow();
-      var prev = doc.getElementById(WALLETCONNECT_STYLE_ID);
-      if (prev) {
-        doc.head.removeChild(prev);
-      }
-      var style = doc.createElement("style");
-      style.setAttribute("id", WALLETCONNECT_STYLE_ID);
-      style.innerText = WALLETCONNECT_STYLE_SHEET;
-      doc.head.appendChild(style);
-    }
-    function renderWrapper() {
-      var doc = browserUtils.getDocumentOrThrow();
-      var wrapper = doc.createElement("div");
-      wrapper.setAttribute("id", WALLETCONNECT_WRAPPER_ID);
-      doc.body.appendChild(wrapper);
-      return wrapper;
-    }
-    function triggerCloseAnimation() {
-      var doc = browserUtils.getDocumentOrThrow();
-      var modal = doc.getElementById(WALLETCONNECT_MODAL_ID);
-      if (modal) {
-        modal.className = modal.className.replace("fadeIn", "fadeOut");
-        setTimeout(function() {
-          var wrapper = doc.getElementById(WALLETCONNECT_WRAPPER_ID);
-          if (wrapper) {
-            doc.body.removeChild(wrapper);
-          }
-        }, ANIMATION_DURATION);
-      }
-    }
-    function getWrappedCallback(cb) {
-      return function() {
-        triggerCloseAnimation();
-        if (cb) {
-          cb();
-        }
-      };
-    }
-    function getText() {
-      var lang = browserUtils.getNavigatorOrThrow().language.split("-")[0] || "en";
-      return languages[lang] || languages["en"];
-    }
-    function open$1(uri, cb, qrcodeModalOptions) {
-      injectStyleSheet();
-      var wrapper = renderWrapper();
-      React.render(React.createElement(Modal, {
-        text: getText(),
-        uri,
-        onClose: getWrappedCallback(cb),
-        qrcodeModalOptions
-      }), wrapper);
-    }
-    function close$1() {
-      triggerCloseAnimation();
-    }
-    var isNode2 = function() {
-      return typeof process !== "undefined" && typeof process.versions !== "undefined" && typeof process.versions.node !== "undefined";
-    };
-    function open$2(uri, cb, qrcodeModalOptions) {
-      console.log(uri);
-      if (isNode2()) {
-        open(uri);
-      } else {
-        open$1(uri, cb, qrcodeModalOptions);
-      }
-    }
-    function close$2() {
-      if (isNode2())
-        ;
-      else {
-        close$1();
-      }
-    }
-    var index = {
-      open: open$2,
-      close: close$2
-    };
-    module2.exports = index;
+    module2.exports = copy2;
   }
 });
 
@@ -26309,48 +24318,48 @@ var require_error = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.validateJsonRpcError = exports2.getErrorByCode = exports2.getError = exports2.isValidErrorCode = exports2.isReservedErrorCode = exports2.isServerErrorCode = void 0;
     var constants_1 = require_constants();
-    function isServerErrorCode(code) {
+    function isServerErrorCode2(code) {
       return code <= constants_1.SERVER_ERROR_CODE_RANGE[0] && code >= constants_1.SERVER_ERROR_CODE_RANGE[1];
     }
-    exports2.isServerErrorCode = isServerErrorCode;
-    function isReservedErrorCode(code) {
+    exports2.isServerErrorCode = isServerErrorCode2;
+    function isReservedErrorCode2(code) {
       return constants_1.RESERVED_ERROR_CODES.includes(code);
     }
-    exports2.isReservedErrorCode = isReservedErrorCode;
-    function isValidErrorCode(code) {
+    exports2.isReservedErrorCode = isReservedErrorCode2;
+    function isValidErrorCode2(code) {
       return typeof code === "number";
     }
-    exports2.isValidErrorCode = isValidErrorCode;
-    function getError(type) {
+    exports2.isValidErrorCode = isValidErrorCode2;
+    function getError2(type) {
       if (!Object.keys(constants_1.STANDARD_ERROR_MAP).includes(type)) {
         return constants_1.STANDARD_ERROR_MAP[constants_1.INTERNAL_ERROR];
       }
       return constants_1.STANDARD_ERROR_MAP[type];
     }
-    exports2.getError = getError;
-    function getErrorByCode(code) {
+    exports2.getError = getError2;
+    function getErrorByCode2(code) {
       const match = Object.values(constants_1.STANDARD_ERROR_MAP).find((e3) => e3.code === code);
       if (!match) {
         return constants_1.STANDARD_ERROR_MAP[constants_1.INTERNAL_ERROR];
       }
       return match;
     }
-    exports2.getErrorByCode = getErrorByCode;
-    function validateJsonRpcError(response) {
+    exports2.getErrorByCode = getErrorByCode2;
+    function validateJsonRpcError2(response) {
       if (typeof response.error.code === "undefined") {
         return { valid: false, error: "Missing code for JSON-RPC error" };
       }
       if (typeof response.error.message === "undefined") {
         return { valid: false, error: "Missing message for JSON-RPC error" };
       }
-      if (!isValidErrorCode(response.error.code)) {
+      if (!isValidErrorCode2(response.error.code)) {
         return {
           valid: false,
           error: `Invalid error code type for JSON-RPC: ${response.error.code}`
         };
       }
-      if (isReservedErrorCode(response.error.code)) {
-        const error = getErrorByCode(response.error.code);
+      if (isReservedErrorCode2(response.error.code)) {
+        const error = getErrorByCode2(response.error.code);
         if (error.message !== constants_1.STANDARD_ERROR_MAP[constants_1.INTERNAL_ERROR].message && response.error.message === error.message) {
           return {
             valid: false,
@@ -26360,34 +24369,34 @@ var require_error = __commonJS({
       }
       return { valid: true };
     }
-    exports2.validateJsonRpcError = validateJsonRpcError;
+    exports2.validateJsonRpcError = validateJsonRpcError2;
   }
 });
 
 // node_modules/@pedrouid/environment/dist/cjs/crypto.js
-var require_crypto2 = __commonJS({
+var require_crypto3 = __commonJS({
   "node_modules/@pedrouid/environment/dist/cjs/crypto.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.isBrowserCryptoAvailable = exports2.getSubtleCrypto = exports2.getBrowerCrypto = void 0;
-    function getBrowerCrypto() {
+    function getBrowerCrypto2() {
       return (global === null || global === void 0 ? void 0 : global.crypto) || (global === null || global === void 0 ? void 0 : global.msCrypto) || {};
     }
-    exports2.getBrowerCrypto = getBrowerCrypto;
-    function getSubtleCrypto() {
-      const browserCrypto = getBrowerCrypto();
+    exports2.getBrowerCrypto = getBrowerCrypto2;
+    function getSubtleCrypto2() {
+      const browserCrypto = getBrowerCrypto2();
       return browserCrypto.subtle || browserCrypto.webkitSubtle;
     }
-    exports2.getSubtleCrypto = getSubtleCrypto;
+    exports2.getSubtleCrypto = getSubtleCrypto2;
     function isBrowserCryptoAvailable() {
-      return !!getBrowerCrypto() && !!getSubtleCrypto();
+      return !!getBrowerCrypto2() && !!getSubtleCrypto2();
     }
     exports2.isBrowserCryptoAvailable = isBrowserCryptoAvailable;
   }
 });
 
 // node_modules/@pedrouid/environment/dist/cjs/env.js
-var require_env = __commonJS({
+var require_env2 = __commonJS({
   "node_modules/@pedrouid/environment/dist/cjs/env.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
@@ -26396,12 +24405,12 @@ var require_env = __commonJS({
       return typeof document === "undefined" && typeof navigator !== "undefined" && navigator.product === "ReactNative";
     }
     exports2.isReactNative = isReactNative;
-    function isNode2() {
+    function isNode4() {
       return typeof process !== "undefined" && typeof process.versions !== "undefined" && typeof process.versions.node !== "undefined";
     }
-    exports2.isNode = isNode2;
+    exports2.isNode = isNode4;
     function isBrowser2() {
-      return !isReactNative() && !isNode2();
+      return !isReactNative() && !isNode4();
     }
     exports2.isBrowser = isBrowser2;
   }
@@ -26428,13 +24437,13 @@ var require_cjs4 = __commonJS({
           __createBinding(exports3, m3, p3);
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
-    __exportStar(require_crypto2(), exports2);
-    __exportStar(require_env(), exports2);
+    __exportStar(require_crypto3(), exports2);
+    __exportStar(require_env2(), exports2);
   }
 });
 
 // node_modules/@json-rpc-tools/utils/dist/cjs/env.js
-var require_env2 = __commonJS({
+var require_env3 = __commonJS({
   "node_modules/@json-rpc-tools/utils/dist/cjs/env.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
@@ -26454,38 +24463,38 @@ var require_format = __commonJS({
     exports2.formatErrorMessage = exports2.formatJsonRpcError = exports2.formatJsonRpcResult = exports2.formatJsonRpcRequest = exports2.payloadId = void 0;
     var error_1 = require_error();
     var constants_1 = require_constants();
-    function payloadId() {
+    function payloadId3() {
       const date = Date.now() * Math.pow(10, 3);
       const extra = Math.floor(Math.random() * Math.pow(10, 3));
       return date + extra;
     }
-    exports2.payloadId = payloadId;
-    function formatJsonRpcRequest2(method2, params, id) {
+    exports2.payloadId = payloadId3;
+    function formatJsonRpcRequest3(method2, params, id) {
       return {
-        id: id || payloadId(),
+        id: id || payloadId3(),
         jsonrpc: "2.0",
         method: method2,
         params
       };
     }
-    exports2.formatJsonRpcRequest = formatJsonRpcRequest2;
-    function formatJsonRpcResult(id, result) {
+    exports2.formatJsonRpcRequest = formatJsonRpcRequest3;
+    function formatJsonRpcResult2(id, result) {
       return {
         id,
         jsonrpc: "2.0",
         result
       };
     }
-    exports2.formatJsonRpcResult = formatJsonRpcResult;
-    function formatJsonRpcError(id, error) {
+    exports2.formatJsonRpcResult = formatJsonRpcResult2;
+    function formatJsonRpcError2(id, error) {
       return {
         id,
         jsonrpc: "2.0",
-        error: formatErrorMessage(error)
+        error: formatErrorMessage2(error)
       };
     }
-    exports2.formatJsonRpcError = formatJsonRpcError;
-    function formatErrorMessage(error) {
+    exports2.formatJsonRpcError = formatJsonRpcError2;
+    function formatErrorMessage2(error) {
       if (typeof error === "undefined") {
         return error_1.getError(constants_1.INTERNAL_ERROR);
       }
@@ -26500,7 +24509,7 @@ var require_format = __commonJS({
       }
       return error;
     }
-    exports2.formatErrorMessage = formatErrorMessage;
+    exports2.formatErrorMessage = formatErrorMessage2;
   }
 });
 
@@ -26510,22 +24519,22 @@ var require_routing = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.isValidTrailingWildcardRoute = exports2.isValidLeadingWildcardRoute = exports2.isValidWildcardRoute = exports2.isValidDefaultRoute = exports2.isValidRoute = void 0;
-    function isValidRoute(route) {
+    function isValidRoute2(route) {
       if (route.includes("*")) {
-        return isValidWildcardRoute(route);
+        return isValidWildcardRoute2(route);
       }
       if (/\W/g.test(route)) {
         return false;
       }
       return true;
     }
-    exports2.isValidRoute = isValidRoute;
-    function isValidDefaultRoute(route) {
+    exports2.isValidRoute = isValidRoute2;
+    function isValidDefaultRoute2(route) {
       return route === "*";
     }
-    exports2.isValidDefaultRoute = isValidDefaultRoute;
-    function isValidWildcardRoute(route) {
-      if (isValidDefaultRoute(route)) {
+    exports2.isValidDefaultRoute = isValidDefaultRoute2;
+    function isValidWildcardRoute2(route) {
+      if (isValidDefaultRoute2(route)) {
         return true;
       }
       if (!route.includes("*")) {
@@ -26539,15 +24548,15 @@ var require_routing = __commonJS({
       }
       return true;
     }
-    exports2.isValidWildcardRoute = isValidWildcardRoute;
-    function isValidLeadingWildcardRoute(route) {
-      return !isValidDefaultRoute(route) && isValidWildcardRoute(route) && !route.split("*")[0].trim();
+    exports2.isValidWildcardRoute = isValidWildcardRoute2;
+    function isValidLeadingWildcardRoute2(route) {
+      return !isValidDefaultRoute2(route) && isValidWildcardRoute2(route) && !route.split("*")[0].trim();
     }
-    exports2.isValidLeadingWildcardRoute = isValidLeadingWildcardRoute;
-    function isValidTrailingWildcardRoute(route) {
-      return !isValidDefaultRoute(route) && isValidWildcardRoute(route) && !route.split("*")[1].trim();
+    exports2.isValidLeadingWildcardRoute = isValidLeadingWildcardRoute2;
+    function isValidTrailingWildcardRoute2(route) {
+      return !isValidDefaultRoute2(route) && isValidWildcardRoute2(route) && !route.split("*")[1].trim();
     }
-    exports2.isValidTrailingWildcardRoute = isValidTrailingWildcardRoute;
+    exports2.isValidTrailingWildcardRoute = isValidTrailingWildcardRoute2;
   }
 });
 
@@ -26557,9 +24566,9 @@ var require_misc = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.IEvents = void 0;
-    var IEvents = class {
+    var IEvents2 = class {
     };
-    exports2.IEvents = IEvents;
+    exports2.IEvents = IEvents2;
   }
 });
 
@@ -26570,24 +24579,24 @@ var require_provider = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.IJsonRpcProvider = exports2.IBaseJsonRpcProvider = exports2.IJsonRpcConnection = void 0;
     var misc_1 = require_misc();
-    var IJsonRpcConnection = class extends misc_1.IEvents {
+    var IJsonRpcConnection2 = class extends misc_1.IEvents {
       constructor(opts) {
         super();
       }
     };
-    exports2.IJsonRpcConnection = IJsonRpcConnection;
-    var IBaseJsonRpcProvider = class extends misc_1.IEvents {
+    exports2.IJsonRpcConnection = IJsonRpcConnection2;
+    var IBaseJsonRpcProvider2 = class extends misc_1.IEvents {
       constructor() {
         super();
       }
     };
-    exports2.IBaseJsonRpcProvider = IBaseJsonRpcProvider;
-    var IJsonRpcProvider = class extends IBaseJsonRpcProvider {
+    exports2.IBaseJsonRpcProvider = IBaseJsonRpcProvider2;
+    var IJsonRpcProvider2 = class extends IBaseJsonRpcProvider2 {
       constructor(connection) {
         super();
       }
     };
-    exports2.IJsonRpcProvider = IJsonRpcProvider;
+    exports2.IJsonRpcProvider = IJsonRpcProvider2;
   }
 });
 
@@ -26717,30 +24726,30 @@ var require_validators = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.isJsonRpcValidationInvalid = exports2.isJsonRpcError = exports2.isJsonRpcResult = exports2.isJsonRpcResponse = exports2.isJsonRpcRequest = exports2.isJsonRpcPayload = void 0;
-    function isJsonRpcPayload(payload) {
+    function isJsonRpcPayload2(payload) {
       return "id" in payload && "jsonrpc" in payload && payload.jsonrpc === "2.0";
     }
-    exports2.isJsonRpcPayload = isJsonRpcPayload;
-    function isJsonRpcRequest(payload) {
-      return isJsonRpcPayload(payload) && "method" in payload;
+    exports2.isJsonRpcPayload = isJsonRpcPayload2;
+    function isJsonRpcRequest3(payload) {
+      return isJsonRpcPayload2(payload) && "method" in payload;
     }
-    exports2.isJsonRpcRequest = isJsonRpcRequest;
-    function isJsonRpcResponse(payload) {
-      return isJsonRpcPayload(payload) && (isJsonRpcResult(payload) || isJsonRpcError(payload));
+    exports2.isJsonRpcRequest = isJsonRpcRequest3;
+    function isJsonRpcResponse2(payload) {
+      return isJsonRpcPayload2(payload) && (isJsonRpcResult2(payload) || isJsonRpcError2(payload));
     }
-    exports2.isJsonRpcResponse = isJsonRpcResponse;
-    function isJsonRpcResult(payload) {
+    exports2.isJsonRpcResponse = isJsonRpcResponse2;
+    function isJsonRpcResult2(payload) {
       return "result" in payload;
     }
-    exports2.isJsonRpcResult = isJsonRpcResult;
-    function isJsonRpcError(payload) {
+    exports2.isJsonRpcResult = isJsonRpcResult2;
+    function isJsonRpcError2(payload) {
       return "error" in payload;
     }
-    exports2.isJsonRpcError = isJsonRpcError;
-    function isJsonRpcValidationInvalid(validation) {
+    exports2.isJsonRpcError = isJsonRpcError2;
+    function isJsonRpcValidationInvalid2(validation) {
       return "error" in validation && validation.valid === false;
     }
-    exports2.isJsonRpcValidationInvalid = isJsonRpcValidationInvalid;
+    exports2.isJsonRpcValidationInvalid = isJsonRpcValidationInvalid2;
   }
 });
 
@@ -26752,7 +24761,7 @@ var require_cjs6 = __commonJS({
     var tslib_1 = require_tslib();
     tslib_1.__exportStar(require_constants(), exports2);
     tslib_1.__exportStar(require_error(), exports2);
-    tslib_1.__exportStar(require_env2(), exports2);
+    tslib_1.__exportStar(require_env3(), exports2);
     tslib_1.__exportStar(require_format(), exports2);
     tslib_1.__exportStar(require_routing(), exports2);
     tslib_1.__exportStar(require_types(), exports2);
@@ -26760,12 +24769,3668 @@ var require_cjs6 = __commonJS({
   }
 });
 
+// node_modules/detect-browser/es/index.js
+var __spreadArrays = function() {
+  for (var s3 = 0, i3 = 0, il = arguments.length; i3 < il; i3++)
+    s3 += arguments[i3].length;
+  for (var r3 = Array(s3), k3 = 0, i3 = 0; i3 < il; i3++)
+    for (var a3 = arguments[i3], j3 = 0, jl = a3.length; j3 < jl; j3++, k3++)
+      r3[k3] = a3[j3];
+  return r3;
+};
+var BrowserInfo = function() {
+  function BrowserInfo2(name, version, os) {
+    this.name = name;
+    this.version = version;
+    this.os = os;
+    this.type = "browser";
+  }
+  return BrowserInfo2;
+}();
+var NodeInfo = function() {
+  function NodeInfo2(version) {
+    this.version = version;
+    this.type = "node";
+    this.name = "node";
+    this.os = process.platform;
+  }
+  return NodeInfo2;
+}();
+var SearchBotDeviceInfo = function() {
+  function SearchBotDeviceInfo2(name, version, os, bot) {
+    this.name = name;
+    this.version = version;
+    this.os = os;
+    this.bot = bot;
+    this.type = "bot-device";
+  }
+  return SearchBotDeviceInfo2;
+}();
+var BotInfo = function() {
+  function BotInfo2() {
+    this.type = "bot";
+    this.bot = true;
+    this.name = "bot";
+    this.version = null;
+    this.os = null;
+  }
+  return BotInfo2;
+}();
+var ReactNativeInfo = function() {
+  function ReactNativeInfo2() {
+    this.type = "react-native";
+    this.name = "react-native";
+    this.version = null;
+    this.os = null;
+  }
+  return ReactNativeInfo2;
+}();
+var SEARCHBOX_UA_REGEX = /alexa|bot|crawl(er|ing)|facebookexternalhit|feedburner|google web preview|nagios|postrank|pingdom|slurp|spider|yahoo!|yandex/;
+var SEARCHBOT_OS_REGEX = /(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask\ Jeeves\/Teoma|ia_archiver)/;
+var REQUIRED_VERSION_PARTS = 3;
+var userAgentRules = [
+  ["aol", /AOLShield\/([0-9\._]+)/],
+  ["edge", /Edge\/([0-9\._]+)/],
+  ["edge-ios", /EdgiOS\/([0-9\._]+)/],
+  ["yandexbrowser", /YaBrowser\/([0-9\._]+)/],
+  ["kakaotalk", /KAKAOTALK\s([0-9\.]+)/],
+  ["samsung", /SamsungBrowser\/([0-9\.]+)/],
+  ["silk", /\bSilk\/([0-9._-]+)\b/],
+  ["miui", /MiuiBrowser\/([0-9\.]+)$/],
+  ["beaker", /BeakerBrowser\/([0-9\.]+)/],
+  ["edge-chromium", /EdgA?\/([0-9\.]+)/],
+  [
+    "chromium-webview",
+    /(?!Chrom.*OPR)wv\).*Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/
+  ],
+  ["chrome", /(?!Chrom.*OPR)Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/],
+  ["phantomjs", /PhantomJS\/([0-9\.]+)(:?\s|$)/],
+  ["crios", /CriOS\/([0-9\.]+)(:?\s|$)/],
+  ["firefox", /Firefox\/([0-9\.]+)(?:\s|$)/],
+  ["fxios", /FxiOS\/([0-9\.]+)/],
+  ["opera-mini", /Opera Mini.*Version\/([0-9\.]+)/],
+  ["opera", /Opera\/([0-9\.]+)(?:\s|$)/],
+  ["opera", /OPR\/([0-9\.]+)(:?\s|$)/],
+  ["ie", /Trident\/7\.0.*rv\:([0-9\.]+).*\).*Gecko$/],
+  ["ie", /MSIE\s([0-9\.]+);.*Trident\/[4-7].0/],
+  ["ie", /MSIE\s(7\.0)/],
+  ["bb10", /BB10;\sTouch.*Version\/([0-9\.]+)/],
+  ["android", /Android\s([0-9\.]+)/],
+  ["ios", /Version\/([0-9\._]+).*Mobile.*Safari.*/],
+  ["safari", /Version\/([0-9\._]+).*Safari/],
+  ["facebook", /FBAV\/([0-9\.]+)/],
+  ["instagram", /Instagram\s([0-9\.]+)/],
+  ["ios-webview", /AppleWebKit\/([0-9\.]+).*Mobile/],
+  ["ios-webview", /AppleWebKit\/([0-9\.]+).*Gecko\)$/],
+  ["searchbot", SEARCHBOX_UA_REGEX]
+];
+var operatingSystemRules = [
+  ["iOS", /iP(hone|od|ad)/],
+  ["Android OS", /Android/],
+  ["BlackBerry OS", /BlackBerry|BB10/],
+  ["Windows Mobile", /IEMobile/],
+  ["Amazon OS", /Kindle/],
+  ["Windows 3.11", /Win16/],
+  ["Windows 95", /(Windows 95)|(Win95)|(Windows_95)/],
+  ["Windows 98", /(Windows 98)|(Win98)/],
+  ["Windows 2000", /(Windows NT 5.0)|(Windows 2000)/],
+  ["Windows XP", /(Windows NT 5.1)|(Windows XP)/],
+  ["Windows Server 2003", /(Windows NT 5.2)/],
+  ["Windows Vista", /(Windows NT 6.0)/],
+  ["Windows 7", /(Windows NT 6.1)/],
+  ["Windows 8", /(Windows NT 6.2)/],
+  ["Windows 8.1", /(Windows NT 6.3)/],
+  ["Windows 10", /(Windows NT 10.0)/],
+  ["Windows ME", /Windows ME/],
+  ["Open BSD", /OpenBSD/],
+  ["Sun OS", /SunOS/],
+  ["Chrome OS", /CrOS/],
+  ["Linux", /(Linux)|(X11)/],
+  ["Mac OS", /(Mac_PowerPC)|(Macintosh)/],
+  ["QNX", /QNX/],
+  ["BeOS", /BeOS/],
+  ["OS/2", /OS\/2/]
+];
+function detect(userAgent) {
+  if (!!userAgent) {
+    return parseUserAgent(userAgent);
+  }
+  if (typeof document === "undefined" && typeof navigator !== "undefined" && navigator.product === "ReactNative") {
+    return new ReactNativeInfo();
+  }
+  if (typeof navigator !== "undefined") {
+    return parseUserAgent(navigator.userAgent);
+  }
+  return getNodeVersion();
+}
+function matchUserAgent(ua) {
+  return ua !== "" && userAgentRules.reduce(function(matched, _a) {
+    var browser = _a[0], regex = _a[1];
+    if (matched) {
+      return matched;
+    }
+    var uaMatch = regex.exec(ua);
+    return !!uaMatch && [browser, uaMatch];
+  }, false);
+}
+function browserName(ua) {
+  var data = matchUserAgent(ua);
+  return data ? data[0] : null;
+}
+function parseUserAgent(ua) {
+  var matchedRule = matchUserAgent(ua);
+  if (!matchedRule) {
+    return null;
+  }
+  var name = matchedRule[0], match = matchedRule[1];
+  if (name === "searchbot") {
+    return new BotInfo();
+  }
+  var versionParts = match[1] && match[1].split(/[._]/).slice(0, 3);
+  if (versionParts) {
+    if (versionParts.length < REQUIRED_VERSION_PARTS) {
+      versionParts = __spreadArrays(versionParts, createVersionParts(REQUIRED_VERSION_PARTS - versionParts.length));
+    }
+  } else {
+    versionParts = [];
+  }
+  var version = versionParts.join(".");
+  var os = detectOS(ua);
+  var searchBotMatch = SEARCHBOT_OS_REGEX.exec(ua);
+  if (searchBotMatch && searchBotMatch[1]) {
+    return new SearchBotDeviceInfo(name, version, os, searchBotMatch[1]);
+  }
+  return new BrowserInfo(name, version, os);
+}
+function detectOS(ua) {
+  for (var ii = 0, count = operatingSystemRules.length; ii < count; ii++) {
+    var _a = operatingSystemRules[ii], os = _a[0], regex = _a[1];
+    var match = regex.exec(ua);
+    if (match) {
+      return os;
+    }
+  }
+  return null;
+}
+function getNodeVersion() {
+  var isNode4 = typeof process !== "undefined" && process.version;
+  return isNode4 ? new NodeInfo(process.version.slice(1)) : null;
+}
+function createVersionParts(count) {
+  var output = [];
+  for (var ii = 0; ii < count; ii++) {
+    output.push("0");
+  }
+  return output;
+}
+
+// node_modules/@walletconnect/browser-utils/dist/esm/browser.js
+var windowMetadata = __toESM(require_cjs2());
+var windowGetters = __toESM(require_cjs());
+function detectEnv(userAgent) {
+  return detect(userAgent);
+}
+function detectOS2() {
+  const env3 = detectEnv();
+  return env3 && env3.os ? env3.os : void 0;
+}
+function isAndroid() {
+  const os = detectOS2();
+  return os ? os.toLowerCase().includes("android") : false;
+}
+function isIOS() {
+  const os = detectOS2();
+  return os ? os.toLowerCase().includes("ios") || os.toLowerCase().includes("mac") && navigator.maxTouchPoints > 1 : false;
+}
+function isMobile() {
+  const os = detectOS2();
+  return os ? isAndroid() || isIOS() : false;
+}
+function isNode() {
+  const env3 = detectEnv();
+  const result = env3 && env3.name ? env3.name.toLowerCase() === "node" : false;
+  return result;
+}
+function isBrowser() {
+  const result = !isNode() && !!getNavigator();
+  return result;
+}
+var getFromWindow = windowGetters.getFromWindow;
+var getFromWindowOrThrow = windowGetters.getFromWindowOrThrow;
+var getDocumentOrThrow = windowGetters.getDocumentOrThrow;
+var getDocument = windowGetters.getDocument;
+var getNavigatorOrThrow = windowGetters.getNavigatorOrThrow;
+var getNavigator = windowGetters.getNavigator;
+var getLocationOrThrow = windowGetters.getLocationOrThrow;
+var getLocation = windowGetters.getLocation;
+var getCryptoOrThrow = windowGetters.getCryptoOrThrow;
+var getCrypto = windowGetters.getCrypto;
+var getLocalStorageOrThrow = windowGetters.getLocalStorageOrThrow;
+var getLocalStorage = windowGetters.getLocalStorage;
+function getClientMeta() {
+  return windowMetadata.getWindowMetadata();
+}
+
+// node_modules/@walletconnect/safe-json/dist/esm/index.js
+function safeJsonParse(value) {
+  if (typeof value !== "string") {
+    throw new Error(`Cannot safe json parse value of type ${typeof value}`);
+  }
+  try {
+    return JSON.parse(value);
+  } catch (_a) {
+    return value;
+  }
+}
+function safeJsonStringify(value) {
+  return typeof value === "string" ? value : JSON.stringify(value);
+}
+
+// node_modules/@walletconnect/browser-utils/dist/esm/json.js
+var safeJsonParse2 = safeJsonParse;
+var safeJsonStringify2 = safeJsonStringify;
+
+// node_modules/@walletconnect/browser-utils/dist/esm/local.js
+function setLocal(key, data) {
+  const raw = safeJsonStringify2(data);
+  const local = getLocalStorage();
+  if (local) {
+    local.setItem(key, raw);
+  }
+}
+function getLocal(key) {
+  let data = null;
+  let raw = null;
+  const local = getLocalStorage();
+  if (local) {
+    raw = local.getItem(key);
+  }
+  data = raw ? safeJsonParse2(raw) : raw;
+  return data;
+}
+function removeLocal(key) {
+  const local = getLocalStorage();
+  if (local) {
+    local.removeItem(key);
+  }
+}
+
+// node_modules/@walletconnect/browser-utils/dist/esm/mobile.js
+var mobileLinkChoiceKey = "WALLETCONNECT_DEEPLINK_CHOICE";
+function formatIOSMobile(uri, entry) {
+  const encodedUri = encodeURIComponent(uri);
+  return entry.universalLink ? `${entry.universalLink}/wc?uri=${encodedUri}` : entry.deepLink ? `${entry.deepLink}${entry.deepLink.endsWith(":") ? "//" : "/"}wc?uri=${encodedUri}` : "";
+}
+function saveMobileLinkInfo(data) {
+  const focusUri = data.href.split("?")[0];
+  setLocal(mobileLinkChoiceKey, Object.assign(Object.assign({}, data), { href: focusUri }));
+}
+function getMobileRegistryEntry(registry, name) {
+  return registry.filter((entry) => entry.name.toLowerCase().includes(name.toLowerCase()))[0];
+}
+function getMobileLinkRegistry(registry, whitelist) {
+  let links = registry;
+  if (whitelist) {
+    links = whitelist.map((name) => getMobileRegistryEntry(registry, name)).filter(Boolean);
+  }
+  return links;
+}
+
+// node_modules/@walletconnect/browser-utils/dist/esm/registry.js
+var API_URL = "https://registry.walletconnect.com";
+function getWalletRegistryUrl() {
+  return API_URL + "/api/v2/wallets";
+}
+function getDappRegistryUrl() {
+  return API_URL + "/api/v2/dapps";
+}
+function formatMobileRegistryEntry(entry, platform = "mobile") {
+  var _a;
+  return {
+    name: entry.name || "",
+    shortName: entry.metadata.shortName || "",
+    color: entry.metadata.colors.primary || "",
+    logo: (_a = entry.image_url.sm) !== null && _a !== void 0 ? _a : "",
+    universalLink: entry[platform].universal || "",
+    deepLink: entry[platform].native || ""
+  };
+}
+function formatMobileRegistry(registry, platform = "mobile") {
+  return Object.values(registry).filter((entry) => !!entry[platform].universal || !!entry[platform].native).map((entry) => formatMobileRegistryEntry(entry, platform));
+}
+
+// node_modules/@walletconnect/utils/dist/esm/constants.js
+var reservedEvents = [
+  "session_request",
+  "session_update",
+  "exchange_key",
+  "connect",
+  "disconnect",
+  "display_uri",
+  "modal_closed",
+  "transport_open",
+  "transport_close",
+  "transport_error"
+];
+var signingMethods = [
+  "eth_sendTransaction",
+  "eth_signTransaction",
+  "eth_sign",
+  "eth_signTypedData",
+  "eth_signTypedData_v1",
+  "eth_signTypedData_v2",
+  "eth_signTypedData_v3",
+  "eth_signTypedData_v4",
+  "personal_sign",
+  "wallet_addEthereumChain",
+  "wallet_switchEthereumChain",
+  "wallet_getPermissions",
+  "wallet_requestPermissions",
+  "wallet_registerOnboarding",
+  "wallet_watchAsset",
+  "wallet_scanQRCode"
+];
+var stateMethods = ["eth_accounts", "eth_chainId", "net_version"];
+var infuraNetworks = {
+  1: "mainnet",
+  3: "ropsten",
+  4: "rinkeby",
+  5: "goerli",
+  42: "kovan"
+};
+
+// node_modules/@walletconnect/encoding/dist/esm/index.js
+var import_is_typedarray = __toESM(require_is_typedarray());
+var import_typedarray_to_buffer = __toESM(require_typedarray_to_buffer());
+var ENC_HEX = "hex";
+var ENC_UTF8 = "utf8";
+var ENC_BIN = "binary";
+var TYPE_BUFFER = "buffer";
+var TYPE_ARRAY = "array";
+var TYPE_TYPED_ARRAY = "typed-array";
+var TYPE_ARRAY_BUFFER = "array-buffer";
+var STRING_ZERO = "0";
+function bufferToArray(buf) {
+  return new Uint8Array(buf);
+}
+function bufferToHex(buf, prefixed = false) {
+  const hex = buf.toString(ENC_HEX);
+  return prefixed ? addHexPrefix(hex) : hex;
+}
+function bufferToUtf8(buf) {
+  return buf.toString(ENC_UTF8);
+}
+function bufferToNumber(buf) {
+  return buf.readUIntBE(0, buf.length);
+}
+function bufferToBinary(buf) {
+  return arrayToBinary(bufferToArray(buf));
+}
+function arrayToBuffer(arr) {
+  return (0, import_typedarray_to_buffer.default)(arr);
+}
+function arrayToHex(arr, prefixed = false) {
+  return bufferToHex(arrayToBuffer(arr), prefixed);
+}
+function arrayToUtf8(arr) {
+  return bufferToUtf8(arrayToBuffer(arr));
+}
+function arrayToNumber(arr) {
+  return bufferToNumber(arrayToBuffer(arr));
+}
+function arrayToBinary(arr) {
+  return Array.from(arr).map(numberToBinary).join("");
+}
+function hexToBuffer(hex) {
+  return Buffer.from(removeHexPrefix(hex), ENC_HEX);
+}
+function hexToArray(hex) {
+  return bufferToArray(hexToBuffer(hex));
+}
+function hexToUtf8(hex) {
+  return bufferToUtf8(hexToBuffer(hex));
+}
+function hexToNumber(hex) {
+  return arrayToNumber(hexToArray(hex));
+}
+function hexToBinary(hex) {
+  return arrayToBinary(hexToArray(hex));
+}
+function utf8ToBuffer(utf8) {
+  return Buffer.from(utf8, ENC_UTF8);
+}
+function utf8ToArray(utf8) {
+  return bufferToArray(utf8ToBuffer(utf8));
+}
+function utf8ToHex(utf8, prefixed = false) {
+  return bufferToHex(utf8ToBuffer(utf8), prefixed);
+}
+function utf8ToNumber(utf8) {
+  const num = parseInt(utf8, 10);
+  assert(isDefined(num), "Number can only safely store up to 53 bits");
+  return num;
+}
+function utf8ToBinary(utf8) {
+  return arrayToBinary(utf8ToArray(utf8));
+}
+function numberToBuffer(num) {
+  return binaryToBuffer(numberToBinary(num));
+}
+function numberToArray(num) {
+  return binaryToArray(numberToBinary(num));
+}
+function numberToHex(num, prefixed) {
+  return binaryToHex(numberToBinary(num), prefixed);
+}
+function numberToUtf8(num) {
+  return `${num}`;
+}
+function numberToBinary(num) {
+  const bin = (num >>> 0).toString(2);
+  return sanitizeBytes(bin);
+}
+function binaryToBuffer(bin) {
+  return arrayToBuffer(binaryToArray(bin));
+}
+function binaryToArray(bin) {
+  return new Uint8Array(splitBytes(bin).map((x3) => parseInt(x3, 2)));
+}
+function binaryToHex(bin, prefixed) {
+  return arrayToHex(binaryToArray(bin), prefixed);
+}
+function binaryToUtf8(bin) {
+  return arrayToUtf8(binaryToArray(bin));
+}
+function binaryToNumber(bin) {
+  return arrayToNumber(binaryToArray(bin));
+}
+function isBinaryString(str) {
+  if (typeof str !== "string" || !new RegExp(/^[01]+$/).test(str)) {
+    return false;
+  }
+  if (str.length % 8 !== 0) {
+    return false;
+  }
+  return true;
+}
+function isHexString(str, length) {
+  if (typeof str !== "string" || !str.match(/^0x[0-9A-Fa-f]*$/)) {
+    return false;
+  }
+  if (length && str.length !== 2 + 2 * length) {
+    return false;
+  }
+  return true;
+}
+function isBuffer(val) {
+  return Buffer.isBuffer(val);
+}
+function isTypedArray(val) {
+  return import_is_typedarray.default.strict(val) && !isBuffer(val);
+}
+function isArrayBuffer(val) {
+  return !isTypedArray(val) && !isBuffer(val) && typeof val.byteLength !== "undefined";
+}
+function getType(val) {
+  if (isBuffer(val)) {
+    return TYPE_BUFFER;
+  } else if (isTypedArray(val)) {
+    return TYPE_TYPED_ARRAY;
+  } else if (isArrayBuffer(val)) {
+    return TYPE_ARRAY_BUFFER;
+  } else if (Array.isArray(val)) {
+    return TYPE_ARRAY;
+  } else {
+    return typeof val;
+  }
+}
+function getEncoding(str) {
+  if (isBinaryString(str)) {
+    return ENC_BIN;
+  }
+  if (isHexString(str)) {
+    return ENC_HEX;
+  }
+  return ENC_UTF8;
+}
+function concatBuffers(...args) {
+  const result = Buffer.concat(args);
+  return result;
+}
+function concatArrays(...args) {
+  let result = [];
+  args.forEach((arg) => result = result.concat(Array.from(arg)));
+  return new Uint8Array([...result]);
+}
+function trimLeft(data, length) {
+  const diff = data.length - length;
+  if (diff > 0) {
+    data = data.slice(diff);
+  }
+  return data;
+}
+function trimRight(data, length) {
+  return data.slice(0, length);
+}
+function calcByteLength(length, byteSize = 8) {
+  const remainder = length % byteSize;
+  return remainder ? (length - remainder) / byteSize * byteSize + byteSize : length;
+}
+function splitBytes(str, byteSize = 8) {
+  const bytes = sanitizeBytes(str).match(new RegExp(`.{${byteSize}}`, "gi"));
+  return Array.from(bytes || []);
+}
+function swapBytes(str) {
+  return splitBytes(str).map(reverseString).join("");
+}
+function swapHex(str) {
+  return binaryToHex(swapBytes(hexToBinary(str)));
+}
+function sanitizeBytes(str, byteSize = 8, padding = STRING_ZERO) {
+  return padLeft(str, calcByteLength(str.length, byteSize), padding);
+}
+function padLeft(str, length, padding = STRING_ZERO) {
+  return padString(str, length, true, padding);
+}
+function padRight(str, length, padding = STRING_ZERO) {
+  return padString(str, length, false, padding);
+}
+function removeHexPrefix(hex) {
+  return hex.replace(/^0x/, "");
+}
+function addHexPrefix(hex) {
+  return hex.startsWith("0x") ? hex : `0x${hex}`;
+}
+function sanitizeHex(hex) {
+  hex = removeHexPrefix(hex);
+  hex = sanitizeBytes(hex, 2);
+  if (hex) {
+    hex = addHexPrefix(hex);
+  }
+  return hex;
+}
+function removeHexLeadingZeros(hex) {
+  const prefixed = hex.startsWith("0x");
+  hex = removeHexPrefix(hex);
+  hex = hex.startsWith(STRING_ZERO) ? hex.substring(1) : hex;
+  return prefixed ? addHexPrefix(hex) : hex;
+}
+function isUndefined(value) {
+  return typeof value === "undefined";
+}
+function isDefined(value) {
+  return !isUndefined(value);
+}
+function assert(assertion, errorMessage) {
+  if (!assertion) {
+    throw new Error(errorMessage);
+  }
+}
+function reverseString(str) {
+  return str.split("").reverse().join("");
+}
+function padString(str, length, left, padding = STRING_ZERO) {
+  const diff = length - str.length;
+  let result = str;
+  if (diff > 0) {
+    const pad = padding.repeat(diff);
+    result = left ? pad + str : str + pad;
+  }
+  return result;
+}
+
+// node_modules/@walletconnect/utils/dist/esm/encoding.js
+var import_bn = __toESM(require_bn());
+function convertArrayBufferToBuffer(arrBuf) {
+  return arrayToBuffer(new Uint8Array(arrBuf));
+}
+function convertArrayBufferToUtf8(arrBuf) {
+  return arrayToUtf8(new Uint8Array(arrBuf));
+}
+function convertArrayBufferToHex(arrBuf, noPrefix) {
+  return arrayToHex(new Uint8Array(arrBuf), !noPrefix);
+}
+function convertArrayBufferToNumber(arrBuf) {
+  return arrayToNumber(new Uint8Array(arrBuf));
+}
+function concatArrayBuffers(...args) {
+  return hexToArray(args.map((b2) => arrayToHex(new Uint8Array(b2))).join("")).buffer;
+}
+function convertBufferToArrayBuffer(buf) {
+  return bufferToArray(buf).buffer;
+}
+function convertBufferToUtf8(buf) {
+  return bufferToUtf8(buf);
+}
+function convertBufferToHex(buf, noPrefix) {
+  return bufferToHex(buf, !noPrefix);
+}
+function convertBufferToNumber(buf) {
+  return bufferToNumber(buf);
+}
+function concatBuffers2(...args) {
+  return concatBuffers(...args);
+}
+function convertUtf8ToArrayBuffer(utf8) {
+  return utf8ToArray(utf8).buffer;
+}
+function convertUtf8ToBuffer(utf8) {
+  return utf8ToBuffer(utf8);
+}
+function convertUtf8ToHex(utf8, noPrefix) {
+  return utf8ToHex(utf8, !noPrefix);
+}
+function convertUtf8ToNumber(utf8) {
+  return new import_bn.default(utf8, 10).toNumber();
+}
+function convertHexToBuffer(hex) {
+  return hexToBuffer(hex);
+}
+function convertHexToArrayBuffer(hex) {
+  return hexToArray(hex).buffer;
+}
+function convertHexToUtf8(hex) {
+  return hexToUtf8(hex);
+}
+function convertHexToNumber(hex) {
+  return new import_bn.default(removeHexPrefix(hex), "hex").toNumber();
+}
+function convertNumberToBuffer(num) {
+  return numberToBuffer(num);
+}
+function convertNumberToArrayBuffer(num) {
+  return numberToArray(num).buffer;
+}
+function convertNumberToUtf8(num) {
+  return new import_bn.default(num).toString();
+}
+function convertNumberToHex(num, noPrefix) {
+  const hex = removeHexPrefix(sanitizeHex(new import_bn.default(num).toString(16)));
+  return noPrefix ? hex : addHexPrefix(hex);
+}
+
+// node_modules/@walletconnect/jsonrpc-utils/dist/esm/index.js
+var esm_exports3 = {};
+__export(esm_exports3, {
+  IBaseJsonRpcProvider: () => IBaseJsonRpcProvider,
+  IEvents: () => IEvents,
+  IJsonRpcConnection: () => IJsonRpcConnection,
+  IJsonRpcProvider: () => IJsonRpcProvider,
+  INTERNAL_ERROR: () => INTERNAL_ERROR,
+  INVALID_PARAMS: () => INVALID_PARAMS,
+  INVALID_REQUEST: () => INVALID_REQUEST,
+  METHOD_NOT_FOUND: () => METHOD_NOT_FOUND,
+  PARSE_ERROR: () => PARSE_ERROR,
+  RESERVED_ERROR_CODES: () => RESERVED_ERROR_CODES,
+  SERVER_ERROR: () => SERVER_ERROR,
+  SERVER_ERROR_CODE_RANGE: () => SERVER_ERROR_CODE_RANGE,
+  STANDARD_ERROR_MAP: () => STANDARD_ERROR_MAP,
+  formatErrorMessage: () => formatErrorMessage,
+  formatJsonRpcError: () => formatJsonRpcError,
+  formatJsonRpcRequest: () => formatJsonRpcRequest,
+  formatJsonRpcResult: () => formatJsonRpcResult,
+  getError: () => getError,
+  getErrorByCode: () => getErrorByCode,
+  isHttpUrl: () => isHttpUrl,
+  isJsonRpcError: () => isJsonRpcError,
+  isJsonRpcPayload: () => isJsonRpcPayload,
+  isJsonRpcRequest: () => isJsonRpcRequest,
+  isJsonRpcResponse: () => isJsonRpcResponse,
+  isJsonRpcResult: () => isJsonRpcResult,
+  isJsonRpcValidationInvalid: () => isJsonRpcValidationInvalid,
+  isLocalhostUrl: () => isLocalhostUrl,
+  isNodeJs: () => isNodeJs,
+  isReservedErrorCode: () => isReservedErrorCode,
+  isServerErrorCode: () => isServerErrorCode,
+  isValidDefaultRoute: () => isValidDefaultRoute,
+  isValidErrorCode: () => isValidErrorCode,
+  isValidLeadingWildcardRoute: () => isValidLeadingWildcardRoute,
+  isValidRoute: () => isValidRoute,
+  isValidTrailingWildcardRoute: () => isValidTrailingWildcardRoute,
+  isValidWildcardRoute: () => isValidWildcardRoute,
+  isWsUrl: () => isWsUrl,
+  parseConnectionError: () => parseConnectionError,
+  payloadId: () => payloadId,
+  validateJsonRpcError: () => validateJsonRpcError
+});
+
+// node_modules/@walletconnect/jsonrpc-utils/dist/esm/constants.js
+var PARSE_ERROR = "PARSE_ERROR";
+var INVALID_REQUEST = "INVALID_REQUEST";
+var METHOD_NOT_FOUND = "METHOD_NOT_FOUND";
+var INVALID_PARAMS = "INVALID_PARAMS";
+var INTERNAL_ERROR = "INTERNAL_ERROR";
+var SERVER_ERROR = "SERVER_ERROR";
+var RESERVED_ERROR_CODES = [-32700, -32600, -32601, -32602, -32603];
+var SERVER_ERROR_CODE_RANGE = [-32e3, -32099];
+var STANDARD_ERROR_MAP = {
+  [PARSE_ERROR]: { code: -32700, message: "Parse error" },
+  [INVALID_REQUEST]: { code: -32600, message: "Invalid Request" },
+  [METHOD_NOT_FOUND]: { code: -32601, message: "Method not found" },
+  [INVALID_PARAMS]: { code: -32602, message: "Invalid params" },
+  [INTERNAL_ERROR]: { code: -32603, message: "Internal error" },
+  [SERVER_ERROR]: { code: -32e3, message: "Server error" }
+};
+
+// node_modules/@walletconnect/jsonrpc-utils/dist/esm/error.js
+function isServerErrorCode(code) {
+  return code <= SERVER_ERROR_CODE_RANGE[0] && code >= SERVER_ERROR_CODE_RANGE[1];
+}
+function isReservedErrorCode(code) {
+  return RESERVED_ERROR_CODES.includes(code);
+}
+function isValidErrorCode(code) {
+  return typeof code === "number";
+}
+function getError(type) {
+  if (!Object.keys(STANDARD_ERROR_MAP).includes(type)) {
+    return STANDARD_ERROR_MAP[INTERNAL_ERROR];
+  }
+  return STANDARD_ERROR_MAP[type];
+}
+function getErrorByCode(code) {
+  const match = Object.values(STANDARD_ERROR_MAP).find((e3) => e3.code === code);
+  if (!match) {
+    return STANDARD_ERROR_MAP[INTERNAL_ERROR];
+  }
+  return match;
+}
+function validateJsonRpcError(response) {
+  if (typeof response.error.code === "undefined") {
+    return { valid: false, error: "Missing code for JSON-RPC error" };
+  }
+  if (typeof response.error.message === "undefined") {
+    return { valid: false, error: "Missing message for JSON-RPC error" };
+  }
+  if (!isValidErrorCode(response.error.code)) {
+    return {
+      valid: false,
+      error: `Invalid error code type for JSON-RPC: ${response.error.code}`
+    };
+  }
+  if (isReservedErrorCode(response.error.code)) {
+    const error = getErrorByCode(response.error.code);
+    if (error.message !== STANDARD_ERROR_MAP[INTERNAL_ERROR].message && response.error.message === error.message) {
+      return {
+        valid: false,
+        error: `Invalid error code message for JSON-RPC: ${response.error.code}`
+      };
+    }
+  }
+  return { valid: true };
+}
+function parseConnectionError(e3, url, type) {
+  return e3.message.includes("getaddrinfo ENOTFOUND") || e3.message.includes("connect ECONNREFUSED") ? new Error(`Unavailable ${type} RPC url at ${url}`) : e3;
+}
+
+// node_modules/@walletconnect/jsonrpc-utils/dist/esm/env.js
+var env_exports = {};
+__export(env_exports, {
+  isNodeJs: () => isNodeJs
+});
+var import_environment = __toESM(require_cjs3());
+__reExport(env_exports, __toESM(require_cjs3()));
+var isNodeJs = import_environment.isNode;
+
+// node_modules/@walletconnect/jsonrpc-utils/dist/esm/format.js
+function payloadId() {
+  const date = Date.now() * Math.pow(10, 3);
+  const extra = Math.floor(Math.random() * Math.pow(10, 3));
+  return date + extra;
+}
+function formatJsonRpcRequest(method2, params, id) {
+  return {
+    id: id || payloadId(),
+    jsonrpc: "2.0",
+    method: method2,
+    params
+  };
+}
+function formatJsonRpcResult(id, result) {
+  return {
+    id,
+    jsonrpc: "2.0",
+    result
+  };
+}
+function formatJsonRpcError(id, error) {
+  return {
+    id,
+    jsonrpc: "2.0",
+    error: formatErrorMessage(error)
+  };
+}
+function formatErrorMessage(error) {
+  if (typeof error === "undefined") {
+    return getError(INTERNAL_ERROR);
+  }
+  if (typeof error === "string") {
+    error = Object.assign(Object.assign({}, getError(SERVER_ERROR)), { message: error });
+  }
+  if (isReservedErrorCode(error.code)) {
+    error = getErrorByCode(error.code);
+  }
+  return error;
+}
+
+// node_modules/@walletconnect/jsonrpc-utils/dist/esm/routing.js
+function isValidRoute(route) {
+  if (route.includes("*")) {
+    return isValidWildcardRoute(route);
+  }
+  if (/\W/g.test(route)) {
+    return false;
+  }
+  return true;
+}
+function isValidDefaultRoute(route) {
+  return route === "*";
+}
+function isValidWildcardRoute(route) {
+  if (isValidDefaultRoute(route)) {
+    return true;
+  }
+  if (!route.includes("*")) {
+    return false;
+  }
+  if (route.split("*").length !== 2) {
+    return false;
+  }
+  if (route.split("*").filter((x3) => x3.trim() === "").length !== 1) {
+    return false;
+  }
+  return true;
+}
+function isValidLeadingWildcardRoute(route) {
+  return !isValidDefaultRoute(route) && isValidWildcardRoute(route) && !route.split("*")[0].trim();
+}
+function isValidTrailingWildcardRoute(route) {
+  return !isValidDefaultRoute(route) && isValidWildcardRoute(route) && !route.split("*")[1].trim();
+}
+
+// node_modules/@walletconnect/jsonrpc-types/dist/esm/misc.js
+var IEvents = class {
+};
+
+// node_modules/@walletconnect/jsonrpc-types/dist/esm/provider.js
+var IJsonRpcConnection = class extends IEvents {
+  constructor(opts) {
+    super();
+  }
+};
+var IBaseJsonRpcProvider = class extends IEvents {
+  constructor() {
+    super();
+  }
+};
+var IJsonRpcProvider = class extends IBaseJsonRpcProvider {
+  constructor(connection) {
+    super();
+  }
+};
+
+// node_modules/@walletconnect/jsonrpc-utils/dist/esm/url.js
+var HTTP_REGEX = "^https?:";
+var WS_REGEX = "^wss?:";
+function getUrlProtocol(url) {
+  const matches = url.match(new RegExp(/^\w+:/, "gi"));
+  if (!matches || !matches.length)
+    return;
+  return matches[0];
+}
+function matchRegexProtocol(url, regex) {
+  const protocol = getUrlProtocol(url);
+  if (typeof protocol === "undefined")
+    return false;
+  return new RegExp(regex).test(protocol);
+}
+function isHttpUrl(url) {
+  return matchRegexProtocol(url, HTTP_REGEX);
+}
+function isWsUrl(url) {
+  return matchRegexProtocol(url, WS_REGEX);
+}
+function isLocalhostUrl(url) {
+  return new RegExp("wss?://localhost(:d{2,5})?").test(url);
+}
+
+// node_modules/@walletconnect/jsonrpc-utils/dist/esm/validators.js
+function isJsonRpcPayload(payload) {
+  return "id" in payload && "jsonrpc" in payload && payload.jsonrpc === "2.0";
+}
+function isJsonRpcRequest(payload) {
+  return isJsonRpcPayload(payload) && "method" in payload;
+}
+function isJsonRpcResponse(payload) {
+  return isJsonRpcPayload(payload) && (isJsonRpcResult(payload) || isJsonRpcError(payload));
+}
+function isJsonRpcResult(payload) {
+  return "result" in payload;
+}
+function isJsonRpcError(payload) {
+  return "error" in payload;
+}
+function isJsonRpcValidationInvalid(validation) {
+  return "error" in validation && validation.valid === false;
+}
+
+// node_modules/@walletconnect/jsonrpc-utils/dist/esm/index.js
+__reExport(esm_exports3, env_exports);
+
+// node_modules/@walletconnect/utils/dist/esm/misc.js
+function sanitizeHex2(hex) {
+  return sanitizeHex(hex);
+}
+function addHexPrefix2(hex) {
+  return addHexPrefix(hex);
+}
+function removeHexPrefix2(hex) {
+  return removeHexPrefix(hex);
+}
+function removeHexLeadingZeros2(hex) {
+  return removeHexLeadingZeros(addHexPrefix(hex));
+}
+var payloadId2 = payloadId;
+function uuid() {
+  const result = ((a3, b2) => {
+    for (b2 = a3 = ""; a3++ < 36; b2 += a3 * 51 & 52 ? (a3 ^ 15 ? 8 ^ Math.random() * (a3 ^ 20 ? 16 : 4) : 4).toString(16) : "-") {
+    }
+    return b2;
+  })();
+  return result;
+}
+function logDeprecationWarning() {
+  console.warn("DEPRECATION WARNING: This WalletConnect client library will be deprecated in favor of @walletconnect/client. Please check docs.walletconnect.org to learn more about this migration!");
+}
+function getInfuraRpcUrl(chainId, infuraId) {
+  let rpcUrl;
+  const network = infuraNetworks[chainId];
+  if (network) {
+    rpcUrl = `https://${network}.infura.io/v3/${infuraId}`;
+  }
+  return rpcUrl;
+}
+function getRpcUrl(chainId, rpc) {
+  let rpcUrl;
+  const infuraUrl = getInfuraRpcUrl(chainId, rpc.infuraId);
+  if (rpc.custom && rpc.custom[chainId]) {
+    rpcUrl = rpc.custom[chainId];
+  } else if (infuraUrl) {
+    rpcUrl = infuraUrl;
+  }
+  return rpcUrl;
+}
+
+// node_modules/@walletconnect/utils/dist/esm/validators.js
+function isEmptyString(value) {
+  return value === "" || typeof value === "string" && value.trim() === "";
+}
+function isEmptyArray(array) {
+  return !(array && array.length);
+}
+function isBuffer2(val) {
+  return isBuffer(val);
+}
+function isTypedArray2(val) {
+  return isTypedArray(val);
+}
+function isArrayBuffer2(val) {
+  return isArrayBuffer(val);
+}
+function getType2(val) {
+  return getType(val);
+}
+function getEncoding2(val) {
+  return getEncoding(val);
+}
+function isHexString2(value, length) {
+  return isHexString(value, length);
+}
+function isJsonRpcSubscription(object) {
+  return typeof object.params === "object";
+}
+function isJsonRpcRequest2(object) {
+  return typeof object.method !== "undefined";
+}
+function isJsonRpcResponseSuccess(object) {
+  return typeof object.result !== "undefined";
+}
+function isJsonRpcResponseError(object) {
+  return typeof object.error !== "undefined";
+}
+function isInternalEvent(object) {
+  return typeof object.event !== "undefined";
+}
+function isReservedEvent(event) {
+  return reservedEvents.includes(event) || event.startsWith("wc_");
+}
+function isSilentPayload(request) {
+  if (request.method.startsWith("wc_")) {
+    return true;
+  }
+  if (signingMethods.includes(request.method)) {
+    return false;
+  }
+  return true;
+}
+
+// node_modules/@walletconnect/utils/dist/esm/ethereum.js
+var import_js_sha3 = __toESM(require_sha32());
+function toChecksumAddress(address) {
+  address = removeHexPrefix(address.toLowerCase());
+  const hash = removeHexPrefix((0, import_js_sha3.keccak_256)(convertUtf8ToBuffer(address)));
+  let checksum = "";
+  for (let i3 = 0; i3 < address.length; i3++) {
+    if (parseInt(hash[i3], 16) > 7) {
+      checksum += address[i3].toUpperCase();
+    } else {
+      checksum += address[i3];
+    }
+  }
+  return addHexPrefix(checksum);
+}
+var isValidAddress = (address) => {
+  if (!address) {
+    return false;
+  } else if (address.toLowerCase().substring(0, 2) !== "0x") {
+    return false;
+  } else if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
+    return false;
+  } else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) {
+    return true;
+  } else {
+    return address === toChecksumAddress(address);
+  }
+};
+function parsePersonalSign(params) {
+  if (!isEmptyArray(params) && !isHexString2(params[0])) {
+    params[0] = convertUtf8ToHex(params[0]);
+  }
+  return params;
+}
+function parseTransactionData(txData) {
+  if (typeof txData.type !== "undefined" && txData.type !== "0")
+    return txData;
+  if (typeof txData.from === "undefined" || !isValidAddress(txData.from)) {
+    throw new Error(`Transaction object must include a valid 'from' value.`);
+  }
+  function parseHexValues(value) {
+    let result = value;
+    if (typeof value === "number" || typeof value === "string" && !isEmptyString(value)) {
+      if (!isHexString2(value)) {
+        result = convertNumberToHex(value);
+      } else if (typeof value === "string") {
+        result = sanitizeHex2(value);
+      }
+    }
+    if (typeof result === "string") {
+      result = removeHexLeadingZeros2(result);
+    }
+    return result;
+  }
+  const txDataRPC = {
+    from: sanitizeHex2(txData.from),
+    to: typeof txData.to === "undefined" ? "" : sanitizeHex2(txData.to),
+    gasPrice: typeof txData.gasPrice === "undefined" ? "" : parseHexValues(txData.gasPrice),
+    gas: typeof txData.gas === "undefined" ? typeof txData.gasLimit === "undefined" ? "" : parseHexValues(txData.gasLimit) : parseHexValues(txData.gas),
+    value: typeof txData.value === "undefined" ? "" : parseHexValues(txData.value),
+    nonce: typeof txData.nonce === "undefined" ? "" : parseHexValues(txData.nonce),
+    data: typeof txData.data === "undefined" ? "" : sanitizeHex2(txData.data) || "0x"
+  };
+  const prunable = ["gasPrice", "gas", "value", "nonce"];
+  Object.keys(txDataRPC).forEach((key) => {
+    if (!txDataRPC[key].trim().length && prunable.includes(key)) {
+      delete txDataRPC[key];
+    }
+  });
+  return txDataRPC;
+}
+
+// node_modules/@walletconnect/utils/dist/esm/payload.js
+function promisify(originalFn, thisArg) {
+  const promisifiedFunction = async (...callArgs) => {
+    return new Promise((resolve, reject) => {
+      const callback = (err, data) => {
+        if (err === null || typeof err === "undefined") {
+          reject(err);
+        }
+        resolve(data);
+      };
+      originalFn.apply(thisArg, [...callArgs, callback]);
+    });
+  };
+  return promisifiedFunction;
+}
+function formatRpcError(error) {
+  const message = error.message || "Failed or Rejected Request";
+  let code = -32e3;
+  if (error && !error.code) {
+    switch (message) {
+      case "Parse error":
+        code = -32700;
+        break;
+      case "Invalid request":
+        code = -32600;
+        break;
+      case "Method not found":
+        code = -32601;
+        break;
+      case "Invalid params":
+        code = -32602;
+        break;
+      case "Internal error":
+        code = -32603;
+        break;
+      default:
+        code = -32e3;
+        break;
+    }
+  }
+  const result = {
+    code,
+    message
+  };
+  return result;
+}
+
+// node_modules/@walletconnect/utils/dist/esm/url.js
+var queryStringUtils = __toESM(require_query_string());
+function getQueryString(url) {
+  const pathEnd = url.indexOf("?") !== -1 ? url.indexOf("?") : void 0;
+  const queryString = typeof pathEnd !== "undefined" ? url.substr(pathEnd) : "";
+  return queryString;
+}
+function appendToQueryString(queryString, newQueryParams) {
+  let queryParams = parseQueryString(queryString);
+  queryParams = Object.assign(Object.assign({}, queryParams), newQueryParams);
+  queryString = formatQueryString(queryParams);
+  return queryString;
+}
+function parseQueryString(queryString) {
+  return queryStringUtils.parse(queryString);
+}
+function formatQueryString(queryParams) {
+  return queryStringUtils.stringify(queryParams);
+}
+
+// node_modules/@walletconnect/utils/dist/esm/session.js
+function isWalletConnectSession(object) {
+  return typeof object.bridge !== "undefined";
+}
+function parseWalletConnectUri(str) {
+  const pathStart = str.indexOf(":");
+  const pathEnd = str.indexOf("?") !== -1 ? str.indexOf("?") : void 0;
+  const protocol = str.substring(0, pathStart);
+  const path = str.substring(pathStart + 1, pathEnd);
+  function parseRequiredParams(path2) {
+    const separator = "@";
+    const values = path2.split(separator);
+    const requiredParams2 = {
+      handshakeTopic: values[0],
+      version: parseInt(values[1], 10)
+    };
+    return requiredParams2;
+  }
+  const requiredParams = parseRequiredParams(path);
+  const queryString = typeof pathEnd !== "undefined" ? str.substr(pathEnd) : "";
+  function parseQueryParams(queryString2) {
+    const result2 = parseQueryString(queryString2);
+    const parameters = {
+      key: result2.key || "",
+      bridge: result2.bridge || ""
+    };
+    return parameters;
+  }
+  const queryParams = parseQueryParams(queryString);
+  const result = Object.assign(Object.assign({ protocol }, requiredParams), queryParams);
+  return result;
+}
+
+// node_modules/@walletconnect/socket-transport/dist/esm/network.js
+var NetworkMonitor = class {
+  constructor() {
+    this._eventEmitters = [];
+    if (typeof window !== "undefined" && typeof window.addEventListener !== "undefined") {
+      window.addEventListener("online", () => this.trigger("online"));
+      window.addEventListener("offline", () => this.trigger("offline"));
+    }
+  }
+  on(event, callback) {
+    this._eventEmitters.push({
+      event,
+      callback
+    });
+  }
+  trigger(event) {
+    let eventEmitters = [];
+    if (event) {
+      eventEmitters = this._eventEmitters.filter((eventEmitter) => eventEmitter.event === event);
+    }
+    eventEmitters.forEach((eventEmitter) => {
+      eventEmitter.callback();
+    });
+  }
+};
+var network_default = NetworkMonitor;
+
+// node_modules/@walletconnect/socket-transport/dist/esm/index.js
+var WS = typeof global.WebSocket !== "undefined" ? global.WebSocket : require_browser();
+var SocketTransport = class {
+  constructor(opts) {
+    this.opts = opts;
+    this._queue = [];
+    this._events = [];
+    this._subscriptions = [];
+    this._protocol = opts.protocol;
+    this._version = opts.version;
+    this._url = "";
+    this._netMonitor = null;
+    this._socket = null;
+    this._nextSocket = null;
+    this._subscriptions = opts.subscriptions || [];
+    this._netMonitor = opts.netMonitor || new network_default();
+    if (!opts.url || typeof opts.url !== "string") {
+      throw new Error("Missing or invalid WebSocket url");
+    }
+    this._url = opts.url;
+    this._netMonitor.on("online", () => this._socketCreate());
+  }
+  set readyState(value) {
+  }
+  get readyState() {
+    return this._socket ? this._socket.readyState : -1;
+  }
+  set connecting(value) {
+  }
+  get connecting() {
+    return this.readyState === 0;
+  }
+  set connected(value) {
+  }
+  get connected() {
+    return this.readyState === 1;
+  }
+  set closing(value) {
+  }
+  get closing() {
+    return this.readyState === 2;
+  }
+  set closed(value) {
+  }
+  get closed() {
+    return this.readyState === 3;
+  }
+  open() {
+    this._socketCreate();
+  }
+  close() {
+    this._socketClose();
+  }
+  send(message, topic, silent) {
+    if (!topic || typeof topic !== "string") {
+      throw new Error("Missing or invalid topic field");
+    }
+    this._socketSend({
+      topic,
+      type: "pub",
+      payload: message,
+      silent: !!silent
+    });
+  }
+  subscribe(topic) {
+    this._socketSend({
+      topic,
+      type: "sub",
+      payload: "",
+      silent: true
+    });
+  }
+  on(event, callback) {
+    this._events.push({ event, callback });
+  }
+  _socketCreate() {
+    if (this._nextSocket) {
+      return;
+    }
+    const url = getWebSocketUrl(this._url, this._protocol, this._version);
+    this._nextSocket = new WS(url);
+    if (!this._nextSocket) {
+      throw new Error("Failed to create socket");
+    }
+    this._nextSocket.onmessage = (event) => this._socketReceive(event);
+    this._nextSocket.onopen = () => this._socketOpen();
+    this._nextSocket.onerror = (event) => this._socketError(event);
+    this._nextSocket.onclose = () => {
+      setTimeout(() => {
+        this._nextSocket = null;
+        this._socketCreate();
+      }, 1e3);
+    };
+  }
+  _socketOpen() {
+    this._socketClose();
+    this._socket = this._nextSocket;
+    this._nextSocket = null;
+    this._queueSubscriptions();
+    this._pushQueue();
+  }
+  _socketClose() {
+    if (this._socket) {
+      this._socket.onclose = () => {
+      };
+      this._socket.close();
+    }
+  }
+  _socketSend(socketMessage) {
+    const message = JSON.stringify(socketMessage);
+    if (this._socket && this._socket.readyState === 1) {
+      this._socket.send(message);
+    } else {
+      this._setToQueue(socketMessage);
+      this._socketCreate();
+    }
+  }
+  async _socketReceive(event) {
+    let socketMessage;
+    try {
+      socketMessage = JSON.parse(event.data);
+    } catch (error) {
+      return;
+    }
+    this._socketSend({
+      topic: socketMessage.topic,
+      type: "ack",
+      payload: "",
+      silent: true
+    });
+    if (this._socket && this._socket.readyState === 1) {
+      const events = this._events.filter((event2) => event2.event === "message");
+      if (events && events.length) {
+        events.forEach((event2) => event2.callback(socketMessage));
+      }
+    }
+  }
+  _socketError(e3) {
+    const events = this._events.filter((event) => event.event === "error");
+    if (events && events.length) {
+      events.forEach((event) => event.callback(e3));
+    }
+  }
+  _queueSubscriptions() {
+    const subscriptions = this._subscriptions;
+    subscriptions.forEach((topic) => this._queue.push({
+      topic,
+      type: "sub",
+      payload: "",
+      silent: true
+    }));
+    this._subscriptions = this.opts.subscriptions || [];
+  }
+  _setToQueue(socketMessage) {
+    this._queue.push(socketMessage);
+  }
+  _pushQueue() {
+    const queue = this._queue;
+    queue.forEach((socketMessage) => this._socketSend(socketMessage));
+    this._queue = [];
+  }
+};
+function getWebSocketUrl(_url, protocol, version) {
+  var _a, _b;
+  const url = _url.startsWith("https") ? _url.replace("https", "wss") : _url.startsWith("http") ? _url.replace("http", "ws") : _url;
+  const splitUrl = url.split("?");
+  const params = isBrowser() ? {
+    protocol,
+    version,
+    env: "browser",
+    host: ((_a = getLocation()) === null || _a === void 0 ? void 0 : _a.host) || ""
+  } : {
+    protocol,
+    version,
+    env: ((_b = detectEnv()) === null || _b === void 0 ? void 0 : _b.name) || ""
+  };
+  const queryString = appendToQueryString(getQueryString(splitUrl[1] || ""), params);
+  return splitUrl[0] + "?" + queryString;
+}
+var esm_default = SocketTransport;
+
+// node_modules/@walletconnect/core/dist/esm/errors.js
+var ERROR_SESSION_CONNECTED = "Session currently connected";
+var ERROR_SESSION_DISCONNECTED = "Session currently disconnected";
+var ERROR_SESSION_REJECTED = "Session Rejected";
+var ERROR_MISSING_JSON_RPC = "Missing JSON RPC response";
+var ERROR_MISSING_RESULT = `JSON-RPC success response must include "result" field`;
+var ERROR_MISSING_ERROR = `JSON-RPC error response must include "error" field`;
+var ERROR_MISSING_METHOD = `JSON RPC request must have valid "method" value`;
+var ERROR_MISSING_ID = `JSON RPC request must have valid "id" value`;
+var ERROR_MISSING_REQUIRED = "Missing one of the required parameters: bridge / uri / session";
+var ERROR_INVALID_RESPONSE = "JSON RPC response format is invalid";
+var ERROR_INVALID_URI = "URI format is invalid";
+var ERROR_QRCODE_MODAL_NOT_PROVIDED = "QRCode Modal not provided";
+var ERROR_QRCODE_MODAL_USER_CLOSED = "User close QRCode Modal";
+
+// node_modules/@walletconnect/core/dist/esm/events.js
+var EventManager = class {
+  constructor() {
+    this._eventEmitters = [];
+  }
+  subscribe(eventEmitter) {
+    this._eventEmitters.push(eventEmitter);
+  }
+  unsubscribe(event) {
+    this._eventEmitters = this._eventEmitters.filter((x3) => x3.event !== event);
+  }
+  trigger(payload) {
+    let eventEmitters = [];
+    let event;
+    if (isJsonRpcRequest2(payload)) {
+      event = payload.method;
+    } else if (isJsonRpcResponseSuccess(payload) || isJsonRpcResponseError(payload)) {
+      event = `response:${payload.id}`;
+    } else if (isInternalEvent(payload)) {
+      event = payload.event;
+    } else {
+      event = "";
+    }
+    if (event) {
+      eventEmitters = this._eventEmitters.filter((eventEmitter) => eventEmitter.event === event);
+    }
+    if ((!eventEmitters || !eventEmitters.length) && !isReservedEvent(event) && !isInternalEvent(event)) {
+      eventEmitters = this._eventEmitters.filter((eventEmitter) => eventEmitter.event === "call_request");
+    }
+    eventEmitters.forEach((eventEmitter) => {
+      if (isJsonRpcResponseError(payload)) {
+        const error = new Error(payload.error.message);
+        eventEmitter.callback(error, null);
+      } else {
+        eventEmitter.callback(null, payload);
+      }
+    });
+  }
+};
+var events_default = EventManager;
+
+// node_modules/@walletconnect/core/dist/esm/storage.js
+var SessionStorage = class {
+  constructor(storageId = "walletconnect") {
+    this.storageId = storageId;
+  }
+  getSession() {
+    let session = null;
+    const json = getLocal(this.storageId);
+    if (json && isWalletConnectSession(json)) {
+      session = json;
+    }
+    return session;
+  }
+  setSession(session) {
+    setLocal(this.storageId, session);
+    return session;
+  }
+  removeSession() {
+    removeLocal(this.storageId);
+  }
+};
+var storage_default = SessionStorage;
+
+// node_modules/@walletconnect/core/dist/esm/url.js
+var domain = "walletconnect.org";
+var alphanumerical = "abcdefghijklmnopqrstuvwxyz0123456789";
+var bridges = alphanumerical.split("").map((char) => `https://${char}.bridge.walletconnect.org`);
+function extractHostname(url) {
+  let hostname = url.indexOf("//") > -1 ? url.split("/")[2] : url.split("/")[0];
+  hostname = hostname.split(":")[0];
+  hostname = hostname.split("?")[0];
+  return hostname;
+}
+function extractRootDomain(url) {
+  return extractHostname(url).split(".").slice(-2).join(".");
+}
+function randomBridgeIndex() {
+  return Math.floor(Math.random() * bridges.length);
+}
+function selectRandomBridgeUrl() {
+  return bridges[randomBridgeIndex()];
+}
+function shouldSelectRandomly(url) {
+  return extractRootDomain(url) === domain;
+}
+function getBridgeUrl(url) {
+  if (shouldSelectRandomly(url)) {
+    return selectRandomBridgeUrl();
+  }
+  return url;
+}
+
+// node_modules/@walletconnect/core/dist/esm/index.js
+var Connector = class {
+  constructor(opts) {
+    this.protocol = "wc";
+    this.version = 1;
+    this._bridge = "";
+    this._key = null;
+    this._clientId = "";
+    this._clientMeta = null;
+    this._peerId = "";
+    this._peerMeta = null;
+    this._handshakeId = 0;
+    this._handshakeTopic = "";
+    this._connected = false;
+    this._accounts = [];
+    this._chainId = 0;
+    this._networkId = 0;
+    this._rpcUrl = "";
+    this._eventManager = new events_default();
+    this._clientMeta = getClientMeta() || opts.connectorOpts.clientMeta || null;
+    this._cryptoLib = opts.cryptoLib;
+    this._sessionStorage = opts.sessionStorage || new storage_default(opts.connectorOpts.storageId);
+    this._qrcodeModal = opts.connectorOpts.qrcodeModal;
+    this._qrcodeModalOptions = opts.connectorOpts.qrcodeModalOptions;
+    this._signingMethods = [...signingMethods, ...opts.connectorOpts.signingMethods || []];
+    if (!opts.connectorOpts.bridge && !opts.connectorOpts.uri && !opts.connectorOpts.session) {
+      throw new Error(ERROR_MISSING_REQUIRED);
+    }
+    if (opts.connectorOpts.bridge) {
+      this.bridge = getBridgeUrl(opts.connectorOpts.bridge);
+    }
+    if (opts.connectorOpts.uri) {
+      this.uri = opts.connectorOpts.uri;
+    }
+    const session = opts.connectorOpts.session || this._getStorageSession();
+    if (session) {
+      this.session = session;
+    }
+    if (this.handshakeId) {
+      this._subscribeToSessionResponse(this.handshakeId, "Session request rejected");
+    }
+    this._transport = opts.transport || new esm_default({
+      protocol: this.protocol,
+      version: this.version,
+      url: this.bridge,
+      subscriptions: [this.clientId]
+    });
+    this._subscribeToInternalEvents();
+    this._initTransport();
+    if (opts.connectorOpts.uri) {
+      this._subscribeToSessionRequest();
+    }
+    if (opts.pushServerOpts) {
+      this._registerPushServer(opts.pushServerOpts);
+    }
+  }
+  set bridge(value) {
+    if (!value) {
+      return;
+    }
+    this._bridge = value;
+  }
+  get bridge() {
+    return this._bridge;
+  }
+  set key(value) {
+    if (!value) {
+      return;
+    }
+    const key = convertHexToArrayBuffer(value);
+    this._key = key;
+  }
+  get key() {
+    if (this._key) {
+      const key = convertArrayBufferToHex(this._key, true);
+      return key;
+    }
+    return "";
+  }
+  set clientId(value) {
+    if (!value) {
+      return;
+    }
+    this._clientId = value;
+  }
+  get clientId() {
+    let clientId = this._clientId;
+    if (!clientId) {
+      clientId = this._clientId = uuid();
+    }
+    return this._clientId;
+  }
+  set peerId(value) {
+    if (!value) {
+      return;
+    }
+    this._peerId = value;
+  }
+  get peerId() {
+    return this._peerId;
+  }
+  set clientMeta(value) {
+  }
+  get clientMeta() {
+    let clientMeta = this._clientMeta;
+    if (!clientMeta) {
+      clientMeta = this._clientMeta = getClientMeta();
+    }
+    return clientMeta;
+  }
+  set peerMeta(value) {
+    this._peerMeta = value;
+  }
+  get peerMeta() {
+    const peerMeta = this._peerMeta;
+    return peerMeta;
+  }
+  set handshakeTopic(value) {
+    if (!value) {
+      return;
+    }
+    this._handshakeTopic = value;
+  }
+  get handshakeTopic() {
+    return this._handshakeTopic;
+  }
+  set handshakeId(value) {
+    if (!value) {
+      return;
+    }
+    this._handshakeId = value;
+  }
+  get handshakeId() {
+    return this._handshakeId;
+  }
+  get uri() {
+    const _uri = this._formatUri();
+    return _uri;
+  }
+  set uri(value) {
+    if (!value) {
+      return;
+    }
+    const { handshakeTopic, bridge, key } = this._parseUri(value);
+    this.handshakeTopic = handshakeTopic;
+    this.bridge = bridge;
+    this.key = key;
+  }
+  set chainId(value) {
+    this._chainId = value;
+  }
+  get chainId() {
+    const chainId = this._chainId;
+    return chainId;
+  }
+  set networkId(value) {
+    this._networkId = value;
+  }
+  get networkId() {
+    const networkId = this._networkId;
+    return networkId;
+  }
+  set accounts(value) {
+    this._accounts = value;
+  }
+  get accounts() {
+    const accounts = this._accounts;
+    return accounts;
+  }
+  set rpcUrl(value) {
+    this._rpcUrl = value;
+  }
+  get rpcUrl() {
+    const rpcUrl = this._rpcUrl;
+    return rpcUrl;
+  }
+  set connected(value) {
+  }
+  get connected() {
+    return this._connected;
+  }
+  set pending(value) {
+  }
+  get pending() {
+    return !!this._handshakeTopic;
+  }
+  get session() {
+    return {
+      connected: this.connected,
+      accounts: this.accounts,
+      chainId: this.chainId,
+      bridge: this.bridge,
+      key: this.key,
+      clientId: this.clientId,
+      clientMeta: this.clientMeta,
+      peerId: this.peerId,
+      peerMeta: this.peerMeta,
+      handshakeId: this.handshakeId,
+      handshakeTopic: this.handshakeTopic
+    };
+  }
+  set session(value) {
+    if (!value) {
+      return;
+    }
+    this._connected = value.connected;
+    this.accounts = value.accounts;
+    this.chainId = value.chainId;
+    this.bridge = value.bridge;
+    this.key = value.key;
+    this.clientId = value.clientId;
+    this.clientMeta = value.clientMeta;
+    this.peerId = value.peerId;
+    this.peerMeta = value.peerMeta;
+    this.handshakeId = value.handshakeId;
+    this.handshakeTopic = value.handshakeTopic;
+  }
+  on(event, callback) {
+    const eventEmitter = {
+      event,
+      callback
+    };
+    this._eventManager.subscribe(eventEmitter);
+  }
+  off(event) {
+    this._eventManager.unsubscribe(event);
+  }
+  async createInstantRequest(instantRequest) {
+    this._key = await this._generateKey();
+    const request = this._formatRequest({
+      method: "wc_instantRequest",
+      params: [
+        {
+          peerId: this.clientId,
+          peerMeta: this.clientMeta,
+          request: this._formatRequest(instantRequest)
+        }
+      ]
+    });
+    this.handshakeId = request.id;
+    this.handshakeTopic = uuid();
+    this._eventManager.trigger({
+      event: "display_uri",
+      params: [this.uri]
+    });
+    this.on("modal_closed", () => {
+      throw new Error(ERROR_QRCODE_MODAL_USER_CLOSED);
+    });
+    const endInstantRequest = () => {
+      this.killSession();
+    };
+    try {
+      const result = await this._sendCallRequest(request);
+      if (result) {
+        endInstantRequest();
+      }
+      return result;
+    } catch (error) {
+      endInstantRequest();
+      throw error;
+    }
+  }
+  async connect(opts) {
+    if (!this._qrcodeModal) {
+      throw new Error(ERROR_QRCODE_MODAL_NOT_PROVIDED);
+    }
+    if (this.connected) {
+      return {
+        chainId: this.chainId,
+        accounts: this.accounts
+      };
+    }
+    await this.createSession(opts);
+    return new Promise(async (resolve, reject) => {
+      this.on("modal_closed", () => reject(new Error(ERROR_QRCODE_MODAL_USER_CLOSED)));
+      this.on("connect", (error, payload) => {
+        if (error) {
+          return reject(error);
+        }
+        resolve(payload.params[0]);
+      });
+    });
+  }
+  async createSession(opts) {
+    if (this._connected) {
+      throw new Error(ERROR_SESSION_CONNECTED);
+    }
+    if (this.pending) {
+      return;
+    }
+    this._key = await this._generateKey();
+    const request = this._formatRequest({
+      method: "wc_sessionRequest",
+      params: [
+        {
+          peerId: this.clientId,
+          peerMeta: this.clientMeta,
+          chainId: opts && opts.chainId ? opts.chainId : null
+        }
+      ]
+    });
+    this.handshakeId = request.id;
+    this.handshakeTopic = uuid();
+    this._sendSessionRequest(request, "Session update rejected", {
+      topic: this.handshakeTopic
+    });
+    this._eventManager.trigger({
+      event: "display_uri",
+      params: [this.uri]
+    });
+  }
+  approveSession(sessionStatus) {
+    if (this._connected) {
+      throw new Error(ERROR_SESSION_CONNECTED);
+    }
+    this.chainId = sessionStatus.chainId;
+    this.accounts = sessionStatus.accounts;
+    this.networkId = sessionStatus.networkId || 0;
+    this.rpcUrl = sessionStatus.rpcUrl || "";
+    const sessionParams = {
+      approved: true,
+      chainId: this.chainId,
+      networkId: this.networkId,
+      accounts: this.accounts,
+      rpcUrl: this.rpcUrl,
+      peerId: this.clientId,
+      peerMeta: this.clientMeta
+    };
+    const response = {
+      id: this.handshakeId,
+      jsonrpc: "2.0",
+      result: sessionParams
+    };
+    this._sendResponse(response);
+    this._connected = true;
+    this._setStorageSession();
+    this._eventManager.trigger({
+      event: "connect",
+      params: [
+        {
+          peerId: this.peerId,
+          peerMeta: this.peerMeta,
+          chainId: this.chainId,
+          accounts: this.accounts
+        }
+      ]
+    });
+  }
+  rejectSession(sessionError) {
+    if (this._connected) {
+      throw new Error(ERROR_SESSION_CONNECTED);
+    }
+    const message = sessionError && sessionError.message ? sessionError.message : ERROR_SESSION_REJECTED;
+    const response = this._formatResponse({
+      id: this.handshakeId,
+      error: { message }
+    });
+    this._sendResponse(response);
+    this._connected = false;
+    this._eventManager.trigger({
+      event: "disconnect",
+      params: [{ message }]
+    });
+    this._removeStorageSession();
+  }
+  updateSession(sessionStatus) {
+    if (!this._connected) {
+      throw new Error(ERROR_SESSION_DISCONNECTED);
+    }
+    this.chainId = sessionStatus.chainId;
+    this.accounts = sessionStatus.accounts;
+    this.networkId = sessionStatus.networkId || 0;
+    this.rpcUrl = sessionStatus.rpcUrl || "";
+    const sessionParams = {
+      approved: true,
+      chainId: this.chainId,
+      networkId: this.networkId,
+      accounts: this.accounts,
+      rpcUrl: this.rpcUrl
+    };
+    const request = this._formatRequest({
+      method: "wc_sessionUpdate",
+      params: [sessionParams]
+    });
+    this._sendSessionRequest(request, "Session update rejected");
+    this._eventManager.trigger({
+      event: "session_update",
+      params: [
+        {
+          chainId: this.chainId,
+          accounts: this.accounts
+        }
+      ]
+    });
+    this._manageStorageSession();
+  }
+  async killSession(sessionError) {
+    const message = sessionError ? sessionError.message : "Session Disconnected";
+    const sessionParams = {
+      approved: false,
+      chainId: null,
+      networkId: null,
+      accounts: null
+    };
+    const request = this._formatRequest({
+      method: "wc_sessionUpdate",
+      params: [sessionParams]
+    });
+    await this._sendRequest(request);
+    this._handleSessionDisconnect(message);
+  }
+  async sendTransaction(tx) {
+    if (!this._connected) {
+      throw new Error(ERROR_SESSION_DISCONNECTED);
+    }
+    const parsedTx = parseTransactionData(tx);
+    const request = this._formatRequest({
+      method: "eth_sendTransaction",
+      params: [parsedTx]
+    });
+    const result = await this._sendCallRequest(request);
+    return result;
+  }
+  async signTransaction(tx) {
+    if (!this._connected) {
+      throw new Error(ERROR_SESSION_DISCONNECTED);
+    }
+    const parsedTx = parseTransactionData(tx);
+    const request = this._formatRequest({
+      method: "eth_signTransaction",
+      params: [parsedTx]
+    });
+    const result = await this._sendCallRequest(request);
+    return result;
+  }
+  async signMessage(params) {
+    if (!this._connected) {
+      throw new Error(ERROR_SESSION_DISCONNECTED);
+    }
+    const request = this._formatRequest({
+      method: "eth_sign",
+      params
+    });
+    const result = await this._sendCallRequest(request);
+    return result;
+  }
+  async signPersonalMessage(params) {
+    if (!this._connected) {
+      throw new Error(ERROR_SESSION_DISCONNECTED);
+    }
+    params = parsePersonalSign(params);
+    const request = this._formatRequest({
+      method: "personal_sign",
+      params
+    });
+    const result = await this._sendCallRequest(request);
+    return result;
+  }
+  async signTypedData(params) {
+    if (!this._connected) {
+      throw new Error(ERROR_SESSION_DISCONNECTED);
+    }
+    const request = this._formatRequest({
+      method: "eth_signTypedData",
+      params
+    });
+    const result = await this._sendCallRequest(request);
+    return result;
+  }
+  async updateChain(chainParams) {
+    if (!this._connected) {
+      throw new Error("Session currently disconnected");
+    }
+    const request = this._formatRequest({
+      method: "wallet_updateChain",
+      params: [chainParams]
+    });
+    const result = await this._sendCallRequest(request);
+    return result;
+  }
+  unsafeSend(request, options) {
+    this._sendRequest(request, options);
+    this._eventManager.trigger({
+      event: "call_request_sent",
+      params: [{ request, options }]
+    });
+    return new Promise((resolve, reject) => {
+      this._subscribeToResponse(request.id, (error, payload) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        if (!payload) {
+          throw new Error(ERROR_MISSING_JSON_RPC);
+        }
+        resolve(payload);
+      });
+    });
+  }
+  async sendCustomRequest(request, options) {
+    if (!this._connected) {
+      throw new Error(ERROR_SESSION_DISCONNECTED);
+    }
+    switch (request.method) {
+      case "eth_accounts":
+        return this.accounts;
+      case "eth_chainId":
+        return convertNumberToHex(this.chainId);
+      case "eth_sendTransaction":
+      case "eth_signTransaction":
+        if (request.params) {
+          request.params[0] = parseTransactionData(request.params[0]);
+        }
+        break;
+      case "personal_sign":
+        if (request.params) {
+          request.params = parsePersonalSign(request.params);
+        }
+        break;
+      default:
+        break;
+    }
+    const formattedRequest = this._formatRequest(request);
+    const result = await this._sendCallRequest(formattedRequest, options);
+    return result;
+  }
+  approveRequest(response) {
+    if (isJsonRpcResponseSuccess(response)) {
+      const formattedResponse = this._formatResponse(response);
+      this._sendResponse(formattedResponse);
+    } else {
+      throw new Error(ERROR_MISSING_RESULT);
+    }
+  }
+  rejectRequest(response) {
+    if (isJsonRpcResponseError(response)) {
+      const formattedResponse = this._formatResponse(response);
+      this._sendResponse(formattedResponse);
+    } else {
+      throw new Error(ERROR_MISSING_ERROR);
+    }
+  }
+  transportClose() {
+    this._transport.close();
+  }
+  async _sendRequest(request, options) {
+    const callRequest = this._formatRequest(request);
+    const encryptionPayload = await this._encrypt(callRequest);
+    const topic = typeof (options === null || options === void 0 ? void 0 : options.topic) !== "undefined" ? options.topic : this.peerId;
+    const payload = JSON.stringify(encryptionPayload);
+    const silent = typeof (options === null || options === void 0 ? void 0 : options.forcePushNotification) !== "undefined" ? !options.forcePushNotification : isSilentPayload(callRequest);
+    this._transport.send(payload, topic, silent);
+  }
+  async _sendResponse(response) {
+    const encryptionPayload = await this._encrypt(response);
+    const topic = this.peerId;
+    const payload = JSON.stringify(encryptionPayload);
+    const silent = true;
+    this._transport.send(payload, topic, silent);
+  }
+  async _sendSessionRequest(request, errorMsg, options) {
+    this._sendRequest(request, options);
+    this._subscribeToSessionResponse(request.id, errorMsg);
+  }
+  _sendCallRequest(request, options) {
+    this._sendRequest(request, options);
+    this._eventManager.trigger({
+      event: "call_request_sent",
+      params: [{ request, options }]
+    });
+    return this._subscribeToCallResponse(request.id);
+  }
+  _formatRequest(request) {
+    if (typeof request.method === "undefined") {
+      throw new Error(ERROR_MISSING_METHOD);
+    }
+    const formattedRequest = {
+      id: typeof request.id === "undefined" ? payloadId2() : request.id,
+      jsonrpc: "2.0",
+      method: request.method,
+      params: typeof request.params === "undefined" ? [] : request.params
+    };
+    return formattedRequest;
+  }
+  _formatResponse(response) {
+    if (typeof response.id === "undefined") {
+      throw new Error(ERROR_MISSING_ID);
+    }
+    const baseResponse = { id: response.id, jsonrpc: "2.0" };
+    if (isJsonRpcResponseError(response)) {
+      const error = formatRpcError(response.error);
+      const errorResponse = Object.assign(Object.assign(Object.assign({}, baseResponse), response), { error });
+      return errorResponse;
+    } else if (isJsonRpcResponseSuccess(response)) {
+      const successResponse = Object.assign(Object.assign({}, baseResponse), response);
+      return successResponse;
+    }
+    throw new Error(ERROR_INVALID_RESPONSE);
+  }
+  _handleSessionDisconnect(errorMsg) {
+    const message = errorMsg || "Session Disconnected";
+    if (!this._connected) {
+      if (this._qrcodeModal) {
+        this._qrcodeModal.close();
+      }
+      removeLocal(mobileLinkChoiceKey);
+    }
+    if (this._connected) {
+      this._connected = false;
+    }
+    if (this._handshakeId) {
+      this._handshakeId = 0;
+    }
+    if (this._handshakeTopic) {
+      this._handshakeTopic = "";
+    }
+    if (this._peerId) {
+      this._peerId = "";
+    }
+    this._eventManager.trigger({
+      event: "disconnect",
+      params: [{ message }]
+    });
+    this._removeStorageSession();
+    this.transportClose();
+  }
+  _handleSessionResponse(errorMsg, sessionParams) {
+    if (sessionParams) {
+      if (sessionParams.approved) {
+        if (!this._connected) {
+          this._connected = true;
+          if (sessionParams.chainId) {
+            this.chainId = sessionParams.chainId;
+          }
+          if (sessionParams.accounts) {
+            this.accounts = sessionParams.accounts;
+          }
+          if (sessionParams.peerId && !this.peerId) {
+            this.peerId = sessionParams.peerId;
+          }
+          if (sessionParams.peerMeta && !this.peerMeta) {
+            this.peerMeta = sessionParams.peerMeta;
+          }
+          this._eventManager.trigger({
+            event: "connect",
+            params: [
+              {
+                peerId: this.peerId,
+                peerMeta: this.peerMeta,
+                chainId: this.chainId,
+                accounts: this.accounts
+              }
+            ]
+          });
+        } else {
+          if (sessionParams.chainId) {
+            this.chainId = sessionParams.chainId;
+          }
+          if (sessionParams.accounts) {
+            this.accounts = sessionParams.accounts;
+          }
+          this._eventManager.trigger({
+            event: "session_update",
+            params: [
+              {
+                chainId: this.chainId,
+                accounts: this.accounts
+              }
+            ]
+          });
+        }
+        this._manageStorageSession();
+      } else {
+        this._handleSessionDisconnect(errorMsg);
+      }
+    } else {
+      this._handleSessionDisconnect(errorMsg);
+    }
+  }
+  async _handleIncomingMessages(socketMessage) {
+    const activeTopics = [this.clientId, this.handshakeTopic];
+    if (!activeTopics.includes(socketMessage.topic)) {
+      return;
+    }
+    let encryptionPayload;
+    try {
+      encryptionPayload = JSON.parse(socketMessage.payload);
+    } catch (error) {
+      return;
+    }
+    const payload = await this._decrypt(encryptionPayload);
+    if (payload) {
+      this._eventManager.trigger(payload);
+    }
+  }
+  _subscribeToSessionRequest() {
+    this._transport.subscribe(this.handshakeTopic);
+  }
+  _subscribeToResponse(id, callback) {
+    this.on(`response:${id}`, callback);
+  }
+  _subscribeToSessionResponse(id, errorMsg) {
+    this._subscribeToResponse(id, (error, payload) => {
+      if (error) {
+        this._handleSessionResponse(error.message);
+        return;
+      }
+      if (payload.result) {
+        this._handleSessionResponse(errorMsg, payload.result);
+      } else if (payload.error && payload.error.message) {
+        this._handleSessionResponse(payload.error.message);
+      } else {
+        this._handleSessionResponse(errorMsg);
+      }
+    });
+  }
+  _subscribeToCallResponse(id) {
+    return new Promise((resolve, reject) => {
+      this._subscribeToResponse(id, (error, payload) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        if (payload.result) {
+          resolve(payload.result);
+        } else if (payload.error && payload.error.message) {
+          reject(new Error(payload.error.message));
+        } else {
+          reject(new Error(ERROR_INVALID_RESPONSE));
+        }
+      });
+    });
+  }
+  _subscribeToInternalEvents() {
+    this.on("display_uri", () => {
+      if (this._qrcodeModal) {
+        this._qrcodeModal.open(this.uri, () => {
+          this._eventManager.trigger({
+            event: "modal_closed",
+            params: []
+          });
+        }, this._qrcodeModalOptions);
+      }
+    });
+    this.on("connect", () => {
+      if (this._qrcodeModal) {
+        this._qrcodeModal.close();
+      }
+    });
+    this.on("call_request_sent", (error, payload) => {
+      const { request } = payload.params[0];
+      if (isMobile() && this._signingMethods.includes(request.method)) {
+        const mobileLinkUrl = getLocal(mobileLinkChoiceKey);
+        if (mobileLinkUrl) {
+          window.location.href = mobileLinkUrl.href;
+        }
+      }
+    });
+    this.on("wc_sessionRequest", (error, payload) => {
+      if (error) {
+        this._eventManager.trigger({
+          event: "error",
+          params: [
+            {
+              code: "SESSION_REQUEST_ERROR",
+              message: error.toString()
+            }
+          ]
+        });
+      }
+      this.handshakeId = payload.id;
+      this.peerId = payload.params[0].peerId;
+      this.peerMeta = payload.params[0].peerMeta;
+      const internalPayload = Object.assign(Object.assign({}, payload), { method: "session_request" });
+      this._eventManager.trigger(internalPayload);
+    });
+    this.on("wc_sessionUpdate", (error, payload) => {
+      if (error) {
+        this._handleSessionResponse(error.message);
+      }
+      this._handleSessionResponse("Session disconnected", payload.params[0]);
+    });
+  }
+  _initTransport() {
+    this._transport.on("message", (socketMessage) => this._handleIncomingMessages(socketMessage));
+    this._transport.on("open", () => this._eventManager.trigger({ event: "transport_open", params: [] }));
+    this._transport.on("close", () => this._eventManager.trigger({ event: "transport_close", params: [] }));
+    this._transport.on("error", () => this._eventManager.trigger({
+      event: "transport_error",
+      params: ["Websocket connection failed"]
+    }));
+    this._transport.open();
+  }
+  _formatUri() {
+    const protocol = this.protocol;
+    const handshakeTopic = this.handshakeTopic;
+    const version = this.version;
+    const bridge = encodeURIComponent(this.bridge);
+    const key = this.key;
+    const uri = `${protocol}:${handshakeTopic}@${version}?bridge=${bridge}&key=${key}`;
+    return uri;
+  }
+  _parseUri(uri) {
+    const result = parseWalletConnectUri(uri);
+    if (result.protocol === this.protocol) {
+      if (!result.handshakeTopic) {
+        throw Error("Invalid or missing handshakeTopic parameter value");
+      }
+      const handshakeTopic = result.handshakeTopic;
+      if (!result.bridge) {
+        throw Error("Invalid or missing bridge url parameter value");
+      }
+      const bridge = decodeURIComponent(result.bridge);
+      if (!result.key) {
+        throw Error("Invalid or missing key parameter value");
+      }
+      const key = result.key;
+      return { handshakeTopic, bridge, key };
+    } else {
+      throw new Error(ERROR_INVALID_URI);
+    }
+  }
+  async _generateKey() {
+    if (this._cryptoLib) {
+      const result = await this._cryptoLib.generateKey();
+      return result;
+    }
+    return null;
+  }
+  async _encrypt(data) {
+    const key = this._key;
+    if (this._cryptoLib && key) {
+      const result = await this._cryptoLib.encrypt(data, key);
+      return result;
+    }
+    return null;
+  }
+  async _decrypt(payload) {
+    const key = this._key;
+    if (this._cryptoLib && key) {
+      const result = await this._cryptoLib.decrypt(payload, key);
+      return result;
+    }
+    return null;
+  }
+  _getStorageSession() {
+    let result = null;
+    if (this._sessionStorage) {
+      result = this._sessionStorage.getSession();
+    }
+    return result;
+  }
+  _setStorageSession() {
+    if (this._sessionStorage) {
+      this._sessionStorage.setSession(this.session);
+    }
+  }
+  _removeStorageSession() {
+    if (this._sessionStorage) {
+      this._sessionStorage.removeSession();
+    }
+  }
+  _manageStorageSession() {
+    if (this._connected) {
+      this._setStorageSession();
+    } else {
+      this._removeStorageSession();
+    }
+  }
+  _registerPushServer(pushServerOpts) {
+    if (!pushServerOpts.url || typeof pushServerOpts.url !== "string") {
+      throw Error("Invalid or missing pushServerOpts.url parameter value");
+    }
+    if (!pushServerOpts.type || typeof pushServerOpts.type !== "string") {
+      throw Error("Invalid or missing pushServerOpts.type parameter value");
+    }
+    if (!pushServerOpts.token || typeof pushServerOpts.token !== "string") {
+      throw Error("Invalid or missing pushServerOpts.token parameter value");
+    }
+    const pushSubscription = {
+      bridge: this.bridge,
+      topic: this.clientId,
+      type: pushServerOpts.type,
+      token: pushServerOpts.token,
+      peerName: "",
+      language: pushServerOpts.language || ""
+    };
+    this.on("connect", async (error, payload) => {
+      if (error) {
+        throw error;
+      }
+      if (pushServerOpts.peerMeta) {
+        const peerName = payload.params[0].peerMeta.name;
+        pushSubscription.peerName = peerName;
+      }
+      try {
+        const response = await fetch(`${pushServerOpts.url}/new`, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(pushSubscription)
+        });
+        const json = await response.json();
+        if (!json.success) {
+          throw Error("Failed to register in Push Server");
+        }
+      } catch (error2) {
+        throw Error("Failed to register in Push Server");
+      }
+    });
+  }
+};
+var esm_default2 = Connector;
+
+// node_modules/@walletconnect/iso-crypto/dist/esm/index.js
+var esm_exports4 = {};
+__export(esm_exports4, {
+  decrypt: () => decrypt,
+  encrypt: () => encrypt,
+  generateKey: () => generateKey,
+  verifyHmac: () => verifyHmac
+});
+
+// node_modules/@walletconnect/crypto/dist/esm/browser/index.js
+var browser_exports = {};
+__export(browser_exports, {
+  AES_BROWSER_ALGO: () => AES_BROWSER_ALGO,
+  AES_LENGTH: () => AES_LENGTH,
+  AES_NODE_ALGO: () => AES_NODE_ALGO,
+  DECRYPT_OP: () => DECRYPT_OP,
+  ENCRYPT_OP: () => ENCRYPT_OP,
+  ERROR_BAD_MAC: () => ERROR_BAD_MAC,
+  HEX_ENC: () => HEX_ENC,
+  HMAC_BROWSER: () => HMAC_BROWSER,
+  HMAC_BROWSER_ALGO: () => HMAC_BROWSER_ALGO,
+  HMAC_LENGTH: () => HMAC_LENGTH,
+  HMAC_NODE_ALGO: () => HMAC_NODE_ALGO,
+  IV_LENGTH: () => IV_LENGTH,
+  KEY_LENGTH: () => KEY_LENGTH,
+  LENGTH_0: () => LENGTH_0,
+  LENGTH_1: () => LENGTH_1,
+  LENGTH_1024: () => LENGTH_1024,
+  LENGTH_128: () => LENGTH_128,
+  LENGTH_16: () => LENGTH_16,
+  LENGTH_256: () => LENGTH_256,
+  LENGTH_32: () => LENGTH_32,
+  LENGTH_512: () => LENGTH_512,
+  LENGTH_64: () => LENGTH_64,
+  MAC_LENGTH: () => MAC_LENGTH,
+  PREFIX_LENGTH: () => PREFIX_LENGTH,
+  RIPEMD160_NODE_ALGO: () => RIPEMD160_NODE_ALGO,
+  SHA256_BROWSER_ALGO: () => SHA256_BROWSER_ALGO,
+  SHA256_NODE_ALGO: () => SHA256_NODE_ALGO,
+  SHA512_BROWSER_ALGO: () => SHA512_BROWSER_ALGO,
+  SHA512_NODE_ALGO: () => SHA512_NODE_ALGO,
+  SIGN_OP: () => SIGN_OP,
+  UTF8_ENC: () => UTF8_ENC,
+  VERIFY_OP: () => VERIFY_OP,
+  aesCbcDecrypt: () => aesCbcDecrypt,
+  aesCbcEncrypt: () => aesCbcEncrypt,
+  assert: () => assert2,
+  hmacSha256Sign: () => hmacSha256Sign,
+  hmacSha256Verify: () => hmacSha256Verify,
+  hmacSha512Sign: () => hmacSha512Sign,
+  hmacSha512Verify: () => hmacSha512Verify,
+  isConstantTime: () => isConstantTime,
+  pkcs7: () => pkcs7,
+  randomBytes: () => randomBytes,
+  ripemd160: () => ripemd160,
+  sha256: () => sha256,
+  sha512: () => sha512
+});
+
+// node_modules/@walletconnect/randombytes/dist/esm/browser/index.js
+var env = __toESM(require_cjs3());
+function randomBytes(length) {
+  const browserCrypto = env.getBrowerCrypto();
+  return browserCrypto.getRandomValues(new Uint8Array(length));
+}
+
+// node_modules/@walletconnect/crypto/dist/esm/constants/length.js
+var LENGTH_0 = 0;
+var LENGTH_1 = 1;
+var LENGTH_16 = 16;
+var LENGTH_32 = 32;
+var LENGTH_64 = 64;
+var LENGTH_128 = 128;
+var LENGTH_256 = 256;
+var LENGTH_512 = 512;
+var LENGTH_1024 = 1024;
+
+// node_modules/@walletconnect/crypto/dist/esm/constants/default.js
+var AES_LENGTH = LENGTH_256;
+var HMAC_LENGTH = LENGTH_256;
+var AES_BROWSER_ALGO = "AES-CBC";
+var HMAC_BROWSER_ALGO = `SHA-${AES_LENGTH}`;
+var HMAC_BROWSER = "HMAC";
+var SHA256_BROWSER_ALGO = "SHA-256";
+var SHA512_BROWSER_ALGO = "SHA-512";
+var AES_NODE_ALGO = `aes-${AES_LENGTH}-cbc`;
+var HMAC_NODE_ALGO = `sha${HMAC_LENGTH}`;
+var SHA256_NODE_ALGO = "sha256";
+var SHA512_NODE_ALGO = "sha512";
+var RIPEMD160_NODE_ALGO = "ripemd160";
+var PREFIX_LENGTH = LENGTH_1;
+var KEY_LENGTH = LENGTH_32;
+var IV_LENGTH = LENGTH_16;
+var MAC_LENGTH = LENGTH_32;
+
+// node_modules/@walletconnect/crypto/dist/esm/constants/encoding.js
+var HEX_ENC = "hex";
+var UTF8_ENC = "utf8";
+
+// node_modules/@walletconnect/crypto/dist/esm/constants/error.js
+var ERROR_BAD_MAC = "Bad MAC";
+
+// node_modules/@walletconnect/crypto/dist/esm/constants/operations.js
+var ENCRYPT_OP = "encrypt";
+var DECRYPT_OP = "decrypt";
+var SIGN_OP = "sign";
+var VERIFY_OP = "verify";
+
+// node_modules/@walletconnect/crypto/dist/esm/lib/browser.js
+var env2 = __toESM(require_cjs3());
+function getAlgo(type) {
+  return type === AES_BROWSER_ALGO ? { length: AES_LENGTH, name: AES_BROWSER_ALGO } : {
+    hash: { name: HMAC_BROWSER_ALGO },
+    name: HMAC_BROWSER
+  };
+}
+function getOps(type) {
+  return type === AES_BROWSER_ALGO ? [ENCRYPT_OP, DECRYPT_OP] : [SIGN_OP, VERIFY_OP];
+}
+async function browserExportKey(cryptoKey, type = AES_BROWSER_ALGO) {
+  const subtle = env2.getSubtleCrypto();
+  return new Uint8Array(await subtle.exportKey("raw", cryptoKey));
+}
+async function browserImportKey(buffer, type = AES_BROWSER_ALGO) {
+  return env2.getSubtleCrypto().importKey("raw", buffer, getAlgo(type), true, getOps(type));
+}
+async function browserAesEncrypt(iv, key, data) {
+  const subtle = env2.getSubtleCrypto();
+  const cryptoKey = await browserImportKey(key, AES_BROWSER_ALGO);
+  const result = await subtle.encrypt({
+    iv,
+    name: AES_BROWSER_ALGO
+  }, cryptoKey, data);
+  return new Uint8Array(result);
+}
+async function browserAesDecrypt(iv, key, data) {
+  const subtle = env2.getSubtleCrypto();
+  const cryptoKey = await browserImportKey(key, AES_BROWSER_ALGO);
+  const result = await subtle.decrypt({
+    iv,
+    name: AES_BROWSER_ALGO
+  }, cryptoKey, data);
+  return new Uint8Array(result);
+}
+async function browserHmacSha256Sign(key, data) {
+  const subtle = env2.getSubtleCrypto();
+  const cryptoKey = await browserImportKey(key, HMAC_BROWSER);
+  const signature = await subtle.sign({
+    length: HMAC_LENGTH,
+    name: HMAC_BROWSER
+  }, cryptoKey, data);
+  return new Uint8Array(signature);
+}
+async function browserHmacSha512Sign(key, data) {
+  const subtle = env2.getSubtleCrypto();
+  const cryptoKey = await browserImportKey(key, HMAC_BROWSER);
+  const signature = await subtle.sign({
+    length: LENGTH_512,
+    name: HMAC_BROWSER
+  }, cryptoKey, data);
+  return new Uint8Array(signature);
+}
+async function browserSha256(data) {
+  const subtle = env2.getSubtleCrypto();
+  const result = await subtle.digest({
+    name: SHA256_BROWSER_ALGO
+  }, data);
+  return new Uint8Array(result);
+}
+async function browserSha512(data) {
+  const subtle = env2.getSubtleCrypto();
+  const result = await subtle.digest({
+    name: SHA512_BROWSER_ALGO
+  }, data);
+  return new Uint8Array(result);
+}
+
+// node_modules/@walletconnect/crypto/dist/esm/browser/aes.js
+function aesCbcEncrypt(iv, key, data) {
+  return browserAesEncrypt(iv, key, data);
+}
+function aesCbcDecrypt(iv, key, data) {
+  return browserAesDecrypt(iv, key, data);
+}
+
+// node_modules/@walletconnect/crypto/dist/esm/helpers/index.js
+var helpers_exports = {};
+__export(helpers_exports, {
+  assert: () => assert2,
+  isConstantTime: () => isConstantTime,
+  pkcs7: () => pkcs7
+});
+
+// node_modules/@walletconnect/crypto/dist/esm/helpers/env.js
+var env_exports2 = {};
+__reExport(env_exports2, __toESM(require_cjs3()));
+
+// node_modules/@walletconnect/crypto/dist/esm/helpers/pkcs7.js
+var PADDING = [
+  [16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16],
+  [15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15],
+  [14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14],
+  [13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13],
+  [12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12],
+  [11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11],
+  [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+  [9, 9, 9, 9, 9, 9, 9, 9, 9],
+  [8, 8, 8, 8, 8, 8, 8, 8],
+  [7, 7, 7, 7, 7, 7, 7],
+  [6, 6, 6, 6, 6, 6],
+  [5, 5, 5, 5, 5],
+  [4, 4, 4, 4],
+  [3, 3, 3],
+  [2, 2],
+  [1]
+];
+var pkcs7 = {
+  pad(plaintext) {
+    const padding = PADDING[plaintext.byteLength % 16 || 0];
+    const result = new Uint8Array(plaintext.byteLength + padding.length);
+    result.set(plaintext);
+    result.set(padding, plaintext.byteLength);
+    return result;
+  },
+  unpad(padded) {
+    return padded.subarray(0, padded.byteLength - padded[padded.byteLength - 1]);
+  }
+};
+
+// node_modules/@walletconnect/crypto/dist/esm/helpers/validators.js
+function assert2(condition, message) {
+  if (!condition) {
+    throw new Error(message || "Assertion failed");
+  }
+}
+function isConstantTime(arr1, arr2) {
+  if (arr1.length !== arr2.length) {
+    return false;
+  }
+  let res = 0;
+  for (let i3 = 0; i3 < arr1.length; i3++) {
+    res |= arr1[i3] ^ arr2[i3];
+  }
+  return res === 0;
+}
+
+// node_modules/@walletconnect/crypto/dist/esm/helpers/index.js
+__reExport(helpers_exports, env_exports2);
+
+// node_modules/@walletconnect/crypto/dist/esm/browser/hmac.js
+async function hmacSha256Sign(key, msg) {
+  const result = await browserHmacSha256Sign(key, msg);
+  return result;
+}
+async function hmacSha256Verify(key, msg, sig) {
+  const expectedSig = await browserHmacSha256Sign(key, msg);
+  const result = isConstantTime(expectedSig, sig);
+  return result;
+}
+async function hmacSha512Sign(key, msg) {
+  const result = await browserHmacSha512Sign(key, msg);
+  return result;
+}
+async function hmacSha512Verify(key, msg, sig) {
+  const expectedSig = await browserHmacSha512Sign(key, msg);
+  const result = isConstantTime(expectedSig, sig);
+  return result;
+}
+
+// node_modules/@walletconnect/crypto/dist/esm/browser/sha2.js
+async function sha256(msg) {
+  const result = await browserSha256(msg);
+  return result;
+}
+async function sha512(msg) {
+  const result = await browserSha512(msg);
+  return result;
+}
+async function ripemd160(msg) {
+  throw new Error("Not supported for Browser async methods, use sync instead!");
+}
+
+// node_modules/@walletconnect/crypto/dist/esm/browser/index.js
+__reExport(browser_exports, helpers_exports);
+
+// node_modules/@walletconnect/iso-crypto/dist/esm/index.js
+async function generateKey(length) {
+  const _length = (length || 256) / 8;
+  const bytes = randomBytes(_length);
+  const result = convertBufferToArrayBuffer(arrayToBuffer(bytes));
+  return result;
+}
+async function verifyHmac(payload, key) {
+  const cipherText = hexToArray(payload.data);
+  const iv = hexToArray(payload.iv);
+  const hmac = hexToArray(payload.hmac);
+  const hmacHex = arrayToHex(hmac, false);
+  const unsigned = concatArrays(cipherText, iv);
+  const chmac = await hmacSha256Sign(key, unsigned);
+  const chmacHex = arrayToHex(chmac, false);
+  if (removeHexPrefix(hmacHex) === removeHexPrefix(chmacHex)) {
+    return true;
+  }
+  return false;
+}
+async function encrypt(data, key, providedIv) {
+  const _key = bufferToArray(convertArrayBufferToBuffer(key));
+  const ivArrayBuffer = providedIv || await generateKey(128);
+  const iv = bufferToArray(convertArrayBufferToBuffer(ivArrayBuffer));
+  const ivHex = arrayToHex(iv, false);
+  const contentString = JSON.stringify(data);
+  const content = utf8ToArray(contentString);
+  const cipherText = await aesCbcEncrypt(iv, _key, content);
+  const cipherTextHex = arrayToHex(cipherText, false);
+  const unsigned = concatArrays(cipherText, iv);
+  const hmac = await hmacSha256Sign(_key, unsigned);
+  const hmacHex = arrayToHex(hmac, false);
+  return {
+    data: cipherTextHex,
+    hmac: hmacHex,
+    iv: ivHex
+  };
+}
+async function decrypt(payload, key) {
+  const _key = bufferToArray(convertArrayBufferToBuffer(key));
+  if (!_key) {
+    throw new Error("Missing key: required for decryption");
+  }
+  const verified = await verifyHmac(payload, _key);
+  if (!verified) {
+    return null;
+  }
+  const cipherText = hexToArray(payload.data);
+  const iv = hexToArray(payload.iv);
+  const buffer = await aesCbcDecrypt(iv, _key, cipherText);
+  const utf8 = arrayToUtf8(buffer);
+  let data;
+  try {
+    data = JSON.parse(utf8);
+  } catch (error) {
+    return null;
+  }
+  return data;
+}
+
+// node_modules/@walletconnect/client/dist/esm/index.js
+var WalletConnect = class extends esm_default2 {
+  constructor(connectorOpts, pushServerOpts) {
+    super({
+      cryptoLib: esm_exports4,
+      connectorOpts,
+      pushServerOpts
+    });
+  }
+};
+var esm_default3 = WalletConnect;
+
+// node_modules/preact/dist/preact.module.js
+var n, l, u, i, t, r, o, f, e = {}, c = [], s = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord/i;
+function a(n2, l3) {
+  for (var u3 in l3)
+    n2[u3] = l3[u3];
+  return n2;
+}
+function v(n2) {
+  var l3 = n2.parentNode;
+  l3 && l3.removeChild(n2);
+}
+function h(n2, l3, u3) {
+  var i3, t3 = arguments, r3 = {};
+  for (i3 in l3)
+    i3 !== "key" && i3 !== "ref" && (r3[i3] = l3[i3]);
+  if (arguments.length > 3)
+    for (u3 = [u3], i3 = 3; i3 < arguments.length; i3++)
+      u3.push(t3[i3]);
+  if (u3 != null && (r3.children = u3), typeof n2 == "function" && n2.defaultProps != null)
+    for (i3 in n2.defaultProps)
+      r3[i3] === void 0 && (r3[i3] = n2.defaultProps[i3]);
+  return p(n2, r3, l3 && l3.key, l3 && l3.ref, null);
+}
+function p(l3, u3, i3, t3, r3) {
+  var o3 = { type: l3, props: u3, key: i3, ref: t3, __k: null, __: null, __b: 0, __e: null, __d: void 0, __c: null, constructor: void 0, __v: r3 };
+  return r3 == null && (o3.__v = o3), n.vnode && n.vnode(o3), o3;
+}
+function y() {
+  return {};
+}
+function d(n2) {
+  return n2.children;
+}
+function m(n2, l3) {
+  this.props = n2, this.context = l3;
+}
+function w(n2, l3) {
+  if (l3 == null)
+    return n2.__ ? w(n2.__, n2.__.__k.indexOf(n2) + 1) : null;
+  for (var u3; l3 < n2.__k.length; l3++)
+    if ((u3 = n2.__k[l3]) != null && u3.__e != null)
+      return u3.__e;
+  return typeof n2.type == "function" ? w(n2) : null;
+}
+function k(n2) {
+  var l3, u3;
+  if ((n2 = n2.__) != null && n2.__c != null) {
+    for (n2.__e = n2.__c.base = null, l3 = 0; l3 < n2.__k.length; l3++)
+      if ((u3 = n2.__k[l3]) != null && u3.__e != null) {
+        n2.__e = n2.__c.base = u3.__e;
+        break;
+      }
+    return k(n2);
+  }
+}
+function g(l3) {
+  (!l3.__d && (l3.__d = true) && u.push(l3) && !i++ || r !== n.debounceRendering) && ((r = n.debounceRendering) || t)(_);
+}
+function _() {
+  for (var n2; i = u.length; )
+    n2 = u.sort(function(n3, l3) {
+      return n3.__v.__b - l3.__v.__b;
+    }), u = [], n2.some(function(n3) {
+      var l3, u3, i3, t3, r3, o3, f3;
+      n3.__d && (o3 = (r3 = (l3 = n3).__v).__e, (f3 = l3.__P) && (u3 = [], (i3 = a({}, r3)).__v = i3, t3 = A(f3, r3, i3, l3.__n, f3.ownerSVGElement !== void 0, null, u3, o3 == null ? w(r3) : o3), T(u3, r3), t3 != o3 && k(r3)));
+    });
+}
+function b(n2, l3, u3, i3, t3, r3, o3, f3, s3) {
+  var a3, h3, p3, y3, d3, m3, k3, g3 = u3 && u3.__k || c, _4 = g3.length;
+  if (f3 == e && (f3 = r3 != null ? r3[0] : _4 ? w(u3, 0) : null), a3 = 0, l3.__k = x(l3.__k, function(u4) {
+    if (u4 != null) {
+      if (u4.__ = l3, u4.__b = l3.__b + 1, (p3 = g3[a3]) === null || p3 && u4.key == p3.key && u4.type === p3.type)
+        g3[a3] = void 0;
+      else
+        for (h3 = 0; h3 < _4; h3++) {
+          if ((p3 = g3[h3]) && u4.key == p3.key && u4.type === p3.type) {
+            g3[h3] = void 0;
+            break;
+          }
+          p3 = null;
+        }
+      if (y3 = A(n2, u4, p3 = p3 || e, i3, t3, r3, o3, f3, s3), (h3 = u4.ref) && p3.ref != h3 && (k3 || (k3 = []), p3.ref && k3.push(p3.ref, null, u4), k3.push(h3, u4.__c || y3, u4)), y3 != null) {
+        var c3;
+        if (m3 == null && (m3 = y3), u4.__d !== void 0)
+          c3 = u4.__d, u4.__d = void 0;
+        else if (r3 == p3 || y3 != f3 || y3.parentNode == null) {
+          n:
+            if (f3 == null || f3.parentNode !== n2)
+              n2.appendChild(y3), c3 = null;
+            else {
+              for (d3 = f3, h3 = 0; (d3 = d3.nextSibling) && h3 < _4; h3 += 2)
+                if (d3 == y3)
+                  break n;
+              n2.insertBefore(y3, f3), c3 = f3;
+            }
+          l3.type == "option" && (n2.value = "");
+        }
+        f3 = c3 !== void 0 ? c3 : y3.nextSibling, typeof l3.type == "function" && (l3.__d = f3);
+      } else
+        f3 && p3.__e == f3 && f3.parentNode != n2 && (f3 = w(p3));
+    }
+    return a3++, u4;
+  }), l3.__e = m3, r3 != null && typeof l3.type != "function")
+    for (a3 = r3.length; a3--; )
+      r3[a3] != null && v(r3[a3]);
+  for (a3 = _4; a3--; )
+    g3[a3] != null && D(g3[a3], g3[a3]);
+  if (k3)
+    for (a3 = 0; a3 < k3.length; a3++)
+      j(k3[a3], k3[++a3], k3[++a3]);
+}
+function x(n2, l3, u3) {
+  if (u3 == null && (u3 = []), n2 == null || typeof n2 == "boolean")
+    l3 && u3.push(l3(null));
+  else if (Array.isArray(n2))
+    for (var i3 = 0; i3 < n2.length; i3++)
+      x(n2[i3], l3, u3);
+  else
+    u3.push(l3 ? l3(typeof n2 == "string" || typeof n2 == "number" ? p(null, n2, null, null, n2) : n2.__e != null || n2.__c != null ? p(n2.type, n2.props, n2.key, null, n2.__v) : n2) : n2);
+  return u3;
+}
+function P(n2, l3, u3, i3, t3) {
+  var r3;
+  for (r3 in u3)
+    r3 === "children" || r3 === "key" || r3 in l3 || N(n2, r3, null, u3[r3], i3);
+  for (r3 in l3)
+    t3 && typeof l3[r3] != "function" || r3 === "children" || r3 === "key" || r3 === "value" || r3 === "checked" || u3[r3] === l3[r3] || N(n2, r3, l3[r3], u3[r3], i3);
+}
+function C(n2, l3, u3) {
+  l3[0] === "-" ? n2.setProperty(l3, u3) : n2[l3] = typeof u3 == "number" && s.test(l3) === false ? u3 + "px" : u3 == null ? "" : u3;
+}
+function N(n2, l3, u3, i3, t3) {
+  var r3, o3, f3, e3, c3;
+  if (t3 ? l3 === "className" && (l3 = "class") : l3 === "class" && (l3 = "className"), l3 === "style")
+    if (r3 = n2.style, typeof u3 == "string")
+      r3.cssText = u3;
+    else {
+      if (typeof i3 == "string" && (r3.cssText = "", i3 = null), i3)
+        for (e3 in i3)
+          u3 && e3 in u3 || C(r3, e3, "");
+      if (u3)
+        for (c3 in u3)
+          i3 && u3[c3] === i3[c3] || C(r3, c3, u3[c3]);
+    }
+  else
+    l3[0] === "o" && l3[1] === "n" ? (o3 = l3 !== (l3 = l3.replace(/Capture$/, "")), f3 = l3.toLowerCase(), l3 = (f3 in n2 ? f3 : l3).slice(2), u3 ? (i3 || n2.addEventListener(l3, z, o3), (n2.l || (n2.l = {}))[l3] = u3) : n2.removeEventListener(l3, z, o3)) : l3 !== "list" && l3 !== "tagName" && l3 !== "form" && l3 !== "type" && l3 !== "size" && !t3 && l3 in n2 ? n2[l3] = u3 == null ? "" : u3 : typeof u3 != "function" && l3 !== "dangerouslySetInnerHTML" && (l3 !== (l3 = l3.replace(/^xlink:?/, "")) ? u3 == null || u3 === false ? n2.removeAttributeNS("http://www.w3.org/1999/xlink", l3.toLowerCase()) : n2.setAttributeNS("http://www.w3.org/1999/xlink", l3.toLowerCase(), u3) : u3 == null || u3 === false && !/^ar/.test(l3) ? n2.removeAttribute(l3) : n2.setAttribute(l3, u3));
+}
+function z(l3) {
+  this.l[l3.type](n.event ? n.event(l3) : l3);
+}
+function A(l3, u3, i3, t3, r3, o3, f3, e3, c3) {
+  var s3, v3, h3, p3, y3, w4, k3, g3, _4, x3, P3 = u3.type;
+  if (u3.constructor !== void 0)
+    return null;
+  (s3 = n.__b) && s3(u3);
+  try {
+    n:
+      if (typeof P3 == "function") {
+        if (g3 = u3.props, _4 = (s3 = P3.contextType) && t3[s3.__c], x3 = s3 ? _4 ? _4.props.value : s3.__ : t3, i3.__c ? k3 = (v3 = u3.__c = i3.__c).__ = v3.__E : ("prototype" in P3 && P3.prototype.render ? u3.__c = v3 = new P3(g3, x3) : (u3.__c = v3 = new m(g3, x3), v3.constructor = P3, v3.render = E), _4 && _4.sub(v3), v3.props = g3, v3.state || (v3.state = {}), v3.context = x3, v3.__n = t3, h3 = v3.__d = true, v3.__h = []), v3.__s == null && (v3.__s = v3.state), P3.getDerivedStateFromProps != null && (v3.__s == v3.state && (v3.__s = a({}, v3.__s)), a(v3.__s, P3.getDerivedStateFromProps(g3, v3.__s))), p3 = v3.props, y3 = v3.state, h3)
+          P3.getDerivedStateFromProps == null && v3.componentWillMount != null && v3.componentWillMount(), v3.componentDidMount != null && v3.__h.push(v3.componentDidMount);
+        else {
+          if (P3.getDerivedStateFromProps == null && g3 !== p3 && v3.componentWillReceiveProps != null && v3.componentWillReceiveProps(g3, x3), !v3.__e && v3.shouldComponentUpdate != null && v3.shouldComponentUpdate(g3, v3.__s, x3) === false || u3.__v === i3.__v && !v3.__) {
+            for (v3.props = g3, v3.state = v3.__s, u3.__v !== i3.__v && (v3.__d = false), v3.__v = u3, u3.__e = i3.__e, u3.__k = i3.__k, v3.__h.length && f3.push(v3), s3 = 0; s3 < u3.__k.length; s3++)
+              u3.__k[s3] && (u3.__k[s3].__ = u3);
+            break n;
+          }
+          v3.componentWillUpdate != null && v3.componentWillUpdate(g3, v3.__s, x3), v3.componentDidUpdate != null && v3.__h.push(function() {
+            v3.componentDidUpdate(p3, y3, w4);
+          });
+        }
+        v3.context = x3, v3.props = g3, v3.state = v3.__s, (s3 = n.__r) && s3(u3), v3.__d = false, v3.__v = u3, v3.__P = l3, s3 = v3.render(v3.props, v3.state, v3.context), u3.__k = s3 != null && s3.type == d && s3.key == null ? s3.props.children : Array.isArray(s3) ? s3 : [s3], v3.getChildContext != null && (t3 = a(a({}, t3), v3.getChildContext())), h3 || v3.getSnapshotBeforeUpdate == null || (w4 = v3.getSnapshotBeforeUpdate(p3, y3)), b(l3, u3, i3, t3, r3, o3, f3, e3, c3), v3.base = u3.__e, v3.__h.length && f3.push(v3), k3 && (v3.__E = v3.__ = null), v3.__e = false;
+      } else
+        o3 == null && u3.__v === i3.__v ? (u3.__k = i3.__k, u3.__e = i3.__e) : u3.__e = $(i3.__e, u3, i3, t3, r3, o3, f3, c3);
+    (s3 = n.diffed) && s3(u3);
+  } catch (l4) {
+    u3.__v = null, n.__e(l4, u3, i3);
+  }
+  return u3.__e;
+}
+function T(l3, u3) {
+  n.__c && n.__c(u3, l3), l3.some(function(u4) {
+    try {
+      l3 = u4.__h, u4.__h = [], l3.some(function(n2) {
+        n2.call(u4);
+      });
+    } catch (l4) {
+      n.__e(l4, u4.__v);
+    }
+  });
+}
+function $(n2, l3, u3, i3, t3, r3, o3, f3) {
+  var s3, a3, v3, h3, p3, y3 = u3.props, d3 = l3.props;
+  if (t3 = l3.type === "svg" || t3, r3 != null) {
+    for (s3 = 0; s3 < r3.length; s3++)
+      if ((a3 = r3[s3]) != null && ((l3.type === null ? a3.nodeType === 3 : a3.localName === l3.type) || n2 == a3)) {
+        n2 = a3, r3[s3] = null;
+        break;
+      }
+  }
+  if (n2 == null) {
+    if (l3.type === null)
+      return document.createTextNode(d3);
+    n2 = t3 ? document.createElementNS("http://www.w3.org/2000/svg", l3.type) : document.createElement(l3.type, d3.is && { is: d3.is }), r3 = null, f3 = false;
+  }
+  if (l3.type === null)
+    y3 !== d3 && n2.data != d3 && (n2.data = d3);
+  else {
+    if (r3 != null && (r3 = c.slice.call(n2.childNodes)), v3 = (y3 = u3.props || e).dangerouslySetInnerHTML, h3 = d3.dangerouslySetInnerHTML, !f3) {
+      if (y3 === e)
+        for (y3 = {}, p3 = 0; p3 < n2.attributes.length; p3++)
+          y3[n2.attributes[p3].name] = n2.attributes[p3].value;
+      (h3 || v3) && (h3 && v3 && h3.__html == v3.__html || (n2.innerHTML = h3 && h3.__html || ""));
+    }
+    P(n2, d3, y3, t3, f3), h3 ? l3.__k = [] : (l3.__k = l3.props.children, b(n2, l3, u3, i3, l3.type !== "foreignObject" && t3, r3, o3, e, f3)), f3 || ("value" in d3 && (s3 = d3.value) !== void 0 && s3 !== n2.value && N(n2, "value", s3, y3.value, false), "checked" in d3 && (s3 = d3.checked) !== void 0 && s3 !== n2.checked && N(n2, "checked", s3, y3.checked, false));
+  }
+  return n2;
+}
+function j(l3, u3, i3) {
+  try {
+    typeof l3 == "function" ? l3(u3) : l3.current = u3;
+  } catch (l4) {
+    n.__e(l4, i3);
+  }
+}
+function D(l3, u3, i3) {
+  var t3, r3, o3;
+  if (n.unmount && n.unmount(l3), (t3 = l3.ref) && (t3.current && t3.current !== l3.__e || j(t3, null, u3)), i3 || typeof l3.type == "function" || (i3 = (r3 = l3.__e) != null), l3.__e = l3.__d = void 0, (t3 = l3.__c) != null) {
+    if (t3.componentWillUnmount)
+      try {
+        t3.componentWillUnmount();
+      } catch (l4) {
+        n.__e(l4, u3);
+      }
+    t3.base = t3.__P = null;
+  }
+  if (t3 = l3.__k)
+    for (o3 = 0; o3 < t3.length; o3++)
+      t3[o3] && D(t3[o3], u3, i3);
+  r3 != null && v(r3);
+}
+function E(n2, l3, u3) {
+  return this.constructor(n2, u3);
+}
+function H(l3, u3, i3) {
+  var t3, r3, f3;
+  n.__ && n.__(l3, u3), r3 = (t3 = i3 === o) ? null : i3 && i3.__k || u3.__k, l3 = h(d, null, [l3]), f3 = [], A(u3, (t3 ? u3 : i3 || u3).__k = l3, r3 || e, e, u3.ownerSVGElement !== void 0, i3 && !t3 ? [i3] : r3 ? null : c.slice.call(u3.childNodes), f3, i3 || e, t3), T(f3, l3);
+}
+function I(n2, l3) {
+  H(n2, l3, o);
+}
+function L(n2, l3) {
+  var u3, i3;
+  for (i3 in l3 = a(a({}, n2.props), l3), arguments.length > 2 && (l3.children = c.slice.call(arguments, 2)), u3 = {}, l3)
+    i3 !== "key" && i3 !== "ref" && (u3[i3] = l3[i3]);
+  return p(n2.type, u3, l3.key || n2.key, l3.ref || n2.ref, null);
+}
+function M(n2) {
+  var l3 = {}, u3 = { __c: "__cC" + f++, __: n2, Consumer: function(n3, l4) {
+    return n3.children(l4);
+  }, Provider: function(n3) {
+    var i3, t3 = this;
+    return this.getChildContext || (i3 = [], this.getChildContext = function() {
+      return l3[u3.__c] = t3, l3;
+    }, this.shouldComponentUpdate = function(n4) {
+      t3.props.value !== n4.value && i3.some(function(l4) {
+        l4.context = n4.value, g(l4);
+      });
+    }, this.sub = function(n4) {
+      i3.push(n4);
+      var l4 = n4.componentWillUnmount;
+      n4.componentWillUnmount = function() {
+        i3.splice(i3.indexOf(n4), 1), l4 && l4.call(n4);
+      };
+    }), n3.children;
+  } };
+  return u3.Consumer.contextType = u3, u3.Provider.__ = u3, u3;
+}
+n = { __e: function(n2, l3) {
+  for (var u3, i3; l3 = l3.__; )
+    if ((u3 = l3.__c) && !u3.__)
+      try {
+        if (u3.constructor && u3.constructor.getDerivedStateFromError != null && (i3 = true, u3.setState(u3.constructor.getDerivedStateFromError(n2))), u3.componentDidCatch != null && (i3 = true, u3.componentDidCatch(n2)), i3)
+          return g(u3.__E = u3);
+      } catch (l4) {
+        n2 = l4;
+      }
+  throw n2;
+} }, l = function(n2) {
+  return n2 != null && n2.constructor === void 0;
+}, m.prototype.setState = function(n2, l3) {
+  var u3;
+  u3 = this.__s !== this.state ? this.__s : this.__s = a({}, this.state), typeof n2 == "function" && (n2 = n2(u3, this.props)), n2 && a(u3, n2), n2 != null && this.__v && (l3 && this.__h.push(l3), g(this));
+}, m.prototype.forceUpdate = function(n2) {
+  this.__v && (this.__e = true, n2 && this.__h.push(n2), g(this));
+}, m.prototype.render = d, u = [], i = 0, t = typeof Promise == "function" ? Promise.prototype.then.bind(Promise.resolve()) : setTimeout, o = e, f = 0;
+
+// node_modules/preact/hooks/dist/hooks.module.js
+var t2, u2, r2, i2 = 0, o2 = [], c2 = n.__r, f2 = n.diffed, e2 = n.__c, a2 = n.unmount;
+function v2(t3, r3) {
+  n.__h && n.__h(u2, t3, i2 || r3), i2 = 0;
+  var o3 = u2.__H || (u2.__H = { __: [], __h: [] });
+  return t3 >= o3.__.length && o3.__.push({}), o3.__[t3];
+}
+function m2(n2) {
+  return i2 = 1, p2(E2, n2);
+}
+function p2(n2, r3, i3) {
+  var o3 = v2(t2++, 2);
+  return o3.__c || (o3.__c = u2, o3.__ = [i3 ? i3(r3) : E2(void 0, r3), function(t3) {
+    var u3 = n2(o3.__[0], t3);
+    o3.__[0] !== u3 && (o3.__[0] = u3, o3.__c.setState({}));
+  }]), o3.__;
+}
+function l2(r3, i3) {
+  var o3 = v2(t2++, 3);
+  !n.__s && x2(o3.__H, i3) && (o3.__ = r3, o3.__H = i3, u2.__H.__h.push(o3));
+}
+function y2(r3, i3) {
+  var o3 = v2(t2++, 4);
+  !n.__s && x2(o3.__H, i3) && (o3.__ = r3, o3.__H = i3, u2.__h.push(o3));
+}
+function d2(n2) {
+  return i2 = 5, h2(function() {
+    return { current: n2 };
+  }, []);
+}
+function s2(n2, t3, u3) {
+  i2 = 6, y2(function() {
+    typeof n2 == "function" ? n2(t3()) : n2 && (n2.current = t3());
+  }, u3 == null ? u3 : u3.concat(n2));
+}
+function h2(n2, u3) {
+  var r3 = v2(t2++, 7);
+  return x2(r3.__H, u3) ? (r3.__H = u3, r3.__h = n2, r3.__ = n2()) : r3.__;
+}
+function T2(n2, t3) {
+  return i2 = 8, h2(function() {
+    return n2;
+  }, t3);
+}
+function w2(n2) {
+  var r3 = u2.context[n2.__c], i3 = v2(t2++, 9);
+  return i3.__c = n2, r3 ? (i3.__ == null && (i3.__ = true, r3.sub(u2)), r3.props.value) : n2.__;
+}
+function A2(t3, u3) {
+  n.useDebugValue && n.useDebugValue(u3 ? u3(t3) : t3);
+}
+function F(n2) {
+  var r3 = v2(t2++, 10), i3 = m2();
+  return r3.__ = n2, u2.componentDidCatch || (u2.componentDidCatch = function(n3) {
+    r3.__ && r3.__(n3), i3[1](n3);
+  }), [i3[0], function() {
+    i3[1](void 0);
+  }];
+}
+function _2() {
+  o2.some(function(t3) {
+    if (t3.__P)
+      try {
+        t3.__H.__h.forEach(g2), t3.__H.__h.forEach(q), t3.__H.__h = [];
+      } catch (u3) {
+        return t3.__H.__h = [], n.__e(u3, t3.__v), true;
+      }
+  }), o2 = [];
+}
+function g2(n2) {
+  n2.t && n2.t();
+}
+function q(n2) {
+  var t3 = n2.__();
+  typeof t3 == "function" && (n2.t = t3);
+}
+function x2(n2, t3) {
+  return !n2 || t3.some(function(t4, u3) {
+    return t4 !== n2[u3];
+  });
+}
+function E2(n2, t3) {
+  return typeof t3 == "function" ? t3(n2) : t3;
+}
+n.__r = function(n2) {
+  c2 && c2(n2), t2 = 0, (u2 = n2.__c).__H && (u2.__H.__h.forEach(g2), u2.__H.__h.forEach(q), u2.__H.__h = []);
+}, n.diffed = function(t3) {
+  f2 && f2(t3);
+  var u3 = t3.__c;
+  if (u3) {
+    var i3 = u3.__H;
+    i3 && i3.__h.length && (o2.push(u3) !== 1 && r2 === n.requestAnimationFrame || ((r2 = n.requestAnimationFrame) || function(n2) {
+      var t4, u4 = function() {
+        clearTimeout(r3), cancelAnimationFrame(t4), setTimeout(n2);
+      }, r3 = setTimeout(u4, 100);
+      typeof window != "undefined" && (t4 = requestAnimationFrame(u4));
+    })(_2));
+  }
+}, n.__c = function(t3, u3) {
+  u3.some(function(t4) {
+    try {
+      t4.__h.forEach(g2), t4.__h = t4.__h.filter(function(n2) {
+        return !n2.__ || q(n2);
+      });
+    } catch (r3) {
+      u3.some(function(n2) {
+        n2.__h && (n2.__h = []);
+      }), u3 = [], n.__e(r3, t4.__v);
+    }
+  }), e2 && e2(t3, u3);
+}, n.unmount = function(t3) {
+  a2 && a2(t3);
+  var u3 = t3.__c;
+  if (u3) {
+    var r3 = u3.__H;
+    if (r3)
+      try {
+        r3.__.forEach(function(n2) {
+          return n2.t && n2.t();
+        });
+      } catch (t4) {
+        n.__e(t4, u3.__v);
+      }
+  }
+};
+
+// node_modules/preact/compat/dist/compat.module.js
+function E3(n2, t3) {
+  for (var e3 in t3)
+    n2[e3] = t3[e3];
+  return n2;
+}
+function w3(n2, t3) {
+  for (var e3 in n2)
+    if (e3 !== "__source" && !(e3 in t3))
+      return true;
+  for (var r3 in t3)
+    if (r3 !== "__source" && n2[r3] !== t3[r3])
+      return true;
+  return false;
+}
+var C2 = function(n2) {
+  var t3, e3;
+  function r3(t4) {
+    var e4;
+    return (e4 = n2.call(this, t4) || this).isPureReactComponent = true, e4;
+  }
+  return e3 = n2, (t3 = r3).prototype = Object.create(e3.prototype), t3.prototype.constructor = t3, t3.__proto__ = e3, r3.prototype.shouldComponentUpdate = function(n3, t4) {
+    return w3(this.props, n3) || w3(this.state, t4);
+  }, r3;
+}(m);
+function _3(n2, t3) {
+  function e3(n3) {
+    var e4 = this.props.ref, r4 = e4 == n3.ref;
+    return !r4 && e4 && (e4.call ? e4(null) : e4.current = null), t3 ? !t3(this.props, n3) || !r4 : w3(this.props, n3);
+  }
+  function r3(t4) {
+    return this.shouldComponentUpdate = e3, h(n2, E3({}, t4));
+  }
+  return r3.prototype.isReactComponent = true, r3.displayName = "Memo(" + (n2.displayName || n2.name) + ")", r3.t = true, r3;
+}
+var A3 = n.__b;
+function S(n2) {
+  function t3(t4) {
+    var e3 = E3({}, t4);
+    return delete e3.ref, n2(e3, t4.ref);
+  }
+  return t3.prototype.isReactComponent = t3.t = true, t3.displayName = "ForwardRef(" + (n2.displayName || n2.name) + ")", t3;
+}
+n.__b = function(n2) {
+  n2.type && n2.type.t && n2.ref && (n2.props.ref = n2.ref, n2.ref = null), A3 && A3(n2);
+};
+var k2 = function(n2, t3) {
+  return n2 ? x(n2).reduce(function(n3, e3, r3) {
+    return n3.concat(t3(e3, r3));
+  }, []) : null;
+}, R = { map: k2, forEach: k2, count: function(n2) {
+  return n2 ? x(n2).length : 0;
+}, only: function(n2) {
+  if ((n2 = x(n2)).length !== 1)
+    throw new Error("Children.only() expects only one child.");
+  return n2[0];
+}, toArray: x }, F2 = n.__e;
+function N2(n2) {
+  return n2 && ((n2 = E3({}, n2)).__c = null, n2.__k = n2.__k && n2.__k.map(N2)), n2;
+}
+function U() {
+  this.__u = 0, this.o = null, this.__b = null;
+}
+function M2(n2) {
+  var t3 = n2.__.__c;
+  return t3 && t3.u && t3.u(n2);
+}
+function L2(n2) {
+  var t3, e3, r3;
+  function o3(o4) {
+    if (t3 || (t3 = n2()).then(function(n3) {
+      e3 = n3.default || n3;
+    }, function(n3) {
+      r3 = n3;
+    }), r3)
+      throw r3;
+    if (!e3)
+      throw t3;
+    return h(e3, o4);
+  }
+  return o3.displayName = "Lazy", o3.t = true, o3;
+}
+function O() {
+  this.i = null, this.l = null;
+}
+n.__e = function(n2, t3, e3) {
+  if (n2.then) {
+    for (var r3, o3 = t3; o3 = o3.__; )
+      if ((r3 = o3.__c) && r3.__c)
+        return r3.__c(n2, t3.__c);
+  }
+  F2(n2, t3, e3);
+}, (U.prototype = new m()).__c = function(n2, t3) {
+  var e3 = this;
+  e3.o == null && (e3.o = []), e3.o.push(t3);
+  var r3 = M2(e3.__v), o3 = false, u3 = function() {
+    o3 || (o3 = true, r3 ? r3(i3) : i3());
+  };
+  t3.__c = t3.componentWillUnmount, t3.componentWillUnmount = function() {
+    u3(), t3.__c && t3.__c();
+  };
+  var i3 = function() {
+    var n3;
+    if (!--e3.__u)
+      for (e3.__v.__k[0] = e3.state.u, e3.setState({ u: e3.__b = null }); n3 = e3.o.pop(); )
+        n3.forceUpdate();
+  };
+  e3.__u++ || e3.setState({ u: e3.__b = e3.__v.__k[0] }), n2.then(u3, u3);
+}, U.prototype.render = function(n2, t3) {
+  return this.__b && (this.__v.__k[0] = N2(this.__b), this.__b = null), [h(m, null, t3.u ? null : n2.children), t3.u && n2.fallback];
+};
+var P2 = function(n2, t3, e3) {
+  if (++e3[1] === e3[0] && n2.l.delete(t3), n2.props.revealOrder && (n2.props.revealOrder[0] !== "t" || !n2.l.size))
+    for (e3 = n2.i; e3; ) {
+      for (; e3.length > 3; )
+        e3.pop()();
+      if (e3[1] < e3[0])
+        break;
+      n2.i = e3 = e3[2];
+    }
+};
+(O.prototype = new m()).u = function(n2) {
+  var t3 = this, e3 = M2(t3.__v), r3 = t3.l.get(n2);
+  return r3[0]++, function(o3) {
+    var u3 = function() {
+      t3.props.revealOrder ? (r3.push(o3), P2(t3, n2, r3)) : o3();
+    };
+    e3 ? e3(u3) : u3();
+  };
+}, O.prototype.render = function(n2) {
+  this.i = null, this.l = /* @__PURE__ */ new Map();
+  var t3 = x(n2.children);
+  n2.revealOrder && n2.revealOrder[0] === "b" && t3.reverse();
+  for (var e3 = t3.length; e3--; )
+    this.l.set(t3[e3], this.i = [1, 0, this.i]);
+  return n2.children;
+}, O.prototype.componentDidUpdate = O.prototype.componentDidMount = function() {
+  var n2 = this;
+  n2.l.forEach(function(t3, e3) {
+    P2(n2, e3, t3);
+  });
+};
+var W = function() {
+  function n2() {
+  }
+  var t3 = n2.prototype;
+  return t3.getChildContext = function() {
+    return this.props.context;
+  }, t3.render = function(n3) {
+    return n3.children;
+  }, n2;
+}();
+function j2(n2) {
+  var t3 = this, e3 = n2.container, r3 = h(W, { context: t3.context }, n2.vnode);
+  return t3.s && t3.s !== e3 && (t3.v.parentNode && t3.s.removeChild(t3.v), D(t3.h), t3.p = false), n2.vnode ? t3.p ? (e3.__k = t3.__k, H(r3, e3), t3.__k = e3.__k) : (t3.v = document.createTextNode(""), I("", e3), e3.appendChild(t3.v), t3.p = true, t3.s = e3, H(r3, e3, t3.v), t3.__k = t3.v.__k) : t3.p && (t3.v.parentNode && t3.s.removeChild(t3.v), D(t3.h)), t3.h = r3, t3.componentWillUnmount = function() {
+    t3.v.parentNode && t3.s.removeChild(t3.v), D(t3.h);
+  }, null;
+}
+function z2(n2, t3) {
+  return h(j2, { vnode: n2, container: t3 });
+}
+var D2 = /^(?:accent|alignment|arabic|baseline|cap|clip(?!PathU)|color|fill|flood|font|glyph(?!R)|horiz|marker(?!H|W|U)|overline|paint|stop|strikethrough|stroke|text(?!L)|underline|unicode|units|v|vector|vert|word|writing|x(?!C))[A-Z]/;
+m.prototype.isReactComponent = {};
+var H2 = typeof Symbol != "undefined" && Symbol.for && Symbol.for("react.element") || 60103;
+function T3(n2, t3, e3) {
+  if (t3.__k == null)
+    for (; t3.firstChild; )
+      t3.removeChild(t3.firstChild);
+  return H(n2, t3), typeof e3 == "function" && e3(), n2 ? n2.__c : null;
+}
+function V(n2, t3, e3) {
+  return I(n2, t3), typeof e3 == "function" && e3(), n2 ? n2.__c : null;
+}
+var Z = n.event;
+function I2(n2, t3) {
+  n2["UNSAFE_" + t3] && !n2[t3] && Object.defineProperty(n2, t3, { configurable: false, get: function() {
+    return this["UNSAFE_" + t3];
+  }, set: function(n3) {
+    this["UNSAFE_" + t3] = n3;
+  } });
+}
+n.event = function(n2) {
+  Z && (n2 = Z(n2)), n2.persist = function() {
+  };
+  var t3 = false, e3 = false, r3 = n2.stopPropagation;
+  n2.stopPropagation = function() {
+    r3.call(n2), t3 = true;
+  };
+  var o3 = n2.preventDefault;
+  return n2.preventDefault = function() {
+    o3.call(n2), e3 = true;
+  }, n2.isPropagationStopped = function() {
+    return t3;
+  }, n2.isDefaultPrevented = function() {
+    return e3;
+  }, n2.nativeEvent = n2;
+};
+var $2 = { configurable: true, get: function() {
+  return this.class;
+} }, q2 = n.vnode;
+n.vnode = function(n2) {
+  n2.$$typeof = H2;
+  var t3 = n2.type, e3 = n2.props;
+  if (t3) {
+    if (e3.class != e3.className && ($2.enumerable = "className" in e3, e3.className != null && (e3.class = e3.className), Object.defineProperty(e3, "className", $2)), typeof t3 != "function") {
+      var r3, o3, u3;
+      for (u3 in e3.defaultValue && e3.value !== void 0 && (e3.value || e3.value === 0 || (e3.value = e3.defaultValue), delete e3.defaultValue), Array.isArray(e3.value) && e3.multiple && t3 === "select" && (x(e3.children).forEach(function(n3) {
+        e3.value.indexOf(n3.props.value) != -1 && (n3.props.selected = true);
+      }), delete e3.value), e3)
+        if (r3 = D2.test(u3))
+          break;
+      if (r3)
+        for (u3 in o3 = n2.props = {}, e3)
+          o3[D2.test(u3) ? u3.replace(/[A-Z0-9]/, "-$&").toLowerCase() : u3] = e3[u3];
+    }
+    !function(t4) {
+      var e4 = n2.type, r4 = n2.props;
+      if (r4 && typeof e4 == "string") {
+        var o4 = {};
+        for (var u4 in r4)
+          /^on(Ani|Tra|Tou)/.test(u4) && (r4[u4.toLowerCase()] = r4[u4], delete r4[u4]), o4[u4.toLowerCase()] = u4;
+        if (o4.ondoubleclick && (r4.ondblclick = r4[o4.ondoubleclick], delete r4[o4.ondoubleclick]), o4.onbeforeinput && (r4.onbeforeinput = r4[o4.onbeforeinput], delete r4[o4.onbeforeinput]), o4.onchange && (e4 === "textarea" || e4.toLowerCase() === "input" && !/^fil|che|ra/i.test(r4.type))) {
+          var i3 = o4.oninput || "oninput";
+          r4[i3] || (r4[i3] = r4[o4.onchange], delete r4[o4.onchange]);
+        }
+      }
+    }(), typeof t3 == "function" && !t3.m && t3.prototype && (I2(t3.prototype, "componentWillMount"), I2(t3.prototype, "componentWillReceiveProps"), I2(t3.prototype, "componentWillUpdate"), t3.m = true);
+  }
+  q2 && q2(n2);
+};
+var B = "16.8.0";
+function G(n2) {
+  return h.bind(null, n2);
+}
+function J(n2) {
+  return !!n2 && n2.$$typeof === H2;
+}
+function K2(n2) {
+  return J(n2) ? L.apply(null, arguments) : n2;
+}
+function Q(n2) {
+  return !!n2.__k && (H(null, n2), true);
+}
+function X(n2) {
+  return n2 && (n2.base || n2.nodeType === 1 && n2) || null;
+}
+var Y = function(n2, t3) {
+  return n2(t3);
+};
+var compat_module_default = { useState: m2, useReducer: p2, useEffect: l2, useLayoutEffect: y2, useRef: d2, useImperativeHandle: s2, useMemo: h2, useCallback: T2, useContext: w2, useDebugValue: A2, version: "16.8.0", Children: R, render: T3, hydrate: T3, unmountComponentAtNode: Q, createPortal: z2, createElement: h, createContext: M, createFactory: G, cloneElement: K2, createRef: y, Fragment: d, isValidElement: J, findDOMNode: X, Component: m, PureComponent: C2, memo: _3, forwardRef: S, unstable_batchedUpdates: Y, Suspense: U, SuspenseList: O, lazy: L2 };
+
+// node_modules/algo-wc-qr-modal-ncc/dist/esm/index.js
+var import_qrcode = __toESM(require_browser2());
+var import_copy_to_clipboard = __toESM(require_copy_to_clipboard());
+function open(e3) {
+  import_qrcode.default.toString(e3, { type: "terminal" }).then(console.log);
+}
+var WALLETCONNECT_STYLE_SHEET = ':root {\n  --animation-duration: 300ms;\n}\n\n@keyframes fadeIn {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 1;\n  }\n}\n\n@keyframes fadeOut {\n  from {\n    opacity: 1;\n  }\n  to {\n    opacity: 0;\n  }\n}\n\n.animated {\n  animation-duration: var(--animation-duration);\n  animation-fill-mode: both;\n}\n\n.fadeIn {\n  animation-name: fadeIn;\n}\n\n.fadeOut {\n  animation-name: fadeOut;\n}\n\n#walletconnect-wrapper {\n  -webkit-user-select: none;\n  align-items: center;\n  display: flex;\n  height: 100%;\n  justify-content: center;\n  left: 0;\n  pointer-events: none;\n  position: fixed;\n  top: 0;\n  user-select: none;\n  width: 100%;\n  z-index: 99999999999999;\n}\n\n.walletconnect-modal__headerLogo {\n  height: 21px;\n}\n\n.walletconnect-modal__header p {\n  color: #ffffff;\n  font-size: 20px;\n  font-weight: 600;\n  margin: 0;\n  align-items: flex-start;\n  display: flex;\n  flex: 1;\n  margin-left: 5px;\n}\n\n.walletconnect-modal__close__wrapper {\n  position: absolute;\n  top: 0px;\n  right: 0px;\n  z-index: 10000;\n  background: white;\n  border-radius: 26px;\n  padding: 6px;\n  box-sizing: border-box;\n  width: 26px;\n  height: 26px;\n  cursor: pointer;\n}\n\n.walletconnect-modal__close__icon {\n  position: relative;\n  top: 7px;\n  right: 0;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  transform: rotate(45deg);\n}\n\n.walletconnect-modal__close__line1 {\n  position: absolute;\n  width: 100%;\n  border: 1px solid rgb(48, 52, 59);\n}\n\n.walletconnect-modal__close__line2 {\n  position: absolute;\n  width: 100%;\n  border: 1px solid rgb(48, 52, 59);\n  transform: rotate(90deg);\n}\n\n.walletconnect-qrcode__base {\n  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);\n  background: rgba(37, 41, 46, 0.95);\n  height: 100%;\n  left: 0;\n  pointer-events: auto;\n  position: fixed;\n  top: 0;\n  transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);\n  width: 100%;\n  will-change: opacity;\n  padding: 40px;\n  box-sizing: border-box;\n}\n\n.walletconnect-qrcode__text {\n  color: rgba(60, 66, 82, 0.6);\n  font-size: 16px;\n  font-weight: 600;\n  letter-spacing: 0;\n  line-height: 1.1875em;\n  margin: 10px 0 20px 0;\n  text-align: center;\n  width: 100%;\n}\n\n@media only screen and (max-width: 768px) {\n  .walletconnect-qrcode__text {\n    font-size: 4vw;\n  }\n}\n\n@media only screen and (max-width: 320px) {\n  .walletconnect-qrcode__text {\n    font-size: 14px;\n  }\n}\n\n.walletconnect-qrcode__image {\n  width: calc(100% - 30px);\n  box-sizing: border-box;\n  cursor: none;\n  margin: 0 auto;\n}\n\n.walletconnect-qrcode__notification {\n  position: absolute;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  font-size: 16px;\n  padding: 16px 20px;\n  border-radius: 16px;\n  text-align: center;\n  transition: all 0.1s ease-in-out;\n  background: white;\n  color: black;\n  margin-bottom: -60px;\n  opacity: 0;\n}\n\n.walletconnect-qrcode__notification.notification__show {\n  opacity: 1;\n}\n\n@media only screen and (max-width: 768px) {\n  .walletconnect-modal__header {\n    height: 130px;\n  }\n  .walletconnect-modal__base {\n    overflow: auto;\n  }\n}\n\n@media only screen and (min-device-width: 415px) and (max-width: 768px) {\n  #content {\n    max-width: 768px;\n    box-sizing: border-box;\n  }\n}\n\n@media only screen and (min-width: 375px) and (max-width: 415px) {\n  #content {\n    max-width: 414px;\n    box-sizing: border-box;\n  }\n}\n\n@media only screen and (min-width: 320px) and (max-width: 375px) {\n  #content {\n    max-width: 375px;\n    box-sizing: border-box;\n  }\n}\n\n@media only screen and (max-width: 320px) {\n  #content {\n    max-width: 320px;\n    box-sizing: border-box;\n  }\n}\n\n.walletconnect-modal__base {\n  -webkit-font-smoothing: antialiased;\n  background: #ffffff;\n  border-radius: 24px;\n  box-shadow: 0 10px 50px 5px rgba(0, 0, 0, 0.4);\n  font-family: ui-rounded, "SF Pro Rounded", "SF Pro Text", medium-content-sans-serif-font,\n    -apple-system, BlinkMacSystemFont, ui-sans-serif, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,\n    "Open Sans", "Helvetica Neue", sans-serif;\n  margin-top: 41px;\n  padding: 24px 24px 22px;\n  pointer-events: auto;\n  position: relative;\n  text-align: center;\n  transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);\n  will-change: transform;\n  overflow: visible;\n  transform: translateY(-50%);\n  top: 50%;\n  max-width: 500px;\n  margin: auto;\n}\n\n@media only screen and (max-width: 320px) {\n  .walletconnect-modal__base {\n    padding: 24px 12px;\n  }\n}\n\n.walletconnect-modal__base .hidden {\n  transform: translateY(150%);\n  transition: 0.125s cubic-bezier(0.4, 0, 1, 1);\n}\n\n.walletconnect-modal__header {\n  align-items: center;\n  display: flex;\n  height: 26px;\n  left: 0;\n  justify-content: space-between;\n  position: absolute;\n  top: -42px;\n  width: 100%;\n}\n\n.walletconnect-modal__base .wc-logo {\n  align-items: center;\n  display: flex;\n  height: 26px;\n  margin-top: 15px;\n  padding-bottom: 15px;\n  pointer-events: auto;\n}\n\n.walletconnect-modal__base .wc-logo div {\n  background-color: #3399ff;\n  height: 21px;\n  margin-right: 5px;\n  mask-image: url("images/wc-logo.svg") center no-repeat;\n  width: 32px;\n}\n\n.walletconnect-modal__base .wc-logo p {\n  color: #ffffff;\n  font-size: 20px;\n  font-weight: 600;\n  margin: 0;\n}\n\n.walletconnect-modal__base h2 {\n  color: rgba(60, 66, 82, 0.6);\n  font-size: 16px;\n  font-weight: 600;\n  letter-spacing: 0;\n  line-height: 1.1875em;\n  margin: 0 0 19px 0;\n  text-align: center;\n  width: 100%;\n}\n\n.walletconnect-modal__base__row {\n  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);\n  align-items: center;\n  border-radius: 20px;\n  cursor: pointer;\n  display: flex;\n  height: 56px;\n  justify-content: space-between;\n  padding: 0 15px;\n  position: relative;\n  margin: 0px 0px 8px;\n  text-align: left;\n  transition: 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);\n  will-change: transform;\n  text-decoration: none;\n}\n\n.walletconnect-modal__base__row:hover {\n  background: rgba(60, 66, 82, 0.06);\n}\n\n.walletconnect-modal__base__row:active {\n  background: rgba(60, 66, 82, 0.06);\n  transform: scale(0.975);\n  transition: 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);\n}\n\n.walletconnect-modal__base__row__h3 {\n  color: #25292e;\n  font-size: 20px;\n  font-weight: 700;\n  margin: 0;\n  padding-bottom: 3px;\n}\n\n.walletconnect-modal__base__row__right {\n  align-items: center;\n  display: flex;\n  justify-content: center;\n}\n\n.walletconnect-modal__base__row__right__app-icon {\n  border-radius: 8px;\n  height: 34px;\n  margin: 0 11px 2px 0;\n  width: 34px;\n  background-size: 100%;\n  box-shadow: 0 4px 12px 0 rgba(37, 41, 46, 0.25);\n}\n\n.walletconnect-modal__base__row__right__caret {\n  height: 18px;\n  opacity: 0.3;\n  transition: 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);\n  width: 8px;\n  will-change: opacity;\n}\n\n.walletconnect-modal__base__row:hover .caret,\n.walletconnect-modal__base__row:active .caret {\n  opacity: 0.6;\n}\n\n.walletconnect-modal__mobile__toggle {\n  width: 80%;\n  display: flex;\n  margin: 0 auto;\n  position: relative;\n  overflow: hidden;\n  border-radius: 8px;\n  margin-bottom: 18px;\n  background: #d4d5d9;\n}\n\n.walletconnect-modal__single_wallet {\n  display: flex;\n  justify-content: center;\n  margin-top: 7px;\n  margin-bottom: 18px;\n}\n\n.walletconnect-modal__single_wallet a {\n  cursor: pointer;\n  color: rgb(64, 153, 255);\n  font-size: 21px;\n  font-weight: 800;\n  text-decoration: none !important;\n  margin: 0 auto;\n}\n\n.walletconnect-modal__mobile__toggle_selector {\n  width: calc(50% - 8px);\n  background: white;\n  position: absolute;\n  border-radius: 5px;\n  height: calc(100% - 8px);\n  top: 4px;\n  transition: all 0.2s ease-in-out;\n  transform: translate3d(4px, 0, 0);\n}\n\n.walletconnect-modal__mobile__toggle.right__selected .walletconnect-modal__mobile__toggle_selector {\n  transform: translate3d(calc(100% + 12px), 0, 0);\n}\n\n.walletconnect-modal__mobile__toggle a {\n  font-size: 12px;\n  width: 50%;\n  text-align: center;\n  padding: 8px;\n  margin: 0;\n  font-weight: 600;\n  z-index: 1;\n}\n\n.walletconnect-modal__footer {\n  display: flex;\n  justify-content: center;\n  margin-top: 20px;\n}\n\n@media only screen and (max-width: 768px) {\n  .walletconnect-modal__footer {\n    margin-top: 5vw;\n  }\n}\n\n.walletconnect-modal__footer a {\n  cursor: pointer;\n  color: #898d97;\n  font-size: 15px;\n  margin: 0 auto;\n}\n\n@media only screen and (max-width: 320px) {\n  .walletconnect-modal__footer a {\n    font-size: 14px;\n  }\n}\n\n.walletconnect-connect__buttons__wrapper {\n  max-height: 44vh;\n}\n\n.walletconnect-connect__buttons__wrapper__android {\n  margin: 50% 0;\n}\n\n.walletconnect-connect__buttons__wrapper__wrap {\n  display: grid;\n  grid-template-columns: repeat(4, 1fr);\n  margin: 10px 0;\n}\n\n@media only screen and (min-width: 768px) {\n  .walletconnect-connect__buttons__wrapper__wrap {\n    margin-top: 40px;\n  }\n}\n\n.walletconnect-connect__button {\n  background-color: rgb(64, 153, 255);\n  padding: 12px;\n  border-radius: 8px;\n  text-decoration: none;\n  color: rgb(255, 255, 255);\n  font-weight: 500;\n}\n\n.walletconnect-connect__button__icon_anchor {\n  cursor: pointer;\n  display: flex;\n  justify-content: flex-start;\n  align-items: center;\n  margin: 8px;\n  width: 42px;\n  justify-self: center;\n  flex-direction: column;\n  text-decoration: none !important;\n}\n\n@media only screen and (max-width: 320px) {\n  .walletconnect-connect__button__icon_anchor {\n    margin: 4px;\n  }\n}\n\n.walletconnect-connect__button__icon {\n  border-radius: 10px;\n  height: 42px;\n  margin: 0;\n  width: 42px;\n  background-size: cover !important;\n  box-shadow: 0 4px 12px 0 rgba(37, 41, 46, 0.25);\n}\n\n.walletconnect-connect__button__text {\n  color: #424952;\n  font-size: 2.7vw;\n  text-decoration: none !important;\n  padding: 0;\n  margin-top: 1.8vw;\n  font-weight: 600;\n}\n\n@media only screen and (min-width: 768px) {\n  .walletconnect-connect__button__text {\n    font-size: 16px;\n    margin-top: 12px;\n  }\n}\n\n.walletconnect-search__input {\n  border: none;\n  background: #d4d5d9;\n  border-style: none;\n  padding: 8px 16px;\n  outline: none;\n  font-style: normal;\n  font-stretch: normal;\n  font-size: 16px;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: left;\n  border-radius: 8px;\n  width: calc(100% - 16px);\n  margin: 0;\n  margin-bottom: 8px;\n}\n';
+var _iteratorSymbol = typeof Symbol != "undefined" ? Symbol.iterator || (Symbol.iterator = Symbol("Symbol.iterator")) : "@@iterator", _asyncIteratorSymbol = typeof Symbol != "undefined" ? Symbol.asyncIterator || (Symbol.asyncIterator = Symbol("Symbol.asyncIterator")) : "@@asyncIterator";
+function _catch(e3, n2) {
+  try {
+    var t3 = e3();
+  } catch (e4) {
+    return n2(e4);
+  }
+  return t3 && t3.then ? t3.then(void 0, n2) : t3;
+}
+var WALLETCONNECT_LOGO_SVG_URL = "data:image/svg+xml,%3Csvg height='185' viewBox='0 0 300 185' width='300' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m61.4385429 36.2562612c48.9112241-47.8881663 128.2119871-47.8881663 177.1232091 0l5.886545 5.7634174c2.445561 2.3944081 2.445561 6.2765112 0 8.6709204l-20.136695 19.715503c-1.222781 1.1972051-3.2053 1.1972051-4.428081 0l-8.100584-7.9311479c-34.121692-33.4079817-89.443886-33.4079817-123.5655788 0l-8.6750562 8.4936051c-1.2227816 1.1972041-3.205301 1.1972041-4.4280806 0l-20.1366949-19.7155031c-2.4455612-2.3944092-2.4455612-6.2765122 0-8.6709204zm218.7677961 40.7737449 17.921697 17.546897c2.445549 2.3943969 2.445563 6.2764769.000031 8.6708899l-80.810171 79.121134c-2.445544 2.394426-6.410582 2.394453-8.85616.000062-.00001-.00001-.000022-.000022-.000032-.000032l-57.354143-56.154572c-.61139-.598602-1.60265-.598602-2.21404 0-.000004.000004-.000007.000008-.000011.000011l-57.3529212 56.154531c-2.4455368 2.394432-6.4105755 2.394472-8.8561612.000087-.0000143-.000014-.0000296-.000028-.0000449-.000044l-80.81241943-79.122185c-2.44556021-2.394408-2.44556021-6.2765115 0-8.6709197l17.92172963-17.5468673c2.4455602-2.3944082 6.4105989-2.3944082 8.8561602 0l57.3549775 56.155357c.6113908.598602 1.602649.598602 2.2140398 0 .0000092-.000009.0000174-.000017.0000265-.000024l57.3521031-56.155333c2.445505-2.3944633 6.410544-2.3945531 8.856161-.0002.000034.0000336.000068.0000673.000101.000101l57.354902 56.155432c.61139.598601 1.60265.598601 2.21404 0l57.353975-56.1543249c2.445561-2.3944092 6.410599-2.3944092 8.85616 0z' fill='%233b99fc'/%3E%3C/svg%3E", WALLETCONNECT_HEADER_TEXT = "WalletConnect", ANIMATION_DURATION = 300, DEFAULT_BUTTON_COLOR = "rgb(64, 153, 255)", WALLETCONNECT_WRAPPER_ID = "walletconnect-wrapper", WALLETCONNECT_STYLE_ID = "walletconnect-style-sheet", WALLETCONNECT_MODAL_ID = "walletconnect-qrcode-modal", WALLETCONNECT_CLOSE_BUTTON_ID = "walletconnect-qrcode-close", WALLETCONNECT_CTA_TEXT_ID = "walletconnect-qrcode-text", WALLETCONNECT_CONNECT_BUTTON_ID = "walletconnect-connect-button";
+function Header(e3) {
+  return h("div", { className: "walletconnect-modal__header" }, h("img", { src: WALLETCONNECT_LOGO_SVG_URL, className: "walletconnect-modal__headerLogo" }), h("p", null, WALLETCONNECT_HEADER_TEXT), h("div", { className: "walletconnect-modal__close__wrapper", onClick: e3.onClose }, h("div", { id: WALLETCONNECT_CLOSE_BUTTON_ID, className: "walletconnect-modal__close__icon" }, h("div", { className: "walletconnect-modal__close__line1" }), h("div", { className: "walletconnect-modal__close__line2" }))));
+}
+function ConnectButton(e3) {
+  return h("a", { className: "walletconnect-connect__button", href: e3.href, id: WALLETCONNECT_CONNECT_BUTTON_ID + "-" + e3.name, onClick: e3.onClick, rel: "noopener noreferrer", style: { backgroundColor: e3.color }, target: "_blank" }, e3.name);
+}
+var CARET_SVG_URL = "data:image/svg+xml,%3Csvg fill='none' height='18' viewBox='0 0 8 18' width='8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath clip-rule='evenodd' d='m.586301.213898c-.435947.33907-.5144813.967342-.175411 1.403292l4.87831 6.27212c.28087.36111.28087.86677 0 1.22788l-4.878311 6.27211c-.33907.436-.260536 1.0642.175412 1.4033.435949.3391 1.064219.2605 1.403289-.1754l4.87832-6.2721c.84259-1.08336.84259-2.60034 0-3.68367l-4.87832-6.27212c-.33907-.4359474-.96734-.514482-1.403289-.175412z' fill='%233c4252' fill-rule='evenodd'/%3E%3C/svg%3E";
+function WalletButton(e3) {
+  var n2 = e3.color, t3 = e3.logo;
+  return h("a", { className: "walletconnect-modal__base__row", href: e3.href, onClick: e3.onClick, rel: "noopener noreferrer", target: "_blank" }, h("h3", { className: "walletconnect-modal__base__row__h3" }, e3.name), h("div", { className: "walletconnect-modal__base__row__right" }, h("div", { className: "walletconnect-modal__base__row__right__app-icon", style: { background: "url('" + t3 + "') " + n2, backgroundSize: "100%" } }), h("img", { src: CARET_SVG_URL, className: "walletconnect-modal__base__row__right__caret" })));
+}
+function WalletIcon(e3) {
+  var n2 = e3.name, t3 = window.innerWidth < 768 ? (n2.length > 8 ? 2.5 : 2.7) + "vw" : "inherit";
+  return h("a", { className: "walletconnect-connect__button__icon_anchor", href: e3.href, onClick: e3.onClick, rel: "noopener noreferrer", target: "_blank" }, h("div", { className: "walletconnect-connect__button__icon", style: { background: "url('" + e3.logo + "') " + e3.color, backgroundSize: "100%" } }), h("div", { style: { fontSize: t3 }, className: "walletconnect-connect__button__text" }, n2));
+}
+var GRID_MIN_COUNT = 5, LINKS_PER_PAGE = 12;
+function LinkDisplay(e3) {
+  var n2 = isAndroid(), t3 = m2(""), o3 = t3[0], a3 = t3[1], l3 = m2(""), r3 = l3[0], i3 = l3[1], c3 = m2(1), s3 = c3[0], d3 = c3[1], _4 = r3 ? e3.links.filter(function(e4) {
+    return e4.name.toLowerCase().includes(r3.toLowerCase());
+  }) : e3.links, m3 = e3.errorMessage, p3 = r3 || _4.length > GRID_MIN_COUNT, g3 = Math.ceil(_4.length / LINKS_PER_PAGE), w4 = [(s3 - 1) * LINKS_PER_PAGE + 1, s3 * LINKS_PER_PAGE], u3 = _4.length ? _4.filter(function(e4, n3) {
+    return n3 + 1 >= w4[0] && n3 + 1 <= w4[1];
+  }) : [], f3 = !(n2 || !(g3 > 1)), h3 = void 0;
+  return h("div", null, h("p", { id: WALLETCONNECT_CTA_TEXT_ID, className: "walletconnect-qrcode__text" }, n2 ? e3.text.connect_mobile_wallet : e3.text.choose_preferred_wallet), !n2 && h("input", { className: "walletconnect-search__input", placeholder: "Search", value: o3, onChange: function(e4) {
+    a3(e4.target.value), clearTimeout(h3), e4.target.value ? h3 = setTimeout(function() {
+      i3(e4.target.value), d3(1);
+    }, 1e3) : (a3(""), i3(""), d3(1));
+  } }), h("div", { className: "walletconnect-connect__buttons__wrapper" + (n2 ? "__android" : p3 && _4.length ? "__wrap" : "") }, n2 ? h(ConnectButton, { name: e3.text.connect, color: DEFAULT_BUTTON_COLOR, href: e3.uri, onClick: T2(function() {
+    saveMobileLinkInfo({ name: "Unknown", href: e3.uri });
+  }, []) }) : u3.length ? u3.map(function(n3) {
+    var t4 = n3.color, o4 = n3.name, a4 = n3.shortName, l4 = n3.logo, r4 = formatIOSMobile(e3.uri, n3), i4 = T2(function() {
+      saveMobileLinkInfo({ name: o4, href: r4 });
+    }, [u3]);
+    return p3 ? h(WalletIcon, { color: t4, href: r4, name: a4 || o4, logo: l4, onClick: i4 }) : h(WalletButton, { color: t4, href: r4, name: o4, logo: l4, onClick: i4 });
+  }) : h(d, null, h("p", null, m3.length ? e3.errorMessage : e3.links.length && !_4.length ? e3.text.no_wallets_found : e3.text.loading))), f3 && h("div", { className: "walletconnect-modal__footer" }, Array(g3).fill(0).map(function(e4, n3) {
+    var t4 = n3 + 1;
+    return h("a", { style: { margin: "auto 10px", fontWeight: s3 === t4 ? "bold" : "normal" }, onClick: function() {
+      return d3(t4);
+    } }, t4);
+  })));
+}
+function Notification(e3) {
+  var n2 = !!e3.message.trim();
+  return h("div", { className: "walletconnect-qrcode__notification" + (n2 ? " notification__show" : "") }, e3.message);
+}
+var formatQRCodeImage = function(e3) {
+  try {
+    var n2 = "";
+    return Promise.resolve(import_qrcode.default.toString(e3, { margin: 0, type: "svg" })).then(function(e4) {
+      return typeof e4 == "string" && (n2 = e4.replace("<svg", '<svg class="walletconnect-qrcode__image"')), n2;
+    });
+  } catch (e4) {
+    return Promise.reject(e4);
+  }
+};
+function QRCodeDisplay(e3) {
+  var n2 = m2(""), t3 = n2[0], o3 = n2[1], a3 = m2(""), l3 = a3[0], r3 = a3[1];
+  return l2(function() {
+    try {
+      return Promise.resolve(formatQRCodeImage(e3.uri)).then(function(e4) {
+        r3(e4);
+      });
+    } catch (e4) {
+      Promise.reject(e4);
+    }
+  }, []), h("div", null, h("p", { id: WALLETCONNECT_CTA_TEXT_ID, className: "walletconnect-qrcode__text" }, e3.text.scan_qrcode_with_wallet), h("div", { dangerouslySetInnerHTML: { __html: l3 } }), h("div", { className: "walletconnect-modal__footer" }, h("a", { onClick: function() {
+    (0, import_copy_to_clipboard.default)(e3.uri) ? (o3(e3.text.copied_to_clipboard), setInterval(function() {
+      return o3("");
+    }, 1200)) : (o3("Error"), setInterval(function() {
+      return o3("");
+    }, 1200));
+  } }, e3.text.copy_to_clipboard)), h(Notification, { message: t3 }));
+}
+function Modal(e3) {
+  var n2 = isAndroid(), t3 = isMobile(), o3 = t3 ? e3.qrcodeModalOptions && e3.qrcodeModalOptions.mobileLinks ? e3.qrcodeModalOptions.mobileLinks : void 0 : e3.qrcodeModalOptions && e3.qrcodeModalOptions.desktopLinks ? e3.qrcodeModalOptions.desktopLinks : void 0, a3 = m2(false), l3 = a3[0], r3 = a3[1], i3 = m2(false), c3 = i3[0], s3 = i3[1], d3 = m2(!t3), _4 = d3[0], m3 = d3[1], p3 = { mobile: t3, text: e3.text, uri: e3.uri, qrcodeModalOptions: e3.qrcodeModalOptions }, g3 = m2(""), w4 = g3[0], u3 = g3[1], f3 = m2(false), h3 = f3[0], b2 = f3[1], x3 = m2([]), E4 = x3[0], C3 = x3[1], v3 = m2(""), y3 = v3[0], N3 = v3[1], T4 = function() {
+    c3 || l3 || o3 && !o3.length || E4.length > 0 || l2(function() {
+      !function() {
+        try {
+          if (n2)
+            return Promise.resolve();
+          r3(true);
+          var a4 = _catch(function() {
+            var n3 = e3.qrcodeModalOptions && e3.qrcodeModalOptions.registryUrl ? e3.qrcodeModalOptions.registryUrl : getWalletRegistryUrl();
+            return Promise.resolve(fetch(n3)).then(function(n4) {
+              return Promise.resolve(n4.json()).then(function(n5) {
+                var a5 = getMobileLinkRegistry(formatMobileRegistry(n5.listings, t3 ? "mobile" : "desktop"), o3);
+                r3(false), s3(true), N3(a5.length ? "" : e3.text.no_supported_wallets), C3(a5);
+                var l4 = a5.length === 1;
+                l4 && (u3(formatIOSMobile(e3.uri, a5[0])), m3(true)), b2(l4);
+              });
+            });
+          }, function(n3) {
+            r3(false), s3(true), N3(e3.text.something_went_wrong), console.error(n3);
+          });
+          Promise.resolve(a4 && a4.then ? a4.then(function() {
+          }) : void 0);
+        } catch (e4) {
+          return Promise.reject(e4);
+        }
+      }();
+    });
+  };
+  T4();
+  var k3 = t3 ? _4 : !_4;
+  return h("div", { id: WALLETCONNECT_MODAL_ID, className: "walletconnect-qrcode__base animated fadeIn" }, h("div", { className: "walletconnect-modal__base" }, h(Header, { onClose: e3.onClose }), h3 && _4 ? h("div", { className: "walletconnect-modal__single_wallet" }, h("a", { onClick: function() {
+    return saveMobileLinkInfo({ name: E4[0].name, href: w4 });
+  }, href: w4, rel: "noopener noreferrer", target: "_blank" }, e3.text.connect_with + " " + (h3 ? E4[0].name : "") + " \u203A")) : n2 || l3 || !l3 && E4.length ? h("div", { className: "walletconnect-modal__mobile__toggle" + (k3 ? " right__selected" : "") }, h("div", { className: "walletconnect-modal__mobile__toggle_selector" }), t3 ? h(d, null, h("a", { onClick: function() {
+    return m3(false), T4();
+  } }, e3.text.mobile), h("a", { onClick: function() {
+    return m3(true);
+  } }, e3.text.qrcode)) : h(d, null, h("a", { onClick: function() {
+    return m3(true);
+  } }, e3.text.qrcode), h("a", { onClick: function() {
+    return m3(false), T4();
+  } }, e3.text.desktop))) : null, h("div", null, _4 || !n2 && !l3 && !E4.length ? h(QRCodeDisplay, Object.assign({}, p3)) : h(LinkDisplay, Object.assign({}, p3, { links: E4, errorMessage: y3 })))));
+}
+var de = { choose_preferred_wallet: "W\xE4hle bevorzugte Wallet", connect_mobile_wallet: "Verbinde mit Mobile Wallet", scan_qrcode_with_wallet: "Scanne den QR-code mit einer WalletConnect kompatiblen Wallet", connect: "Verbinden", qrcode: "QR-Code", mobile: "Mobile", desktop: "Desktop", copy_to_clipboard: "In die Zwischenablage kopieren", copied_to_clipboard: "In die Zwischenablage kopiert!", connect_with: "Verbinden mit Hilfe von", loading: "Laden...", something_went_wrong: "Etwas ist schief gelaufen", no_supported_wallets: "Es gibt noch keine unterst\xFCtzten Wallet", no_wallets_found: "keine Wallet gefunden" }, en = { choose_preferred_wallet: "Choose your preferred wallet", connect_mobile_wallet: "Connect to Mobile Wallet", scan_qrcode_with_wallet: "Scan QR code with a WalletConnect-compatible wallet", connect: "Connect", qrcode: "QR Code", mobile: "Mobile", desktop: "Desktop", copy_to_clipboard: "Copy to clipboard", copied_to_clipboard: "Copied to clipboard!", connect_with: "Connect with", loading: "Loading...", something_went_wrong: "Something went wrong", no_supported_wallets: "There are no supported wallets yet", no_wallets_found: "No wallets found" }, es = { choose_preferred_wallet: "Elige tu billetera preferida", connect_mobile_wallet: "Conectar a billetera m\xF3vil", scan_qrcode_with_wallet: "Escanea el c\xF3digo QR con una billetera compatible con WalletConnect", connect: "Conectar", qrcode: "C\xF3digo QR", mobile: "M\xF3vil", desktop: "Desktop", copy_to_clipboard: "Copiar", copied_to_clipboard: "Copiado!", connect_with: "Conectar mediante", loading: "Cargando...", something_went_wrong: "Algo sali\xF3 mal", no_supported_wallets: "Todav\xEDa no hay billeteras compatibles", no_wallets_found: "No se encontraron billeteras" }, fr = { choose_preferred_wallet: "Choisissez votre portefeuille pr\xE9f\xE9r\xE9", connect_mobile_wallet: "Se connecter au portefeuille mobile", scan_qrcode_with_wallet: "Scannez le QR code avec un portefeuille compatible WalletConnect", connect: "Se connecter", qrcode: "QR Code", mobile: "Mobile", desktop: "Desktop", copy_to_clipboard: "Copier", copied_to_clipboard: "Copi\xE9!", connect_with: "Connectez-vous \xE0 l'aide de", loading: "Chargement...", something_went_wrong: "Quelque chose a mal tourn\xE9", no_supported_wallets: "Il n'y a pas encore de portefeuilles pris en charge", no_wallets_found: "Aucun portefeuille trouv\xE9" }, ko = { choose_preferred_wallet: "\uC6D0\uD558\uB294 \uC9C0\uAC11\uC744 \uC120\uD0DD\uD558\uC138\uC694", connect_mobile_wallet: "\uBAA8\uBC14\uC77C \uC9C0\uAC11\uACFC \uC5F0\uACB0", scan_qrcode_with_wallet: "WalletConnect \uC9C0\uC6D0 \uC9C0\uAC11\uC5D0\uC11C QR\uCF54\uB4DC\uB97C \uC2A4\uCE94\uD558\uC138\uC694", connect: "\uC5F0\uACB0", qrcode: "QR \uCF54\uB4DC", mobile: "\uBAA8\uBC14\uC77C", desktop: "\uB370\uC2A4\uD06C\uD0D1", copy_to_clipboard: "\uD074\uB9BD\uBCF4\uB4DC\uC5D0 \uBCF5\uC0AC", copied_to_clipboard: "\uD074\uB9BD\uBCF4\uB4DC\uC5D0 \uBCF5\uC0AC\uB418\uC5C8\uC2B5\uB2C8\uB2E4!", connect_with: "\uC640 \uC5F0\uACB0\uD558\uB2E4", loading: "\uB85C\uB4DC \uC911...", something_went_wrong: "\uBB38\uC81C\uAC00 \uBC1C\uC0DD\uD588\uC2B5\uB2C8\uB2E4.", no_supported_wallets: "\uC544\uC9C1 \uC9C0\uC6D0\uB418\uB294 \uC9C0\uAC11\uC774 \uC5C6\uC2B5\uB2C8\uB2E4", no_wallets_found: "\uC9C0\uAC11\uC744 \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4" }, pt = { choose_preferred_wallet: "Escolha sua carteira preferida", connect_mobile_wallet: "Conectar-se \xE0 carteira m\xF3vel", scan_qrcode_with_wallet: "Ler o c\xF3digo QR com uma carteira compat\xEDvel com WalletConnect", connect: "Conectar", qrcode: "C\xF3digo QR", mobile: "M\xF3vel", desktop: "Desktop", copy_to_clipboard: "Copiar", copied_to_clipboard: "Copiado!", connect_with: "Ligar por meio de", loading: "Carregamento...", something_went_wrong: "Algo correu mal", no_supported_wallets: "Ainda n\xE3o h\xE1 carteiras suportadas", no_wallets_found: "Nenhuma carteira encontrada" }, zh = { choose_preferred_wallet: "\u9009\u62E9\u4F60\u7684\u94B1\u5305", connect_mobile_wallet: "\u8FDE\u63A5\u81F3\u79FB\u52A8\u7AEF\u94B1\u5305", scan_qrcode_with_wallet: "\u4F7F\u7528\u517C\u5BB9 WalletConnect \u7684\u94B1\u5305\u626B\u63CF\u4E8C\u7EF4\u7801", connect: "\u8FDE\u63A5", qrcode: "\u4E8C\u7EF4\u7801", mobile: "\u79FB\u52A8", desktop: "\u684C\u9762", copy_to_clipboard: "\u590D\u5236\u5230\u526A\u8D34\u677F", copied_to_clipboard: "\u590D\u5236\u5230\u526A\u8D34\u677F\u6210\u529F\uFF01", connect_with: "\u901A\u8FC7\u4EE5\u4E0B\u65B9\u5F0F\u8FDE\u63A5", loading: "\u6B63\u5728\u52A0\u8F7D...", something_went_wrong: "\u51FA\u4E86\u95EE\u9898", no_supported_wallets: "\u76EE\u524D\u8FD8\u6CA1\u6709\u652F\u6301\u7684\u94B1\u5305", no_wallets_found: "\u6CA1\u6709\u627E\u5230\u94B1\u5305" }, fa = { choose_preferred_wallet: "\u06A9\u06CC\u0641 \u067E\u0648\u0644 \u0645\u0648\u0631\u062F \u0646\u0638\u0631 \u062E\u0648\u062F \u0631\u0627 \u0627\u0646\u062A\u062E\u0627\u0628 \u06A9\u0646\u06CC\u062F", connect_mobile_wallet: "\u0628\u0647 \u06A9\u06CC\u0641 \u067E\u0648\u0644 \u0645\u0648\u0628\u0627\u06CC\u0644 \u0648\u0635\u0644 \u0634\u0648\u06CC\u062F", scan_qrcode_with_wallet: "\u06A9\u062F QR \u0631\u0627 \u0628\u0627 \u06CC\u06A9 \u06A9\u06CC\u0641 \u067E\u0648\u0644 \u0633\u0627\u0632\u06AF\u0627\u0631 \u0628\u0627 WalletConnect \u0627\u0633\u06A9\u0646 \u06A9\u0646\u06CC\u062F", connect: "\u0627\u062A\u0635\u0627\u0644", qrcode: "\u06A9\u062F QR", mobile: "\u0633\u06CC\u0627\u0631", desktop: "\u062F\u0633\u06A9\u062A\u0627\u067E", copy_to_clipboard: "\u06A9\u067E\u06CC \u0628\u0647 \u06A9\u0644\u06CC\u067E \u0628\u0648\u0631\u062F", copied_to_clipboard: "\u062F\u0631 \u06A9\u0644\u06CC\u067E \u0628\u0648\u0631\u062F \u06A9\u067E\u06CC \u0634\u062F!", connect_with: "\u0627\u0631\u062A\u0628\u0627\u0637 \u0628\u0627", loading: "...\u0628\u0627\u0631\u06AF\u0630\u0627\u0631\u06CC", something_went_wrong: "\u0645\u0634\u06A9\u0644\u06CC \u067E\u06CC\u0634 \u0622\u0645\u062F", no_supported_wallets: "\u0647\u0646\u0648\u0632 \u0647\u06CC\u0686 \u06A9\u06CC\u0641 \u067E\u0648\u0644 \u067E\u0634\u062A\u06CC\u0628\u0627\u0646\u06CC \u0634\u062F\u0647 \u0627\u06CC \u0648\u062C\u0648\u062F \u0646\u062F\u0627\u0631\u062F", no_wallets_found: "\u0647\u06CC\u0686 \u06A9\u06CC\u0641 \u067E\u0648\u0644\u06CC \u067E\u06CC\u062F\u0627 \u0646\u0634\u062F" }, languages = { de, en, es, fr, ko, pt, zh, fa };
+function injectStyleSheet() {
+  var e3 = getDocumentOrThrow(), n2 = e3.getElementById(WALLETCONNECT_STYLE_ID);
+  n2 && e3.head.removeChild(n2);
+  var t3 = e3.createElement("style");
+  t3.setAttribute("id", WALLETCONNECT_STYLE_ID), t3.innerText = WALLETCONNECT_STYLE_SHEET, e3.head.appendChild(t3);
+}
+function renderWrapper() {
+  var e3 = getDocumentOrThrow(), n2 = e3.createElement("div");
+  return n2.setAttribute("id", WALLETCONNECT_WRAPPER_ID), e3.body.appendChild(n2), n2;
+}
+function triggerCloseAnimation() {
+  var e3 = getDocumentOrThrow(), n2 = e3.getElementById(WALLETCONNECT_MODAL_ID);
+  n2 && (n2.className = n2.className.replace("fadeIn", "fadeOut"), setTimeout(function() {
+    var n3 = e3.getElementById(WALLETCONNECT_WRAPPER_ID);
+    n3 && e3.body.removeChild(n3);
+  }, ANIMATION_DURATION));
+}
+function getWrappedCallback(e3) {
+  return function() {
+    triggerCloseAnimation(), e3 && e3();
+  };
+}
+function getText() {
+  var e3 = getNavigatorOrThrow().language.split("-")[0] || "en";
+  return languages[e3] || languages.en;
+}
+function open$1(e3, n2, t3) {
+  injectStyleSheet();
+  var o3 = renderWrapper();
+  T3(h(Modal, { text: getText(), uri: e3, onClose: getWrappedCallback(n2), qrcodeModalOptions: t3 }), o3);
+}
+function close$1() {
+  triggerCloseAnimation();
+}
+var isNode3 = function() {
+  return typeof process != "undefined" && process.versions !== void 0 && process.versions.node !== void 0;
+};
+function open$2(e3, n2, t3) {
+  console.log(e3), isNode3() ? open(e3) : open$1(e3, n2, t3);
+}
+function close$2() {
+  isNode3() || close$1();
+}
+var index = { open: open$2, close: close$2 };
+var esm_default4 = index;
+
 // src/index.ts
 var import_buffer = __toESM(require_buffer());
 var import_algosdk = __toESM(require_algosdk_min());
-var import_index_min = __toESM(require_index_min());
-var import_algorand_walletconnect_qrcode_modal = __toESM(require_cjs3());
-var import_utils = __toESM(require_cjs6());
+var import_utils6 = __toESM(require_cjs6());
 var Algonaut = class {
   algodClient;
   indexerClient = void 0;
@@ -27545,7 +29210,7 @@ var Algonaut = class {
         };
       });
       const requestParams = [txnsToSign];
-      const request = (0, import_utils.formatJsonRpcRequest)("algo_signTxn", requestParams);
+      const request = (0, import_utils6.formatJsonRpcRequest)("algo_signTxn", requestParams);
       let result;
       try {
         result = await this.walletConnect.connector?.sendCustomRequest(request);
@@ -27657,13 +29322,16 @@ var Algonaut = class {
     if (!clientListener)
       clientListener = void 0;
     const bridge = "https://bridge.walletconnect.org";
-    const wcConnector = new import_index_min.default({
+    const wcConnector = new esm_default3({
       bridge,
-      qrcodeModal: import_algorand_walletconnect_qrcode_modal.default
+      qrcodeModal: esm_default4
     });
     this.walletConnect.connector = wcConnector;
+    console.log("connector created");
+    console.log(this.walletConnect.connector);
     if (!this.walletConnect.connector.connected) {
       this.walletConnect.connector.createSession();
+      console.log("session created");
     }
     this.subscribeToEvents(clientListener);
   }
@@ -27672,6 +29340,7 @@ var Algonaut = class {
       return;
     }
     this.walletConnect.connector.on("session_update", async (error, payload) => {
+      console.log('connector.on("session_update")');
       if (error) {
         throw error;
       }
@@ -27681,6 +29350,7 @@ var Algonaut = class {
       this.onSessionUpdate(accounts);
     });
     this.walletConnect.connector.on("connect", (error, payload) => {
+      console.log('connector.on("connect")');
       if (error) {
         throw error;
       }
@@ -27689,7 +29359,9 @@ var Algonaut = class {
       this.onConnect(payload);
     });
     this.walletConnect.connector.on("disconnect", (error, payload) => {
+      console.log('connector.on("disconnect")');
       if (error) {
+        console.log(payload);
         throw error;
       }
       if (clientListener)
@@ -27791,12 +29463,6 @@ export {
 /*!
  * The buffer module from node.js, for the browser.
  *
- * @author   Feross Aboukhadijeh <http://feross.org>
- * @license  MIT
- */
-/*!
- * The buffer module from node.js, for the browser.
- *
  * @author   Feross Aboukhadijeh <https://feross.org>
  * @license  MIT
  */
@@ -27813,20 +29479,6 @@ INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
 LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-this file except in compliance with the License. You may obtain a copy of the
-License at http://www.apache.org/licenses/LICENSE-2.0
-
-THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-MERCHANTABLITY OR NON-INFRINGEMENT.
-
-See the Apache Version 2.0 License for specific language governing permissions
-and limitations under the License.
 ***************************************************************************** */
 /*! For license information please see algosdk.min.js.LICENSE.txt */
 /*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */

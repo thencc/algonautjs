@@ -25,10 +25,9 @@ import {
 import * as sha512 from 'js-sha512';
 import * as CryptoJS from 'crypto-js';
 
-// import umd because somehow walletconnect messes up... (maybe bad package.json "module" field or esm build)
-import WalletConnect from '@walletconnect/client/dist/umd/index.min.js'; // umd work in node + browser
+import WalletConnect from '@walletconnect/client';
 import { IInternalEvent } from '@walletconnect/types';
-import QRCodeModal from 'algorand-walletconnect-qrcode-modal';
+import QRCodeModal from 'algo-wc-qr-modal-ncc'; // custom ncc fork
 import { formatJsonRpcRequest } from '@json-rpc-tools/utils';
 import { decode, encode } from 'hi-base32';
 
@@ -1725,8 +1724,8 @@ export default class Algonaut {
 		});
 		this.walletConnect.connector = wcConnector;
 
-		//console.log('connector created');
-		//console.log(this.walletConnect.connector);
+		console.log('connector created');
+		console.log(this.walletConnect.connector);
 
 		//console.log('trying to create session');
 
@@ -1734,9 +1733,7 @@ export default class Algonaut {
 		if (!this.walletConnect.connector.connected) {
 			// create new session
 			this.walletConnect.connector.createSession();
-			//console.log('session created');
-
-
+			console.log('session created');
 		}
 
 		this.subscribeToEvents(clientListener);
@@ -1752,7 +1749,7 @@ export default class Algonaut {
 		}
 
 		this.walletConnect.connector.on('session_update', async (error: any, payload: any) => {
-			//console.log('connector.on("session_update")');
+			console.log('connector.on("session_update")');
 
 			if (error) {
 				throw error;
@@ -1764,7 +1761,7 @@ export default class Algonaut {
 		});
 
 		this.walletConnect.connector.on('connect', (error: any, payload: any) => {
-			//console.log('connector.on("connect")');
+			console.log('connector.on("connect")');
 
 			if (error) {
 				throw error;
@@ -1774,10 +1771,10 @@ export default class Algonaut {
 		});
 
 		this.walletConnect.connector.on('disconnect', (error: any, payload: any) => {
-			//console.log('connector.on("disconnect")');
+			console.log('connector.on("disconnect")');
 
 			if (error) {
-				//console.log(payload);
+				console.log(payload);
 				throw error;
 			}
 			if (clientListener) clientListener.onDisconnect(payload);

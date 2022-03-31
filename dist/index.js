@@ -25,8 +25,8 @@ __export(src_exports, {
 module.exports = __toCommonJS(src_exports);
 var import_buffer = require("buffer");
 var import_algosdk = __toESM(require("algosdk"));
-var import_index_min = __toESM(require("@walletconnect/client/dist/umd/index.min.js"));
-var import_algorand_walletconnect_qrcode_modal = __toESM(require("algorand-walletconnect-qrcode-modal"));
+var import_client = __toESM(require("@walletconnect/client"));
+var import_algo_wc_qr_modal_ncc = __toESM(require("algo-wc-qr-modal-ncc"));
 var import_utils = require("@json-rpc-tools/utils");
 class Algonaut {
   algodClient;
@@ -919,13 +919,16 @@ class Algonaut {
     if (!clientListener)
       clientListener = void 0;
     const bridge = "https://bridge.walletconnect.org";
-    const wcConnector = new import_index_min.default({
+    const wcConnector = new import_client.default({
       bridge,
-      qrcodeModal: import_algorand_walletconnect_qrcode_modal.default
+      qrcodeModal: import_algo_wc_qr_modal_ncc.default
     });
     this.walletConnect.connector = wcConnector;
+    console.log("connector created");
+    console.log(this.walletConnect.connector);
     if (!this.walletConnect.connector.connected) {
       this.walletConnect.connector.createSession();
+      console.log("session created");
     }
     this.subscribeToEvents(clientListener);
   }
@@ -934,6 +937,7 @@ class Algonaut {
       return;
     }
     this.walletConnect.connector.on("session_update", async (error, payload) => {
+      console.log('connector.on("session_update")');
       if (error) {
         throw error;
       }
@@ -943,6 +947,7 @@ class Algonaut {
       this.onSessionUpdate(accounts);
     });
     this.walletConnect.connector.on("connect", (error, payload) => {
+      console.log('connector.on("connect")');
       if (error) {
         throw error;
       }
@@ -951,7 +956,9 @@ class Algonaut {
       this.onConnect(payload);
     });
     this.walletConnect.connector.on("disconnect", (error, payload) => {
+      console.log('connector.on("disconnect")');
       if (error) {
+        console.log(payload);
         throw error;
       }
       if (clientListener)
