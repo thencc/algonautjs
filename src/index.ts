@@ -1,8 +1,5 @@
 import { Buffer } from 'buffer';
-// the web build seems to me missing type defs for algosdk.Account
-// and a few other types so we use this ref to get them into the IDE
 import algosdk from 'algosdk';
-
 import {
 	AlgonautConfig,
 	AlgonautWallet,
@@ -25,14 +22,24 @@ import {
 	AlgonautLsigPaymentArguments,
 	AlgonautUpdateAppArguments
 } from './AlgonautTypes';
-import * as sha512 from 'js-sha512';
-import * as CryptoJS from 'crypto-js';
+// import * as sha512 from 'js-sha512';
+// import * as CryptoJS from 'crypto-js';
+// import { decode, encode } from 'hi-base32';
 
-import WalletConnect from '@walletconnect/client';
+// @walletconnect/socket-transport incorrectly uses global in esm build... + @walletconnect/encoding uses Buffer in esm build... so use umd build
+import WalletConnect from '@walletconnect/client/dist/umd/index.min.js'; // umd works in node + browser
 import { IInternalEvent } from '@walletconnect/types';
 import QRCodeModal from 'algorand-walletconnect-qrcode-modal';
 import { formatJsonRpcRequest } from '@json-rpc-tools/utils';
-import { decode, encode } from 'hi-base32';
+import {
+	isBrowser,
+	isAndroid,
+	isIOS,
+	isMobile
+} from "@walletconnect/utils";
+
+// fix for wallectconnect websocket issue when backgrounded on mobile (uses request animation frame)
+var wcReqAF = 0;
 
 /*
 
@@ -96,7 +103,7 @@ export default class Algonaut {
 	uiLoading = false;
 	walletConnect = {
 		connected: false,
-		connector: undefined as any,
+		connector: undefined as undefined | WalletConnect,
 		accounts: [] as any[],
 		address: '',
 		assets: [] as any[],
@@ -1500,7 +1507,7 @@ export default class Algonaut {
 			// this will fail if they cancel... we think
 			let result: any;
 			try {
-				result = await this.walletConnect.connector.sendCustomRequest(request);
+				result = await this.walletConnect.connector?.sendCustomRequest(request);
 			} catch (er) {
 				throw new Error('You canceled the transaction');
 			}
@@ -1714,20 +1721,21 @@ export default class Algonaut {
 	 * @param clientListener object of listener functions (see {@link WalletConnectListener})
 	 */
 	async connectAlgoWallet(clientListener?: WalletConnectListener): Promise<void> {
-		console.log('connecting wallet: ');
+		// console.log('connectAlgoWallet');
 
 		// 4067ab2454244fb39835bfeafc285c8d
 		if (!clientListener) clientListener = undefined;
 
 		const bridge = 'https://bridge.walletconnect.org';
 
-		this.walletConnect.connector = new WalletConnect({
+		const wcConnector = new WalletConnect({
 			bridge,
 			qrcodeModal: QRCodeModal
 		});
+		this.walletConnect.connector = wcConnector;
 
-		//console.log('connector created');
-		//console.log(this.walletConnect.connector);
+		// console.log('connector created');
+		// console.log(this.walletConnect.connector);
 
 		//console.log('trying to create session');
 
@@ -1735,9 +1743,10 @@ export default class Algonaut {
 		if (!this.walletConnect.connector.connected) {
 			// create new session
 			this.walletConnect.connector.createSession();
-			//console.log('session created');
+			// console.log('session created');
 
-
+			// keeps some background tasks running while navigating to Pera Wallet to approve wc session link handshake
+			this.startReqAF();
 		}
 
 		this.subscribeToEvents(clientListener);
@@ -1753,8 +1762,7 @@ export default class Algonaut {
 		}
 
 		this.walletConnect.connector.on('session_update', async (error: any, payload: any) => {
-			//console.log('connector.on("session_update")');
-
+			// console.log('connector.on("session_update")');
 			if (error) {
 				throw error;
 			}
@@ -1765,8 +1773,7 @@ export default class Algonaut {
 		});
 
 		this.walletConnect.connector.on('connect', (error: any, payload: any) => {
-			//console.log('connector.on("connect")');
-
+			// console.log('connector.on("connect")');
 			if (error) {
 				throw error;
 			}
@@ -1775,10 +1782,9 @@ export default class Algonaut {
 		});
 
 		this.walletConnect.connector.on('disconnect', (error: any, payload: any) => {
-			//console.log('connector.on("disconnect")');
-
+			// console.log('connector.on("disconnect")');
 			if (error) {
-				//console.log(payload);
+				console.log(payload);
 				throw error;
 			}
 			if (clientListener) clientListener.onDisconnect(payload);
@@ -1817,11 +1823,36 @@ export default class Algonaut {
 		console.log('TBD!');
 	}
 
+	startReqAF() {
+		// console.log('startReqAF');
+		// keeps some background tasks running while navigating to Pera Wallet to approve wc session link handshake
+		if (isBrowser() && isMobile()) {
+			const keepAlive = () => {
+				// console.log('keepAlive');
+				wcReqAF = requestAnimationFrame(keepAlive);
+			}
+			requestAnimationFrame(keepAlive);
+		}
+	}
+
+	stopReqAF() {
+		// console.log('stopReqAF');
+		// CANCEL wcReqAF to free up CPU
+		if (wcReqAF) {
+			cancelAnimationFrame(wcReqAF);
+			wcReqAF = 0; // reset
+		} else {
+			console.log('no wcReqAF to cancel'); // is this the browser?
+		}
+	}
+
 	/**
 	 * Function called upon connection to WalletConnect. Sets account in AlgonautJS via {@link setWalletConnectAccount}.
 	 * @param payload Event payload, containing an array of account addresses
 	 */
 	async onConnect(payload: IInternalEvent) {
+		// console.log('onConnect');
+
 		const { accounts } = payload.params[0];
 		const address = accounts[0];
 
@@ -1831,16 +1862,22 @@ export default class Algonaut {
 		this.walletConnect.accounts = accounts;
 		this.walletConnect.address = address;
 
+		// CANCEL wcReqAF to free up CPU
+		this.stopReqAF(); // if ticking...
 	}
 
 	/**
 	 * Called upon disconnection from WalletConnect.
 	 */
 	onDisconnect() {
+		// console.log('onDisconnect');
 		this.walletConnect.connected = false;
 		this.walletConnect.accounts = [];
 		this.walletConnect.address = '';
 		this.account = undefined;
+
+		// CANCEL wcReqAF to free up CPU
+		this.stopReqAF(); // if ticking...
 	}
 
 	/**
@@ -1848,6 +1885,7 @@ export default class Algonaut {
 	 * @param accounts Array of account address strings
 	 */
 	async onSessionUpdate(accounts: string[]) {
+		// console.log('onSessionUpdate');
 		this.walletConnect.address = accounts[0];
 		this.walletConnect.accounts = accounts;
 		this.setWalletConnectAccount(accounts[0]);

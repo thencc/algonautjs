@@ -25,9 +25,11 @@ __export(src_exports, {
 module.exports = __toCommonJS(src_exports);
 var import_buffer = require("buffer");
 var import_algosdk = __toESM(require("algosdk"));
-var import_client = __toESM(require("@walletconnect/client"));
+var import_index_min = __toESM(require("@walletconnect/client/dist/umd/index.min.js"));
 var import_algorand_walletconnect_qrcode_modal = __toESM(require("algorand-walletconnect-qrcode-modal"));
 var import_utils = require("@json-rpc-tools/utils");
+var import_utils2 = require("@walletconnect/utils");
+var wcReqAF = 0;
 class Algonaut {
   algodClient;
   indexerClient = void 0;
@@ -810,7 +812,7 @@ class Algonaut {
       const request = (0, import_utils.formatJsonRpcRequest)("algo_signTxn", requestParams);
       let result;
       try {
-        result = await this.walletConnect.connector.sendCustomRequest(request);
+        result = await this.walletConnect.connector?.sendCustomRequest(request);
       } catch (er) {
         throw new Error("You canceled the transaction");
       }
@@ -915,16 +917,17 @@ class Algonaut {
     }
   }
   async connectAlgoWallet(clientListener) {
-    console.log("connecting wallet: ");
     if (!clientListener)
       clientListener = void 0;
     const bridge = "https://bridge.walletconnect.org";
-    this.walletConnect.connector = new import_client.default({
+    const wcConnector = new import_index_min.default({
       bridge,
       qrcodeModal: import_algorand_walletconnect_qrcode_modal.default
     });
+    this.walletConnect.connector = wcConnector;
     if (!this.walletConnect.connector.connected) {
       this.walletConnect.connector.createSession();
+      this.startReqAF();
     }
     this.subscribeToEvents(clientListener);
   }
@@ -951,6 +954,7 @@ class Algonaut {
     });
     this.walletConnect.connector.on("disconnect", (error, payload) => {
       if (error) {
+        console.log(payload);
         throw error;
       }
       if (clientListener)
@@ -979,6 +983,22 @@ class Algonaut {
     console.log("reset app called");
     console.log("TBD!");
   }
+  startReqAF() {
+    if ((0, import_utils2.isBrowser)() && (0, import_utils2.isMobile)()) {
+      const keepAlive = () => {
+        wcReqAF = requestAnimationFrame(keepAlive);
+      };
+      requestAnimationFrame(keepAlive);
+    }
+  }
+  stopReqAF() {
+    if (wcReqAF) {
+      cancelAnimationFrame(wcReqAF);
+      wcReqAF = 0;
+    } else {
+      console.log("no wcReqAF to cancel");
+    }
+  }
   async onConnect(payload) {
     const { accounts } = payload.params[0];
     const address = accounts[0];
@@ -986,12 +1006,14 @@ class Algonaut {
     this.walletConnect.connected = true;
     this.walletConnect.accounts = accounts;
     this.walletConnect.address = address;
+    this.stopReqAF();
   }
   onDisconnect() {
     this.walletConnect.connected = false;
     this.walletConnect.accounts = [];
     this.walletConnect.address = "";
     this.account = void 0;
+    this.stopReqAF();
   }
   async onSessionUpdate(accounts) {
     this.walletConnect.address = accounts[0];
