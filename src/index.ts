@@ -22,14 +22,15 @@ import {
 	AlgonautLsigPaymentArguments,
 	AlgonautUpdateAppArguments
 } from './AlgonautTypes';
-import * as sha512 from 'js-sha512';
-import * as CryptoJS from 'crypto-js';
+// import * as sha512 from 'js-sha512';
+// import * as CryptoJS from 'crypto-js';
 
-import WalletConnect from '@walletconnect/client';
+// @walletconnect/socket-transport incorrectly uses global in esm build... + @walletconnect/encoding uses Buffer in esm build... so use umd build
+import WalletConnect from '@walletconnect/client/dist/umd/index.min.js'; // umd works in node + browser
 import { IInternalEvent } from '@walletconnect/types';
-import QRCodeModal from 'algo-wc-qr-modal-ncc'; // custom ncc fork
+import QRCodeModal from 'algorand-walletconnect-qrcode-modal';
 import { formatJsonRpcRequest } from '@json-rpc-tools/utils';
-import { decode, encode } from 'hi-base32';
+// import { decode, encode } from 'hi-base32';
 
 /*
 
@@ -1711,7 +1712,7 @@ export default class Algonaut {
 	 * @param clientListener object of listener functions (see {@link WalletConnectListener})
 	 */
 	async connectAlgoWallet(clientListener?: WalletConnectListener): Promise<void> {
-		console.log('connecting wallet: ');
+		console.log('connectAlgoWallet');
 
 		// 4067ab2454244fb39835bfeafc285c8d
 		if (!clientListener) clientListener = undefined;
@@ -1724,8 +1725,8 @@ export default class Algonaut {
 		});
 		this.walletConnect.connector = wcConnector;
 
-		console.log('connector created');
-		console.log(this.walletConnect.connector);
+		// console.log('connector created');
+		// console.log(this.walletConnect.connector);
 
 		//console.log('trying to create session');
 
@@ -1818,6 +1819,8 @@ export default class Algonaut {
 	 * @param payload Event payload, containing an array of account addresses
 	 */
 	async onConnect(payload: IInternalEvent) {
+		console.log('onConnect');
+
 		const { accounts } = payload.params[0];
 		const address = accounts[0];
 

@@ -25,8 +25,8 @@ __export(src_exports, {
 module.exports = __toCommonJS(src_exports);
 var import_buffer = require("buffer");
 var import_algosdk = __toESM(require("algosdk"));
-var import_client = __toESM(require("@walletconnect/client"));
-var import_algo_wc_qr_modal_ncc = __toESM(require("algo-wc-qr-modal-ncc"));
+var import_index_min = __toESM(require("@walletconnect/client/dist/umd/index.min.js"));
+var import_algorand_walletconnect_qrcode_modal = __toESM(require("algorand-walletconnect-qrcode-modal"));
 var import_utils = require("@json-rpc-tools/utils");
 class Algonaut {
   algodClient;
@@ -915,17 +915,15 @@ class Algonaut {
     }
   }
   async connectAlgoWallet(clientListener) {
-    console.log("connecting wallet: ");
+    console.log("connectAlgoWallet");
     if (!clientListener)
       clientListener = void 0;
     const bridge = "https://bridge.walletconnect.org";
-    const wcConnector = new import_client.default({
+    const wcConnector = new import_index_min.default({
       bridge,
-      qrcodeModal: import_algo_wc_qr_modal_ncc.default
+      qrcodeModal: import_algorand_walletconnect_qrcode_modal.default
     });
     this.walletConnect.connector = wcConnector;
-    console.log("connector created");
-    console.log(this.walletConnect.connector);
     if (!this.walletConnect.connector.connected) {
       this.walletConnect.connector.createSession();
       console.log("session created");
@@ -988,6 +986,7 @@ class Algonaut {
     console.log("TBD!");
   }
   async onConnect(payload) {
+    console.log("onConnect");
     const { accounts } = payload.params[0];
     const address = accounts[0];
     this.setWalletConnectAccount(address);
