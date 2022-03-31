@@ -917,6 +917,10 @@ class Algonaut {
     }
   }
   async connectAlgoWallet(clientListener) {
+    if ((0, import_utils2.isNode)()) {
+      console.warn("NOTE: this lib isnt made for using wallet connect in node yet...");
+      return;
+    }
     if (!clientListener)
       clientListener = void 0;
     const bridge = "https://bridge.walletconnect.org";

@@ -33,6 +33,7 @@ import QRCodeModal from 'algorand-walletconnect-qrcode-modal';
 import { formatJsonRpcRequest } from '@json-rpc-tools/utils';
 import {
 	isBrowser,
+	isNode,
 	isAndroid,
 	isIOS,
 	isMobile
@@ -1722,6 +1723,11 @@ export default class Algonaut {
 	 */
 	async connectAlgoWallet(clientListener?: WalletConnectListener): Promise<void> {
 		// console.log('connectAlgoWallet');
+
+		if (isNode()) {
+			console.warn('NOTE: this lib isnt made for using wallet connect in node yet...');
+			return;
+		}
 
 		// 4067ab2454244fb39835bfeafc285c8d
 		if (!clientListener) clientListener = undefined;
