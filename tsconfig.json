@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "ES2015",
+    "module": "esnext",
     "moduleResolution": "Node",
     "noImplicitReturns": true,
     "noUnusedLocals": false,

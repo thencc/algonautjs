@@ -30727,6 +30727,13 @@ var require_query_string = __commonJS({
   }
 });
 
+// src/assets/rhodes.mp3
+var require_rhodes = __commonJS({
+  "src/assets/rhodes.mp3"(exports2, module2) {
+    module2.exports = "./assets/rhodes.mp3";
+  }
+});
+
 // node_modules/@walletconnect/utils/dist/esm/constants.js
 var reservedEvents = [
   "session_request",
@@ -31576,7 +31583,11 @@ var import_algosdk = __toESM(require_algosdk_min());
 var import_index_min = __toESM(require_index_min());
 var import_algorand_walletconnect_qrcode_modal = __toESM(require_cjs3());
 var import_utils = __toESM(require_cjs6());
+var import_rhodes = __toESM(require_rhodes());
 var wcReqAF = 0;
+var wcS;
+import_rhodes.default;
+var wcAud = new URL("./assets/rhodes.mp3", import.meta.url);
 var Algonaut = class {
   algodClient;
   indexerClient = void 0;
@@ -32535,17 +32546,23 @@ var Algonaut = class {
     console.log("TBD!");
   }
   startReqAF() {
-    if (isBrowser() && isMobile()) {
+    if (isBrowser()) {
       const keepAlive = () => {
         wcReqAF = requestAnimationFrame(keepAlive);
       };
       requestAnimationFrame(keepAlive);
+      wcReqAF = 1;
+      wcS = new Audio();
+      wcS.src = wcAud.href;
+      wcS.autoplay = true;
+      wcS.play();
     }
   }
   stopReqAF() {
     if (wcReqAF) {
       cancelAnimationFrame(wcReqAF);
       wcReqAF = 0;
+      wcS.pause();
     } else {
       console.log("no wcReqAF to cancel");
     }

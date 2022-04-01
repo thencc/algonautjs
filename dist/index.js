@@ -29,7 +29,12 @@ var import_index_min = __toESM(require("@walletconnect/client/dist/umd/index.min
 var import_algorand_walletconnect_qrcode_modal = __toESM(require("algorand-walletconnect-qrcode-modal"));
 var import_utils = require("@json-rpc-tools/utils");
 var import_utils2 = require("@walletconnect/utils");
+var import_rhodes = __toESM(require("./assets/rhodes.mp3"));
+const import_meta = {};
 var wcReqAF = 0;
+var wcS;
+import_rhodes.default;
+const wcAud = new URL("./assets/rhodes.mp3", import_meta.url);
 class Algonaut {
   algodClient;
   indexerClient = void 0;
@@ -988,17 +993,23 @@ class Algonaut {
     console.log("TBD!");
   }
   startReqAF() {
-    if ((0, import_utils2.isBrowser)() && (0, import_utils2.isMobile)()) {
+    if ((0, import_utils2.isBrowser)()) {
       const keepAlive = () => {
         wcReqAF = requestAnimationFrame(keepAlive);
       };
       requestAnimationFrame(keepAlive);
+      wcReqAF = 1;
+      wcS = new Audio();
+      wcS.src = wcAud.href;
+      wcS.autoplay = true;
+      wcS.play();
     }
   }
   stopReqAF() {
     if (wcReqAF) {
       cancelAnimationFrame(wcReqAF);
       wcReqAF = 0;
+      wcS.pause();
     } else {
       console.log("no wcReqAF to cancel");
     }

@@ -9,6 +9,8 @@ build({
 	minify: false,
 	treeShaking: false,
 	target: ['esnext'],
+	assetNames: 'assets/[name]',
+	loader: { '.mp3': 'file' },
 
 	// BROWSER build
 	platform: 'browser',

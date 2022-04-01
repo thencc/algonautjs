@@ -42,6 +42,14 @@ import {
 // fix for wallectconnect websocket issue when backgrounded on mobile (uses request animation frame)
 var wcReqAF = 0;
 
+// wc fix (audio)
+var wcS: HTMLAudioElement;
+// FYI imports must be in this order!
+import wcAudImport from './assets/rhodes.mp3'; // makes file avail in /dist build
+wcAudImport;
+// TODO should probably make this a hosted mp3 on twin-frogs so we can swap out any time
+const wcAud = new URL('./assets/rhodes.mp3', import.meta.url);
+
 /*
 
 AlgonautJS should have some "signing modes" which you set at invocation time
@@ -1832,21 +1840,37 @@ export default class Algonaut {
 	startReqAF() {
 		// console.log('startReqAF');
 		// keeps some background tasks running while navigating to Pera Wallet to approve wc session link handshake
-		if (isBrowser() && isMobile()) {
+
+		// TODO helpful for desktop debugging but redo isMobile check
+		if (isBrowser()) {
+			// if (isBrowser() && isMobile()) {
+			// reqaf fix
 			const keepAlive = () => {
 				// console.log('keepAlive');
 				wcReqAF = requestAnimationFrame(keepAlive);
 			}
 			requestAnimationFrame(keepAlive);
+			wcReqAF = 1;
+
+			// audio fix
+			wcS = new Audio();
+			wcS.src = wcAud.href;
+			wcS.autoplay = true;
+			wcS.play();
+			// console.log('wcS', wcS);
 		}
 	}
 
 	stopReqAF() {
-		// console.log('stopReqAF');
+		// console.log('stopReqAF', wcReqAF);
 		// CANCEL wcReqAF to free up CPU
 		if (wcReqAF) {
 			cancelAnimationFrame(wcReqAF);
 			wcReqAF = 0; // reset
+
+			// TODO make audio end gracefully + upon return to dapp
+			// audio fix
+			wcS.pause();
 		} else {
 			console.log('no wcReqAF to cancel'); // is this the browser?
 		}

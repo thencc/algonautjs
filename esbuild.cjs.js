@@ -9,6 +9,8 @@ build({
 	minify: false,
 	treeShaking: false,
 	target: ['esnext'], // change for browser/node?
+	// assetNames: 'assets/[name]',
+	// loader: { '.mp3': 'file' },
 	// target: [
 	// 	'es2020',
 	// 	'chrome58',
