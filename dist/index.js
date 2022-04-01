@@ -4,37 +4,42 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __markAsModule = (target) => __defProp(target, "__esModule", { value: true });
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
 };
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+var __reExport = (target, module2, copyDefault, desc) => {
+  if (module2 && typeof module2 === "object" || typeof module2 === "function") {
+    for (let key of __getOwnPropNames(module2))
+      if (!__hasOwnProp.call(target, key) && (copyDefault || key !== "default"))
+        __defProp(target, key, { get: () => module2[key], enumerable: !(desc = __getOwnPropDesc(module2, key)) || desc.enumerable });
   }
-  return to;
+  return target;
 };
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target, mod));
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toESM = (module2, isNodeMode) => {
+  return __reExport(__markAsModule(__defProp(module2 != null ? __create(__getProtoOf(module2)) : {}, "default", !isNodeMode && module2 && module2.__esModule ? { get: () => module2.default, enumerable: true } : { value: module2, enumerable: true })), module2);
+};
+var __toCommonJS = /* @__PURE__ */ ((cache) => {
+  return (module2, temp) => {
+    return cache && cache.get(module2) || (temp = __reExport(__markAsModule({}), module2, 1), cache && cache.set(module2, temp), temp);
+  };
+})(typeof WeakMap !== "undefined" ? /* @__PURE__ */ new WeakMap() : 0);
 var src_exports = {};
 __export(src_exports, {
   default: () => Algonaut
 });
-module.exports = __toCommonJS(src_exports);
 var import_buffer = require("buffer");
 var import_algosdk = __toESM(require("algosdk"));
 var import_index_min = __toESM(require("@walletconnect/client/dist/umd/index.min.js"));
 var import_algorand_walletconnect_qrcode_modal = __toESM(require("algorand-walletconnect-qrcode-modal"));
 var import_utils = require("@json-rpc-tools/utils");
 var import_utils2 = require("@walletconnect/utils");
-var import_rhodes = __toESM(require("./assets/rhodes.mp3"));
-const import_meta = {};
-var wcReqAF = 0;
-var wcS;
-import_rhodes.default;
-const wcAud = new URL("./assets/rhodes.mp3", import_meta.url);
+var import_lowtone = __toESM(require("./lowtone"));
+var import_finished = __toESM(require("./finished"));
+let wcReqAF = 0;
+let wcS;
+let wcSDone;
 class Algonaut {
   algodClient;
   indexerClient = void 0;
@@ -802,6 +807,7 @@ class Algonaut {
   }
   async sendWalletConnectTxns(walletTxns, callbacks) {
     if (this.walletConnect.connected) {
+      this.startReqAF();
       let txns = walletTxns.map((txn) => txn.transaction);
       if (walletTxns.length > 1) {
         txns = import_algosdk.default.assignGroupID(txns);
@@ -846,9 +852,11 @@ class Algonaut {
         txStatus.meta = transactionResponse;
         if (callbacks?.onConfirm)
           callbacks.onConfirm(txStatus);
+        this.stopReqAF(true);
         return txStatus;
       } else {
         throw new Error("there were no signed transactions returned");
+        this.stopReqAF();
       }
     } else {
       throw new Error("There is no wallet connect session");
@@ -933,6 +941,9 @@ class Algonaut {
       bridge,
       qrcodeModal: import_algorand_walletconnect_qrcode_modal.default
     });
+    wcConnector.on("disconnect", () => {
+      console.log("session update");
+    });
     this.walletConnect.connector = wcConnector;
     if (!this.walletConnect.connector.connected) {
       this.walletConnect.connector.createSession();
@@ -945,6 +956,7 @@ class Algonaut {
       return;
     }
     this.walletConnect.connector.on("session_update", async (error, payload) => {
+      console.log('connector.on("session_update")');
       if (error) {
         throw error;
       }
@@ -954,6 +966,7 @@ class Algonaut {
       this.onSessionUpdate(accounts);
     });
     this.walletConnect.connector.on("connect", (error, payload) => {
+      console.log('connector.on("connect")');
       if (error) {
         throw error;
       }
@@ -962,6 +975,7 @@ class Algonaut {
       this.onConnect(payload);
     });
     this.walletConnect.connector.on("disconnect", (error, payload) => {
+      console.log('connector.on("disconnect")');
       if (error) {
         console.log(payload);
         throw error;
@@ -995,24 +1009,42 @@ class Algonaut {
   startReqAF() {
     if ((0, import_utils2.isBrowser)()) {
       const keepAlive = () => {
+        const qrIsOpen = document.querySelector("#walletconnect-qrcode-modal");
+        if (!qrIsOpen) {
+          this.stopReqAF();
+          return;
+        }
         wcReqAF = requestAnimationFrame(keepAlive);
       };
       requestAnimationFrame(keepAlive);
       wcReqAF = 1;
       wcS = new Audio();
-      wcS.src = wcAud.href;
+      wcS.src = import_lowtone.default;
       wcS.autoplay = true;
+      wcS.volume = 0.6;
+      wcS.loop = true;
       wcS.play();
+      wcSDone = new Audio();
+      wcSDone.src = import_finished.default;
+      wcSDone.volume = 0.1;
+      wcSDone.play();
+      wcSDone.pause();
     }
   }
-  stopReqAF() {
+  stopReqAF(playSound) {
     if (wcReqAF) {
       cancelAnimationFrame(wcReqAF);
       wcReqAF = 0;
       wcS.pause();
+      if (playSound) {
+        wcSDone.play();
+      }
     } else {
       console.log("no wcReqAF to cancel");
     }
+  }
+  pauseWaitSound() {
+    wcS.pause();
   }
   async onConnect(payload) {
     const { accounts } = payload.params[0];
@@ -1021,7 +1053,7 @@ class Algonaut {
     this.walletConnect.connected = true;
     this.walletConnect.accounts = accounts;
     this.walletConnect.address = address;
-    this.stopReqAF();
+    this.stopReqAF(true);
   }
   onDisconnect() {
     this.walletConnect.connected = false;
@@ -1083,6 +1115,7 @@ class Algonaut {
     return accounts;
   }
 }
+module.exports = __toCommonJS(src_exports);
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {});
 //# sourceMappingURL=index.js.map

@@ -4,6 +4,7 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __markAsModule = (target) => __defProp(target, "__esModule", { value: true });
 var __require = /* @__PURE__ */ ((x3) => typeof require !== "undefined" ? require : typeof Proxy !== "undefined" ? new Proxy(x3, {
   get: (a3, b2) => (typeof require !== "undefined" ? require : a3)[b2]
 }) : x3)(function(x3) {
@@ -21,17 +22,22 @@ var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
 };
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+var __reExport = (target, module2, copyDefault, desc) => {
+  if (module2 && typeof module2 === "object" || typeof module2 === "function") {
+    for (let key of __getOwnPropNames(module2))
+      if (!__hasOwnProp.call(target, key) && (copyDefault || key !== "default"))
+        __defProp(target, key, { get: () => module2[key], enumerable: !(desc = __getOwnPropDesc(module2, key)) || desc.enumerable });
   }
-  return to;
+  return target;
 };
-var __reExport = (target, mod, secondTarget) => (__copyProps(target, mod, "default"), secondTarget && __copyProps(secondTarget, mod, "default"));
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target, mod));
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toESM = (module2, isNodeMode) => {
+  return __reExport(__markAsModule(__defProp(module2 != null ? __create(__getProtoOf(module2)) : {}, "default", !isNodeMode && module2 && module2.__esModule ? { get: () => module2.default, enumerable: true } : { value: module2, enumerable: true })), module2);
+};
+var __toCommonJS = /* @__PURE__ */ ((cache) => {
+  return (module2, temp) => {
+    return cache && cache.get(module2) || (temp = __reExport(__markAsModule({}), module2, 1), cache && cache.set(module2, temp), temp);
+  };
+})(typeof WeakMap !== "undefined" ? /* @__PURE__ */ new WeakMap() : 0);
 
 // node_modules/base64-js/index.js
 var require_base64_js = __commonJS({
@@ -6216,27 +6222,27 @@ var require_algosdk_min = __commonJS({
               var r4 = typeof Symbol == "function" && e5[Symbol.iterator];
               if (!r4)
                 return e5;
-              var n3, o4, s4 = r4.call(e5), i4 = [];
+              var n3, o4, i4 = r4.call(e5), s4 = [];
               try {
-                for (; (t4 === void 0 || t4-- > 0) && !(n3 = s4.next()).done; )
-                  i4.push(n3.value);
+                for (; (t4 === void 0 || t4-- > 0) && !(n3 = i4.next()).done; )
+                  s4.push(n3.value);
               } catch (e6) {
                 o4 = { error: e6 };
               } finally {
                 try {
-                  n3 && !n3.done && (r4 = s4.return) && r4.call(s4);
+                  n3 && !n3.done && (r4 = i4.return) && r4.call(i4);
                 } finally {
                   if (o4)
                     throw o4.error;
                 }
               }
-              return i4;
+              return s4;
             }, o3 = function() {
               for (var e5 = [], t4 = 0; t4 < arguments.length; t4++)
                 e5 = e5.concat(n2(arguments[t4]));
               return e5;
-            }, s3 = typeof process != "undefined" && typeof TextEncoder != "undefined" && typeof TextDecoder != "undefined";
-            function i3(e5) {
+            }, i3 = typeof process != "undefined" && typeof TextEncoder != "undefined" && typeof TextDecoder != "undefined";
+            function s3(e5) {
               for (var t4 = e5.length, r4 = 0, n3 = 0; n3 < t4; ) {
                 var o4 = e5.charCodeAt(n3++);
                 if ((4294967168 & o4) != 0)
@@ -6244,8 +6250,8 @@ var require_algosdk_min = __commonJS({
                     r4 += 2;
                   else {
                     if (o4 >= 55296 && o4 <= 56319 && n3 < t4) {
-                      var s4 = e5.charCodeAt(n3);
-                      (64512 & s4) == 56320 && (++n3, o4 = ((1023 & o4) << 10) + (1023 & s4) + 65536);
+                      var i4 = e5.charCodeAt(n3);
+                      (64512 & i4) == 56320 && (++n3, o4 = ((1023 & o4) << 10) + (1023 & i4) + 65536);
                     }
                     r4 += (4294901760 & o4) == 0 ? 3 : 4;
                   }
@@ -6254,33 +6260,33 @@ var require_algosdk_min = __commonJS({
               }
               return r4;
             }
-            var a3 = s3 ? new TextEncoder() : void 0, c3 = typeof process != "undefined" ? 200 : 0, u3 = (a3 == null ? void 0 : a3.encodeInto) ? function(e5, t4, r4) {
+            var a3 = i3 ? new TextEncoder() : void 0, c3 = typeof process != "undefined" ? 200 : 0, u3 = (a3 == null ? void 0 : a3.encodeInto) ? function(e5, t4, r4) {
               a3.encodeInto(e5, t4.subarray(r4));
             } : function(e5, t4, r4) {
               t4.set(a3.encode(e5), r4);
             };
             function l3(e5, t4, r4) {
-              for (var n3 = t4, s4 = n3 + r4, i4 = [], a4 = ""; n3 < s4; ) {
+              for (var n3 = t4, i4 = n3 + r4, s4 = [], a4 = ""; n3 < i4; ) {
                 var c4 = e5[n3++];
                 if ((128 & c4) == 0)
-                  i4.push(c4);
+                  s4.push(c4);
                 else if ((224 & c4) == 192) {
                   var u4 = 63 & e5[n3++];
-                  i4.push((31 & c4) << 6 | u4);
+                  s4.push((31 & c4) << 6 | u4);
                 } else if ((240 & c4) == 224) {
                   u4 = 63 & e5[n3++];
                   var l4 = 63 & e5[n3++];
-                  i4.push((31 & c4) << 12 | u4 << 6 | l4);
+                  s4.push((31 & c4) << 12 | u4 << 6 | l4);
                 } else if ((248 & c4) == 240) {
                   var h4 = (7 & c4) << 18 | (u4 = 63 & e5[n3++]) << 12 | (l4 = 63 & e5[n3++]) << 6 | 63 & e5[n3++];
-                  h4 > 65535 && (h4 -= 65536, i4.push(h4 >>> 10 & 1023 | 55296), h4 = 56320 | 1023 & h4), i4.push(h4);
+                  h4 > 65535 && (h4 -= 65536, s4.push(h4 >>> 10 & 1023 | 55296), h4 = 56320 | 1023 & h4), s4.push(h4);
                 } else
-                  i4.push(c4);
-                i4.length >= 4096 && (a4 += String.fromCharCode.apply(String, o3(i4)), i4.length = 0);
+                  s4.push(c4);
+                s4.length >= 4096 && (a4 += String.fromCharCode.apply(String, o3(s4)), s4.length = 0);
               }
-              return i4.length > 0 && (a4 += String.fromCharCode.apply(String, o3(i4))), a4;
+              return s4.length > 0 && (a4 += String.fromCharCode.apply(String, o3(s4))), a4;
             }
-            var h3 = s3 ? new TextDecoder() : null, p3 = typeof process != "undefined" ? 200 : 0, f3 = function(e5, t4) {
+            var h3 = i3 ? new TextDecoder() : null, p3 = typeof process != "undefined" ? 200 : 0, f3 = function(e5, t4) {
               this.type = e5, this.data = t4;
             };
             function d3(e5, t4, r4) {
@@ -6288,8 +6294,8 @@ var require_algosdk_min = __commonJS({
               e5.setUint32(t4, n3), e5.setUint32(t4 + 4, o4);
             }
             function g3(e5, t4) {
-              var r4 = e5.getInt32(t4), n3 = e5.getUint32(t4 + 4), o4 = r4 < Math.floor(Number.MIN_SAFE_INTEGER / 4294967296) || r4 === Math.floor(Number.MIN_SAFE_INTEGER / 4294967296) && n3 === 0, s4 = r4 > Math.floor(Number.MAX_SAFE_INTEGER / 4294967296);
-              return o4 || s4 ? BigInt(r4) * BigInt(4294967296) + BigInt(n3) : 4294967296 * r4 + n3;
+              var r4 = e5.getInt32(t4), n3 = e5.getUint32(t4 + 4), o4 = r4 < Math.floor(Number.MIN_SAFE_INTEGER / 4294967296) || r4 === Math.floor(Number.MIN_SAFE_INTEGER / 4294967296) && n3 === 0, i4 = r4 > Math.floor(Number.MAX_SAFE_INTEGER / 4294967296);
+              return o4 || i4 ? BigInt(r4) * BigInt(4294967296) + BigInt(n3) : 4294967296 * r4 + n3;
             }
             var y3 = -1;
             function m3(e5) {
@@ -6299,8 +6305,8 @@ var require_algosdk_min = __commonJS({
                   var o4 = new Uint8Array(4);
                   return (t4 = new DataView(o4.buffer)).setUint32(0, r4), o4;
                 }
-                var s4 = r4 / 4294967296, i4 = 4294967295 & r4;
-                return o4 = new Uint8Array(8), (t4 = new DataView(o4.buffer)).setUint32(0, n3 << 2 | 3 & s4), t4.setUint32(4, i4), o4;
+                var i4 = r4 / 4294967296, s4 = 4294967295 & r4;
+                return o4 = new Uint8Array(8), (t4 = new DataView(o4.buffer)).setUint32(0, n3 << 2 | 3 & i4), t4.setUint32(4, s4), o4;
               }
               return o4 = new Uint8Array(12), (t4 = new DataView(o4.buffer)).setUint32(0, n3), d3(t4, 4, r4), o4;
             }
@@ -6369,8 +6375,8 @@ var require_algosdk_min = __commonJS({
                 } };
               throw new TypeError(t4 ? "Object is not iterable." : "Symbol.iterator is not defined.");
             }, _4 = function() {
-              function e5(e6, t4, r4, n3, o4, s4, i4, a4) {
-                e6 === void 0 && (e6 = S2.defaultCodec), t4 === void 0 && (t4 = void 0), r4 === void 0 && (r4 = 100), n3 === void 0 && (n3 = 2048), o4 === void 0 && (o4 = false), s4 === void 0 && (s4 = false), i4 === void 0 && (i4 = false), a4 === void 0 && (a4 = false), this.extensionCodec = e6, this.context = t4, this.maxDepth = r4, this.initialBufferSize = n3, this.sortKeys = o4, this.forceFloat32 = s4, this.ignoreUndefined = i4, this.forceIntegerToFloat = a4, this.pos = 0, this.view = new DataView(new ArrayBuffer(this.initialBufferSize)), this.bytes = new Uint8Array(this.view.buffer);
+              function e5(e6, t4, r4, n3, o4, i4, s4, a4) {
+                e6 === void 0 && (e6 = S2.defaultCodec), t4 === void 0 && (t4 = void 0), r4 === void 0 && (r4 = 100), n3 === void 0 && (n3 = 2048), o4 === void 0 && (o4 = false), i4 === void 0 && (i4 = false), s4 === void 0 && (s4 = false), a4 === void 0 && (a4 = false), this.extensionCodec = e6, this.context = t4, this.maxDepth = r4, this.initialBufferSize = n3, this.sortKeys = o4, this.forceFloat32 = i4, this.ignoreUndefined = s4, this.forceIntegerToFloat = a4, this.pos = 0, this.view = new DataView(new ArrayBuffer(this.initialBufferSize)), this.bytes = new Uint8Array(this.view.buffer);
               }
               return e5.prototype.getUint8Array = function() {
                 return this.bytes.subarray(0, this.pos);
@@ -6410,26 +6416,26 @@ var require_algosdk_min = __commonJS({
                 }
               }, e5.prototype.encodeString = function(e6) {
                 var t4 = e6.length;
-                if (s3 && t4 > c3) {
-                  var r4 = i3(e6);
+                if (i3 && t4 > c3) {
+                  var r4 = s3(e6);
                   this.ensureBufferSizeToWrite(5 + r4), this.writeStringHeader(r4), u3(e6, this.bytes, this.pos), this.pos += r4;
                 } else
-                  r4 = i3(e6), this.ensureBufferSizeToWrite(5 + r4), this.writeStringHeader(r4), function(e7, t5, r5) {
-                    for (var n3 = e7.length, o4 = r5, s4 = 0; s4 < n3; ) {
-                      var i4 = e7.charCodeAt(s4++);
-                      if ((4294967168 & i4) != 0) {
-                        if ((4294965248 & i4) == 0)
-                          t5[o4++] = i4 >> 6 & 31 | 192;
+                  r4 = s3(e6), this.ensureBufferSizeToWrite(5 + r4), this.writeStringHeader(r4), function(e7, t5, r5) {
+                    for (var n3 = e7.length, o4 = r5, i4 = 0; i4 < n3; ) {
+                      var s4 = e7.charCodeAt(i4++);
+                      if ((4294967168 & s4) != 0) {
+                        if ((4294965248 & s4) == 0)
+                          t5[o4++] = s4 >> 6 & 31 | 192;
                         else {
-                          if (i4 >= 55296 && i4 <= 56319 && s4 < n3) {
-                            var a4 = e7.charCodeAt(s4);
-                            (64512 & a4) == 56320 && (++s4, i4 = ((1023 & i4) << 10) + (1023 & a4) + 65536);
+                          if (s4 >= 55296 && s4 <= 56319 && i4 < n3) {
+                            var a4 = e7.charCodeAt(i4);
+                            (64512 & a4) == 56320 && (++i4, s4 = ((1023 & s4) << 10) + (1023 & a4) + 65536);
                           }
-                          (4294901760 & i4) == 0 ? (t5[o4++] = i4 >> 12 & 15 | 224, t5[o4++] = i4 >> 6 & 63 | 128) : (t5[o4++] = i4 >> 18 & 7 | 240, t5[o4++] = i4 >> 12 & 63 | 128, t5[o4++] = i4 >> 6 & 63 | 128);
+                          (4294901760 & s4) == 0 ? (t5[o4++] = s4 >> 12 & 15 | 224, t5[o4++] = s4 >> 6 & 63 | 128) : (t5[o4++] = s4 >> 18 & 7 | 240, t5[o4++] = s4 >> 12 & 63 | 128, t5[o4++] = s4 >> 6 & 63 | 128);
                         }
-                        t5[o4++] = 63 & i4 | 128;
+                        t5[o4++] = 63 & s4 | 128;
                       } else
-                        t5[o4++] = i4;
+                        t5[o4++] = s4;
                     }
                   }(e6, this.bytes, this.pos), this.pos += r4;
               }, e5.prototype.encodeObject = function(e6, t4) {
@@ -6470,15 +6476,15 @@ var require_algosdk_min = __commonJS({
                   this.writeU8(221), this.writeU32(o4);
                 }
                 try {
-                  for (var s4 = T4(e6), i4 = s4.next(); !i4.done; i4 = s4.next()) {
-                    var a4 = i4.value;
+                  for (var i4 = T4(e6), s4 = i4.next(); !s4.done; s4 = i4.next()) {
+                    var a4 = s4.value;
                     this.doEncode(a4, t4 + 1);
                   }
                 } catch (e7) {
                   r4 = { error: e7 };
                 } finally {
                   try {
-                    i4 && !i4.done && (n3 = s4.return) && n3.call(s4);
+                    s4 && !s4.done && (n3 = i4.return) && n3.call(i4);
                   } finally {
                     if (r4)
                       throw r4.error;
@@ -6487,13 +6493,13 @@ var require_algosdk_min = __commonJS({
               }, e5.prototype.countWithoutUndefined = function(e6, t4) {
                 var r4, n3, o4 = 0;
                 try {
-                  for (var s4 = T4(t4), i4 = s4.next(); !i4.done; i4 = s4.next())
-                    e6[i4.value] !== void 0 && o4++;
+                  for (var i4 = T4(t4), s4 = i4.next(); !s4.done; s4 = i4.next())
+                    e6[s4.value] !== void 0 && o4++;
                 } catch (e7) {
                   r4 = { error: e7 };
                 } finally {
                   try {
-                    i4 && !i4.done && (n3 = s4.return) && n3.call(s4);
+                    s4 && !s4.done && (n3 = i4.return) && n3.call(i4);
                   } finally {
                     if (r4)
                       throw r4.error;
@@ -6503,18 +6509,18 @@ var require_algosdk_min = __commonJS({
               }, e5.prototype.encodeMap = function(e6, t4) {
                 var r4, n3, o4 = Object.keys(e6);
                 this.sortKeys && o4.sort();
-                var s4 = this.ignoreUndefined ? this.countWithoutUndefined(e6, o4) : o4.length;
-                if (s4 < 16)
-                  this.writeU8(128 + s4);
-                else if (s4 < 65536)
-                  this.writeU8(222), this.writeU16(s4);
+                var i4 = this.ignoreUndefined ? this.countWithoutUndefined(e6, o4) : o4.length;
+                if (i4 < 16)
+                  this.writeU8(128 + i4);
+                else if (i4 < 65536)
+                  this.writeU8(222), this.writeU16(i4);
                 else {
-                  if (!(s4 < 4294967296))
-                    throw new Error("Too large map object: " + s4);
-                  this.writeU8(223), this.writeU32(s4);
+                  if (!(i4 < 4294967296))
+                    throw new Error("Too large map object: " + i4);
+                  this.writeU8(223), this.writeU32(i4);
                 }
                 try {
-                  for (var i4 = T4(o4), a4 = i4.next(); !a4.done; a4 = i4.next()) {
+                  for (var s4 = T4(o4), a4 = s4.next(); !a4.done; a4 = s4.next()) {
                     var c4 = a4.value, u4 = e6[c4];
                     this.ignoreUndefined && u4 === void 0 || (this.encodeString(c4), this.doEncode(u4, t4 + 1));
                   }
@@ -6522,7 +6528,7 @@ var require_algosdk_min = __commonJS({
                   r4 = { error: e7 };
                 } finally {
                   try {
-                    a4 && !a4.done && (n3 = i4.return) && n3.call(i4);
+                    a4 && !a4.done && (n3 = s4.return) && n3.call(s4);
                   } finally {
                     if (r4)
                       throw r4.error;
@@ -6600,11 +6606,11 @@ var require_algosdk_min = __commonJS({
               }, e5.prototype.get = function(e6, t4, r4) {
                 var n3 = this.caches[r4 - 1], o4 = n3.length;
                 e:
-                  for (var s4 = 0; s4 < o4; s4++) {
-                    for (var i4 = n3[s4], a4 = i4.bytes, c4 = 0; c4 < r4; c4++)
+                  for (var i4 = 0; i4 < o4; i4++) {
+                    for (var s4 = n3[i4], a4 = s4.bytes, c4 = 0; c4 < r4; c4++)
                       if (a4[c4] !== e6[t4 + c4])
                         continue e;
-                    return i4.value;
+                    return s4.value;
                   }
                 return null;
               }, e5.prototype.store = function(e6, t4) {
@@ -6615,70 +6621,70 @@ var require_algosdk_min = __commonJS({
                 if (n3 != null)
                   return this.hit++, n3;
                 this.miss++;
-                var o4 = l3(e6, t4, r4), s4 = Uint8Array.prototype.slice.call(e6, t4, t4 + r4);
-                return this.store(s4, o4), o4;
+                var o4 = l3(e6, t4, r4), i4 = Uint8Array.prototype.slice.call(e6, t4, t4 + r4);
+                return this.store(i4, o4), o4;
               }, e5;
             }(), C3 = function(e5, t4) {
-              var r4, n3, o4, s4, i4 = { label: 0, sent: function() {
+              var r4, n3, o4, i4, s4 = { label: 0, sent: function() {
                 if (1 & o4[0])
                   throw o4[1];
                 return o4[1];
               }, trys: [], ops: [] };
-              return s4 = { next: a4(0), throw: a4(1), return: a4(2) }, typeof Symbol == "function" && (s4[Symbol.iterator] = function() {
+              return i4 = { next: a4(0), throw: a4(1), return: a4(2) }, typeof Symbol == "function" && (i4[Symbol.iterator] = function() {
                 return this;
-              }), s4;
-              function a4(s5) {
+              }), i4;
+              function a4(i5) {
                 return function(a5) {
-                  return function(s6) {
+                  return function(i6) {
                     if (r4)
                       throw new TypeError("Generator is already executing.");
-                    for (; i4; )
+                    for (; s4; )
                       try {
-                        if (r4 = 1, n3 && (o4 = 2 & s6[0] ? n3.return : s6[0] ? n3.throw || ((o4 = n3.return) && o4.call(n3), 0) : n3.next) && !(o4 = o4.call(n3, s6[1])).done)
+                        if (r4 = 1, n3 && (o4 = 2 & i6[0] ? n3.return : i6[0] ? n3.throw || ((o4 = n3.return) && o4.call(n3), 0) : n3.next) && !(o4 = o4.call(n3, i6[1])).done)
                           return o4;
-                        switch (n3 = 0, o4 && (s6 = [2 & s6[0], o4.value]), s6[0]) {
+                        switch (n3 = 0, o4 && (i6 = [2 & i6[0], o4.value]), i6[0]) {
                           case 0:
                           case 1:
-                            o4 = s6;
+                            o4 = i6;
                             break;
                           case 4:
-                            return i4.label++, { value: s6[1], done: false };
+                            return s4.label++, { value: i6[1], done: false };
                           case 5:
-                            i4.label++, n3 = s6[1], s6 = [0];
+                            s4.label++, n3 = i6[1], i6 = [0];
                             continue;
                           case 7:
-                            s6 = i4.ops.pop(), i4.trys.pop();
+                            i6 = s4.ops.pop(), s4.trys.pop();
                             continue;
                           default:
-                            if (!((o4 = (o4 = i4.trys).length > 0 && o4[o4.length - 1]) || s6[0] !== 6 && s6[0] !== 2)) {
-                              i4 = 0;
+                            if (!((o4 = (o4 = s4.trys).length > 0 && o4[o4.length - 1]) || i6[0] !== 6 && i6[0] !== 2)) {
+                              s4 = 0;
                               continue;
                             }
-                            if (s6[0] === 3 && (!o4 || s6[1] > o4[0] && s6[1] < o4[3])) {
-                              i4.label = s6[1];
+                            if (i6[0] === 3 && (!o4 || i6[1] > o4[0] && i6[1] < o4[3])) {
+                              s4.label = i6[1];
                               break;
                             }
-                            if (s6[0] === 6 && i4.label < o4[1]) {
-                              i4.label = o4[1], o4 = s6;
+                            if (i6[0] === 6 && s4.label < o4[1]) {
+                              s4.label = o4[1], o4 = i6;
                               break;
                             }
-                            if (o4 && i4.label < o4[2]) {
-                              i4.label = o4[2], i4.ops.push(s6);
+                            if (o4 && s4.label < o4[2]) {
+                              s4.label = o4[2], s4.ops.push(i6);
                               break;
                             }
-                            o4[2] && i4.ops.pop(), i4.trys.pop();
+                            o4[2] && s4.ops.pop(), s4.trys.pop();
                             continue;
                         }
-                        s6 = t4.call(e5, i4);
+                        i6 = t4.call(e5, s4);
                       } catch (e6) {
-                        s6 = [6, e6], n3 = 0;
+                        i6 = [6, e6], n3 = 0;
                       } finally {
                         r4 = o4 = 0;
                       }
-                    if (5 & s6[0])
-                      throw s6[1];
-                    return { value: s6[0] ? s6[1] : void 0, done: true };
-                  }([s5, a5]);
+                    if (5 & i6[0])
+                      throw i6[1];
+                    return { value: i6[0] ? i6[1] : void 0, done: true };
+                  }([i5, a5]);
                 };
               }
             }, R2 = function(e5) {
@@ -6704,22 +6710,22 @@ var require_algosdk_min = __commonJS({
             }, D3 = function(e5, t4, r4) {
               if (!Symbol.asyncIterator)
                 throw new TypeError("Symbol.asyncIterator is not defined.");
-              var n3, o4 = r4.apply(e5, t4 || []), s4 = [];
-              return n3 = {}, i4("next"), i4("throw"), i4("return"), n3[Symbol.asyncIterator] = function() {
+              var n3, o4 = r4.apply(e5, t4 || []), i4 = [];
+              return n3 = {}, s4("next"), s4("throw"), s4("return"), n3[Symbol.asyncIterator] = function() {
                 return this;
               }, n3;
-              function i4(e6) {
+              function s4(e6) {
                 o4[e6] && (n3[e6] = function(t5) {
                   return new Promise(function(r5, n4) {
-                    s4.push([e6, t5, r5, n4]) > 1 || a4(e6, t5);
+                    i4.push([e6, t5, r5, n4]) > 1 || a4(e6, t5);
                   });
                 });
               }
               function a4(e6, t5) {
                 try {
-                  (r5 = o4[e6](t5)).value instanceof O2 ? Promise.resolve(r5.value.v).then(c4, u4) : l4(s4[0][2], r5);
+                  (r5 = o4[e6](t5)).value instanceof O2 ? Promise.resolve(r5.value.v).then(c4, u4) : l4(i4[0][2], r5);
                 } catch (e7) {
-                  l4(s4[0][3], e7);
+                  l4(i4[0][3], e7);
                 }
                 var r5;
               }
@@ -6730,7 +6736,7 @@ var require_algosdk_min = __commonJS({
                 a4("throw", e6);
               }
               function l4(e6, t5) {
-                e6(t5), s4.shift(), s4.length && a4(s4[0][0], s4[0][1]);
+                e6(t5), i4.shift(), i4.length && a4(i4[0][0], i4[0][1]);
               }
             }, N3 = new DataView(new ArrayBuffer(0)), P3 = new Uint8Array(N3.buffer), L3 = function() {
               try {
@@ -6740,8 +6746,8 @@ var require_algosdk_min = __commonJS({
               }
               throw new Error("never reached");
             }(), F3 = new L3("Insufficient data"), z3 = new I3(), j3 = function() {
-              function e5(e6, t4, r4, n3, o4, s4, i4, a4) {
-                e6 === void 0 && (e6 = S2.defaultCodec), t4 === void 0 && (t4 = void 0), r4 === void 0 && (r4 = 4294967295), n3 === void 0 && (n3 = 4294967295), o4 === void 0 && (o4 = 4294967295), s4 === void 0 && (s4 = 4294967295), i4 === void 0 && (i4 = 4294967295), a4 === void 0 && (a4 = z3), this.extensionCodec = e6, this.context = t4, this.maxStrLength = r4, this.maxBinLength = n3, this.maxArrayLength = o4, this.maxMapLength = s4, this.maxExtLength = i4, this.keyDecoder = a4, this.totalPos = 0, this.pos = 0, this.view = N3, this.bytes = P3, this.headByte = -1, this.stack = [];
+              function e5(e6, t4, r4, n3, o4, i4, s4, a4) {
+                e6 === void 0 && (e6 = S2.defaultCodec), t4 === void 0 && (t4 = void 0), r4 === void 0 && (r4 = 4294967295), n3 === void 0 && (n3 = 4294967295), o4 === void 0 && (o4 = 4294967295), i4 === void 0 && (i4 = 4294967295), s4 === void 0 && (s4 = 4294967295), a4 === void 0 && (a4 = z3), this.extensionCodec = e6, this.context = t4, this.maxStrLength = r4, this.maxBinLength = n3, this.maxArrayLength = o4, this.maxMapLength = i4, this.maxExtLength = s4, this.keyDecoder = a4, this.totalPos = 0, this.pos = 0, this.view = N3, this.bytes = P3, this.headByte = -1, this.stack = [];
               }
               return e5.prototype.reinitializeState = function() {
                 this.totalPos = 0, this.headByte = -1;
@@ -6773,35 +6779,35 @@ var require_algosdk_min = __commonJS({
               }, e5.prototype.decodeAsync = function(e6) {
                 var t4, r4, n3, o4;
                 return function(e7, t5, r5, n4) {
-                  return new (r5 || (r5 = Promise))(function(o5, s4) {
-                    function i4(e8) {
+                  return new (r5 || (r5 = Promise))(function(o5, i4) {
+                    function s4(e8) {
                       try {
                         c4(n4.next(e8));
                       } catch (e9) {
-                        s4(e9);
+                        i4(e9);
                       }
                     }
                     function a4(e8) {
                       try {
                         c4(n4.throw(e8));
                       } catch (e9) {
-                        s4(e9);
+                        i4(e9);
                       }
                     }
                     function c4(e8) {
                       var t6;
                       e8.done ? o5(e8.value) : (t6 = e8.value, t6 instanceof r5 ? t6 : new r5(function(e9) {
                         e9(t6);
-                      })).then(i4, a4);
+                      })).then(s4, a4);
                     }
                     c4((n4 = n4.apply(e7, t5 || [])).next());
                   });
                 }(this, void 0, void 0, function() {
-                  var s4, i4, a4, c4, u4, l4, h4, p4;
+                  var i4, s4, a4, c4, u4, l4, h4, p4;
                   return C3(this, function(f4) {
                     switch (f4.label) {
                       case 0:
-                        s4 = false, f4.label = 1;
+                        i4 = false, f4.label = 1;
                       case 1:
                         f4.trys.push([1, 6, 7, 12]), t4 = R2(e6), f4.label = 2;
                       case 2:
@@ -6809,11 +6815,11 @@ var require_algosdk_min = __commonJS({
                       case 3:
                         if ((r4 = f4.sent()).done)
                           return [3, 5];
-                        if (a4 = r4.value, s4)
+                        if (a4 = r4.value, i4)
                           throw this.createNoExtraBytesError(this.totalPos);
                         this.appendBuffer(a4);
                         try {
-                          i4 = this.doDecodeSync(), s4 = true;
+                          s4 = this.doDecodeSync(), i4 = true;
                         } catch (e7) {
                           if (!(e7 instanceof L3))
                             throw e7;
@@ -6838,10 +6844,10 @@ var require_algosdk_min = __commonJS({
                       case 11:
                         return [7];
                       case 12:
-                        if (s4) {
+                        if (i4) {
                           if (this.hasRemaining())
                             throw this.createNoExtraBytesError(this.totalPos);
-                          return [2, i4];
+                          return [2, s4];
                         }
                         throw l4 = (u4 = this).headByte, h4 = u4.pos, p4 = u4.totalPos, new RangeError("Insufficient data in parcing " + k3(l4) + " at " + p4 + " (" + h4 + " in the current buffer)");
                     }
@@ -6853,7 +6859,7 @@ var require_algosdk_min = __commonJS({
                 return this.decodeMultiAsync(e6, false);
               }, e5.prototype.decodeMultiAsync = function(e6, t4) {
                 return D3(this, arguments, function() {
-                  var r4, n3, o4, s4, i4, a4, c4, u4, l4;
+                  var r4, n3, o4, i4, s4, a4, c4, u4, l4;
                   return C3(this, function(h4) {
                     switch (h4.label) {
                       case 0:
@@ -6863,11 +6869,11 @@ var require_algosdk_min = __commonJS({
                       case 2:
                         return [4, O2(o4.next())];
                       case 3:
-                        if ((s4 = h4.sent()).done)
+                        if ((i4 = h4.sent()).done)
                           return [3, 12];
-                        if (i4 = s4.value, t4 && n3 === 0)
+                        if (s4 = i4.value, t4 && n3 === 0)
                           throw this.createNoExtraBytesError(this.totalPos);
-                        this.appendBuffer(i4), r4 && (n3 = this.readArraySize(), r4 = false, this.complete()), h4.label = 4;
+                        this.appendBuffer(s4), r4 && (n3 = this.readArraySize(), r4 = false, this.complete()), h4.label = 4;
                       case 4:
                         h4.trys.push([4, 9, , 10]), h4.label = 5;
                       case 5:
@@ -6891,7 +6897,7 @@ var require_algosdk_min = __commonJS({
                       case 13:
                         return c4 = h4.sent(), u4 = { error: c4 }, [3, 19];
                       case 14:
-                        return h4.trys.push([14, , 17, 18]), s4 && !s4.done && (l4 = o4.return) ? [4, O2(l4.call(o4))] : [3, 16];
+                        return h4.trys.push([14, , 17, 18]), i4 && !i4.done && (l4 = o4.return) ? [4, O2(l4.call(o4))] : [3, 16];
                       case 15:
                         h4.sent(), h4.label = 16;
                       case 16:
@@ -7016,28 +7022,28 @@ var require_algosdk_min = __commonJS({
                     }
                     this.complete();
                     for (var o4 = this.stack; o4.length > 0; ) {
-                      var s4 = o4[o4.length - 1];
-                      if (s4.type === 0) {
-                        if (s4.array[s4.position] = t4, s4.position++, s4.position !== s4.size)
+                      var i4 = o4[o4.length - 1];
+                      if (i4.type === 0) {
+                        if (i4.array[i4.position] = t4, i4.position++, i4.position !== i4.size)
                           continue e;
-                        o4.pop(), t4 = s4.array;
+                        o4.pop(), t4 = i4.array;
                       } else {
-                        if (s4.type === 1) {
-                          if (void 0, (i4 = typeof t4) != "string" && i4 !== "number")
+                        if (i4.type === 1) {
+                          if (void 0, (s4 = typeof t4) != "string" && s4 !== "number")
                             throw new Error("The type of key must be string or number but " + typeof t4);
-                          s4.key = t4, s4.type = 2;
+                          i4.key = t4, i4.type = 2;
                           continue e;
                         }
-                        if (s4.map[s4.key] = t4, s4.readCount++, s4.readCount !== s4.size) {
-                          s4.key = null, s4.type = 1;
+                        if (i4.map[i4.key] = t4, i4.readCount++, i4.readCount !== i4.size) {
+                          i4.key = null, i4.type = 1;
                           continue e;
                         }
-                        o4.pop(), t4 = s4.map;
+                        o4.pop(), t4 = i4.map;
                       }
                     }
                     return t4;
                   }
-                var i4;
+                var s4;
               }, e5.prototype.readHeadByte = function() {
                 return this.headByte === -1 && (this.headByte = this.readU8()), this.headByte;
               }, e5.prototype.complete = function() {
@@ -7069,7 +7075,7 @@ var require_algosdk_min = __commonJS({
                 if (this.bytes.byteLength < this.pos + t4 + e6)
                   throw F3;
                 var n3, o4 = this.pos + t4;
-                return n3 = this.stateIsMapKey() && ((r4 = this.keyDecoder) === null || r4 === void 0 ? void 0 : r4.canBeCached(e6)) ? this.keyDecoder.decode(this.bytes, o4, e6) : s3 && e6 > p3 ? function(e7, t5, r5) {
+                return n3 = this.stateIsMapKey() && ((r4 = this.keyDecoder) === null || r4 === void 0 ? void 0 : r4.canBeCached(e6)) ? this.keyDecoder.decode(this.bytes, o4, e6) : i3 && e6 > p3 ? function(e7, t5, r5) {
                   var n4 = e7.subarray(t5, t5 + r5);
                   return h3.decode(n4);
                 }(this.bytes, o4, e6) : l3(this.bytes, o4, e6), this.pos += t4 + e6, n3;
@@ -7129,66 +7135,66 @@ var require_algosdk_min = __commonJS({
               return t4 === void 0 && (t4 = M3), new j3(t4.extensionCodec, t4.context, t4.maxStrLength, t4.maxBinLength, t4.maxArrayLength, t4.maxMapLength, t4.maxExtLength).decode(e5);
             }
             var G2 = function(e5, t4) {
-              var r4, n3, o4, s4, i4 = { label: 0, sent: function() {
+              var r4, n3, o4, i4, s4 = { label: 0, sent: function() {
                 if (1 & o4[0])
                   throw o4[1];
                 return o4[1];
               }, trys: [], ops: [] };
-              return s4 = { next: a4(0), throw: a4(1), return: a4(2) }, typeof Symbol == "function" && (s4[Symbol.iterator] = function() {
+              return i4 = { next: a4(0), throw: a4(1), return: a4(2) }, typeof Symbol == "function" && (i4[Symbol.iterator] = function() {
                 return this;
-              }), s4;
-              function a4(s5) {
+              }), i4;
+              function a4(i5) {
                 return function(a5) {
-                  return function(s6) {
+                  return function(i6) {
                     if (r4)
                       throw new TypeError("Generator is already executing.");
-                    for (; i4; )
+                    for (; s4; )
                       try {
-                        if (r4 = 1, n3 && (o4 = 2 & s6[0] ? n3.return : s6[0] ? n3.throw || ((o4 = n3.return) && o4.call(n3), 0) : n3.next) && !(o4 = o4.call(n3, s6[1])).done)
+                        if (r4 = 1, n3 && (o4 = 2 & i6[0] ? n3.return : i6[0] ? n3.throw || ((o4 = n3.return) && o4.call(n3), 0) : n3.next) && !(o4 = o4.call(n3, i6[1])).done)
                           return o4;
-                        switch (n3 = 0, o4 && (s6 = [2 & s6[0], o4.value]), s6[0]) {
+                        switch (n3 = 0, o4 && (i6 = [2 & i6[0], o4.value]), i6[0]) {
                           case 0:
                           case 1:
-                            o4 = s6;
+                            o4 = i6;
                             break;
                           case 4:
-                            return i4.label++, { value: s6[1], done: false };
+                            return s4.label++, { value: i6[1], done: false };
                           case 5:
-                            i4.label++, n3 = s6[1], s6 = [0];
+                            s4.label++, n3 = i6[1], i6 = [0];
                             continue;
                           case 7:
-                            s6 = i4.ops.pop(), i4.trys.pop();
+                            i6 = s4.ops.pop(), s4.trys.pop();
                             continue;
                           default:
-                            if (!((o4 = (o4 = i4.trys).length > 0 && o4[o4.length - 1]) || s6[0] !== 6 && s6[0] !== 2)) {
-                              i4 = 0;
+                            if (!((o4 = (o4 = s4.trys).length > 0 && o4[o4.length - 1]) || i6[0] !== 6 && i6[0] !== 2)) {
+                              s4 = 0;
                               continue;
                             }
-                            if (s6[0] === 3 && (!o4 || s6[1] > o4[0] && s6[1] < o4[3])) {
-                              i4.label = s6[1];
+                            if (i6[0] === 3 && (!o4 || i6[1] > o4[0] && i6[1] < o4[3])) {
+                              s4.label = i6[1];
                               break;
                             }
-                            if (s6[0] === 6 && i4.label < o4[1]) {
-                              i4.label = o4[1], o4 = s6;
+                            if (i6[0] === 6 && s4.label < o4[1]) {
+                              s4.label = o4[1], o4 = i6;
                               break;
                             }
-                            if (o4 && i4.label < o4[2]) {
-                              i4.label = o4[2], i4.ops.push(s6);
+                            if (o4 && s4.label < o4[2]) {
+                              s4.label = o4[2], s4.ops.push(i6);
                               break;
                             }
-                            o4[2] && i4.ops.pop(), i4.trys.pop();
+                            o4[2] && s4.ops.pop(), s4.trys.pop();
                             continue;
                         }
-                        s6 = t4.call(e5, i4);
+                        i6 = t4.call(e5, s4);
                       } catch (e6) {
-                        s6 = [6, e6], n3 = 0;
+                        i6 = [6, e6], n3 = 0;
                       } finally {
                         r4 = o4 = 0;
                       }
-                    if (5 & s6[0])
-                      throw s6[1];
-                    return { value: s6[0] ? s6[1] : void 0, done: true };
-                  }([s5, a5]);
+                    if (5 & i6[0])
+                      throw i6[1];
+                    return { value: i6[0] ? i6[1] : void 0, done: true };
+                  }([i5, a5]);
                 };
               }
             }, K3 = function(e5) {
@@ -7196,22 +7202,22 @@ var require_algosdk_min = __commonJS({
             }, q3 = function(e5, t4, r4) {
               if (!Symbol.asyncIterator)
                 throw new TypeError("Symbol.asyncIterator is not defined.");
-              var n3, o4 = r4.apply(e5, t4 || []), s4 = [];
-              return n3 = {}, i4("next"), i4("throw"), i4("return"), n3[Symbol.asyncIterator] = function() {
+              var n3, o4 = r4.apply(e5, t4 || []), i4 = [];
+              return n3 = {}, s4("next"), s4("throw"), s4("return"), n3[Symbol.asyncIterator] = function() {
                 return this;
               }, n3;
-              function i4(e6) {
+              function s4(e6) {
                 o4[e6] && (n3[e6] = function(t5) {
                   return new Promise(function(r5, n4) {
-                    s4.push([e6, t5, r5, n4]) > 1 || a4(e6, t5);
+                    i4.push([e6, t5, r5, n4]) > 1 || a4(e6, t5);
                   });
                 });
               }
               function a4(e6, t5) {
                 try {
-                  (r5 = o4[e6](t5)).value instanceof K3 ? Promise.resolve(r5.value.v).then(c4, u4) : l4(s4[0][2], r5);
+                  (r5 = o4[e6](t5)).value instanceof K3 ? Promise.resolve(r5.value.v).then(c4, u4) : l4(i4[0][2], r5);
                 } catch (e7) {
-                  l4(s4[0][3], e7);
+                  l4(i4[0][3], e7);
                 }
                 var r5;
               }
@@ -7222,7 +7228,7 @@ var require_algosdk_min = __commonJS({
                 a4("throw", e6);
               }
               function l4(e6, t5) {
-                e6(t5), s4.shift(), s4.length && a4(s4[0][0], s4[0][1]);
+                e6(t5), i4.shift(), i4.length && a4(i4[0][0], i4[0][1]);
               }
             };
             function V2(e5) {
@@ -7233,24 +7239,24 @@ var require_algosdk_min = __commonJS({
               return e5[Symbol.asyncIterator] != null ? e5 : function(e6) {
                 return q3(this, arguments, function() {
                   var t4, r4, n3, o4;
-                  return G2(this, function(s4) {
-                    switch (s4.label) {
+                  return G2(this, function(i4) {
+                    switch (i4.label) {
                       case 0:
-                        t4 = e6.getReader(), s4.label = 1;
+                        t4 = e6.getReader(), i4.label = 1;
                       case 1:
-                        s4.trys.push([1, , 9, 10]), s4.label = 2;
+                        i4.trys.push([1, , 9, 10]), i4.label = 2;
                       case 2:
                         return [4, K3(t4.read())];
                       case 3:
-                        return r4 = s4.sent(), n3 = r4.done, o4 = r4.value, n3 ? [4, K3(void 0)] : [3, 5];
+                        return r4 = i4.sent(), n3 = r4.done, o4 = r4.value, n3 ? [4, K3(void 0)] : [3, 5];
                       case 4:
-                        return [2, s4.sent()];
+                        return [2, i4.sent()];
                       case 5:
                         return V2(o4), [4, K3(o4)];
                       case 6:
-                        return [4, s4.sent()];
+                        return [4, i4.sent()];
                       case 7:
-                        return s4.sent(), [3, 2];
+                        return i4.sent(), [3, 2];
                       case 8:
                         return [3, 10];
                       case 9:
@@ -7264,92 +7270,92 @@ var require_algosdk_min = __commonJS({
             }
             function W2(e5, t4) {
               return t4 === void 0 && (t4 = M3), function(e6, t5, r4, n3) {
-                return new (r4 || (r4 = Promise))(function(o4, s4) {
-                  function i4(e7) {
+                return new (r4 || (r4 = Promise))(function(o4, i4) {
+                  function s4(e7) {
                     try {
                       c4(n3.next(e7));
                     } catch (e8) {
-                      s4(e8);
+                      i4(e8);
                     }
                   }
                   function a4(e7) {
                     try {
                       c4(n3.throw(e7));
                     } catch (e8) {
-                      s4(e8);
+                      i4(e8);
                     }
                   }
                   function c4(e7) {
                     var t6;
                     e7.done ? o4(e7.value) : (t6 = e7.value, t6 instanceof r4 ? t6 : new r4(function(e8) {
                       e8(t6);
-                    })).then(i4, a4);
+                    })).then(s4, a4);
                   }
                   c4((n3 = n3.apply(e6, t5 || [])).next());
                 });
               }(this, void 0, void 0, function() {
                 var r4;
                 return function(e6, t5) {
-                  var r5, n3, o4, s4, i4 = { label: 0, sent: function() {
+                  var r5, n3, o4, i4, s4 = { label: 0, sent: function() {
                     if (1 & o4[0])
                       throw o4[1];
                     return o4[1];
                   }, trys: [], ops: [] };
-                  return s4 = { next: a4(0), throw: a4(1), return: a4(2) }, typeof Symbol == "function" && (s4[Symbol.iterator] = function() {
+                  return i4 = { next: a4(0), throw: a4(1), return: a4(2) }, typeof Symbol == "function" && (i4[Symbol.iterator] = function() {
                     return this;
-                  }), s4;
-                  function a4(s5) {
+                  }), i4;
+                  function a4(i5) {
                     return function(a5) {
-                      return function(s6) {
+                      return function(i6) {
                         if (r5)
                           throw new TypeError("Generator is already executing.");
-                        for (; i4; )
+                        for (; s4; )
                           try {
-                            if (r5 = 1, n3 && (o4 = 2 & s6[0] ? n3.return : s6[0] ? n3.throw || ((o4 = n3.return) && o4.call(n3), 0) : n3.next) && !(o4 = o4.call(n3, s6[1])).done)
+                            if (r5 = 1, n3 && (o4 = 2 & i6[0] ? n3.return : i6[0] ? n3.throw || ((o4 = n3.return) && o4.call(n3), 0) : n3.next) && !(o4 = o4.call(n3, i6[1])).done)
                               return o4;
-                            switch (n3 = 0, o4 && (s6 = [2 & s6[0], o4.value]), s6[0]) {
+                            switch (n3 = 0, o4 && (i6 = [2 & i6[0], o4.value]), i6[0]) {
                               case 0:
                               case 1:
-                                o4 = s6;
+                                o4 = i6;
                                 break;
                               case 4:
-                                return i4.label++, { value: s6[1], done: false };
+                                return s4.label++, { value: i6[1], done: false };
                               case 5:
-                                i4.label++, n3 = s6[1], s6 = [0];
+                                s4.label++, n3 = i6[1], i6 = [0];
                                 continue;
                               case 7:
-                                s6 = i4.ops.pop(), i4.trys.pop();
+                                i6 = s4.ops.pop(), s4.trys.pop();
                                 continue;
                               default:
-                                if (!((o4 = (o4 = i4.trys).length > 0 && o4[o4.length - 1]) || s6[0] !== 6 && s6[0] !== 2)) {
-                                  i4 = 0;
+                                if (!((o4 = (o4 = s4.trys).length > 0 && o4[o4.length - 1]) || i6[0] !== 6 && i6[0] !== 2)) {
+                                  s4 = 0;
                                   continue;
                                 }
-                                if (s6[0] === 3 && (!o4 || s6[1] > o4[0] && s6[1] < o4[3])) {
-                                  i4.label = s6[1];
+                                if (i6[0] === 3 && (!o4 || i6[1] > o4[0] && i6[1] < o4[3])) {
+                                  s4.label = i6[1];
                                   break;
                                 }
-                                if (s6[0] === 6 && i4.label < o4[1]) {
-                                  i4.label = o4[1], o4 = s6;
+                                if (i6[0] === 6 && s4.label < o4[1]) {
+                                  s4.label = o4[1], o4 = i6;
                                   break;
                                 }
-                                if (o4 && i4.label < o4[2]) {
-                                  i4.label = o4[2], i4.ops.push(s6);
+                                if (o4 && s4.label < o4[2]) {
+                                  s4.label = o4[2], s4.ops.push(i6);
                                   break;
                                 }
-                                o4[2] && i4.ops.pop(), i4.trys.pop();
+                                o4[2] && s4.ops.pop(), s4.trys.pop();
                                 continue;
                             }
-                            s6 = t5.call(e6, i4);
+                            i6 = t5.call(e6, s4);
                           } catch (e7) {
-                            s6 = [6, e7], n3 = 0;
+                            i6 = [6, e7], n3 = 0;
                           } finally {
                             r5 = o4 = 0;
                           }
-                        if (5 & s6[0])
-                          throw s6[1];
-                        return { value: s6[0] ? s6[1] : void 0, done: true };
-                      }([s5, a5]);
+                        if (5 & i6[0])
+                          throw i6[1];
+                        return { value: i6[0] ? i6[1] : void 0, done: true };
+                      }([i5, a5]);
                     };
                   }
                 }(this, function(n3) {
@@ -7374,19 +7380,19 @@ var require_algosdk_min = __commonJS({
             var t4 = c3(e4), r4 = t4[0], n3 = t4[1];
             return 3 * (r4 + n3) / 4 - n3;
           }, t3.toByteArray = function(e4) {
-            var t4, r4, s4 = c3(e4), i4 = s4[0], a4 = s4[1], u4 = new o3(function(e5, t5, r5) {
+            var t4, r4, i4 = c3(e4), s4 = i4[0], a4 = i4[1], u4 = new o3(function(e5, t5, r5) {
               return 3 * (t5 + r5) / 4 - r5;
-            }(0, i4, a4)), l3 = 0, h3 = a4 > 0 ? i4 - 4 : i4;
+            }(0, s4, a4)), l3 = 0, h3 = a4 > 0 ? s4 - 4 : s4;
             for (r4 = 0; r4 < h3; r4 += 4)
               t4 = n2[e4.charCodeAt(r4)] << 18 | n2[e4.charCodeAt(r4 + 1)] << 12 | n2[e4.charCodeAt(r4 + 2)] << 6 | n2[e4.charCodeAt(r4 + 3)], u4[l3++] = t4 >> 16 & 255, u4[l3++] = t4 >> 8 & 255, u4[l3++] = 255 & t4;
             return a4 === 2 && (t4 = n2[e4.charCodeAt(r4)] << 2 | n2[e4.charCodeAt(r4 + 1)] >> 4, u4[l3++] = 255 & t4), a4 === 1 && (t4 = n2[e4.charCodeAt(r4)] << 10 | n2[e4.charCodeAt(r4 + 1)] << 4 | n2[e4.charCodeAt(r4 + 2)] >> 2, u4[l3++] = t4 >> 8 & 255, u4[l3++] = 255 & t4), u4;
           }, t3.fromByteArray = function(e4) {
-            for (var t4, n3 = e4.length, o4 = n3 % 3, s4 = [], i4 = 16383, a4 = 0, c4 = n3 - o4; a4 < c4; a4 += i4)
-              s4.push(u3(e4, a4, a4 + i4 > c4 ? c4 : a4 + i4));
-            return o4 === 1 ? (t4 = e4[n3 - 1], s4.push(r3[t4 >> 2] + r3[t4 << 4 & 63] + "==")) : o4 === 2 && (t4 = (e4[n3 - 2] << 8) + e4[n3 - 1], s4.push(r3[t4 >> 10] + r3[t4 >> 4 & 63] + r3[t4 << 2 & 63] + "=")), s4.join("");
+            for (var t4, n3 = e4.length, o4 = n3 % 3, i4 = [], s4 = 16383, a4 = 0, c4 = n3 - o4; a4 < c4; a4 += s4)
+              i4.push(u3(e4, a4, a4 + s4 > c4 ? c4 : a4 + s4));
+            return o4 === 1 ? (t4 = e4[n3 - 1], i4.push(r3[t4 >> 2] + r3[t4 << 4 & 63] + "==")) : o4 === 2 && (t4 = (e4[n3 - 2] << 8) + e4[n3 - 1], i4.push(r3[t4 >> 10] + r3[t4 >> 4 & 63] + r3[t4 << 2 & 63] + "=")), i4.join("");
           };
-          for (var r3 = [], n2 = [], o3 = typeof Uint8Array != "undefined" ? Uint8Array : Array, s3 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", i3 = 0, a3 = s3.length; i3 < a3; ++i3)
-            r3[i3] = s3[i3], n2[s3.charCodeAt(i3)] = i3;
+          for (var r3 = [], n2 = [], o3 = typeof Uint8Array != "undefined" ? Uint8Array : Array, i3 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", s3 = 0, a3 = i3.length; s3 < a3; ++s3)
+            r3[s3] = i3[s3], n2[i3.charCodeAt(s3)] = s3;
           function c3(e4) {
             var t4 = e4.length;
             if (t4 % 4 > 0)
@@ -7395,45 +7401,45 @@ var require_algosdk_min = __commonJS({
             return r4 === -1 && (r4 = t4), [r4, r4 === t4 ? 0 : 4 - r4 % 4];
           }
           function u3(e4, t4, n3) {
-            for (var o4, s4, i4 = [], a4 = t4; a4 < n3; a4 += 3)
-              o4 = (e4[a4] << 16 & 16711680) + (e4[a4 + 1] << 8 & 65280) + (255 & e4[a4 + 2]), i4.push(r3[(s4 = o4) >> 18 & 63] + r3[s4 >> 12 & 63] + r3[s4 >> 6 & 63] + r3[63 & s4]);
-            return i4.join("");
+            for (var o4, i4, s4 = [], a4 = t4; a4 < n3; a4 += 3)
+              o4 = (e4[a4] << 16 & 16711680) + (e4[a4 + 1] << 8 & 65280) + (255 & e4[a4 + 2]), s4.push(r3[(i4 = o4) >> 18 & 63] + r3[i4 >> 12 & 63] + r3[i4 >> 6 & 63] + r3[63 & i4]);
+            return s4.join("");
           }
           n2["-".charCodeAt(0)] = 62, n2["_".charCodeAt(0)] = 63;
         }, 5117: function(e3, t3, r3) {
           var n2;
           !function(o3) {
             "use strict";
-            var s3, i3 = /^-?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i, a3 = Math.ceil, c3 = Math.floor, u3 = "[BigNumber Error] ", l3 = u3 + "Number primitive has more than 15 significant digits: ", h3 = 1e14, p3 = 14, f3 = 9007199254740991, d3 = [1, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10, 1e11, 1e12, 1e13], g3 = 1e7, y3 = 1e9;
+            var i3, s3 = /^-?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i, a3 = Math.ceil, c3 = Math.floor, u3 = "[BigNumber Error] ", l3 = u3 + "Number primitive has more than 15 significant digits: ", h3 = 1e14, p3 = 14, f3 = 9007199254740991, d3 = [1, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10, 1e11, 1e12, 1e13], g3 = 1e7, y3 = 1e9;
             function m3(e4) {
               var t4 = 0 | e4;
               return e4 > 0 || e4 === t4 ? t4 : t4 - 1;
             }
             function b2(e4) {
-              for (var t4, r4, n3 = 1, o4 = e4.length, s4 = e4[0] + ""; n3 < o4; ) {
+              for (var t4, r4, n3 = 1, o4 = e4.length, i4 = e4[0] + ""; n3 < o4; ) {
                 for (t4 = e4[n3++] + "", r4 = p3 - t4.length; r4--; t4 = "0" + t4)
                   ;
-                s4 += t4;
+                i4 += t4;
               }
-              for (o4 = s4.length; s4.charCodeAt(--o4) === 48; )
+              for (o4 = i4.length; i4.charCodeAt(--o4) === 48; )
                 ;
-              return s4.slice(0, o4 + 1 || 1);
+              return i4.slice(0, o4 + 1 || 1);
             }
             function A4(e4, t4) {
-              var r4, n3, o4 = e4.c, s4 = t4.c, i4 = e4.s, a4 = t4.s, c4 = e4.e, u4 = t4.e;
-              if (!i4 || !a4)
+              var r4, n3, o4 = e4.c, i4 = t4.c, s4 = e4.s, a4 = t4.s, c4 = e4.e, u4 = t4.e;
+              if (!s4 || !a4)
                 return null;
-              if (r4 = o4 && !o4[0], n3 = s4 && !s4[0], r4 || n3)
-                return r4 ? n3 ? 0 : -a4 : i4;
-              if (i4 != a4)
-                return i4;
-              if (r4 = i4 < 0, n3 = c4 == u4, !o4 || !s4)
+              if (r4 = o4 && !o4[0], n3 = i4 && !i4[0], r4 || n3)
+                return r4 ? n3 ? 0 : -a4 : s4;
+              if (s4 != a4)
+                return s4;
+              if (r4 = s4 < 0, n3 = c4 == u4, !o4 || !i4)
                 return n3 ? 0 : !o4 ^ r4 ? 1 : -1;
               if (!n3)
                 return c4 > u4 ^ r4 ? 1 : -1;
-              for (a4 = (c4 = o4.length) < (u4 = s4.length) ? c4 : u4, i4 = 0; i4 < a4; i4++)
-                if (o4[i4] != s4[i4])
-                  return o4[i4] > s4[i4] ^ r4 ? 1 : -1;
+              for (a4 = (c4 = o4.length) < (u4 = i4.length) ? c4 : u4, s4 = 0; s4 < a4; s4++)
+                if (o4[s4] != i4[s4])
+                  return o4[s4] > i4[s4] ^ r4 ? 1 : -1;
               return c4 == u4 ? 0 : c4 > u4 ^ r4 ? 1 : -1;
             }
             function w4(e4, t4, r4, n3) {
@@ -7461,10 +7467,10 @@ var require_algosdk_min = __commonJS({
                 t4 < n3 && (e4 = e4.slice(0, t4) + "." + e4.slice(t4));
               return e4;
             }
-            (s3 = function e4(t4) {
-              var r4, n3, o4, s4, E4, T4, _4, B2, U2, k3, I3 = G2.prototype = { constructor: G2, toString: null, valueOf: null }, C3 = new G2(1), R2 = 20, O2 = 4, D3 = -7, N3 = 21, P3 = -1e7, L3 = 1e7, F3 = false, z3 = 1, j3 = 0, M3 = { prefix: "", groupSize: 3, secondaryGroupSize: 0, groupSeparator: ",", decimalSeparator: ".", fractionGroupSize: 0, fractionGroupSeparator: "\xA0", suffix: "" }, H3 = "0123456789abcdefghijklmnopqrstuvwxyz";
+            (i3 = function e4(t4) {
+              var r4, n3, o4, i4, E4, T4, _4, B2, U2, k3, I3 = G2.prototype = { constructor: G2, toString: null, valueOf: null }, C3 = new G2(1), R2 = 20, O2 = 4, D3 = -7, N3 = 21, P3 = -1e7, L3 = 1e7, F3 = false, z3 = 1, j3 = 0, M3 = { prefix: "", groupSize: 3, secondaryGroupSize: 0, groupSeparator: ",", decimalSeparator: ".", fractionGroupSize: 0, fractionGroupSeparator: "\xA0", suffix: "" }, H3 = "0123456789abcdefghijklmnopqrstuvwxyz";
               function G2(e5, t5) {
-                var r5, s5, a4, u4, h4, d4, g4, y4, m4 = this;
+                var r5, i5, a4, u4, h4, d4, g4, y4, m4 = this;
                 if (!(m4 instanceof G2))
                   return new G2(e5, t5);
                 if (t5 == null) {
@@ -7478,7 +7484,7 @@ var require_algosdk_min = __commonJS({
                     }
                     y4 = String(e5);
                   } else {
-                    if (!i3.test(y4 = String(e5)))
+                    if (!s3.test(y4 = String(e5)))
                       return o4(m4, y4, d4);
                     m4.s = y4.charCodeAt(0) == 45 ? (y4 = y4.slice(1), -1) : 1;
                   }
@@ -7494,8 +7500,8 @@ var require_algosdk_min = __commonJS({
                   } else
                     m4.s = y4.charCodeAt(0) === 45 ? (y4 = y4.slice(1), -1) : 1;
                   for (r5 = H3.slice(0, t5), u4 = h4 = 0, g4 = y4.length; h4 < g4; h4++)
-                    if (r5.indexOf(s5 = y4.charAt(h4)) < 0) {
-                      if (s5 == ".") {
+                    if (r5.indexOf(i5 = y4.charAt(h4)) < 0) {
+                      if (i5 == ".") {
                         if (h4 > u4) {
                           u4 = g4;
                           continue;
@@ -7534,21 +7540,21 @@ var require_algosdk_min = __commonJS({
                   m4.c = [m4.e = 0];
               }
               function K3(e5, t5, r5, n4) {
-                var o5, s5, i4, a4, c4;
+                var o5, i5, s4, a4, c4;
                 if (r5 == null ? r5 = O2 : w4(r5, 0, 8), !e5.c)
                   return e5.toString();
-                if (o5 = e5.c[0], i4 = e5.e, t5 == null)
-                  c4 = b2(e5.c), c4 = n4 == 1 || n4 == 2 && (i4 <= D3 || i4 >= N3) ? x3(c4, i4) : S2(c4, i4, "0");
-                else if (s5 = (e5 = $3(new G2(e5), t5, r5)).e, a4 = (c4 = b2(e5.c)).length, n4 == 1 || n4 == 2 && (t5 <= s5 || s5 <= D3)) {
+                if (o5 = e5.c[0], s4 = e5.e, t5 == null)
+                  c4 = b2(e5.c), c4 = n4 == 1 || n4 == 2 && (s4 <= D3 || s4 >= N3) ? x3(c4, s4) : S2(c4, s4, "0");
+                else if (i5 = (e5 = $3(new G2(e5), t5, r5)).e, a4 = (c4 = b2(e5.c)).length, n4 == 1 || n4 == 2 && (t5 <= i5 || i5 <= D3)) {
                   for (; a4 < t5; c4 += "0", a4++)
                     ;
-                  c4 = x3(c4, s5);
-                } else if (t5 -= i4, c4 = S2(c4, s5, "0"), s5 + 1 > a4) {
+                  c4 = x3(c4, i5);
+                } else if (t5 -= s4, c4 = S2(c4, i5, "0"), i5 + 1 > a4) {
                   if (--t5 > 0)
                     for (c4 += "."; t5--; c4 += "0")
                       ;
-                } else if ((t5 += s5 - a4) > 0)
-                  for (s5 + 1 == a4 && (c4 += "."); t5--; c4 += "0")
+                } else if ((t5 += i5 - a4) > 0)
+                  for (i5 + 1 == a4 && (c4 += "."); t5--; c4 += "0")
                     ;
                 return e5.s < 0 && o5 ? "-" + c4 : c4;
               }
@@ -7570,41 +7576,41 @@ var require_algosdk_min = __commonJS({
                 return (r5 = n4 + r5 * p3 - 1) > L3 ? e5.c = e5.e = null : r5 < P3 ? e5.c = [e5.e = 0] : (e5.e = r5, e5.c = t5), e5;
               }
               function $3(e5, t5, r5, n4) {
-                var o5, s5, i4, u4, l4, f4, g4, y4 = e5.c, m4 = d3;
+                var o5, i5, s4, u4, l4, f4, g4, y4 = e5.c, m4 = d3;
                 if (y4) {
                   e: {
                     for (o5 = 1, u4 = y4[0]; u4 >= 10; u4 /= 10, o5++)
                       ;
-                    if ((s5 = t5 - o5) < 0)
-                      s5 += p3, i4 = t5, g4 = (l4 = y4[f4 = 0]) / m4[o5 - i4 - 1] % 10 | 0;
-                    else if ((f4 = a3((s5 + 1) / p3)) >= y4.length) {
+                    if ((i5 = t5 - o5) < 0)
+                      i5 += p3, s4 = t5, g4 = (l4 = y4[f4 = 0]) / m4[o5 - s4 - 1] % 10 | 0;
+                    else if ((f4 = a3((i5 + 1) / p3)) >= y4.length) {
                       if (!n4)
                         break e;
                       for (; y4.length <= f4; y4.push(0))
                         ;
-                      l4 = g4 = 0, o5 = 1, i4 = (s5 %= p3) - p3 + 1;
+                      l4 = g4 = 0, o5 = 1, s4 = (i5 %= p3) - p3 + 1;
                     } else {
                       for (l4 = u4 = y4[f4], o5 = 1; u4 >= 10; u4 /= 10, o5++)
                         ;
-                      g4 = (i4 = (s5 %= p3) - p3 + o5) < 0 ? 0 : l4 / m4[o5 - i4 - 1] % 10 | 0;
+                      g4 = (s4 = (i5 %= p3) - p3 + o5) < 0 ? 0 : l4 / m4[o5 - s4 - 1] % 10 | 0;
                     }
-                    if (n4 = n4 || t5 < 0 || y4[f4 + 1] != null || (i4 < 0 ? l4 : l4 % m4[o5 - i4 - 1]), n4 = r5 < 4 ? (g4 || n4) && (r5 == 0 || r5 == (e5.s < 0 ? 3 : 2)) : g4 > 5 || g4 == 5 && (r5 == 4 || n4 || r5 == 6 && (s5 > 0 ? i4 > 0 ? l4 / m4[o5 - i4] : 0 : y4[f4 - 1]) % 10 & 1 || r5 == (e5.s < 0 ? 8 : 7)), t5 < 1 || !y4[0])
+                    if (n4 = n4 || t5 < 0 || y4[f4 + 1] != null || (s4 < 0 ? l4 : l4 % m4[o5 - s4 - 1]), n4 = r5 < 4 ? (g4 || n4) && (r5 == 0 || r5 == (e5.s < 0 ? 3 : 2)) : g4 > 5 || g4 == 5 && (r5 == 4 || n4 || r5 == 6 && (i5 > 0 ? s4 > 0 ? l4 / m4[o5 - s4] : 0 : y4[f4 - 1]) % 10 & 1 || r5 == (e5.s < 0 ? 8 : 7)), t5 < 1 || !y4[0])
                       return y4.length = 0, n4 ? (t5 -= e5.e + 1, y4[0] = m4[(p3 - t5 % p3) % p3], e5.e = -t5 || 0) : y4[0] = e5.e = 0, e5;
-                    if (s5 == 0 ? (y4.length = f4, u4 = 1, f4--) : (y4.length = f4 + 1, u4 = m4[p3 - s5], y4[f4] = i4 > 0 ? c3(l4 / m4[o5 - i4] % m4[i4]) * u4 : 0), n4)
+                    if (i5 == 0 ? (y4.length = f4, u4 = 1, f4--) : (y4.length = f4 + 1, u4 = m4[p3 - i5], y4[f4] = s4 > 0 ? c3(l4 / m4[o5 - s4] % m4[s4]) * u4 : 0), n4)
                       for (; ; ) {
                         if (f4 == 0) {
-                          for (s5 = 1, i4 = y4[0]; i4 >= 10; i4 /= 10, s5++)
+                          for (i5 = 1, s4 = y4[0]; s4 >= 10; s4 /= 10, i5++)
                             ;
-                          for (i4 = y4[0] += u4, u4 = 1; i4 >= 10; i4 /= 10, u4++)
+                          for (s4 = y4[0] += u4, u4 = 1; s4 >= 10; s4 /= 10, u4++)
                             ;
-                          s5 != u4 && (e5.e++, y4[0] == h3 && (y4[0] = 1));
+                          i5 != u4 && (e5.e++, y4[0] == h3 && (y4[0] = 1));
                           break;
                         }
                         if (y4[f4] += u4, y4[f4] != h3)
                           break;
                         y4[f4--] = 0, u4 = 1;
                       }
-                    for (s5 = y4.length; y4[--s5] === 0; y4.pop())
+                    for (i5 = y4.length; y4[--i5] === 0; y4.pop())
                       ;
                   }
                   e5.e > L3 ? e5.c = e5.e = null : e5.e < P3 && (e5.c = [e5.e = 0]);
@@ -7655,10 +7661,10 @@ var require_algosdk_min = __commonJS({
                   return false;
                 if (!G2.DEBUG)
                   return true;
-                var t5, r5, n4 = e5.c, o5 = e5.e, s5 = e5.s;
+                var t5, r5, n4 = e5.c, o5 = e5.e, i5 = e5.s;
                 e:
                   if ({}.toString.call(n4) == "[object Array]") {
-                    if ((s5 === 1 || s5 === -1) && o5 >= -y3 && o5 <= y3 && o5 === c3(o5)) {
+                    if ((i5 === 1 || i5 === -1) && o5 >= -y3 && o5 <= y3 && o5 === c3(o5)) {
                       if (n4[0] === 0) {
                         if (o5 === 0 && n4.length === 1)
                           return true;
@@ -7672,44 +7678,44 @@ var require_algosdk_min = __commonJS({
                           return true;
                       }
                     }
-                  } else if (n4 === null && o5 === null && (s5 === null || s5 === 1 || s5 === -1))
+                  } else if (n4 === null && o5 === null && (i5 === null || i5 === 1 || i5 === -1))
                     return true;
                 throw Error(u3 + "Invalid BigNumber: " + e5);
               }, G2.maximum = G2.max = function() {
                 return q3(arguments, I3.lt);
               }, G2.minimum = G2.min = function() {
                 return q3(arguments, I3.gt);
-              }, G2.random = (s4 = 9007199254740992, E4 = Math.random() * s4 & 2097151 ? function() {
-                return c3(Math.random() * s4);
+              }, G2.random = (i4 = 9007199254740992, E4 = Math.random() * i4 & 2097151 ? function() {
+                return c3(Math.random() * i4);
               } : function() {
                 return 8388608 * (1073741824 * Math.random() | 0) + (8388608 * Math.random() | 0);
               }, function(e5) {
-                var t5, r5, n4, o5, s5, i4 = 0, l4 = [], h4 = new G2(C3);
+                var t5, r5, n4, o5, i5, s4 = 0, l4 = [], h4 = new G2(C3);
                 if (e5 == null ? e5 = R2 : w4(e5, 0, y3), o5 = a3(e5 / p3), F3)
                   if (crypto.getRandomValues) {
-                    for (t5 = crypto.getRandomValues(new Uint32Array(o5 *= 2)); i4 < o5; )
-                      (s5 = 131072 * t5[i4] + (t5[i4 + 1] >>> 11)) >= 9e15 ? (r5 = crypto.getRandomValues(new Uint32Array(2)), t5[i4] = r5[0], t5[i4 + 1] = r5[1]) : (l4.push(s5 % 1e14), i4 += 2);
-                    i4 = o5 / 2;
+                    for (t5 = crypto.getRandomValues(new Uint32Array(o5 *= 2)); s4 < o5; )
+                      (i5 = 131072 * t5[s4] + (t5[s4 + 1] >>> 11)) >= 9e15 ? (r5 = crypto.getRandomValues(new Uint32Array(2)), t5[s4] = r5[0], t5[s4 + 1] = r5[1]) : (l4.push(i5 % 1e14), s4 += 2);
+                    s4 = o5 / 2;
                   } else {
                     if (!crypto.randomBytes)
                       throw F3 = false, Error(u3 + "crypto unavailable");
-                    for (t5 = crypto.randomBytes(o5 *= 7); i4 < o5; )
-                      (s5 = 281474976710656 * (31 & t5[i4]) + 1099511627776 * t5[i4 + 1] + 4294967296 * t5[i4 + 2] + 16777216 * t5[i4 + 3] + (t5[i4 + 4] << 16) + (t5[i4 + 5] << 8) + t5[i4 + 6]) >= 9e15 ? crypto.randomBytes(7).copy(t5, i4) : (l4.push(s5 % 1e14), i4 += 7);
-                    i4 = o5 / 7;
+                    for (t5 = crypto.randomBytes(o5 *= 7); s4 < o5; )
+                      (i5 = 281474976710656 * (31 & t5[s4]) + 1099511627776 * t5[s4 + 1] + 4294967296 * t5[s4 + 2] + 16777216 * t5[s4 + 3] + (t5[s4 + 4] << 16) + (t5[s4 + 5] << 8) + t5[s4 + 6]) >= 9e15 ? crypto.randomBytes(7).copy(t5, s4) : (l4.push(i5 % 1e14), s4 += 7);
+                    s4 = o5 / 7;
                   }
                 if (!F3)
-                  for (; i4 < o5; )
-                    (s5 = E4()) < 9e15 && (l4[i4++] = s5 % 1e14);
-                for (o5 = l4[--i4], e5 %= p3, o5 && e5 && (s5 = d3[p3 - e5], l4[i4] = c3(o5 / s5) * s5); l4[i4] === 0; l4.pop(), i4--)
+                  for (; s4 < o5; )
+                    (i5 = E4()) < 9e15 && (l4[s4++] = i5 % 1e14);
+                for (o5 = l4[--s4], e5 %= p3, o5 && e5 && (i5 = d3[p3 - e5], l4[s4] = c3(o5 / i5) * i5); l4[s4] === 0; l4.pop(), s4--)
                   ;
-                if (i4 < 0)
+                if (s4 < 0)
                   l4 = [n4 = 0];
                 else {
                   for (n4 = -1; l4[0] === 0; l4.splice(0, 1), n4 -= p3)
                     ;
-                  for (i4 = 1, s5 = l4[0]; s5 >= 10; s5 /= 10, i4++)
+                  for (s4 = 1, i5 = l4[0]; i5 >= 10; i5 /= 10, s4++)
                     ;
-                  i4 < p3 && (n4 -= p3 - i4);
+                  s4 < p3 && (n4 -= p3 - s4);
                 }
                 return h4.e = n4, h4.c = l4, h4;
               }), G2.sum = function() {
@@ -7719,25 +7725,25 @@ var require_algosdk_min = __commonJS({
               }, n3 = function() {
                 var e5 = "0123456789";
                 function t5(e6, t6, r5, n4) {
-                  for (var o5, s5, i4 = [0], a4 = 0, c4 = e6.length; a4 < c4; ) {
-                    for (s5 = i4.length; s5--; i4[s5] *= t6)
+                  for (var o5, i5, s4 = [0], a4 = 0, c4 = e6.length; a4 < c4; ) {
+                    for (i5 = s4.length; i5--; s4[i5] *= t6)
                       ;
-                    for (i4[0] += n4.indexOf(e6.charAt(a4++)), o5 = 0; o5 < i4.length; o5++)
-                      i4[o5] > r5 - 1 && (i4[o5 + 1] == null && (i4[o5 + 1] = 0), i4[o5 + 1] += i4[o5] / r5 | 0, i4[o5] %= r5);
+                    for (s4[0] += n4.indexOf(e6.charAt(a4++)), o5 = 0; o5 < s4.length; o5++)
+                      s4[o5] > r5 - 1 && (s4[o5 + 1] == null && (s4[o5 + 1] = 0), s4[o5 + 1] += s4[o5] / r5 | 0, s4[o5] %= r5);
                   }
-                  return i4.reverse();
+                  return s4.reverse();
                 }
-                return function(n4, o5, s5, i4, a4) {
+                return function(n4, o5, i5, s4, a4) {
                   var c4, u4, l4, h4, p4, f4, d4, g4, y4 = n4.indexOf("."), m4 = R2, A5 = O2;
-                  for (y4 >= 0 && (h4 = j3, j3 = 0, n4 = n4.replace(".", ""), f4 = (g4 = new G2(o5)).pow(n4.length - y4), j3 = h4, g4.c = t5(S2(b2(f4.c), f4.e, "0"), 10, s5, e5), g4.e = g4.c.length), l4 = h4 = (d4 = t5(n4, o5, s5, a4 ? (c4 = H3, e5) : (c4 = e5, H3))).length; d4[--h4] == 0; d4.pop())
+                  for (y4 >= 0 && (h4 = j3, j3 = 0, n4 = n4.replace(".", ""), f4 = (g4 = new G2(o5)).pow(n4.length - y4), j3 = h4, g4.c = t5(S2(b2(f4.c), f4.e, "0"), 10, i5, e5), g4.e = g4.c.length), l4 = h4 = (d4 = t5(n4, o5, i5, a4 ? (c4 = H3, e5) : (c4 = e5, H3))).length; d4[--h4] == 0; d4.pop())
                     ;
                   if (!d4[0])
                     return c4.charAt(0);
-                  if (y4 < 0 ? --l4 : (f4.c = d4, f4.e = l4, f4.s = i4, d4 = (f4 = r4(f4, g4, m4, A5, s5)).c, p4 = f4.r, l4 = f4.e), y4 = d4[u4 = l4 + m4 + 1], h4 = s5 / 2, p4 = p4 || u4 < 0 || d4[u4 + 1] != null, p4 = A5 < 4 ? (y4 != null || p4) && (A5 == 0 || A5 == (f4.s < 0 ? 3 : 2)) : y4 > h4 || y4 == h4 && (A5 == 4 || p4 || A5 == 6 && 1 & d4[u4 - 1] || A5 == (f4.s < 0 ? 8 : 7)), u4 < 1 || !d4[0])
+                  if (y4 < 0 ? --l4 : (f4.c = d4, f4.e = l4, f4.s = s4, d4 = (f4 = r4(f4, g4, m4, A5, i5)).c, p4 = f4.r, l4 = f4.e), y4 = d4[u4 = l4 + m4 + 1], h4 = i5 / 2, p4 = p4 || u4 < 0 || d4[u4 + 1] != null, p4 = A5 < 4 ? (y4 != null || p4) && (A5 == 0 || A5 == (f4.s < 0 ? 3 : 2)) : y4 > h4 || y4 == h4 && (A5 == 4 || p4 || A5 == 6 && 1 & d4[u4 - 1] || A5 == (f4.s < 0 ? 8 : 7)), u4 < 1 || !d4[0])
                     n4 = p4 ? S2(c4.charAt(1), -m4, c4.charAt(0)) : c4.charAt(0);
                   else {
                     if (d4.length = u4, p4)
-                      for (--s5; ++d4[--u4] > s5; )
+                      for (--i5; ++d4[--u4] > i5; )
                         d4[u4] = 0, u4 || (++l4, d4 = [1].concat(d4));
                     for (h4 = d4.length; !d4[--h4]; )
                       ;
@@ -7749,22 +7755,22 @@ var require_algosdk_min = __commonJS({
                 };
               }(), r4 = function() {
                 function e5(e6, t6, r6) {
-                  var n4, o5, s5, i4, a4 = 0, c4 = e6.length, u4 = t6 % g3, l4 = t6 / g3 | 0;
+                  var n4, o5, i5, s4, a4 = 0, c4 = e6.length, u4 = t6 % g3, l4 = t6 / g3 | 0;
                   for (e6 = e6.slice(); c4--; )
-                    a4 = ((o5 = u4 * (s5 = e6[c4] % g3) + (n4 = l4 * s5 + (i4 = e6[c4] / g3 | 0) * u4) % g3 * g3 + a4) / r6 | 0) + (n4 / g3 | 0) + l4 * i4, e6[c4] = o5 % r6;
+                    a4 = ((o5 = u4 * (i5 = e6[c4] % g3) + (n4 = l4 * i5 + (s4 = e6[c4] / g3 | 0) * u4) % g3 * g3 + a4) / r6 | 0) + (n4 / g3 | 0) + l4 * s4, e6[c4] = o5 % r6;
                   return a4 && (e6 = [a4].concat(e6)), e6;
                 }
                 function t5(e6, t6, r6, n4) {
-                  var o5, s5;
+                  var o5, i5;
                   if (r6 != n4)
-                    s5 = r6 > n4 ? 1 : -1;
+                    i5 = r6 > n4 ? 1 : -1;
                   else
-                    for (o5 = s5 = 0; o5 < r6; o5++)
+                    for (o5 = i5 = 0; o5 < r6; o5++)
                       if (e6[o5] != t6[o5]) {
-                        s5 = e6[o5] > t6[o5] ? 1 : -1;
+                        i5 = e6[o5] > t6[o5] ? 1 : -1;
                         break;
                       }
-                  return s5;
+                  return i5;
                 }
                 function r5(e6, t6, r6, n4) {
                   for (var o5 = 0; r6--; )
@@ -7772,11 +7778,11 @@ var require_algosdk_min = __commonJS({
                   for (; !e6[0] && e6.length > 1; e6.splice(0, 1))
                     ;
                 }
-                return function(n4, o5, s5, i4, a4) {
+                return function(n4, o5, i5, s4, a4) {
                   var u4, l4, f4, d4, g4, y4, b3, A5, w5, v4, x4, S3, E5, T5, _5, B3, U3, k4 = n4.s == o5.s ? 1 : -1, I4 = n4.c, C4 = o5.c;
                   if (!(I4 && I4[0] && C4 && C4[0]))
                     return new G2(n4.s && o5.s && (I4 ? !C4 || I4[0] != C4[0] : C4) ? I4 && I4[0] == 0 || !C4 ? 0 * k4 : k4 / 0 : NaN);
-                  for (w5 = (A5 = new G2(k4)).c = [], k4 = s5 + (l4 = n4.e - o5.e) + 1, a4 || (a4 = h3, l4 = m3(n4.e / p3) - m3(o5.e / p3), k4 = k4 / p3 | 0), f4 = 0; C4[f4] == (I4[f4] || 0); f4++)
+                  for (w5 = (A5 = new G2(k4)).c = [], k4 = i5 + (l4 = n4.e - o5.e) + 1, a4 || (a4 = h3, l4 = m3(n4.e / p3) - m3(o5.e / p3), k4 = k4 / p3 | 0), f4 = 0; C4[f4] == (I4[f4] || 0); f4++)
                     ;
                   if (C4[f4] > (I4[f4] || 0) && l4--, k4 < 0)
                     w5.push(1), d4 = true;
@@ -7803,20 +7809,20 @@ var require_algosdk_min = __commonJS({
                   if (a4 == h3) {
                     for (f4 = 1, k4 = w5[0]; k4 >= 10; k4 /= 10, f4++)
                       ;
-                    $3(A5, s5 + (A5.e = f4 + l4 * p3 - 1) + 1, i4, d4);
+                    $3(A5, i5 + (A5.e = f4 + l4 * p3 - 1) + 1, s4, d4);
                   } else
                     A5.e = l4, A5.r = +d4;
                   return A5;
                 };
               }(), T4 = /^(-?)0([xbo])(?=\w[\w.]*$)/i, _4 = /^([^.]+)\.$/, B2 = /^\.([^.]+)$/, U2 = /^-?(Infinity|NaN)$/, k3 = /^\s*\+(?=[\w.])|^\s+|\s+$/g, o4 = function(e5, t5, r5, n4) {
-                var o5, s5 = r5 ? t5 : t5.replace(k3, "");
-                if (U2.test(s5))
-                  e5.s = isNaN(s5) ? null : s5 < 0 ? -1 : 1;
+                var o5, i5 = r5 ? t5 : t5.replace(k3, "");
+                if (U2.test(i5))
+                  e5.s = isNaN(i5) ? null : i5 < 0 ? -1 : 1;
                 else {
-                  if (!r5 && (s5 = s5.replace(T4, function(e6, t6, r6) {
+                  if (!r5 && (i5 = i5.replace(T4, function(e6, t6, r6) {
                     return o5 = (r6 = r6.toLowerCase()) == "x" ? 16 : r6 == "b" ? 2 : 8, n4 && n4 != o5 ? e6 : t6;
-                  }), n4 && (o5 = n4, s5 = s5.replace(_4, "$1").replace(B2, "0.$1")), t5 != s5))
-                    return new G2(s5, o5);
+                  }), n4 && (o5 = n4, i5 = i5.replace(_4, "$1").replace(B2, "0.$1")), t5 != i5))
+                    return new G2(i5, o5);
                   if (G2.DEBUG)
                     throw Error(u3 + "Not a" + (n4 ? " base " + n4 : "") + " number: " + t5);
                   e5.s = null;
@@ -7828,10 +7834,10 @@ var require_algosdk_min = __commonJS({
               }, I3.comparedTo = function(e5, t5) {
                 return A4(this, new G2(e5, t5));
               }, I3.decimalPlaces = I3.dp = function(e5, t5) {
-                var r5, n4, o5, s5 = this;
+                var r5, n4, o5, i5 = this;
                 if (e5 != null)
-                  return w4(e5, 0, y3), t5 == null ? t5 = O2 : w4(t5, 0, 8), $3(new G2(s5), e5 + s5.e + 1, t5);
-                if (!(r5 = s5.c))
+                  return w4(e5, 0, y3), t5 == null ? t5 = O2 : w4(t5, 0, 8), $3(new G2(i5), e5 + i5.e + 1, t5);
+                if (!(r5 = i5.c))
                   return null;
                 if (n4 = ((o5 = r5.length - 1) - m3(this.e / p3)) * p3, o5 = r5[o5])
                   for (; o5 % 10 == 0; o5 /= 10, n4--)
@@ -7842,25 +7848,25 @@ var require_algosdk_min = __commonJS({
               }, I3.dividedToIntegerBy = I3.idiv = function(e5, t5) {
                 return r4(this, new G2(e5, t5), 0, 1);
               }, I3.exponentiatedBy = I3.pow = function(e5, t5) {
-                var r5, n4, o5, s5, i4, l4, h4, f4, d4 = this;
+                var r5, n4, o5, i5, s4, l4, h4, f4, d4 = this;
                 if ((e5 = new G2(e5)).c && !e5.isInteger())
                   throw Error(u3 + "Exponent not an integer: " + W2(e5));
-                if (t5 != null && (t5 = new G2(t5)), i4 = e5.e > 14, !d4.c || !d4.c[0] || d4.c[0] == 1 && !d4.e && d4.c.length == 1 || !e5.c || !e5.c[0])
-                  return f4 = new G2(Math.pow(+W2(d4), i4 ? 2 - v3(e5) : +W2(e5))), t5 ? f4.mod(t5) : f4;
+                if (t5 != null && (t5 = new G2(t5)), s4 = e5.e > 14, !d4.c || !d4.c[0] || d4.c[0] == 1 && !d4.e && d4.c.length == 1 || !e5.c || !e5.c[0])
+                  return f4 = new G2(Math.pow(+W2(d4), s4 ? 2 - v3(e5) : +W2(e5))), t5 ? f4.mod(t5) : f4;
                 if (l4 = e5.s < 0, t5) {
                   if (t5.c ? !t5.c[0] : !t5.s)
                     return new G2(NaN);
                   (n4 = !l4 && d4.isInteger() && t5.isInteger()) && (d4 = d4.mod(t5));
                 } else {
-                  if (e5.e > 9 && (d4.e > 0 || d4.e < -1 || (d4.e == 0 ? d4.c[0] > 1 || i4 && d4.c[1] >= 24e7 : d4.c[0] < 8e13 || i4 && d4.c[0] <= 9999975e7)))
-                    return s5 = d4.s < 0 && v3(e5) ? -0 : 0, d4.e > -1 && (s5 = 1 / s5), new G2(l4 ? 1 / s5 : s5);
-                  j3 && (s5 = a3(j3 / p3 + 2));
+                  if (e5.e > 9 && (d4.e > 0 || d4.e < -1 || (d4.e == 0 ? d4.c[0] > 1 || s4 && d4.c[1] >= 24e7 : d4.c[0] < 8e13 || s4 && d4.c[0] <= 9999975e7)))
+                    return i5 = d4.s < 0 && v3(e5) ? -0 : 0, d4.e > -1 && (i5 = 1 / i5), new G2(l4 ? 1 / i5 : i5);
+                  j3 && (i5 = a3(j3 / p3 + 2));
                 }
-                for (i4 ? (r5 = new G2(0.5), l4 && (e5.s = 1), h4 = v3(e5)) : h4 = (o5 = Math.abs(+W2(e5))) % 2, f4 = new G2(C3); ; ) {
+                for (s4 ? (r5 = new G2(0.5), l4 && (e5.s = 1), h4 = v3(e5)) : h4 = (o5 = Math.abs(+W2(e5))) % 2, f4 = new G2(C3); ; ) {
                   if (h4) {
                     if (!(f4 = f4.times(d4)).c)
                       break;
-                    s5 ? f4.c.length > s5 && (f4.c.length = s5) : n4 && (f4 = f4.mod(t5));
+                    i5 ? f4.c.length > i5 && (f4.c.length = i5) : n4 && (f4 = f4.mod(t5));
                   }
                   if (o5) {
                     if ((o5 = c3(o5 / 2)) === 0)
@@ -7873,9 +7879,9 @@ var require_algosdk_min = __commonJS({
                       break;
                     h4 = o5 % 2;
                   }
-                  d4 = d4.times(d4), s5 ? d4.c && d4.c.length > s5 && (d4.c.length = s5) : n4 && (d4 = d4.mod(t5));
+                  d4 = d4.times(d4), i5 ? d4.c && d4.c.length > i5 && (d4.c.length = i5) : n4 && (d4 = d4.mod(t5));
                 }
-                return n4 ? f4 : (l4 && (f4 = C3.div(f4)), t5 ? f4.mod(t5) : s5 ? $3(f4, j3, O2, void 0) : f4);
+                return n4 ? f4 : (l4 && (f4 = C3.div(f4)), t5 ? f4.mod(t5) : i5 ? $3(f4, j3, O2, void 0) : f4);
               }, I3.integerValue = function(e5) {
                 var t5 = new G2(this);
                 return e5 == null ? e5 = O2 : w4(e5, 0, 8), $3(t5, t5.e + 1, e5);
@@ -7902,29 +7908,29 @@ var require_algosdk_min = __commonJS({
               }, I3.isZero = function() {
                 return !!this.c && this.c[0] == 0;
               }, I3.minus = function(e5, t5) {
-                var r5, n4, o5, s5, i4 = this, a4 = i4.s;
+                var r5, n4, o5, i5, s4 = this, a4 = s4.s;
                 if (t5 = (e5 = new G2(e5, t5)).s, !a4 || !t5)
                   return new G2(NaN);
                 if (a4 != t5)
-                  return e5.s = -t5, i4.plus(e5);
-                var c4 = i4.e / p3, u4 = e5.e / p3, l4 = i4.c, f4 = e5.c;
+                  return e5.s = -t5, s4.plus(e5);
+                var c4 = s4.e / p3, u4 = e5.e / p3, l4 = s4.c, f4 = e5.c;
                 if (!c4 || !u4) {
                   if (!l4 || !f4)
-                    return l4 ? (e5.s = -t5, e5) : new G2(f4 ? i4 : NaN);
+                    return l4 ? (e5.s = -t5, e5) : new G2(f4 ? s4 : NaN);
                   if (!l4[0] || !f4[0])
-                    return f4[0] ? (e5.s = -t5, e5) : new G2(l4[0] ? i4 : O2 == 3 ? -0 : 0);
+                    return f4[0] ? (e5.s = -t5, e5) : new G2(l4[0] ? s4 : O2 == 3 ? -0 : 0);
                 }
                 if (c4 = m3(c4), u4 = m3(u4), l4 = l4.slice(), a4 = c4 - u4) {
-                  for ((s5 = a4 < 0) ? (a4 = -a4, o5 = l4) : (u4 = c4, o5 = f4), o5.reverse(), t5 = a4; t5--; o5.push(0))
+                  for ((i5 = a4 < 0) ? (a4 = -a4, o5 = l4) : (u4 = c4, o5 = f4), o5.reverse(), t5 = a4; t5--; o5.push(0))
                     ;
                   o5.reverse();
                 } else
-                  for (n4 = (s5 = (a4 = l4.length) < (t5 = f4.length)) ? a4 : t5, a4 = t5 = 0; t5 < n4; t5++)
+                  for (n4 = (i5 = (a4 = l4.length) < (t5 = f4.length)) ? a4 : t5, a4 = t5 = 0; t5 < n4; t5++)
                     if (l4[t5] != f4[t5]) {
-                      s5 = l4[t5] < f4[t5];
+                      i5 = l4[t5] < f4[t5];
                       break;
                     }
-                if (s5 && (o5 = l4, l4 = f4, f4 = o5, e5.s = -e5.s), (t5 = (n4 = f4.length) - (r5 = l4.length)) > 0)
+                if (i5 && (o5 = l4, l4 = f4, f4 = o5, e5.s = -e5.s), (t5 = (n4 = f4.length) - (r5 = l4.length)) > 0)
                   for (; t5--; l4[r5++] = 0)
                     ;
                 for (t5 = h3 - 1; n4 > a4; ) {
@@ -7939,18 +7945,18 @@ var require_algosdk_min = __commonJS({
                   ;
                 return l4[0] ? V2(e5, l4, u4) : (e5.s = O2 == 3 ? -1 : 1, e5.c = [e5.e = 0], e5);
               }, I3.modulo = I3.mod = function(e5, t5) {
-                var n4, o5, s5 = this;
-                return e5 = new G2(e5, t5), !s5.c || !e5.s || e5.c && !e5.c[0] ? new G2(NaN) : !e5.c || s5.c && !s5.c[0] ? new G2(s5) : (z3 == 9 ? (o5 = e5.s, e5.s = 1, n4 = r4(s5, e5, 0, 3), e5.s = o5, n4.s *= o5) : n4 = r4(s5, e5, 0, z3), (e5 = s5.minus(n4.times(e5))).c[0] || z3 != 1 || (e5.s = s5.s), e5);
+                var n4, o5, i5 = this;
+                return e5 = new G2(e5, t5), !i5.c || !e5.s || e5.c && !e5.c[0] ? new G2(NaN) : !e5.c || i5.c && !i5.c[0] ? new G2(i5) : (z3 == 9 ? (o5 = e5.s, e5.s = 1, n4 = r4(i5, e5, 0, 3), e5.s = o5, n4.s *= o5) : n4 = r4(i5, e5, 0, z3), (e5 = i5.minus(n4.times(e5))).c[0] || z3 != 1 || (e5.s = i5.s), e5);
               }, I3.multipliedBy = I3.times = function(e5, t5) {
-                var r5, n4, o5, s5, i4, a4, c4, u4, l4, f4, d4, y4, b3, A5, w5, v4 = this, x4 = v4.c, S3 = (e5 = new G2(e5, t5)).c;
+                var r5, n4, o5, i5, s4, a4, c4, u4, l4, f4, d4, y4, b3, A5, w5, v4 = this, x4 = v4.c, S3 = (e5 = new G2(e5, t5)).c;
                 if (!(x4 && S3 && x4[0] && S3[0]))
                   return !v4.s || !e5.s || x4 && !x4[0] && !S3 || S3 && !S3[0] && !x4 ? e5.c = e5.e = e5.s = null : (e5.s *= v4.s, x4 && S3 ? (e5.c = [0], e5.e = 0) : e5.c = e5.e = null), e5;
                 for (n4 = m3(v4.e / p3) + m3(e5.e / p3), e5.s *= v4.s, (c4 = x4.length) < (f4 = S3.length) && (b3 = x4, x4 = S3, S3 = b3, o5 = c4, c4 = f4, f4 = o5), o5 = c4 + f4, b3 = []; o5--; b3.push(0))
                   ;
                 for (A5 = h3, w5 = g3, o5 = f4; --o5 >= 0; ) {
-                  for (r5 = 0, d4 = S3[o5] % w5, y4 = S3[o5] / w5 | 0, s5 = o5 + (i4 = c4); s5 > o5; )
-                    r5 = ((u4 = d4 * (u4 = x4[--i4] % w5) + (a4 = y4 * u4 + (l4 = x4[i4] / w5 | 0) * d4) % w5 * w5 + b3[s5] + r5) / A5 | 0) + (a4 / w5 | 0) + y4 * l4, b3[s5--] = u4 % A5;
-                  b3[s5] = r5;
+                  for (r5 = 0, d4 = S3[o5] % w5, y4 = S3[o5] / w5 | 0, i5 = o5 + (s4 = c4); i5 > o5; )
+                    r5 = ((u4 = d4 * (u4 = x4[--s4] % w5) + (a4 = y4 * u4 + (l4 = x4[s4] / w5 | 0) * d4) % w5 * w5 + b3[i5] + r5) / A5 | 0) + (a4 / w5 | 0) + y4 * l4, b3[i5--] = u4 % A5;
+                  b3[i5] = r5;
                 }
                 return r5 ? ++n4 : b3.splice(0, 1), V2(e5, b3, n4);
               }, I3.negated = function() {
@@ -7962,26 +7968,26 @@ var require_algosdk_min = __commonJS({
                   return new G2(NaN);
                 if (o5 != t5)
                   return e5.s = -t5, n4.minus(e5);
-                var s5 = n4.e / p3, i4 = e5.e / p3, a4 = n4.c, c4 = e5.c;
-                if (!s5 || !i4) {
+                var i5 = n4.e / p3, s4 = e5.e / p3, a4 = n4.c, c4 = e5.c;
+                if (!i5 || !s4) {
                   if (!a4 || !c4)
                     return new G2(o5 / 0);
                   if (!a4[0] || !c4[0])
                     return c4[0] ? e5 : new G2(a4[0] ? n4 : 0 * o5);
                 }
-                if (s5 = m3(s5), i4 = m3(i4), a4 = a4.slice(), o5 = s5 - i4) {
-                  for (o5 > 0 ? (i4 = s5, r5 = c4) : (o5 = -o5, r5 = a4), r5.reverse(); o5--; r5.push(0))
+                if (i5 = m3(i5), s4 = m3(s4), a4 = a4.slice(), o5 = i5 - s4) {
+                  for (o5 > 0 ? (s4 = i5, r5 = c4) : (o5 = -o5, r5 = a4), r5.reverse(); o5--; r5.push(0))
                     ;
                   r5.reverse();
                 }
                 for ((o5 = a4.length) - (t5 = c4.length) < 0 && (r5 = c4, c4 = a4, a4 = r5, t5 = o5), o5 = 0; t5; )
                   o5 = (a4[--t5] = a4[t5] + c4[t5] + o5) / h3 | 0, a4[t5] = h3 === a4[t5] ? 0 : a4[t5] % h3;
-                return o5 && (a4 = [o5].concat(a4), ++i4), V2(e5, a4, i4);
+                return o5 && (a4 = [o5].concat(a4), ++s4), V2(e5, a4, s4);
               }, I3.precision = I3.sd = function(e5, t5) {
-                var r5, n4, o5, s5 = this;
+                var r5, n4, o5, i5 = this;
                 if (e5 != null && e5 !== !!e5)
-                  return w4(e5, 1, y3), t5 == null ? t5 = O2 : w4(t5, 0, 8), $3(new G2(s5), e5, t5);
-                if (!(r5 = s5.c))
+                  return w4(e5, 1, y3), t5 == null ? t5 = O2 : w4(t5, 0, 8), $3(new G2(i5), e5, t5);
+                if (!(r5 = i5.c))
                   return null;
                 if (n4 = (o5 = r5.length - 1) * p3 + 1, o5 = r5[o5]) {
                   for (; o5 % 10 == 0; o5 /= 10, n4--)
@@ -7989,22 +7995,22 @@ var require_algosdk_min = __commonJS({
                   for (o5 = r5[0]; o5 >= 10; o5 /= 10, n4++)
                     ;
                 }
-                return e5 && s5.e + 1 > n4 && (n4 = s5.e + 1), n4;
+                return e5 && i5.e + 1 > n4 && (n4 = i5.e + 1), n4;
               }, I3.shiftedBy = function(e5) {
                 return w4(e5, -9007199254740991, f3), this.times("1e" + e5);
               }, I3.squareRoot = I3.sqrt = function() {
-                var e5, t5, n4, o5, s5, i4 = this, a4 = i4.c, c4 = i4.s, u4 = i4.e, l4 = R2 + 4, h4 = new G2("0.5");
+                var e5, t5, n4, o5, i5, s4 = this, a4 = s4.c, c4 = s4.s, u4 = s4.e, l4 = R2 + 4, h4 = new G2("0.5");
                 if (c4 !== 1 || !a4 || !a4[0])
-                  return new G2(!c4 || c4 < 0 && (!a4 || a4[0]) ? NaN : a4 ? i4 : 1 / 0);
-                if ((c4 = Math.sqrt(+W2(i4))) == 0 || c4 == 1 / 0 ? (((t5 = b2(a4)).length + u4) % 2 == 0 && (t5 += "0"), c4 = Math.sqrt(+t5), u4 = m3((u4 + 1) / 2) - (u4 < 0 || u4 % 2), n4 = new G2(t5 = c4 == 1 / 0 ? "5e" + u4 : (t5 = c4.toExponential()).slice(0, t5.indexOf("e") + 1) + u4)) : n4 = new G2(c4 + ""), n4.c[0]) {
+                  return new G2(!c4 || c4 < 0 && (!a4 || a4[0]) ? NaN : a4 ? s4 : 1 / 0);
+                if ((c4 = Math.sqrt(+W2(s4))) == 0 || c4 == 1 / 0 ? (((t5 = b2(a4)).length + u4) % 2 == 0 && (t5 += "0"), c4 = Math.sqrt(+t5), u4 = m3((u4 + 1) / 2) - (u4 < 0 || u4 % 2), n4 = new G2(t5 = c4 == 1 / 0 ? "5e" + u4 : (t5 = c4.toExponential()).slice(0, t5.indexOf("e") + 1) + u4)) : n4 = new G2(c4 + ""), n4.c[0]) {
                   for ((c4 = (u4 = n4.e) + l4) < 3 && (c4 = 0); ; )
-                    if (s5 = n4, n4 = h4.times(s5.plus(r4(i4, s5, l4, 1))), b2(s5.c).slice(0, c4) === (t5 = b2(n4.c)).slice(0, c4)) {
+                    if (i5 = n4, n4 = h4.times(i5.plus(r4(s4, i5, l4, 1))), b2(i5.c).slice(0, c4) === (t5 = b2(n4.c)).slice(0, c4)) {
                       if (n4.e < u4 && --c4, (t5 = t5.slice(c4 - 3, c4 + 1)) != "9999" && (o5 || t5 != "4999")) {
-                        +t5 && (+t5.slice(1) || t5.charAt(0) != "5") || ($3(n4, n4.e + R2 + 2, 1), e5 = !n4.times(n4).eq(i4));
+                        +t5 && (+t5.slice(1) || t5.charAt(0) != "5") || ($3(n4, n4.e + R2 + 2, 1), e5 = !n4.times(n4).eq(s4));
                         break;
                       }
-                      if (!o5 && ($3(s5, s5.e + R2 + 2, 0), s5.times(s5).eq(i4))) {
-                        n4 = s5;
+                      if (!o5 && ($3(i5, i5.e + R2 + 2, 0), i5.times(i5).eq(s4))) {
+                        n4 = i5;
                         break;
                       }
                       l4 += 4, c4 += 4, o5 = 1;
@@ -8022,47 +8028,47 @@ var require_algosdk_min = __commonJS({
                 else if (typeof r5 != "object")
                   throw Error(u3 + "Argument not an object: " + r5);
                 if (n4 = o5.toFixed(e5, t5), o5.c) {
-                  var s5, i4 = n4.split("."), a4 = +r5.groupSize, c4 = +r5.secondaryGroupSize, l4 = r5.groupSeparator || "", h4 = i4[0], p4 = i4[1], f4 = o5.s < 0, d4 = f4 ? h4.slice(1) : h4, g4 = d4.length;
-                  if (c4 && (s5 = a4, a4 = c4, c4 = s5, g4 -= s5), a4 > 0 && g4 > 0) {
-                    for (s5 = g4 % a4 || a4, h4 = d4.substr(0, s5); s5 < g4; s5 += a4)
-                      h4 += l4 + d4.substr(s5, a4);
-                    c4 > 0 && (h4 += l4 + d4.slice(s5)), f4 && (h4 = "-" + h4);
+                  var i5, s4 = n4.split("."), a4 = +r5.groupSize, c4 = +r5.secondaryGroupSize, l4 = r5.groupSeparator || "", h4 = s4[0], p4 = s4[1], f4 = o5.s < 0, d4 = f4 ? h4.slice(1) : h4, g4 = d4.length;
+                  if (c4 && (i5 = a4, a4 = c4, c4 = i5, g4 -= i5), a4 > 0 && g4 > 0) {
+                    for (i5 = g4 % a4 || a4, h4 = d4.substr(0, i5); i5 < g4; i5 += a4)
+                      h4 += l4 + d4.substr(i5, a4);
+                    c4 > 0 && (h4 += l4 + d4.slice(i5)), f4 && (h4 = "-" + h4);
                   }
                   n4 = p4 ? h4 + (r5.decimalSeparator || "") + ((c4 = +r5.fractionGroupSize) ? p4.replace(new RegExp("\\d{" + c4 + "}\\B", "g"), "$&" + (r5.fractionGroupSeparator || "")) : p4) : h4;
                 }
                 return (r5.prefix || "") + n4 + (r5.suffix || "");
               }, I3.toFraction = function(e5) {
-                var t5, n4, o5, s5, i4, a4, c4, l4, h4, f4, g4, y4, m4 = this, A5 = m4.c;
+                var t5, n4, o5, i5, s4, a4, c4, l4, h4, f4, g4, y4, m4 = this, A5 = m4.c;
                 if (e5 != null && (!(c4 = new G2(e5)).isInteger() && (c4.c || c4.s !== 1) || c4.lt(C3)))
                   throw Error(u3 + "Argument " + (c4.isInteger() ? "out of range: " : "not an integer: ") + W2(c4));
                 if (!A5)
                   return new G2(m4);
-                for (t5 = new G2(C3), h4 = n4 = new G2(C3), o5 = l4 = new G2(C3), y4 = b2(A5), i4 = t5.e = y4.length - m4.e - 1, t5.c[0] = d3[(a4 = i4 % p3) < 0 ? p3 + a4 : a4], e5 = !e5 || c4.comparedTo(t5) > 0 ? i4 > 0 ? t5 : h4 : c4, a4 = L3, L3 = 1 / 0, c4 = new G2(y4), l4.c[0] = 0; f4 = r4(c4, t5, 0, 1), (s5 = n4.plus(f4.times(o5))).comparedTo(e5) != 1; )
-                  n4 = o5, o5 = s5, h4 = l4.plus(f4.times(s5 = h4)), l4 = s5, t5 = c4.minus(f4.times(s5 = t5)), c4 = s5;
-                return s5 = r4(e5.minus(n4), o5, 0, 1), l4 = l4.plus(s5.times(h4)), n4 = n4.plus(s5.times(o5)), l4.s = h4.s = m4.s, g4 = r4(h4, o5, i4 *= 2, O2).minus(m4).abs().comparedTo(r4(l4, n4, i4, O2).minus(m4).abs()) < 1 ? [h4, o5] : [l4, n4], L3 = a4, g4;
+                for (t5 = new G2(C3), h4 = n4 = new G2(C3), o5 = l4 = new G2(C3), y4 = b2(A5), s4 = t5.e = y4.length - m4.e - 1, t5.c[0] = d3[(a4 = s4 % p3) < 0 ? p3 + a4 : a4], e5 = !e5 || c4.comparedTo(t5) > 0 ? s4 > 0 ? t5 : h4 : c4, a4 = L3, L3 = 1 / 0, c4 = new G2(y4), l4.c[0] = 0; f4 = r4(c4, t5, 0, 1), (i5 = n4.plus(f4.times(o5))).comparedTo(e5) != 1; )
+                  n4 = o5, o5 = i5, h4 = l4.plus(f4.times(i5 = h4)), l4 = i5, t5 = c4.minus(f4.times(i5 = t5)), c4 = i5;
+                return i5 = r4(e5.minus(n4), o5, 0, 1), l4 = l4.plus(i5.times(h4)), n4 = n4.plus(i5.times(o5)), l4.s = h4.s = m4.s, g4 = r4(h4, o5, s4 *= 2, O2).minus(m4).abs().comparedTo(r4(l4, n4, s4, O2).minus(m4).abs()) < 1 ? [h4, o5] : [l4, n4], L3 = a4, g4;
               }, I3.toNumber = function() {
                 return +W2(this);
               }, I3.toPrecision = function(e5, t5) {
                 return e5 != null && w4(e5, 1, y3), K3(this, e5, t5, 2);
               }, I3.toString = function(e5) {
-                var t5, r5 = this, o5 = r5.s, s5 = r5.e;
-                return s5 === null ? o5 ? (t5 = "Infinity", o5 < 0 && (t5 = "-" + t5)) : t5 = "NaN" : (e5 == null ? t5 = s5 <= D3 || s5 >= N3 ? x3(b2(r5.c), s5) : S2(b2(r5.c), s5, "0") : e5 === 10 ? t5 = S2(b2((r5 = $3(new G2(r5), R2 + s5 + 1, O2)).c), r5.e, "0") : (w4(e5, 2, H3.length, "Base"), t5 = n3(S2(b2(r5.c), s5, "0"), 10, e5, o5, true)), o5 < 0 && r5.c[0] && (t5 = "-" + t5)), t5;
+                var t5, r5 = this, o5 = r5.s, i5 = r5.e;
+                return i5 === null ? o5 ? (t5 = "Infinity", o5 < 0 && (t5 = "-" + t5)) : t5 = "NaN" : (e5 == null ? t5 = i5 <= D3 || i5 >= N3 ? x3(b2(r5.c), i5) : S2(b2(r5.c), i5, "0") : e5 === 10 ? t5 = S2(b2((r5 = $3(new G2(r5), R2 + i5 + 1, O2)).c), r5.e, "0") : (w4(e5, 2, H3.length, "Base"), t5 = n3(S2(b2(r5.c), i5, "0"), 10, e5, o5, true)), o5 < 0 && r5.c[0] && (t5 = "-" + t5)), t5;
               }, I3.valueOf = I3.toJSON = function() {
                 return W2(this);
               }, I3._isBigNumber = true, t4 != null && G2.set(t4), G2;
-            }()).default = s3.BigNumber = s3, (n2 = function() {
-              return s3;
+            }()).default = i3.BigNumber = i3, (n2 = function() {
+              return i3;
             }.call(t3, r3, t3, e3)) === void 0 || (e3.exports = n2);
           }();
         }, 2486: (e3, t3, r3) => {
           "use strict";
-          const n2 = r3(5155), o3 = r3(4525), s3 = typeof Symbol == "function" && typeof Symbol.for == "function" ? Symbol.for("nodejs.util.inspect.custom") : null;
+          const n2 = r3(5155), o3 = r3(4525), i3 = typeof Symbol == "function" && typeof Symbol.for == "function" ? Symbol.for("nodejs.util.inspect.custom") : null;
           t3.Buffer = c3, t3.SlowBuffer = function(e4) {
             return +e4 != e4 && (e4 = 0), c3.alloc(+e4);
           }, t3.INSPECT_MAX_BYTES = 50;
-          const i3 = 2147483647;
+          const s3 = 2147483647;
           function a3(e4) {
-            if (e4 > i3)
+            if (e4 > s3)
               throw new RangeError('The value "' + e4 + '" is invalid for option "size"');
             const t4 = new Uint8Array(e4);
             return Object.setPrototypeOf(t4, c3.prototype), t4;
@@ -8141,8 +8147,8 @@ var require_algosdk_min = __commonJS({
             return n3 = t4 === void 0 && r4 === void 0 ? new Uint8Array(e4) : r4 === void 0 ? new Uint8Array(e4, t4) : new Uint8Array(e4, t4, r4), Object.setPrototypeOf(n3, c3.prototype), n3;
           }
           function d3(e4) {
-            if (e4 >= i3)
-              throw new RangeError("Attempt to allocate Buffer larger than maximum size: 0x" + i3.toString(16) + " bytes");
+            if (e4 >= s3)
+              throw new RangeError("Attempt to allocate Buffer larger than maximum size: 0x" + s3.toString(16) + " bytes");
             return 0 | e4;
           }
           function g3(e4, t4) {
@@ -8236,33 +8242,33 @@ var require_algosdk_min = __commonJS({
             throw new TypeError("val must be string, number or Buffer");
           }
           function A4(e4, t4, r4, n3, o4) {
-            let s4, i4 = 1, a4 = e4.length, c4 = t4.length;
+            let i4, s4 = 1, a4 = e4.length, c4 = t4.length;
             if (n3 !== void 0 && ((n3 = String(n3).toLowerCase()) === "ucs2" || n3 === "ucs-2" || n3 === "utf16le" || n3 === "utf-16le")) {
               if (e4.length < 2 || t4.length < 2)
                 return -1;
-              i4 = 2, a4 /= 2, c4 /= 2, r4 /= 2;
+              s4 = 2, a4 /= 2, c4 /= 2, r4 /= 2;
             }
             function u4(e5, t5) {
-              return i4 === 1 ? e5[t5] : e5.readUInt16BE(t5 * i4);
+              return s4 === 1 ? e5[t5] : e5.readUInt16BE(t5 * s4);
             }
             if (o4) {
               let n4 = -1;
-              for (s4 = r4; s4 < a4; s4++)
-                if (u4(e4, s4) === u4(t4, n4 === -1 ? 0 : s4 - n4)) {
-                  if (n4 === -1 && (n4 = s4), s4 - n4 + 1 === c4)
-                    return n4 * i4;
+              for (i4 = r4; i4 < a4; i4++)
+                if (u4(e4, i4) === u4(t4, n4 === -1 ? 0 : i4 - n4)) {
+                  if (n4 === -1 && (n4 = i4), i4 - n4 + 1 === c4)
+                    return n4 * s4;
                 } else
-                  n4 !== -1 && (s4 -= s4 - n4), n4 = -1;
+                  n4 !== -1 && (i4 -= i4 - n4), n4 = -1;
             } else
-              for (r4 + c4 > a4 && (r4 = a4 - c4), s4 = r4; s4 >= 0; s4--) {
+              for (r4 + c4 > a4 && (r4 = a4 - c4), i4 = r4; i4 >= 0; i4--) {
                 let r5 = true;
                 for (let n4 = 0; n4 < c4; n4++)
-                  if (u4(e4, s4 + n4) !== u4(t4, n4)) {
+                  if (u4(e4, i4 + n4) !== u4(t4, n4)) {
                     r5 = false;
                     break;
                   }
                 if (r5)
-                  return s4;
+                  return i4;
               }
             return -1;
           }
@@ -8270,15 +8276,15 @@ var require_algosdk_min = __commonJS({
             r4 = Number(r4) || 0;
             const o4 = e4.length - r4;
             n3 ? (n3 = Number(n3)) > o4 && (n3 = o4) : n3 = o4;
-            const s4 = t4.length;
-            let i4;
-            for (n3 > s4 / 2 && (n3 = s4 / 2), i4 = 0; i4 < n3; ++i4) {
-              const n4 = parseInt(t4.substr(2 * i4, 2), 16);
+            const i4 = t4.length;
+            let s4;
+            for (n3 > i4 / 2 && (n3 = i4 / 2), s4 = 0; s4 < n3; ++s4) {
+              const n4 = parseInt(t4.substr(2 * s4, 2), 16);
               if (Y2(n4))
-                return i4;
-              e4[r4 + i4] = n4;
+                return s4;
+              e4[r4 + s4] = n4;
             }
-            return i4;
+            return s4;
           }
           function v3(e4, t4, r4, n3) {
             return W2(V2(t4, e4.length - r4), e4, r4, n3);
@@ -8297,10 +8303,10 @@ var require_algosdk_min = __commonJS({
           function E4(e4, t4, r4, n3) {
             return W2(function(e5, t5) {
               let r5, n4, o4;
-              const s4 = [];
-              for (let i4 = 0; i4 < e5.length && !((t5 -= 2) < 0); ++i4)
-                r5 = e5.charCodeAt(i4), n4 = r5 >> 8, o4 = r5 % 256, s4.push(o4), s4.push(n4);
-              return s4;
+              const i4 = [];
+              for (let s4 = 0; s4 < e5.length && !((t5 -= 2) < 0); ++s4)
+                r5 = e5.charCodeAt(s4), n4 = r5 >> 8, o4 = r5 % 256, i4.push(o4), i4.push(n4);
+              return i4;
             }(t4, e4.length - r4), e4, r4, n3);
           }
           function T4(e4, t4, r4) {
@@ -8312,24 +8318,24 @@ var require_algosdk_min = __commonJS({
             let o4 = t4;
             for (; o4 < r4; ) {
               const t5 = e4[o4];
-              let s4 = null, i4 = t5 > 239 ? 4 : t5 > 223 ? 3 : t5 > 191 ? 2 : 1;
-              if (o4 + i4 <= r4) {
+              let i4 = null, s4 = t5 > 239 ? 4 : t5 > 223 ? 3 : t5 > 191 ? 2 : 1;
+              if (o4 + s4 <= r4) {
                 let r5, n4, a4, c4;
-                switch (i4) {
+                switch (s4) {
                   case 1:
-                    t5 < 128 && (s4 = t5);
+                    t5 < 128 && (i4 = t5);
                     break;
                   case 2:
-                    r5 = e4[o4 + 1], (192 & r5) == 128 && (c4 = (31 & t5) << 6 | 63 & r5, c4 > 127 && (s4 = c4));
+                    r5 = e4[o4 + 1], (192 & r5) == 128 && (c4 = (31 & t5) << 6 | 63 & r5, c4 > 127 && (i4 = c4));
                     break;
                   case 3:
-                    r5 = e4[o4 + 1], n4 = e4[o4 + 2], (192 & r5) == 128 && (192 & n4) == 128 && (c4 = (15 & t5) << 12 | (63 & r5) << 6 | 63 & n4, c4 > 2047 && (c4 < 55296 || c4 > 57343) && (s4 = c4));
+                    r5 = e4[o4 + 1], n4 = e4[o4 + 2], (192 & r5) == 128 && (192 & n4) == 128 && (c4 = (15 & t5) << 12 | (63 & r5) << 6 | 63 & n4, c4 > 2047 && (c4 < 55296 || c4 > 57343) && (i4 = c4));
                     break;
                   case 4:
-                    r5 = e4[o4 + 1], n4 = e4[o4 + 2], a4 = e4[o4 + 3], (192 & r5) == 128 && (192 & n4) == 128 && (192 & a4) == 128 && (c4 = (15 & t5) << 18 | (63 & r5) << 12 | (63 & n4) << 6 | 63 & a4, c4 > 65535 && c4 < 1114112 && (s4 = c4));
+                    r5 = e4[o4 + 1], n4 = e4[o4 + 2], a4 = e4[o4 + 3], (192 & r5) == 128 && (192 & n4) == 128 && (192 & a4) == 128 && (c4 = (15 & t5) << 18 | (63 & r5) << 12 | (63 & n4) << 6 | 63 & a4, c4 > 65535 && c4 < 1114112 && (i4 = c4));
                 }
               }
-              s4 === null ? (s4 = 65533, i4 = 1) : s4 > 65535 && (s4 -= 65536, n3.push(s4 >>> 10 & 1023 | 55296), s4 = 56320 | 1023 & s4), n3.push(s4), o4 += i4;
+              i4 === null ? (i4 = 65533, s4 = 1) : i4 > 65535 && (i4 -= 65536, n3.push(i4 >>> 10 & 1023 | 55296), i4 = 56320 | 1023 & i4), n3.push(i4), o4 += s4;
             }
             return function(e5) {
               const t5 = e5.length;
@@ -8341,7 +8347,7 @@ var require_algosdk_min = __commonJS({
               return r5;
             }(n3);
           }
-          t3.kMaxLength = i3, c3.TYPED_ARRAY_SUPPORT = function() {
+          t3.kMaxLength = s3, c3.TYPED_ARRAY_SUPPORT = function() {
             try {
               const e4 = new Uint8Array(1), t4 = { foo: function() {
                 return 42;
@@ -8374,7 +8380,7 @@ var require_algosdk_min = __commonJS({
             if (e4 === t4)
               return 0;
             let r4 = e4.length, n3 = t4.length;
-            for (let o4 = 0, s4 = Math.min(r4, n3); o4 < s4; ++o4)
+            for (let o4 = 0, i4 = Math.min(r4, n3); o4 < i4; ++o4)
               if (e4[o4] !== t4[o4]) {
                 r4 = e4[o4], n3 = t4[o4];
                 break;
@@ -8452,7 +8458,7 @@ var require_algosdk_min = __commonJS({
             let e4 = "";
             const r4 = t3.INSPECT_MAX_BYTES;
             return e4 = this.toString("hex", 0, r4).replace(/(.{2})/g, "$1 ").trim(), this.length > r4 && (e4 += " ... "), "<Buffer " + e4 + ">";
-          }, s3 && (c3.prototype[s3] = c3.prototype.inspect), c3.prototype.compare = function(e4, t4, r4, n3, o4) {
+          }, i3 && (c3.prototype[i3] = c3.prototype.inspect), c3.prototype.compare = function(e4, t4, r4, n3, o4) {
             if (X2(e4, Uint8Array) && (e4 = c3.from(e4, e4.offset, e4.byteLength)), !c3.isBuffer(e4))
               throw new TypeError('The "target" argument must be one of type Buffer or Uint8Array. Received type ' + typeof e4);
             if (t4 === void 0 && (t4 = 0), r4 === void 0 && (r4 = e4 ? e4.length : 0), n3 === void 0 && (n3 = 0), o4 === void 0 && (o4 = this.length), t4 < 0 || r4 > e4.length || n3 < 0 || o4 > this.length)
@@ -8465,14 +8471,14 @@ var require_algosdk_min = __commonJS({
               return 1;
             if (this === e4)
               return 0;
-            let s4 = (o4 >>>= 0) - (n3 >>>= 0), i4 = (r4 >>>= 0) - (t4 >>>= 0);
-            const a4 = Math.min(s4, i4), u4 = this.slice(n3, o4), l4 = e4.slice(t4, r4);
+            let i4 = (o4 >>>= 0) - (n3 >>>= 0), s4 = (r4 >>>= 0) - (t4 >>>= 0);
+            const a4 = Math.min(i4, s4), u4 = this.slice(n3, o4), l4 = e4.slice(t4, r4);
             for (let e5 = 0; e5 < a4; ++e5)
               if (u4[e5] !== l4[e5]) {
-                s4 = u4[e5], i4 = l4[e5];
+                i4 = u4[e5], s4 = l4[e5];
                 break;
               }
-            return s4 < i4 ? -1 : i4 < s4 ? 1 : 0;
+            return i4 < s4 ? -1 : s4 < i4 ? 1 : 0;
           }, c3.prototype.includes = function(e4, t4, r4) {
             return this.indexOf(e4, t4, r4) !== -1;
           }, c3.prototype.indexOf = function(e4, t4, r4) {
@@ -8493,7 +8499,7 @@ var require_algosdk_min = __commonJS({
             if ((r4 === void 0 || r4 > o4) && (r4 = o4), e4.length > 0 && (r4 < 0 || t4 < 0) || t4 > this.length)
               throw new RangeError("Attempt to write outside buffer bounds");
             n3 || (n3 = "utf8");
-            let s4 = false;
+            let i4 = false;
             for (; ; )
               switch (n3) {
                 case "hex":
@@ -8513,9 +8519,9 @@ var require_algosdk_min = __commonJS({
                 case "utf-16le":
                   return E4(this, e4, t4, r4);
                 default:
-                  if (s4)
+                  if (i4)
                     throw new TypeError("Unknown encoding: " + n3);
-                  n3 = ("" + n3).toLowerCase(), s4 = true;
+                  n3 = ("" + n3).toLowerCase(), i4 = true;
               }
           }, c3.prototype.toJSON = function() {
             return { type: "Buffer", data: Array.prototype.slice.call(this._arr || this, 0) };
@@ -8556,39 +8562,39 @@ var require_algosdk_min = __commonJS({
             if (e4 + t4 > r4)
               throw new RangeError("Trying to access beyond buffer length");
           }
-          function O2(e4, t4, r4, n3, o4, s4) {
+          function O2(e4, t4, r4, n3, o4, i4) {
             if (!c3.isBuffer(e4))
               throw new TypeError('"buffer" argument must be a Buffer instance');
-            if (t4 > o4 || t4 < s4)
+            if (t4 > o4 || t4 < i4)
               throw new RangeError('"value" argument is out of bounds');
             if (r4 + n3 > e4.length)
               throw new RangeError("Index out of range");
           }
           function D3(e4, t4, r4, n3, o4) {
             H3(t4, n3, o4, e4, r4, 7);
-            let s4 = Number(t4 & BigInt(4294967295));
-            e4[r4++] = s4, s4 >>= 8, e4[r4++] = s4, s4 >>= 8, e4[r4++] = s4, s4 >>= 8, e4[r4++] = s4;
-            let i4 = Number(t4 >> BigInt(32) & BigInt(4294967295));
-            return e4[r4++] = i4, i4 >>= 8, e4[r4++] = i4, i4 >>= 8, e4[r4++] = i4, i4 >>= 8, e4[r4++] = i4, r4;
+            let i4 = Number(t4 & BigInt(4294967295));
+            e4[r4++] = i4, i4 >>= 8, e4[r4++] = i4, i4 >>= 8, e4[r4++] = i4, i4 >>= 8, e4[r4++] = i4;
+            let s4 = Number(t4 >> BigInt(32) & BigInt(4294967295));
+            return e4[r4++] = s4, s4 >>= 8, e4[r4++] = s4, s4 >>= 8, e4[r4++] = s4, s4 >>= 8, e4[r4++] = s4, r4;
           }
           function N3(e4, t4, r4, n3, o4) {
             H3(t4, n3, o4, e4, r4, 7);
-            let s4 = Number(t4 & BigInt(4294967295));
-            e4[r4 + 7] = s4, s4 >>= 8, e4[r4 + 6] = s4, s4 >>= 8, e4[r4 + 5] = s4, s4 >>= 8, e4[r4 + 4] = s4;
-            let i4 = Number(t4 >> BigInt(32) & BigInt(4294967295));
-            return e4[r4 + 3] = i4, i4 >>= 8, e4[r4 + 2] = i4, i4 >>= 8, e4[r4 + 1] = i4, i4 >>= 8, e4[r4] = i4, r4 + 8;
+            let i4 = Number(t4 & BigInt(4294967295));
+            e4[r4 + 7] = i4, i4 >>= 8, e4[r4 + 6] = i4, i4 >>= 8, e4[r4 + 5] = i4, i4 >>= 8, e4[r4 + 4] = i4;
+            let s4 = Number(t4 >> BigInt(32) & BigInt(4294967295));
+            return e4[r4 + 3] = s4, s4 >>= 8, e4[r4 + 2] = s4, s4 >>= 8, e4[r4 + 1] = s4, s4 >>= 8, e4[r4] = s4, r4 + 8;
           }
-          function P3(e4, t4, r4, n3, o4, s4) {
+          function P3(e4, t4, r4, n3, o4, i4) {
             if (r4 + n3 > e4.length)
               throw new RangeError("Index out of range");
             if (r4 < 0)
               throw new RangeError("Index out of range");
           }
-          function L3(e4, t4, r4, n3, s4) {
-            return t4 = +t4, r4 >>>= 0, s4 || P3(e4, 0, r4, 4), o3.write(e4, t4, r4, n3, 23, 4), r4 + 4;
+          function L3(e4, t4, r4, n3, i4) {
+            return t4 = +t4, r4 >>>= 0, i4 || P3(e4, 0, r4, 4), o3.write(e4, t4, r4, n3, 23, 4), r4 + 4;
           }
-          function F3(e4, t4, r4, n3, s4) {
-            return t4 = +t4, r4 >>>= 0, s4 || P3(e4, 0, r4, 8), o3.write(e4, t4, r4, n3, 52, 8), r4 + 8;
+          function F3(e4, t4, r4, n3, i4) {
+            return t4 = +t4, r4 >>>= 0, i4 || P3(e4, 0, r4, 8), o3.write(e4, t4, r4, n3, 52, 8), r4 + 8;
           }
           c3.prototype.slice = function(e4, t4) {
             const r4 = this.length;
@@ -8597,9 +8603,9 @@ var require_algosdk_min = __commonJS({
             return Object.setPrototypeOf(n3, c3.prototype), n3;
           }, c3.prototype.readUintLE = c3.prototype.readUIntLE = function(e4, t4, r4) {
             e4 >>>= 0, t4 >>>= 0, r4 || R2(e4, t4, this.length);
-            let n3 = this[e4], o4 = 1, s4 = 0;
-            for (; ++s4 < t4 && (o4 *= 256); )
-              n3 += this[e4 + s4] * o4;
+            let n3 = this[e4], o4 = 1, i4 = 0;
+            for (; ++i4 < t4 && (o4 *= 256); )
+              n3 += this[e4 + i4] * o4;
             return n3;
           }, c3.prototype.readUintBE = c3.prototype.readUIntBE = function(e4, t4, r4) {
             e4 >>>= 0, t4 >>>= 0, r4 || R2(e4, t4, this.length);
@@ -8631,16 +8637,16 @@ var require_algosdk_min = __commonJS({
             return (BigInt(n3) << BigInt(32)) + BigInt(o4);
           }), c3.prototype.readIntLE = function(e4, t4, r4) {
             e4 >>>= 0, t4 >>>= 0, r4 || R2(e4, t4, this.length);
-            let n3 = this[e4], o4 = 1, s4 = 0;
-            for (; ++s4 < t4 && (o4 *= 256); )
-              n3 += this[e4 + s4] * o4;
+            let n3 = this[e4], o4 = 1, i4 = 0;
+            for (; ++i4 < t4 && (o4 *= 256); )
+              n3 += this[e4 + i4] * o4;
             return o4 *= 128, n3 >= o4 && (n3 -= Math.pow(2, 8 * t4)), n3;
           }, c3.prototype.readIntBE = function(e4, t4, r4) {
             e4 >>>= 0, t4 >>>= 0, r4 || R2(e4, t4, this.length);
-            let n3 = t4, o4 = 1, s4 = this[e4 + --n3];
+            let n3 = t4, o4 = 1, i4 = this[e4 + --n3];
             for (; n3 > 0 && (o4 *= 256); )
-              s4 += this[e4 + --n3] * o4;
-            return o4 *= 128, s4 >= o4 && (s4 -= Math.pow(2, 8 * t4)), s4;
+              i4 += this[e4 + --n3] * o4;
+            return o4 *= 128, i4 >= o4 && (i4 -= Math.pow(2, 8 * t4)), i4;
           }, c3.prototype.readInt8 = function(e4, t4) {
             return e4 >>>= 0, t4 || R2(e4, 1, this.length), 128 & this[e4] ? -1 * (255 - this[e4] + 1) : this[e4];
           }, c3.prototype.readInt16LE = function(e4, t4) {
@@ -8677,15 +8683,15 @@ var require_algosdk_min = __commonJS({
             return e4 >>>= 0, t4 || R2(e4, 8, this.length), o3.read(this, e4, false, 52, 8);
           }, c3.prototype.writeUintLE = c3.prototype.writeUIntLE = function(e4, t4, r4, n3) {
             e4 = +e4, t4 >>>= 0, r4 >>>= 0, n3 || O2(this, e4, t4, r4, Math.pow(2, 8 * r4) - 1, 0);
-            let o4 = 1, s4 = 0;
-            for (this[t4] = 255 & e4; ++s4 < r4 && (o4 *= 256); )
-              this[t4 + s4] = e4 / o4 & 255;
+            let o4 = 1, i4 = 0;
+            for (this[t4] = 255 & e4; ++i4 < r4 && (o4 *= 256); )
+              this[t4 + i4] = e4 / o4 & 255;
             return t4 + r4;
           }, c3.prototype.writeUintBE = c3.prototype.writeUIntBE = function(e4, t4, r4, n3) {
             e4 = +e4, t4 >>>= 0, r4 >>>= 0, n3 || O2(this, e4, t4, r4, Math.pow(2, 8 * r4) - 1, 0);
-            let o4 = r4 - 1, s4 = 1;
-            for (this[t4 + o4] = 255 & e4; --o4 >= 0 && (s4 *= 256); )
-              this[t4 + o4] = e4 / s4 & 255;
+            let o4 = r4 - 1, i4 = 1;
+            for (this[t4 + o4] = 255 & e4; --o4 >= 0 && (i4 *= 256); )
+              this[t4 + o4] = e4 / i4 & 255;
             return t4 + r4;
           }, c3.prototype.writeUint8 = c3.prototype.writeUInt8 = function(e4, t4, r4) {
             return e4 = +e4, t4 >>>= 0, r4 || O2(this, e4, t4, 1, 255, 0), this[t4] = 255 & e4, t4 + 1;
@@ -8706,18 +8712,18 @@ var require_algosdk_min = __commonJS({
               const n4 = Math.pow(2, 8 * r4 - 1);
               O2(this, e4, t4, r4, n4 - 1, -n4);
             }
-            let o4 = 0, s4 = 1, i4 = 0;
-            for (this[t4] = 255 & e4; ++o4 < r4 && (s4 *= 256); )
-              e4 < 0 && i4 === 0 && this[t4 + o4 - 1] !== 0 && (i4 = 1), this[t4 + o4] = (e4 / s4 >> 0) - i4 & 255;
+            let o4 = 0, i4 = 1, s4 = 0;
+            for (this[t4] = 255 & e4; ++o4 < r4 && (i4 *= 256); )
+              e4 < 0 && s4 === 0 && this[t4 + o4 - 1] !== 0 && (s4 = 1), this[t4 + o4] = (e4 / i4 >> 0) - s4 & 255;
             return t4 + r4;
           }, c3.prototype.writeIntBE = function(e4, t4, r4, n3) {
             if (e4 = +e4, t4 >>>= 0, !n3) {
               const n4 = Math.pow(2, 8 * r4 - 1);
               O2(this, e4, t4, r4, n4 - 1, -n4);
             }
-            let o4 = r4 - 1, s4 = 1, i4 = 0;
-            for (this[t4 + o4] = 255 & e4; --o4 >= 0 && (s4 *= 256); )
-              e4 < 0 && i4 === 0 && this[t4 + o4 + 1] !== 0 && (i4 = 1), this[t4 + o4] = (e4 / s4 >> 0) - i4 & 255;
+            let o4 = r4 - 1, i4 = 1, s4 = 0;
+            for (this[t4 + o4] = 255 & e4; --o4 >= 0 && (i4 *= 256); )
+              e4 < 0 && s4 === 0 && this[t4 + o4 + 1] !== 0 && (s4 = 1), this[t4 + o4] = (e4 / i4 >> 0) - s4 & 255;
             return t4 + r4;
           }, c3.prototype.writeInt8 = function(e4, t4, r4) {
             return e4 = +e4, t4 >>>= 0, r4 || O2(this, e4, t4, 1, 127, -128), e4 < 0 && (e4 = 255 + e4 + 1), this[t4] = 255 & e4, t4 + 1;
@@ -8778,11 +8784,11 @@ var require_algosdk_min = __commonJS({
               for (o4 = t4; o4 < r4; ++o4)
                 this[o4] = e4;
             else {
-              const s4 = c3.isBuffer(e4) ? e4 : c3.from(e4, n3), i4 = s4.length;
-              if (i4 === 0)
+              const i4 = c3.isBuffer(e4) ? e4 : c3.from(e4, n3), s4 = i4.length;
+              if (s4 === 0)
                 throw new TypeError('The value "' + e4 + '" is invalid for argument "value"');
               for (o4 = 0; o4 < r4 - t4; ++o4)
-                this[o4 + t4] = s4[o4 % i4];
+                this[o4 + t4] = i4[o4 % s4];
             }
             return this;
           };
@@ -8810,15 +8816,15 @@ var require_algosdk_min = __commonJS({
               t4 = `_${e4.slice(r4 - 3, r4)}${t4}`;
             return `${e4.slice(0, r4)}${t4}`;
           }
-          function H3(e4, t4, r4, n3, o4, s4) {
+          function H3(e4, t4, r4, n3, o4, i4) {
             if (e4 > r4 || e4 < t4) {
               const n4 = typeof t4 == "bigint" ? "n" : "";
               let o5;
-              throw o5 = s4 > 3 ? t4 === 0 || t4 === BigInt(0) ? `>= 0${n4} and < 2${n4} ** ${8 * (s4 + 1)}${n4}` : `>= -(2${n4} ** ${8 * (s4 + 1) - 1}${n4}) and < 2 ** ${8 * (s4 + 1) - 1}${n4}` : `>= ${t4}${n4} and <= ${r4}${n4}`, new z3.ERR_OUT_OF_RANGE("value", o5, e4);
+              throw o5 = i4 > 3 ? t4 === 0 || t4 === BigInt(0) ? `>= 0${n4} and < 2${n4} ** ${8 * (i4 + 1)}${n4}` : `>= -(2${n4} ** ${8 * (i4 + 1) - 1}${n4}) and < 2 ** ${8 * (i4 + 1) - 1}${n4}` : `>= ${t4}${n4} and <= ${r4}${n4}`, new z3.ERR_OUT_OF_RANGE("value", o5, e4);
             }
             !function(e5, t5, r5) {
               G2(t5, "offset"), e5[t5] !== void 0 && e5[t5 + r5] !== void 0 || K3(t5, e5.length - (r5 + 1));
-            }(n3, o4, s4);
+            }(n3, o4, i4);
           }
           function G2(e4, t4) {
             if (typeof e4 != "number")
@@ -8845,49 +8851,49 @@ var require_algosdk_min = __commonJS({
             t4 = t4 || 1 / 0;
             const n3 = e4.length;
             let o4 = null;
-            const s4 = [];
-            for (let i4 = 0; i4 < n3; ++i4) {
-              if (r4 = e4.charCodeAt(i4), r4 > 55295 && r4 < 57344) {
+            const i4 = [];
+            for (let s4 = 0; s4 < n3; ++s4) {
+              if (r4 = e4.charCodeAt(s4), r4 > 55295 && r4 < 57344) {
                 if (!o4) {
                   if (r4 > 56319) {
-                    (t4 -= 3) > -1 && s4.push(239, 191, 189);
+                    (t4 -= 3) > -1 && i4.push(239, 191, 189);
                     continue;
                   }
-                  if (i4 + 1 === n3) {
-                    (t4 -= 3) > -1 && s4.push(239, 191, 189);
+                  if (s4 + 1 === n3) {
+                    (t4 -= 3) > -1 && i4.push(239, 191, 189);
                     continue;
                   }
                   o4 = r4;
                   continue;
                 }
                 if (r4 < 56320) {
-                  (t4 -= 3) > -1 && s4.push(239, 191, 189), o4 = r4;
+                  (t4 -= 3) > -1 && i4.push(239, 191, 189), o4 = r4;
                   continue;
                 }
                 r4 = 65536 + (o4 - 55296 << 10 | r4 - 56320);
               } else
-                o4 && (t4 -= 3) > -1 && s4.push(239, 191, 189);
+                o4 && (t4 -= 3) > -1 && i4.push(239, 191, 189);
               if (o4 = null, r4 < 128) {
                 if ((t4 -= 1) < 0)
                   break;
-                s4.push(r4);
+                i4.push(r4);
               } else if (r4 < 2048) {
                 if ((t4 -= 2) < 0)
                   break;
-                s4.push(r4 >> 6 | 192, 63 & r4 | 128);
+                i4.push(r4 >> 6 | 192, 63 & r4 | 128);
               } else if (r4 < 65536) {
                 if ((t4 -= 3) < 0)
                   break;
-                s4.push(r4 >> 12 | 224, r4 >> 6 & 63 | 128, 63 & r4 | 128);
+                i4.push(r4 >> 12 | 224, r4 >> 6 & 63 | 128, 63 & r4 | 128);
               } else {
                 if (!(r4 < 1114112))
                   throw new Error("Invalid code point");
                 if ((t4 -= 4) < 0)
                   break;
-                s4.push(r4 >> 18 | 240, r4 >> 12 & 63 | 128, r4 >> 6 & 63 | 128, 63 & r4 | 128);
+                i4.push(r4 >> 18 | 240, r4 >> 12 & 63 | 128, r4 >> 6 & 63 | 128, 63 & r4 | 128);
               }
             }
-            return s4;
+            return i4;
           }
           function $3(e4) {
             return n2.toByteArray(function(e5) {
@@ -8927,14 +8933,14 @@ var require_algosdk_min = __commonJS({
           }
         }, 7615: (e3, t3, r3) => {
           "use strict";
-          var n2 = r3(1801), o3 = r3(2550), s3 = o3(n2("String.prototype.indexOf"));
+          var n2 = r3(1801), o3 = r3(2550), i3 = o3(n2("String.prototype.indexOf"));
           e3.exports = function(e4, t4) {
             var r4 = n2(e4, !!t4);
-            return typeof r4 == "function" && s3(e4, ".prototype.") > -1 ? o3(r4) : r4;
+            return typeof r4 == "function" && i3(e4, ".prototype.") > -1 ? o3(r4) : r4;
           };
         }, 2550: (e3, t3, r3) => {
           "use strict";
-          var n2 = r3(1930), o3 = r3(1801), s3 = o3("%Function.prototype.apply%"), i3 = o3("%Function.prototype.call%"), a3 = o3("%Reflect.apply%", true) || n2.call(i3, s3), c3 = o3("%Object.getOwnPropertyDescriptor%", true), u3 = o3("%Object.defineProperty%", true), l3 = o3("%Math.max%");
+          var n2 = r3(1930), o3 = r3(1801), i3 = o3("%Function.prototype.apply%"), s3 = o3("%Function.prototype.call%"), a3 = o3("%Reflect.apply%", true) || n2.call(s3, i3), c3 = o3("%Object.getOwnPropertyDescriptor%", true), u3 = o3("%Object.defineProperty%", true), l3 = o3("%Math.max%");
           if (u3)
             try {
               u3({}, "a", { value: 1 });
@@ -8942,7 +8948,7 @@ var require_algosdk_min = __commonJS({
               u3 = null;
             }
           e3.exports = function(e4) {
-            var t4 = a3(n2, i3, arguments);
+            var t4 = a3(n2, s3, arguments);
             if (c3 && u3) {
               var r4 = c3(t4, "length");
               r4.configurable && u3(t4, "length", { value: 1 + l3(0, e4.length - (arguments.length - 1)) });
@@ -8950,7 +8956,7 @@ var require_algosdk_min = __commonJS({
             return t4;
           };
           var h3 = function() {
-            return a3(n2, s3, arguments);
+            return a3(n2, i3, arguments);
           };
           u3 ? u3(e3.exports, "apply", { value: h3 }) : e3.exports.apply = h3;
         }, 1069: (e3) => {
@@ -8999,55 +9005,55 @@ var require_algosdk_min = __commonJS({
             return !!this.listeners(e4).length;
           };
         }, 5799: (e3) => {
-          e3.exports = n2, n2.default = n2, n2.stable = i3, n2.stableStringify = i3;
+          e3.exports = n2, n2.default = n2, n2.stable = s3, n2.stableStringify = s3;
           var t3 = [], r3 = [];
-          function n2(e4, n3, s4) {
-            var i4;
-            for (o3(e4, "", [], void 0), i4 = r3.length === 0 ? JSON.stringify(e4, n3, s4) : JSON.stringify(e4, c3(n3), s4); t3.length !== 0; ) {
+          function n2(e4, n3, i4) {
+            var s4;
+            for (o3(e4, "", [], void 0), s4 = r3.length === 0 ? JSON.stringify(e4, n3, i4) : JSON.stringify(e4, c3(n3), i4); t3.length !== 0; ) {
               var a4 = t3.pop();
               a4.length === 4 ? Object.defineProperty(a4[0], a4[1], a4[3]) : a4[0][a4[1]] = a4[2];
             }
-            return i4;
+            return s4;
           }
-          function o3(e4, n3, s4, i4) {
+          function o3(e4, n3, i4, s4) {
             var a4;
             if (typeof e4 == "object" && e4 !== null) {
-              for (a4 = 0; a4 < s4.length; a4++)
-                if (s4[a4] === e4) {
-                  var c4 = Object.getOwnPropertyDescriptor(i4, n3);
-                  return void (c4.get !== void 0 ? c4.configurable ? (Object.defineProperty(i4, n3, { value: "[Circular]" }), t3.push([i4, n3, e4, c4])) : r3.push([e4, n3]) : (i4[n3] = "[Circular]", t3.push([i4, n3, e4])));
+              for (a4 = 0; a4 < i4.length; a4++)
+                if (i4[a4] === e4) {
+                  var c4 = Object.getOwnPropertyDescriptor(s4, n3);
+                  return void (c4.get !== void 0 ? c4.configurable ? (Object.defineProperty(s4, n3, { value: "[Circular]" }), t3.push([s4, n3, e4, c4])) : r3.push([e4, n3]) : (s4[n3] = "[Circular]", t3.push([s4, n3, e4])));
                 }
-              if (s4.push(e4), Array.isArray(e4))
+              if (i4.push(e4), Array.isArray(e4))
                 for (a4 = 0; a4 < e4.length; a4++)
-                  o3(e4[a4], a4, s4, e4);
+                  o3(e4[a4], a4, i4, e4);
               else {
                 var u3 = Object.keys(e4);
                 for (a4 = 0; a4 < u3.length; a4++) {
                   var l3 = u3[a4];
-                  o3(e4[l3], l3, s4, e4);
+                  o3(e4[l3], l3, i4, e4);
                 }
               }
-              s4.pop();
+              i4.pop();
             }
           }
-          function s3(e4, t4) {
+          function i3(e4, t4) {
             return e4 < t4 ? -1 : e4 > t4 ? 1 : 0;
           }
-          function i3(e4, n3, o4) {
-            var s4, i4 = a3(e4, "", [], void 0) || e4;
-            for (s4 = r3.length === 0 ? JSON.stringify(i4, n3, o4) : JSON.stringify(i4, c3(n3), o4); t3.length !== 0; ) {
+          function s3(e4, n3, o4) {
+            var i4, s4 = a3(e4, "", [], void 0) || e4;
+            for (i4 = r3.length === 0 ? JSON.stringify(s4, n3, o4) : JSON.stringify(s4, c3(n3), o4); t3.length !== 0; ) {
               var u3 = t3.pop();
               u3.length === 4 ? Object.defineProperty(u3[0], u3[1], u3[3]) : u3[0][u3[1]] = u3[2];
             }
-            return s4;
+            return i4;
           }
-          function a3(e4, n3, o4, i4) {
+          function a3(e4, n3, o4, s4) {
             var c4;
             if (typeof e4 == "object" && e4 !== null) {
               for (c4 = 0; c4 < o4.length; c4++)
                 if (o4[c4] === e4) {
-                  var u3 = Object.getOwnPropertyDescriptor(i4, n3);
-                  return void (u3.get !== void 0 ? u3.configurable ? (Object.defineProperty(i4, n3, { value: "[Circular]" }), t3.push([i4, n3, e4, u3])) : r3.push([e4, n3]) : (i4[n3] = "[Circular]", t3.push([i4, n3, e4])));
+                  var u3 = Object.getOwnPropertyDescriptor(s4, n3);
+                  return void (u3.get !== void 0 ? u3.configurable ? (Object.defineProperty(s4, n3, { value: "[Circular]" }), t3.push([s4, n3, e4, u3])) : r3.push([e4, n3]) : (s4[n3] = "[Circular]", t3.push([s4, n3, e4])));
                 }
               if (typeof e4.toJSON == "function")
                 return;
@@ -9055,14 +9061,14 @@ var require_algosdk_min = __commonJS({
                 for (c4 = 0; c4 < e4.length; c4++)
                   a3(e4[c4], c4, o4, e4);
               else {
-                var l3 = {}, h3 = Object.keys(e4).sort(s3);
+                var l3 = {}, h3 = Object.keys(e4).sort(i3);
                 for (c4 = 0; c4 < h3.length; c4++) {
                   var p3 = h3[c4];
                   a3(e4[p3], p3, o4, e4), l3[p3] = e4[p3];
                 }
-                if (i4 === void 0)
+                if (s4 === void 0)
                   return l3;
-                t3.push([i4, n3, e4]), i4[n3] = l3;
+                t3.push([s4, n3, e4]), s4[n3] = l3;
               }
               o4.pop();
             }
@@ -9073,8 +9079,8 @@ var require_algosdk_min = __commonJS({
             }, function(t4, n3) {
               if (r3.length > 0)
                 for (var o4 = 0; o4 < r3.length; o4++) {
-                  var s4 = r3[o4];
-                  if (s4[1] === t4 && s4[0] === n3) {
+                  var i4 = r3[o4];
+                  if (i4[1] === t4 && i4[0] === n3) {
                     n3 = "[Circular]", r3.splice(o4, 1);
                     break;
                   }
@@ -9086,23 +9092,23 @@ var require_algosdk_min = __commonJS({
           "use strict";
           var t3 = "Function.prototype.bind called on incompatible ", r3 = Array.prototype.slice, n2 = Object.prototype.toString, o3 = "[object Function]";
           e3.exports = function(e4) {
-            var s3 = this;
-            if (typeof s3 != "function" || n2.call(s3) !== o3)
-              throw new TypeError(t3 + s3);
-            for (var i3, a3 = r3.call(arguments, 1), c3 = function() {
-              if (this instanceof i3) {
-                var t4 = s3.apply(this, a3.concat(r3.call(arguments)));
+            var i3 = this;
+            if (typeof i3 != "function" || n2.call(i3) !== o3)
+              throw new TypeError(t3 + i3);
+            for (var s3, a3 = r3.call(arguments, 1), c3 = function() {
+              if (this instanceof s3) {
+                var t4 = i3.apply(this, a3.concat(r3.call(arguments)));
                 return Object(t4) === t4 ? t4 : this;
               }
-              return s3.apply(e4, a3.concat(r3.call(arguments)));
-            }, u3 = Math.max(0, s3.length - a3.length), l3 = [], h3 = 0; h3 < u3; h3++)
+              return i3.apply(e4, a3.concat(r3.call(arguments)));
+            }, u3 = Math.max(0, i3.length - a3.length), l3 = [], h3 = 0; h3 < u3; h3++)
               l3.push("$" + h3);
-            if (i3 = Function("binder", "return function (" + l3.join(",") + "){ return binder.apply(this,arguments); }")(c3), s3.prototype) {
+            if (s3 = Function("binder", "return function (" + l3.join(",") + "){ return binder.apply(this,arguments); }")(c3), i3.prototype) {
               var p3 = function() {
               };
-              p3.prototype = s3.prototype, i3.prototype = new p3(), p3.prototype = null;
+              p3.prototype = i3.prototype, s3.prototype = new p3(), p3.prototype = null;
             }
-            return i3;
+            return s3;
           };
         }, 1930: (e3, t3, r3) => {
           "use strict";
@@ -9110,9 +9116,9 @@ var require_algosdk_min = __commonJS({
           e3.exports = Function.prototype.bind || n2;
         }, 1801: (e3, t3, r3) => {
           "use strict";
-          var n2, o3 = SyntaxError, s3 = Function, i3 = TypeError, a3 = function(e4) {
+          var n2, o3 = SyntaxError, i3 = Function, s3 = TypeError, a3 = function(e4) {
             try {
-              return s3('"use strict"; return (' + e4 + ").constructor;")();
+              return i3('"use strict"; return (' + e4 + ").constructor;")();
             } catch (e5) {
             }
           }, c3 = Object.getOwnPropertyDescriptor;
@@ -9123,7 +9129,7 @@ var require_algosdk_min = __commonJS({
               c3 = null;
             }
           var u3 = function() {
-            throw new i3();
+            throw new s3();
           }, l3 = c3 ? function() {
             try {
               return u3;
@@ -9136,7 +9142,7 @@ var require_algosdk_min = __commonJS({
             }
           }() : u3, h3 = r3(9905)(), p3 = Object.getPrototypeOf || function(e4) {
             return e4.__proto__;
-          }, f3 = {}, d3 = typeof Uint8Array == "undefined" ? n2 : p3(Uint8Array), g3 = { "%AggregateError%": typeof AggregateError == "undefined" ? n2 : AggregateError, "%Array%": Array, "%ArrayBuffer%": typeof ArrayBuffer == "undefined" ? n2 : ArrayBuffer, "%ArrayIteratorPrototype%": h3 ? p3([][Symbol.iterator]()) : n2, "%AsyncFromSyncIteratorPrototype%": n2, "%AsyncFunction%": f3, "%AsyncGenerator%": f3, "%AsyncGeneratorFunction%": f3, "%AsyncIteratorPrototype%": f3, "%Atomics%": typeof Atomics == "undefined" ? n2 : Atomics, "%BigInt%": typeof BigInt == "undefined" ? n2 : BigInt, "%Boolean%": Boolean, "%DataView%": typeof DataView == "undefined" ? n2 : DataView, "%Date%": Date, "%decodeURI%": decodeURI, "%decodeURIComponent%": decodeURIComponent, "%encodeURI%": encodeURI, "%encodeURIComponent%": encodeURIComponent, "%Error%": Error, "%eval%": eval, "%EvalError%": EvalError, "%Float32Array%": typeof Float32Array == "undefined" ? n2 : Float32Array, "%Float64Array%": typeof Float64Array == "undefined" ? n2 : Float64Array, "%FinalizationRegistry%": typeof FinalizationRegistry == "undefined" ? n2 : FinalizationRegistry, "%Function%": s3, "%GeneratorFunction%": f3, "%Int8Array%": typeof Int8Array == "undefined" ? n2 : Int8Array, "%Int16Array%": typeof Int16Array == "undefined" ? n2 : Int16Array, "%Int32Array%": typeof Int32Array == "undefined" ? n2 : Int32Array, "%isFinite%": isFinite, "%isNaN%": isNaN, "%IteratorPrototype%": h3 ? p3(p3([][Symbol.iterator]())) : n2, "%JSON%": typeof JSON == "object" ? JSON : n2, "%Map%": typeof Map == "undefined" ? n2 : Map, "%MapIteratorPrototype%": typeof Map != "undefined" && h3 ? p3((/* @__PURE__ */ new Map())[Symbol.iterator]()) : n2, "%Math%": Math, "%Number%": Number, "%Object%": Object, "%parseFloat%": parseFloat, "%parseInt%": parseInt, "%Promise%": typeof Promise == "undefined" ? n2 : Promise, "%Proxy%": typeof Proxy == "undefined" ? n2 : Proxy, "%RangeError%": RangeError, "%ReferenceError%": ReferenceError, "%Reflect%": typeof Reflect == "undefined" ? n2 : Reflect, "%RegExp%": RegExp, "%Set%": typeof Set == "undefined" ? n2 : Set, "%SetIteratorPrototype%": typeof Set != "undefined" && h3 ? p3((/* @__PURE__ */ new Set())[Symbol.iterator]()) : n2, "%SharedArrayBuffer%": typeof SharedArrayBuffer == "undefined" ? n2 : SharedArrayBuffer, "%String%": String, "%StringIteratorPrototype%": h3 ? p3(""[Symbol.iterator]()) : n2, "%Symbol%": h3 ? Symbol : n2, "%SyntaxError%": o3, "%ThrowTypeError%": l3, "%TypedArray%": d3, "%TypeError%": i3, "%Uint8Array%": typeof Uint8Array == "undefined" ? n2 : Uint8Array, "%Uint8ClampedArray%": typeof Uint8ClampedArray == "undefined" ? n2 : Uint8ClampedArray, "%Uint16Array%": typeof Uint16Array == "undefined" ? n2 : Uint16Array, "%Uint32Array%": typeof Uint32Array == "undefined" ? n2 : Uint32Array, "%URIError%": URIError, "%WeakMap%": typeof WeakMap == "undefined" ? n2 : WeakMap, "%WeakRef%": typeof WeakRef == "undefined" ? n2 : WeakRef, "%WeakSet%": typeof WeakSet == "undefined" ? n2 : WeakSet }, y3 = function e4(t4) {
+          }, f3 = {}, d3 = typeof Uint8Array == "undefined" ? n2 : p3(Uint8Array), g3 = { "%AggregateError%": typeof AggregateError == "undefined" ? n2 : AggregateError, "%Array%": Array, "%ArrayBuffer%": typeof ArrayBuffer == "undefined" ? n2 : ArrayBuffer, "%ArrayIteratorPrototype%": h3 ? p3([][Symbol.iterator]()) : n2, "%AsyncFromSyncIteratorPrototype%": n2, "%AsyncFunction%": f3, "%AsyncGenerator%": f3, "%AsyncGeneratorFunction%": f3, "%AsyncIteratorPrototype%": f3, "%Atomics%": typeof Atomics == "undefined" ? n2 : Atomics, "%BigInt%": typeof BigInt == "undefined" ? n2 : BigInt, "%Boolean%": Boolean, "%DataView%": typeof DataView == "undefined" ? n2 : DataView, "%Date%": Date, "%decodeURI%": decodeURI, "%decodeURIComponent%": decodeURIComponent, "%encodeURI%": encodeURI, "%encodeURIComponent%": encodeURIComponent, "%Error%": Error, "%eval%": eval, "%EvalError%": EvalError, "%Float32Array%": typeof Float32Array == "undefined" ? n2 : Float32Array, "%Float64Array%": typeof Float64Array == "undefined" ? n2 : Float64Array, "%FinalizationRegistry%": typeof FinalizationRegistry == "undefined" ? n2 : FinalizationRegistry, "%Function%": i3, "%GeneratorFunction%": f3, "%Int8Array%": typeof Int8Array == "undefined" ? n2 : Int8Array, "%Int16Array%": typeof Int16Array == "undefined" ? n2 : Int16Array, "%Int32Array%": typeof Int32Array == "undefined" ? n2 : Int32Array, "%isFinite%": isFinite, "%isNaN%": isNaN, "%IteratorPrototype%": h3 ? p3(p3([][Symbol.iterator]())) : n2, "%JSON%": typeof JSON == "object" ? JSON : n2, "%Map%": typeof Map == "undefined" ? n2 : Map, "%MapIteratorPrototype%": typeof Map != "undefined" && h3 ? p3((/* @__PURE__ */ new Map())[Symbol.iterator]()) : n2, "%Math%": Math, "%Number%": Number, "%Object%": Object, "%parseFloat%": parseFloat, "%parseInt%": parseInt, "%Promise%": typeof Promise == "undefined" ? n2 : Promise, "%Proxy%": typeof Proxy == "undefined" ? n2 : Proxy, "%RangeError%": RangeError, "%ReferenceError%": ReferenceError, "%Reflect%": typeof Reflect == "undefined" ? n2 : Reflect, "%RegExp%": RegExp, "%Set%": typeof Set == "undefined" ? n2 : Set, "%SetIteratorPrototype%": typeof Set != "undefined" && h3 ? p3((/* @__PURE__ */ new Set())[Symbol.iterator]()) : n2, "%SharedArrayBuffer%": typeof SharedArrayBuffer == "undefined" ? n2 : SharedArrayBuffer, "%String%": String, "%StringIteratorPrototype%": h3 ? p3(""[Symbol.iterator]()) : n2, "%Symbol%": h3 ? Symbol : n2, "%SyntaxError%": o3, "%ThrowTypeError%": l3, "%TypedArray%": d3, "%TypeError%": s3, "%Uint8Array%": typeof Uint8Array == "undefined" ? n2 : Uint8Array, "%Uint8ClampedArray%": typeof Uint8ClampedArray == "undefined" ? n2 : Uint8ClampedArray, "%Uint16Array%": typeof Uint16Array == "undefined" ? n2 : Uint16Array, "%Uint32Array%": typeof Uint32Array == "undefined" ? n2 : Uint32Array, "%URIError%": URIError, "%WeakMap%": typeof WeakMap == "undefined" ? n2 : WeakMap, "%WeakRef%": typeof WeakRef == "undefined" ? n2 : WeakRef, "%WeakSet%": typeof WeakSet == "undefined" ? n2 : WeakSet }, y3 = function e4(t4) {
             var r4;
             if (t4 === "%AsyncFunction%")
               r4 = a3("async function () {}");
@@ -9165,19 +9171,19 @@ var require_algosdk_min = __commonJS({
           }, B2 = function(e4, t4) {
             var r4, n3 = e4;
             if (A4(m3, n3) && (n3 = "%" + (r4 = m3[n3])[0] + "%"), A4(g3, n3)) {
-              var s4 = g3[n3];
-              if (s4 === f3 && (s4 = y3(n3)), s4 === void 0 && !t4)
-                throw new i3("intrinsic " + e4 + " exists, but is not available. Please file an issue!");
-              return { alias: r4, name: n3, value: s4 };
+              var i4 = g3[n3];
+              if (i4 === f3 && (i4 = y3(n3)), i4 === void 0 && !t4)
+                throw new s3("intrinsic " + e4 + " exists, but is not available. Please file an issue!");
+              return { alias: r4, name: n3, value: i4 };
             }
             throw new o3("intrinsic " + e4 + " does not exist!");
           };
           e3.exports = function(e4, t4) {
             if (typeof e4 != "string" || e4.length === 0)
-              throw new i3("intrinsic name must be a non-empty string");
+              throw new s3("intrinsic name must be a non-empty string");
             if (arguments.length > 1 && typeof t4 != "boolean")
-              throw new i3('"allowMissing" argument must be a boolean');
-            var r4 = _4(e4), n3 = r4.length > 0 ? r4[0] : "", s4 = B2("%" + n3 + "%", t4), a4 = s4.name, u4 = s4.value, l4 = false, h4 = s4.alias;
+              throw new s3('"allowMissing" argument must be a boolean');
+            var r4 = _4(e4), n3 = r4.length > 0 ? r4[0] : "", i4 = B2("%" + n3 + "%", t4), a4 = i4.name, u4 = i4.value, l4 = false, h4 = i4.alias;
             h4 && (n3 = h4[0], v3(r4, w4([0, 1], h4)));
             for (var p4 = 1, f4 = true; p4 < r4.length; p4 += 1) {
               var d4 = r4[p4], y4 = S2(d4, 0, 1), m4 = S2(d4, -1);
@@ -9188,7 +9194,7 @@ var require_algosdk_min = __commonJS({
               else if (u4 != null) {
                 if (!(d4 in u4)) {
                   if (!t4)
-                    throw new i3("base intrinsic for " + e4 + " exists, but the property is not available.");
+                    throw new s3("base intrinsic for " + e4 + " exists, but the property is not available.");
                   return;
                 }
                 if (c3 && p4 + 1 >= r4.length) {
@@ -9249,7 +9255,7 @@ var require_algosdk_min = __commonJS({
             "use strict";
             var t4 = typeof window == "object" ? window : {};
             !t4.HI_BASE32_NO_NODE_JS && typeof process == "object" && process.versions && process.versions.node && (t4 = r3.g);
-            var o3 = !t4.HI_BASE32_NO_COMMON_JS && e3.exports, s3 = r3.amdO, i3 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".split(""), a3 = { A: 0, B: 1, C: 2, D: 3, E: 4, F: 5, G: 6, H: 7, I: 8, J: 9, K: 10, L: 11, M: 12, N: 13, O: 14, P: 15, Q: 16, R: 17, S: 18, T: 19, U: 20, V: 21, W: 22, X: 23, Y: 24, Z: 25, 2: 26, 3: 27, 4: 28, 5: 29, 6: 30, 7: 31 }, c3 = [0, 0, 0, 0, 0, 0, 0, 0], u3 = function(e4, t5) {
+            var o3 = !t4.HI_BASE32_NO_COMMON_JS && e3.exports, i3 = r3.amdO, s3 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".split(""), a3 = { A: 0, B: 1, C: 2, D: 3, E: 4, F: 5, G: 6, H: 7, I: 8, J: 9, K: 10, L: 11, M: 12, N: 13, O: 14, P: 15, Q: 16, R: 17, S: 18, T: 19, U: 20, V: 21, W: 22, X: 23, Y: 24, Z: 25, 2: 26, 3: 27, 4: 28, 5: 29, 6: 30, 7: 31 }, c3 = [0, 0, 0, 0, 0, 0, 0, 0], u3 = function(e4, t5) {
               t5.length > 10 && (t5 = "..." + t5.substr(-10));
               var r4 = new Error("Decoded data is not valid UTF-8. Maybe try base32.decode.asBytes()? Partial data after reading " + e4 + " bytes: " + t5 + " <-");
               throw r4.position = e4, r4;
@@ -9258,21 +9264,21 @@ var require_algosdk_min = __commonJS({
                 return [];
               if (!/^[A-Z2-7=]+$/.test(e4))
                 throw new Error("Invalid base32 characters");
-              for (var t5, r4, n3, o4, s4, i4, c4, u4, l4 = [], h4 = 0, p4 = (e4 = e4.replace(/=/g, "")).length, f3 = 0, d3 = p4 >> 3 << 3; f3 < d3; )
-                t5 = a3[e4.charAt(f3++)], r4 = a3[e4.charAt(f3++)], n3 = a3[e4.charAt(f3++)], o4 = a3[e4.charAt(f3++)], s4 = a3[e4.charAt(f3++)], i4 = a3[e4.charAt(f3++)], c4 = a3[e4.charAt(f3++)], u4 = a3[e4.charAt(f3++)], l4[h4++] = 255 & (t5 << 3 | r4 >>> 2), l4[h4++] = 255 & (r4 << 6 | n3 << 1 | o4 >>> 4), l4[h4++] = 255 & (o4 << 4 | s4 >>> 1), l4[h4++] = 255 & (s4 << 7 | i4 << 2 | c4 >>> 3), l4[h4++] = 255 & (c4 << 5 | u4);
+              for (var t5, r4, n3, o4, i4, s4, c4, u4, l4 = [], h4 = 0, p4 = (e4 = e4.replace(/=/g, "")).length, f3 = 0, d3 = p4 >> 3 << 3; f3 < d3; )
+                t5 = a3[e4.charAt(f3++)], r4 = a3[e4.charAt(f3++)], n3 = a3[e4.charAt(f3++)], o4 = a3[e4.charAt(f3++)], i4 = a3[e4.charAt(f3++)], s4 = a3[e4.charAt(f3++)], c4 = a3[e4.charAt(f3++)], u4 = a3[e4.charAt(f3++)], l4[h4++] = 255 & (t5 << 3 | r4 >>> 2), l4[h4++] = 255 & (r4 << 6 | n3 << 1 | o4 >>> 4), l4[h4++] = 255 & (o4 << 4 | i4 >>> 1), l4[h4++] = 255 & (i4 << 7 | s4 << 2 | c4 >>> 3), l4[h4++] = 255 & (c4 << 5 | u4);
               var g3 = p4 - d3;
-              return g3 === 2 ? (t5 = a3[e4.charAt(f3++)], r4 = a3[e4.charAt(f3++)], l4[h4++] = 255 & (t5 << 3 | r4 >>> 2)) : g3 === 4 ? (t5 = a3[e4.charAt(f3++)], r4 = a3[e4.charAt(f3++)], n3 = a3[e4.charAt(f3++)], o4 = a3[e4.charAt(f3++)], l4[h4++] = 255 & (t5 << 3 | r4 >>> 2), l4[h4++] = 255 & (r4 << 6 | n3 << 1 | o4 >>> 4)) : g3 === 5 ? (t5 = a3[e4.charAt(f3++)], r4 = a3[e4.charAt(f3++)], n3 = a3[e4.charAt(f3++)], o4 = a3[e4.charAt(f3++)], s4 = a3[e4.charAt(f3++)], l4[h4++] = 255 & (t5 << 3 | r4 >>> 2), l4[h4++] = 255 & (r4 << 6 | n3 << 1 | o4 >>> 4), l4[h4++] = 255 & (o4 << 4 | s4 >>> 1)) : g3 === 7 && (t5 = a3[e4.charAt(f3++)], r4 = a3[e4.charAt(f3++)], n3 = a3[e4.charAt(f3++)], o4 = a3[e4.charAt(f3++)], s4 = a3[e4.charAt(f3++)], i4 = a3[e4.charAt(f3++)], c4 = a3[e4.charAt(f3++)], l4[h4++] = 255 & (t5 << 3 | r4 >>> 2), l4[h4++] = 255 & (r4 << 6 | n3 << 1 | o4 >>> 4), l4[h4++] = 255 & (o4 << 4 | s4 >>> 1), l4[h4++] = 255 & (s4 << 7 | i4 << 2 | c4 >>> 3)), l4;
+              return g3 === 2 ? (t5 = a3[e4.charAt(f3++)], r4 = a3[e4.charAt(f3++)], l4[h4++] = 255 & (t5 << 3 | r4 >>> 2)) : g3 === 4 ? (t5 = a3[e4.charAt(f3++)], r4 = a3[e4.charAt(f3++)], n3 = a3[e4.charAt(f3++)], o4 = a3[e4.charAt(f3++)], l4[h4++] = 255 & (t5 << 3 | r4 >>> 2), l4[h4++] = 255 & (r4 << 6 | n3 << 1 | o4 >>> 4)) : g3 === 5 ? (t5 = a3[e4.charAt(f3++)], r4 = a3[e4.charAt(f3++)], n3 = a3[e4.charAt(f3++)], o4 = a3[e4.charAt(f3++)], i4 = a3[e4.charAt(f3++)], l4[h4++] = 255 & (t5 << 3 | r4 >>> 2), l4[h4++] = 255 & (r4 << 6 | n3 << 1 | o4 >>> 4), l4[h4++] = 255 & (o4 << 4 | i4 >>> 1)) : g3 === 7 && (t5 = a3[e4.charAt(f3++)], r4 = a3[e4.charAt(f3++)], n3 = a3[e4.charAt(f3++)], o4 = a3[e4.charAt(f3++)], i4 = a3[e4.charAt(f3++)], s4 = a3[e4.charAt(f3++)], c4 = a3[e4.charAt(f3++)], l4[h4++] = 255 & (t5 << 3 | r4 >>> 2), l4[h4++] = 255 & (r4 << 6 | n3 << 1 | o4 >>> 4), l4[h4++] = 255 & (o4 << 4 | i4 >>> 1), l4[h4++] = 255 & (i4 << 7 | s4 << 2 | c4 >>> 3)), l4;
             }, h3 = function(e4, t5) {
               if (!t5)
                 return function(e5) {
-                  for (var t6, r5, n4 = "", o5 = e5.length, s5 = 0, i5 = 0; s5 < o5; )
-                    if ((t6 = e5[s5++]) <= 127)
+                  for (var t6, r5, n4 = "", o5 = e5.length, i5 = 0, s5 = 0; i5 < o5; )
+                    if ((t6 = e5[i5++]) <= 127)
                       n4 += String.fromCharCode(t6);
                     else {
-                      t6 > 191 && t6 <= 223 ? (r5 = 31 & t6, i5 = 1) : t6 <= 239 ? (r5 = 15 & t6, i5 = 2) : t6 <= 247 ? (r5 = 7 & t6, i5 = 3) : u3(s5, n4);
-                      for (var a4 = 0; a4 < i5; ++a4)
-                        ((t6 = e5[s5++]) < 128 || t6 > 191) && u3(s5, n4), r5 <<= 6, r5 += 63 & t6;
-                      r5 >= 55296 && r5 <= 57343 && u3(s5, n4), r5 > 1114111 && u3(s5, n4), r5 <= 65535 ? n4 += String.fromCharCode(r5) : (r5 -= 65536, n4 += String.fromCharCode(55296 + (r5 >> 10)), n4 += String.fromCharCode(56320 + (1023 & r5)));
+                      t6 > 191 && t6 <= 223 ? (r5 = 31 & t6, s5 = 1) : t6 <= 239 ? (r5 = 15 & t6, s5 = 2) : t6 <= 247 ? (r5 = 7 & t6, s5 = 3) : u3(i5, n4);
+                      for (var a4 = 0; a4 < s5; ++a4)
+                        ((t6 = e5[i5++]) < 128 || t6 > 191) && u3(i5, n4), r5 <<= 6, r5 += 63 & t6;
+                      r5 >= 55296 && r5 <= 57343 && u3(i5, n4), r5 > 1114111 && u3(i5, n4), r5 <= 65535 ? n4 += String.fromCharCode(r5) : (r5 -= 65536, n4 += String.fromCharCode(55296 + (r5 >> 10)), n4 += String.fromCharCode(56320 + (1023 & r5)));
                     }
                   return n4;
                 }(l3(e4));
@@ -9280,60 +9286,60 @@ var require_algosdk_min = __commonJS({
                 return "";
               if (!/^[A-Z2-7=]+$/.test(e4))
                 throw new Error("Invalid base32 characters");
-              var r4, n3, o4, s4, i4, c4, h4, p4, f3 = "", d3 = e4.indexOf("=");
+              var r4, n3, o4, i4, s4, c4, h4, p4, f3 = "", d3 = e4.indexOf("=");
               d3 === -1 && (d3 = e4.length);
               for (var g3 = 0, y3 = d3 >> 3 << 3; g3 < y3; )
-                r4 = a3[e4.charAt(g3++)], n3 = a3[e4.charAt(g3++)], o4 = a3[e4.charAt(g3++)], s4 = a3[e4.charAt(g3++)], i4 = a3[e4.charAt(g3++)], c4 = a3[e4.charAt(g3++)], h4 = a3[e4.charAt(g3++)], p4 = a3[e4.charAt(g3++)], f3 += String.fromCharCode(255 & (r4 << 3 | n3 >>> 2)) + String.fromCharCode(255 & (n3 << 6 | o4 << 1 | s4 >>> 4)) + String.fromCharCode(255 & (s4 << 4 | i4 >>> 1)) + String.fromCharCode(255 & (i4 << 7 | c4 << 2 | h4 >>> 3)) + String.fromCharCode(255 & (h4 << 5 | p4));
+                r4 = a3[e4.charAt(g3++)], n3 = a3[e4.charAt(g3++)], o4 = a3[e4.charAt(g3++)], i4 = a3[e4.charAt(g3++)], s4 = a3[e4.charAt(g3++)], c4 = a3[e4.charAt(g3++)], h4 = a3[e4.charAt(g3++)], p4 = a3[e4.charAt(g3++)], f3 += String.fromCharCode(255 & (r4 << 3 | n3 >>> 2)) + String.fromCharCode(255 & (n3 << 6 | o4 << 1 | i4 >>> 4)) + String.fromCharCode(255 & (i4 << 4 | s4 >>> 1)) + String.fromCharCode(255 & (s4 << 7 | c4 << 2 | h4 >>> 3)) + String.fromCharCode(255 & (h4 << 5 | p4));
               var m3 = d3 - y3;
-              return m3 === 2 ? (r4 = a3[e4.charAt(g3++)], n3 = a3[e4.charAt(g3++)], f3 += String.fromCharCode(255 & (r4 << 3 | n3 >>> 2))) : m3 === 4 ? (r4 = a3[e4.charAt(g3++)], n3 = a3[e4.charAt(g3++)], o4 = a3[e4.charAt(g3++)], s4 = a3[e4.charAt(g3++)], f3 += String.fromCharCode(255 & (r4 << 3 | n3 >>> 2)) + String.fromCharCode(255 & (n3 << 6 | o4 << 1 | s4 >>> 4))) : m3 === 5 ? (r4 = a3[e4.charAt(g3++)], n3 = a3[e4.charAt(g3++)], o4 = a3[e4.charAt(g3++)], s4 = a3[e4.charAt(g3++)], i4 = a3[e4.charAt(g3++)], f3 += String.fromCharCode(255 & (r4 << 3 | n3 >>> 2)) + String.fromCharCode(255 & (n3 << 6 | o4 << 1 | s4 >>> 4)) + String.fromCharCode(255 & (s4 << 4 | i4 >>> 1))) : m3 === 7 && (r4 = a3[e4.charAt(g3++)], n3 = a3[e4.charAt(g3++)], o4 = a3[e4.charAt(g3++)], s4 = a3[e4.charAt(g3++)], i4 = a3[e4.charAt(g3++)], c4 = a3[e4.charAt(g3++)], h4 = a3[e4.charAt(g3++)], f3 += String.fromCharCode(255 & (r4 << 3 | n3 >>> 2)) + String.fromCharCode(255 & (n3 << 6 | o4 << 1 | s4 >>> 4)) + String.fromCharCode(255 & (s4 << 4 | i4 >>> 1)) + String.fromCharCode(255 & (i4 << 7 | c4 << 2 | h4 >>> 3))), f3;
+              return m3 === 2 ? (r4 = a3[e4.charAt(g3++)], n3 = a3[e4.charAt(g3++)], f3 += String.fromCharCode(255 & (r4 << 3 | n3 >>> 2))) : m3 === 4 ? (r4 = a3[e4.charAt(g3++)], n3 = a3[e4.charAt(g3++)], o4 = a3[e4.charAt(g3++)], i4 = a3[e4.charAt(g3++)], f3 += String.fromCharCode(255 & (r4 << 3 | n3 >>> 2)) + String.fromCharCode(255 & (n3 << 6 | o4 << 1 | i4 >>> 4))) : m3 === 5 ? (r4 = a3[e4.charAt(g3++)], n3 = a3[e4.charAt(g3++)], o4 = a3[e4.charAt(g3++)], i4 = a3[e4.charAt(g3++)], s4 = a3[e4.charAt(g3++)], f3 += String.fromCharCode(255 & (r4 << 3 | n3 >>> 2)) + String.fromCharCode(255 & (n3 << 6 | o4 << 1 | i4 >>> 4)) + String.fromCharCode(255 & (i4 << 4 | s4 >>> 1))) : m3 === 7 && (r4 = a3[e4.charAt(g3++)], n3 = a3[e4.charAt(g3++)], o4 = a3[e4.charAt(g3++)], i4 = a3[e4.charAt(g3++)], s4 = a3[e4.charAt(g3++)], c4 = a3[e4.charAt(g3++)], h4 = a3[e4.charAt(g3++)], f3 += String.fromCharCode(255 & (r4 << 3 | n3 >>> 2)) + String.fromCharCode(255 & (n3 << 6 | o4 << 1 | i4 >>> 4)) + String.fromCharCode(255 & (i4 << 4 | s4 >>> 1)) + String.fromCharCode(255 & (s4 << 7 | c4 << 2 | h4 >>> 3))), f3;
             }, p3 = { encode: function(e4, t5) {
               var r4 = typeof e4 != "string";
               return r4 && e4.constructor === ArrayBuffer && (e4 = new Uint8Array(e4)), r4 ? function(e5) {
-                for (var t6, r5, n3, o4, s4, a4 = "", c4 = e5.length, u4 = 0, l4 = 5 * parseInt(c4 / 5); u4 < l4; )
-                  t6 = e5[u4++], r5 = e5[u4++], n3 = e5[u4++], o4 = e5[u4++], s4 = e5[u4++], a4 += i3[t6 >>> 3] + i3[31 & (t6 << 2 | r5 >>> 6)] + i3[r5 >>> 1 & 31] + i3[31 & (r5 << 4 | n3 >>> 4)] + i3[31 & (n3 << 1 | o4 >>> 7)] + i3[o4 >>> 2 & 31] + i3[31 & (o4 << 3 | s4 >>> 5)] + i3[31 & s4];
+                for (var t6, r5, n3, o4, i4, a4 = "", c4 = e5.length, u4 = 0, l4 = 5 * parseInt(c4 / 5); u4 < l4; )
+                  t6 = e5[u4++], r5 = e5[u4++], n3 = e5[u4++], o4 = e5[u4++], i4 = e5[u4++], a4 += s3[t6 >>> 3] + s3[31 & (t6 << 2 | r5 >>> 6)] + s3[r5 >>> 1 & 31] + s3[31 & (r5 << 4 | n3 >>> 4)] + s3[31 & (n3 << 1 | o4 >>> 7)] + s3[o4 >>> 2 & 31] + s3[31 & (o4 << 3 | i4 >>> 5)] + s3[31 & i4];
                 var h4 = c4 - l4;
-                return h4 === 1 ? (t6 = e5[u4], a4 += i3[t6 >>> 3] + i3[t6 << 2 & 31] + "======") : h4 === 2 ? (t6 = e5[u4++], r5 = e5[u4], a4 += i3[t6 >>> 3] + i3[31 & (t6 << 2 | r5 >>> 6)] + i3[r5 >>> 1 & 31] + i3[r5 << 4 & 31] + "====") : h4 === 3 ? (t6 = e5[u4++], r5 = e5[u4++], n3 = e5[u4], a4 += i3[t6 >>> 3] + i3[31 & (t6 << 2 | r5 >>> 6)] + i3[r5 >>> 1 & 31] + i3[31 & (r5 << 4 | n3 >>> 4)] + i3[n3 << 1 & 31] + "===") : h4 === 4 && (t6 = e5[u4++], r5 = e5[u4++], n3 = e5[u4++], o4 = e5[u4], a4 += i3[t6 >>> 3] + i3[31 & (t6 << 2 | r5 >>> 6)] + i3[r5 >>> 1 & 31] + i3[31 & (r5 << 4 | n3 >>> 4)] + i3[31 & (n3 << 1 | o4 >>> 7)] + i3[o4 >>> 2 & 31] + i3[o4 << 3 & 31] + "="), a4;
+                return h4 === 1 ? (t6 = e5[u4], a4 += s3[t6 >>> 3] + s3[t6 << 2 & 31] + "======") : h4 === 2 ? (t6 = e5[u4++], r5 = e5[u4], a4 += s3[t6 >>> 3] + s3[31 & (t6 << 2 | r5 >>> 6)] + s3[r5 >>> 1 & 31] + s3[r5 << 4 & 31] + "====") : h4 === 3 ? (t6 = e5[u4++], r5 = e5[u4++], n3 = e5[u4], a4 += s3[t6 >>> 3] + s3[31 & (t6 << 2 | r5 >>> 6)] + s3[r5 >>> 1 & 31] + s3[31 & (r5 << 4 | n3 >>> 4)] + s3[n3 << 1 & 31] + "===") : h4 === 4 && (t6 = e5[u4++], r5 = e5[u4++], n3 = e5[u4++], o4 = e5[u4], a4 += s3[t6 >>> 3] + s3[31 & (t6 << 2 | r5 >>> 6)] + s3[r5 >>> 1 & 31] + s3[31 & (r5 << 4 | n3 >>> 4)] + s3[31 & (n3 << 1 | o4 >>> 7)] + s3[o4 >>> 2 & 31] + s3[o4 << 3 & 31] + "="), a4;
               }(e4) : t5 ? function(e5) {
-                for (var t6, r5, n3, o4, s4, a4 = "", c4 = e5.length, u4 = 0, l4 = 5 * parseInt(c4 / 5); u4 < l4; )
-                  t6 = e5.charCodeAt(u4++), r5 = e5.charCodeAt(u4++), n3 = e5.charCodeAt(u4++), o4 = e5.charCodeAt(u4++), s4 = e5.charCodeAt(u4++), a4 += i3[t6 >>> 3] + i3[31 & (t6 << 2 | r5 >>> 6)] + i3[r5 >>> 1 & 31] + i3[31 & (r5 << 4 | n3 >>> 4)] + i3[31 & (n3 << 1 | o4 >>> 7)] + i3[o4 >>> 2 & 31] + i3[31 & (o4 << 3 | s4 >>> 5)] + i3[31 & s4];
+                for (var t6, r5, n3, o4, i4, a4 = "", c4 = e5.length, u4 = 0, l4 = 5 * parseInt(c4 / 5); u4 < l4; )
+                  t6 = e5.charCodeAt(u4++), r5 = e5.charCodeAt(u4++), n3 = e5.charCodeAt(u4++), o4 = e5.charCodeAt(u4++), i4 = e5.charCodeAt(u4++), a4 += s3[t6 >>> 3] + s3[31 & (t6 << 2 | r5 >>> 6)] + s3[r5 >>> 1 & 31] + s3[31 & (r5 << 4 | n3 >>> 4)] + s3[31 & (n3 << 1 | o4 >>> 7)] + s3[o4 >>> 2 & 31] + s3[31 & (o4 << 3 | i4 >>> 5)] + s3[31 & i4];
                 var h4 = c4 - l4;
-                return h4 === 1 ? (t6 = e5.charCodeAt(u4), a4 += i3[t6 >>> 3] + i3[t6 << 2 & 31] + "======") : h4 === 2 ? (t6 = e5.charCodeAt(u4++), r5 = e5.charCodeAt(u4), a4 += i3[t6 >>> 3] + i3[31 & (t6 << 2 | r5 >>> 6)] + i3[r5 >>> 1 & 31] + i3[r5 << 4 & 31] + "====") : h4 === 3 ? (t6 = e5.charCodeAt(u4++), r5 = e5.charCodeAt(u4++), n3 = e5.charCodeAt(u4), a4 += i3[t6 >>> 3] + i3[31 & (t6 << 2 | r5 >>> 6)] + i3[r5 >>> 1 & 31] + i3[31 & (r5 << 4 | n3 >>> 4)] + i3[n3 << 1 & 31] + "===") : h4 === 4 && (t6 = e5.charCodeAt(u4++), r5 = e5.charCodeAt(u4++), n3 = e5.charCodeAt(u4++), o4 = e5.charCodeAt(u4), a4 += i3[t6 >>> 3] + i3[31 & (t6 << 2 | r5 >>> 6)] + i3[r5 >>> 1 & 31] + i3[31 & (r5 << 4 | n3 >>> 4)] + i3[31 & (n3 << 1 | o4 >>> 7)] + i3[o4 >>> 2 & 31] + i3[o4 << 3 & 31] + "="), a4;
+                return h4 === 1 ? (t6 = e5.charCodeAt(u4), a4 += s3[t6 >>> 3] + s3[t6 << 2 & 31] + "======") : h4 === 2 ? (t6 = e5.charCodeAt(u4++), r5 = e5.charCodeAt(u4), a4 += s3[t6 >>> 3] + s3[31 & (t6 << 2 | r5 >>> 6)] + s3[r5 >>> 1 & 31] + s3[r5 << 4 & 31] + "====") : h4 === 3 ? (t6 = e5.charCodeAt(u4++), r5 = e5.charCodeAt(u4++), n3 = e5.charCodeAt(u4), a4 += s3[t6 >>> 3] + s3[31 & (t6 << 2 | r5 >>> 6)] + s3[r5 >>> 1 & 31] + s3[31 & (r5 << 4 | n3 >>> 4)] + s3[n3 << 1 & 31] + "===") : h4 === 4 && (t6 = e5.charCodeAt(u4++), r5 = e5.charCodeAt(u4++), n3 = e5.charCodeAt(u4++), o4 = e5.charCodeAt(u4), a4 += s3[t6 >>> 3] + s3[31 & (t6 << 2 | r5 >>> 6)] + s3[r5 >>> 1 & 31] + s3[31 & (r5 << 4 | n3 >>> 4)] + s3[31 & (n3 << 1 | o4 >>> 7)] + s3[o4 >>> 2 & 31] + s3[o4 << 3 & 31] + "="), a4;
               }(e4) : function(e5) {
-                var t6, r5, n3, o4, s4, a4, u4, l4 = false, h4 = "", p4 = 0, f3 = 0, d3 = e5.length;
+                var t6, r5, n3, o4, i4, a4, u4, l4 = false, h4 = "", p4 = 0, f3 = 0, d3 = e5.length;
                 if (e5 === "")
                   return h4;
                 do {
                   for (c3[0] = c3[5], c3[1] = c3[6], c3[2] = c3[7], u4 = f3; p4 < d3 && u4 < 5; ++p4)
                     (a4 = e5.charCodeAt(p4)) < 128 ? c3[u4++] = a4 : a4 < 2048 ? (c3[u4++] = 192 | a4 >> 6, c3[u4++] = 128 | 63 & a4) : a4 < 55296 || a4 >= 57344 ? (c3[u4++] = 224 | a4 >> 12, c3[u4++] = 128 | a4 >> 6 & 63, c3[u4++] = 128 | 63 & a4) : (a4 = 65536 + ((1023 & a4) << 10 | 1023 & e5.charCodeAt(++p4)), c3[u4++] = 240 | a4 >> 18, c3[u4++] = 128 | a4 >> 12 & 63, c3[u4++] = 128 | a4 >> 6 & 63, c3[u4++] = 128 | 63 & a4);
-                  f3 = u4 - 5, p4 === d3 && ++p4, p4 > d3 && u4 < 6 && (l4 = true), t6 = c3[0], u4 > 4 ? (r5 = c3[1], n3 = c3[2], o4 = c3[3], s4 = c3[4], h4 += i3[t6 >>> 3] + i3[31 & (t6 << 2 | r5 >>> 6)] + i3[r5 >>> 1 & 31] + i3[31 & (r5 << 4 | n3 >>> 4)] + i3[31 & (n3 << 1 | o4 >>> 7)] + i3[o4 >>> 2 & 31] + i3[31 & (o4 << 3 | s4 >>> 5)] + i3[31 & s4]) : u4 === 1 ? h4 += i3[t6 >>> 3] + i3[t6 << 2 & 31] + "======" : u4 === 2 ? (r5 = c3[1], h4 += i3[t6 >>> 3] + i3[31 & (t6 << 2 | r5 >>> 6)] + i3[r5 >>> 1 & 31] + i3[r5 << 4 & 31] + "====") : u4 === 3 ? (r5 = c3[1], n3 = c3[2], h4 += i3[t6 >>> 3] + i3[31 & (t6 << 2 | r5 >>> 6)] + i3[r5 >>> 1 & 31] + i3[31 & (r5 << 4 | n3 >>> 4)] + i3[n3 << 1 & 31] + "===") : (r5 = c3[1], n3 = c3[2], o4 = c3[3], h4 += i3[t6 >>> 3] + i3[31 & (t6 << 2 | r5 >>> 6)] + i3[r5 >>> 1 & 31] + i3[31 & (r5 << 4 | n3 >>> 4)] + i3[31 & (n3 << 1 | o4 >>> 7)] + i3[o4 >>> 2 & 31] + i3[o4 << 3 & 31] + "=");
+                  f3 = u4 - 5, p4 === d3 && ++p4, p4 > d3 && u4 < 6 && (l4 = true), t6 = c3[0], u4 > 4 ? (r5 = c3[1], n3 = c3[2], o4 = c3[3], i4 = c3[4], h4 += s3[t6 >>> 3] + s3[31 & (t6 << 2 | r5 >>> 6)] + s3[r5 >>> 1 & 31] + s3[31 & (r5 << 4 | n3 >>> 4)] + s3[31 & (n3 << 1 | o4 >>> 7)] + s3[o4 >>> 2 & 31] + s3[31 & (o4 << 3 | i4 >>> 5)] + s3[31 & i4]) : u4 === 1 ? h4 += s3[t6 >>> 3] + s3[t6 << 2 & 31] + "======" : u4 === 2 ? (r5 = c3[1], h4 += s3[t6 >>> 3] + s3[31 & (t6 << 2 | r5 >>> 6)] + s3[r5 >>> 1 & 31] + s3[r5 << 4 & 31] + "====") : u4 === 3 ? (r5 = c3[1], n3 = c3[2], h4 += s3[t6 >>> 3] + s3[31 & (t6 << 2 | r5 >>> 6)] + s3[r5 >>> 1 & 31] + s3[31 & (r5 << 4 | n3 >>> 4)] + s3[n3 << 1 & 31] + "===") : (r5 = c3[1], n3 = c3[2], o4 = c3[3], h4 += s3[t6 >>> 3] + s3[31 & (t6 << 2 | r5 >>> 6)] + s3[r5 >>> 1 & 31] + s3[31 & (r5 << 4 | n3 >>> 4)] + s3[31 & (n3 << 1 | o4 >>> 7)] + s3[o4 >>> 2 & 31] + s3[o4 << 3 & 31] + "=");
                 } while (!l4);
                 return h4;
               }(e4);
             }, decode: h3 };
-            h3.asBytes = l3, o3 ? e3.exports = p3 : (t4.base32 = p3, s3 && ((n2 = function() {
+            h3.asBytes = l3, o3 ? e3.exports = p3 : (t4.base32 = p3, i3 && ((n2 = function() {
               return p3;
             }.call(p3, r3, p3, e3)) === void 0 || (e3.exports = n2)));
           }();
         }, 4525: (e3, t3) => {
           t3.read = function(e4, t4, r3, n2, o3) {
-            var s3, i3, a3 = 8 * o3 - n2 - 1, c3 = (1 << a3) - 1, u3 = c3 >> 1, l3 = -7, h3 = r3 ? o3 - 1 : 0, p3 = r3 ? -1 : 1, f3 = e4[t4 + h3];
-            for (h3 += p3, s3 = f3 & (1 << -l3) - 1, f3 >>= -l3, l3 += a3; l3 > 0; s3 = 256 * s3 + e4[t4 + h3], h3 += p3, l3 -= 8)
+            var i3, s3, a3 = 8 * o3 - n2 - 1, c3 = (1 << a3) - 1, u3 = c3 >> 1, l3 = -7, h3 = r3 ? o3 - 1 : 0, p3 = r3 ? -1 : 1, f3 = e4[t4 + h3];
+            for (h3 += p3, i3 = f3 & (1 << -l3) - 1, f3 >>= -l3, l3 += a3; l3 > 0; i3 = 256 * i3 + e4[t4 + h3], h3 += p3, l3 -= 8)
               ;
-            for (i3 = s3 & (1 << -l3) - 1, s3 >>= -l3, l3 += n2; l3 > 0; i3 = 256 * i3 + e4[t4 + h3], h3 += p3, l3 -= 8)
+            for (s3 = i3 & (1 << -l3) - 1, i3 >>= -l3, l3 += n2; l3 > 0; s3 = 256 * s3 + e4[t4 + h3], h3 += p3, l3 -= 8)
               ;
-            if (s3 === 0)
-              s3 = 1 - u3;
+            if (i3 === 0)
+              i3 = 1 - u3;
             else {
-              if (s3 === c3)
-                return i3 ? NaN : 1 / 0 * (f3 ? -1 : 1);
-              i3 += Math.pow(2, n2), s3 -= u3;
+              if (i3 === c3)
+                return s3 ? NaN : 1 / 0 * (f3 ? -1 : 1);
+              s3 += Math.pow(2, n2), i3 -= u3;
             }
-            return (f3 ? -1 : 1) * i3 * Math.pow(2, s3 - n2);
-          }, t3.write = function(e4, t4, r3, n2, o3, s3) {
-            var i3, a3, c3, u3 = 8 * s3 - o3 - 1, l3 = (1 << u3) - 1, h3 = l3 >> 1, p3 = o3 === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0, f3 = n2 ? 0 : s3 - 1, d3 = n2 ? 1 : -1, g3 = t4 < 0 || t4 === 0 && 1 / t4 < 0 ? 1 : 0;
-            for (t4 = Math.abs(t4), isNaN(t4) || t4 === 1 / 0 ? (a3 = isNaN(t4) ? 1 : 0, i3 = l3) : (i3 = Math.floor(Math.log(t4) / Math.LN2), t4 * (c3 = Math.pow(2, -i3)) < 1 && (i3--, c3 *= 2), (t4 += i3 + h3 >= 1 ? p3 / c3 : p3 * Math.pow(2, 1 - h3)) * c3 >= 2 && (i3++, c3 /= 2), i3 + h3 >= l3 ? (a3 = 0, i3 = l3) : i3 + h3 >= 1 ? (a3 = (t4 * c3 - 1) * Math.pow(2, o3), i3 += h3) : (a3 = t4 * Math.pow(2, h3 - 1) * Math.pow(2, o3), i3 = 0)); o3 >= 8; e4[r3 + f3] = 255 & a3, f3 += d3, a3 /= 256, o3 -= 8)
+            return (f3 ? -1 : 1) * s3 * Math.pow(2, i3 - n2);
+          }, t3.write = function(e4, t4, r3, n2, o3, i3) {
+            var s3, a3, c3, u3 = 8 * i3 - o3 - 1, l3 = (1 << u3) - 1, h3 = l3 >> 1, p3 = o3 === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0, f3 = n2 ? 0 : i3 - 1, d3 = n2 ? 1 : -1, g3 = t4 < 0 || t4 === 0 && 1 / t4 < 0 ? 1 : 0;
+            for (t4 = Math.abs(t4), isNaN(t4) || t4 === 1 / 0 ? (a3 = isNaN(t4) ? 1 : 0, s3 = l3) : (s3 = Math.floor(Math.log(t4) / Math.LN2), t4 * (c3 = Math.pow(2, -s3)) < 1 && (s3--, c3 *= 2), (t4 += s3 + h3 >= 1 ? p3 / c3 : p3 * Math.pow(2, 1 - h3)) * c3 >= 2 && (s3++, c3 /= 2), s3 + h3 >= l3 ? (a3 = 0, s3 = l3) : s3 + h3 >= 1 ? (a3 = (t4 * c3 - 1) * Math.pow(2, o3), s3 += h3) : (a3 = t4 * Math.pow(2, h3 - 1) * Math.pow(2, o3), s3 = 0)); o3 >= 8; e4[r3 + f3] = 255 & a3, f3 += d3, a3 /= 256, o3 -= 8)
               ;
-            for (i3 = i3 << o3 | a3, u3 += o3; u3 > 0; e4[r3 + f3] = 255 & i3, f3 += d3, i3 /= 256, u3 -= 8)
+            for (s3 = s3 << o3 | a3, u3 += o3; u3 > 0; e4[r3 + f3] = 255 & s3, f3 += d3, s3 /= 256, u3 -= 8)
               ;
             e4[r3 + f3 - d3] |= 128 * g3;
           };
@@ -9399,10 +9405,10 @@ var require_algosdk_min = __commonJS({
             function HmacSha256(e3, t3, r3) {
               var n2, o3 = typeof e3;
               if (o3 === "string") {
-                var s3, i3 = [], a3 = e3.length, c3 = 0;
+                var i3, s3 = [], a3 = e3.length, c3 = 0;
                 for (n2 = 0; n2 < a3; ++n2)
-                  (s3 = e3.charCodeAt(n2)) < 128 ? i3[c3++] = s3 : s3 < 2048 ? (i3[c3++] = 192 | s3 >> 6, i3[c3++] = 128 | 63 & s3) : s3 < 55296 || s3 >= 57344 ? (i3[c3++] = 224 | s3 >> 12, i3[c3++] = 128 | s3 >> 6 & 63, i3[c3++] = 128 | 63 & s3) : (s3 = 65536 + ((1023 & s3) << 10 | 1023 & e3.charCodeAt(++n2)), i3[c3++] = 240 | s3 >> 18, i3[c3++] = 128 | s3 >> 12 & 63, i3[c3++] = 128 | s3 >> 6 & 63, i3[c3++] = 128 | 63 & s3);
-                e3 = i3;
+                  (i3 = e3.charCodeAt(n2)) < 128 ? s3[c3++] = i3 : i3 < 2048 ? (s3[c3++] = 192 | i3 >> 6, s3[c3++] = 128 | 63 & i3) : i3 < 55296 || i3 >= 57344 ? (s3[c3++] = 224 | i3 >> 12, s3[c3++] = 128 | i3 >> 6 & 63, s3[c3++] = 128 | 63 & i3) : (i3 = 65536 + ((1023 & i3) << 10 | 1023 & e3.charCodeAt(++n2)), s3[c3++] = 240 | i3 >> 18, s3[c3++] = 128 | i3 >> 12 & 63, s3[c3++] = 128 | i3 >> 6 & 63, s3[c3++] = 128 | 63 & i3);
+                e3 = s3;
               } else {
                 if (o3 !== "object")
                   throw new Error(ERROR);
@@ -9435,13 +9441,13 @@ var require_algosdk_min = __commonJS({
                     throw new Error(ERROR);
                   t3 = true;
                 }
-                for (var n2, o3, s3 = 0, i3 = e3.length, a3 = this.blocks; s3 < i3; ) {
+                for (var n2, o3, i3 = 0, s3 = e3.length, a3 = this.blocks; i3 < s3; ) {
                   if (this.hashed && (this.hashed = false, a3[0] = this.block, a3[16] = a3[1] = a3[2] = a3[3] = a3[4] = a3[5] = a3[6] = a3[7] = a3[8] = a3[9] = a3[10] = a3[11] = a3[12] = a3[13] = a3[14] = a3[15] = 0), t3)
-                    for (o3 = this.start; s3 < i3 && o3 < 64; ++s3)
-                      a3[o3 >> 2] |= e3[s3] << SHIFT[3 & o3++];
+                    for (o3 = this.start; i3 < s3 && o3 < 64; ++i3)
+                      a3[o3 >> 2] |= e3[i3] << SHIFT[3 & o3++];
                   else
-                    for (o3 = this.start; s3 < i3 && o3 < 64; ++s3)
-                      (n2 = e3.charCodeAt(s3)) < 128 ? a3[o3 >> 2] |= n2 << SHIFT[3 & o3++] : n2 < 2048 ? (a3[o3 >> 2] |= (192 | n2 >> 6) << SHIFT[3 & o3++], a3[o3 >> 2] |= (128 | 63 & n2) << SHIFT[3 & o3++]) : n2 < 55296 || n2 >= 57344 ? (a3[o3 >> 2] |= (224 | n2 >> 12) << SHIFT[3 & o3++], a3[o3 >> 2] |= (128 | n2 >> 6 & 63) << SHIFT[3 & o3++], a3[o3 >> 2] |= (128 | 63 & n2) << SHIFT[3 & o3++]) : (n2 = 65536 + ((1023 & n2) << 10 | 1023 & e3.charCodeAt(++s3)), a3[o3 >> 2] |= (240 | n2 >> 18) << SHIFT[3 & o3++], a3[o3 >> 2] |= (128 | n2 >> 12 & 63) << SHIFT[3 & o3++], a3[o3 >> 2] |= (128 | n2 >> 6 & 63) << SHIFT[3 & o3++], a3[o3 >> 2] |= (128 | 63 & n2) << SHIFT[3 & o3++]);
+                    for (o3 = this.start; i3 < s3 && o3 < 64; ++i3)
+                      (n2 = e3.charCodeAt(i3)) < 128 ? a3[o3 >> 2] |= n2 << SHIFT[3 & o3++] : n2 < 2048 ? (a3[o3 >> 2] |= (192 | n2 >> 6) << SHIFT[3 & o3++], a3[o3 >> 2] |= (128 | 63 & n2) << SHIFT[3 & o3++]) : n2 < 55296 || n2 >= 57344 ? (a3[o3 >> 2] |= (224 | n2 >> 12) << SHIFT[3 & o3++], a3[o3 >> 2] |= (128 | n2 >> 6 & 63) << SHIFT[3 & o3++], a3[o3 >> 2] |= (128 | 63 & n2) << SHIFT[3 & o3++]) : (n2 = 65536 + ((1023 & n2) << 10 | 1023 & e3.charCodeAt(++i3)), a3[o3 >> 2] |= (240 | n2 >> 18) << SHIFT[3 & o3++], a3[o3 >> 2] |= (128 | n2 >> 12 & 63) << SHIFT[3 & o3++], a3[o3 >> 2] |= (128 | n2 >> 6 & 63) << SHIFT[3 & o3++], a3[o3 >> 2] |= (128 | 63 & n2) << SHIFT[3 & o3++]);
                   this.lastByteIndex = o3, this.bytes += o3 - this.start, o3 >= 64 ? (this.block = a3[16], this.start = o3 - 64, this.hash(), this.hashed = true) : this.start = o3;
                 }
                 return this.bytes > 4294967295 && (this.hBytes += this.bytes / 4294967296 << 0, this.bytes = this.bytes % 4294967296), this;
@@ -9453,19 +9459,19 @@ var require_algosdk_min = __commonJS({
                 e3[16] = this.block, e3[t3 >> 2] |= EXTRA[3 & t3], this.block = e3[16], t3 >= 56 && (this.hashed || this.hash(), e3[0] = this.block, e3[16] = e3[1] = e3[2] = e3[3] = e3[4] = e3[5] = e3[6] = e3[7] = e3[8] = e3[9] = e3[10] = e3[11] = e3[12] = e3[13] = e3[14] = e3[15] = 0), e3[14] = this.hBytes << 3 | this.bytes >>> 29, e3[15] = this.bytes << 3, this.hash();
               }
             }, Sha256.prototype.hash = function() {
-              var e3, t3, r3, n2, o3, s3, i3, a3, c3, u3 = this.h0, l3 = this.h1, h3 = this.h2, p3 = this.h3, f3 = this.h4, d3 = this.h5, g3 = this.h6, y3 = this.h7, m3 = this.blocks;
+              var e3, t3, r3, n2, o3, i3, s3, a3, c3, u3 = this.h0, l3 = this.h1, h3 = this.h2, p3 = this.h3, f3 = this.h4, d3 = this.h5, g3 = this.h6, y3 = this.h7, m3 = this.blocks;
               for (e3 = 16; e3 < 64; ++e3)
                 t3 = ((o3 = m3[e3 - 15]) >>> 7 | o3 << 25) ^ (o3 >>> 18 | o3 << 14) ^ o3 >>> 3, r3 = ((o3 = m3[e3 - 2]) >>> 17 | o3 << 15) ^ (o3 >>> 19 | o3 << 13) ^ o3 >>> 10, m3[e3] = m3[e3 - 16] + t3 + m3[e3 - 7] + r3 << 0;
               for (c3 = l3 & h3, e3 = 0; e3 < 64; e3 += 4)
-                this.first ? (this.is224 ? (s3 = 300032, y3 = (o3 = m3[0] - 1413257819) - 150054599 << 0, p3 = o3 + 24177077 << 0) : (s3 = 704751109, y3 = (o3 = m3[0] - 210244248) - 1521486534 << 0, p3 = o3 + 143694565 << 0), this.first = false) : (t3 = (u3 >>> 2 | u3 << 30) ^ (u3 >>> 13 | u3 << 19) ^ (u3 >>> 22 | u3 << 10), n2 = (s3 = u3 & l3) ^ u3 & h3 ^ c3, y3 = p3 + (o3 = y3 + (r3 = (f3 >>> 6 | f3 << 26) ^ (f3 >>> 11 | f3 << 21) ^ (f3 >>> 25 | f3 << 7)) + (f3 & d3 ^ ~f3 & g3) + K[e3] + m3[e3]) << 0, p3 = o3 + (t3 + n2) << 0), t3 = (p3 >>> 2 | p3 << 30) ^ (p3 >>> 13 | p3 << 19) ^ (p3 >>> 22 | p3 << 10), n2 = (i3 = p3 & u3) ^ p3 & l3 ^ s3, g3 = h3 + (o3 = g3 + (r3 = (y3 >>> 6 | y3 << 26) ^ (y3 >>> 11 | y3 << 21) ^ (y3 >>> 25 | y3 << 7)) + (y3 & f3 ^ ~y3 & d3) + K[e3 + 1] + m3[e3 + 1]) << 0, t3 = ((h3 = o3 + (t3 + n2) << 0) >>> 2 | h3 << 30) ^ (h3 >>> 13 | h3 << 19) ^ (h3 >>> 22 | h3 << 10), n2 = (a3 = h3 & p3) ^ h3 & u3 ^ i3, d3 = l3 + (o3 = d3 + (r3 = (g3 >>> 6 | g3 << 26) ^ (g3 >>> 11 | g3 << 21) ^ (g3 >>> 25 | g3 << 7)) + (g3 & y3 ^ ~g3 & f3) + K[e3 + 2] + m3[e3 + 2]) << 0, t3 = ((l3 = o3 + (t3 + n2) << 0) >>> 2 | l3 << 30) ^ (l3 >>> 13 | l3 << 19) ^ (l3 >>> 22 | l3 << 10), n2 = (c3 = l3 & h3) ^ l3 & p3 ^ a3, f3 = u3 + (o3 = f3 + (r3 = (d3 >>> 6 | d3 << 26) ^ (d3 >>> 11 | d3 << 21) ^ (d3 >>> 25 | d3 << 7)) + (d3 & g3 ^ ~d3 & y3) + K[e3 + 3] + m3[e3 + 3]) << 0, u3 = o3 + (t3 + n2) << 0;
+                this.first ? (this.is224 ? (i3 = 300032, y3 = (o3 = m3[0] - 1413257819) - 150054599 << 0, p3 = o3 + 24177077 << 0) : (i3 = 704751109, y3 = (o3 = m3[0] - 210244248) - 1521486534 << 0, p3 = o3 + 143694565 << 0), this.first = false) : (t3 = (u3 >>> 2 | u3 << 30) ^ (u3 >>> 13 | u3 << 19) ^ (u3 >>> 22 | u3 << 10), n2 = (i3 = u3 & l3) ^ u3 & h3 ^ c3, y3 = p3 + (o3 = y3 + (r3 = (f3 >>> 6 | f3 << 26) ^ (f3 >>> 11 | f3 << 21) ^ (f3 >>> 25 | f3 << 7)) + (f3 & d3 ^ ~f3 & g3) + K[e3] + m3[e3]) << 0, p3 = o3 + (t3 + n2) << 0), t3 = (p3 >>> 2 | p3 << 30) ^ (p3 >>> 13 | p3 << 19) ^ (p3 >>> 22 | p3 << 10), n2 = (s3 = p3 & u3) ^ p3 & l3 ^ i3, g3 = h3 + (o3 = g3 + (r3 = (y3 >>> 6 | y3 << 26) ^ (y3 >>> 11 | y3 << 21) ^ (y3 >>> 25 | y3 << 7)) + (y3 & f3 ^ ~y3 & d3) + K[e3 + 1] + m3[e3 + 1]) << 0, t3 = ((h3 = o3 + (t3 + n2) << 0) >>> 2 | h3 << 30) ^ (h3 >>> 13 | h3 << 19) ^ (h3 >>> 22 | h3 << 10), n2 = (a3 = h3 & p3) ^ h3 & u3 ^ s3, d3 = l3 + (o3 = d3 + (r3 = (g3 >>> 6 | g3 << 26) ^ (g3 >>> 11 | g3 << 21) ^ (g3 >>> 25 | g3 << 7)) + (g3 & y3 ^ ~g3 & f3) + K[e3 + 2] + m3[e3 + 2]) << 0, t3 = ((l3 = o3 + (t3 + n2) << 0) >>> 2 | l3 << 30) ^ (l3 >>> 13 | l3 << 19) ^ (l3 >>> 22 | l3 << 10), n2 = (c3 = l3 & h3) ^ l3 & p3 ^ a3, f3 = u3 + (o3 = f3 + (r3 = (d3 >>> 6 | d3 << 26) ^ (d3 >>> 11 | d3 << 21) ^ (d3 >>> 25 | d3 << 7)) + (d3 & g3 ^ ~d3 & y3) + K[e3 + 3] + m3[e3 + 3]) << 0, u3 = o3 + (t3 + n2) << 0;
               this.h0 = this.h0 + u3 << 0, this.h1 = this.h1 + l3 << 0, this.h2 = this.h2 + h3 << 0, this.h3 = this.h3 + p3 << 0, this.h4 = this.h4 + f3 << 0, this.h5 = this.h5 + d3 << 0, this.h6 = this.h6 + g3 << 0, this.h7 = this.h7 + y3 << 0;
             }, Sha256.prototype.hex = function() {
               this.finalize();
-              var e3 = this.h0, t3 = this.h1, r3 = this.h2, n2 = this.h3, o3 = this.h4, s3 = this.h5, i3 = this.h6, a3 = this.h7, c3 = HEX_CHARS[e3 >> 28 & 15] + HEX_CHARS[e3 >> 24 & 15] + HEX_CHARS[e3 >> 20 & 15] + HEX_CHARS[e3 >> 16 & 15] + HEX_CHARS[e3 >> 12 & 15] + HEX_CHARS[e3 >> 8 & 15] + HEX_CHARS[e3 >> 4 & 15] + HEX_CHARS[15 & e3] + HEX_CHARS[t3 >> 28 & 15] + HEX_CHARS[t3 >> 24 & 15] + HEX_CHARS[t3 >> 20 & 15] + HEX_CHARS[t3 >> 16 & 15] + HEX_CHARS[t3 >> 12 & 15] + HEX_CHARS[t3 >> 8 & 15] + HEX_CHARS[t3 >> 4 & 15] + HEX_CHARS[15 & t3] + HEX_CHARS[r3 >> 28 & 15] + HEX_CHARS[r3 >> 24 & 15] + HEX_CHARS[r3 >> 20 & 15] + HEX_CHARS[r3 >> 16 & 15] + HEX_CHARS[r3 >> 12 & 15] + HEX_CHARS[r3 >> 8 & 15] + HEX_CHARS[r3 >> 4 & 15] + HEX_CHARS[15 & r3] + HEX_CHARS[n2 >> 28 & 15] + HEX_CHARS[n2 >> 24 & 15] + HEX_CHARS[n2 >> 20 & 15] + HEX_CHARS[n2 >> 16 & 15] + HEX_CHARS[n2 >> 12 & 15] + HEX_CHARS[n2 >> 8 & 15] + HEX_CHARS[n2 >> 4 & 15] + HEX_CHARS[15 & n2] + HEX_CHARS[o3 >> 28 & 15] + HEX_CHARS[o3 >> 24 & 15] + HEX_CHARS[o3 >> 20 & 15] + HEX_CHARS[o3 >> 16 & 15] + HEX_CHARS[o3 >> 12 & 15] + HEX_CHARS[o3 >> 8 & 15] + HEX_CHARS[o3 >> 4 & 15] + HEX_CHARS[15 & o3] + HEX_CHARS[s3 >> 28 & 15] + HEX_CHARS[s3 >> 24 & 15] + HEX_CHARS[s3 >> 20 & 15] + HEX_CHARS[s3 >> 16 & 15] + HEX_CHARS[s3 >> 12 & 15] + HEX_CHARS[s3 >> 8 & 15] + HEX_CHARS[s3 >> 4 & 15] + HEX_CHARS[15 & s3] + HEX_CHARS[i3 >> 28 & 15] + HEX_CHARS[i3 >> 24 & 15] + HEX_CHARS[i3 >> 20 & 15] + HEX_CHARS[i3 >> 16 & 15] + HEX_CHARS[i3 >> 12 & 15] + HEX_CHARS[i3 >> 8 & 15] + HEX_CHARS[i3 >> 4 & 15] + HEX_CHARS[15 & i3];
+              var e3 = this.h0, t3 = this.h1, r3 = this.h2, n2 = this.h3, o3 = this.h4, i3 = this.h5, s3 = this.h6, a3 = this.h7, c3 = HEX_CHARS[e3 >> 28 & 15] + HEX_CHARS[e3 >> 24 & 15] + HEX_CHARS[e3 >> 20 & 15] + HEX_CHARS[e3 >> 16 & 15] + HEX_CHARS[e3 >> 12 & 15] + HEX_CHARS[e3 >> 8 & 15] + HEX_CHARS[e3 >> 4 & 15] + HEX_CHARS[15 & e3] + HEX_CHARS[t3 >> 28 & 15] + HEX_CHARS[t3 >> 24 & 15] + HEX_CHARS[t3 >> 20 & 15] + HEX_CHARS[t3 >> 16 & 15] + HEX_CHARS[t3 >> 12 & 15] + HEX_CHARS[t3 >> 8 & 15] + HEX_CHARS[t3 >> 4 & 15] + HEX_CHARS[15 & t3] + HEX_CHARS[r3 >> 28 & 15] + HEX_CHARS[r3 >> 24 & 15] + HEX_CHARS[r3 >> 20 & 15] + HEX_CHARS[r3 >> 16 & 15] + HEX_CHARS[r3 >> 12 & 15] + HEX_CHARS[r3 >> 8 & 15] + HEX_CHARS[r3 >> 4 & 15] + HEX_CHARS[15 & r3] + HEX_CHARS[n2 >> 28 & 15] + HEX_CHARS[n2 >> 24 & 15] + HEX_CHARS[n2 >> 20 & 15] + HEX_CHARS[n2 >> 16 & 15] + HEX_CHARS[n2 >> 12 & 15] + HEX_CHARS[n2 >> 8 & 15] + HEX_CHARS[n2 >> 4 & 15] + HEX_CHARS[15 & n2] + HEX_CHARS[o3 >> 28 & 15] + HEX_CHARS[o3 >> 24 & 15] + HEX_CHARS[o3 >> 20 & 15] + HEX_CHARS[o3 >> 16 & 15] + HEX_CHARS[o3 >> 12 & 15] + HEX_CHARS[o3 >> 8 & 15] + HEX_CHARS[o3 >> 4 & 15] + HEX_CHARS[15 & o3] + HEX_CHARS[i3 >> 28 & 15] + HEX_CHARS[i3 >> 24 & 15] + HEX_CHARS[i3 >> 20 & 15] + HEX_CHARS[i3 >> 16 & 15] + HEX_CHARS[i3 >> 12 & 15] + HEX_CHARS[i3 >> 8 & 15] + HEX_CHARS[i3 >> 4 & 15] + HEX_CHARS[15 & i3] + HEX_CHARS[s3 >> 28 & 15] + HEX_CHARS[s3 >> 24 & 15] + HEX_CHARS[s3 >> 20 & 15] + HEX_CHARS[s3 >> 16 & 15] + HEX_CHARS[s3 >> 12 & 15] + HEX_CHARS[s3 >> 8 & 15] + HEX_CHARS[s3 >> 4 & 15] + HEX_CHARS[15 & s3];
               return this.is224 || (c3 += HEX_CHARS[a3 >> 28 & 15] + HEX_CHARS[a3 >> 24 & 15] + HEX_CHARS[a3 >> 20 & 15] + HEX_CHARS[a3 >> 16 & 15] + HEX_CHARS[a3 >> 12 & 15] + HEX_CHARS[a3 >> 8 & 15] + HEX_CHARS[a3 >> 4 & 15] + HEX_CHARS[15 & a3]), c3;
             }, Sha256.prototype.toString = Sha256.prototype.hex, Sha256.prototype.digest = function() {
               this.finalize();
-              var e3 = this.h0, t3 = this.h1, r3 = this.h2, n2 = this.h3, o3 = this.h4, s3 = this.h5, i3 = this.h6, a3 = this.h7, c3 = [e3 >> 24 & 255, e3 >> 16 & 255, e3 >> 8 & 255, 255 & e3, t3 >> 24 & 255, t3 >> 16 & 255, t3 >> 8 & 255, 255 & t3, r3 >> 24 & 255, r3 >> 16 & 255, r3 >> 8 & 255, 255 & r3, n2 >> 24 & 255, n2 >> 16 & 255, n2 >> 8 & 255, 255 & n2, o3 >> 24 & 255, o3 >> 16 & 255, o3 >> 8 & 255, 255 & o3, s3 >> 24 & 255, s3 >> 16 & 255, s3 >> 8 & 255, 255 & s3, i3 >> 24 & 255, i3 >> 16 & 255, i3 >> 8 & 255, 255 & i3];
+              var e3 = this.h0, t3 = this.h1, r3 = this.h2, n2 = this.h3, o3 = this.h4, i3 = this.h5, s3 = this.h6, a3 = this.h7, c3 = [e3 >> 24 & 255, e3 >> 16 & 255, e3 >> 8 & 255, 255 & e3, t3 >> 24 & 255, t3 >> 16 & 255, t3 >> 8 & 255, 255 & t3, r3 >> 24 & 255, r3 >> 16 & 255, r3 >> 8 & 255, 255 & r3, n2 >> 24 & 255, n2 >> 16 & 255, n2 >> 8 & 255, 255 & n2, o3 >> 24 & 255, o3 >> 16 & 255, o3 >> 8 & 255, 255 & o3, i3 >> 24 & 255, i3 >> 16 & 255, i3 >> 8 & 255, 255 & i3, s3 >> 24 & 255, s3 >> 16 & 255, s3 >> 8 & 255, 255 & s3];
               return this.is224 || c3.push(a3 >> 24 & 255, a3 >> 16 & 255, a3 >> 8 & 255, 255 & a3), c3;
             }, Sha256.prototype.array = Sha256.prototype.digest, Sha256.prototype.arrayBuffer = function() {
               this.finalize();
@@ -9487,14 +9493,14 @@ var require_algosdk_min = __commonJS({
           var n2;
           !function() {
             "use strict";
-            var o3 = "input is invalid type", s3 = typeof window == "object", i3 = s3 ? window : {};
-            i3.JS_SHA3_NO_WINDOW && (s3 = false);
-            var a3 = !s3 && typeof self == "object";
-            !i3.JS_SHA3_NO_NODE_JS && typeof process == "object" && process.versions && process.versions.node ? i3 = r3.g : a3 && (i3 = self);
-            var c3 = !i3.JS_SHA3_NO_COMMON_JS && e3.exports, u3 = r3.amdO, l3 = !i3.JS_SHA3_NO_ARRAY_BUFFER && typeof ArrayBuffer != "undefined", h3 = "0123456789abcdef".split(""), p3 = [4, 1024, 262144, 67108864], f3 = [0, 8, 16, 24], d3 = [1, 0, 32898, 0, 32906, 2147483648, 2147516416, 2147483648, 32907, 0, 2147483649, 0, 2147516545, 2147483648, 32777, 2147483648, 138, 0, 136, 0, 2147516425, 0, 2147483658, 0, 2147516555, 0, 139, 2147483648, 32905, 2147483648, 32771, 2147483648, 32770, 2147483648, 128, 2147483648, 32778, 0, 2147483658, 2147483648, 2147516545, 2147483648, 32896, 2147483648, 2147483649, 0, 2147516424, 2147483648], g3 = [224, 256, 384, 512], y3 = [128, 256], m3 = ["hex", "buffer", "arrayBuffer", "array", "digest"], b2 = { 128: 168, 256: 136 };
-            !i3.JS_SHA3_NO_NODE_JS && Array.isArray || (Array.isArray = function(e4) {
+            var o3 = "input is invalid type", i3 = typeof window == "object", s3 = i3 ? window : {};
+            s3.JS_SHA3_NO_WINDOW && (i3 = false);
+            var a3 = !i3 && typeof self == "object";
+            !s3.JS_SHA3_NO_NODE_JS && typeof process == "object" && process.versions && process.versions.node ? s3 = r3.g : a3 && (s3 = self);
+            var c3 = !s3.JS_SHA3_NO_COMMON_JS && e3.exports, u3 = r3.amdO, l3 = !s3.JS_SHA3_NO_ARRAY_BUFFER && typeof ArrayBuffer != "undefined", h3 = "0123456789abcdef".split(""), p3 = [4, 1024, 262144, 67108864], f3 = [0, 8, 16, 24], d3 = [1, 0, 32898, 0, 32906, 2147483648, 2147516416, 2147483648, 32907, 0, 2147483649, 0, 2147516545, 2147483648, 32777, 2147483648, 138, 0, 136, 0, 2147516425, 0, 2147483658, 0, 2147516555, 0, 139, 2147483648, 32905, 2147483648, 32771, 2147483648, 32770, 2147483648, 128, 2147483648, 32778, 0, 2147483658, 2147483648, 2147516545, 2147483648, 32896, 2147483648, 2147483649, 0, 2147516424, 2147483648], g3 = [224, 256, 384, 512], y3 = [128, 256], m3 = ["hex", "buffer", "arrayBuffer", "array", "digest"], b2 = { 128: 168, 256: 136 };
+            !s3.JS_SHA3_NO_NODE_JS && Array.isArray || (Array.isArray = function(e4) {
               return Object.prototype.toString.call(e4) === "[object Array]";
-            }), !l3 || !i3.JS_SHA3_NO_ARRAY_BUFFER_IS_VIEW && ArrayBuffer.isView || (ArrayBuffer.isView = function(e4) {
+            }), !l3 || !s3.JS_SHA3_NO_ARRAY_BUFFER_IS_VIEW && ArrayBuffer.isView || (ArrayBuffer.isView = function(e4) {
               return typeof e4 == "object" && e4.buffer && e4.buffer.constructor === ArrayBuffer;
             });
             for (var A4 = function(e4, t4, r4) {
@@ -9506,17 +9512,17 @@ var require_algosdk_min = __commonJS({
                 return new D3(e4, t4, o4).update(n3)[r4]();
               };
             }, v3 = function(e4, t4, r4) {
-              return function(t5, n3, o4, s4) {
-                return _4["cshake" + e4].update(t5, n3, o4, s4)[r4]();
+              return function(t5, n3, o4, i4) {
+                return _4["cshake" + e4].update(t5, n3, o4, i4)[r4]();
               };
             }, x3 = function(e4, t4, r4) {
-              return function(t5, n3, o4, s4) {
-                return _4["kmac" + e4].update(t5, n3, o4, s4)[r4]();
+              return function(t5, n3, o4, i4) {
+                return _4["kmac" + e4].update(t5, n3, o4, i4)[r4]();
               };
             }, S2 = function(e4, t4, r4, n3) {
               for (var o4 = 0; o4 < m3.length; ++o4) {
-                var s4 = m3[o4];
-                e4[s4] = t4(r4, n3, s4);
+                var i4 = m3[o4];
+                e4[i4] = t4(r4, n3, i4);
               }
               return e4;
             }, E4 = function(e4, t4) {
@@ -9535,15 +9541,15 @@ var require_algosdk_min = __commonJS({
               }, S2(r4, w4, e4, t4);
             } }, { name: "cshake", padding: p3, bits: y3, createMethod: function(e4, t4) {
               var r4 = b2[e4], n3 = v3(e4, 0, "hex");
-              return n3.create = function(n4, o4, s4) {
-                return o4 || s4 ? new D3(e4, t4, n4).bytepad([o4, s4], r4) : _4["shake" + e4].create(n4);
+              return n3.create = function(n4, o4, i4) {
+                return o4 || i4 ? new D3(e4, t4, n4).bytepad([o4, i4], r4) : _4["shake" + e4].create(n4);
               }, n3.update = function(e5, t5, r5, o4) {
                 return n3.create(t5, r5, o4).update(e5);
               }, S2(n3, v3, e4, t4);
             } }, { name: "kmac", padding: p3, bits: y3, createMethod: function(e4, t4) {
               var r4 = b2[e4], n3 = x3(e4, 0, "hex");
-              return n3.create = function(n4, o4, s4) {
-                return new N3(e4, t4, o4).bytepad(["KMAC", s4], r4).bytepad([n4], r4);
+              return n3.create = function(n4, o4, i4) {
+                return new N3(e4, t4, o4).bytepad(["KMAC", i4], r4).bytepad([n4], r4);
               }, n3.update = function(e5, t5, r5, o4) {
                 return n3.create(e5, r5, o4).update(t5);
               }, S2(n3, x3, e4, t4);
@@ -9578,19 +9584,19 @@ var require_algosdk_min = __commonJS({
                   throw new Error(o3);
                 t4 = true;
               }
-              for (var n3, s4, i4 = this.blocks, a4 = this.byteCount, c4 = e4.length, u4 = this.blockCount, h4 = 0, p4 = this.s; h4 < c4; ) {
+              for (var n3, i4, s4 = this.blocks, a4 = this.byteCount, c4 = e4.length, u4 = this.blockCount, h4 = 0, p4 = this.s; h4 < c4; ) {
                 if (this.reset)
-                  for (this.reset = false, i4[0] = this.block, n3 = 1; n3 < u4 + 1; ++n3)
-                    i4[n3] = 0;
+                  for (this.reset = false, s4[0] = this.block, n3 = 1; n3 < u4 + 1; ++n3)
+                    s4[n3] = 0;
                 if (t4)
                   for (n3 = this.start; h4 < c4 && n3 < a4; ++h4)
-                    i4[n3 >> 2] |= e4[h4] << f3[3 & n3++];
+                    s4[n3 >> 2] |= e4[h4] << f3[3 & n3++];
                 else
                   for (n3 = this.start; h4 < c4 && n3 < a4; ++h4)
-                    (s4 = e4.charCodeAt(h4)) < 128 ? i4[n3 >> 2] |= s4 << f3[3 & n3++] : s4 < 2048 ? (i4[n3 >> 2] |= (192 | s4 >> 6) << f3[3 & n3++], i4[n3 >> 2] |= (128 | 63 & s4) << f3[3 & n3++]) : s4 < 55296 || s4 >= 57344 ? (i4[n3 >> 2] |= (224 | s4 >> 12) << f3[3 & n3++], i4[n3 >> 2] |= (128 | s4 >> 6 & 63) << f3[3 & n3++], i4[n3 >> 2] |= (128 | 63 & s4) << f3[3 & n3++]) : (s4 = 65536 + ((1023 & s4) << 10 | 1023 & e4.charCodeAt(++h4)), i4[n3 >> 2] |= (240 | s4 >> 18) << f3[3 & n3++], i4[n3 >> 2] |= (128 | s4 >> 12 & 63) << f3[3 & n3++], i4[n3 >> 2] |= (128 | s4 >> 6 & 63) << f3[3 & n3++], i4[n3 >> 2] |= (128 | 63 & s4) << f3[3 & n3++]);
+                    (i4 = e4.charCodeAt(h4)) < 128 ? s4[n3 >> 2] |= i4 << f3[3 & n3++] : i4 < 2048 ? (s4[n3 >> 2] |= (192 | i4 >> 6) << f3[3 & n3++], s4[n3 >> 2] |= (128 | 63 & i4) << f3[3 & n3++]) : i4 < 55296 || i4 >= 57344 ? (s4[n3 >> 2] |= (224 | i4 >> 12) << f3[3 & n3++], s4[n3 >> 2] |= (128 | i4 >> 6 & 63) << f3[3 & n3++], s4[n3 >> 2] |= (128 | 63 & i4) << f3[3 & n3++]) : (i4 = 65536 + ((1023 & i4) << 10 | 1023 & e4.charCodeAt(++h4)), s4[n3 >> 2] |= (240 | i4 >> 18) << f3[3 & n3++], s4[n3 >> 2] |= (128 | i4 >> 12 & 63) << f3[3 & n3++], s4[n3 >> 2] |= (128 | i4 >> 6 & 63) << f3[3 & n3++], s4[n3 >> 2] |= (128 | 63 & i4) << f3[3 & n3++]);
                 if (this.lastByteIndex = n3, n3 >= a4) {
-                  for (this.start = n3 - a4, this.block = i4[u4], n3 = 0; n3 < u4; ++n3)
-                    p4[n3] ^= i4[n3];
+                  for (this.start = n3 - a4, this.block = s4[u4], n3 = 0; n3 < u4; ++n3)
+                    p4[n3] ^= s4[n3];
                   P3(p4), this.reset = true;
                 } else
                   this.start = n3;
@@ -9614,20 +9620,20 @@ var require_algosdk_min = __commonJS({
                   throw new Error(o3);
                 t4 = true;
               }
-              var n3 = 0, s4 = e4.length;
+              var n3 = 0, i4 = e4.length;
               if (t4)
-                n3 = s4;
+                n3 = i4;
               else
-                for (var i4 = 0; i4 < e4.length; ++i4) {
-                  var a4 = e4.charCodeAt(i4);
-                  a4 < 128 ? n3 += 1 : a4 < 2048 ? n3 += 2 : a4 < 55296 || a4 >= 57344 ? n3 += 3 : (a4 = 65536 + ((1023 & a4) << 10 | 1023 & e4.charCodeAt(++i4)), n3 += 4);
+                for (var s4 = 0; s4 < e4.length; ++s4) {
+                  var a4 = e4.charCodeAt(s4);
+                  a4 < 128 ? n3 += 1 : a4 < 2048 ? n3 += 2 : a4 < 55296 || a4 >= 57344 ? n3 += 3 : (a4 = 65536 + ((1023 & a4) << 10 | 1023 & e4.charCodeAt(++s4)), n3 += 4);
                 }
               return n3 += this.encode(8 * n3), this.update(e4), n3;
             }, D3.prototype.bytepad = function(e4, t4) {
               for (var r4 = this.encode(t4), n3 = 0; n3 < e4.length; ++n3)
                 r4 += this.encodeString(e4[n3]);
-              var o4 = t4 - r4 % t4, s4 = [];
-              return s4.length = o4, this.update(s4), this;
+              var o4 = t4 - r4 % t4, i4 = [];
+              return i4.length = o4, this.update(i4), this;
             }, D3.prototype.finalize = function() {
               if (!this.finalized) {
                 this.finalized = true;
@@ -9641,43 +9647,43 @@ var require_algosdk_min = __commonJS({
               }
             }, D3.prototype.toString = D3.prototype.hex = function() {
               this.finalize();
-              for (var e4, t4 = this.blockCount, r4 = this.s, n3 = this.outputBlocks, o4 = this.extraBytes, s4 = 0, i4 = 0, a4 = ""; i4 < n3; ) {
-                for (s4 = 0; s4 < t4 && i4 < n3; ++s4, ++i4)
-                  e4 = r4[s4], a4 += h3[e4 >> 4 & 15] + h3[15 & e4] + h3[e4 >> 12 & 15] + h3[e4 >> 8 & 15] + h3[e4 >> 20 & 15] + h3[e4 >> 16 & 15] + h3[e4 >> 28 & 15] + h3[e4 >> 24 & 15];
-                i4 % t4 == 0 && (P3(r4), s4 = 0);
+              for (var e4, t4 = this.blockCount, r4 = this.s, n3 = this.outputBlocks, o4 = this.extraBytes, i4 = 0, s4 = 0, a4 = ""; s4 < n3; ) {
+                for (i4 = 0; i4 < t4 && s4 < n3; ++i4, ++s4)
+                  e4 = r4[i4], a4 += h3[e4 >> 4 & 15] + h3[15 & e4] + h3[e4 >> 12 & 15] + h3[e4 >> 8 & 15] + h3[e4 >> 20 & 15] + h3[e4 >> 16 & 15] + h3[e4 >> 28 & 15] + h3[e4 >> 24 & 15];
+                s4 % t4 == 0 && (P3(r4), i4 = 0);
               }
-              return o4 && (e4 = r4[s4], a4 += h3[e4 >> 4 & 15] + h3[15 & e4], o4 > 1 && (a4 += h3[e4 >> 12 & 15] + h3[e4 >> 8 & 15]), o4 > 2 && (a4 += h3[e4 >> 20 & 15] + h3[e4 >> 16 & 15])), a4;
+              return o4 && (e4 = r4[i4], a4 += h3[e4 >> 4 & 15] + h3[15 & e4], o4 > 1 && (a4 += h3[e4 >> 12 & 15] + h3[e4 >> 8 & 15]), o4 > 2 && (a4 += h3[e4 >> 20 & 15] + h3[e4 >> 16 & 15])), a4;
             }, D3.prototype.arrayBuffer = function() {
               this.finalize();
-              var e4, t4 = this.blockCount, r4 = this.s, n3 = this.outputBlocks, o4 = this.extraBytes, s4 = 0, i4 = 0, a4 = this.outputBits >> 3;
+              var e4, t4 = this.blockCount, r4 = this.s, n3 = this.outputBlocks, o4 = this.extraBytes, i4 = 0, s4 = 0, a4 = this.outputBits >> 3;
               e4 = o4 ? new ArrayBuffer(n3 + 1 << 2) : new ArrayBuffer(a4);
-              for (var c4 = new Uint32Array(e4); i4 < n3; ) {
-                for (s4 = 0; s4 < t4 && i4 < n3; ++s4, ++i4)
-                  c4[i4] = r4[s4];
-                i4 % t4 == 0 && P3(r4);
+              for (var c4 = new Uint32Array(e4); s4 < n3; ) {
+                for (i4 = 0; i4 < t4 && s4 < n3; ++i4, ++s4)
+                  c4[s4] = r4[i4];
+                s4 % t4 == 0 && P3(r4);
               }
-              return o4 && (c4[s4] = r4[s4], e4 = e4.slice(0, a4)), e4;
+              return o4 && (c4[i4] = r4[i4], e4 = e4.slice(0, a4)), e4;
             }, D3.prototype.buffer = D3.prototype.arrayBuffer, D3.prototype.digest = D3.prototype.array = function() {
               this.finalize();
-              for (var e4, t4, r4 = this.blockCount, n3 = this.s, o4 = this.outputBlocks, s4 = this.extraBytes, i4 = 0, a4 = 0, c4 = []; a4 < o4; ) {
-                for (i4 = 0; i4 < r4 && a4 < o4; ++i4, ++a4)
-                  e4 = a4 << 2, t4 = n3[i4], c4[e4] = 255 & t4, c4[e4 + 1] = t4 >> 8 & 255, c4[e4 + 2] = t4 >> 16 & 255, c4[e4 + 3] = t4 >> 24 & 255;
+              for (var e4, t4, r4 = this.blockCount, n3 = this.s, o4 = this.outputBlocks, i4 = this.extraBytes, s4 = 0, a4 = 0, c4 = []; a4 < o4; ) {
+                for (s4 = 0; s4 < r4 && a4 < o4; ++s4, ++a4)
+                  e4 = a4 << 2, t4 = n3[s4], c4[e4] = 255 & t4, c4[e4 + 1] = t4 >> 8 & 255, c4[e4 + 2] = t4 >> 16 & 255, c4[e4 + 3] = t4 >> 24 & 255;
                 a4 % r4 == 0 && P3(n3);
               }
-              return s4 && (e4 = a4 << 2, t4 = n3[i4], c4[e4] = 255 & t4, s4 > 1 && (c4[e4 + 1] = t4 >> 8 & 255), s4 > 2 && (c4[e4 + 2] = t4 >> 16 & 255)), c4;
+              return i4 && (e4 = a4 << 2, t4 = n3[s4], c4[e4] = 255 & t4, i4 > 1 && (c4[e4 + 1] = t4 >> 8 & 255), i4 > 2 && (c4[e4 + 2] = t4 >> 16 & 255)), c4;
             }, N3.prototype = new D3(), N3.prototype.finalize = function() {
               return this.encode(this.outputBits, true), D3.prototype.finalize.call(this);
             };
             var P3 = function(e4) {
-              var t4, r4, n3, o4, s4, i4, a4, c4, u4, l4, h4, p4, f4, g4, y4, m4, b3, A5, w5, v4, x4, S3, E5, T5, _5, B3, U3, k4, I4, C4, R3, O3, D4, N4, P4, L3, F3, z3, j3, M3, H3, G2, K3, q3, V2, $3, W2, X2, Y2, J2, Q2, Z2, ee, te, re, ne, oe, se, ie, ae, ce, ue, le;
+              var t4, r4, n3, o4, i4, s4, a4, c4, u4, l4, h4, p4, f4, g4, y4, m4, b3, A5, w5, v4, x4, S3, E5, T5, _5, B3, U3, k4, I4, C4, R3, O3, D4, N4, P4, L3, F3, z3, j3, M3, H3, G2, K3, q3, V2, $3, W2, X2, Y2, J2, Q2, Z2, ee, te, re, ne, oe, ie, se, ae, ce, ue, le;
               for (n3 = 0; n3 < 48; n3 += 2)
-                o4 = e4[0] ^ e4[10] ^ e4[20] ^ e4[30] ^ e4[40], s4 = e4[1] ^ e4[11] ^ e4[21] ^ e4[31] ^ e4[41], i4 = e4[2] ^ e4[12] ^ e4[22] ^ e4[32] ^ e4[42], a4 = e4[3] ^ e4[13] ^ e4[23] ^ e4[33] ^ e4[43], c4 = e4[4] ^ e4[14] ^ e4[24] ^ e4[34] ^ e4[44], u4 = e4[5] ^ e4[15] ^ e4[25] ^ e4[35] ^ e4[45], l4 = e4[6] ^ e4[16] ^ e4[26] ^ e4[36] ^ e4[46], h4 = e4[7] ^ e4[17] ^ e4[27] ^ e4[37] ^ e4[47], t4 = (p4 = e4[8] ^ e4[18] ^ e4[28] ^ e4[38] ^ e4[48]) ^ (i4 << 1 | a4 >>> 31), r4 = (f4 = e4[9] ^ e4[19] ^ e4[29] ^ e4[39] ^ e4[49]) ^ (a4 << 1 | i4 >>> 31), e4[0] ^= t4, e4[1] ^= r4, e4[10] ^= t4, e4[11] ^= r4, e4[20] ^= t4, e4[21] ^= r4, e4[30] ^= t4, e4[31] ^= r4, e4[40] ^= t4, e4[41] ^= r4, t4 = o4 ^ (c4 << 1 | u4 >>> 31), r4 = s4 ^ (u4 << 1 | c4 >>> 31), e4[2] ^= t4, e4[3] ^= r4, e4[12] ^= t4, e4[13] ^= r4, e4[22] ^= t4, e4[23] ^= r4, e4[32] ^= t4, e4[33] ^= r4, e4[42] ^= t4, e4[43] ^= r4, t4 = i4 ^ (l4 << 1 | h4 >>> 31), r4 = a4 ^ (h4 << 1 | l4 >>> 31), e4[4] ^= t4, e4[5] ^= r4, e4[14] ^= t4, e4[15] ^= r4, e4[24] ^= t4, e4[25] ^= r4, e4[34] ^= t4, e4[35] ^= r4, e4[44] ^= t4, e4[45] ^= r4, t4 = c4 ^ (p4 << 1 | f4 >>> 31), r4 = u4 ^ (f4 << 1 | p4 >>> 31), e4[6] ^= t4, e4[7] ^= r4, e4[16] ^= t4, e4[17] ^= r4, e4[26] ^= t4, e4[27] ^= r4, e4[36] ^= t4, e4[37] ^= r4, e4[46] ^= t4, e4[47] ^= r4, t4 = l4 ^ (o4 << 1 | s4 >>> 31), r4 = h4 ^ (s4 << 1 | o4 >>> 31), e4[8] ^= t4, e4[9] ^= r4, e4[18] ^= t4, e4[19] ^= r4, e4[28] ^= t4, e4[29] ^= r4, e4[38] ^= t4, e4[39] ^= r4, e4[48] ^= t4, e4[49] ^= r4, g4 = e4[0], y4 = e4[1], $3 = e4[11] << 4 | e4[10] >>> 28, W2 = e4[10] << 4 | e4[11] >>> 28, k4 = e4[20] << 3 | e4[21] >>> 29, I4 = e4[21] << 3 | e4[20] >>> 29, ae = e4[31] << 9 | e4[30] >>> 23, ce = e4[30] << 9 | e4[31] >>> 23, G2 = e4[40] << 18 | e4[41] >>> 14, K3 = e4[41] << 18 | e4[40] >>> 14, N4 = e4[2] << 1 | e4[3] >>> 31, P4 = e4[3] << 1 | e4[2] >>> 31, m4 = e4[13] << 12 | e4[12] >>> 20, b3 = e4[12] << 12 | e4[13] >>> 20, X2 = e4[22] << 10 | e4[23] >>> 22, Y2 = e4[23] << 10 | e4[22] >>> 22, C4 = e4[33] << 13 | e4[32] >>> 19, R3 = e4[32] << 13 | e4[33] >>> 19, ue = e4[42] << 2 | e4[43] >>> 30, le = e4[43] << 2 | e4[42] >>> 30, te = e4[5] << 30 | e4[4] >>> 2, re = e4[4] << 30 | e4[5] >>> 2, L3 = e4[14] << 6 | e4[15] >>> 26, F3 = e4[15] << 6 | e4[14] >>> 26, A5 = e4[25] << 11 | e4[24] >>> 21, w5 = e4[24] << 11 | e4[25] >>> 21, J2 = e4[34] << 15 | e4[35] >>> 17, Q2 = e4[35] << 15 | e4[34] >>> 17, O3 = e4[45] << 29 | e4[44] >>> 3, D4 = e4[44] << 29 | e4[45] >>> 3, T5 = e4[6] << 28 | e4[7] >>> 4, _5 = e4[7] << 28 | e4[6] >>> 4, ne = e4[17] << 23 | e4[16] >>> 9, oe = e4[16] << 23 | e4[17] >>> 9, z3 = e4[26] << 25 | e4[27] >>> 7, j3 = e4[27] << 25 | e4[26] >>> 7, v4 = e4[36] << 21 | e4[37] >>> 11, x4 = e4[37] << 21 | e4[36] >>> 11, Z2 = e4[47] << 24 | e4[46] >>> 8, ee = e4[46] << 24 | e4[47] >>> 8, q3 = e4[8] << 27 | e4[9] >>> 5, V2 = e4[9] << 27 | e4[8] >>> 5, B3 = e4[18] << 20 | e4[19] >>> 12, U3 = e4[19] << 20 | e4[18] >>> 12, se = e4[29] << 7 | e4[28] >>> 25, ie = e4[28] << 7 | e4[29] >>> 25, M3 = e4[38] << 8 | e4[39] >>> 24, H3 = e4[39] << 8 | e4[38] >>> 24, S3 = e4[48] << 14 | e4[49] >>> 18, E5 = e4[49] << 14 | e4[48] >>> 18, e4[0] = g4 ^ ~m4 & A5, e4[1] = y4 ^ ~b3 & w5, e4[10] = T5 ^ ~B3 & k4, e4[11] = _5 ^ ~U3 & I4, e4[20] = N4 ^ ~L3 & z3, e4[21] = P4 ^ ~F3 & j3, e4[30] = q3 ^ ~$3 & X2, e4[31] = V2 ^ ~W2 & Y2, e4[40] = te ^ ~ne & se, e4[41] = re ^ ~oe & ie, e4[2] = m4 ^ ~A5 & v4, e4[3] = b3 ^ ~w5 & x4, e4[12] = B3 ^ ~k4 & C4, e4[13] = U3 ^ ~I4 & R3, e4[22] = L3 ^ ~z3 & M3, e4[23] = F3 ^ ~j3 & H3, e4[32] = $3 ^ ~X2 & J2, e4[33] = W2 ^ ~Y2 & Q2, e4[42] = ne ^ ~se & ae, e4[43] = oe ^ ~ie & ce, e4[4] = A5 ^ ~v4 & S3, e4[5] = w5 ^ ~x4 & E5, e4[14] = k4 ^ ~C4 & O3, e4[15] = I4 ^ ~R3 & D4, e4[24] = z3 ^ ~M3 & G2, e4[25] = j3 ^ ~H3 & K3, e4[34] = X2 ^ ~J2 & Z2, e4[35] = Y2 ^ ~Q2 & ee, e4[44] = se ^ ~ae & ue, e4[45] = ie ^ ~ce & le, e4[6] = v4 ^ ~S3 & g4, e4[7] = x4 ^ ~E5 & y4, e4[16] = C4 ^ ~O3 & T5, e4[17] = R3 ^ ~D4 & _5, e4[26] = M3 ^ ~G2 & N4, e4[27] = H3 ^ ~K3 & P4, e4[36] = J2 ^ ~Z2 & q3, e4[37] = Q2 ^ ~ee & V2, e4[46] = ae ^ ~ue & te, e4[47] = ce ^ ~le & re, e4[8] = S3 ^ ~g4 & m4, e4[9] = E5 ^ ~y4 & b3, e4[18] = O3 ^ ~T5 & B3, e4[19] = D4 ^ ~_5 & U3, e4[28] = G2 ^ ~N4 & L3, e4[29] = K3 ^ ~P4 & F3, e4[38] = Z2 ^ ~q3 & $3, e4[39] = ee ^ ~V2 & W2, e4[48] = ue ^ ~te & ne, e4[49] = le ^ ~re & oe, e4[0] ^= d3[n3], e4[1] ^= d3[n3 + 1];
+                o4 = e4[0] ^ e4[10] ^ e4[20] ^ e4[30] ^ e4[40], i4 = e4[1] ^ e4[11] ^ e4[21] ^ e4[31] ^ e4[41], s4 = e4[2] ^ e4[12] ^ e4[22] ^ e4[32] ^ e4[42], a4 = e4[3] ^ e4[13] ^ e4[23] ^ e4[33] ^ e4[43], c4 = e4[4] ^ e4[14] ^ e4[24] ^ e4[34] ^ e4[44], u4 = e4[5] ^ e4[15] ^ e4[25] ^ e4[35] ^ e4[45], l4 = e4[6] ^ e4[16] ^ e4[26] ^ e4[36] ^ e4[46], h4 = e4[7] ^ e4[17] ^ e4[27] ^ e4[37] ^ e4[47], t4 = (p4 = e4[8] ^ e4[18] ^ e4[28] ^ e4[38] ^ e4[48]) ^ (s4 << 1 | a4 >>> 31), r4 = (f4 = e4[9] ^ e4[19] ^ e4[29] ^ e4[39] ^ e4[49]) ^ (a4 << 1 | s4 >>> 31), e4[0] ^= t4, e4[1] ^= r4, e4[10] ^= t4, e4[11] ^= r4, e4[20] ^= t4, e4[21] ^= r4, e4[30] ^= t4, e4[31] ^= r4, e4[40] ^= t4, e4[41] ^= r4, t4 = o4 ^ (c4 << 1 | u4 >>> 31), r4 = i4 ^ (u4 << 1 | c4 >>> 31), e4[2] ^= t4, e4[3] ^= r4, e4[12] ^= t4, e4[13] ^= r4, e4[22] ^= t4, e4[23] ^= r4, e4[32] ^= t4, e4[33] ^= r4, e4[42] ^= t4, e4[43] ^= r4, t4 = s4 ^ (l4 << 1 | h4 >>> 31), r4 = a4 ^ (h4 << 1 | l4 >>> 31), e4[4] ^= t4, e4[5] ^= r4, e4[14] ^= t4, e4[15] ^= r4, e4[24] ^= t4, e4[25] ^= r4, e4[34] ^= t4, e4[35] ^= r4, e4[44] ^= t4, e4[45] ^= r4, t4 = c4 ^ (p4 << 1 | f4 >>> 31), r4 = u4 ^ (f4 << 1 | p4 >>> 31), e4[6] ^= t4, e4[7] ^= r4, e4[16] ^= t4, e4[17] ^= r4, e4[26] ^= t4, e4[27] ^= r4, e4[36] ^= t4, e4[37] ^= r4, e4[46] ^= t4, e4[47] ^= r4, t4 = l4 ^ (o4 << 1 | i4 >>> 31), r4 = h4 ^ (i4 << 1 | o4 >>> 31), e4[8] ^= t4, e4[9] ^= r4, e4[18] ^= t4, e4[19] ^= r4, e4[28] ^= t4, e4[29] ^= r4, e4[38] ^= t4, e4[39] ^= r4, e4[48] ^= t4, e4[49] ^= r4, g4 = e4[0], y4 = e4[1], $3 = e4[11] << 4 | e4[10] >>> 28, W2 = e4[10] << 4 | e4[11] >>> 28, k4 = e4[20] << 3 | e4[21] >>> 29, I4 = e4[21] << 3 | e4[20] >>> 29, ae = e4[31] << 9 | e4[30] >>> 23, ce = e4[30] << 9 | e4[31] >>> 23, G2 = e4[40] << 18 | e4[41] >>> 14, K3 = e4[41] << 18 | e4[40] >>> 14, N4 = e4[2] << 1 | e4[3] >>> 31, P4 = e4[3] << 1 | e4[2] >>> 31, m4 = e4[13] << 12 | e4[12] >>> 20, b3 = e4[12] << 12 | e4[13] >>> 20, X2 = e4[22] << 10 | e4[23] >>> 22, Y2 = e4[23] << 10 | e4[22] >>> 22, C4 = e4[33] << 13 | e4[32] >>> 19, R3 = e4[32] << 13 | e4[33] >>> 19, ue = e4[42] << 2 | e4[43] >>> 30, le = e4[43] << 2 | e4[42] >>> 30, te = e4[5] << 30 | e4[4] >>> 2, re = e4[4] << 30 | e4[5] >>> 2, L3 = e4[14] << 6 | e4[15] >>> 26, F3 = e4[15] << 6 | e4[14] >>> 26, A5 = e4[25] << 11 | e4[24] >>> 21, w5 = e4[24] << 11 | e4[25] >>> 21, J2 = e4[34] << 15 | e4[35] >>> 17, Q2 = e4[35] << 15 | e4[34] >>> 17, O3 = e4[45] << 29 | e4[44] >>> 3, D4 = e4[44] << 29 | e4[45] >>> 3, T5 = e4[6] << 28 | e4[7] >>> 4, _5 = e4[7] << 28 | e4[6] >>> 4, ne = e4[17] << 23 | e4[16] >>> 9, oe = e4[16] << 23 | e4[17] >>> 9, z3 = e4[26] << 25 | e4[27] >>> 7, j3 = e4[27] << 25 | e4[26] >>> 7, v4 = e4[36] << 21 | e4[37] >>> 11, x4 = e4[37] << 21 | e4[36] >>> 11, Z2 = e4[47] << 24 | e4[46] >>> 8, ee = e4[46] << 24 | e4[47] >>> 8, q3 = e4[8] << 27 | e4[9] >>> 5, V2 = e4[9] << 27 | e4[8] >>> 5, B3 = e4[18] << 20 | e4[19] >>> 12, U3 = e4[19] << 20 | e4[18] >>> 12, ie = e4[29] << 7 | e4[28] >>> 25, se = e4[28] << 7 | e4[29] >>> 25, M3 = e4[38] << 8 | e4[39] >>> 24, H3 = e4[39] << 8 | e4[38] >>> 24, S3 = e4[48] << 14 | e4[49] >>> 18, E5 = e4[49] << 14 | e4[48] >>> 18, e4[0] = g4 ^ ~m4 & A5, e4[1] = y4 ^ ~b3 & w5, e4[10] = T5 ^ ~B3 & k4, e4[11] = _5 ^ ~U3 & I4, e4[20] = N4 ^ ~L3 & z3, e4[21] = P4 ^ ~F3 & j3, e4[30] = q3 ^ ~$3 & X2, e4[31] = V2 ^ ~W2 & Y2, e4[40] = te ^ ~ne & ie, e4[41] = re ^ ~oe & se, e4[2] = m4 ^ ~A5 & v4, e4[3] = b3 ^ ~w5 & x4, e4[12] = B3 ^ ~k4 & C4, e4[13] = U3 ^ ~I4 & R3, e4[22] = L3 ^ ~z3 & M3, e4[23] = F3 ^ ~j3 & H3, e4[32] = $3 ^ ~X2 & J2, e4[33] = W2 ^ ~Y2 & Q2, e4[42] = ne ^ ~ie & ae, e4[43] = oe ^ ~se & ce, e4[4] = A5 ^ ~v4 & S3, e4[5] = w5 ^ ~x4 & E5, e4[14] = k4 ^ ~C4 & O3, e4[15] = I4 ^ ~R3 & D4, e4[24] = z3 ^ ~M3 & G2, e4[25] = j3 ^ ~H3 & K3, e4[34] = X2 ^ ~J2 & Z2, e4[35] = Y2 ^ ~Q2 & ee, e4[44] = ie ^ ~ae & ue, e4[45] = se ^ ~ce & le, e4[6] = v4 ^ ~S3 & g4, e4[7] = x4 ^ ~E5 & y4, e4[16] = C4 ^ ~O3 & T5, e4[17] = R3 ^ ~D4 & _5, e4[26] = M3 ^ ~G2 & N4, e4[27] = H3 ^ ~K3 & P4, e4[36] = J2 ^ ~Z2 & q3, e4[37] = Q2 ^ ~ee & V2, e4[46] = ae ^ ~ue & te, e4[47] = ce ^ ~le & re, e4[8] = S3 ^ ~g4 & m4, e4[9] = E5 ^ ~y4 & b3, e4[18] = O3 ^ ~T5 & B3, e4[19] = D4 ^ ~_5 & U3, e4[28] = G2 ^ ~N4 & L3, e4[29] = K3 ^ ~P4 & F3, e4[38] = Z2 ^ ~q3 & $3, e4[39] = ee ^ ~V2 & W2, e4[48] = ue ^ ~te & ne, e4[49] = le ^ ~re & oe, e4[0] ^= d3[n3], e4[1] ^= d3[n3 + 1];
             };
             if (c3)
               e3.exports = _4;
             else {
               for (U2 = 0; U2 < B2.length; ++U2)
-                i3[B2[U2]] = _4[B2[U2]];
+                s3[B2[U2]] = _4[B2[U2]];
               u3 && ((n2 = function() {
                 return _4;
               }.call(t3, r3, t3, e3)) === void 0 || (e3.exports = n2));
@@ -9687,14 +9693,14 @@ var require_algosdk_min = __commonJS({
           var n2;
           !function() {
             "use strict";
-            var t4 = "input is invalid type", o3 = typeof window == "object", s3 = o3 ? window : {};
-            s3.JS_SHA512_NO_WINDOW && (o3 = false);
-            var i3 = !o3 && typeof self == "object";
-            !s3.JS_SHA512_NO_NODE_JS && typeof process == "object" && process.versions && process.versions.node ? s3 = r3.g : i3 && (s3 = self);
-            var a3 = !s3.JS_SHA512_NO_COMMON_JS && e3.exports, c3 = r3.amdO, u3 = !s3.JS_SHA512_NO_ARRAY_BUFFER && typeof ArrayBuffer != "undefined", l3 = "0123456789abcdef".split(""), h3 = [-2147483648, 8388608, 32768, 128], p3 = [24, 16, 8, 0], f3 = [1116352408, 3609767458, 1899447441, 602891725, 3049323471, 3964484399, 3921009573, 2173295548, 961987163, 4081628472, 1508970993, 3053834265, 2453635748, 2937671579, 2870763221, 3664609560, 3624381080, 2734883394, 310598401, 1164996542, 607225278, 1323610764, 1426881987, 3590304994, 1925078388, 4068182383, 2162078206, 991336113, 2614888103, 633803317, 3248222580, 3479774868, 3835390401, 2666613458, 4022224774, 944711139, 264347078, 2341262773, 604807628, 2007800933, 770255983, 1495990901, 1249150122, 1856431235, 1555081692, 3175218132, 1996064986, 2198950837, 2554220882, 3999719339, 2821834349, 766784016, 2952996808, 2566594879, 3210313671, 3203337956, 3336571891, 1034457026, 3584528711, 2466948901, 113926993, 3758326383, 338241895, 168717936, 666307205, 1188179964, 773529912, 1546045734, 1294757372, 1522805485, 1396182291, 2643833823, 1695183700, 2343527390, 1986661051, 1014477480, 2177026350, 1206759142, 2456956037, 344077627, 2730485921, 1290863460, 2820302411, 3158454273, 3259730800, 3505952657, 3345764771, 106217008, 3516065817, 3606008344, 3600352804, 1432725776, 4094571909, 1467031594, 275423344, 851169720, 430227734, 3100823752, 506948616, 1363258195, 659060556, 3750685593, 883997877, 3785050280, 958139571, 3318307427, 1322822218, 3812723403, 1537002063, 2003034995, 1747873779, 3602036899, 1955562222, 1575990012, 2024104815, 1125592928, 2227730452, 2716904306, 2361852424, 442776044, 2428436474, 593698344, 2756734187, 3733110249, 3204031479, 2999351573, 3329325298, 3815920427, 3391569614, 3928383900, 3515267271, 566280711, 3940187606, 3454069534, 4118630271, 4000239992, 116418474, 1914138554, 174292421, 2731055270, 289380356, 3203993006, 460393269, 320620315, 685471733, 587496836, 852142971, 1086792851, 1017036298, 365543100, 1126000580, 2618297676, 1288033470, 3409855158, 1501505948, 4234509866, 1607167915, 987167468, 1816402316, 1246189591], d3 = ["hex", "array", "digest", "arrayBuffer"], g3 = [];
-            !s3.JS_SHA512_NO_NODE_JS && Array.isArray || (Array.isArray = function(e4) {
+            var t4 = "input is invalid type", o3 = typeof window == "object", i3 = o3 ? window : {};
+            i3.JS_SHA512_NO_WINDOW && (o3 = false);
+            var s3 = !o3 && typeof self == "object";
+            !i3.JS_SHA512_NO_NODE_JS && typeof process == "object" && process.versions && process.versions.node ? i3 = r3.g : s3 && (i3 = self);
+            var a3 = !i3.JS_SHA512_NO_COMMON_JS && e3.exports, c3 = r3.amdO, u3 = !i3.JS_SHA512_NO_ARRAY_BUFFER && typeof ArrayBuffer != "undefined", l3 = "0123456789abcdef".split(""), h3 = [-2147483648, 8388608, 32768, 128], p3 = [24, 16, 8, 0], f3 = [1116352408, 3609767458, 1899447441, 602891725, 3049323471, 3964484399, 3921009573, 2173295548, 961987163, 4081628472, 1508970993, 3053834265, 2453635748, 2937671579, 2870763221, 3664609560, 3624381080, 2734883394, 310598401, 1164996542, 607225278, 1323610764, 1426881987, 3590304994, 1925078388, 4068182383, 2162078206, 991336113, 2614888103, 633803317, 3248222580, 3479774868, 3835390401, 2666613458, 4022224774, 944711139, 264347078, 2341262773, 604807628, 2007800933, 770255983, 1495990901, 1249150122, 1856431235, 1555081692, 3175218132, 1996064986, 2198950837, 2554220882, 3999719339, 2821834349, 766784016, 2952996808, 2566594879, 3210313671, 3203337956, 3336571891, 1034457026, 3584528711, 2466948901, 113926993, 3758326383, 338241895, 168717936, 666307205, 1188179964, 773529912, 1546045734, 1294757372, 1522805485, 1396182291, 2643833823, 1695183700, 2343527390, 1986661051, 1014477480, 2177026350, 1206759142, 2456956037, 344077627, 2730485921, 1290863460, 2820302411, 3158454273, 3259730800, 3505952657, 3345764771, 106217008, 3516065817, 3606008344, 3600352804, 1432725776, 4094571909, 1467031594, 275423344, 851169720, 430227734, 3100823752, 506948616, 1363258195, 659060556, 3750685593, 883997877, 3785050280, 958139571, 3318307427, 1322822218, 3812723403, 1537002063, 2003034995, 1747873779, 3602036899, 1955562222, 1575990012, 2024104815, 1125592928, 2227730452, 2716904306, 2361852424, 442776044, 2428436474, 593698344, 2756734187, 3733110249, 3204031479, 2999351573, 3329325298, 3815920427, 3391569614, 3928383900, 3515267271, 566280711, 3940187606, 3454069534, 4118630271, 4000239992, 116418474, 1914138554, 174292421, 2731055270, 289380356, 3203993006, 460393269, 320620315, 685471733, 587496836, 852142971, 1086792851, 1017036298, 365543100, 1126000580, 2618297676, 1288033470, 3409855158, 1501505948, 4234509866, 1607167915, 987167468, 1816402316, 1246189591], d3 = ["hex", "array", "digest", "arrayBuffer"], g3 = [];
+            !i3.JS_SHA512_NO_NODE_JS && Array.isArray || (Array.isArray = function(e4) {
               return Object.prototype.toString.call(e4) === "[object Array]";
-            }), !u3 || !s3.JS_SHA512_NO_ARRAY_BUFFER_IS_VIEW && ArrayBuffer.isView || (ArrayBuffer.isView = function(e4) {
+            }), !u3 || !i3.JS_SHA512_NO_ARRAY_BUFFER_IS_VIEW && ArrayBuffer.isView || (ArrayBuffer.isView = function(e4) {
               return typeof e4 == "object" && e4.buffer && e4.buffer.constructor === ArrayBuffer;
             });
             var y3 = function(e4, t5) {
@@ -9734,9 +9740,9 @@ var require_algosdk_min = __commonJS({
               t5 ? (g3[0] = g3[1] = g3[2] = g3[3] = g3[4] = g3[5] = g3[6] = g3[7] = g3[8] = g3[9] = g3[10] = g3[11] = g3[12] = g3[13] = g3[14] = g3[15] = g3[16] = g3[17] = g3[18] = g3[19] = g3[20] = g3[21] = g3[22] = g3[23] = g3[24] = g3[25] = g3[26] = g3[27] = g3[28] = g3[29] = g3[30] = g3[31] = g3[32] = 0, this.blocks = g3) : this.blocks = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], e4 == 384 ? (this.h0h = 3418070365, this.h0l = 3238371032, this.h1h = 1654270250, this.h1l = 914150663, this.h2h = 2438529370, this.h2l = 812702999, this.h3h = 355462360, this.h3l = 4144912697, this.h4h = 1731405415, this.h4l = 4290775857, this.h5h = 2394180231, this.h5l = 1750603025, this.h6h = 3675008525, this.h6l = 1694076839, this.h7h = 1203062813, this.h7l = 3204075428) : e4 == 256 ? (this.h0h = 573645204, this.h0l = 4230739756, this.h1h = 2673172387, this.h1l = 3360449730, this.h2h = 596883563, this.h2l = 1867755857, this.h3h = 2520282905, this.h3l = 1497426621, this.h4h = 2519219938, this.h4l = 2827943907, this.h5h = 3193839141, this.h5l = 1401305490, this.h6h = 721525244, this.h6l = 746961066, this.h7h = 246885852, this.h7l = 2177182882) : e4 == 224 ? (this.h0h = 2352822216, this.h0l = 424955298, this.h1h = 1944164710, this.h1l = 2312950998, this.h2h = 502970286, this.h2l = 855612546, this.h3h = 1738396948, this.h3l = 1479516111, this.h4h = 258812777, this.h4l = 2077511080, this.h5h = 2011393907, this.h5l = 79989058, this.h6h = 1067287976, this.h6l = 1780299464, this.h7h = 286451373, this.h7l = 2446758561) : (this.h0h = 1779033703, this.h0l = 4089235720, this.h1h = 3144134277, this.h1l = 2227873595, this.h2h = 1013904242, this.h2l = 4271175723, this.h3h = 2773480762, this.h3l = 1595750129, this.h4h = 1359893119, this.h4l = 2917565137, this.h5h = 2600822924, this.h5l = 725511199, this.h6h = 528734635, this.h6l = 4215389547, this.h7h = 1541459225, this.h7l = 327033209), this.bits = e4, this.block = this.start = this.bytes = this.hBytes = 0, this.finalized = this.hashed = false;
             }
             function v3(e4, r4, n3) {
-              var o4, s4 = typeof e4;
-              if (s4 !== "string") {
-                if (s4 !== "object")
+              var o4, i4 = typeof e4;
+              if (i4 !== "string") {
+                if (i4 !== "object")
                   throw new Error(t4);
                 if (e4 === null)
                   throw new Error(t4);
@@ -9746,9 +9752,9 @@ var require_algosdk_min = __commonJS({
                   throw new Error(t4);
                 o4 = true;
               }
-              var i4 = e4.length;
+              var s4 = e4.length;
               if (!o4) {
-                for (var a4, c4 = [], l4 = (i4 = e4.length, 0), h4 = 0; h4 < i4; ++h4)
+                for (var a4, c4 = [], l4 = (s4 = e4.length, 0), h4 = 0; h4 < s4; ++h4)
                   (a4 = e4.charCodeAt(h4)) < 128 ? c4[l4++] = a4 : a4 < 2048 ? (c4[l4++] = 192 | a4 >> 6, c4[l4++] = 128 | 63 & a4) : a4 < 55296 || a4 >= 57344 ? (c4[l4++] = 224 | a4 >> 12, c4[l4++] = 128 | a4 >> 6 & 63, c4[l4++] = 128 | 63 & a4) : (a4 = 65536 + ((1023 & a4) << 10 | 1023 & e4.charCodeAt(++h4)), c4[l4++] = 240 | a4 >> 18, c4[l4++] = 128 | a4 >> 12 & 63, c4[l4++] = 128 | a4 >> 6 & 63, c4[l4++] = 128 | 63 & a4);
                 e4 = c4;
               }
@@ -9775,14 +9781,14 @@ var require_algosdk_min = __commonJS({
                   throw new Error(t4);
                 r4 = true;
               }
-              for (var o4, s4, i4 = 0, a4 = e4.length, c4 = this.blocks; i4 < a4; ) {
+              for (var o4, i4, s4 = 0, a4 = e4.length, c4 = this.blocks; s4 < a4; ) {
                 if (this.hashed && (this.hashed = false, c4[0] = this.block, c4[1] = c4[2] = c4[3] = c4[4] = c4[5] = c4[6] = c4[7] = c4[8] = c4[9] = c4[10] = c4[11] = c4[12] = c4[13] = c4[14] = c4[15] = c4[16] = c4[17] = c4[18] = c4[19] = c4[20] = c4[21] = c4[22] = c4[23] = c4[24] = c4[25] = c4[26] = c4[27] = c4[28] = c4[29] = c4[30] = c4[31] = c4[32] = 0), r4)
-                  for (s4 = this.start; i4 < a4 && s4 < 128; ++i4)
-                    c4[s4 >> 2] |= e4[i4] << p3[3 & s4++];
+                  for (i4 = this.start; s4 < a4 && i4 < 128; ++s4)
+                    c4[i4 >> 2] |= e4[s4] << p3[3 & i4++];
                 else
-                  for (s4 = this.start; i4 < a4 && s4 < 128; ++i4)
-                    (o4 = e4.charCodeAt(i4)) < 128 ? c4[s4 >> 2] |= o4 << p3[3 & s4++] : o4 < 2048 ? (c4[s4 >> 2] |= (192 | o4 >> 6) << p3[3 & s4++], c4[s4 >> 2] |= (128 | 63 & o4) << p3[3 & s4++]) : o4 < 55296 || o4 >= 57344 ? (c4[s4 >> 2] |= (224 | o4 >> 12) << p3[3 & s4++], c4[s4 >> 2] |= (128 | o4 >> 6 & 63) << p3[3 & s4++], c4[s4 >> 2] |= (128 | 63 & o4) << p3[3 & s4++]) : (o4 = 65536 + ((1023 & o4) << 10 | 1023 & e4.charCodeAt(++i4)), c4[s4 >> 2] |= (240 | o4 >> 18) << p3[3 & s4++], c4[s4 >> 2] |= (128 | o4 >> 12 & 63) << p3[3 & s4++], c4[s4 >> 2] |= (128 | o4 >> 6 & 63) << p3[3 & s4++], c4[s4 >> 2] |= (128 | 63 & o4) << p3[3 & s4++]);
-                this.lastByteIndex = s4, this.bytes += s4 - this.start, s4 >= 128 ? (this.block = c4[32], this.start = s4 - 128, this.hash(), this.hashed = true) : this.start = s4;
+                  for (i4 = this.start; s4 < a4 && i4 < 128; ++s4)
+                    (o4 = e4.charCodeAt(s4)) < 128 ? c4[i4 >> 2] |= o4 << p3[3 & i4++] : o4 < 2048 ? (c4[i4 >> 2] |= (192 | o4 >> 6) << p3[3 & i4++], c4[i4 >> 2] |= (128 | 63 & o4) << p3[3 & i4++]) : o4 < 55296 || o4 >= 57344 ? (c4[i4 >> 2] |= (224 | o4 >> 12) << p3[3 & i4++], c4[i4 >> 2] |= (128 | o4 >> 6 & 63) << p3[3 & i4++], c4[i4 >> 2] |= (128 | 63 & o4) << p3[3 & i4++]) : (o4 = 65536 + ((1023 & o4) << 10 | 1023 & e4.charCodeAt(++s4)), c4[i4 >> 2] |= (240 | o4 >> 18) << p3[3 & i4++], c4[i4 >> 2] |= (128 | o4 >> 12 & 63) << p3[3 & i4++], c4[i4 >> 2] |= (128 | o4 >> 6 & 63) << p3[3 & i4++], c4[i4 >> 2] |= (128 | 63 & o4) << p3[3 & i4++]);
+                this.lastByteIndex = i4, this.bytes += i4 - this.start, i4 >= 128 ? (this.block = c4[32], this.start = i4 - 128, this.hash(), this.hashed = true) : this.start = i4;
               }
               return this.bytes > 4294967295 && (this.hBytes += this.bytes / 4294967296 << 0, this.bytes = this.bytes % 4294967296), this;
             }, w4.prototype.finalize = function() {
@@ -9792,20 +9798,20 @@ var require_algosdk_min = __commonJS({
                 e4[32] = this.block, e4[t5 >> 2] |= h3[3 & t5], this.block = e4[32], t5 >= 112 && (this.hashed || this.hash(), e4[0] = this.block, e4[1] = e4[2] = e4[3] = e4[4] = e4[5] = e4[6] = e4[7] = e4[8] = e4[9] = e4[10] = e4[11] = e4[12] = e4[13] = e4[14] = e4[15] = e4[16] = e4[17] = e4[18] = e4[19] = e4[20] = e4[21] = e4[22] = e4[23] = e4[24] = e4[25] = e4[26] = e4[27] = e4[28] = e4[29] = e4[30] = e4[31] = e4[32] = 0), e4[30] = this.hBytes << 3 | this.bytes >>> 29, e4[31] = this.bytes << 3, this.hash();
               }
             }, w4.prototype.hash = function() {
-              var e4, t5, r4, n3, o4, s4, i4, a4, c4, u4, l4, h4, p4, d4, g4, y4, m4, b3, A5, w5, v4, x4, S2, E4, T4, _4 = this.h0h, B2 = this.h0l, U2 = this.h1h, k3 = this.h1l, I3 = this.h2h, C3 = this.h2l, R2 = this.h3h, O2 = this.h3l, D3 = this.h4h, N3 = this.h4l, P3 = this.h5h, L3 = this.h5l, F3 = this.h6h, z3 = this.h6l, j3 = this.h7h, M3 = this.h7l, H3 = this.blocks;
+              var e4, t5, r4, n3, o4, i4, s4, a4, c4, u4, l4, h4, p4, d4, g4, y4, m4, b3, A5, w5, v4, x4, S2, E4, T4, _4 = this.h0h, B2 = this.h0l, U2 = this.h1h, k3 = this.h1l, I3 = this.h2h, C3 = this.h2l, R2 = this.h3h, O2 = this.h3l, D3 = this.h4h, N3 = this.h4l, P3 = this.h5h, L3 = this.h5l, F3 = this.h6h, z3 = this.h6l, j3 = this.h7h, M3 = this.h7l, H3 = this.blocks;
               for (e4 = 32; e4 < 160; e4 += 2)
-                t5 = ((w5 = H3[e4 - 30]) >>> 1 | (v4 = H3[e4 - 29]) << 31) ^ (w5 >>> 8 | v4 << 24) ^ w5 >>> 7, r4 = (v4 >>> 1 | w5 << 31) ^ (v4 >>> 8 | w5 << 24) ^ (v4 >>> 7 | w5 << 25), n3 = ((w5 = H3[e4 - 4]) >>> 19 | (v4 = H3[e4 - 3]) << 13) ^ (v4 >>> 29 | w5 << 3) ^ w5 >>> 6, o4 = (v4 >>> 19 | w5 << 13) ^ (w5 >>> 29 | v4 << 3) ^ (v4 >>> 6 | w5 << 26), w5 = H3[e4 - 32], v4 = H3[e4 - 31], c4 = ((x4 = H3[e4 - 14]) >>> 16) + (w5 >>> 16) + (t5 >>> 16) + (n3 >>> 16) + ((a4 = (65535 & x4) + (65535 & w5) + (65535 & t5) + (65535 & n3) + ((i4 = ((S2 = H3[e4 - 13]) >>> 16) + (v4 >>> 16) + (r4 >>> 16) + (o4 >>> 16) + ((s4 = (65535 & S2) + (65535 & v4) + (65535 & r4) + (65535 & o4)) >>> 16)) >>> 16)) >>> 16), H3[e4] = c4 << 16 | 65535 & a4, H3[e4 + 1] = i4 << 16 | 65535 & s4;
+                t5 = ((w5 = H3[e4 - 30]) >>> 1 | (v4 = H3[e4 - 29]) << 31) ^ (w5 >>> 8 | v4 << 24) ^ w5 >>> 7, r4 = (v4 >>> 1 | w5 << 31) ^ (v4 >>> 8 | w5 << 24) ^ (v4 >>> 7 | w5 << 25), n3 = ((w5 = H3[e4 - 4]) >>> 19 | (v4 = H3[e4 - 3]) << 13) ^ (v4 >>> 29 | w5 << 3) ^ w5 >>> 6, o4 = (v4 >>> 19 | w5 << 13) ^ (w5 >>> 29 | v4 << 3) ^ (v4 >>> 6 | w5 << 26), w5 = H3[e4 - 32], v4 = H3[e4 - 31], c4 = ((x4 = H3[e4 - 14]) >>> 16) + (w5 >>> 16) + (t5 >>> 16) + (n3 >>> 16) + ((a4 = (65535 & x4) + (65535 & w5) + (65535 & t5) + (65535 & n3) + ((s4 = ((S2 = H3[e4 - 13]) >>> 16) + (v4 >>> 16) + (r4 >>> 16) + (o4 >>> 16) + ((i4 = (65535 & S2) + (65535 & v4) + (65535 & r4) + (65535 & o4)) >>> 16)) >>> 16)) >>> 16), H3[e4] = c4 << 16 | 65535 & a4, H3[e4 + 1] = s4 << 16 | 65535 & i4;
               var G2 = _4, K3 = B2, q3 = U2, V2 = k3, $3 = I3, W2 = C3, X2 = R2, Y2 = O2, J2 = D3, Q2 = N3, Z2 = P3, ee = L3, te = F3, re = z3, ne = j3, oe = M3;
               for (y4 = q3 & $3, m4 = V2 & W2, e4 = 0; e4 < 160; e4 += 8)
-                t5 = (G2 >>> 28 | K3 << 4) ^ (K3 >>> 2 | G2 << 30) ^ (K3 >>> 7 | G2 << 25), r4 = (K3 >>> 28 | G2 << 4) ^ (G2 >>> 2 | K3 << 30) ^ (G2 >>> 7 | K3 << 25), n3 = (J2 >>> 14 | Q2 << 18) ^ (J2 >>> 18 | Q2 << 14) ^ (Q2 >>> 9 | J2 << 23), o4 = (Q2 >>> 14 | J2 << 18) ^ (Q2 >>> 18 | J2 << 14) ^ (J2 >>> 9 | Q2 << 23), b3 = (u4 = G2 & q3) ^ G2 & $3 ^ y4, A5 = (l4 = K3 & V2) ^ K3 & W2 ^ m4, E4 = J2 & Z2 ^ ~J2 & te, T4 = Q2 & ee ^ ~Q2 & re, w5 = H3[e4], v4 = H3[e4 + 1], w5 = (c4 = ((x4 = f3[e4]) >>> 16) + (w5 >>> 16) + (E4 >>> 16) + (n3 >>> 16) + (ne >>> 16) + ((a4 = (65535 & x4) + (65535 & w5) + (65535 & E4) + (65535 & n3) + (65535 & ne) + ((i4 = ((S2 = f3[e4 + 1]) >>> 16) + (v4 >>> 16) + (T4 >>> 16) + (o4 >>> 16) + (oe >>> 16) + ((s4 = (65535 & S2) + (65535 & v4) + (65535 & T4) + (65535 & o4) + (65535 & oe)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, v4 = i4 << 16 | 65535 & s4, x4 = (c4 = (b3 >>> 16) + (t5 >>> 16) + ((a4 = (65535 & b3) + (65535 & t5) + ((i4 = (A5 >>> 16) + (r4 >>> 16) + ((s4 = (65535 & A5) + (65535 & r4)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, S2 = i4 << 16 | 65535 & s4, ne = (c4 = (X2 >>> 16) + (w5 >>> 16) + ((a4 = (65535 & X2) + (65535 & w5) + ((i4 = (Y2 >>> 16) + (v4 >>> 16) + ((s4 = (65535 & Y2) + (65535 & v4)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, oe = i4 << 16 | 65535 & s4, t5 = ((X2 = (c4 = (x4 >>> 16) + (w5 >>> 16) + ((a4 = (65535 & x4) + (65535 & w5) + ((i4 = (S2 >>> 16) + (v4 >>> 16) + ((s4 = (65535 & S2) + (65535 & v4)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4) >>> 28 | (Y2 = i4 << 16 | 65535 & s4) << 4) ^ (Y2 >>> 2 | X2 << 30) ^ (Y2 >>> 7 | X2 << 25), r4 = (Y2 >>> 28 | X2 << 4) ^ (X2 >>> 2 | Y2 << 30) ^ (X2 >>> 7 | Y2 << 25), n3 = (ne >>> 14 | oe << 18) ^ (ne >>> 18 | oe << 14) ^ (oe >>> 9 | ne << 23), o4 = (oe >>> 14 | ne << 18) ^ (oe >>> 18 | ne << 14) ^ (ne >>> 9 | oe << 23), b3 = (h4 = X2 & G2) ^ X2 & q3 ^ u4, A5 = (p4 = Y2 & K3) ^ Y2 & V2 ^ l4, E4 = ne & J2 ^ ~ne & Z2, T4 = oe & Q2 ^ ~oe & ee, w5 = H3[e4 + 2], v4 = H3[e4 + 3], w5 = (c4 = ((x4 = f3[e4 + 2]) >>> 16) + (w5 >>> 16) + (E4 >>> 16) + (n3 >>> 16) + (te >>> 16) + ((a4 = (65535 & x4) + (65535 & w5) + (65535 & E4) + (65535 & n3) + (65535 & te) + ((i4 = ((S2 = f3[e4 + 3]) >>> 16) + (v4 >>> 16) + (T4 >>> 16) + (o4 >>> 16) + (re >>> 16) + ((s4 = (65535 & S2) + (65535 & v4) + (65535 & T4) + (65535 & o4) + (65535 & re)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, v4 = i4 << 16 | 65535 & s4, x4 = (c4 = (b3 >>> 16) + (t5 >>> 16) + ((a4 = (65535 & b3) + (65535 & t5) + ((i4 = (A5 >>> 16) + (r4 >>> 16) + ((s4 = (65535 & A5) + (65535 & r4)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, S2 = i4 << 16 | 65535 & s4, te = (c4 = ($3 >>> 16) + (w5 >>> 16) + ((a4 = (65535 & $3) + (65535 & w5) + ((i4 = (W2 >>> 16) + (v4 >>> 16) + ((s4 = (65535 & W2) + (65535 & v4)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, re = i4 << 16 | 65535 & s4, t5 = (($3 = (c4 = (x4 >>> 16) + (w5 >>> 16) + ((a4 = (65535 & x4) + (65535 & w5) + ((i4 = (S2 >>> 16) + (v4 >>> 16) + ((s4 = (65535 & S2) + (65535 & v4)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4) >>> 28 | (W2 = i4 << 16 | 65535 & s4) << 4) ^ (W2 >>> 2 | $3 << 30) ^ (W2 >>> 7 | $3 << 25), r4 = (W2 >>> 28 | $3 << 4) ^ ($3 >>> 2 | W2 << 30) ^ ($3 >>> 7 | W2 << 25), n3 = (te >>> 14 | re << 18) ^ (te >>> 18 | re << 14) ^ (re >>> 9 | te << 23), o4 = (re >>> 14 | te << 18) ^ (re >>> 18 | te << 14) ^ (te >>> 9 | re << 23), b3 = (d4 = $3 & X2) ^ $3 & G2 ^ h4, A5 = (g4 = W2 & Y2) ^ W2 & K3 ^ p4, E4 = te & ne ^ ~te & J2, T4 = re & oe ^ ~re & Q2, w5 = H3[e4 + 4], v4 = H3[e4 + 5], w5 = (c4 = ((x4 = f3[e4 + 4]) >>> 16) + (w5 >>> 16) + (E4 >>> 16) + (n3 >>> 16) + (Z2 >>> 16) + ((a4 = (65535 & x4) + (65535 & w5) + (65535 & E4) + (65535 & n3) + (65535 & Z2) + ((i4 = ((S2 = f3[e4 + 5]) >>> 16) + (v4 >>> 16) + (T4 >>> 16) + (o4 >>> 16) + (ee >>> 16) + ((s4 = (65535 & S2) + (65535 & v4) + (65535 & T4) + (65535 & o4) + (65535 & ee)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, v4 = i4 << 16 | 65535 & s4, x4 = (c4 = (b3 >>> 16) + (t5 >>> 16) + ((a4 = (65535 & b3) + (65535 & t5) + ((i4 = (A5 >>> 16) + (r4 >>> 16) + ((s4 = (65535 & A5) + (65535 & r4)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, S2 = i4 << 16 | 65535 & s4, Z2 = (c4 = (q3 >>> 16) + (w5 >>> 16) + ((a4 = (65535 & q3) + (65535 & w5) + ((i4 = (V2 >>> 16) + (v4 >>> 16) + ((s4 = (65535 & V2) + (65535 & v4)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, ee = i4 << 16 | 65535 & s4, t5 = ((q3 = (c4 = (x4 >>> 16) + (w5 >>> 16) + ((a4 = (65535 & x4) + (65535 & w5) + ((i4 = (S2 >>> 16) + (v4 >>> 16) + ((s4 = (65535 & S2) + (65535 & v4)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4) >>> 28 | (V2 = i4 << 16 | 65535 & s4) << 4) ^ (V2 >>> 2 | q3 << 30) ^ (V2 >>> 7 | q3 << 25), r4 = (V2 >>> 28 | q3 << 4) ^ (q3 >>> 2 | V2 << 30) ^ (q3 >>> 7 | V2 << 25), n3 = (Z2 >>> 14 | ee << 18) ^ (Z2 >>> 18 | ee << 14) ^ (ee >>> 9 | Z2 << 23), o4 = (ee >>> 14 | Z2 << 18) ^ (ee >>> 18 | Z2 << 14) ^ (Z2 >>> 9 | ee << 23), b3 = (y4 = q3 & $3) ^ q3 & X2 ^ d4, A5 = (m4 = V2 & W2) ^ V2 & Y2 ^ g4, E4 = Z2 & te ^ ~Z2 & ne, T4 = ee & re ^ ~ee & oe, w5 = H3[e4 + 6], v4 = H3[e4 + 7], w5 = (c4 = ((x4 = f3[e4 + 6]) >>> 16) + (w5 >>> 16) + (E4 >>> 16) + (n3 >>> 16) + (J2 >>> 16) + ((a4 = (65535 & x4) + (65535 & w5) + (65535 & E4) + (65535 & n3) + (65535 & J2) + ((i4 = ((S2 = f3[e4 + 7]) >>> 16) + (v4 >>> 16) + (T4 >>> 16) + (o4 >>> 16) + (Q2 >>> 16) + ((s4 = (65535 & S2) + (65535 & v4) + (65535 & T4) + (65535 & o4) + (65535 & Q2)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, v4 = i4 << 16 | 65535 & s4, x4 = (c4 = (b3 >>> 16) + (t5 >>> 16) + ((a4 = (65535 & b3) + (65535 & t5) + ((i4 = (A5 >>> 16) + (r4 >>> 16) + ((s4 = (65535 & A5) + (65535 & r4)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, S2 = i4 << 16 | 65535 & s4, J2 = (c4 = (G2 >>> 16) + (w5 >>> 16) + ((a4 = (65535 & G2) + (65535 & w5) + ((i4 = (K3 >>> 16) + (v4 >>> 16) + ((s4 = (65535 & K3) + (65535 & v4)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, Q2 = i4 << 16 | 65535 & s4, G2 = (c4 = (x4 >>> 16) + (w5 >>> 16) + ((a4 = (65535 & x4) + (65535 & w5) + ((i4 = (S2 >>> 16) + (v4 >>> 16) + ((s4 = (65535 & S2) + (65535 & v4)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, K3 = i4 << 16 | 65535 & s4;
-              c4 = (_4 >>> 16) + (G2 >>> 16) + ((a4 = (65535 & _4) + (65535 & G2) + ((i4 = (B2 >>> 16) + (K3 >>> 16) + ((s4 = (65535 & B2) + (65535 & K3)) >>> 16)) >>> 16)) >>> 16), this.h0h = c4 << 16 | 65535 & a4, this.h0l = i4 << 16 | 65535 & s4, c4 = (U2 >>> 16) + (q3 >>> 16) + ((a4 = (65535 & U2) + (65535 & q3) + ((i4 = (k3 >>> 16) + (V2 >>> 16) + ((s4 = (65535 & k3) + (65535 & V2)) >>> 16)) >>> 16)) >>> 16), this.h1h = c4 << 16 | 65535 & a4, this.h1l = i4 << 16 | 65535 & s4, c4 = (I3 >>> 16) + ($3 >>> 16) + ((a4 = (65535 & I3) + (65535 & $3) + ((i4 = (C3 >>> 16) + (W2 >>> 16) + ((s4 = (65535 & C3) + (65535 & W2)) >>> 16)) >>> 16)) >>> 16), this.h2h = c4 << 16 | 65535 & a4, this.h2l = i4 << 16 | 65535 & s4, c4 = (R2 >>> 16) + (X2 >>> 16) + ((a4 = (65535 & R2) + (65535 & X2) + ((i4 = (O2 >>> 16) + (Y2 >>> 16) + ((s4 = (65535 & O2) + (65535 & Y2)) >>> 16)) >>> 16)) >>> 16), this.h3h = c4 << 16 | 65535 & a4, this.h3l = i4 << 16 | 65535 & s4, c4 = (D3 >>> 16) + (J2 >>> 16) + ((a4 = (65535 & D3) + (65535 & J2) + ((i4 = (N3 >>> 16) + (Q2 >>> 16) + ((s4 = (65535 & N3) + (65535 & Q2)) >>> 16)) >>> 16)) >>> 16), this.h4h = c4 << 16 | 65535 & a4, this.h4l = i4 << 16 | 65535 & s4, c4 = (P3 >>> 16) + (Z2 >>> 16) + ((a4 = (65535 & P3) + (65535 & Z2) + ((i4 = (L3 >>> 16) + (ee >>> 16) + ((s4 = (65535 & L3) + (65535 & ee)) >>> 16)) >>> 16)) >>> 16), this.h5h = c4 << 16 | 65535 & a4, this.h5l = i4 << 16 | 65535 & s4, c4 = (F3 >>> 16) + (te >>> 16) + ((a4 = (65535 & F3) + (65535 & te) + ((i4 = (z3 >>> 16) + (re >>> 16) + ((s4 = (65535 & z3) + (65535 & re)) >>> 16)) >>> 16)) >>> 16), this.h6h = c4 << 16 | 65535 & a4, this.h6l = i4 << 16 | 65535 & s4, c4 = (j3 >>> 16) + (ne >>> 16) + ((a4 = (65535 & j3) + (65535 & ne) + ((i4 = (M3 >>> 16) + (oe >>> 16) + ((s4 = (65535 & M3) + (65535 & oe)) >>> 16)) >>> 16)) >>> 16), this.h7h = c4 << 16 | 65535 & a4, this.h7l = i4 << 16 | 65535 & s4;
+                t5 = (G2 >>> 28 | K3 << 4) ^ (K3 >>> 2 | G2 << 30) ^ (K3 >>> 7 | G2 << 25), r4 = (K3 >>> 28 | G2 << 4) ^ (G2 >>> 2 | K3 << 30) ^ (G2 >>> 7 | K3 << 25), n3 = (J2 >>> 14 | Q2 << 18) ^ (J2 >>> 18 | Q2 << 14) ^ (Q2 >>> 9 | J2 << 23), o4 = (Q2 >>> 14 | J2 << 18) ^ (Q2 >>> 18 | J2 << 14) ^ (J2 >>> 9 | Q2 << 23), b3 = (u4 = G2 & q3) ^ G2 & $3 ^ y4, A5 = (l4 = K3 & V2) ^ K3 & W2 ^ m4, E4 = J2 & Z2 ^ ~J2 & te, T4 = Q2 & ee ^ ~Q2 & re, w5 = H3[e4], v4 = H3[e4 + 1], w5 = (c4 = ((x4 = f3[e4]) >>> 16) + (w5 >>> 16) + (E4 >>> 16) + (n3 >>> 16) + (ne >>> 16) + ((a4 = (65535 & x4) + (65535 & w5) + (65535 & E4) + (65535 & n3) + (65535 & ne) + ((s4 = ((S2 = f3[e4 + 1]) >>> 16) + (v4 >>> 16) + (T4 >>> 16) + (o4 >>> 16) + (oe >>> 16) + ((i4 = (65535 & S2) + (65535 & v4) + (65535 & T4) + (65535 & o4) + (65535 & oe)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, v4 = s4 << 16 | 65535 & i4, x4 = (c4 = (b3 >>> 16) + (t5 >>> 16) + ((a4 = (65535 & b3) + (65535 & t5) + ((s4 = (A5 >>> 16) + (r4 >>> 16) + ((i4 = (65535 & A5) + (65535 & r4)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, S2 = s4 << 16 | 65535 & i4, ne = (c4 = (X2 >>> 16) + (w5 >>> 16) + ((a4 = (65535 & X2) + (65535 & w5) + ((s4 = (Y2 >>> 16) + (v4 >>> 16) + ((i4 = (65535 & Y2) + (65535 & v4)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, oe = s4 << 16 | 65535 & i4, t5 = ((X2 = (c4 = (x4 >>> 16) + (w5 >>> 16) + ((a4 = (65535 & x4) + (65535 & w5) + ((s4 = (S2 >>> 16) + (v4 >>> 16) + ((i4 = (65535 & S2) + (65535 & v4)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4) >>> 28 | (Y2 = s4 << 16 | 65535 & i4) << 4) ^ (Y2 >>> 2 | X2 << 30) ^ (Y2 >>> 7 | X2 << 25), r4 = (Y2 >>> 28 | X2 << 4) ^ (X2 >>> 2 | Y2 << 30) ^ (X2 >>> 7 | Y2 << 25), n3 = (ne >>> 14 | oe << 18) ^ (ne >>> 18 | oe << 14) ^ (oe >>> 9 | ne << 23), o4 = (oe >>> 14 | ne << 18) ^ (oe >>> 18 | ne << 14) ^ (ne >>> 9 | oe << 23), b3 = (h4 = X2 & G2) ^ X2 & q3 ^ u4, A5 = (p4 = Y2 & K3) ^ Y2 & V2 ^ l4, E4 = ne & J2 ^ ~ne & Z2, T4 = oe & Q2 ^ ~oe & ee, w5 = H3[e4 + 2], v4 = H3[e4 + 3], w5 = (c4 = ((x4 = f3[e4 + 2]) >>> 16) + (w5 >>> 16) + (E4 >>> 16) + (n3 >>> 16) + (te >>> 16) + ((a4 = (65535 & x4) + (65535 & w5) + (65535 & E4) + (65535 & n3) + (65535 & te) + ((s4 = ((S2 = f3[e4 + 3]) >>> 16) + (v4 >>> 16) + (T4 >>> 16) + (o4 >>> 16) + (re >>> 16) + ((i4 = (65535 & S2) + (65535 & v4) + (65535 & T4) + (65535 & o4) + (65535 & re)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, v4 = s4 << 16 | 65535 & i4, x4 = (c4 = (b3 >>> 16) + (t5 >>> 16) + ((a4 = (65535 & b3) + (65535 & t5) + ((s4 = (A5 >>> 16) + (r4 >>> 16) + ((i4 = (65535 & A5) + (65535 & r4)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, S2 = s4 << 16 | 65535 & i4, te = (c4 = ($3 >>> 16) + (w5 >>> 16) + ((a4 = (65535 & $3) + (65535 & w5) + ((s4 = (W2 >>> 16) + (v4 >>> 16) + ((i4 = (65535 & W2) + (65535 & v4)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, re = s4 << 16 | 65535 & i4, t5 = (($3 = (c4 = (x4 >>> 16) + (w5 >>> 16) + ((a4 = (65535 & x4) + (65535 & w5) + ((s4 = (S2 >>> 16) + (v4 >>> 16) + ((i4 = (65535 & S2) + (65535 & v4)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4) >>> 28 | (W2 = s4 << 16 | 65535 & i4) << 4) ^ (W2 >>> 2 | $3 << 30) ^ (W2 >>> 7 | $3 << 25), r4 = (W2 >>> 28 | $3 << 4) ^ ($3 >>> 2 | W2 << 30) ^ ($3 >>> 7 | W2 << 25), n3 = (te >>> 14 | re << 18) ^ (te >>> 18 | re << 14) ^ (re >>> 9 | te << 23), o4 = (re >>> 14 | te << 18) ^ (re >>> 18 | te << 14) ^ (te >>> 9 | re << 23), b3 = (d4 = $3 & X2) ^ $3 & G2 ^ h4, A5 = (g4 = W2 & Y2) ^ W2 & K3 ^ p4, E4 = te & ne ^ ~te & J2, T4 = re & oe ^ ~re & Q2, w5 = H3[e4 + 4], v4 = H3[e4 + 5], w5 = (c4 = ((x4 = f3[e4 + 4]) >>> 16) + (w5 >>> 16) + (E4 >>> 16) + (n3 >>> 16) + (Z2 >>> 16) + ((a4 = (65535 & x4) + (65535 & w5) + (65535 & E4) + (65535 & n3) + (65535 & Z2) + ((s4 = ((S2 = f3[e4 + 5]) >>> 16) + (v4 >>> 16) + (T4 >>> 16) + (o4 >>> 16) + (ee >>> 16) + ((i4 = (65535 & S2) + (65535 & v4) + (65535 & T4) + (65535 & o4) + (65535 & ee)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, v4 = s4 << 16 | 65535 & i4, x4 = (c4 = (b3 >>> 16) + (t5 >>> 16) + ((a4 = (65535 & b3) + (65535 & t5) + ((s4 = (A5 >>> 16) + (r4 >>> 16) + ((i4 = (65535 & A5) + (65535 & r4)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, S2 = s4 << 16 | 65535 & i4, Z2 = (c4 = (q3 >>> 16) + (w5 >>> 16) + ((a4 = (65535 & q3) + (65535 & w5) + ((s4 = (V2 >>> 16) + (v4 >>> 16) + ((i4 = (65535 & V2) + (65535 & v4)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, ee = s4 << 16 | 65535 & i4, t5 = ((q3 = (c4 = (x4 >>> 16) + (w5 >>> 16) + ((a4 = (65535 & x4) + (65535 & w5) + ((s4 = (S2 >>> 16) + (v4 >>> 16) + ((i4 = (65535 & S2) + (65535 & v4)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4) >>> 28 | (V2 = s4 << 16 | 65535 & i4) << 4) ^ (V2 >>> 2 | q3 << 30) ^ (V2 >>> 7 | q3 << 25), r4 = (V2 >>> 28 | q3 << 4) ^ (q3 >>> 2 | V2 << 30) ^ (q3 >>> 7 | V2 << 25), n3 = (Z2 >>> 14 | ee << 18) ^ (Z2 >>> 18 | ee << 14) ^ (ee >>> 9 | Z2 << 23), o4 = (ee >>> 14 | Z2 << 18) ^ (ee >>> 18 | Z2 << 14) ^ (Z2 >>> 9 | ee << 23), b3 = (y4 = q3 & $3) ^ q3 & X2 ^ d4, A5 = (m4 = V2 & W2) ^ V2 & Y2 ^ g4, E4 = Z2 & te ^ ~Z2 & ne, T4 = ee & re ^ ~ee & oe, w5 = H3[e4 + 6], v4 = H3[e4 + 7], w5 = (c4 = ((x4 = f3[e4 + 6]) >>> 16) + (w5 >>> 16) + (E4 >>> 16) + (n3 >>> 16) + (J2 >>> 16) + ((a4 = (65535 & x4) + (65535 & w5) + (65535 & E4) + (65535 & n3) + (65535 & J2) + ((s4 = ((S2 = f3[e4 + 7]) >>> 16) + (v4 >>> 16) + (T4 >>> 16) + (o4 >>> 16) + (Q2 >>> 16) + ((i4 = (65535 & S2) + (65535 & v4) + (65535 & T4) + (65535 & o4) + (65535 & Q2)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, v4 = s4 << 16 | 65535 & i4, x4 = (c4 = (b3 >>> 16) + (t5 >>> 16) + ((a4 = (65535 & b3) + (65535 & t5) + ((s4 = (A5 >>> 16) + (r4 >>> 16) + ((i4 = (65535 & A5) + (65535 & r4)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, S2 = s4 << 16 | 65535 & i4, J2 = (c4 = (G2 >>> 16) + (w5 >>> 16) + ((a4 = (65535 & G2) + (65535 & w5) + ((s4 = (K3 >>> 16) + (v4 >>> 16) + ((i4 = (65535 & K3) + (65535 & v4)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, Q2 = s4 << 16 | 65535 & i4, G2 = (c4 = (x4 >>> 16) + (w5 >>> 16) + ((a4 = (65535 & x4) + (65535 & w5) + ((s4 = (S2 >>> 16) + (v4 >>> 16) + ((i4 = (65535 & S2) + (65535 & v4)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a4, K3 = s4 << 16 | 65535 & i4;
+              c4 = (_4 >>> 16) + (G2 >>> 16) + ((a4 = (65535 & _4) + (65535 & G2) + ((s4 = (B2 >>> 16) + (K3 >>> 16) + ((i4 = (65535 & B2) + (65535 & K3)) >>> 16)) >>> 16)) >>> 16), this.h0h = c4 << 16 | 65535 & a4, this.h0l = s4 << 16 | 65535 & i4, c4 = (U2 >>> 16) + (q3 >>> 16) + ((a4 = (65535 & U2) + (65535 & q3) + ((s4 = (k3 >>> 16) + (V2 >>> 16) + ((i4 = (65535 & k3) + (65535 & V2)) >>> 16)) >>> 16)) >>> 16), this.h1h = c4 << 16 | 65535 & a4, this.h1l = s4 << 16 | 65535 & i4, c4 = (I3 >>> 16) + ($3 >>> 16) + ((a4 = (65535 & I3) + (65535 & $3) + ((s4 = (C3 >>> 16) + (W2 >>> 16) + ((i4 = (65535 & C3) + (65535 & W2)) >>> 16)) >>> 16)) >>> 16), this.h2h = c4 << 16 | 65535 & a4, this.h2l = s4 << 16 | 65535 & i4, c4 = (R2 >>> 16) + (X2 >>> 16) + ((a4 = (65535 & R2) + (65535 & X2) + ((s4 = (O2 >>> 16) + (Y2 >>> 16) + ((i4 = (65535 & O2) + (65535 & Y2)) >>> 16)) >>> 16)) >>> 16), this.h3h = c4 << 16 | 65535 & a4, this.h3l = s4 << 16 | 65535 & i4, c4 = (D3 >>> 16) + (J2 >>> 16) + ((a4 = (65535 & D3) + (65535 & J2) + ((s4 = (N3 >>> 16) + (Q2 >>> 16) + ((i4 = (65535 & N3) + (65535 & Q2)) >>> 16)) >>> 16)) >>> 16), this.h4h = c4 << 16 | 65535 & a4, this.h4l = s4 << 16 | 65535 & i4, c4 = (P3 >>> 16) + (Z2 >>> 16) + ((a4 = (65535 & P3) + (65535 & Z2) + ((s4 = (L3 >>> 16) + (ee >>> 16) + ((i4 = (65535 & L3) + (65535 & ee)) >>> 16)) >>> 16)) >>> 16), this.h5h = c4 << 16 | 65535 & a4, this.h5l = s4 << 16 | 65535 & i4, c4 = (F3 >>> 16) + (te >>> 16) + ((a4 = (65535 & F3) + (65535 & te) + ((s4 = (z3 >>> 16) + (re >>> 16) + ((i4 = (65535 & z3) + (65535 & re)) >>> 16)) >>> 16)) >>> 16), this.h6h = c4 << 16 | 65535 & a4, this.h6l = s4 << 16 | 65535 & i4, c4 = (j3 >>> 16) + (ne >>> 16) + ((a4 = (65535 & j3) + (65535 & ne) + ((s4 = (M3 >>> 16) + (oe >>> 16) + ((i4 = (65535 & M3) + (65535 & oe)) >>> 16)) >>> 16)) >>> 16), this.h7h = c4 << 16 | 65535 & a4, this.h7l = s4 << 16 | 65535 & i4;
             }, w4.prototype.hex = function() {
               this.finalize();
-              var e4 = this.h0h, t5 = this.h0l, r4 = this.h1h, n3 = this.h1l, o4 = this.h2h, s4 = this.h2l, i4 = this.h3h, a4 = this.h3l, c4 = this.h4h, u4 = this.h4l, h4 = this.h5h, p4 = this.h5l, f4 = this.h6h, d4 = this.h6l, g4 = this.h7h, y4 = this.h7l, m4 = this.bits, b3 = l3[e4 >> 28 & 15] + l3[e4 >> 24 & 15] + l3[e4 >> 20 & 15] + l3[e4 >> 16 & 15] + l3[e4 >> 12 & 15] + l3[e4 >> 8 & 15] + l3[e4 >> 4 & 15] + l3[15 & e4] + l3[t5 >> 28 & 15] + l3[t5 >> 24 & 15] + l3[t5 >> 20 & 15] + l3[t5 >> 16 & 15] + l3[t5 >> 12 & 15] + l3[t5 >> 8 & 15] + l3[t5 >> 4 & 15] + l3[15 & t5] + l3[r4 >> 28 & 15] + l3[r4 >> 24 & 15] + l3[r4 >> 20 & 15] + l3[r4 >> 16 & 15] + l3[r4 >> 12 & 15] + l3[r4 >> 8 & 15] + l3[r4 >> 4 & 15] + l3[15 & r4] + l3[n3 >> 28 & 15] + l3[n3 >> 24 & 15] + l3[n3 >> 20 & 15] + l3[n3 >> 16 & 15] + l3[n3 >> 12 & 15] + l3[n3 >> 8 & 15] + l3[n3 >> 4 & 15] + l3[15 & n3] + l3[o4 >> 28 & 15] + l3[o4 >> 24 & 15] + l3[o4 >> 20 & 15] + l3[o4 >> 16 & 15] + l3[o4 >> 12 & 15] + l3[o4 >> 8 & 15] + l3[o4 >> 4 & 15] + l3[15 & o4] + l3[s4 >> 28 & 15] + l3[s4 >> 24 & 15] + l3[s4 >> 20 & 15] + l3[s4 >> 16 & 15] + l3[s4 >> 12 & 15] + l3[s4 >> 8 & 15] + l3[s4 >> 4 & 15] + l3[15 & s4] + l3[i4 >> 28 & 15] + l3[i4 >> 24 & 15] + l3[i4 >> 20 & 15] + l3[i4 >> 16 & 15] + l3[i4 >> 12 & 15] + l3[i4 >> 8 & 15] + l3[i4 >> 4 & 15] + l3[15 & i4];
+              var e4 = this.h0h, t5 = this.h0l, r4 = this.h1h, n3 = this.h1l, o4 = this.h2h, i4 = this.h2l, s4 = this.h3h, a4 = this.h3l, c4 = this.h4h, u4 = this.h4l, h4 = this.h5h, p4 = this.h5l, f4 = this.h6h, d4 = this.h6l, g4 = this.h7h, y4 = this.h7l, m4 = this.bits, b3 = l3[e4 >> 28 & 15] + l3[e4 >> 24 & 15] + l3[e4 >> 20 & 15] + l3[e4 >> 16 & 15] + l3[e4 >> 12 & 15] + l3[e4 >> 8 & 15] + l3[e4 >> 4 & 15] + l3[15 & e4] + l3[t5 >> 28 & 15] + l3[t5 >> 24 & 15] + l3[t5 >> 20 & 15] + l3[t5 >> 16 & 15] + l3[t5 >> 12 & 15] + l3[t5 >> 8 & 15] + l3[t5 >> 4 & 15] + l3[15 & t5] + l3[r4 >> 28 & 15] + l3[r4 >> 24 & 15] + l3[r4 >> 20 & 15] + l3[r4 >> 16 & 15] + l3[r4 >> 12 & 15] + l3[r4 >> 8 & 15] + l3[r4 >> 4 & 15] + l3[15 & r4] + l3[n3 >> 28 & 15] + l3[n3 >> 24 & 15] + l3[n3 >> 20 & 15] + l3[n3 >> 16 & 15] + l3[n3 >> 12 & 15] + l3[n3 >> 8 & 15] + l3[n3 >> 4 & 15] + l3[15 & n3] + l3[o4 >> 28 & 15] + l3[o4 >> 24 & 15] + l3[o4 >> 20 & 15] + l3[o4 >> 16 & 15] + l3[o4 >> 12 & 15] + l3[o4 >> 8 & 15] + l3[o4 >> 4 & 15] + l3[15 & o4] + l3[i4 >> 28 & 15] + l3[i4 >> 24 & 15] + l3[i4 >> 20 & 15] + l3[i4 >> 16 & 15] + l3[i4 >> 12 & 15] + l3[i4 >> 8 & 15] + l3[i4 >> 4 & 15] + l3[15 & i4] + l3[s4 >> 28 & 15] + l3[s4 >> 24 & 15] + l3[s4 >> 20 & 15] + l3[s4 >> 16 & 15] + l3[s4 >> 12 & 15] + l3[s4 >> 8 & 15] + l3[s4 >> 4 & 15] + l3[15 & s4];
               return m4 >= 256 && (b3 += l3[a4 >> 28 & 15] + l3[a4 >> 24 & 15] + l3[a4 >> 20 & 15] + l3[a4 >> 16 & 15] + l3[a4 >> 12 & 15] + l3[a4 >> 8 & 15] + l3[a4 >> 4 & 15] + l3[15 & a4]), m4 >= 384 && (b3 += l3[c4 >> 28 & 15] + l3[c4 >> 24 & 15] + l3[c4 >> 20 & 15] + l3[c4 >> 16 & 15] + l3[c4 >> 12 & 15] + l3[c4 >> 8 & 15] + l3[c4 >> 4 & 15] + l3[15 & c4] + l3[u4 >> 28 & 15] + l3[u4 >> 24 & 15] + l3[u4 >> 20 & 15] + l3[u4 >> 16 & 15] + l3[u4 >> 12 & 15] + l3[u4 >> 8 & 15] + l3[u4 >> 4 & 15] + l3[15 & u4] + l3[h4 >> 28 & 15] + l3[h4 >> 24 & 15] + l3[h4 >> 20 & 15] + l3[h4 >> 16 & 15] + l3[h4 >> 12 & 15] + l3[h4 >> 8 & 15] + l3[h4 >> 4 & 15] + l3[15 & h4] + l3[p4 >> 28 & 15] + l3[p4 >> 24 & 15] + l3[p4 >> 20 & 15] + l3[p4 >> 16 & 15] + l3[p4 >> 12 & 15] + l3[p4 >> 8 & 15] + l3[p4 >> 4 & 15] + l3[15 & p4]), m4 == 512 && (b3 += l3[f4 >> 28 & 15] + l3[f4 >> 24 & 15] + l3[f4 >> 20 & 15] + l3[f4 >> 16 & 15] + l3[f4 >> 12 & 15] + l3[f4 >> 8 & 15] + l3[f4 >> 4 & 15] + l3[15 & f4] + l3[d4 >> 28 & 15] + l3[d4 >> 24 & 15] + l3[d4 >> 20 & 15] + l3[d4 >> 16 & 15] + l3[d4 >> 12 & 15] + l3[d4 >> 8 & 15] + l3[d4 >> 4 & 15] + l3[15 & d4] + l3[g4 >> 28 & 15] + l3[g4 >> 24 & 15] + l3[g4 >> 20 & 15] + l3[g4 >> 16 & 15] + l3[g4 >> 12 & 15] + l3[g4 >> 8 & 15] + l3[g4 >> 4 & 15] + l3[15 & g4] + l3[y4 >> 28 & 15] + l3[y4 >> 24 & 15] + l3[y4 >> 20 & 15] + l3[y4 >> 16 & 15] + l3[y4 >> 12 & 15] + l3[y4 >> 8 & 15] + l3[y4 >> 4 & 15] + l3[15 & y4]), b3;
             }, w4.prototype.toString = w4.prototype.hex, w4.prototype.digest = function() {
               this.finalize();
-              var e4 = this.h0h, t5 = this.h0l, r4 = this.h1h, n3 = this.h1l, o4 = this.h2h, s4 = this.h2l, i4 = this.h3h, a4 = this.h3l, c4 = this.h4h, u4 = this.h4l, l4 = this.h5h, h4 = this.h5l, p4 = this.h6h, f4 = this.h6l, d4 = this.h7h, g4 = this.h7l, y4 = this.bits, m4 = [e4 >> 24 & 255, e4 >> 16 & 255, e4 >> 8 & 255, 255 & e4, t5 >> 24 & 255, t5 >> 16 & 255, t5 >> 8 & 255, 255 & t5, r4 >> 24 & 255, r4 >> 16 & 255, r4 >> 8 & 255, 255 & r4, n3 >> 24 & 255, n3 >> 16 & 255, n3 >> 8 & 255, 255 & n3, o4 >> 24 & 255, o4 >> 16 & 255, o4 >> 8 & 255, 255 & o4, s4 >> 24 & 255, s4 >> 16 & 255, s4 >> 8 & 255, 255 & s4, i4 >> 24 & 255, i4 >> 16 & 255, i4 >> 8 & 255, 255 & i4];
+              var e4 = this.h0h, t5 = this.h0l, r4 = this.h1h, n3 = this.h1l, o4 = this.h2h, i4 = this.h2l, s4 = this.h3h, a4 = this.h3l, c4 = this.h4h, u4 = this.h4l, l4 = this.h5h, h4 = this.h5l, p4 = this.h6h, f4 = this.h6l, d4 = this.h7h, g4 = this.h7l, y4 = this.bits, m4 = [e4 >> 24 & 255, e4 >> 16 & 255, e4 >> 8 & 255, 255 & e4, t5 >> 24 & 255, t5 >> 16 & 255, t5 >> 8 & 255, 255 & t5, r4 >> 24 & 255, r4 >> 16 & 255, r4 >> 8 & 255, 255 & r4, n3 >> 24 & 255, n3 >> 16 & 255, n3 >> 8 & 255, 255 & n3, o4 >> 24 & 255, o4 >> 16 & 255, o4 >> 8 & 255, 255 & o4, i4 >> 24 & 255, i4 >> 16 & 255, i4 >> 8 & 255, 255 & i4, s4 >> 24 & 255, s4 >> 16 & 255, s4 >> 8 & 255, 255 & s4];
               return y4 >= 256 && m4.push(a4 >> 24 & 255, a4 >> 16 & 255, a4 >> 8 & 255, 255 & a4), y4 >= 384 && m4.push(c4 >> 24 & 255, c4 >> 16 & 255, c4 >> 8 & 255, 255 & c4, u4 >> 24 & 255, u4 >> 16 & 255, u4 >> 8 & 255, 255 & u4, l4 >> 24 & 255, l4 >> 16 & 255, l4 >> 8 & 255, 255 & l4, h4 >> 24 & 255, h4 >> 16 & 255, h4 >> 8 & 255, 255 & h4), y4 == 512 && m4.push(p4 >> 24 & 255, p4 >> 16 & 255, p4 >> 8 & 255, 255 & p4, f4 >> 24 & 255, f4 >> 16 & 255, f4 >> 8 & 255, 255 & f4, d4 >> 24 & 255, d4 >> 16 & 255, d4 >> 8 & 255, 255 & d4, g4 >> 24 & 255, g4 >> 16 & 255, g4 >> 8 & 255, 255 & g4), m4;
             }, w4.prototype.array = w4.prototype.digest, w4.prototype.arrayBuffer = function() {
               this.finalize();
@@ -9834,7 +9840,7 @@ var require_algosdk_min = __commonJS({
               return e4;
             };
             var x3 = m3(512);
-            x3.sha512 = x3, x3.sha384 = m3(384), x3.sha512_256 = m3(256), x3.sha512_224 = m3(224), x3.sha512.hmac = A4(512), x3.sha384.hmac = A4(384), x3.sha512_256.hmac = A4(256), x3.sha512_224.hmac = A4(224), a3 ? e3.exports = x3 : (s3.sha512 = x3.sha512, s3.sha384 = x3.sha384, s3.sha512_256 = x3.sha512_256, s3.sha512_224 = x3.sha512_224, c3 && ((n2 = function() {
+            x3.sha512 = x3, x3.sha384 = m3(384), x3.sha512_256 = m3(256), x3.sha512_224 = m3(224), x3.sha512.hmac = A4(512), x3.sha384.hmac = A4(384), x3.sha512_256.hmac = A4(256), x3.sha512_224.hmac = A4(224), a3 ? e3.exports = x3 : (i3.sha512 = x3.sha512, i3.sha384 = x3.sha384, i3.sha512_256 = x3.sha512_256, i3.sha512_224 = x3.sha512_224, c3 && ((n2 = function() {
               return x3;
             }.call(x3, r3, x3, e3)) === void 0 || (e3.exports = n2)));
           }();
@@ -9845,7 +9851,7 @@ var require_algosdk_min = __commonJS({
           }, e3.exports.parse = o3(), e3.exports.stringify = n2;
         }, 9385: (e3, t3, r3) => {
           var n2 = null;
-          const o3 = /(?:_|\\u005[Ff])(?:_|\\u005[Ff])(?:p|\\u0070)(?:r|\\u0072)(?:o|\\u006[Ff])(?:t|\\u0074)(?:o|\\u006[Ff])(?:_|\\u005[Ff])(?:_|\\u005[Ff])/, s3 = /(?:c|\\u0063)(?:o|\\u006[Ff])(?:n|\\u006[Ee])(?:s|\\u0073)(?:t|\\u0074)(?:r|\\u0072)(?:u|\\u0075)(?:c|\\u0063)(?:t|\\u0074)(?:o|\\u006[Ff])(?:r|\\u0072)/;
+          const o3 = /(?:_|\\u005[Ff])(?:_|\\u005[Ff])(?:p|\\u0070)(?:r|\\u0072)(?:o|\\u006[Ff])(?:t|\\u0074)(?:o|\\u006[Ff])(?:_|\\u005[Ff])(?:_|\\u005[Ff])/, i3 = /(?:c|\\u0063)(?:o|\\u006[Ff])(?:n|\\u006[Ee])(?:s|\\u0073)(?:t|\\u0074)(?:r|\\u0072)(?:u|\\u0075)(?:c|\\u0063)(?:t|\\u0074)(?:o|\\u006[Ff])(?:r|\\u0072)/;
           e3.exports = function(e4) {
             "use strict";
             var t4 = { strict: false, storeAsString: false, alwaysParseAsBig: false, useNativeBigInt: false, protoAction: "error", constructorAction: "error" };
@@ -9861,10 +9867,10 @@ var require_algosdk_min = __commonJS({
                 t4.protoAction = e4.protoAction;
               }
             }
-            var i3, a3, c3, u3, l3 = { '"': '"', "\\": "\\", "/": "/", b: "\b", f: "\f", n: "\n", r: "\r", t: "	" }, h3 = function(e5) {
-              throw { name: "SyntaxError", message: e5, at: i3, text: c3 };
+            var s3, a3, c3, u3, l3 = { '"': '"', "\\": "\\", "/": "/", b: "\b", f: "\f", n: "\n", r: "\r", t: "	" }, h3 = function(e5) {
+              throw { name: "SyntaxError", message: e5, at: s3, text: c3 };
             }, p3 = function(e5) {
-              return e5 && e5 !== a3 && h3("Expected '" + e5 + "' instead of '" + a3 + "'"), a3 = c3.charAt(i3), i3 += 1, a3;
+              return e5 && e5 !== a3 && h3("Expected '" + e5 + "' instead of '" + a3 + "'"), a3 = c3.charAt(s3), s3 += 1, a3;
             }, f3 = function() {
               var e5, o4 = "";
               for (a3 === "-" && (o4 = "-", p3("-")); a3 >= "0" && a3 <= "9"; )
@@ -9881,11 +9887,11 @@ var require_algosdk_min = __commonJS({
             }, d3 = function() {
               var e5, t5, r4, n3 = "";
               if (a3 === '"')
-                for (var o4 = i3; p3(); ) {
+                for (var o4 = s3; p3(); ) {
                   if (a3 === '"')
-                    return i3 - 1 > o4 && (n3 += c3.substring(o4, i3 - 1)), p3(), n3;
+                    return s3 - 1 > o4 && (n3 += c3.substring(o4, s3 - 1)), p3(), n3;
                   if (a3 === "\\") {
-                    if (i3 - 1 > o4 && (n3 += c3.substring(o4, i3 - 1)), p3(), a3 === "u") {
+                    if (s3 - 1 > o4 && (n3 += c3.substring(o4, s3 - 1)), p3(), a3 === "u") {
                       for (r4 = 0, t5 = 0; t5 < 4 && (e5 = parseInt(p3(), 16), isFinite(e5)); t5 += 1)
                         r4 = 16 * r4 + e5;
                       n3 += String.fromCharCode(r4);
@@ -9894,7 +9900,7 @@ var require_algosdk_min = __commonJS({
                         break;
                       n3 += l3[a3];
                     }
-                    o4 = i3;
+                    o4 = s3;
                   }
                 }
               h3("Bad string");
@@ -9911,7 +9917,7 @@ var require_algosdk_min = __commonJS({
                       if (p3("{"), g3(), a3 === "}")
                         return p3("}"), r4;
                       for (; a3; ) {
-                        if (e5 = d3(), g3(), p3(":"), t4.strict === true && Object.hasOwnProperty.call(r4, e5) && h3('Duplicate key "' + e5 + '"'), o3.test(e5) === true ? t4.protoAction === "error" ? h3("Object contains forbidden prototype property") : t4.protoAction === "ignore" ? u3() : r4[e5] = u3() : s3.test(e5) === true ? t4.constructorAction === "error" ? h3("Object contains forbidden constructor property") : t4.constructorAction === "ignore" ? u3() : r4[e5] = u3() : r4[e5] = u3(), g3(), a3 === "}")
+                        if (e5 = d3(), g3(), p3(":"), t4.strict === true && Object.hasOwnProperty.call(r4, e5) && h3('Duplicate key "' + e5 + '"'), o3.test(e5) === true ? t4.protoAction === "error" ? h3("Object contains forbidden prototype property") : t4.protoAction === "ignore" ? u3() : r4[e5] = u3() : i3.test(e5) === true ? t4.constructorAction === "error" ? h3("Object contains forbidden constructor property") : t4.constructorAction === "ignore" ? u3() : r4[e5] = u3() : r4[e5] = u3(), g3(), a3 === "}")
                           return p3("}"), r4;
                         p3(","), g3();
                       }
@@ -9951,11 +9957,11 @@ var require_algosdk_min = __commonJS({
               }
             }, function(e5, t5) {
               var r4;
-              return c3 = e5 + "", i3 = 0, a3 = " ", r4 = u3(), g3(), a3 && h3("Syntax error"), typeof t5 == "function" ? function e6(r5, n3) {
-                var o4, s4 = r5[n3];
-                return s4 && typeof s4 == "object" && Object.keys(s4).forEach(function(t6) {
-                  (o4 = e6(s4, t6)) !== void 0 ? s4[t6] = o4 : delete s4[t6];
-                }), t5.call(r5, n3, s4);
+              return c3 = e5 + "", s3 = 0, a3 = " ", r4 = u3(), g3(), a3 && h3("Syntax error"), typeof t5 == "function" ? function e6(r5, n3) {
+                var o4, i4 = r5[n3];
+                return i4 && typeof i4 == "object" && Object.keys(i4).forEach(function(t6) {
+                  (o4 = e6(i4, t6)) !== void 0 ? i4[t6] = o4 : delete i4[t6];
+                }), t5.call(r5, n3, i4);
               }({ "": r4 }, "") : r4;
             };
           };
@@ -9963,16 +9969,16 @@ var require_algosdk_min = __commonJS({
           var n2 = r3(5117), o3 = e3.exports;
           !function() {
             "use strict";
-            var e4, t4, r4, s3 = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g, i3 = { "\b": "\\b", "	": "\\t", "\n": "\\n", "\f": "\\f", "\r": "\\r", '"': '\\"', "\\": "\\\\" };
+            var e4, t4, r4, i3 = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g, s3 = { "\b": "\\b", "	": "\\t", "\n": "\\n", "\f": "\\f", "\r": "\\r", '"': '\\"', "\\": "\\\\" };
             function a3(e5) {
-              return s3.lastIndex = 0, s3.test(e5) ? '"' + e5.replace(s3, function(e6) {
-                var t5 = i3[e6];
+              return i3.lastIndex = 0, i3.test(e5) ? '"' + e5.replace(i3, function(e6) {
+                var t5 = s3[e6];
                 return typeof t5 == "string" ? t5 : "\\u" + ("0000" + e6.charCodeAt(0).toString(16)).slice(-4);
               }) + '"' : '"' + e5 + '"';
             }
-            function c3(o4, s4) {
-              var i4, u3, l3, h3, p3, f3 = e4, d3 = s4[o4], g3 = d3 != null && (d3 instanceof n2 || n2.isBigNumber(d3));
-              switch (d3 && typeof d3 == "object" && typeof d3.toJSON == "function" && (d3 = d3.toJSON(o4)), typeof r4 == "function" && (d3 = r4.call(s4, o4, d3)), typeof d3) {
+            function c3(o4, i4) {
+              var s4, u3, l3, h3, p3, f3 = e4, d3 = i4[o4], g3 = d3 != null && (d3 instanceof n2 || n2.isBigNumber(d3));
+              switch (d3 && typeof d3 == "object" && typeof d3.toJSON == "function" && (d3 = d3.toJSON(o4)), typeof r4 == "function" && (d3 = r4.call(i4, o4, d3)), typeof d3) {
                 case "string":
                   return g3 ? d3 : a3(d3);
                 case "number":
@@ -9985,13 +9991,13 @@ var require_algosdk_min = __commonJS({
                   if (!d3)
                     return "null";
                   if (e4 += t4, p3 = [], Object.prototype.toString.apply(d3) === "[object Array]") {
-                    for (h3 = d3.length, i4 = 0; i4 < h3; i4 += 1)
-                      p3[i4] = c3(i4, d3) || "null";
+                    for (h3 = d3.length, s4 = 0; s4 < h3; s4 += 1)
+                      p3[s4] = c3(s4, d3) || "null";
                     return l3 = p3.length === 0 ? "[]" : e4 ? "[\n" + e4 + p3.join(",\n" + e4) + "\n" + f3 + "]" : "[" + p3.join(",") + "]", e4 = f3, l3;
                   }
                   if (r4 && typeof r4 == "object")
-                    for (h3 = r4.length, i4 = 0; i4 < h3; i4 += 1)
-                      typeof r4[i4] == "string" && (l3 = c3(u3 = r4[i4], d3)) && p3.push(a3(u3) + (e4 ? ": " : ":") + l3);
+                    for (h3 = r4.length, s4 = 0; s4 < h3; s4 += 1)
+                      typeof r4[s4] == "string" && (l3 = c3(u3 = r4[s4], d3)) && p3.push(a3(u3) + (e4 ? ": " : ":") + l3);
                   else
                     Object.keys(d3).forEach(function(t5) {
                       var r5 = c3(t5, d3);
@@ -10000,20 +10006,20 @@ var require_algosdk_min = __commonJS({
                   return l3 = p3.length === 0 ? "{}" : e4 ? "{\n" + e4 + p3.join(",\n" + e4) + "\n" + f3 + "}" : "{" + p3.join(",") + "}", e4 = f3, l3;
               }
             }
-            typeof o3.stringify != "function" && (o3.stringify = function(n3, o4, s4) {
-              var i4;
-              if (e4 = "", t4 = "", typeof s4 == "number")
-                for (i4 = 0; i4 < s4; i4 += 1)
+            typeof o3.stringify != "function" && (o3.stringify = function(n3, o4, i4) {
+              var s4;
+              if (e4 = "", t4 = "", typeof i4 == "number")
+                for (s4 = 0; s4 < i4; s4 += 1)
                   t4 += " ";
               else
-                typeof s4 == "string" && (t4 = s4);
+                typeof i4 == "string" && (t4 = i4);
               if (r4 = o4, o4 && typeof o4 != "function" && (typeof o4 != "object" || typeof o4.length != "number"))
                 throw new Error("JSON.stringify");
               return c3("", { "": n3 });
             });
           }();
         }, 3126: (e3, t3, r3) => {
-          var n2 = typeof Map == "function" && Map.prototype, o3 = Object.getOwnPropertyDescriptor && n2 ? Object.getOwnPropertyDescriptor(Map.prototype, "size") : null, s3 = n2 && o3 && typeof o3.get == "function" ? o3.get : null, i3 = n2 && Map.prototype.forEach, a3 = typeof Set == "function" && Set.prototype, c3 = Object.getOwnPropertyDescriptor && a3 ? Object.getOwnPropertyDescriptor(Set.prototype, "size") : null, u3 = a3 && c3 && typeof c3.get == "function" ? c3.get : null, l3 = a3 && Set.prototype.forEach, h3 = typeof WeakMap == "function" && WeakMap.prototype ? WeakMap.prototype.has : null, p3 = typeof WeakSet == "function" && WeakSet.prototype ? WeakSet.prototype.has : null, f3 = typeof WeakRef == "function" && WeakRef.prototype ? WeakRef.prototype.deref : null, d3 = Boolean.prototype.valueOf, g3 = Object.prototype.toString, y3 = Function.prototype.toString, m3 = String.prototype.match, b2 = typeof BigInt == "function" ? BigInt.prototype.valueOf : null, A4 = Object.getOwnPropertySymbols, w4 = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? Symbol.prototype.toString : null, v3 = typeof Symbol == "function" && typeof Symbol.iterator == "object", x3 = Object.prototype.propertyIsEnumerable, S2 = (typeof Reflect == "function" ? Reflect.getPrototypeOf : Object.getPrototypeOf) || ([].__proto__ === Array.prototype ? function(e4) {
+          var n2 = typeof Map == "function" && Map.prototype, o3 = Object.getOwnPropertyDescriptor && n2 ? Object.getOwnPropertyDescriptor(Map.prototype, "size") : null, i3 = n2 && o3 && typeof o3.get == "function" ? o3.get : null, s3 = n2 && Map.prototype.forEach, a3 = typeof Set == "function" && Set.prototype, c3 = Object.getOwnPropertyDescriptor && a3 ? Object.getOwnPropertyDescriptor(Set.prototype, "size") : null, u3 = a3 && c3 && typeof c3.get == "function" ? c3.get : null, l3 = a3 && Set.prototype.forEach, h3 = typeof WeakMap == "function" && WeakMap.prototype ? WeakMap.prototype.has : null, p3 = typeof WeakSet == "function" && WeakSet.prototype ? WeakSet.prototype.has : null, f3 = typeof WeakRef == "function" && WeakRef.prototype ? WeakRef.prototype.deref : null, d3 = Boolean.prototype.valueOf, g3 = Object.prototype.toString, y3 = Function.prototype.toString, m3 = String.prototype.match, b2 = typeof BigInt == "function" ? BigInt.prototype.valueOf : null, A4 = Object.getOwnPropertySymbols, w4 = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? Symbol.prototype.toString : null, v3 = typeof Symbol == "function" && typeof Symbol.iterator == "object", x3 = Object.prototype.propertyIsEnumerable, S2 = (typeof Reflect == "function" ? Reflect.getPrototypeOf : Object.getPrototypeOf) || ([].__proto__ === Array.prototype ? function(e4) {
             return e4.__proto__;
           } : null), E4 = r3(4654).custom, T4 = E4 && I3(E4) ? E4 : null, _4 = typeof Symbol == "function" && Symbol.toStringTag !== void 0 ? Symbol.toStringTag : null;
           function B2(e4, t4, r4) {
@@ -10080,10 +10086,10 @@ var require_algosdk_min = __commonJS({
               o4 = [];
             else if (D3(o4, t4) >= 0)
               return "[Circular]";
-            function E5(t5, r5, s4) {
-              if (r5 && (o4 = o4.slice()).push(r5), s4) {
-                var i4 = { depth: a4.depth };
-                return R2(a4, "quoteStyle") && (i4.quoteStyle = a4.quoteStyle), e4(t5, i4, n3 + 1, o4);
+            function E5(t5, r5, i4) {
+              if (r5 && (o4 = o4.slice()).push(r5), i4) {
+                var s4 = { depth: a4.depth };
+                return R2(a4, "quoteStyle") && (s4.quoteStyle = a4.quoteStyle), e4(t5, s4, n3 + 1, o4);
               }
               return e4(t5, a4, n3 + 1, o4);
             }
@@ -10129,10 +10135,10 @@ var require_algosdk_min = __commonJS({
                 return t4.inspect();
             }
             if (function(e5) {
-              if (!s3 || !e5 || typeof e5 != "object")
+              if (!i3 || !e5 || typeof e5 != "object")
                 return false;
               try {
-                s3.call(e5);
+                i3.call(e5);
                 try {
                   u3.call(e5);
                 } catch (e6) {
@@ -10144,9 +10150,9 @@ var require_algosdk_min = __commonJS({
               return false;
             }(t4)) {
               var W2 = [];
-              return i3.call(t4, function(e5, r5) {
+              return s3.call(t4, function(e5, r5) {
                 W2.push(E5(r5, t4, true) + " => " + E5(e5, t4));
-              }), z3("Map", s3.call(t4), W2, x4);
+              }), z3("Map", i3.call(t4), W2, x4);
             }
             if (function(e5) {
               if (!u3 || !e5 || typeof e5 != "object")
@@ -10154,7 +10160,7 @@ var require_algosdk_min = __commonJS({
               try {
                 u3.call(e5);
                 try {
-                  s3.call(e5);
+                  i3.call(e5);
                 } catch (e6) {
                   return true;
                 }
@@ -10292,17 +10298,17 @@ var require_algosdk_min = __commonJS({
               for (var o4 = 0; o4 < e4.length; o4++)
                 n3[o4] = R2(e4, o4) ? t4(e4[o4], e4) : "";
             }
-            var s4, i4 = typeof A4 == "function" ? A4(e4) : [];
+            var i4, s4 = typeof A4 == "function" ? A4(e4) : [];
             if (v3) {
-              s4 = {};
-              for (var a4 = 0; a4 < i4.length; a4++)
-                s4["$" + i4[a4]] = i4[a4];
+              i4 = {};
+              for (var a4 = 0; a4 < s4.length; a4++)
+                i4["$" + s4[a4]] = s4[a4];
             }
             for (var c4 in e4)
-              R2(e4, c4) && (r4 && String(Number(c4)) === c4 && c4 < e4.length || v3 && s4["$" + c4] instanceof Symbol || (/[^\w$]/.test(c4) ? n3.push(t4(c4, e4) + ": " + t4(e4[c4], e4)) : n3.push(c4 + ": " + t4(e4[c4], e4))));
+              R2(e4, c4) && (r4 && String(Number(c4)) === c4 && c4 < e4.length || v3 && i4["$" + c4] instanceof Symbol || (/[^\w$]/.test(c4) ? n3.push(t4(c4, e4) + ": " + t4(e4[c4], e4)) : n3.push(c4 + ": " + t4(e4[c4], e4))));
             if (typeof A4 == "function")
-              for (var u4 = 0; u4 < i4.length; u4++)
-                x3.call(e4, i4[u4]) && n3.push("[" + t4(i4[u4]) + "]: " + t4(e4[i4[u4]], e4));
+              for (var u4 = 0; u4 < s4.length; u4++)
+                x3.call(e4, s4[u4]) && n3.push("[" + t4(s4[u4]) + "]: " + t4(e4[s4[u4]], e4));
             return n3;
           }
         }, 9368: (e3) => {
@@ -10312,7 +10318,7 @@ var require_algosdk_min = __commonJS({
               throw new TypeError("Path must be a string. Received " + JSON.stringify(e4));
           }
           function r3(e4, t4) {
-            for (var r4, n3 = "", o3 = 0, s3 = -1, i3 = 0, a3 = 0; a3 <= e4.length; ++a3) {
+            for (var r4, n3 = "", o3 = 0, i3 = -1, s3 = 0, a3 = 0; a3 <= e4.length; ++a3) {
               if (a3 < e4.length)
                 r4 = e4.charCodeAt(a3);
               else {
@@ -10321,34 +10327,34 @@ var require_algosdk_min = __commonJS({
                 r4 = 47;
               }
               if (r4 === 47) {
-                if (s3 === a3 - 1 || i3 === 1)
+                if (i3 === a3 - 1 || s3 === 1)
                   ;
-                else if (s3 !== a3 - 1 && i3 === 2) {
+                else if (i3 !== a3 - 1 && s3 === 2) {
                   if (n3.length < 2 || o3 !== 2 || n3.charCodeAt(n3.length - 1) !== 46 || n3.charCodeAt(n3.length - 2) !== 46) {
                     if (n3.length > 2) {
                       var c3 = n3.lastIndexOf("/");
                       if (c3 !== n3.length - 1) {
-                        c3 === -1 ? (n3 = "", o3 = 0) : o3 = (n3 = n3.slice(0, c3)).length - 1 - n3.lastIndexOf("/"), s3 = a3, i3 = 0;
+                        c3 === -1 ? (n3 = "", o3 = 0) : o3 = (n3 = n3.slice(0, c3)).length - 1 - n3.lastIndexOf("/"), i3 = a3, s3 = 0;
                         continue;
                       }
                     } else if (n3.length === 2 || n3.length === 1) {
-                      n3 = "", o3 = 0, s3 = a3, i3 = 0;
+                      n3 = "", o3 = 0, i3 = a3, s3 = 0;
                       continue;
                     }
                   }
                   t4 && (n3.length > 0 ? n3 += "/.." : n3 = "..", o3 = 2);
                 } else
-                  n3.length > 0 ? n3 += "/" + e4.slice(s3 + 1, a3) : n3 = e4.slice(s3 + 1, a3), o3 = a3 - s3 - 1;
-                s3 = a3, i3 = 0;
+                  n3.length > 0 ? n3 += "/" + e4.slice(i3 + 1, a3) : n3 = e4.slice(i3 + 1, a3), o3 = a3 - i3 - 1;
+                i3 = a3, s3 = 0;
               } else
-                r4 === 46 && i3 !== -1 ? ++i3 : i3 = -1;
+                r4 === 46 && s3 !== -1 ? ++s3 : s3 = -1;
             }
             return n3;
           }
           var n2 = { resolve: function() {
-            for (var e4, n3 = "", o3 = false, s3 = arguments.length - 1; s3 >= -1 && !o3; s3--) {
-              var i3;
-              s3 >= 0 ? i3 = arguments[s3] : (e4 === void 0 && (e4 = process.cwd()), i3 = e4), t3(i3), i3.length !== 0 && (n3 = i3 + "/" + n3, o3 = i3.charCodeAt(0) === 47);
+            for (var e4, n3 = "", o3 = false, i3 = arguments.length - 1; i3 >= -1 && !o3; i3--) {
+              var s3;
+              i3 >= 0 ? s3 = arguments[i3] : (e4 === void 0 && (e4 = process.cwd()), s3 = e4), t3(s3), s3.length !== 0 && (n3 = s3 + "/" + n3, o3 = s3.charCodeAt(0) === 47);
             }
             return n3 = r3(n3, !o3), o3 ? n3.length > 0 ? "/" + n3 : "/" : n3.length > 0 ? n3 : ".";
           }, normalize: function(e4) {
@@ -10373,9 +10379,9 @@ var require_algosdk_min = __commonJS({
               return "";
             for (var o3 = 1; o3 < e4.length && e4.charCodeAt(o3) === 47; ++o3)
               ;
-            for (var s3 = e4.length, i3 = s3 - o3, a3 = 1; a3 < r4.length && r4.charCodeAt(a3) === 47; ++a3)
+            for (var i3 = e4.length, s3 = i3 - o3, a3 = 1; a3 < r4.length && r4.charCodeAt(a3) === 47; ++a3)
               ;
-            for (var c3 = r4.length - a3, u3 = i3 < c3 ? i3 : c3, l3 = -1, h3 = 0; h3 <= u3; ++h3) {
+            for (var c3 = r4.length - a3, u3 = s3 < c3 ? s3 : c3, l3 = -1, h3 = 0; h3 <= u3; ++h3) {
               if (h3 === u3) {
                 if (c3 > u3) {
                   if (r4.charCodeAt(a3 + h3) === 47)
@@ -10383,7 +10389,7 @@ var require_algosdk_min = __commonJS({
                   if (h3 === 0)
                     return r4.slice(a3 + h3);
                 } else
-                  i3 > u3 && (e4.charCodeAt(o3 + h3) === 47 ? l3 = h3 : h3 === 0 && (l3 = 0));
+                  s3 > u3 && (e4.charCodeAt(o3 + h3) === 47 ? l3 = h3 : h3 === 0 && (l3 = 0));
                 break;
               }
               var p3 = e4.charCodeAt(o3 + h3);
@@ -10392,28 +10398,28 @@ var require_algosdk_min = __commonJS({
               p3 === 47 && (l3 = h3);
             }
             var f3 = "";
-            for (h3 = o3 + l3 + 1; h3 <= s3; ++h3)
-              h3 !== s3 && e4.charCodeAt(h3) !== 47 || (f3.length === 0 ? f3 += ".." : f3 += "/..");
+            for (h3 = o3 + l3 + 1; h3 <= i3; ++h3)
+              h3 !== i3 && e4.charCodeAt(h3) !== 47 || (f3.length === 0 ? f3 += ".." : f3 += "/..");
             return f3.length > 0 ? f3 + r4.slice(a3 + l3) : (a3 += l3, r4.charCodeAt(a3) === 47 && ++a3, r4.slice(a3));
           }, _makeLong: function(e4) {
             return e4;
           }, dirname: function(e4) {
             if (t3(e4), e4.length === 0)
               return ".";
-            for (var r4 = e4.charCodeAt(0), n3 = r4 === 47, o3 = -1, s3 = true, i3 = e4.length - 1; i3 >= 1; --i3)
-              if ((r4 = e4.charCodeAt(i3)) === 47) {
-                if (!s3) {
-                  o3 = i3;
+            for (var r4 = e4.charCodeAt(0), n3 = r4 === 47, o3 = -1, i3 = true, s3 = e4.length - 1; s3 >= 1; --s3)
+              if ((r4 = e4.charCodeAt(s3)) === 47) {
+                if (!i3) {
+                  o3 = s3;
                   break;
                 }
               } else
-                s3 = false;
+                i3 = false;
             return o3 === -1 ? n3 ? "/" : "." : n3 && o3 === 1 ? "//" : e4.slice(0, o3);
           }, basename: function(e4, r4) {
             if (r4 !== void 0 && typeof r4 != "string")
               throw new TypeError('"ext" argument must be a string');
             t3(e4);
-            var n3, o3 = 0, s3 = -1, i3 = true;
+            var n3, o3 = 0, i3 = -1, s3 = true;
             if (r4 !== void 0 && r4.length > 0 && r4.length <= e4.length) {
               if (r4.length === e4.length && r4 === e4)
                 return "";
@@ -10421,36 +10427,36 @@ var require_algosdk_min = __commonJS({
               for (n3 = e4.length - 1; n3 >= 0; --n3) {
                 var u3 = e4.charCodeAt(n3);
                 if (u3 === 47) {
-                  if (!i3) {
+                  if (!s3) {
                     o3 = n3 + 1;
                     break;
                   }
                 } else
-                  c3 === -1 && (i3 = false, c3 = n3 + 1), a3 >= 0 && (u3 === r4.charCodeAt(a3) ? --a3 == -1 && (s3 = n3) : (a3 = -1, s3 = c3));
+                  c3 === -1 && (s3 = false, c3 = n3 + 1), a3 >= 0 && (u3 === r4.charCodeAt(a3) ? --a3 == -1 && (i3 = n3) : (a3 = -1, i3 = c3));
               }
-              return o3 === s3 ? s3 = c3 : s3 === -1 && (s3 = e4.length), e4.slice(o3, s3);
+              return o3 === i3 ? i3 = c3 : i3 === -1 && (i3 = e4.length), e4.slice(o3, i3);
             }
             for (n3 = e4.length - 1; n3 >= 0; --n3)
               if (e4.charCodeAt(n3) === 47) {
-                if (!i3) {
+                if (!s3) {
                   o3 = n3 + 1;
                   break;
                 }
               } else
-                s3 === -1 && (i3 = false, s3 = n3 + 1);
-            return s3 === -1 ? "" : e4.slice(o3, s3);
+                i3 === -1 && (s3 = false, i3 = n3 + 1);
+            return i3 === -1 ? "" : e4.slice(o3, i3);
           }, extname: function(e4) {
             t3(e4);
-            for (var r4 = -1, n3 = 0, o3 = -1, s3 = true, i3 = 0, a3 = e4.length - 1; a3 >= 0; --a3) {
+            for (var r4 = -1, n3 = 0, o3 = -1, i3 = true, s3 = 0, a3 = e4.length - 1; a3 >= 0; --a3) {
               var c3 = e4.charCodeAt(a3);
               if (c3 !== 47)
-                o3 === -1 && (s3 = false, o3 = a3 + 1), c3 === 46 ? r4 === -1 ? r4 = a3 : i3 !== 1 && (i3 = 1) : r4 !== -1 && (i3 = -1);
-              else if (!s3) {
+                o3 === -1 && (i3 = false, o3 = a3 + 1), c3 === 46 ? r4 === -1 ? r4 = a3 : s3 !== 1 && (s3 = 1) : r4 !== -1 && (s3 = -1);
+              else if (!i3) {
                 n3 = a3 + 1;
                 break;
               }
             }
-            return r4 === -1 || o3 === -1 || i3 === 0 || i3 === 1 && r4 === o3 - 1 && r4 === n3 + 1 ? "" : e4.slice(r4, o3);
+            return r4 === -1 || o3 === -1 || s3 === 0 || s3 === 1 && r4 === o3 - 1 && r4 === n3 + 1 ? "" : e4.slice(r4, o3);
           }, format: function(e4) {
             if (e4 === null || typeof e4 != "object")
               throw new TypeError('The "pathObject" argument must be of type Object. Received type ' + typeof e4);
@@ -10463,16 +10469,16 @@ var require_algosdk_min = __commonJS({
             var r4 = { root: "", dir: "", base: "", ext: "", name: "" };
             if (e4.length === 0)
               return r4;
-            var n3, o3 = e4.charCodeAt(0), s3 = o3 === 47;
-            s3 ? (r4.root = "/", n3 = 1) : n3 = 0;
-            for (var i3 = -1, a3 = 0, c3 = -1, u3 = true, l3 = e4.length - 1, h3 = 0; l3 >= n3; --l3)
+            var n3, o3 = e4.charCodeAt(0), i3 = o3 === 47;
+            i3 ? (r4.root = "/", n3 = 1) : n3 = 0;
+            for (var s3 = -1, a3 = 0, c3 = -1, u3 = true, l3 = e4.length - 1, h3 = 0; l3 >= n3; --l3)
               if ((o3 = e4.charCodeAt(l3)) !== 47)
-                c3 === -1 && (u3 = false, c3 = l3 + 1), o3 === 46 ? i3 === -1 ? i3 = l3 : h3 !== 1 && (h3 = 1) : i3 !== -1 && (h3 = -1);
+                c3 === -1 && (u3 = false, c3 = l3 + 1), o3 === 46 ? s3 === -1 ? s3 = l3 : h3 !== 1 && (h3 = 1) : s3 !== -1 && (h3 = -1);
               else if (!u3) {
                 a3 = l3 + 1;
                 break;
               }
-            return i3 === -1 || c3 === -1 || h3 === 0 || h3 === 1 && i3 === c3 - 1 && i3 === a3 + 1 ? c3 !== -1 && (r4.base = r4.name = a3 === 0 && s3 ? e4.slice(1, c3) : e4.slice(a3, c3)) : (a3 === 0 && s3 ? (r4.name = e4.slice(1, i3), r4.base = e4.slice(1, c3)) : (r4.name = e4.slice(a3, i3), r4.base = e4.slice(a3, c3)), r4.ext = e4.slice(i3, c3)), a3 > 0 ? r4.dir = e4.slice(0, a3 - 1) : s3 && (r4.dir = "/"), r4;
+            return s3 === -1 || c3 === -1 || h3 === 0 || h3 === 1 && s3 === c3 - 1 && s3 === a3 + 1 ? c3 !== -1 && (r4.base = r4.name = a3 === 0 && i3 ? e4.slice(1, c3) : e4.slice(a3, c3)) : (a3 === 0 && i3 ? (r4.name = e4.slice(1, s3), r4.base = e4.slice(1, c3)) : (r4.name = e4.slice(a3, s3), r4.base = e4.slice(a3, c3)), r4.ext = e4.slice(s3, c3)), a3 > 0 ? r4.dir = e4.slice(0, a3 - 1) : i3 && (r4.dir = "/"), r4;
           }, sep: "/", delimiter: ":", win32: null, posix: null };
           n2.posix = n2, e3.exports = n2;
         }, 9370: (e3, t3) => {
@@ -10494,18 +10500,18 @@ var require_algosdk_min = __commonJS({
           }
           t3.stringify = function(e4, t4) {
             t4 = t4 || "";
-            var n3, s3, i3 = [];
-            for (s3 in typeof t4 != "string" && (t4 = "?"), e4)
-              if (r3.call(e4, s3)) {
-                if ((n3 = e4[s3]) || n3 != null && !isNaN(n3) || (n3 = ""), s3 = o3(s3), n3 = o3(n3), s3 === null || n3 === null)
+            var n3, i3, s3 = [];
+            for (i3 in typeof t4 != "string" && (t4 = "?"), e4)
+              if (r3.call(e4, i3)) {
+                if ((n3 = e4[i3]) || n3 != null && !isNaN(n3) || (n3 = ""), i3 = o3(i3), n3 = o3(n3), i3 === null || n3 === null)
                   continue;
-                i3.push(s3 + "=" + n3);
+                s3.push(i3 + "=" + n3);
               }
-            return i3.length ? t4 + i3.join("&") : "";
+            return s3.length ? t4 + s3.join("&") : "";
           }, t3.parse = function(e4) {
             for (var t4, r4 = /([^=?#&]+)=?([^&]*)/g, o4 = {}; t4 = r4.exec(e4); ) {
-              var s3 = n2(t4[1]), i3 = n2(t4[2]);
-              s3 === null || i3 === null || s3 in o4 || (o4[s3] = i3);
+              var i3 = n2(t4[1]), s3 = n2(t4[2]);
+              i3 === null || s3 === null || i3 in o4 || (o4[i3] = s3);
             }
             return o4;
           };
@@ -10532,7 +10538,7 @@ var require_algosdk_min = __commonJS({
           };
         }, 3680: (e3, t3, r3) => {
           "use strict";
-          var n2 = r3(1801), o3 = r3(7615), s3 = r3(3126), i3 = n2("%TypeError%"), a3 = n2("%WeakMap%", true), c3 = n2("%Map%", true), u3 = o3("WeakMap.prototype.get", true), l3 = o3("WeakMap.prototype.set", true), h3 = o3("WeakMap.prototype.has", true), p3 = o3("Map.prototype.get", true), f3 = o3("Map.prototype.set", true), d3 = o3("Map.prototype.has", true), g3 = function(e4, t4) {
+          var n2 = r3(1801), o3 = r3(7615), i3 = r3(3126), s3 = n2("%TypeError%"), a3 = n2("%WeakMap%", true), c3 = n2("%Map%", true), u3 = o3("WeakMap.prototype.get", true), l3 = o3("WeakMap.prototype.set", true), h3 = o3("WeakMap.prototype.has", true), p3 = o3("Map.prototype.get", true), f3 = o3("Map.prototype.set", true), d3 = o3("Map.prototype.has", true), g3 = function(e4, t4) {
             for (var r4, n3 = e4; (r4 = n3.next) !== null; n3 = r4)
               if (r4.key === t4)
                 return n3.next = r4.next, r4.next = e4.next, e4.next = r4, r4;
@@ -10540,7 +10546,7 @@ var require_algosdk_min = __commonJS({
           e3.exports = function() {
             var e4, t4, r4, n3 = { assert: function(e5) {
               if (!n3.has(e5))
-                throw new i3("Side channel does not contain " + s3(e5));
+                throw new s3("Side channel does not contain " + i3(e5));
             }, get: function(n4) {
               if (a3 && n4 && (typeof n4 == "object" || typeof n4 == "function")) {
                 if (e4)
@@ -10622,7 +10628,7 @@ var require_algosdk_min = __commonJS({
           }
           var o3;
           typeof window != "undefined" ? o3 = window : typeof self == "undefined" ? (console.warn("Using browser-only version of superagent in non-browser environment"), o3 = void 0) : o3 = self;
-          var s3 = r3(1069), i3 = r3(5799), a3 = r3(3065), c3 = r3(4287), u3 = r3(1960), l3 = r3(969), h3 = r3(2858);
+          var i3 = r3(1069), s3 = r3(5799), a3 = r3(3065), c3 = r3(4287), u3 = r3(1960), l3 = r3(969), h3 = r3(2858);
           function p3() {
           }
           e3.exports = function(e4, r4) {
@@ -10679,8 +10685,8 @@ var require_algosdk_min = __commonJS({
                 e4.push(encodeURI(t4));
           }
           function m3(e4) {
-            for (var t4, r4, n3 = {}, o4 = e4.split("&"), s4 = 0, i4 = o4.length; s4 < i4; ++s4)
-              (r4 = (t4 = o4[s4]).indexOf("=")) === -1 ? n3[decodeURIComponent(t4)] = "" : n3[decodeURIComponent(t4.slice(0, r4))] = decodeURIComponent(t4.slice(r4 + 1));
+            for (var t4, r4, n3 = {}, o4 = e4.split("&"), i4 = 0, s4 = o4.length; i4 < s4; ++i4)
+              (r4 = (t4 = o4[i4]).indexOf("=")) === -1 ? n3[decodeURIComponent(t4)] = "" : n3[decodeURIComponent(t4.slice(0, r4))] = decodeURIComponent(t4.slice(r4 + 1));
             return n3;
           }
           function b2(e4) {
@@ -10690,9 +10696,9 @@ var require_algosdk_min = __commonJS({
             this.req = e4, this.xhr = this.req.xhr, this.text = this.req.method !== "HEAD" && (this.xhr.responseType === "" || this.xhr.responseType === "text") || this.xhr.responseType === void 0 ? this.xhr.responseText : null, this.statusText = this.req.xhr.statusText;
             var t4 = this.xhr.status;
             t4 === 1223 && (t4 = 204), this._setStatusProperties(t4), this.headers = function(e5) {
-              for (var t5, r4, n3, o4, s4 = e5.split(/\r?\n/), i4 = {}, a4 = 0, c4 = s4.length; a4 < c4; ++a4)
-                (t5 = (r4 = s4[a4]).indexOf(":")) !== -1 && (n3 = r4.slice(0, t5).toLowerCase(), o4 = d3(r4.slice(t5 + 1)), i4[n3] = o4);
-              return i4;
+              for (var t5, r4, n3, o4, i4 = e5.split(/\r?\n/), s4 = {}, a4 = 0, c4 = i4.length; a4 < c4; ++a4)
+                (t5 = (r4 = i4[a4]).indexOf(":")) !== -1 && (n3 = r4.slice(0, t5).toLowerCase(), o4 = d3(r4.slice(t5 + 1)), s4[n3] = o4);
+              return s4;
             }(this.xhr.getAllResponseHeaders()), this.header = this.headers, this.header["content-type"] = this.xhr.getResponseHeader("content-type"), this._setHeaderProperties(this.header), this.text === null && e4._responseType ? this.body = this.xhr.response : this.body = this.req.method === "HEAD" ? null : this._parseBody(this.text ? this.text : this.xhr.response);
           }
           function w4(e4, t4) {
@@ -10717,13 +10723,13 @@ var require_algosdk_min = __commonJS({
             var n3 = f3("DELETE", e4);
             return typeof t4 == "function" && (r4 = t4, t4 = null), t4 && n3.send(t4), r4 && n3.end(r4), n3;
           }
-          f3.serializeObject = g3, f3.parseString = m3, f3.types = { html: "text/html", json: "application/json", xml: "text/xml", urlencoded: "application/x-www-form-urlencoded", form: "application/x-www-form-urlencoded", "form-data": "application/x-www-form-urlencoded" }, f3.serialize = { "application/x-www-form-urlencoded": a3.stringify, "application/json": i3 }, f3.parse = { "application/x-www-form-urlencoded": m3, "application/json": JSON.parse }, l3(A4.prototype), A4.prototype._parseBody = function(e4) {
+          f3.serializeObject = g3, f3.parseString = m3, f3.types = { html: "text/html", json: "application/json", xml: "text/xml", urlencoded: "application/x-www-form-urlencoded", form: "application/x-www-form-urlencoded", "form-data": "application/x-www-form-urlencoded" }, f3.serialize = { "application/x-www-form-urlencoded": a3.stringify, "application/json": s3 }, f3.parse = { "application/x-www-form-urlencoded": m3, "application/json": JSON.parse }, l3(A4.prototype), A4.prototype._parseBody = function(e4) {
             var t4 = f3.parse[this.type];
             return this.req._parser ? this.req._parser(this, e4) : (!t4 && b2(this.type) && (t4 = f3.parse["application/json"]), t4 && e4 && (e4.length > 0 || e4 instanceof Object) ? t4(e4) : null);
           }, A4.prototype.toError = function() {
             var e4 = this.req, t4 = e4.method, r4 = e4.url, n3 = "cannot ".concat(t4, " ").concat(r4, " (").concat(this.status, ")"), o4 = new Error(n3);
             return o4.status = this.status, o4.method = t4, o4.url = r4, o4;
-          }, f3.Response = A4, s3(w4.prototype), c3(w4.prototype), w4.prototype.type = function(e4) {
+          }, f3.Response = A4, i3(w4.prototype), c3(w4.prototype), w4.prototype.type = function(e4) {
             return this.set("Content-Type", f3.types[e4] || e4), this;
           }, w4.prototype.accept = function(e4) {
             return this.set("Accept", f3.types[e4] || e4), this;
@@ -10805,11 +10811,11 @@ var require_algosdk_min = __commonJS({
               return this.callback(e5);
             }
             if (this._withCredentials && (t4.withCredentials = true), !this._formData && this.method !== "GET" && this.method !== "HEAD" && typeof r4 != "string" && !this._isHost(r4)) {
-              var o4 = this._header["content-type"], s4 = this._serializer || f3.serialize[o4 ? o4.split(";")[0] : ""];
-              !s4 && b2(o4) && (s4 = f3.serialize["application/json"]), s4 && (r4 = s4(r4));
+              var o4 = this._header["content-type"], i4 = this._serializer || f3.serialize[o4 ? o4.split(";")[0] : ""];
+              !i4 && b2(o4) && (i4 = f3.serialize["application/json"]), i4 && (r4 = i4(r4));
             }
-            for (var i4 in this.header)
-              this.header[i4] !== null && Object.prototype.hasOwnProperty.call(this.header, i4) && t4.setRequestHeader(i4, this.header[i4]);
+            for (var s4 in this.header)
+              this.header[s4] !== null && Object.prototype.hasOwnProperty.call(this.header, s4) && t4.setRequestHeader(s4, this.header[s4]);
             this._responseType && (t4.responseType = this._responseType), this.emit("request", this), t4.send(r4 === void 0 ? null : r4);
           }, f3.agent = function() {
             return new h3();
@@ -10859,23 +10865,23 @@ var require_algosdk_min = __commonJS({
             })(e4);
           }
           var o3 = r3(1960);
-          function s3(e4) {
+          function i3(e4) {
             if (e4)
               return function(e5) {
-                for (var t4 in s3.prototype)
-                  Object.prototype.hasOwnProperty.call(s3.prototype, t4) && (e5[t4] = s3.prototype[t4]);
+                for (var t4 in i3.prototype)
+                  Object.prototype.hasOwnProperty.call(i3.prototype, t4) && (e5[t4] = i3.prototype[t4]);
                 return e5;
               }(e4);
           }
-          e3.exports = s3, s3.prototype.clearTimeout = function() {
+          e3.exports = i3, i3.prototype.clearTimeout = function() {
             return clearTimeout(this._timer), clearTimeout(this._responseTimeoutTimer), clearTimeout(this._uploadTimeoutTimer), delete this._timer, delete this._responseTimeoutTimer, delete this._uploadTimeoutTimer, this;
-          }, s3.prototype.parse = function(e4) {
+          }, i3.prototype.parse = function(e4) {
             return this._parser = e4, this;
-          }, s3.prototype.responseType = function(e4) {
+          }, i3.prototype.responseType = function(e4) {
             return this._responseType = e4, this;
-          }, s3.prototype.serialize = function(e4) {
+          }, i3.prototype.serialize = function(e4) {
             return this._serializer = e4, this;
-          }, s3.prototype.timeout = function(e4) {
+          }, i3.prototype.timeout = function(e4) {
             if (!e4 || n2(e4) !== "object")
               return this._timeout = e4, this._responseTimeout = 0, this._uploadTimeout = 0, this;
             for (var t4 in e4)
@@ -10894,11 +10900,11 @@ var require_algosdk_min = __commonJS({
                     console.warn("Unknown timeout option", t4);
                 }
             return this;
-          }, s3.prototype.retry = function(e4, t4) {
+          }, i3.prototype.retry = function(e4, t4) {
             return arguments.length !== 0 && e4 !== true || (e4 = 1), e4 <= 0 && (e4 = 0), this._maxRetries = e4, this._retries = 0, this._retryCallback = t4, this;
           };
-          var i3 = /* @__PURE__ */ new Set(["ETIMEDOUT", "ECONNRESET", "EADDRINUSE", "ECONNREFUSED", "EPIPE", "ENOTFOUND", "ENETUNREACH", "EAI_AGAIN"]), a3 = /* @__PURE__ */ new Set([408, 413, 429, 500, 502, 503, 504, 521, 522, 524]);
-          s3.prototype._shouldRetry = function(e4, t4) {
+          var s3 = /* @__PURE__ */ new Set(["ETIMEDOUT", "ECONNRESET", "EADDRINUSE", "ECONNREFUSED", "EPIPE", "ENOTFOUND", "ENETUNREACH", "EAI_AGAIN"]), a3 = /* @__PURE__ */ new Set([408, 413, 429, 500, 502, 503, 504, 521, 522, 524]);
+          i3.prototype._shouldRetry = function(e4, t4) {
             if (!this._maxRetries || this._retries++ >= this._maxRetries)
               return false;
             if (this._retryCallback)
@@ -10914,7 +10920,7 @@ var require_algosdk_min = __commonJS({
             if (t4 && t4.status && a3.has(t4.status))
               return true;
             if (e4) {
-              if (e4.code && i3.has(e4.code))
+              if (e4.code && s3.has(e4.code))
                 return true;
               if (e4.timeout && e4.code === "ECONNABORTED")
                 return true;
@@ -10922,9 +10928,9 @@ var require_algosdk_min = __commonJS({
                 return true;
             }
             return false;
-          }, s3.prototype._retry = function() {
+          }, i3.prototype._retry = function() {
             return this.clearTimeout(), this.req && (this.req = null, this.req = this.request()), this._aborted = false, this.timedout = false, this.timedoutError = null, this._end();
-          }, s3.prototype.then = function(e4, t4) {
+          }, i3.prototype.then = function(e4, t4) {
             var r4 = this;
             if (!this._fullfilledPromise) {
               var n3 = this;
@@ -10943,28 +10949,28 @@ var require_algosdk_min = __commonJS({
               });
             }
             return this._fullfilledPromise.then(e4, t4);
-          }, s3.prototype.catch = function(e4) {
+          }, i3.prototype.catch = function(e4) {
             return this.then(void 0, e4);
-          }, s3.prototype.use = function(e4) {
+          }, i3.prototype.use = function(e4) {
             return e4(this), this;
-          }, s3.prototype.ok = function(e4) {
+          }, i3.prototype.ok = function(e4) {
             if (typeof e4 != "function")
               throw new Error("Callback required");
             return this._okCallback = e4, this;
-          }, s3.prototype._isResponseOK = function(e4) {
+          }, i3.prototype._isResponseOK = function(e4) {
             return !!e4 && (this._okCallback ? this._okCallback(e4) : e4.status >= 200 && e4.status < 300);
-          }, s3.prototype.get = function(e4) {
+          }, i3.prototype.get = function(e4) {
             return this._header[e4.toLowerCase()];
-          }, s3.prototype.getHeader = s3.prototype.get, s3.prototype.set = function(e4, t4) {
+          }, i3.prototype.getHeader = i3.prototype.get, i3.prototype.set = function(e4, t4) {
             if (o3(e4)) {
               for (var r4 in e4)
                 Object.prototype.hasOwnProperty.call(e4, r4) && this.set(r4, e4[r4]);
               return this;
             }
             return this._header[e4.toLowerCase()] = t4, this.header[e4] = t4, this;
-          }, s3.prototype.unset = function(e4) {
+          }, i3.prototype.unset = function(e4) {
             return delete this._header[e4.toLowerCase()], delete this.header[e4], this;
-          }, s3.prototype.field = function(e4, t4) {
+          }, i3.prototype.field = function(e4, t4) {
             if (e4 == null)
               throw new Error(".field(name, val) name can not be empty");
             if (this._data)
@@ -10982,9 +10988,9 @@ var require_algosdk_min = __commonJS({
             if (t4 == null)
               throw new Error(".field(name, val) val can not be empty");
             return typeof t4 == "boolean" && (t4 = String(t4)), this._getFormData().append(e4, t4), this;
-          }, s3.prototype.abort = function() {
+          }, i3.prototype.abort = function() {
             return this._aborted || (this._aborted = true, this.xhr && this.xhr.abort(), this.req && this.req.abort(), this.clearTimeout(), this.emit("abort")), this;
-          }, s3.prototype._auth = function(e4, t4, r4, n3) {
+          }, i3.prototype._auth = function(e4, t4, r4, n3) {
             switch (r4.type) {
               case "basic":
                 this.set("Authorization", "Basic ".concat(n3("".concat(e4, ":").concat(t4))));
@@ -10996,17 +11002,17 @@ var require_algosdk_min = __commonJS({
                 this.set("Authorization", "Bearer ".concat(e4));
             }
             return this;
-          }, s3.prototype.withCredentials = function(e4) {
+          }, i3.prototype.withCredentials = function(e4) {
             return e4 === void 0 && (e4 = true), this._withCredentials = e4, this;
-          }, s3.prototype.redirects = function(e4) {
+          }, i3.prototype.redirects = function(e4) {
             return this._maxRedirects = e4, this;
-          }, s3.prototype.maxResponseSize = function(e4) {
+          }, i3.prototype.maxResponseSize = function(e4) {
             if (typeof e4 != "number")
               throw new TypeError("Invalid argument");
             return this._maxResponseSize = e4, this;
-          }, s3.prototype.toJSON = function() {
+          }, i3.prototype.toJSON = function() {
             return { method: this.method, url: this.url, data: this._data, headers: this._header };
-          }, s3.prototype.send = function(e4) {
+          }, i3.prototype.send = function(e4) {
             var t4 = o3(e4), r4 = this._header["content-type"];
             if (this._formData)
               throw new Error(".send() can't be used if .attach() or .field() is used. Please use only .send() or only .field() & .attach()");
@@ -11020,9 +11026,9 @@ var require_algosdk_min = __commonJS({
             else
               typeof e4 == "string" ? (r4 || this.type("form"), (r4 = this._header["content-type"]) && (r4 = r4.toLowerCase().trim()), this._data = r4 === "application/x-www-form-urlencoded" ? this._data ? "".concat(this._data, "&").concat(e4) : e4 : (this._data || "") + e4) : this._data = e4;
             return !t4 || this._isHost(e4) || r4 || this.type("json"), this;
-          }, s3.prototype.sortQuery = function(e4) {
+          }, i3.prototype.sortQuery = function(e4) {
             return this._sort = e4 === void 0 || e4, this;
-          }, s3.prototype._finalizeQueryString = function() {
+          }, i3.prototype._finalizeQueryString = function() {
             var e4 = this._query.join("&");
             if (e4 && (this.url += (this.url.includes("?") ? "&" : "?") + e4), this._query.length = 0, this._sort) {
               var t4 = this.url.indexOf("?");
@@ -11031,14 +11037,14 @@ var require_algosdk_min = __commonJS({
                 typeof this._sort == "function" ? r4.sort(this._sort) : r4.sort(), this.url = this.url.slice(0, t4) + "?" + r4.join("&");
               }
             }
-          }, s3.prototype._appendQueryString = function() {
+          }, i3.prototype._appendQueryString = function() {
             console.warn("Unsupported");
-          }, s3.prototype._timeoutError = function(e4, t4, r4) {
+          }, i3.prototype._timeoutError = function(e4, t4, r4) {
             if (!this._aborted) {
               var n3 = new Error("".concat(e4 + t4, "ms exceeded"));
               n3.timeout = t4, n3.code = "ECONNABORTED", n3.errno = r4, this.timedout = true, this.timedoutError = n3, this.abort(), this.callback(n3);
             }
-          }, s3.prototype._setTimeouts = function() {
+          }, i3.prototype._setTimeouts = function() {
             var e4 = this;
             this._timeout && !this._timer && (this._timer = setTimeout(function() {
               e4._timeoutError("Timeout of ", e4._timeout, "ETIME");
@@ -11088,30 +11094,30 @@ var require_algosdk_min = __commonJS({
                 }
               }(e4)) || t4 && e4 && typeof e4.length == "number") {
                 r4 && (e4 = r4);
-                var o3 = 0, s3 = function() {
+                var o3 = 0, i3 = function() {
                 };
-                return { s: s3, n: function() {
+                return { s: i3, n: function() {
                   return o3 >= e4.length ? { done: true } : { done: false, value: e4[o3++] };
                 }, e: function(e5) {
                   throw e5;
-                }, f: s3 };
+                }, f: i3 };
               }
               throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
             }
-            var i3, a3 = true, c3 = false;
+            var s3, a3 = true, c3 = false;
             return { s: function() {
               r4 = e4[Symbol.iterator]();
             }, n: function() {
               var e5 = r4.next();
               return a3 = e5.done, e5;
             }, e: function(e5) {
-              c3 = true, i3 = e5;
+              c3 = true, s3 = e5;
             }, f: function() {
               try {
                 a3 || r4.return == null || r4.return();
               } finally {
                 if (c3)
-                  throw i3;
+                  throw s3;
               }
             } };
           }
@@ -11127,8 +11133,8 @@ var require_algosdk_min = __commonJS({
             var t4, n3 = {}, o3 = r3(e4.split(/ *; */));
             try {
               for (o3.s(); !(t4 = o3.n()).done; ) {
-                var s3 = t4.value.split(/ *= */), i3 = s3.shift(), a3 = s3.shift();
-                i3 && a3 && (n3[i3] = a3);
+                var i3 = t4.value.split(/ *= */), s3 = i3.shift(), a3 = i3.shift();
+                s3 && a3 && (n3[s3] = a3);
               }
             } catch (e5) {
               o3.e(e5);
@@ -11140,8 +11146,8 @@ var require_algosdk_min = __commonJS({
             var t4, n3 = {}, o3 = r3(e4.split(/ *, */));
             try {
               for (o3.s(); !(t4 = o3.n()).done; ) {
-                var s3 = t4.value.split(/ *; */), i3 = s3[0].slice(1, -1);
-                n3[s3[1].split(/ *= */)[1].slice(1, -1)] = i3;
+                var i3 = t4.value.split(/ *; */), s3 = i3[0].slice(1, -1);
+                n3[i3[1].split(/ *= */)[1].slice(1, -1)] = s3;
               }
             } catch (e5) {
               o3.e(e5);
@@ -11162,11 +11168,11 @@ var require_algosdk_min = __commonJS({
           } }, RFC1738: "RFC1738", RFC3986: n2 };
         }, 3065: (e3, t3, r3) => {
           "use strict";
-          var n2 = r3(4246), o3 = r3(1688), s3 = r3(5335);
-          e3.exports = { formats: s3, parse: o3, stringify: n2 };
+          var n2 = r3(4246), o3 = r3(1688), i3 = r3(5335);
+          e3.exports = { formats: i3, parse: o3, stringify: n2 };
         }, 1688: (e3, t3, r3) => {
           "use strict";
-          var n2 = r3(4562), o3 = Object.prototype.hasOwnProperty, s3 = Array.isArray, i3 = { allowDots: false, allowPrototypes: false, allowSparse: false, arrayLimit: 20, charset: "utf-8", charsetSentinel: false, comma: false, decoder: n2.decode, delimiter: "&", depth: 5, ignoreQueryPrefix: false, interpretNumericEntities: false, parameterLimit: 1e3, parseArrays: true, plainObjects: false, strictNullHandling: false }, a3 = function(e4) {
+          var n2 = r3(4562), o3 = Object.prototype.hasOwnProperty, i3 = Array.isArray, s3 = { allowDots: false, allowPrototypes: false, allowSparse: false, arrayLimit: 20, charset: "utf-8", charsetSentinel: false, comma: false, decoder: n2.decode, delimiter: "&", depth: 5, ignoreQueryPrefix: false, interpretNumericEntities: false, parameterLimit: 1e3, parseArrays: true, plainObjects: false, strictNullHandling: false }, a3 = function(e4) {
             return e4.replace(/&#(\d+);/g, function(e5, t4) {
               return String.fromCharCode(parseInt(t4, 10));
             });
@@ -11174,28 +11180,28 @@ var require_algosdk_min = __commonJS({
             return e4 && typeof e4 == "string" && t4.comma && e4.indexOf(",") > -1 ? e4.split(",") : e4;
           }, u3 = function(e4, t4, r4, n3) {
             if (e4) {
-              var s4 = r4.allowDots ? e4.replace(/\.([^.[]+)/g, "[$1]") : e4, i4 = /(\[[^[\]]*])/g, a4 = r4.depth > 0 && /(\[[^[\]]*])/.exec(s4), u4 = a4 ? s4.slice(0, a4.index) : s4, l3 = [];
+              var i4 = r4.allowDots ? e4.replace(/\.([^.[]+)/g, "[$1]") : e4, s4 = /(\[[^[\]]*])/g, a4 = r4.depth > 0 && /(\[[^[\]]*])/.exec(i4), u4 = a4 ? i4.slice(0, a4.index) : i4, l3 = [];
               if (u4) {
                 if (!r4.plainObjects && o3.call(Object.prototype, u4) && !r4.allowPrototypes)
                   return;
                 l3.push(u4);
               }
-              for (var h3 = 0; r4.depth > 0 && (a4 = i4.exec(s4)) !== null && h3 < r4.depth; ) {
+              for (var h3 = 0; r4.depth > 0 && (a4 = s4.exec(i4)) !== null && h3 < r4.depth; ) {
                 if (h3 += 1, !r4.plainObjects && o3.call(Object.prototype, a4[1].slice(1, -1)) && !r4.allowPrototypes)
                   return;
                 l3.push(a4[1]);
               }
-              return a4 && l3.push("[" + s4.slice(a4.index) + "]"), function(e5, t5, r5, n4) {
-                for (var o4 = n4 ? t5 : c3(t5, r5), s5 = e5.length - 1; s5 >= 0; --s5) {
-                  var i5, a5 = e5[s5];
+              return a4 && l3.push("[" + i4.slice(a4.index) + "]"), function(e5, t5, r5, n4) {
+                for (var o4 = n4 ? t5 : c3(t5, r5), i5 = e5.length - 1; i5 >= 0; --i5) {
+                  var s5, a5 = e5[i5];
                   if (a5 === "[]" && r5.parseArrays)
-                    i5 = [].concat(o4);
+                    s5 = [].concat(o4);
                   else {
-                    i5 = r5.plainObjects ? /* @__PURE__ */ Object.create(null) : {};
+                    s5 = r5.plainObjects ? /* @__PURE__ */ Object.create(null) : {};
                     var u5 = a5.charAt(0) === "[" && a5.charAt(a5.length - 1) === "]" ? a5.slice(1, -1) : a5, l4 = parseInt(u5, 10);
-                    r5.parseArrays || u5 !== "" ? !isNaN(l4) && a5 !== u5 && String(l4) === u5 && l4 >= 0 && r5.parseArrays && l4 <= r5.arrayLimit ? (i5 = [])[l4] = o4 : i5[u5] = o4 : i5 = { 0: o4 };
+                    r5.parseArrays || u5 !== "" ? !isNaN(l4) && a5 !== u5 && String(l4) === u5 && l4 >= 0 && r5.parseArrays && l4 <= r5.arrayLimit ? (s5 = [])[l4] = o4 : s5[u5] = o4 : s5 = { 0: o4 };
                   }
-                  o4 = i5;
+                  o4 = s5;
                 }
                 return o4;
               }(l3, t4, r4, n3);
@@ -11204,13 +11210,13 @@ var require_algosdk_min = __commonJS({
           e3.exports = function(e4, t4) {
             var r4 = function(e5) {
               if (!e5)
-                return i3;
+                return s3;
               if (e5.decoder !== null && e5.decoder !== void 0 && typeof e5.decoder != "function")
                 throw new TypeError("Decoder has to be a function.");
               if (e5.charset !== void 0 && e5.charset !== "utf-8" && e5.charset !== "iso-8859-1")
                 throw new TypeError("The charset option must be either utf-8, iso-8859-1, or undefined");
-              var t5 = e5.charset === void 0 ? i3.charset : e5.charset;
-              return { allowDots: e5.allowDots === void 0 ? i3.allowDots : !!e5.allowDots, allowPrototypes: typeof e5.allowPrototypes == "boolean" ? e5.allowPrototypes : i3.allowPrototypes, allowSparse: typeof e5.allowSparse == "boolean" ? e5.allowSparse : i3.allowSparse, arrayLimit: typeof e5.arrayLimit == "number" ? e5.arrayLimit : i3.arrayLimit, charset: t5, charsetSentinel: typeof e5.charsetSentinel == "boolean" ? e5.charsetSentinel : i3.charsetSentinel, comma: typeof e5.comma == "boolean" ? e5.comma : i3.comma, decoder: typeof e5.decoder == "function" ? e5.decoder : i3.decoder, delimiter: typeof e5.delimiter == "string" || n2.isRegExp(e5.delimiter) ? e5.delimiter : i3.delimiter, depth: typeof e5.depth == "number" || e5.depth === false ? +e5.depth : i3.depth, ignoreQueryPrefix: e5.ignoreQueryPrefix === true, interpretNumericEntities: typeof e5.interpretNumericEntities == "boolean" ? e5.interpretNumericEntities : i3.interpretNumericEntities, parameterLimit: typeof e5.parameterLimit == "number" ? e5.parameterLimit : i3.parameterLimit, parseArrays: e5.parseArrays !== false, plainObjects: typeof e5.plainObjects == "boolean" ? e5.plainObjects : i3.plainObjects, strictNullHandling: typeof e5.strictNullHandling == "boolean" ? e5.strictNullHandling : i3.strictNullHandling };
+              var t5 = e5.charset === void 0 ? s3.charset : e5.charset;
+              return { allowDots: e5.allowDots === void 0 ? s3.allowDots : !!e5.allowDots, allowPrototypes: typeof e5.allowPrototypes == "boolean" ? e5.allowPrototypes : s3.allowPrototypes, allowSparse: typeof e5.allowSparse == "boolean" ? e5.allowSparse : s3.allowSparse, arrayLimit: typeof e5.arrayLimit == "number" ? e5.arrayLimit : s3.arrayLimit, charset: t5, charsetSentinel: typeof e5.charsetSentinel == "boolean" ? e5.charsetSentinel : s3.charsetSentinel, comma: typeof e5.comma == "boolean" ? e5.comma : s3.comma, decoder: typeof e5.decoder == "function" ? e5.decoder : s3.decoder, delimiter: typeof e5.delimiter == "string" || n2.isRegExp(e5.delimiter) ? e5.delimiter : s3.delimiter, depth: typeof e5.depth == "number" || e5.depth === false ? +e5.depth : s3.depth, ignoreQueryPrefix: e5.ignoreQueryPrefix === true, interpretNumericEntities: typeof e5.interpretNumericEntities == "boolean" ? e5.interpretNumericEntities : s3.interpretNumericEntities, parameterLimit: typeof e5.parameterLimit == "number" ? e5.parameterLimit : s3.parameterLimit, parseArrays: e5.parseArrays !== false, plainObjects: typeof e5.plainObjects == "boolean" ? e5.plainObjects : s3.plainObjects, strictNullHandling: typeof e5.strictNullHandling == "boolean" ? e5.strictNullHandling : s3.strictNullHandling };
             }(t4);
             if (e4 === "" || e4 == null)
               return r4.plainObjects ? /* @__PURE__ */ Object.create(null) : {};
@@ -11222,9 +11228,9 @@ var require_algosdk_min = __commonJS({
               for (r5 = 0; r5 < p4.length; ++r5)
                 if (r5 !== f4) {
                   var g4, y3, m3 = p4[r5], b2 = m3.indexOf("]="), A4 = b2 === -1 ? m3.indexOf("=") : b2 + 1;
-                  A4 === -1 ? (g4 = t5.decoder(m3, i3.decoder, d4, "key"), y3 = t5.strictNullHandling ? null : "") : (g4 = t5.decoder(m3.slice(0, A4), i3.decoder, d4, "key"), y3 = n2.maybeMap(c3(m3.slice(A4 + 1), t5), function(e6) {
-                    return t5.decoder(e6, i3.decoder, d4, "value");
-                  })), y3 && t5.interpretNumericEntities && d4 === "iso-8859-1" && (y3 = a3(y3)), m3.indexOf("[]=") > -1 && (y3 = s3(y3) ? [y3] : y3), o3.call(u4, g4) ? u4[g4] = n2.combine(u4[g4], y3) : u4[g4] = y3;
+                  A4 === -1 ? (g4 = t5.decoder(m3, s3.decoder, d4, "key"), y3 = t5.strictNullHandling ? null : "") : (g4 = t5.decoder(m3.slice(0, A4), s3.decoder, d4, "key"), y3 = n2.maybeMap(c3(m3.slice(A4 + 1), t5), function(e6) {
+                    return t5.decoder(e6, s3.decoder, d4, "value");
+                  })), y3 && t5.interpretNumericEntities && d4 === "iso-8859-1" && (y3 = a3(y3)), m3.indexOf("[]=") > -1 && (y3 = i3(y3) ? [y3] : y3), o3.call(u4, g4) ? u4[g4] = n2.combine(u4[g4], y3) : u4[g4] = y3;
                 }
               return u4;
             }(e4, r4) : e4, h3 = r4.plainObjects ? /* @__PURE__ */ Object.create(null) : {}, p3 = Object.keys(l3), f3 = 0; f3 < p3.length; ++f3) {
@@ -11235,7 +11241,7 @@ var require_algosdk_min = __commonJS({
           };
         }, 4246: (e3, t3, r3) => {
           "use strict";
-          var n2 = r3(3680), o3 = r3(4562), s3 = r3(5335), i3 = Object.prototype.hasOwnProperty, a3 = { brackets: function(e4) {
+          var n2 = r3(3680), o3 = r3(4562), i3 = r3(5335), s3 = Object.prototype.hasOwnProperty, a3 = { brackets: function(e4) {
             return e4 + "[]";
           }, comma: "comma", indices: function(e4, t4) {
             return e4 + "[" + t4 + "]";
@@ -11243,16 +11249,16 @@ var require_algosdk_min = __commonJS({
             return e4;
           } }, c3 = Array.isArray, u3 = Array.prototype.push, l3 = function(e4, t4) {
             u3.apply(e4, c3(t4) ? t4 : [t4]);
-          }, h3 = Date.prototype.toISOString, p3 = s3.default, f3 = { addQueryPrefix: false, allowDots: false, charset: "utf-8", charsetSentinel: false, delimiter: "&", encode: true, encoder: o3.encode, encodeValuesOnly: false, format: p3, formatter: s3.formatters[p3], indices: false, serializeDate: function(e4) {
+          }, h3 = Date.prototype.toISOString, p3 = i3.default, f3 = { addQueryPrefix: false, allowDots: false, charset: "utf-8", charsetSentinel: false, delimiter: "&", encode: true, encoder: o3.encode, encodeValuesOnly: false, format: p3, formatter: i3.formatters[p3], indices: false, serializeDate: function(e4) {
             return h3.call(e4);
-          }, skipNulls: false, strictNullHandling: false }, d3 = function e4(t4, r4, s4, i4, a4, u4, h4, p4, d4, g3, y3, m3, b2, A4, w4) {
+          }, skipNulls: false, strictNullHandling: false }, d3 = function e4(t4, r4, i4, s4, a4, u4, h4, p4, d4, g3, y3, m3, b2, A4, w4) {
             var v3, x3 = t4;
             if (w4.has(t4))
               throw new RangeError("Cyclic object value");
-            if (typeof h4 == "function" ? x3 = h4(r4, x3) : x3 instanceof Date ? x3 = g3(x3) : s4 === "comma" && c3(x3) && (x3 = o3.maybeMap(x3, function(e5) {
+            if (typeof h4 == "function" ? x3 = h4(r4, x3) : x3 instanceof Date ? x3 = g3(x3) : i4 === "comma" && c3(x3) && (x3 = o3.maybeMap(x3, function(e5) {
               return e5 instanceof Date ? g3(e5) : e5;
             })), x3 === null) {
-              if (i4)
+              if (s4)
                 return u4 && !b2 ? u4(r4, f3.encoder, A4, "key", y3) : r4;
               x3 = "";
             }
@@ -11261,7 +11267,7 @@ var require_algosdk_min = __commonJS({
             var S2, E4 = [];
             if (x3 === void 0)
               return E4;
-            if (s4 === "comma" && c3(x3))
+            if (i4 === "comma" && c3(x3))
               S2 = [{ value: x3.length > 0 ? x3.join(",") || null : void 0 }];
             else if (c3(h4))
               S2 = h4;
@@ -11272,10 +11278,10 @@ var require_algosdk_min = __commonJS({
             for (var _4 = 0; _4 < S2.length; ++_4) {
               var B2 = S2[_4], U2 = typeof B2 == "object" && B2.value !== void 0 ? B2.value : x3[B2];
               if (!a4 || U2 !== null) {
-                var k3 = c3(x3) ? typeof s4 == "function" ? s4(r4, B2) : r4 : r4 + (d4 ? "." + B2 : "[" + B2 + "]");
+                var k3 = c3(x3) ? typeof i4 == "function" ? i4(r4, B2) : r4 : r4 + (d4 ? "." + B2 : "[" + B2 + "]");
                 w4.set(t4, true);
                 var I3 = n2();
-                l3(E4, e4(U2, k3, s4, i4, a4, u4, h4, p4, d4, g3, y3, m3, b2, A4, I3));
+                l3(E4, e4(U2, k3, i4, s4, a4, u4, h4, p4, d4, g3, y3, m3, b2, A4, I3));
               }
             }
             return E4;
@@ -11289,13 +11295,13 @@ var require_algosdk_min = __commonJS({
               var t5 = e5.charset || f3.charset;
               if (e5.charset !== void 0 && e5.charset !== "utf-8" && e5.charset !== "iso-8859-1")
                 throw new TypeError("The charset option must be either utf-8, iso-8859-1, or undefined");
-              var r5 = s3.default;
+              var r5 = i3.default;
               if (e5.format !== void 0) {
-                if (!i3.call(s3.formatters, e5.format))
+                if (!s3.call(i3.formatters, e5.format))
                   throw new TypeError("Unknown format option provided.");
                 r5 = e5.format;
               }
-              var n3 = s3.formatters[r5], o5 = f3.filter;
+              var n3 = i3.formatters[r5], o5 = f3.filter;
               return (typeof e5.filter == "function" || c3(e5.filter)) && (o5 = e5.filter), { addQueryPrefix: typeof e5.addQueryPrefix == "boolean" ? e5.addQueryPrefix : f3.addQueryPrefix, allowDots: e5.allowDots === void 0 ? f3.allowDots : !!e5.allowDots, charset: t5, charsetSentinel: typeof e5.charsetSentinel == "boolean" ? e5.charsetSentinel : f3.charsetSentinel, delimiter: e5.delimiter === void 0 ? f3.delimiter : e5.delimiter, encode: typeof e5.encode == "boolean" ? e5.encode : f3.encode, encoder: typeof e5.encoder == "function" ? e5.encoder : f3.encoder, encodeValuesOnly: typeof e5.encodeValuesOnly == "boolean" ? e5.encodeValuesOnly : f3.encodeValuesOnly, filter: o5, format: r5, formatter: n3, serializeDate: typeof e5.serializeDate == "function" ? e5.serializeDate : f3.serializeDate, skipNulls: typeof e5.skipNulls == "boolean" ? e5.skipNulls : f3.skipNulls, sort: typeof e5.sort == "function" ? e5.sort : null, strictNullHandling: typeof e5.strictNullHandling == "boolean" ? e5.strictNullHandling : f3.strictNullHandling };
             }(t4);
             typeof u4.filter == "function" ? o4 = (0, u4.filter)("", o4) : c3(u4.filter) && (r4 = u4.filter);
@@ -11314,7 +11320,7 @@ var require_algosdk_min = __commonJS({
           };
         }, 4562: (e3, t3, r3) => {
           "use strict";
-          var n2 = r3(5335), o3 = Object.prototype.hasOwnProperty, s3 = Array.isArray, i3 = function() {
+          var n2 = r3(5335), o3 = Object.prototype.hasOwnProperty, i3 = Array.isArray, s3 = function() {
             for (var e4 = [], t4 = 0; t4 < 256; ++t4)
               e4.push("%" + ((t4 < 16 ? "0" : "") + t4.toString(16)).toUpperCase());
             return e4;
@@ -11331,14 +11337,14 @@ var require_algosdk_min = __commonJS({
             return [].concat(e4, t4);
           }, compact: function(e4) {
             for (var t4 = [{ obj: { o: e4 }, prop: "o" }], r4 = [], n3 = 0; n3 < t4.length; ++n3)
-              for (var o4 = t4[n3], i4 = o4.obj[o4.prop], a4 = Object.keys(i4), c3 = 0; c3 < a4.length; ++c3) {
-                var u3 = a4[c3], l3 = i4[u3];
-                typeof l3 == "object" && l3 !== null && r4.indexOf(l3) === -1 && (t4.push({ obj: i4, prop: u3 }), r4.push(l3));
+              for (var o4 = t4[n3], s4 = o4.obj[o4.prop], a4 = Object.keys(s4), c3 = 0; c3 < a4.length; ++c3) {
+                var u3 = a4[c3], l3 = s4[u3];
+                typeof l3 == "object" && l3 !== null && r4.indexOf(l3) === -1 && (t4.push({ obj: s4, prop: u3 }), r4.push(l3));
               }
             return function(e5) {
               for (; e5.length > 1; ) {
                 var t5 = e5.pop(), r5 = t5.obj[t5.prop];
-                if (s3(r5)) {
+                if (i3(r5)) {
                   for (var n4 = [], o5 = 0; o5 < r5.length; ++o5)
                     r5[o5] !== void 0 && n4.push(r5[o5]);
                   t5.obj[t5.prop] = n4;
@@ -11354,7 +11360,7 @@ var require_algosdk_min = __commonJS({
             } catch (e5) {
               return n3;
             }
-          }, encode: function(e4, t4, r4, o4, s4) {
+          }, encode: function(e4, t4, r4, o4, i4) {
             if (e4.length === 0)
               return e4;
             var a4 = e4;
@@ -11364,7 +11370,7 @@ var require_algosdk_min = __commonJS({
               });
             for (var c3 = "", u3 = 0; u3 < a4.length; ++u3) {
               var l3 = a4.charCodeAt(u3);
-              l3 === 45 || l3 === 46 || l3 === 95 || l3 === 126 || l3 >= 48 && l3 <= 57 || l3 >= 65 && l3 <= 90 || l3 >= 97 && l3 <= 122 || s4 === n2.RFC1738 && (l3 === 40 || l3 === 41) ? c3 += a4.charAt(u3) : l3 < 128 ? c3 += i3[l3] : l3 < 2048 ? c3 += i3[192 | l3 >> 6] + i3[128 | 63 & l3] : l3 < 55296 || l3 >= 57344 ? c3 += i3[224 | l3 >> 12] + i3[128 | l3 >> 6 & 63] + i3[128 | 63 & l3] : (u3 += 1, l3 = 65536 + ((1023 & l3) << 10 | 1023 & a4.charCodeAt(u3)), c3 += i3[240 | l3 >> 18] + i3[128 | l3 >> 12 & 63] + i3[128 | l3 >> 6 & 63] + i3[128 | 63 & l3]);
+              l3 === 45 || l3 === 46 || l3 === 95 || l3 === 126 || l3 >= 48 && l3 <= 57 || l3 >= 65 && l3 <= 90 || l3 >= 97 && l3 <= 122 || i4 === n2.RFC1738 && (l3 === 40 || l3 === 41) ? c3 += a4.charAt(u3) : l3 < 128 ? c3 += s3[l3] : l3 < 2048 ? c3 += s3[192 | l3 >> 6] + s3[128 | 63 & l3] : l3 < 55296 || l3 >= 57344 ? c3 += s3[224 | l3 >> 12] + s3[128 | l3 >> 6 & 63] + s3[128 | 63 & l3] : (u3 += 1, l3 = 65536 + ((1023 & l3) << 10 | 1023 & a4.charCodeAt(u3)), c3 += s3[240 | l3 >> 18] + s3[128 | l3 >> 12 & 63] + s3[128 | l3 >> 6 & 63] + s3[128 | 63 & l3]);
             }
             return c3;
           }, isBuffer: function(e4) {
@@ -11372,7 +11378,7 @@ var require_algosdk_min = __commonJS({
           }, isRegExp: function(e4) {
             return Object.prototype.toString.call(e4) === "[object RegExp]";
           }, maybeMap: function(e4, t4) {
-            if (s3(e4)) {
+            if (i3(e4)) {
               for (var r4 = [], n3 = 0; n3 < e4.length; n3 += 1)
                 r4.push(t4(e4[n3]));
               return r4;
@@ -11382,7 +11388,7 @@ var require_algosdk_min = __commonJS({
             if (!r4)
               return t4;
             if (typeof r4 != "object") {
-              if (s3(t4))
+              if (i3(t4))
                 t4.push(r4);
               else {
                 if (!t4 || typeof t4 != "object")
@@ -11393,17 +11399,17 @@ var require_algosdk_min = __commonJS({
             }
             if (!t4 || typeof t4 != "object")
               return [t4].concat(r4);
-            var i4 = t4;
-            return s3(t4) && !s3(r4) && (i4 = a3(t4, n3)), s3(t4) && s3(r4) ? (r4.forEach(function(r5, s4) {
-              if (o3.call(t4, s4)) {
-                var i5 = t4[s4];
-                i5 && typeof i5 == "object" && r5 && typeof r5 == "object" ? t4[s4] = e4(i5, r5, n3) : t4.push(r5);
+            var s4 = t4;
+            return i3(t4) && !i3(r4) && (s4 = a3(t4, n3)), i3(t4) && i3(r4) ? (r4.forEach(function(r5, i4) {
+              if (o3.call(t4, i4)) {
+                var s5 = t4[i4];
+                s5 && typeof s5 == "object" && r5 && typeof r5 == "object" ? t4[i4] = e4(s5, r5, n3) : t4.push(r5);
               } else
-                t4[s4] = r5;
-            }), t4) : Object.keys(r4).reduce(function(t5, s4) {
-              var i5 = r4[s4];
-              return o3.call(t5, s4) ? t5[s4] = e4(t5[s4], i5, n3) : t5[s4] = i5, t5;
-            }, i4);
+                t4[i4] = r5;
+            }), t4) : Object.keys(r4).reduce(function(t5, i4) {
+              var s5 = r4[i4];
+              return o3.call(t5, i4) ? t5[i4] = e4(t5[i4], s5, n3) : t5[i4] = s5, t5;
+            }, s4);
           } };
         }, 7765: function(e3, t3) {
           !function(e4) {
@@ -11418,15 +11424,15 @@ var require_algosdk_min = __commonJS({
               throw new Error("no PRNG");
             }, n2 = new Uint8Array(16), o3 = new Uint8Array(32);
             o3[0] = 9;
-            var s3 = t4(), i3 = t4([1]), a3 = t4([56129, 1]), c3 = t4([30883, 4953, 19914, 30187, 55467, 16705, 2637, 112, 59544, 30585, 16505, 36039, 65139, 11119, 27886, 20995]), u3 = t4([61785, 9906, 39828, 60374, 45398, 33411, 5274, 224, 53552, 61171, 33010, 6542, 64743, 22239, 55772, 9222]), l3 = t4([54554, 36645, 11616, 51542, 42930, 38181, 51040, 26924, 56412, 64982, 57905, 49316, 21502, 52590, 14035, 8553]), h3 = t4([26200, 26214, 26214, 26214, 26214, 26214, 26214, 26214, 26214, 26214, 26214, 26214, 26214, 26214, 26214, 26214]), p3 = t4([41136, 18958, 6951, 50414, 58488, 44335, 6150, 12099, 55207, 15867, 153, 11085, 57099, 20417, 9344, 11139]);
+            var i3 = t4(), s3 = t4([1]), a3 = t4([56129, 1]), c3 = t4([30883, 4953, 19914, 30187, 55467, 16705, 2637, 112, 59544, 30585, 16505, 36039, 65139, 11119, 27886, 20995]), u3 = t4([61785, 9906, 39828, 60374, 45398, 33411, 5274, 224, 53552, 61171, 33010, 6542, 64743, 22239, 55772, 9222]), l3 = t4([54554, 36645, 11616, 51542, 42930, 38181, 51040, 26924, 56412, 64982, 57905, 49316, 21502, 52590, 14035, 8553]), h3 = t4([26200, 26214, 26214, 26214, 26214, 26214, 26214, 26214, 26214, 26214, 26214, 26214, 26214, 26214, 26214, 26214]), p3 = t4([41136, 18958, 6951, 50414, 58488, 44335, 6150, 12099, 55207, 15867, 153, 11085, 57099, 20417, 9344, 11139]);
             function f3(e5, t5, r4, n3) {
               e5[t5] = r4 >> 24 & 255, e5[t5 + 1] = r4 >> 16 & 255, e5[t5 + 2] = r4 >> 8 & 255, e5[t5 + 3] = 255 & r4, e5[t5 + 4] = n3 >> 24 & 255, e5[t5 + 5] = n3 >> 16 & 255, e5[t5 + 6] = n3 >> 8 & 255, e5[t5 + 7] = 255 & n3;
             }
             function d3(e5, t5, r4, n3, o4) {
-              var s4, i4 = 0;
-              for (s4 = 0; s4 < o4; s4++)
-                i4 |= e5[t5 + s4] ^ r4[n3 + s4];
-              return (1 & i4 - 1 >>> 8) - 1;
+              var i4, s4 = 0;
+              for (i4 = 0; i4 < o4; i4++)
+                s4 |= e5[t5 + i4] ^ r4[n3 + i4];
+              return (1 & s4 - 1 >>> 8) - 1;
             }
             function g3(e5, t5, r4, n3) {
               return d3(e5, t5, r4, n3, 16);
@@ -11436,97 +11442,97 @@ var require_algosdk_min = __commonJS({
             }
             function m3(e5, t5, r4, n3) {
               !function(e6, t6, r5, n4) {
-                for (var o4, s4 = 255 & n4[0] | (255 & n4[1]) << 8 | (255 & n4[2]) << 16 | (255 & n4[3]) << 24, i4 = 255 & r5[0] | (255 & r5[1]) << 8 | (255 & r5[2]) << 16 | (255 & r5[3]) << 24, a4 = 255 & r5[4] | (255 & r5[5]) << 8 | (255 & r5[6]) << 16 | (255 & r5[7]) << 24, c4 = 255 & r5[8] | (255 & r5[9]) << 8 | (255 & r5[10]) << 16 | (255 & r5[11]) << 24, u4 = 255 & r5[12] | (255 & r5[13]) << 8 | (255 & r5[14]) << 16 | (255 & r5[15]) << 24, l4 = 255 & n4[4] | (255 & n4[5]) << 8 | (255 & n4[6]) << 16 | (255 & n4[7]) << 24, h4 = 255 & t6[0] | (255 & t6[1]) << 8 | (255 & t6[2]) << 16 | (255 & t6[3]) << 24, p4 = 255 & t6[4] | (255 & t6[5]) << 8 | (255 & t6[6]) << 16 | (255 & t6[7]) << 24, f4 = 255 & t6[8] | (255 & t6[9]) << 8 | (255 & t6[10]) << 16 | (255 & t6[11]) << 24, d4 = 255 & t6[12] | (255 & t6[13]) << 8 | (255 & t6[14]) << 16 | (255 & t6[15]) << 24, g4 = 255 & n4[8] | (255 & n4[9]) << 8 | (255 & n4[10]) << 16 | (255 & n4[11]) << 24, y4 = 255 & r5[16] | (255 & r5[17]) << 8 | (255 & r5[18]) << 16 | (255 & r5[19]) << 24, m4 = 255 & r5[20] | (255 & r5[21]) << 8 | (255 & r5[22]) << 16 | (255 & r5[23]) << 24, b3 = 255 & r5[24] | (255 & r5[25]) << 8 | (255 & r5[26]) << 16 | (255 & r5[27]) << 24, A5 = 255 & r5[28] | (255 & r5[29]) << 8 | (255 & r5[30]) << 16 | (255 & r5[31]) << 24, w5 = 255 & n4[12] | (255 & n4[13]) << 8 | (255 & n4[14]) << 16 | (255 & n4[15]) << 24, v4 = s4, x4 = i4, S3 = a4, E5 = c4, T5 = u4, _5 = l4, B3 = h4, U3 = p4, k4 = f4, I4 = d4, C4 = g4, R3 = y4, O3 = m4, D4 = b3, N4 = A5, P4 = w5, L4 = 0; L4 < 20; L4 += 2)
+                for (var o4, i4 = 255 & n4[0] | (255 & n4[1]) << 8 | (255 & n4[2]) << 16 | (255 & n4[3]) << 24, s4 = 255 & r5[0] | (255 & r5[1]) << 8 | (255 & r5[2]) << 16 | (255 & r5[3]) << 24, a4 = 255 & r5[4] | (255 & r5[5]) << 8 | (255 & r5[6]) << 16 | (255 & r5[7]) << 24, c4 = 255 & r5[8] | (255 & r5[9]) << 8 | (255 & r5[10]) << 16 | (255 & r5[11]) << 24, u4 = 255 & r5[12] | (255 & r5[13]) << 8 | (255 & r5[14]) << 16 | (255 & r5[15]) << 24, l4 = 255 & n4[4] | (255 & n4[5]) << 8 | (255 & n4[6]) << 16 | (255 & n4[7]) << 24, h4 = 255 & t6[0] | (255 & t6[1]) << 8 | (255 & t6[2]) << 16 | (255 & t6[3]) << 24, p4 = 255 & t6[4] | (255 & t6[5]) << 8 | (255 & t6[6]) << 16 | (255 & t6[7]) << 24, f4 = 255 & t6[8] | (255 & t6[9]) << 8 | (255 & t6[10]) << 16 | (255 & t6[11]) << 24, d4 = 255 & t6[12] | (255 & t6[13]) << 8 | (255 & t6[14]) << 16 | (255 & t6[15]) << 24, g4 = 255 & n4[8] | (255 & n4[9]) << 8 | (255 & n4[10]) << 16 | (255 & n4[11]) << 24, y4 = 255 & r5[16] | (255 & r5[17]) << 8 | (255 & r5[18]) << 16 | (255 & r5[19]) << 24, m4 = 255 & r5[20] | (255 & r5[21]) << 8 | (255 & r5[22]) << 16 | (255 & r5[23]) << 24, b3 = 255 & r5[24] | (255 & r5[25]) << 8 | (255 & r5[26]) << 16 | (255 & r5[27]) << 24, A5 = 255 & r5[28] | (255 & r5[29]) << 8 | (255 & r5[30]) << 16 | (255 & r5[31]) << 24, w5 = 255 & n4[12] | (255 & n4[13]) << 8 | (255 & n4[14]) << 16 | (255 & n4[15]) << 24, v4 = i4, x4 = s4, S3 = a4, E5 = c4, T5 = u4, _5 = l4, B3 = h4, U3 = p4, k4 = f4, I4 = d4, C4 = g4, R3 = y4, O3 = m4, D4 = b3, N4 = A5, P4 = w5, L4 = 0; L4 < 20; L4 += 2)
                   v4 ^= (o4 = (O3 ^= (o4 = (k4 ^= (o4 = (T5 ^= (o4 = v4 + O3 | 0) << 7 | o4 >>> 25) + v4 | 0) << 9 | o4 >>> 23) + T5 | 0) << 13 | o4 >>> 19) + k4 | 0) << 18 | o4 >>> 14, _5 ^= (o4 = (x4 ^= (o4 = (D4 ^= (o4 = (I4 ^= (o4 = _5 + x4 | 0) << 7 | o4 >>> 25) + _5 | 0) << 9 | o4 >>> 23) + I4 | 0) << 13 | o4 >>> 19) + D4 | 0) << 18 | o4 >>> 14, C4 ^= (o4 = (B3 ^= (o4 = (S3 ^= (o4 = (N4 ^= (o4 = C4 + B3 | 0) << 7 | o4 >>> 25) + C4 | 0) << 9 | o4 >>> 23) + N4 | 0) << 13 | o4 >>> 19) + S3 | 0) << 18 | o4 >>> 14, P4 ^= (o4 = (R3 ^= (o4 = (U3 ^= (o4 = (E5 ^= (o4 = P4 + R3 | 0) << 7 | o4 >>> 25) + P4 | 0) << 9 | o4 >>> 23) + E5 | 0) << 13 | o4 >>> 19) + U3 | 0) << 18 | o4 >>> 14, v4 ^= (o4 = (E5 ^= (o4 = (S3 ^= (o4 = (x4 ^= (o4 = v4 + E5 | 0) << 7 | o4 >>> 25) + v4 | 0) << 9 | o4 >>> 23) + x4 | 0) << 13 | o4 >>> 19) + S3 | 0) << 18 | o4 >>> 14, _5 ^= (o4 = (T5 ^= (o4 = (U3 ^= (o4 = (B3 ^= (o4 = _5 + T5 | 0) << 7 | o4 >>> 25) + _5 | 0) << 9 | o4 >>> 23) + B3 | 0) << 13 | o4 >>> 19) + U3 | 0) << 18 | o4 >>> 14, C4 ^= (o4 = (I4 ^= (o4 = (k4 ^= (o4 = (R3 ^= (o4 = C4 + I4 | 0) << 7 | o4 >>> 25) + C4 | 0) << 9 | o4 >>> 23) + R3 | 0) << 13 | o4 >>> 19) + k4 | 0) << 18 | o4 >>> 14, P4 ^= (o4 = (N4 ^= (o4 = (D4 ^= (o4 = (O3 ^= (o4 = P4 + N4 | 0) << 7 | o4 >>> 25) + P4 | 0) << 9 | o4 >>> 23) + O3 | 0) << 13 | o4 >>> 19) + D4 | 0) << 18 | o4 >>> 14;
-                v4 = v4 + s4 | 0, x4 = x4 + i4 | 0, S3 = S3 + a4 | 0, E5 = E5 + c4 | 0, T5 = T5 + u4 | 0, _5 = _5 + l4 | 0, B3 = B3 + h4 | 0, U3 = U3 + p4 | 0, k4 = k4 + f4 | 0, I4 = I4 + d4 | 0, C4 = C4 + g4 | 0, R3 = R3 + y4 | 0, O3 = O3 + m4 | 0, D4 = D4 + b3 | 0, N4 = N4 + A5 | 0, P4 = P4 + w5 | 0, e6[0] = v4 >>> 0 & 255, e6[1] = v4 >>> 8 & 255, e6[2] = v4 >>> 16 & 255, e6[3] = v4 >>> 24 & 255, e6[4] = x4 >>> 0 & 255, e6[5] = x4 >>> 8 & 255, e6[6] = x4 >>> 16 & 255, e6[7] = x4 >>> 24 & 255, e6[8] = S3 >>> 0 & 255, e6[9] = S3 >>> 8 & 255, e6[10] = S3 >>> 16 & 255, e6[11] = S3 >>> 24 & 255, e6[12] = E5 >>> 0 & 255, e6[13] = E5 >>> 8 & 255, e6[14] = E5 >>> 16 & 255, e6[15] = E5 >>> 24 & 255, e6[16] = T5 >>> 0 & 255, e6[17] = T5 >>> 8 & 255, e6[18] = T5 >>> 16 & 255, e6[19] = T5 >>> 24 & 255, e6[20] = _5 >>> 0 & 255, e6[21] = _5 >>> 8 & 255, e6[22] = _5 >>> 16 & 255, e6[23] = _5 >>> 24 & 255, e6[24] = B3 >>> 0 & 255, e6[25] = B3 >>> 8 & 255, e6[26] = B3 >>> 16 & 255, e6[27] = B3 >>> 24 & 255, e6[28] = U3 >>> 0 & 255, e6[29] = U3 >>> 8 & 255, e6[30] = U3 >>> 16 & 255, e6[31] = U3 >>> 24 & 255, e6[32] = k4 >>> 0 & 255, e6[33] = k4 >>> 8 & 255, e6[34] = k4 >>> 16 & 255, e6[35] = k4 >>> 24 & 255, e6[36] = I4 >>> 0 & 255, e6[37] = I4 >>> 8 & 255, e6[38] = I4 >>> 16 & 255, e6[39] = I4 >>> 24 & 255, e6[40] = C4 >>> 0 & 255, e6[41] = C4 >>> 8 & 255, e6[42] = C4 >>> 16 & 255, e6[43] = C4 >>> 24 & 255, e6[44] = R3 >>> 0 & 255, e6[45] = R3 >>> 8 & 255, e6[46] = R3 >>> 16 & 255, e6[47] = R3 >>> 24 & 255, e6[48] = O3 >>> 0 & 255, e6[49] = O3 >>> 8 & 255, e6[50] = O3 >>> 16 & 255, e6[51] = O3 >>> 24 & 255, e6[52] = D4 >>> 0 & 255, e6[53] = D4 >>> 8 & 255, e6[54] = D4 >>> 16 & 255, e6[55] = D4 >>> 24 & 255, e6[56] = N4 >>> 0 & 255, e6[57] = N4 >>> 8 & 255, e6[58] = N4 >>> 16 & 255, e6[59] = N4 >>> 24 & 255, e6[60] = P4 >>> 0 & 255, e6[61] = P4 >>> 8 & 255, e6[62] = P4 >>> 16 & 255, e6[63] = P4 >>> 24 & 255;
+                v4 = v4 + i4 | 0, x4 = x4 + s4 | 0, S3 = S3 + a4 | 0, E5 = E5 + c4 | 0, T5 = T5 + u4 | 0, _5 = _5 + l4 | 0, B3 = B3 + h4 | 0, U3 = U3 + p4 | 0, k4 = k4 + f4 | 0, I4 = I4 + d4 | 0, C4 = C4 + g4 | 0, R3 = R3 + y4 | 0, O3 = O3 + m4 | 0, D4 = D4 + b3 | 0, N4 = N4 + A5 | 0, P4 = P4 + w5 | 0, e6[0] = v4 >>> 0 & 255, e6[1] = v4 >>> 8 & 255, e6[2] = v4 >>> 16 & 255, e6[3] = v4 >>> 24 & 255, e6[4] = x4 >>> 0 & 255, e6[5] = x4 >>> 8 & 255, e6[6] = x4 >>> 16 & 255, e6[7] = x4 >>> 24 & 255, e6[8] = S3 >>> 0 & 255, e6[9] = S3 >>> 8 & 255, e6[10] = S3 >>> 16 & 255, e6[11] = S3 >>> 24 & 255, e6[12] = E5 >>> 0 & 255, e6[13] = E5 >>> 8 & 255, e6[14] = E5 >>> 16 & 255, e6[15] = E5 >>> 24 & 255, e6[16] = T5 >>> 0 & 255, e6[17] = T5 >>> 8 & 255, e6[18] = T5 >>> 16 & 255, e6[19] = T5 >>> 24 & 255, e6[20] = _5 >>> 0 & 255, e6[21] = _5 >>> 8 & 255, e6[22] = _5 >>> 16 & 255, e6[23] = _5 >>> 24 & 255, e6[24] = B3 >>> 0 & 255, e6[25] = B3 >>> 8 & 255, e6[26] = B3 >>> 16 & 255, e6[27] = B3 >>> 24 & 255, e6[28] = U3 >>> 0 & 255, e6[29] = U3 >>> 8 & 255, e6[30] = U3 >>> 16 & 255, e6[31] = U3 >>> 24 & 255, e6[32] = k4 >>> 0 & 255, e6[33] = k4 >>> 8 & 255, e6[34] = k4 >>> 16 & 255, e6[35] = k4 >>> 24 & 255, e6[36] = I4 >>> 0 & 255, e6[37] = I4 >>> 8 & 255, e6[38] = I4 >>> 16 & 255, e6[39] = I4 >>> 24 & 255, e6[40] = C4 >>> 0 & 255, e6[41] = C4 >>> 8 & 255, e6[42] = C4 >>> 16 & 255, e6[43] = C4 >>> 24 & 255, e6[44] = R3 >>> 0 & 255, e6[45] = R3 >>> 8 & 255, e6[46] = R3 >>> 16 & 255, e6[47] = R3 >>> 24 & 255, e6[48] = O3 >>> 0 & 255, e6[49] = O3 >>> 8 & 255, e6[50] = O3 >>> 16 & 255, e6[51] = O3 >>> 24 & 255, e6[52] = D4 >>> 0 & 255, e6[53] = D4 >>> 8 & 255, e6[54] = D4 >>> 16 & 255, e6[55] = D4 >>> 24 & 255, e6[56] = N4 >>> 0 & 255, e6[57] = N4 >>> 8 & 255, e6[58] = N4 >>> 16 & 255, e6[59] = N4 >>> 24 & 255, e6[60] = P4 >>> 0 & 255, e6[61] = P4 >>> 8 & 255, e6[62] = P4 >>> 16 & 255, e6[63] = P4 >>> 24 & 255;
               }(e5, t5, r4, n3);
             }
             function b2(e5, t5, r4, n3) {
               !function(e6, t6, r5, n4) {
-                for (var o4, s4 = 255 & n4[0] | (255 & n4[1]) << 8 | (255 & n4[2]) << 16 | (255 & n4[3]) << 24, i4 = 255 & r5[0] | (255 & r5[1]) << 8 | (255 & r5[2]) << 16 | (255 & r5[3]) << 24, a4 = 255 & r5[4] | (255 & r5[5]) << 8 | (255 & r5[6]) << 16 | (255 & r5[7]) << 24, c4 = 255 & r5[8] | (255 & r5[9]) << 8 | (255 & r5[10]) << 16 | (255 & r5[11]) << 24, u4 = 255 & r5[12] | (255 & r5[13]) << 8 | (255 & r5[14]) << 16 | (255 & r5[15]) << 24, l4 = 255 & n4[4] | (255 & n4[5]) << 8 | (255 & n4[6]) << 16 | (255 & n4[7]) << 24, h4 = 255 & t6[0] | (255 & t6[1]) << 8 | (255 & t6[2]) << 16 | (255 & t6[3]) << 24, p4 = 255 & t6[4] | (255 & t6[5]) << 8 | (255 & t6[6]) << 16 | (255 & t6[7]) << 24, f4 = 255 & t6[8] | (255 & t6[9]) << 8 | (255 & t6[10]) << 16 | (255 & t6[11]) << 24, d4 = 255 & t6[12] | (255 & t6[13]) << 8 | (255 & t6[14]) << 16 | (255 & t6[15]) << 24, g4 = 255 & n4[8] | (255 & n4[9]) << 8 | (255 & n4[10]) << 16 | (255 & n4[11]) << 24, y4 = 255 & r5[16] | (255 & r5[17]) << 8 | (255 & r5[18]) << 16 | (255 & r5[19]) << 24, m4 = 255 & r5[20] | (255 & r5[21]) << 8 | (255 & r5[22]) << 16 | (255 & r5[23]) << 24, b3 = 255 & r5[24] | (255 & r5[25]) << 8 | (255 & r5[26]) << 16 | (255 & r5[27]) << 24, A5 = 255 & r5[28] | (255 & r5[29]) << 8 | (255 & r5[30]) << 16 | (255 & r5[31]) << 24, w5 = 255 & n4[12] | (255 & n4[13]) << 8 | (255 & n4[14]) << 16 | (255 & n4[15]) << 24, v4 = 0; v4 < 20; v4 += 2)
-                  s4 ^= (o4 = (m4 ^= (o4 = (f4 ^= (o4 = (u4 ^= (o4 = s4 + m4 | 0) << 7 | o4 >>> 25) + s4 | 0) << 9 | o4 >>> 23) + u4 | 0) << 13 | o4 >>> 19) + f4 | 0) << 18 | o4 >>> 14, l4 ^= (o4 = (i4 ^= (o4 = (b3 ^= (o4 = (d4 ^= (o4 = l4 + i4 | 0) << 7 | o4 >>> 25) + l4 | 0) << 9 | o4 >>> 23) + d4 | 0) << 13 | o4 >>> 19) + b3 | 0) << 18 | o4 >>> 14, g4 ^= (o4 = (h4 ^= (o4 = (a4 ^= (o4 = (A5 ^= (o4 = g4 + h4 | 0) << 7 | o4 >>> 25) + g4 | 0) << 9 | o4 >>> 23) + A5 | 0) << 13 | o4 >>> 19) + a4 | 0) << 18 | o4 >>> 14, w5 ^= (o4 = (y4 ^= (o4 = (p4 ^= (o4 = (c4 ^= (o4 = w5 + y4 | 0) << 7 | o4 >>> 25) + w5 | 0) << 9 | o4 >>> 23) + c4 | 0) << 13 | o4 >>> 19) + p4 | 0) << 18 | o4 >>> 14, s4 ^= (o4 = (c4 ^= (o4 = (a4 ^= (o4 = (i4 ^= (o4 = s4 + c4 | 0) << 7 | o4 >>> 25) + s4 | 0) << 9 | o4 >>> 23) + i4 | 0) << 13 | o4 >>> 19) + a4 | 0) << 18 | o4 >>> 14, l4 ^= (o4 = (u4 ^= (o4 = (p4 ^= (o4 = (h4 ^= (o4 = l4 + u4 | 0) << 7 | o4 >>> 25) + l4 | 0) << 9 | o4 >>> 23) + h4 | 0) << 13 | o4 >>> 19) + p4 | 0) << 18 | o4 >>> 14, g4 ^= (o4 = (d4 ^= (o4 = (f4 ^= (o4 = (y4 ^= (o4 = g4 + d4 | 0) << 7 | o4 >>> 25) + g4 | 0) << 9 | o4 >>> 23) + y4 | 0) << 13 | o4 >>> 19) + f4 | 0) << 18 | o4 >>> 14, w5 ^= (o4 = (A5 ^= (o4 = (b3 ^= (o4 = (m4 ^= (o4 = w5 + A5 | 0) << 7 | o4 >>> 25) + w5 | 0) << 9 | o4 >>> 23) + m4 | 0) << 13 | o4 >>> 19) + b3 | 0) << 18 | o4 >>> 14;
-                e6[0] = s4 >>> 0 & 255, e6[1] = s4 >>> 8 & 255, e6[2] = s4 >>> 16 & 255, e6[3] = s4 >>> 24 & 255, e6[4] = l4 >>> 0 & 255, e6[5] = l4 >>> 8 & 255, e6[6] = l4 >>> 16 & 255, e6[7] = l4 >>> 24 & 255, e6[8] = g4 >>> 0 & 255, e6[9] = g4 >>> 8 & 255, e6[10] = g4 >>> 16 & 255, e6[11] = g4 >>> 24 & 255, e6[12] = w5 >>> 0 & 255, e6[13] = w5 >>> 8 & 255, e6[14] = w5 >>> 16 & 255, e6[15] = w5 >>> 24 & 255, e6[16] = h4 >>> 0 & 255, e6[17] = h4 >>> 8 & 255, e6[18] = h4 >>> 16 & 255, e6[19] = h4 >>> 24 & 255, e6[20] = p4 >>> 0 & 255, e6[21] = p4 >>> 8 & 255, e6[22] = p4 >>> 16 & 255, e6[23] = p4 >>> 24 & 255, e6[24] = f4 >>> 0 & 255, e6[25] = f4 >>> 8 & 255, e6[26] = f4 >>> 16 & 255, e6[27] = f4 >>> 24 & 255, e6[28] = d4 >>> 0 & 255, e6[29] = d4 >>> 8 & 255, e6[30] = d4 >>> 16 & 255, e6[31] = d4 >>> 24 & 255;
+                for (var o4, i4 = 255 & n4[0] | (255 & n4[1]) << 8 | (255 & n4[2]) << 16 | (255 & n4[3]) << 24, s4 = 255 & r5[0] | (255 & r5[1]) << 8 | (255 & r5[2]) << 16 | (255 & r5[3]) << 24, a4 = 255 & r5[4] | (255 & r5[5]) << 8 | (255 & r5[6]) << 16 | (255 & r5[7]) << 24, c4 = 255 & r5[8] | (255 & r5[9]) << 8 | (255 & r5[10]) << 16 | (255 & r5[11]) << 24, u4 = 255 & r5[12] | (255 & r5[13]) << 8 | (255 & r5[14]) << 16 | (255 & r5[15]) << 24, l4 = 255 & n4[4] | (255 & n4[5]) << 8 | (255 & n4[6]) << 16 | (255 & n4[7]) << 24, h4 = 255 & t6[0] | (255 & t6[1]) << 8 | (255 & t6[2]) << 16 | (255 & t6[3]) << 24, p4 = 255 & t6[4] | (255 & t6[5]) << 8 | (255 & t6[6]) << 16 | (255 & t6[7]) << 24, f4 = 255 & t6[8] | (255 & t6[9]) << 8 | (255 & t6[10]) << 16 | (255 & t6[11]) << 24, d4 = 255 & t6[12] | (255 & t6[13]) << 8 | (255 & t6[14]) << 16 | (255 & t6[15]) << 24, g4 = 255 & n4[8] | (255 & n4[9]) << 8 | (255 & n4[10]) << 16 | (255 & n4[11]) << 24, y4 = 255 & r5[16] | (255 & r5[17]) << 8 | (255 & r5[18]) << 16 | (255 & r5[19]) << 24, m4 = 255 & r5[20] | (255 & r5[21]) << 8 | (255 & r5[22]) << 16 | (255 & r5[23]) << 24, b3 = 255 & r5[24] | (255 & r5[25]) << 8 | (255 & r5[26]) << 16 | (255 & r5[27]) << 24, A5 = 255 & r5[28] | (255 & r5[29]) << 8 | (255 & r5[30]) << 16 | (255 & r5[31]) << 24, w5 = 255 & n4[12] | (255 & n4[13]) << 8 | (255 & n4[14]) << 16 | (255 & n4[15]) << 24, v4 = 0; v4 < 20; v4 += 2)
+                  i4 ^= (o4 = (m4 ^= (o4 = (f4 ^= (o4 = (u4 ^= (o4 = i4 + m4 | 0) << 7 | o4 >>> 25) + i4 | 0) << 9 | o4 >>> 23) + u4 | 0) << 13 | o4 >>> 19) + f4 | 0) << 18 | o4 >>> 14, l4 ^= (o4 = (s4 ^= (o4 = (b3 ^= (o4 = (d4 ^= (o4 = l4 + s4 | 0) << 7 | o4 >>> 25) + l4 | 0) << 9 | o4 >>> 23) + d4 | 0) << 13 | o4 >>> 19) + b3 | 0) << 18 | o4 >>> 14, g4 ^= (o4 = (h4 ^= (o4 = (a4 ^= (o4 = (A5 ^= (o4 = g4 + h4 | 0) << 7 | o4 >>> 25) + g4 | 0) << 9 | o4 >>> 23) + A5 | 0) << 13 | o4 >>> 19) + a4 | 0) << 18 | o4 >>> 14, w5 ^= (o4 = (y4 ^= (o4 = (p4 ^= (o4 = (c4 ^= (o4 = w5 + y4 | 0) << 7 | o4 >>> 25) + w5 | 0) << 9 | o4 >>> 23) + c4 | 0) << 13 | o4 >>> 19) + p4 | 0) << 18 | o4 >>> 14, i4 ^= (o4 = (c4 ^= (o4 = (a4 ^= (o4 = (s4 ^= (o4 = i4 + c4 | 0) << 7 | o4 >>> 25) + i4 | 0) << 9 | o4 >>> 23) + s4 | 0) << 13 | o4 >>> 19) + a4 | 0) << 18 | o4 >>> 14, l4 ^= (o4 = (u4 ^= (o4 = (p4 ^= (o4 = (h4 ^= (o4 = l4 + u4 | 0) << 7 | o4 >>> 25) + l4 | 0) << 9 | o4 >>> 23) + h4 | 0) << 13 | o4 >>> 19) + p4 | 0) << 18 | o4 >>> 14, g4 ^= (o4 = (d4 ^= (o4 = (f4 ^= (o4 = (y4 ^= (o4 = g4 + d4 | 0) << 7 | o4 >>> 25) + g4 | 0) << 9 | o4 >>> 23) + y4 | 0) << 13 | o4 >>> 19) + f4 | 0) << 18 | o4 >>> 14, w5 ^= (o4 = (A5 ^= (o4 = (b3 ^= (o4 = (m4 ^= (o4 = w5 + A5 | 0) << 7 | o4 >>> 25) + w5 | 0) << 9 | o4 >>> 23) + m4 | 0) << 13 | o4 >>> 19) + b3 | 0) << 18 | o4 >>> 14;
+                e6[0] = i4 >>> 0 & 255, e6[1] = i4 >>> 8 & 255, e6[2] = i4 >>> 16 & 255, e6[3] = i4 >>> 24 & 255, e6[4] = l4 >>> 0 & 255, e6[5] = l4 >>> 8 & 255, e6[6] = l4 >>> 16 & 255, e6[7] = l4 >>> 24 & 255, e6[8] = g4 >>> 0 & 255, e6[9] = g4 >>> 8 & 255, e6[10] = g4 >>> 16 & 255, e6[11] = g4 >>> 24 & 255, e6[12] = w5 >>> 0 & 255, e6[13] = w5 >>> 8 & 255, e6[14] = w5 >>> 16 & 255, e6[15] = w5 >>> 24 & 255, e6[16] = h4 >>> 0 & 255, e6[17] = h4 >>> 8 & 255, e6[18] = h4 >>> 16 & 255, e6[19] = h4 >>> 24 & 255, e6[20] = p4 >>> 0 & 255, e6[21] = p4 >>> 8 & 255, e6[22] = p4 >>> 16 & 255, e6[23] = p4 >>> 24 & 255, e6[24] = f4 >>> 0 & 255, e6[25] = f4 >>> 8 & 255, e6[26] = f4 >>> 16 & 255, e6[27] = f4 >>> 24 & 255, e6[28] = d4 >>> 0 & 255, e6[29] = d4 >>> 8 & 255, e6[30] = d4 >>> 16 & 255, e6[31] = d4 >>> 24 & 255;
               }(e5, t5, r4, n3);
             }
             var A4 = new Uint8Array([101, 120, 112, 97, 110, 100, 32, 51, 50, 45, 98, 121, 116, 101, 32, 107]);
-            function w4(e5, t5, r4, n3, o4, s4, i4) {
+            function w4(e5, t5, r4, n3, o4, i4, s4) {
               var a4, c4, u4 = new Uint8Array(16), l4 = new Uint8Array(64);
               for (c4 = 0; c4 < 16; c4++)
                 u4[c4] = 0;
               for (c4 = 0; c4 < 8; c4++)
-                u4[c4] = s4[c4];
+                u4[c4] = i4[c4];
               for (; o4 >= 64; ) {
-                for (m3(l4, u4, i4, A4), c4 = 0; c4 < 64; c4++)
+                for (m3(l4, u4, s4, A4), c4 = 0; c4 < 64; c4++)
                   e5[t5 + c4] = r4[n3 + c4] ^ l4[c4];
                 for (a4 = 1, c4 = 8; c4 < 16; c4++)
                   a4 = a4 + (255 & u4[c4]) | 0, u4[c4] = 255 & a4, a4 >>>= 8;
                 o4 -= 64, t5 += 64, n3 += 64;
               }
               if (o4 > 0)
-                for (m3(l4, u4, i4, A4), c4 = 0; c4 < o4; c4++)
+                for (m3(l4, u4, s4, A4), c4 = 0; c4 < o4; c4++)
                   e5[t5 + c4] = r4[n3 + c4] ^ l4[c4];
               return 0;
             }
             function v3(e5, t5, r4, n3, o4) {
-              var s4, i4, a4 = new Uint8Array(16), c4 = new Uint8Array(64);
-              for (i4 = 0; i4 < 16; i4++)
-                a4[i4] = 0;
-              for (i4 = 0; i4 < 8; i4++)
-                a4[i4] = n3[i4];
+              var i4, s4, a4 = new Uint8Array(16), c4 = new Uint8Array(64);
+              for (s4 = 0; s4 < 16; s4++)
+                a4[s4] = 0;
+              for (s4 = 0; s4 < 8; s4++)
+                a4[s4] = n3[s4];
               for (; r4 >= 64; ) {
-                for (m3(c4, a4, o4, A4), i4 = 0; i4 < 64; i4++)
-                  e5[t5 + i4] = c4[i4];
-                for (s4 = 1, i4 = 8; i4 < 16; i4++)
-                  s4 = s4 + (255 & a4[i4]) | 0, a4[i4] = 255 & s4, s4 >>>= 8;
+                for (m3(c4, a4, o4, A4), s4 = 0; s4 < 64; s4++)
+                  e5[t5 + s4] = c4[s4];
+                for (i4 = 1, s4 = 8; s4 < 16; s4++)
+                  i4 = i4 + (255 & a4[s4]) | 0, a4[s4] = 255 & i4, i4 >>>= 8;
                 r4 -= 64, t5 += 64;
               }
               if (r4 > 0)
-                for (m3(c4, a4, o4, A4), i4 = 0; i4 < r4; i4++)
-                  e5[t5 + i4] = c4[i4];
+                for (m3(c4, a4, o4, A4), s4 = 0; s4 < r4; s4++)
+                  e5[t5 + s4] = c4[s4];
               return 0;
             }
             function x3(e5, t5, r4, n3, o4) {
-              var s4 = new Uint8Array(32);
-              b2(s4, n3, o4, A4);
-              for (var i4 = new Uint8Array(8), a4 = 0; a4 < 8; a4++)
-                i4[a4] = n3[a4 + 16];
-              return v3(e5, t5, r4, i4, s4);
+              var i4 = new Uint8Array(32);
+              b2(i4, n3, o4, A4);
+              for (var s4 = new Uint8Array(8), a4 = 0; a4 < 8; a4++)
+                s4[a4] = n3[a4 + 16];
+              return v3(e5, t5, r4, s4, i4);
             }
-            function S2(e5, t5, r4, n3, o4, s4, i4) {
+            function S2(e5, t5, r4, n3, o4, i4, s4) {
               var a4 = new Uint8Array(32);
-              b2(a4, s4, i4, A4);
+              b2(a4, i4, s4, A4);
               for (var c4 = new Uint8Array(8), u4 = 0; u4 < 8; u4++)
-                c4[u4] = s4[u4 + 16];
+                c4[u4] = i4[u4 + 16];
               return w4(e5, t5, r4, n3, o4, c4, a4);
             }
             var E4 = function(e5) {
-              var t5, r4, n3, o4, s4, i4, a4, c4;
-              this.buffer = new Uint8Array(16), this.r = new Uint16Array(10), this.h = new Uint16Array(10), this.pad = new Uint16Array(8), this.leftover = 0, this.fin = 0, t5 = 255 & e5[0] | (255 & e5[1]) << 8, this.r[0] = 8191 & t5, r4 = 255 & e5[2] | (255 & e5[3]) << 8, this.r[1] = 8191 & (t5 >>> 13 | r4 << 3), n3 = 255 & e5[4] | (255 & e5[5]) << 8, this.r[2] = 7939 & (r4 >>> 10 | n3 << 6), o4 = 255 & e5[6] | (255 & e5[7]) << 8, this.r[3] = 8191 & (n3 >>> 7 | o4 << 9), s4 = 255 & e5[8] | (255 & e5[9]) << 8, this.r[4] = 255 & (o4 >>> 4 | s4 << 12), this.r[5] = s4 >>> 1 & 8190, i4 = 255 & e5[10] | (255 & e5[11]) << 8, this.r[6] = 8191 & (s4 >>> 14 | i4 << 2), a4 = 255 & e5[12] | (255 & e5[13]) << 8, this.r[7] = 8065 & (i4 >>> 11 | a4 << 5), c4 = 255 & e5[14] | (255 & e5[15]) << 8, this.r[8] = 8191 & (a4 >>> 8 | c4 << 8), this.r[9] = c4 >>> 5 & 127, this.pad[0] = 255 & e5[16] | (255 & e5[17]) << 8, this.pad[1] = 255 & e5[18] | (255 & e5[19]) << 8, this.pad[2] = 255 & e5[20] | (255 & e5[21]) << 8, this.pad[3] = 255 & e5[22] | (255 & e5[23]) << 8, this.pad[4] = 255 & e5[24] | (255 & e5[25]) << 8, this.pad[5] = 255 & e5[26] | (255 & e5[27]) << 8, this.pad[6] = 255 & e5[28] | (255 & e5[29]) << 8, this.pad[7] = 255 & e5[30] | (255 & e5[31]) << 8;
+              var t5, r4, n3, o4, i4, s4, a4, c4;
+              this.buffer = new Uint8Array(16), this.r = new Uint16Array(10), this.h = new Uint16Array(10), this.pad = new Uint16Array(8), this.leftover = 0, this.fin = 0, t5 = 255 & e5[0] | (255 & e5[1]) << 8, this.r[0] = 8191 & t5, r4 = 255 & e5[2] | (255 & e5[3]) << 8, this.r[1] = 8191 & (t5 >>> 13 | r4 << 3), n3 = 255 & e5[4] | (255 & e5[5]) << 8, this.r[2] = 7939 & (r4 >>> 10 | n3 << 6), o4 = 255 & e5[6] | (255 & e5[7]) << 8, this.r[3] = 8191 & (n3 >>> 7 | o4 << 9), i4 = 255 & e5[8] | (255 & e5[9]) << 8, this.r[4] = 255 & (o4 >>> 4 | i4 << 12), this.r[5] = i4 >>> 1 & 8190, s4 = 255 & e5[10] | (255 & e5[11]) << 8, this.r[6] = 8191 & (i4 >>> 14 | s4 << 2), a4 = 255 & e5[12] | (255 & e5[13]) << 8, this.r[7] = 8065 & (s4 >>> 11 | a4 << 5), c4 = 255 & e5[14] | (255 & e5[15]) << 8, this.r[8] = 8191 & (a4 >>> 8 | c4 << 8), this.r[9] = c4 >>> 5 & 127, this.pad[0] = 255 & e5[16] | (255 & e5[17]) << 8, this.pad[1] = 255 & e5[18] | (255 & e5[19]) << 8, this.pad[2] = 255 & e5[20] | (255 & e5[21]) << 8, this.pad[3] = 255 & e5[22] | (255 & e5[23]) << 8, this.pad[4] = 255 & e5[24] | (255 & e5[25]) << 8, this.pad[5] = 255 & e5[26] | (255 & e5[27]) << 8, this.pad[6] = 255 & e5[28] | (255 & e5[29]) << 8, this.pad[7] = 255 & e5[30] | (255 & e5[31]) << 8;
             };
-            function T4(e5, t5, r4, n3, o4, s4) {
-              var i4 = new E4(s4);
-              return i4.update(r4, n3, o4), i4.finish(e5, t5), 0;
+            function T4(e5, t5, r4, n3, o4, i4) {
+              var s4 = new E4(i4);
+              return s4.update(r4, n3, o4), s4.finish(e5, t5), 0;
             }
-            function _4(e5, t5, r4, n3, o4, s4) {
-              var i4 = new Uint8Array(16);
-              return T4(i4, 0, r4, n3, o4, s4), g3(e5, t5, i4, 0);
+            function _4(e5, t5, r4, n3, o4, i4) {
+              var s4 = new Uint8Array(16);
+              return T4(s4, 0, r4, n3, o4, i4), g3(e5, t5, s4, 0);
             }
             function B2(e5, t5, r4, n3, o4) {
-              var s4;
+              var i4;
               if (r4 < 32)
                 return -1;
-              for (S2(e5, 0, t5, 0, r4, n3, o4), T4(e5, 16, e5, 32, r4 - 32, e5), s4 = 0; s4 < 16; s4++)
-                e5[s4] = 0;
+              for (S2(e5, 0, t5, 0, r4, n3, o4), T4(e5, 16, e5, 32, r4 - 32, e5), i4 = 0; i4 < 16; i4++)
+                e5[i4] = 0;
               return 0;
             }
             function U2(e5, t5, r4, n3, o4) {
-              var s4, i4 = new Uint8Array(32);
+              var i4, s4 = new Uint8Array(32);
               if (r4 < 32)
                 return -1;
-              if (x3(i4, 0, 32, n3, o4), _4(t5, 16, t5, 32, r4 - 32, i4) !== 0)
+              if (x3(s4, 0, 32, n3, o4), _4(t5, 16, t5, 32, r4 - 32, s4) !== 0)
                 return -1;
-              for (S2(e5, 0, t5, 0, r4, n3, o4), s4 = 0; s4 < 32; s4++)
-                e5[s4] = 0;
+              for (S2(e5, 0, t5, 0, r4, n3, o4), i4 = 0; i4 < 32; i4++)
+                e5[i4] = 0;
               return 0;
             }
             function k3(e5, t5) {
@@ -11541,17 +11547,17 @@ var require_algosdk_min = __commonJS({
               e5[0] += n3 - 1 + 37 * (n3 - 1);
             }
             function C3(e5, t5, r4) {
-              for (var n3, o4 = ~(r4 - 1), s4 = 0; s4 < 16; s4++)
-                n3 = o4 & (e5[s4] ^ t5[s4]), e5[s4] ^= n3, t5[s4] ^= n3;
+              for (var n3, o4 = ~(r4 - 1), i4 = 0; i4 < 16; i4++)
+                n3 = o4 & (e5[i4] ^ t5[i4]), e5[i4] ^= n3, t5[i4] ^= n3;
             }
             function R2(e5, r4) {
-              var n3, o4, s4, i4 = t4(), a4 = t4();
+              var n3, o4, i4, s4 = t4(), a4 = t4();
               for (n3 = 0; n3 < 16; n3++)
                 a4[n3] = r4[n3];
               for (I3(a4), I3(a4), I3(a4), o4 = 0; o4 < 2; o4++) {
-                for (i4[0] = a4[0] - 65517, n3 = 1; n3 < 15; n3++)
-                  i4[n3] = a4[n3] - 65535 - (i4[n3 - 1] >> 16 & 1), i4[n3 - 1] &= 65535;
-                i4[15] = a4[15] - 32767 - (i4[14] >> 16 & 1), s4 = i4[15] >> 16 & 1, i4[14] &= 65535, C3(a4, i4, 1 - s4);
+                for (s4[0] = a4[0] - 65517, n3 = 1; n3 < 15; n3++)
+                  s4[n3] = a4[n3] - 65535 - (s4[n3 - 1] >> 16 & 1), s4[n3 - 1] &= 65535;
+                s4[15] = a4[15] - 32767 - (s4[14] >> 16 & 1), i4 = s4[15] >> 16 & 1, s4[14] &= 65535, C3(a4, s4, 1 - i4);
               }
               for (n3 = 0; n3 < 16; n3++)
                 e5[2 * n3] = 255 & a4[n3], e5[2 * n3 + 1] = a4[n3] >> 8;
@@ -11579,8 +11585,8 @@ var require_algosdk_min = __commonJS({
                 e5[n3] = t5[n3] - r4[n3];
             }
             function F3(e5, t5, r4) {
-              var n3, o4, s4 = 0, i4 = 0, a4 = 0, c4 = 0, u4 = 0, l4 = 0, h4 = 0, p4 = 0, f4 = 0, d4 = 0, g4 = 0, y4 = 0, m4 = 0, b3 = 0, A5 = 0, w5 = 0, v4 = 0, x4 = 0, S3 = 0, E5 = 0, T5 = 0, _5 = 0, B3 = 0, U3 = 0, k4 = 0, I4 = 0, C4 = 0, R3 = 0, O3 = 0, D4 = 0, N4 = 0, P4 = r4[0], L4 = r4[1], F4 = r4[2], z4 = r4[3], j4 = r4[4], M4 = r4[5], H4 = r4[6], G3 = r4[7], K4 = r4[8], q4 = r4[9], V3 = r4[10], $4 = r4[11], W3 = r4[12], X3 = r4[13], Y3 = r4[14], J3 = r4[15];
-              s4 += (n3 = t5[0]) * P4, i4 += n3 * L4, a4 += n3 * F4, c4 += n3 * z4, u4 += n3 * j4, l4 += n3 * M4, h4 += n3 * H4, p4 += n3 * G3, f4 += n3 * K4, d4 += n3 * q4, g4 += n3 * V3, y4 += n3 * $4, m4 += n3 * W3, b3 += n3 * X3, A5 += n3 * Y3, w5 += n3 * J3, i4 += (n3 = t5[1]) * P4, a4 += n3 * L4, c4 += n3 * F4, u4 += n3 * z4, l4 += n3 * j4, h4 += n3 * M4, p4 += n3 * H4, f4 += n3 * G3, d4 += n3 * K4, g4 += n3 * q4, y4 += n3 * V3, m4 += n3 * $4, b3 += n3 * W3, A5 += n3 * X3, w5 += n3 * Y3, v4 += n3 * J3, a4 += (n3 = t5[2]) * P4, c4 += n3 * L4, u4 += n3 * F4, l4 += n3 * z4, h4 += n3 * j4, p4 += n3 * M4, f4 += n3 * H4, d4 += n3 * G3, g4 += n3 * K4, y4 += n3 * q4, m4 += n3 * V3, b3 += n3 * $4, A5 += n3 * W3, w5 += n3 * X3, v4 += n3 * Y3, x4 += n3 * J3, c4 += (n3 = t5[3]) * P4, u4 += n3 * L4, l4 += n3 * F4, h4 += n3 * z4, p4 += n3 * j4, f4 += n3 * M4, d4 += n3 * H4, g4 += n3 * G3, y4 += n3 * K4, m4 += n3 * q4, b3 += n3 * V3, A5 += n3 * $4, w5 += n3 * W3, v4 += n3 * X3, x4 += n3 * Y3, S3 += n3 * J3, u4 += (n3 = t5[4]) * P4, l4 += n3 * L4, h4 += n3 * F4, p4 += n3 * z4, f4 += n3 * j4, d4 += n3 * M4, g4 += n3 * H4, y4 += n3 * G3, m4 += n3 * K4, b3 += n3 * q4, A5 += n3 * V3, w5 += n3 * $4, v4 += n3 * W3, x4 += n3 * X3, S3 += n3 * Y3, E5 += n3 * J3, l4 += (n3 = t5[5]) * P4, h4 += n3 * L4, p4 += n3 * F4, f4 += n3 * z4, d4 += n3 * j4, g4 += n3 * M4, y4 += n3 * H4, m4 += n3 * G3, b3 += n3 * K4, A5 += n3 * q4, w5 += n3 * V3, v4 += n3 * $4, x4 += n3 * W3, S3 += n3 * X3, E5 += n3 * Y3, T5 += n3 * J3, h4 += (n3 = t5[6]) * P4, p4 += n3 * L4, f4 += n3 * F4, d4 += n3 * z4, g4 += n3 * j4, y4 += n3 * M4, m4 += n3 * H4, b3 += n3 * G3, A5 += n3 * K4, w5 += n3 * q4, v4 += n3 * V3, x4 += n3 * $4, S3 += n3 * W3, E5 += n3 * X3, T5 += n3 * Y3, _5 += n3 * J3, p4 += (n3 = t5[7]) * P4, f4 += n3 * L4, d4 += n3 * F4, g4 += n3 * z4, y4 += n3 * j4, m4 += n3 * M4, b3 += n3 * H4, A5 += n3 * G3, w5 += n3 * K4, v4 += n3 * q4, x4 += n3 * V3, S3 += n3 * $4, E5 += n3 * W3, T5 += n3 * X3, _5 += n3 * Y3, B3 += n3 * J3, f4 += (n3 = t5[8]) * P4, d4 += n3 * L4, g4 += n3 * F4, y4 += n3 * z4, m4 += n3 * j4, b3 += n3 * M4, A5 += n3 * H4, w5 += n3 * G3, v4 += n3 * K4, x4 += n3 * q4, S3 += n3 * V3, E5 += n3 * $4, T5 += n3 * W3, _5 += n3 * X3, B3 += n3 * Y3, U3 += n3 * J3, d4 += (n3 = t5[9]) * P4, g4 += n3 * L4, y4 += n3 * F4, m4 += n3 * z4, b3 += n3 * j4, A5 += n3 * M4, w5 += n3 * H4, v4 += n3 * G3, x4 += n3 * K4, S3 += n3 * q4, E5 += n3 * V3, T5 += n3 * $4, _5 += n3 * W3, B3 += n3 * X3, U3 += n3 * Y3, k4 += n3 * J3, g4 += (n3 = t5[10]) * P4, y4 += n3 * L4, m4 += n3 * F4, b3 += n3 * z4, A5 += n3 * j4, w5 += n3 * M4, v4 += n3 * H4, x4 += n3 * G3, S3 += n3 * K4, E5 += n3 * q4, T5 += n3 * V3, _5 += n3 * $4, B3 += n3 * W3, U3 += n3 * X3, k4 += n3 * Y3, I4 += n3 * J3, y4 += (n3 = t5[11]) * P4, m4 += n3 * L4, b3 += n3 * F4, A5 += n3 * z4, w5 += n3 * j4, v4 += n3 * M4, x4 += n3 * H4, S3 += n3 * G3, E5 += n3 * K4, T5 += n3 * q4, _5 += n3 * V3, B3 += n3 * $4, U3 += n3 * W3, k4 += n3 * X3, I4 += n3 * Y3, C4 += n3 * J3, m4 += (n3 = t5[12]) * P4, b3 += n3 * L4, A5 += n3 * F4, w5 += n3 * z4, v4 += n3 * j4, x4 += n3 * M4, S3 += n3 * H4, E5 += n3 * G3, T5 += n3 * K4, _5 += n3 * q4, B3 += n3 * V3, U3 += n3 * $4, k4 += n3 * W3, I4 += n3 * X3, C4 += n3 * Y3, R3 += n3 * J3, b3 += (n3 = t5[13]) * P4, A5 += n3 * L4, w5 += n3 * F4, v4 += n3 * z4, x4 += n3 * j4, S3 += n3 * M4, E5 += n3 * H4, T5 += n3 * G3, _5 += n3 * K4, B3 += n3 * q4, U3 += n3 * V3, k4 += n3 * $4, I4 += n3 * W3, C4 += n3 * X3, R3 += n3 * Y3, O3 += n3 * J3, A5 += (n3 = t5[14]) * P4, w5 += n3 * L4, v4 += n3 * F4, x4 += n3 * z4, S3 += n3 * j4, E5 += n3 * M4, T5 += n3 * H4, _5 += n3 * G3, B3 += n3 * K4, U3 += n3 * q4, k4 += n3 * V3, I4 += n3 * $4, C4 += n3 * W3, R3 += n3 * X3, O3 += n3 * Y3, D4 += n3 * J3, w5 += (n3 = t5[15]) * P4, i4 += 38 * (x4 += n3 * F4), a4 += 38 * (S3 += n3 * z4), c4 += 38 * (E5 += n3 * j4), u4 += 38 * (T5 += n3 * M4), l4 += 38 * (_5 += n3 * H4), h4 += 38 * (B3 += n3 * G3), p4 += 38 * (U3 += n3 * K4), f4 += 38 * (k4 += n3 * q4), d4 += 38 * (I4 += n3 * V3), g4 += 38 * (C4 += n3 * $4), y4 += 38 * (R3 += n3 * W3), m4 += 38 * (O3 += n3 * X3), b3 += 38 * (D4 += n3 * Y3), A5 += 38 * (N4 += n3 * J3), s4 = (n3 = (s4 += 38 * (v4 += n3 * L4)) + (o4 = 1) + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), i4 = (n3 = i4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), a4 = (n3 = a4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), c4 = (n3 = c4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), u4 = (n3 = u4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), l4 = (n3 = l4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), h4 = (n3 = h4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), p4 = (n3 = p4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), f4 = (n3 = f4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), d4 = (n3 = d4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), g4 = (n3 = g4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), y4 = (n3 = y4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), m4 = (n3 = m4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), b3 = (n3 = b3 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), A5 = (n3 = A5 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), w5 = (n3 = w5 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), s4 = (n3 = (s4 += o4 - 1 + 37 * (o4 - 1)) + (o4 = 1) + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), i4 = (n3 = i4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), a4 = (n3 = a4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), c4 = (n3 = c4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), u4 = (n3 = u4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), l4 = (n3 = l4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), h4 = (n3 = h4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), p4 = (n3 = p4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), f4 = (n3 = f4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), d4 = (n3 = d4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), g4 = (n3 = g4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), y4 = (n3 = y4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), m4 = (n3 = m4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), b3 = (n3 = b3 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), A5 = (n3 = A5 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), w5 = (n3 = w5 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), s4 += o4 - 1 + 37 * (o4 - 1), e5[0] = s4, e5[1] = i4, e5[2] = a4, e5[3] = c4, e5[4] = u4, e5[5] = l4, e5[6] = h4, e5[7] = p4, e5[8] = f4, e5[9] = d4, e5[10] = g4, e5[11] = y4, e5[12] = m4, e5[13] = b3, e5[14] = A5, e5[15] = w5;
+              var n3, o4, i4 = 0, s4 = 0, a4 = 0, c4 = 0, u4 = 0, l4 = 0, h4 = 0, p4 = 0, f4 = 0, d4 = 0, g4 = 0, y4 = 0, m4 = 0, b3 = 0, A5 = 0, w5 = 0, v4 = 0, x4 = 0, S3 = 0, E5 = 0, T5 = 0, _5 = 0, B3 = 0, U3 = 0, k4 = 0, I4 = 0, C4 = 0, R3 = 0, O3 = 0, D4 = 0, N4 = 0, P4 = r4[0], L4 = r4[1], F4 = r4[2], z4 = r4[3], j4 = r4[4], M4 = r4[5], H4 = r4[6], G3 = r4[7], K4 = r4[8], q4 = r4[9], V3 = r4[10], $4 = r4[11], W3 = r4[12], X3 = r4[13], Y3 = r4[14], J3 = r4[15];
+              i4 += (n3 = t5[0]) * P4, s4 += n3 * L4, a4 += n3 * F4, c4 += n3 * z4, u4 += n3 * j4, l4 += n3 * M4, h4 += n3 * H4, p4 += n3 * G3, f4 += n3 * K4, d4 += n3 * q4, g4 += n3 * V3, y4 += n3 * $4, m4 += n3 * W3, b3 += n3 * X3, A5 += n3 * Y3, w5 += n3 * J3, s4 += (n3 = t5[1]) * P4, a4 += n3 * L4, c4 += n3 * F4, u4 += n3 * z4, l4 += n3 * j4, h4 += n3 * M4, p4 += n3 * H4, f4 += n3 * G3, d4 += n3 * K4, g4 += n3 * q4, y4 += n3 * V3, m4 += n3 * $4, b3 += n3 * W3, A5 += n3 * X3, w5 += n3 * Y3, v4 += n3 * J3, a4 += (n3 = t5[2]) * P4, c4 += n3 * L4, u4 += n3 * F4, l4 += n3 * z4, h4 += n3 * j4, p4 += n3 * M4, f4 += n3 * H4, d4 += n3 * G3, g4 += n3 * K4, y4 += n3 * q4, m4 += n3 * V3, b3 += n3 * $4, A5 += n3 * W3, w5 += n3 * X3, v4 += n3 * Y3, x4 += n3 * J3, c4 += (n3 = t5[3]) * P4, u4 += n3 * L4, l4 += n3 * F4, h4 += n3 * z4, p4 += n3 * j4, f4 += n3 * M4, d4 += n3 * H4, g4 += n3 * G3, y4 += n3 * K4, m4 += n3 * q4, b3 += n3 * V3, A5 += n3 * $4, w5 += n3 * W3, v4 += n3 * X3, x4 += n3 * Y3, S3 += n3 * J3, u4 += (n3 = t5[4]) * P4, l4 += n3 * L4, h4 += n3 * F4, p4 += n3 * z4, f4 += n3 * j4, d4 += n3 * M4, g4 += n3 * H4, y4 += n3 * G3, m4 += n3 * K4, b3 += n3 * q4, A5 += n3 * V3, w5 += n3 * $4, v4 += n3 * W3, x4 += n3 * X3, S3 += n3 * Y3, E5 += n3 * J3, l4 += (n3 = t5[5]) * P4, h4 += n3 * L4, p4 += n3 * F4, f4 += n3 * z4, d4 += n3 * j4, g4 += n3 * M4, y4 += n3 * H4, m4 += n3 * G3, b3 += n3 * K4, A5 += n3 * q4, w5 += n3 * V3, v4 += n3 * $4, x4 += n3 * W3, S3 += n3 * X3, E5 += n3 * Y3, T5 += n3 * J3, h4 += (n3 = t5[6]) * P4, p4 += n3 * L4, f4 += n3 * F4, d4 += n3 * z4, g4 += n3 * j4, y4 += n3 * M4, m4 += n3 * H4, b3 += n3 * G3, A5 += n3 * K4, w5 += n3 * q4, v4 += n3 * V3, x4 += n3 * $4, S3 += n3 * W3, E5 += n3 * X3, T5 += n3 * Y3, _5 += n3 * J3, p4 += (n3 = t5[7]) * P4, f4 += n3 * L4, d4 += n3 * F4, g4 += n3 * z4, y4 += n3 * j4, m4 += n3 * M4, b3 += n3 * H4, A5 += n3 * G3, w5 += n3 * K4, v4 += n3 * q4, x4 += n3 * V3, S3 += n3 * $4, E5 += n3 * W3, T5 += n3 * X3, _5 += n3 * Y3, B3 += n3 * J3, f4 += (n3 = t5[8]) * P4, d4 += n3 * L4, g4 += n3 * F4, y4 += n3 * z4, m4 += n3 * j4, b3 += n3 * M4, A5 += n3 * H4, w5 += n3 * G3, v4 += n3 * K4, x4 += n3 * q4, S3 += n3 * V3, E5 += n3 * $4, T5 += n3 * W3, _5 += n3 * X3, B3 += n3 * Y3, U3 += n3 * J3, d4 += (n3 = t5[9]) * P4, g4 += n3 * L4, y4 += n3 * F4, m4 += n3 * z4, b3 += n3 * j4, A5 += n3 * M4, w5 += n3 * H4, v4 += n3 * G3, x4 += n3 * K4, S3 += n3 * q4, E5 += n3 * V3, T5 += n3 * $4, _5 += n3 * W3, B3 += n3 * X3, U3 += n3 * Y3, k4 += n3 * J3, g4 += (n3 = t5[10]) * P4, y4 += n3 * L4, m4 += n3 * F4, b3 += n3 * z4, A5 += n3 * j4, w5 += n3 * M4, v4 += n3 * H4, x4 += n3 * G3, S3 += n3 * K4, E5 += n3 * q4, T5 += n3 * V3, _5 += n3 * $4, B3 += n3 * W3, U3 += n3 * X3, k4 += n3 * Y3, I4 += n3 * J3, y4 += (n3 = t5[11]) * P4, m4 += n3 * L4, b3 += n3 * F4, A5 += n3 * z4, w5 += n3 * j4, v4 += n3 * M4, x4 += n3 * H4, S3 += n3 * G3, E5 += n3 * K4, T5 += n3 * q4, _5 += n3 * V3, B3 += n3 * $4, U3 += n3 * W3, k4 += n3 * X3, I4 += n3 * Y3, C4 += n3 * J3, m4 += (n3 = t5[12]) * P4, b3 += n3 * L4, A5 += n3 * F4, w5 += n3 * z4, v4 += n3 * j4, x4 += n3 * M4, S3 += n3 * H4, E5 += n3 * G3, T5 += n3 * K4, _5 += n3 * q4, B3 += n3 * V3, U3 += n3 * $4, k4 += n3 * W3, I4 += n3 * X3, C4 += n3 * Y3, R3 += n3 * J3, b3 += (n3 = t5[13]) * P4, A5 += n3 * L4, w5 += n3 * F4, v4 += n3 * z4, x4 += n3 * j4, S3 += n3 * M4, E5 += n3 * H4, T5 += n3 * G3, _5 += n3 * K4, B3 += n3 * q4, U3 += n3 * V3, k4 += n3 * $4, I4 += n3 * W3, C4 += n3 * X3, R3 += n3 * Y3, O3 += n3 * J3, A5 += (n3 = t5[14]) * P4, w5 += n3 * L4, v4 += n3 * F4, x4 += n3 * z4, S3 += n3 * j4, E5 += n3 * M4, T5 += n3 * H4, _5 += n3 * G3, B3 += n3 * K4, U3 += n3 * q4, k4 += n3 * V3, I4 += n3 * $4, C4 += n3 * W3, R3 += n3 * X3, O3 += n3 * Y3, D4 += n3 * J3, w5 += (n3 = t5[15]) * P4, s4 += 38 * (x4 += n3 * F4), a4 += 38 * (S3 += n3 * z4), c4 += 38 * (E5 += n3 * j4), u4 += 38 * (T5 += n3 * M4), l4 += 38 * (_5 += n3 * H4), h4 += 38 * (B3 += n3 * G3), p4 += 38 * (U3 += n3 * K4), f4 += 38 * (k4 += n3 * q4), d4 += 38 * (I4 += n3 * V3), g4 += 38 * (C4 += n3 * $4), y4 += 38 * (R3 += n3 * W3), m4 += 38 * (O3 += n3 * X3), b3 += 38 * (D4 += n3 * Y3), A5 += 38 * (N4 += n3 * J3), i4 = (n3 = (i4 += 38 * (v4 += n3 * L4)) + (o4 = 1) + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), s4 = (n3 = s4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), a4 = (n3 = a4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), c4 = (n3 = c4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), u4 = (n3 = u4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), l4 = (n3 = l4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), h4 = (n3 = h4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), p4 = (n3 = p4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), f4 = (n3 = f4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), d4 = (n3 = d4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), g4 = (n3 = g4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), y4 = (n3 = y4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), m4 = (n3 = m4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), b3 = (n3 = b3 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), A5 = (n3 = A5 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), w5 = (n3 = w5 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), i4 = (n3 = (i4 += o4 - 1 + 37 * (o4 - 1)) + (o4 = 1) + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), s4 = (n3 = s4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), a4 = (n3 = a4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), c4 = (n3 = c4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), u4 = (n3 = u4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), l4 = (n3 = l4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), h4 = (n3 = h4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), p4 = (n3 = p4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), f4 = (n3 = f4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), d4 = (n3 = d4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), g4 = (n3 = g4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), y4 = (n3 = y4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), m4 = (n3 = m4 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), b3 = (n3 = b3 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), A5 = (n3 = A5 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), w5 = (n3 = w5 + o4 + 65535) - 65536 * (o4 = Math.floor(n3 / 65536)), i4 += o4 - 1 + 37 * (o4 - 1), e5[0] = i4, e5[1] = s4, e5[2] = a4, e5[3] = c4, e5[4] = u4, e5[5] = l4, e5[6] = h4, e5[7] = p4, e5[8] = f4, e5[9] = d4, e5[10] = g4, e5[11] = y4, e5[12] = m4, e5[13] = b3, e5[14] = A5, e5[15] = w5;
             }
             function z3(e5, t5) {
               F3(e5, t5, t5);
@@ -11604,15 +11610,15 @@ var require_algosdk_min = __commonJS({
                 e5[n3] = o4[n3];
             }
             function H3(e5, r4, n3) {
-              var o4, s4, i4 = new Uint8Array(32), c4 = new Float64Array(80), u4 = t4(), l4 = t4(), h4 = t4(), p4 = t4(), f4 = t4(), d4 = t4();
-              for (s4 = 0; s4 < 31; s4++)
-                i4[s4] = r4[s4];
-              for (i4[31] = 127 & r4[31] | 64, i4[0] &= 248, N3(c4, n3), s4 = 0; s4 < 16; s4++)
-                l4[s4] = c4[s4], p4[s4] = u4[s4] = h4[s4] = 0;
-              for (u4[0] = p4[0] = 1, s4 = 254; s4 >= 0; --s4)
-                C3(u4, l4, o4 = i4[s4 >>> 3] >>> (7 & s4) & 1), C3(h4, p4, o4), P3(f4, u4, h4), L3(u4, u4, h4), P3(h4, l4, p4), L3(l4, l4, p4), z3(p4, f4), z3(d4, u4), F3(u4, h4, u4), F3(h4, l4, f4), P3(f4, u4, h4), L3(u4, u4, h4), z3(l4, u4), L3(h4, p4, d4), F3(u4, h4, a3), P3(u4, u4, p4), F3(h4, h4, u4), F3(u4, p4, d4), F3(p4, l4, c4), z3(l4, f4), C3(u4, l4, o4), C3(h4, p4, o4);
-              for (s4 = 0; s4 < 16; s4++)
-                c4[s4 + 16] = u4[s4], c4[s4 + 32] = h4[s4], c4[s4 + 48] = l4[s4], c4[s4 + 64] = p4[s4];
+              var o4, i4, s4 = new Uint8Array(32), c4 = new Float64Array(80), u4 = t4(), l4 = t4(), h4 = t4(), p4 = t4(), f4 = t4(), d4 = t4();
+              for (i4 = 0; i4 < 31; i4++)
+                s4[i4] = r4[i4];
+              for (s4[31] = 127 & r4[31] | 64, s4[0] &= 248, N3(c4, n3), i4 = 0; i4 < 16; i4++)
+                l4[i4] = c4[i4], p4[i4] = u4[i4] = h4[i4] = 0;
+              for (u4[0] = p4[0] = 1, i4 = 254; i4 >= 0; --i4)
+                C3(u4, l4, o4 = s4[i4 >>> 3] >>> (7 & i4) & 1), C3(h4, p4, o4), P3(f4, u4, h4), L3(u4, u4, h4), P3(h4, l4, p4), L3(l4, l4, p4), z3(p4, f4), z3(d4, u4), F3(u4, h4, u4), F3(h4, l4, f4), P3(f4, u4, h4), L3(u4, u4, h4), z3(l4, u4), L3(h4, p4, d4), F3(u4, h4, a3), P3(u4, u4, p4), F3(h4, h4, u4), F3(u4, p4, d4), F3(p4, l4, c4), z3(l4, f4), C3(u4, l4, o4), C3(h4, p4, o4);
+              for (i4 = 0; i4 < 16; i4++)
+                c4[i4 + 16] = u4[i4], c4[i4 + 32] = h4[i4], c4[i4 + 48] = l4[i4], c4[i4 + 64] = p4[i4];
               var g4 = c4.subarray(32), y4 = c4.subarray(16);
               return j3(g4, g4), F3(y4, y4, g4), R2(e5, y4), 0;
             }
@@ -11627,26 +11633,26 @@ var require_algosdk_min = __commonJS({
               return H3(o4, r4, t5), b2(e5, n2, o4, A4);
             }
             E4.prototype.blocks = function(e5, t5, r4) {
-              for (var n3, o4, s4, i4, a4, c4, u4, l4, h4, p4, f4, d4, g4, y4, m4, b3, A5, w5, v4, x4 = this.fin ? 0 : 2048, S3 = this.h[0], E5 = this.h[1], T5 = this.h[2], _5 = this.h[3], B3 = this.h[4], U3 = this.h[5], k4 = this.h[6], I4 = this.h[7], C4 = this.h[8], R3 = this.h[9], O3 = this.r[0], D4 = this.r[1], N4 = this.r[2], P4 = this.r[3], L4 = this.r[4], F4 = this.r[5], z4 = this.r[6], j4 = this.r[7], M4 = this.r[8], H4 = this.r[9]; r4 >= 16; )
-                p4 = h4 = 0, p4 += (S3 += 8191 & (n3 = 255 & e5[t5 + 0] | (255 & e5[t5 + 1]) << 8)) * O3, p4 += (E5 += 8191 & (n3 >>> 13 | (o4 = 255 & e5[t5 + 2] | (255 & e5[t5 + 3]) << 8) << 3)) * (5 * H4), p4 += (T5 += 8191 & (o4 >>> 10 | (s4 = 255 & e5[t5 + 4] | (255 & e5[t5 + 5]) << 8) << 6)) * (5 * M4), p4 += (_5 += 8191 & (s4 >>> 7 | (i4 = 255 & e5[t5 + 6] | (255 & e5[t5 + 7]) << 8) << 9)) * (5 * j4), h4 = (p4 += (B3 += 8191 & (i4 >>> 4 | (a4 = 255 & e5[t5 + 8] | (255 & e5[t5 + 9]) << 8) << 12)) * (5 * z4)) >>> 13, p4 &= 8191, p4 += (U3 += a4 >>> 1 & 8191) * (5 * F4), p4 += (k4 += 8191 & (a4 >>> 14 | (c4 = 255 & e5[t5 + 10] | (255 & e5[t5 + 11]) << 8) << 2)) * (5 * L4), p4 += (I4 += 8191 & (c4 >>> 11 | (u4 = 255 & e5[t5 + 12] | (255 & e5[t5 + 13]) << 8) << 5)) * (5 * P4), p4 += (C4 += 8191 & (u4 >>> 8 | (l4 = 255 & e5[t5 + 14] | (255 & e5[t5 + 15]) << 8) << 8)) * (5 * N4), f4 = h4 += (p4 += (R3 += l4 >>> 5 | x4) * (5 * D4)) >>> 13, f4 += S3 * D4, f4 += E5 * O3, f4 += T5 * (5 * H4), f4 += _5 * (5 * M4), h4 = (f4 += B3 * (5 * j4)) >>> 13, f4 &= 8191, f4 += U3 * (5 * z4), f4 += k4 * (5 * F4), f4 += I4 * (5 * L4), f4 += C4 * (5 * P4), h4 += (f4 += R3 * (5 * N4)) >>> 13, f4 &= 8191, d4 = h4, d4 += S3 * N4, d4 += E5 * D4, d4 += T5 * O3, d4 += _5 * (5 * H4), h4 = (d4 += B3 * (5 * M4)) >>> 13, d4 &= 8191, d4 += U3 * (5 * j4), d4 += k4 * (5 * z4), d4 += I4 * (5 * F4), d4 += C4 * (5 * L4), g4 = h4 += (d4 += R3 * (5 * P4)) >>> 13, g4 += S3 * P4, g4 += E5 * N4, g4 += T5 * D4, g4 += _5 * O3, h4 = (g4 += B3 * (5 * H4)) >>> 13, g4 &= 8191, g4 += U3 * (5 * M4), g4 += k4 * (5 * j4), g4 += I4 * (5 * z4), g4 += C4 * (5 * F4), y4 = h4 += (g4 += R3 * (5 * L4)) >>> 13, y4 += S3 * L4, y4 += E5 * P4, y4 += T5 * N4, y4 += _5 * D4, h4 = (y4 += B3 * O3) >>> 13, y4 &= 8191, y4 += U3 * (5 * H4), y4 += k4 * (5 * M4), y4 += I4 * (5 * j4), y4 += C4 * (5 * z4), m4 = h4 += (y4 += R3 * (5 * F4)) >>> 13, m4 += S3 * F4, m4 += E5 * L4, m4 += T5 * P4, m4 += _5 * N4, h4 = (m4 += B3 * D4) >>> 13, m4 &= 8191, m4 += U3 * O3, m4 += k4 * (5 * H4), m4 += I4 * (5 * M4), m4 += C4 * (5 * j4), b3 = h4 += (m4 += R3 * (5 * z4)) >>> 13, b3 += S3 * z4, b3 += E5 * F4, b3 += T5 * L4, b3 += _5 * P4, h4 = (b3 += B3 * N4) >>> 13, b3 &= 8191, b3 += U3 * D4, b3 += k4 * O3, b3 += I4 * (5 * H4), b3 += C4 * (5 * M4), A5 = h4 += (b3 += R3 * (5 * j4)) >>> 13, A5 += S3 * j4, A5 += E5 * z4, A5 += T5 * F4, A5 += _5 * L4, h4 = (A5 += B3 * P4) >>> 13, A5 &= 8191, A5 += U3 * N4, A5 += k4 * D4, A5 += I4 * O3, A5 += C4 * (5 * H4), w5 = h4 += (A5 += R3 * (5 * M4)) >>> 13, w5 += S3 * M4, w5 += E5 * j4, w5 += T5 * z4, w5 += _5 * F4, h4 = (w5 += B3 * L4) >>> 13, w5 &= 8191, w5 += U3 * P4, w5 += k4 * N4, w5 += I4 * D4, w5 += C4 * O3, v4 = h4 += (w5 += R3 * (5 * H4)) >>> 13, v4 += S3 * H4, v4 += E5 * M4, v4 += T5 * j4, v4 += _5 * z4, h4 = (v4 += B3 * F4) >>> 13, v4 &= 8191, v4 += U3 * L4, v4 += k4 * P4, v4 += I4 * N4, v4 += C4 * D4, S3 = p4 = 8191 & (h4 = (h4 = ((h4 += (v4 += R3 * O3) >>> 13) << 2) + h4 | 0) + (p4 &= 8191) | 0), E5 = f4 += h4 >>>= 13, T5 = d4 &= 8191, _5 = g4 &= 8191, B3 = y4 &= 8191, U3 = m4 &= 8191, k4 = b3 &= 8191, I4 = A5 &= 8191, C4 = w5 &= 8191, R3 = v4 &= 8191, t5 += 16, r4 -= 16;
+              for (var n3, o4, i4, s4, a4, c4, u4, l4, h4, p4, f4, d4, g4, y4, m4, b3, A5, w5, v4, x4 = this.fin ? 0 : 2048, S3 = this.h[0], E5 = this.h[1], T5 = this.h[2], _5 = this.h[3], B3 = this.h[4], U3 = this.h[5], k4 = this.h[6], I4 = this.h[7], C4 = this.h[8], R3 = this.h[9], O3 = this.r[0], D4 = this.r[1], N4 = this.r[2], P4 = this.r[3], L4 = this.r[4], F4 = this.r[5], z4 = this.r[6], j4 = this.r[7], M4 = this.r[8], H4 = this.r[9]; r4 >= 16; )
+                p4 = h4 = 0, p4 += (S3 += 8191 & (n3 = 255 & e5[t5 + 0] | (255 & e5[t5 + 1]) << 8)) * O3, p4 += (E5 += 8191 & (n3 >>> 13 | (o4 = 255 & e5[t5 + 2] | (255 & e5[t5 + 3]) << 8) << 3)) * (5 * H4), p4 += (T5 += 8191 & (o4 >>> 10 | (i4 = 255 & e5[t5 + 4] | (255 & e5[t5 + 5]) << 8) << 6)) * (5 * M4), p4 += (_5 += 8191 & (i4 >>> 7 | (s4 = 255 & e5[t5 + 6] | (255 & e5[t5 + 7]) << 8) << 9)) * (5 * j4), h4 = (p4 += (B3 += 8191 & (s4 >>> 4 | (a4 = 255 & e5[t5 + 8] | (255 & e5[t5 + 9]) << 8) << 12)) * (5 * z4)) >>> 13, p4 &= 8191, p4 += (U3 += a4 >>> 1 & 8191) * (5 * F4), p4 += (k4 += 8191 & (a4 >>> 14 | (c4 = 255 & e5[t5 + 10] | (255 & e5[t5 + 11]) << 8) << 2)) * (5 * L4), p4 += (I4 += 8191 & (c4 >>> 11 | (u4 = 255 & e5[t5 + 12] | (255 & e5[t5 + 13]) << 8) << 5)) * (5 * P4), p4 += (C4 += 8191 & (u4 >>> 8 | (l4 = 255 & e5[t5 + 14] | (255 & e5[t5 + 15]) << 8) << 8)) * (5 * N4), f4 = h4 += (p4 += (R3 += l4 >>> 5 | x4) * (5 * D4)) >>> 13, f4 += S3 * D4, f4 += E5 * O3, f4 += T5 * (5 * H4), f4 += _5 * (5 * M4), h4 = (f4 += B3 * (5 * j4)) >>> 13, f4 &= 8191, f4 += U3 * (5 * z4), f4 += k4 * (5 * F4), f4 += I4 * (5 * L4), f4 += C4 * (5 * P4), h4 += (f4 += R3 * (5 * N4)) >>> 13, f4 &= 8191, d4 = h4, d4 += S3 * N4, d4 += E5 * D4, d4 += T5 * O3, d4 += _5 * (5 * H4), h4 = (d4 += B3 * (5 * M4)) >>> 13, d4 &= 8191, d4 += U3 * (5 * j4), d4 += k4 * (5 * z4), d4 += I4 * (5 * F4), d4 += C4 * (5 * L4), g4 = h4 += (d4 += R3 * (5 * P4)) >>> 13, g4 += S3 * P4, g4 += E5 * N4, g4 += T5 * D4, g4 += _5 * O3, h4 = (g4 += B3 * (5 * H4)) >>> 13, g4 &= 8191, g4 += U3 * (5 * M4), g4 += k4 * (5 * j4), g4 += I4 * (5 * z4), g4 += C4 * (5 * F4), y4 = h4 += (g4 += R3 * (5 * L4)) >>> 13, y4 += S3 * L4, y4 += E5 * P4, y4 += T5 * N4, y4 += _5 * D4, h4 = (y4 += B3 * O3) >>> 13, y4 &= 8191, y4 += U3 * (5 * H4), y4 += k4 * (5 * M4), y4 += I4 * (5 * j4), y4 += C4 * (5 * z4), m4 = h4 += (y4 += R3 * (5 * F4)) >>> 13, m4 += S3 * F4, m4 += E5 * L4, m4 += T5 * P4, m4 += _5 * N4, h4 = (m4 += B3 * D4) >>> 13, m4 &= 8191, m4 += U3 * O3, m4 += k4 * (5 * H4), m4 += I4 * (5 * M4), m4 += C4 * (5 * j4), b3 = h4 += (m4 += R3 * (5 * z4)) >>> 13, b3 += S3 * z4, b3 += E5 * F4, b3 += T5 * L4, b3 += _5 * P4, h4 = (b3 += B3 * N4) >>> 13, b3 &= 8191, b3 += U3 * D4, b3 += k4 * O3, b3 += I4 * (5 * H4), b3 += C4 * (5 * M4), A5 = h4 += (b3 += R3 * (5 * j4)) >>> 13, A5 += S3 * j4, A5 += E5 * z4, A5 += T5 * F4, A5 += _5 * L4, h4 = (A5 += B3 * P4) >>> 13, A5 &= 8191, A5 += U3 * N4, A5 += k4 * D4, A5 += I4 * O3, A5 += C4 * (5 * H4), w5 = h4 += (A5 += R3 * (5 * M4)) >>> 13, w5 += S3 * M4, w5 += E5 * j4, w5 += T5 * z4, w5 += _5 * F4, h4 = (w5 += B3 * L4) >>> 13, w5 &= 8191, w5 += U3 * P4, w5 += k4 * N4, w5 += I4 * D4, w5 += C4 * O3, v4 = h4 += (w5 += R3 * (5 * H4)) >>> 13, v4 += S3 * H4, v4 += E5 * M4, v4 += T5 * j4, v4 += _5 * z4, h4 = (v4 += B3 * F4) >>> 13, v4 &= 8191, v4 += U3 * L4, v4 += k4 * P4, v4 += I4 * N4, v4 += C4 * D4, S3 = p4 = 8191 & (h4 = (h4 = ((h4 += (v4 += R3 * O3) >>> 13) << 2) + h4 | 0) + (p4 &= 8191) | 0), E5 = f4 += h4 >>>= 13, T5 = d4 &= 8191, _5 = g4 &= 8191, B3 = y4 &= 8191, U3 = m4 &= 8191, k4 = b3 &= 8191, I4 = A5 &= 8191, C4 = w5 &= 8191, R3 = v4 &= 8191, t5 += 16, r4 -= 16;
               this.h[0] = S3, this.h[1] = E5, this.h[2] = T5, this.h[3] = _5, this.h[4] = B3, this.h[5] = U3, this.h[6] = k4, this.h[7] = I4, this.h[8] = C4, this.h[9] = R3;
             }, E4.prototype.finish = function(e5, t5) {
-              var r4, n3, o4, s4, i4 = new Uint16Array(10);
+              var r4, n3, o4, i4, s4 = new Uint16Array(10);
               if (this.leftover) {
-                for (s4 = this.leftover, this.buffer[s4++] = 1; s4 < 16; s4++)
-                  this.buffer[s4] = 0;
+                for (i4 = this.leftover, this.buffer[i4++] = 1; i4 < 16; i4++)
+                  this.buffer[i4] = 0;
                 this.fin = 1, this.blocks(this.buffer, 0, 16);
               }
-              for (r4 = this.h[1] >>> 13, this.h[1] &= 8191, s4 = 2; s4 < 10; s4++)
-                this.h[s4] += r4, r4 = this.h[s4] >>> 13, this.h[s4] &= 8191;
-              for (this.h[0] += 5 * r4, r4 = this.h[0] >>> 13, this.h[0] &= 8191, this.h[1] += r4, r4 = this.h[1] >>> 13, this.h[1] &= 8191, this.h[2] += r4, i4[0] = this.h[0] + 5, r4 = i4[0] >>> 13, i4[0] &= 8191, s4 = 1; s4 < 10; s4++)
-                i4[s4] = this.h[s4] + r4, r4 = i4[s4] >>> 13, i4[s4] &= 8191;
-              for (i4[9] -= 8192, n3 = (1 ^ r4) - 1, s4 = 0; s4 < 10; s4++)
-                i4[s4] &= n3;
-              for (n3 = ~n3, s4 = 0; s4 < 10; s4++)
-                this.h[s4] = this.h[s4] & n3 | i4[s4];
-              for (this.h[0] = 65535 & (this.h[0] | this.h[1] << 13), this.h[1] = 65535 & (this.h[1] >>> 3 | this.h[2] << 10), this.h[2] = 65535 & (this.h[2] >>> 6 | this.h[3] << 7), this.h[3] = 65535 & (this.h[3] >>> 9 | this.h[4] << 4), this.h[4] = 65535 & (this.h[4] >>> 12 | this.h[5] << 1 | this.h[6] << 14), this.h[5] = 65535 & (this.h[6] >>> 2 | this.h[7] << 11), this.h[6] = 65535 & (this.h[7] >>> 5 | this.h[8] << 8), this.h[7] = 65535 & (this.h[8] >>> 8 | this.h[9] << 5), o4 = this.h[0] + this.pad[0], this.h[0] = 65535 & o4, s4 = 1; s4 < 8; s4++)
-                o4 = (this.h[s4] + this.pad[s4] | 0) + (o4 >>> 16) | 0, this.h[s4] = 65535 & o4;
+              for (r4 = this.h[1] >>> 13, this.h[1] &= 8191, i4 = 2; i4 < 10; i4++)
+                this.h[i4] += r4, r4 = this.h[i4] >>> 13, this.h[i4] &= 8191;
+              for (this.h[0] += 5 * r4, r4 = this.h[0] >>> 13, this.h[0] &= 8191, this.h[1] += r4, r4 = this.h[1] >>> 13, this.h[1] &= 8191, this.h[2] += r4, s4[0] = this.h[0] + 5, r4 = s4[0] >>> 13, s4[0] &= 8191, i4 = 1; i4 < 10; i4++)
+                s4[i4] = this.h[i4] + r4, r4 = s4[i4] >>> 13, s4[i4] &= 8191;
+              for (s4[9] -= 8192, n3 = (1 ^ r4) - 1, i4 = 0; i4 < 10; i4++)
+                s4[i4] &= n3;
+              for (n3 = ~n3, i4 = 0; i4 < 10; i4++)
+                this.h[i4] = this.h[i4] & n3 | s4[i4];
+              for (this.h[0] = 65535 & (this.h[0] | this.h[1] << 13), this.h[1] = 65535 & (this.h[1] >>> 3 | this.h[2] << 10), this.h[2] = 65535 & (this.h[2] >>> 6 | this.h[3] << 7), this.h[3] = 65535 & (this.h[3] >>> 9 | this.h[4] << 4), this.h[4] = 65535 & (this.h[4] >>> 12 | this.h[5] << 1 | this.h[6] << 14), this.h[5] = 65535 & (this.h[6] >>> 2 | this.h[7] << 11), this.h[6] = 65535 & (this.h[7] >>> 5 | this.h[8] << 8), this.h[7] = 65535 & (this.h[8] >>> 8 | this.h[9] << 5), o4 = this.h[0] + this.pad[0], this.h[0] = 65535 & o4, i4 = 1; i4 < 8; i4++)
+                o4 = (this.h[i4] + this.pad[i4] | 0) + (o4 >>> 16) | 0, this.h[i4] = 65535 & o4;
               e5[t5 + 0] = this.h[0] >>> 0 & 255, e5[t5 + 1] = this.h[0] >>> 8 & 255, e5[t5 + 2] = this.h[1] >>> 0 & 255, e5[t5 + 3] = this.h[1] >>> 8 & 255, e5[t5 + 4] = this.h[2] >>> 0 & 255, e5[t5 + 5] = this.h[2] >>> 8 & 255, e5[t5 + 6] = this.h[3] >>> 0 & 255, e5[t5 + 7] = this.h[3] >>> 8 & 255, e5[t5 + 8] = this.h[4] >>> 0 & 255, e5[t5 + 9] = this.h[4] >>> 8 & 255, e5[t5 + 10] = this.h[5] >>> 0 & 255, e5[t5 + 11] = this.h[5] >>> 8 & 255, e5[t5 + 12] = this.h[6] >>> 0 & 255, e5[t5 + 13] = this.h[6] >>> 8 & 255, e5[t5 + 14] = this.h[7] >>> 0 & 255, e5[t5 + 15] = this.h[7] >>> 8 & 255;
             }, E4.prototype.update = function(e5, t5, r4) {
               var n3, o4;
@@ -11665,11 +11671,11 @@ var require_algosdk_min = __commonJS({
             };
             var V2 = B2, $3 = U2, W2 = [1116352408, 3609767458, 1899447441, 602891725, 3049323471, 3964484399, 3921009573, 2173295548, 961987163, 4081628472, 1508970993, 3053834265, 2453635748, 2937671579, 2870763221, 3664609560, 3624381080, 2734883394, 310598401, 1164996542, 607225278, 1323610764, 1426881987, 3590304994, 1925078388, 4068182383, 2162078206, 991336113, 2614888103, 633803317, 3248222580, 3479774868, 3835390401, 2666613458, 4022224774, 944711139, 264347078, 2341262773, 604807628, 2007800933, 770255983, 1495990901, 1249150122, 1856431235, 1555081692, 3175218132, 1996064986, 2198950837, 2554220882, 3999719339, 2821834349, 766784016, 2952996808, 2566594879, 3210313671, 3203337956, 3336571891, 1034457026, 3584528711, 2466948901, 113926993, 3758326383, 338241895, 168717936, 666307205, 1188179964, 773529912, 1546045734, 1294757372, 1522805485, 1396182291, 2643833823, 1695183700, 2343527390, 1986661051, 1014477480, 2177026350, 1206759142, 2456956037, 344077627, 2730485921, 1290863460, 2820302411, 3158454273, 3259730800, 3505952657, 3345764771, 106217008, 3516065817, 3606008344, 3600352804, 1432725776, 4094571909, 1467031594, 275423344, 851169720, 430227734, 3100823752, 506948616, 1363258195, 659060556, 3750685593, 883997877, 3785050280, 958139571, 3318307427, 1322822218, 3812723403, 1537002063, 2003034995, 1747873779, 3602036899, 1955562222, 1575990012, 2024104815, 1125592928, 2227730452, 2716904306, 2361852424, 442776044, 2428436474, 593698344, 2756734187, 3733110249, 3204031479, 2999351573, 3329325298, 3815920427, 3391569614, 3928383900, 3515267271, 566280711, 3940187606, 3454069534, 4118630271, 4000239992, 116418474, 1914138554, 174292421, 2731055270, 289380356, 3203993006, 460393269, 320620315, 685471733, 587496836, 852142971, 1086792851, 1017036298, 365543100, 1126000580, 2618297676, 1288033470, 3409855158, 1501505948, 4234509866, 1607167915, 987167468, 1816402316, 1246189591];
             function X2(e5, t5, r4, n3) {
-              for (var o4, s4, i4, a4, c4, u4, l4, h4, p4, f4, d4, g4, y4, m4, b3, A5, w5, v4, x4, S3, E5, T5, _5, B3, U3, k4, I4 = new Int32Array(16), C4 = new Int32Array(16), R3 = e5[0], O3 = e5[1], D4 = e5[2], N4 = e5[3], P4 = e5[4], L4 = e5[5], F4 = e5[6], z4 = e5[7], j4 = t5[0], M4 = t5[1], H4 = t5[2], G3 = t5[3], K4 = t5[4], q4 = t5[5], V3 = t5[6], $4 = t5[7], X3 = 0; n3 >= 128; ) {
+              for (var o4, i4, s4, a4, c4, u4, l4, h4, p4, f4, d4, g4, y4, m4, b3, A5, w5, v4, x4, S3, E5, T5, _5, B3, U3, k4, I4 = new Int32Array(16), C4 = new Int32Array(16), R3 = e5[0], O3 = e5[1], D4 = e5[2], N4 = e5[3], P4 = e5[4], L4 = e5[5], F4 = e5[6], z4 = e5[7], j4 = t5[0], M4 = t5[1], H4 = t5[2], G3 = t5[3], K4 = t5[4], q4 = t5[5], V3 = t5[6], $4 = t5[7], X3 = 0; n3 >= 128; ) {
                 for (x4 = 0; x4 < 16; x4++)
                   S3 = 8 * x4 + X3, I4[x4] = r4[S3 + 0] << 24 | r4[S3 + 1] << 16 | r4[S3 + 2] << 8 | r4[S3 + 3], C4[x4] = r4[S3 + 4] << 24 | r4[S3 + 5] << 16 | r4[S3 + 6] << 8 | r4[S3 + 7];
                 for (x4 = 0; x4 < 80; x4++)
-                  if (o4 = R3, s4 = O3, i4 = D4, a4 = N4, c4 = P4, u4 = L4, l4 = F4, p4 = j4, f4 = M4, d4 = H4, g4 = G3, y4 = K4, m4 = q4, b3 = V3, _5 = 65535 & (T5 = $4), B3 = T5 >>> 16, U3 = 65535 & (E5 = z4), k4 = E5 >>> 16, _5 += 65535 & (T5 = (K4 >>> 14 | P4 << 18) ^ (K4 >>> 18 | P4 << 14) ^ (P4 >>> 9 | K4 << 23)), B3 += T5 >>> 16, U3 += 65535 & (E5 = (P4 >>> 14 | K4 << 18) ^ (P4 >>> 18 | K4 << 14) ^ (K4 >>> 9 | P4 << 23)), k4 += E5 >>> 16, _5 += 65535 & (T5 = K4 & q4 ^ ~K4 & V3), B3 += T5 >>> 16, U3 += 65535 & (E5 = P4 & L4 ^ ~P4 & F4), k4 += E5 >>> 16, _5 += 65535 & (T5 = W2[2 * x4 + 1]), B3 += T5 >>> 16, U3 += 65535 & (E5 = W2[2 * x4]), k4 += E5 >>> 16, E5 = I4[x4 % 16], B3 += (T5 = C4[x4 % 16]) >>> 16, U3 += 65535 & E5, k4 += E5 >>> 16, U3 += (B3 += (_5 += 65535 & T5) >>> 16) >>> 16, _5 = 65535 & (T5 = v4 = 65535 & _5 | B3 << 16), B3 = T5 >>> 16, U3 = 65535 & (E5 = w5 = 65535 & U3 | (k4 += U3 >>> 16) << 16), k4 = E5 >>> 16, _5 += 65535 & (T5 = (j4 >>> 28 | R3 << 4) ^ (R3 >>> 2 | j4 << 30) ^ (R3 >>> 7 | j4 << 25)), B3 += T5 >>> 16, U3 += 65535 & (E5 = (R3 >>> 28 | j4 << 4) ^ (j4 >>> 2 | R3 << 30) ^ (j4 >>> 7 | R3 << 25)), k4 += E5 >>> 16, B3 += (T5 = j4 & M4 ^ j4 & H4 ^ M4 & H4) >>> 16, U3 += 65535 & (E5 = R3 & O3 ^ R3 & D4 ^ O3 & D4), k4 += E5 >>> 16, h4 = 65535 & (U3 += (B3 += (_5 += 65535 & T5) >>> 16) >>> 16) | (k4 += U3 >>> 16) << 16, A5 = 65535 & _5 | B3 << 16, _5 = 65535 & (T5 = g4), B3 = T5 >>> 16, U3 = 65535 & (E5 = a4), k4 = E5 >>> 16, B3 += (T5 = v4) >>> 16, U3 += 65535 & (E5 = w5), k4 += E5 >>> 16, O3 = o4, D4 = s4, N4 = i4, P4 = a4 = 65535 & (U3 += (B3 += (_5 += 65535 & T5) >>> 16) >>> 16) | (k4 += U3 >>> 16) << 16, L4 = c4, F4 = u4, z4 = l4, R3 = h4, M4 = p4, H4 = f4, G3 = d4, K4 = g4 = 65535 & _5 | B3 << 16, q4 = y4, V3 = m4, $4 = b3, j4 = A5, x4 % 16 == 15)
+                  if (o4 = R3, i4 = O3, s4 = D4, a4 = N4, c4 = P4, u4 = L4, l4 = F4, p4 = j4, f4 = M4, d4 = H4, g4 = G3, y4 = K4, m4 = q4, b3 = V3, _5 = 65535 & (T5 = $4), B3 = T5 >>> 16, U3 = 65535 & (E5 = z4), k4 = E5 >>> 16, _5 += 65535 & (T5 = (K4 >>> 14 | P4 << 18) ^ (K4 >>> 18 | P4 << 14) ^ (P4 >>> 9 | K4 << 23)), B3 += T5 >>> 16, U3 += 65535 & (E5 = (P4 >>> 14 | K4 << 18) ^ (P4 >>> 18 | K4 << 14) ^ (K4 >>> 9 | P4 << 23)), k4 += E5 >>> 16, _5 += 65535 & (T5 = K4 & q4 ^ ~K4 & V3), B3 += T5 >>> 16, U3 += 65535 & (E5 = P4 & L4 ^ ~P4 & F4), k4 += E5 >>> 16, _5 += 65535 & (T5 = W2[2 * x4 + 1]), B3 += T5 >>> 16, U3 += 65535 & (E5 = W2[2 * x4]), k4 += E5 >>> 16, E5 = I4[x4 % 16], B3 += (T5 = C4[x4 % 16]) >>> 16, U3 += 65535 & E5, k4 += E5 >>> 16, U3 += (B3 += (_5 += 65535 & T5) >>> 16) >>> 16, _5 = 65535 & (T5 = v4 = 65535 & _5 | B3 << 16), B3 = T5 >>> 16, U3 = 65535 & (E5 = w5 = 65535 & U3 | (k4 += U3 >>> 16) << 16), k4 = E5 >>> 16, _5 += 65535 & (T5 = (j4 >>> 28 | R3 << 4) ^ (R3 >>> 2 | j4 << 30) ^ (R3 >>> 7 | j4 << 25)), B3 += T5 >>> 16, U3 += 65535 & (E5 = (R3 >>> 28 | j4 << 4) ^ (j4 >>> 2 | R3 << 30) ^ (j4 >>> 7 | R3 << 25)), k4 += E5 >>> 16, B3 += (T5 = j4 & M4 ^ j4 & H4 ^ M4 & H4) >>> 16, U3 += 65535 & (E5 = R3 & O3 ^ R3 & D4 ^ O3 & D4), k4 += E5 >>> 16, h4 = 65535 & (U3 += (B3 += (_5 += 65535 & T5) >>> 16) >>> 16) | (k4 += U3 >>> 16) << 16, A5 = 65535 & _5 | B3 << 16, _5 = 65535 & (T5 = g4), B3 = T5 >>> 16, U3 = 65535 & (E5 = a4), k4 = E5 >>> 16, B3 += (T5 = v4) >>> 16, U3 += 65535 & (E5 = w5), k4 += E5 >>> 16, O3 = o4, D4 = i4, N4 = s4, P4 = a4 = 65535 & (U3 += (B3 += (_5 += 65535 & T5) >>> 16) >>> 16) | (k4 += U3 >>> 16) << 16, L4 = c4, F4 = u4, z4 = l4, R3 = h4, M4 = p4, H4 = f4, G3 = d4, K4 = g4 = 65535 & _5 | B3 << 16, q4 = y4, V3 = m4, $4 = b3, j4 = A5, x4 % 16 == 15)
                     for (S3 = 0; S3 < 16; S3++)
                       E5 = I4[S3], _5 = 65535 & (T5 = C4[S3]), B3 = T5 >>> 16, U3 = 65535 & E5, k4 = E5 >>> 16, E5 = I4[(S3 + 9) % 16], _5 += 65535 & (T5 = C4[(S3 + 9) % 16]), B3 += T5 >>> 16, U3 += 65535 & E5, k4 += E5 >>> 16, w5 = I4[(S3 + 1) % 16], _5 += 65535 & (T5 = ((v4 = C4[(S3 + 1) % 16]) >>> 1 | w5 << 31) ^ (v4 >>> 8 | w5 << 24) ^ (v4 >>> 7 | w5 << 25)), B3 += T5 >>> 16, U3 += 65535 & (E5 = (w5 >>> 1 | v4 << 31) ^ (w5 >>> 8 | v4 << 24) ^ w5 >>> 7), k4 += E5 >>> 16, w5 = I4[(S3 + 14) % 16], B3 += (T5 = ((v4 = C4[(S3 + 14) % 16]) >>> 19 | w5 << 13) ^ (w5 >>> 29 | v4 << 3) ^ (v4 >>> 6 | w5 << 26)) >>> 16, U3 += 65535 & (E5 = (w5 >>> 19 | v4 << 13) ^ (v4 >>> 29 | w5 << 3) ^ w5 >>> 6), k4 += E5 >>> 16, k4 += (U3 += (B3 += (_5 += 65535 & T5) >>> 16) >>> 16) >>> 16, I4[S3] = 65535 & U3 | k4 << 16, C4[S3] = 65535 & _5 | B3 << 16;
                 _5 = 65535 & (T5 = j4), B3 = T5 >>> 16, U3 = 65535 & (E5 = R3), k4 = E5 >>> 16, E5 = e5[0], B3 += (T5 = t5[0]) >>> 16, U3 += 65535 & E5, k4 += E5 >>> 16, k4 += (U3 += (B3 += (_5 += 65535 & T5) >>> 16) >>> 16) >>> 16, e5[0] = R3 = 65535 & U3 | k4 << 16, t5[0] = j4 = 65535 & _5 | B3 << 16, _5 = 65535 & (T5 = M4), B3 = T5 >>> 16, U3 = 65535 & (E5 = O3), k4 = E5 >>> 16, E5 = e5[1], B3 += (T5 = t5[1]) >>> 16, U3 += 65535 & E5, k4 += E5 >>> 16, k4 += (U3 += (B3 += (_5 += 65535 & T5) >>> 16) >>> 16) >>> 16, e5[1] = O3 = 65535 & U3 | k4 << 16, t5[1] = M4 = 65535 & _5 | B3 << 16, _5 = 65535 & (T5 = H4), B3 = T5 >>> 16, U3 = 65535 & (E5 = D4), k4 = E5 >>> 16, E5 = e5[2], B3 += (T5 = t5[2]) >>> 16, U3 += 65535 & E5, k4 += E5 >>> 16, k4 += (U3 += (B3 += (_5 += 65535 & T5) >>> 16) >>> 16) >>> 16, e5[2] = D4 = 65535 & U3 | k4 << 16, t5[2] = H4 = 65535 & _5 | B3 << 16, _5 = 65535 & (T5 = G3), B3 = T5 >>> 16, U3 = 65535 & (E5 = N4), k4 = E5 >>> 16, E5 = e5[3], B3 += (T5 = t5[3]) >>> 16, U3 += 65535 & E5, k4 += E5 >>> 16, k4 += (U3 += (B3 += (_5 += 65535 & T5) >>> 16) >>> 16) >>> 16, e5[3] = N4 = 65535 & U3 | k4 << 16, t5[3] = G3 = 65535 & _5 | B3 << 16, _5 = 65535 & (T5 = K4), B3 = T5 >>> 16, U3 = 65535 & (E5 = P4), k4 = E5 >>> 16, E5 = e5[4], B3 += (T5 = t5[4]) >>> 16, U3 += 65535 & E5, k4 += E5 >>> 16, k4 += (U3 += (B3 += (_5 += 65535 & T5) >>> 16) >>> 16) >>> 16, e5[4] = P4 = 65535 & U3 | k4 << 16, t5[4] = K4 = 65535 & _5 | B3 << 16, _5 = 65535 & (T5 = q4), B3 = T5 >>> 16, U3 = 65535 & (E5 = L4), k4 = E5 >>> 16, E5 = e5[5], B3 += (T5 = t5[5]) >>> 16, U3 += 65535 & E5, k4 += E5 >>> 16, k4 += (U3 += (B3 += (_5 += 65535 & T5) >>> 16) >>> 16) >>> 16, e5[5] = L4 = 65535 & U3 | k4 << 16, t5[5] = q4 = 65535 & _5 | B3 << 16, _5 = 65535 & (T5 = V3), B3 = T5 >>> 16, U3 = 65535 & (E5 = F4), k4 = E5 >>> 16, E5 = e5[6], B3 += (T5 = t5[6]) >>> 16, U3 += 65535 & E5, k4 += E5 >>> 16, k4 += (U3 += (B3 += (_5 += 65535 & T5) >>> 16) >>> 16) >>> 16, e5[6] = F4 = 65535 & U3 | k4 << 16, t5[6] = V3 = 65535 & _5 | B3 << 16, _5 = 65535 & (T5 = $4), B3 = T5 >>> 16, U3 = 65535 & (E5 = z4), k4 = E5 >>> 16, E5 = e5[7], B3 += (T5 = t5[7]) >>> 16, U3 += 65535 & E5, k4 += E5 >>> 16, k4 += (U3 += (B3 += (_5 += 65535 & T5) >>> 16) >>> 16) >>> 16, e5[7] = z4 = 65535 & U3 | k4 << 16, t5[7] = $4 = 65535 & _5 | B3 << 16, X3 += 128, n3 -= 128;
@@ -11677,16 +11683,16 @@ var require_algosdk_min = __commonJS({
               return n3;
             }
             function Y2(e5, t5, r4) {
-              var n3, o4 = new Int32Array(8), s4 = new Int32Array(8), i4 = new Uint8Array(256), a4 = r4;
-              for (o4[0] = 1779033703, o4[1] = 3144134277, o4[2] = 1013904242, o4[3] = 2773480762, o4[4] = 1359893119, o4[5] = 2600822924, o4[6] = 528734635, o4[7] = 1541459225, s4[0] = 4089235720, s4[1] = 2227873595, s4[2] = 4271175723, s4[3] = 1595750129, s4[4] = 2917565137, s4[5] = 725511199, s4[6] = 4215389547, s4[7] = 327033209, X2(o4, s4, t5, r4), r4 %= 128, n3 = 0; n3 < r4; n3++)
-                i4[n3] = t5[a4 - r4 + n3];
-              for (i4[r4] = 128, i4[(r4 = 256 - 128 * (r4 < 112 ? 1 : 0)) - 9] = 0, f3(i4, r4 - 8, a4 / 536870912 | 0, a4 << 3), X2(o4, s4, i4, r4), n3 = 0; n3 < 8; n3++)
-                f3(e5, 8 * n3, o4[n3], s4[n3]);
+              var n3, o4 = new Int32Array(8), i4 = new Int32Array(8), s4 = new Uint8Array(256), a4 = r4;
+              for (o4[0] = 1779033703, o4[1] = 3144134277, o4[2] = 1013904242, o4[3] = 2773480762, o4[4] = 1359893119, o4[5] = 2600822924, o4[6] = 528734635, o4[7] = 1541459225, i4[0] = 4089235720, i4[1] = 2227873595, i4[2] = 4271175723, i4[3] = 1595750129, i4[4] = 2917565137, i4[5] = 725511199, i4[6] = 4215389547, i4[7] = 327033209, X2(o4, i4, t5, r4), r4 %= 128, n3 = 0; n3 < r4; n3++)
+                s4[n3] = t5[a4 - r4 + n3];
+              for (s4[r4] = 128, s4[(r4 = 256 - 128 * (r4 < 112 ? 1 : 0)) - 9] = 0, f3(s4, r4 - 8, a4 / 536870912 | 0, a4 << 3), X2(o4, i4, s4, r4), n3 = 0; n3 < 8; n3++)
+                f3(e5, 8 * n3, o4[n3], i4[n3]);
               return 0;
             }
             function J2(e5, r4) {
-              var n3 = t4(), o4 = t4(), s4 = t4(), i4 = t4(), a4 = t4(), c4 = t4(), l4 = t4(), h4 = t4(), p4 = t4();
-              L3(n3, e5[1], e5[0]), L3(p4, r4[1], r4[0]), F3(n3, n3, p4), P3(o4, e5[0], e5[1]), P3(p4, r4[0], r4[1]), F3(o4, o4, p4), F3(s4, e5[3], r4[3]), F3(s4, s4, u3), F3(i4, e5[2], r4[2]), P3(i4, i4, i4), L3(a4, o4, n3), L3(c4, i4, s4), P3(l4, i4, s4), P3(h4, o4, n3), F3(e5[0], a4, c4), F3(e5[1], h4, l4), F3(e5[2], l4, c4), F3(e5[3], a4, h4);
+              var n3 = t4(), o4 = t4(), i4 = t4(), s4 = t4(), a4 = t4(), c4 = t4(), l4 = t4(), h4 = t4(), p4 = t4();
+              L3(n3, e5[1], e5[0]), L3(p4, r4[1], r4[0]), F3(n3, n3, p4), P3(o4, e5[0], e5[1]), P3(p4, r4[0], r4[1]), F3(o4, o4, p4), F3(i4, e5[3], r4[3]), F3(i4, i4, u3), F3(s4, e5[2], r4[2]), P3(s4, s4, s4), L3(a4, o4, n3), L3(c4, s4, i4), P3(l4, s4, i4), P3(h4, o4, n3), F3(e5[0], a4, c4), F3(e5[1], h4, l4), F3(e5[2], l4, c4), F3(e5[3], a4, h4);
             }
             function Q2(e5, t5, r4) {
               var n3;
@@ -11694,29 +11700,29 @@ var require_algosdk_min = __commonJS({
                 C3(e5[n3], t5[n3], r4);
             }
             function Z2(e5, r4) {
-              var n3 = t4(), o4 = t4(), s4 = t4();
-              j3(s4, r4[2]), F3(n3, r4[0], s4), F3(o4, r4[1], s4), R2(e5, o4), e5[31] ^= D3(n3) << 7;
+              var n3 = t4(), o4 = t4(), i4 = t4();
+              j3(i4, r4[2]), F3(n3, r4[0], i4), F3(o4, r4[1], i4), R2(e5, o4), e5[31] ^= D3(n3) << 7;
             }
             function ee(e5, t5, r4) {
               var n3, o4;
-              for (k3(e5[0], s3), k3(e5[1], i3), k3(e5[2], i3), k3(e5[3], s3), o4 = 255; o4 >= 0; --o4)
+              for (k3(e5[0], i3), k3(e5[1], s3), k3(e5[2], s3), k3(e5[3], i3), o4 = 255; o4 >= 0; --o4)
                 Q2(e5, t5, n3 = r4[o4 / 8 | 0] >> (7 & o4) & 1), J2(t5, e5), J2(e5, e5), Q2(e5, t5, n3);
             }
             function te(e5, r4) {
               var n3 = [t4(), t4(), t4(), t4()];
-              k3(n3[0], l3), k3(n3[1], h3), k3(n3[2], i3), F3(n3[3], l3, h3), ee(e5, n3, r4);
+              k3(n3[0], l3), k3(n3[1], h3), k3(n3[2], s3), F3(n3[3], l3, h3), ee(e5, n3, r4);
             }
             function re(e5, n3, o4) {
-              var s4, i4 = new Uint8Array(64), a4 = [t4(), t4(), t4(), t4()];
-              for (o4 || r3(n3, 32), Y2(i4, n3, 32), i4[0] &= 248, i4[31] &= 127, i4[31] |= 64, te(a4, i4), Z2(e5, a4), s4 = 0; s4 < 32; s4++)
-                n3[s4 + 32] = e5[s4];
+              var i4, s4 = new Uint8Array(64), a4 = [t4(), t4(), t4(), t4()];
+              for (o4 || r3(n3, 32), Y2(s4, n3, 32), s4[0] &= 248, s4[31] &= 127, s4[31] |= 64, te(a4, s4), Z2(e5, a4), i4 = 0; i4 < 32; i4++)
+                n3[i4 + 32] = e5[i4];
               return 0;
             }
             var ne = new Float64Array([237, 211, 245, 92, 26, 99, 18, 88, 214, 156, 247, 162, 222, 249, 222, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16]);
             function oe(e5, t5) {
-              var r4, n3, o4, s4;
+              var r4, n3, o4, i4;
               for (n3 = 63; n3 >= 32; --n3) {
-                for (r4 = 0, o4 = n3 - 32, s4 = n3 - 12; o4 < s4; ++o4)
+                for (r4 = 0, o4 = n3 - 32, i4 = n3 - 12; o4 < i4; ++o4)
                   t5[o4] += r4 - 16 * t5[n3] * ne[o4 - (n3 - 32)], r4 = Math.floor((t5[o4] + 128) / 256), t5[o4] -= 256 * r4;
                 t5[o4] += r4, t5[n3] = 0;
               }
@@ -11727,7 +11733,7 @@ var require_algosdk_min = __commonJS({
               for (n3 = 0; n3 < 32; n3++)
                 t5[n3 + 1] += t5[n3] >> 8, e5[n3] = 255 & t5[n3];
             }
-            function se(e5) {
+            function ie(e5) {
               var t5, r4 = new Float64Array(64);
               for (t5 = 0; t5 < 64; t5++)
                 r4[t5] = e5[t5];
@@ -11735,23 +11741,23 @@ var require_algosdk_min = __commonJS({
                 e5[t5] = 0;
               oe(e5, r4);
             }
-            function ie(e5, r4, n3, o4) {
-              var s4, i4, a4 = new Uint8Array(64), c4 = new Uint8Array(64), u4 = new Uint8Array(64), l4 = new Float64Array(64), h4 = [t4(), t4(), t4(), t4()];
+            function se(e5, r4, n3, o4) {
+              var i4, s4, a4 = new Uint8Array(64), c4 = new Uint8Array(64), u4 = new Uint8Array(64), l4 = new Float64Array(64), h4 = [t4(), t4(), t4(), t4()];
               Y2(a4, o4, 32), a4[0] &= 248, a4[31] &= 127, a4[31] |= 64;
               var p4 = n3 + 64;
-              for (s4 = 0; s4 < n3; s4++)
-                e5[64 + s4] = r4[s4];
-              for (s4 = 0; s4 < 32; s4++)
-                e5[32 + s4] = a4[32 + s4];
-              for (Y2(u4, e5.subarray(32), n3 + 32), se(u4), te(h4, u4), Z2(e5, h4), s4 = 32; s4 < 64; s4++)
-                e5[s4] = o4[s4];
-              for (Y2(c4, e5, n3 + 64), se(c4), s4 = 0; s4 < 64; s4++)
-                l4[s4] = 0;
-              for (s4 = 0; s4 < 32; s4++)
-                l4[s4] = u4[s4];
-              for (s4 = 0; s4 < 32; s4++)
-                for (i4 = 0; i4 < 32; i4++)
-                  l4[s4 + i4] += c4[s4] * a4[i4];
+              for (i4 = 0; i4 < n3; i4++)
+                e5[64 + i4] = r4[i4];
+              for (i4 = 0; i4 < 32; i4++)
+                e5[32 + i4] = a4[32 + i4];
+              for (Y2(u4, e5.subarray(32), n3 + 32), ie(u4), te(h4, u4), Z2(e5, h4), i4 = 32; i4 < 64; i4++)
+                e5[i4] = o4[i4];
+              for (Y2(c4, e5, n3 + 64), ie(c4), i4 = 0; i4 < 64; i4++)
+                l4[i4] = 0;
+              for (i4 = 0; i4 < 32; i4++)
+                l4[i4] = u4[i4];
+              for (i4 = 0; i4 < 32; i4++)
+                for (s4 = 0; s4 < 32; s4++)
+                  l4[i4 + s4] += c4[i4] * a4[s4];
               return oe(e5.subarray(32), l4), p4;
             }
             function ae(e5, r4, n3, o4) {
@@ -11760,14 +11766,14 @@ var require_algosdk_min = __commonJS({
                 return -1;
               if (function(e6, r5) {
                 var n4 = t4(), o5 = t4(), a5 = t4(), u5 = t4(), l5 = t4(), h5 = t4(), f5 = t4();
-                return k3(e6[2], i3), N3(e6[1], r5), z3(a5, e6[1]), F3(u5, a5, c3), L3(a5, a5, e6[2]), P3(u5, e6[2], u5), z3(l5, u5), z3(h5, l5), F3(f5, h5, l5), F3(n4, f5, a5), F3(n4, n4, u5), M3(n4, n4), F3(n4, n4, a5), F3(n4, n4, u5), F3(n4, n4, u5), F3(e6[0], n4, u5), z3(o5, e6[0]), F3(o5, o5, u5), O2(o5, a5) && F3(e6[0], e6[0], p3), z3(o5, e6[0]), F3(o5, o5, u5), O2(o5, a5) ? -1 : (D3(e6[0]) === r5[31] >> 7 && L3(e6[0], s3, e6[0]), F3(e6[3], e6[0], e6[1]), 0);
+                return k3(e6[2], s3), N3(e6[1], r5), z3(a5, e6[1]), F3(u5, a5, c3), L3(a5, a5, e6[2]), P3(u5, e6[2], u5), z3(l5, u5), z3(h5, l5), F3(f5, h5, l5), F3(n4, f5, a5), F3(n4, n4, u5), M3(n4, n4), F3(n4, n4, a5), F3(n4, n4, u5), F3(n4, n4, u5), F3(e6[0], n4, u5), z3(o5, e6[0]), F3(o5, o5, u5), O2(o5, a5) && F3(e6[0], e6[0], p3), z3(o5, e6[0]), F3(o5, o5, u5), O2(o5, a5) ? -1 : (D3(e6[0]) === r5[31] >> 7 && L3(e6[0], i3, e6[0]), F3(e6[3], e6[0], e6[1]), 0);
               }(f4, o4))
                 return -1;
               for (a4 = 0; a4 < n3; a4++)
                 e5[a4] = r4[a4];
               for (a4 = 0; a4 < 32; a4++)
                 e5[a4 + 32] = o4[a4];
-              if (Y2(l4, e5, n3), se(l4), ee(h4, f4, l4), te(f4, r4.subarray(32)), J2(h4, f4), Z2(u4, h4), n3 -= 64, y3(r4, 0, u4, 0)) {
+              if (Y2(l4, e5, n3), ie(l4), ee(h4, f4, l4), te(f4, r4.subarray(32)), J2(h4, f4), Z2(u4, h4), n3 -= 64, y3(r4, 0, u4, 0)) {
                 for (a4 = 0; a4 < n3; a4++)
                   e5[a4] = 0;
                 return -1;
@@ -11792,24 +11798,24 @@ var require_algosdk_min = __commonJS({
               for (var t5 = 0; t5 < e5.length; t5++)
                 e5[t5] = 0;
             }
-            e4.lowlevel = { crypto_core_hsalsa20: b2, crypto_stream_xor: S2, crypto_stream: x3, crypto_stream_salsa20_xor: w4, crypto_stream_salsa20: v3, crypto_onetimeauth: T4, crypto_onetimeauth_verify: _4, crypto_verify_16: g3, crypto_verify_32: y3, crypto_secretbox: B2, crypto_secretbox_open: U2, crypto_scalarmult: H3, crypto_scalarmult_base: G2, crypto_box_beforenm: q3, crypto_box_afternm: V2, crypto_box: function(e5, t5, r4, n3, o4, s4) {
-              var i4 = new Uint8Array(32);
-              return q3(i4, o4, s4), V2(e5, t5, r4, n3, i4);
-            }, crypto_box_open: function(e5, t5, r4, n3, o4, s4) {
-              var i4 = new Uint8Array(32);
-              return q3(i4, o4, s4), $3(e5, t5, r4, n3, i4);
-            }, crypto_box_keypair: K3, crypto_hash: Y2, crypto_sign: ie, crypto_sign_keypair: re, crypto_sign_open: ae, crypto_secretbox_KEYBYTES: 32, crypto_secretbox_NONCEBYTES: 24, crypto_secretbox_ZEROBYTES: 32, crypto_secretbox_BOXZEROBYTES: 16, crypto_scalarmult_BYTES: 32, crypto_scalarmult_SCALARBYTES: 32, crypto_box_PUBLICKEYBYTES: 32, crypto_box_SECRETKEYBYTES: 32, crypto_box_BEFORENMBYTES: 32, crypto_box_NONCEBYTES: 24, crypto_box_ZEROBYTES: 32, crypto_box_BOXZEROBYTES: 16, crypto_sign_BYTES: ce, crypto_sign_PUBLICKEYBYTES: ue, crypto_sign_SECRETKEYBYTES: le, crypto_sign_SEEDBYTES: 32, crypto_hash_BYTES: 64, gf: t4, D: c3, L: ne, pack25519: R2, unpack25519: N3, M: F3, A: P3, S: z3, Z: L3, pow2523: M3, add: J2, set25519: k3, modL: oe, scalarmult: ee, scalarbase: te }, e4.randomBytes = function(e5) {
+            e4.lowlevel = { crypto_core_hsalsa20: b2, crypto_stream_xor: S2, crypto_stream: x3, crypto_stream_salsa20_xor: w4, crypto_stream_salsa20: v3, crypto_onetimeauth: T4, crypto_onetimeauth_verify: _4, crypto_verify_16: g3, crypto_verify_32: y3, crypto_secretbox: B2, crypto_secretbox_open: U2, crypto_scalarmult: H3, crypto_scalarmult_base: G2, crypto_box_beforenm: q3, crypto_box_afternm: V2, crypto_box: function(e5, t5, r4, n3, o4, i4) {
+              var s4 = new Uint8Array(32);
+              return q3(s4, o4, i4), V2(e5, t5, r4, n3, s4);
+            }, crypto_box_open: function(e5, t5, r4, n3, o4, i4) {
+              var s4 = new Uint8Array(32);
+              return q3(s4, o4, i4), $3(e5, t5, r4, n3, s4);
+            }, crypto_box_keypair: K3, crypto_hash: Y2, crypto_sign: se, crypto_sign_keypair: re, crypto_sign_open: ae, crypto_secretbox_KEYBYTES: 32, crypto_secretbox_NONCEBYTES: 24, crypto_secretbox_ZEROBYTES: 32, crypto_secretbox_BOXZEROBYTES: 16, crypto_scalarmult_BYTES: 32, crypto_scalarmult_SCALARBYTES: 32, crypto_box_PUBLICKEYBYTES: 32, crypto_box_SECRETKEYBYTES: 32, crypto_box_BEFORENMBYTES: 32, crypto_box_NONCEBYTES: 24, crypto_box_ZEROBYTES: 32, crypto_box_BOXZEROBYTES: 16, crypto_sign_BYTES: ce, crypto_sign_PUBLICKEYBYTES: ue, crypto_sign_SECRETKEYBYTES: le, crypto_sign_SEEDBYTES: 32, crypto_hash_BYTES: 64, gf: t4, D: c3, L: ne, pack25519: R2, unpack25519: N3, M: F3, A: P3, S: z3, Z: L3, pow2523: M3, add: J2, set25519: k3, modL: oe, scalarmult: ee, scalarbase: te }, e4.randomBytes = function(e5) {
               var t5 = new Uint8Array(e5);
               return r3(t5, e5), t5;
             }, e4.secretbox = function(e5, t5, r4) {
               pe(e5, t5, r4), he(r4, t5);
-              for (var n3 = new Uint8Array(32 + e5.length), o4 = new Uint8Array(n3.length), s4 = 0; s4 < e5.length; s4++)
-                n3[s4 + 32] = e5[s4];
+              for (var n3 = new Uint8Array(32 + e5.length), o4 = new Uint8Array(n3.length), i4 = 0; i4 < e5.length; i4++)
+                n3[i4 + 32] = e5[i4];
               return B2(o4, n3, n3.length, t5, r4), o4.subarray(16);
             }, e4.secretbox.open = function(e5, t5, r4) {
               pe(e5, t5, r4), he(r4, t5);
-              for (var n3 = new Uint8Array(16 + e5.length), o4 = new Uint8Array(n3.length), s4 = 0; s4 < e5.length; s4++)
-                n3[s4 + 16] = e5[s4];
+              for (var n3 = new Uint8Array(16 + e5.length), o4 = new Uint8Array(n3.length), i4 = 0; i4 < e5.length; i4++)
+                n3[i4 + 16] = e5[i4];
               return n3.length < 32 || U2(o4, n3, n3.length, t5, r4) !== 0 ? null : o4.subarray(32);
             }, e4.secretbox.keyLength = 32, e4.secretbox.nonceLength = 24, e4.secretbox.overheadLength = 16, e4.scalarMult = function(e5, t5) {
               if (pe(e5, t5), e5.length !== 32)
@@ -11824,8 +11830,8 @@ var require_algosdk_min = __commonJS({
               var t5 = new Uint8Array(32);
               return G2(t5, e5), t5;
             }, e4.scalarMult.scalarLength = 32, e4.scalarMult.groupElementLength = 32, e4.box = function(t5, r4, n3, o4) {
-              var s4 = e4.box.before(n3, o4);
-              return e4.secretbox(t5, r4, s4);
+              var i4 = e4.box.before(n3, o4);
+              return e4.secretbox(t5, r4, i4);
             }, e4.box.before = function(e5, t5) {
               pe(e5, t5), function(e6, t6) {
                 if (e6.length !== 32)
@@ -11836,8 +11842,8 @@ var require_algosdk_min = __commonJS({
               var r4 = new Uint8Array(32);
               return q3(r4, e5, t5), r4;
             }, e4.box.after = e4.secretbox, e4.box.open = function(t5, r4, n3, o4) {
-              var s4 = e4.box.before(n3, o4);
-              return e4.secretbox.open(t5, r4, s4);
+              var i4 = e4.box.before(n3, o4);
+              return e4.secretbox.open(t5, r4, i4);
             }, e4.box.open.after = e4.secretbox.open, e4.box.keyPair = function() {
               var e5 = new Uint8Array(32), t5 = new Uint8Array(32);
               return K3(e5, t5), { publicKey: e5, secretKey: t5 };
@@ -11850,31 +11856,31 @@ var require_algosdk_min = __commonJS({
               if (pe(e5, t5), t5.length !== le)
                 throw new Error("bad secret key size");
               var r4 = new Uint8Array(ce + e5.length);
-              return ie(r4, e5, e5.length, t5), r4;
+              return se(r4, e5, e5.length, t5), r4;
             }, e4.sign.open = function(e5, t5) {
               if (pe(e5, t5), t5.length !== ue)
                 throw new Error("bad public key size");
               var r4 = new Uint8Array(e5.length), n3 = ae(r4, e5, e5.length, t5);
               if (n3 < 0)
                 return null;
-              for (var o4 = new Uint8Array(n3), s4 = 0; s4 < o4.length; s4++)
-                o4[s4] = r4[s4];
+              for (var o4 = new Uint8Array(n3), i4 = 0; i4 < o4.length; i4++)
+                o4[i4] = r4[i4];
               return o4;
             }, e4.sign.detached = function(t5, r4) {
-              for (var n3 = e4.sign(t5, r4), o4 = new Uint8Array(ce), s4 = 0; s4 < o4.length; s4++)
-                o4[s4] = n3[s4];
+              for (var n3 = e4.sign(t5, r4), o4 = new Uint8Array(ce), i4 = 0; i4 < o4.length; i4++)
+                o4[i4] = n3[i4];
               return o4;
             }, e4.sign.detached.verify = function(e5, t5, r4) {
               if (pe(e5, t5, r4), t5.length !== ce)
                 throw new Error("bad signature size");
               if (r4.length !== ue)
                 throw new Error("bad public key size");
-              var n3, o4 = new Uint8Array(ce + e5.length), s4 = new Uint8Array(ce + e5.length);
+              var n3, o4 = new Uint8Array(ce + e5.length), i4 = new Uint8Array(ce + e5.length);
               for (n3 = 0; n3 < ce; n3++)
                 o4[n3] = t5[n3];
               for (n3 = 0; n3 < e5.length; n3++)
                 o4[n3 + ce] = e5[n3];
-              return ae(s4, o4, o4.length, r4) >= 0;
+              return ae(i4, o4, o4.length, r4) >= 0;
             }, e4.sign.keyPair = function() {
               var e5 = new Uint8Array(ue), t5 = new Uint8Array(le);
               return re(e5, t5), { publicKey: e5, secretKey: t5 };
@@ -11917,7 +11923,7 @@ var require_algosdk_min = __commonJS({
           }(e3 !== void 0 && e3.exports ? e3.exports : self.nacl = self.nacl || {});
         }, 1042: (e3, t3, r3) => {
           "use strict";
-          var n2 = r3(1926), o3 = r3(9370), s3 = /[\n\r\t]/g, i3 = /^[A-Za-z][A-Za-z0-9+-.]*:\/\//, a3 = /^([a-z][a-z0-9.+-]*:)?(\/\/)?([\\/]+)?([\S\s]*)/i, c3 = /^[a-zA-Z]:/, u3 = /^[ \f\n\r\t\v\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]+/;
+          var n2 = r3(1926), o3 = r3(9370), i3 = /[\n\r\t]/g, s3 = /^[A-Za-z][A-Za-z0-9+-.]*:\/\//, a3 = /^([a-z][a-z0-9.+-]*:)?(\/\/)?([\\/]+)?([\S\s]*)/i, c3 = /^[a-zA-Z]:/, u3 = /^[ \f\n\r\t\v\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]+/;
           function l3(e4) {
             return (e4 || "").toString().replace(u3, "");
           }
@@ -11925,16 +11931,16 @@ var require_algosdk_min = __commonJS({
             return d3(t4.protocol) ? e4.replace(/\\/g, "/") : e4;
           }, ["/", "pathname"], ["@", "auth", 1], [NaN, "host", void 0, 1, 1], [/:(\d*)$/, "port", void 0, 1], [NaN, "hostname", void 0, 1, 1]], p3 = { hash: 1, query: 1 };
           function f3(e4) {
-            var t4, n3 = (typeof window != "undefined" ? window : r3.g !== void 0 ? r3.g : typeof self != "undefined" ? self : {}).location || {}, o4 = {}, s4 = typeof (e4 = e4 || n3);
+            var t4, n3 = (typeof window != "undefined" ? window : r3.g !== void 0 ? r3.g : typeof self != "undefined" ? self : {}).location || {}, o4 = {}, i4 = typeof (e4 = e4 || n3);
             if (e4.protocol === "blob:")
               o4 = new y3(unescape(e4.pathname), {});
-            else if (s4 === "string")
+            else if (i4 === "string")
               for (t4 in o4 = new y3(e4, {}), p3)
                 delete o4[t4];
-            else if (s4 === "object") {
+            else if (i4 === "object") {
               for (t4 in e4)
                 t4 in p3 || (o4[t4] = e4[t4]);
-              o4.slashes === void 0 && (o4.slashes = i3.test(e4.href));
+              o4.slashes === void 0 && (o4.slashes = s3.test(e4.href));
             }
             return o4;
           }
@@ -11942,77 +11948,77 @@ var require_algosdk_min = __commonJS({
             return e4 === "file:" || e4 === "ftp:" || e4 === "http:" || e4 === "https:" || e4 === "ws:" || e4 === "wss:";
           }
           function g3(e4, t4) {
-            e4 = (e4 = l3(e4)).replace(s3, ""), t4 = t4 || {};
-            var r4, n3 = a3.exec(e4), o4 = n3[1] ? n3[1].toLowerCase() : "", i4 = !!n3[2], c4 = !!n3[3], u4 = 0;
-            return i4 ? c4 ? (r4 = n3[2] + n3[3] + n3[4], u4 = n3[2].length + n3[3].length) : (r4 = n3[2] + n3[4], u4 = n3[2].length) : c4 ? (r4 = n3[3] + n3[4], u4 = n3[3].length) : r4 = n3[4], o4 === "file:" ? u4 >= 2 && (r4 = r4.slice(2)) : d3(o4) ? r4 = n3[4] : o4 ? i4 && (r4 = r4.slice(2)) : u4 >= 2 && d3(t4.protocol) && (r4 = n3[4]), { protocol: o4, slashes: i4 || d3(o4), slashesCount: u4, rest: r4 };
+            e4 = (e4 = l3(e4)).replace(i3, ""), t4 = t4 || {};
+            var r4, n3 = a3.exec(e4), o4 = n3[1] ? n3[1].toLowerCase() : "", s4 = !!n3[2], c4 = !!n3[3], u4 = 0;
+            return s4 ? c4 ? (r4 = n3[2] + n3[3] + n3[4], u4 = n3[2].length + n3[3].length) : (r4 = n3[2] + n3[4], u4 = n3[2].length) : c4 ? (r4 = n3[3] + n3[4], u4 = n3[3].length) : r4 = n3[4], o4 === "file:" ? u4 >= 2 && (r4 = r4.slice(2)) : d3(o4) ? r4 = n3[4] : o4 ? s4 && (r4 = r4.slice(2)) : u4 >= 2 && d3(t4.protocol) && (r4 = n3[4]), { protocol: o4, slashes: s4 || d3(o4), slashesCount: u4, rest: r4 };
           }
           function y3(e4, t4, r4) {
-            if (e4 = (e4 = l3(e4)).replace(s3, ""), !(this instanceof y3))
+            if (e4 = (e4 = l3(e4)).replace(i3, ""), !(this instanceof y3))
               return new y3(e4, t4, r4);
-            var i4, a4, u4, p4, m3, b2, A4 = h3.slice(), w4 = typeof t4, v3 = this, x3 = 0;
-            for (w4 !== "object" && w4 !== "string" && (r4 = t4, t4 = null), r4 && typeof r4 != "function" && (r4 = o3.parse), i4 = !(a4 = g3(e4 || "", t4 = f3(t4))).protocol && !a4.slashes, v3.slashes = a4.slashes || i4 && t4.slashes, v3.protocol = a4.protocol || t4.protocol || "", e4 = a4.rest, (a4.protocol === "file:" && (a4.slashesCount !== 2 || c3.test(e4)) || !a4.slashes && (a4.protocol || a4.slashesCount < 2 || !d3(v3.protocol))) && (A4[3] = [/(.*)/, "pathname"]); x3 < A4.length; x3++)
-              typeof (p4 = A4[x3]) != "function" ? (u4 = p4[0], b2 = p4[1], u4 != u4 ? v3[b2] = e4 : typeof u4 == "string" ? ~(m3 = u4 === "@" ? e4.lastIndexOf(u4) : e4.indexOf(u4)) && (typeof p4[2] == "number" ? (v3[b2] = e4.slice(0, m3), e4 = e4.slice(m3 + p4[2])) : (v3[b2] = e4.slice(m3), e4 = e4.slice(0, m3))) : (m3 = u4.exec(e4)) && (v3[b2] = m3[1], e4 = e4.slice(0, m3.index)), v3[b2] = v3[b2] || i4 && p4[3] && t4[b2] || "", p4[4] && (v3[b2] = v3[b2].toLowerCase())) : e4 = p4(e4, v3);
-            r4 && (v3.query = r4(v3.query)), i4 && t4.slashes && v3.pathname.charAt(0) !== "/" && (v3.pathname !== "" || t4.pathname !== "") && (v3.pathname = function(e5, t5) {
+            var s4, a4, u4, p4, m3, b2, A4 = h3.slice(), w4 = typeof t4, v3 = this, x3 = 0;
+            for (w4 !== "object" && w4 !== "string" && (r4 = t4, t4 = null), r4 && typeof r4 != "function" && (r4 = o3.parse), s4 = !(a4 = g3(e4 || "", t4 = f3(t4))).protocol && !a4.slashes, v3.slashes = a4.slashes || s4 && t4.slashes, v3.protocol = a4.protocol || t4.protocol || "", e4 = a4.rest, (a4.protocol === "file:" && (a4.slashesCount !== 2 || c3.test(e4)) || !a4.slashes && (a4.protocol || a4.slashesCount < 2 || !d3(v3.protocol))) && (A4[3] = [/(.*)/, "pathname"]); x3 < A4.length; x3++)
+              typeof (p4 = A4[x3]) != "function" ? (u4 = p4[0], b2 = p4[1], u4 != u4 ? v3[b2] = e4 : typeof u4 == "string" ? ~(m3 = u4 === "@" ? e4.lastIndexOf(u4) : e4.indexOf(u4)) && (typeof p4[2] == "number" ? (v3[b2] = e4.slice(0, m3), e4 = e4.slice(m3 + p4[2])) : (v3[b2] = e4.slice(m3), e4 = e4.slice(0, m3))) : (m3 = u4.exec(e4)) && (v3[b2] = m3[1], e4 = e4.slice(0, m3.index)), v3[b2] = v3[b2] || s4 && p4[3] && t4[b2] || "", p4[4] && (v3[b2] = v3[b2].toLowerCase())) : e4 = p4(e4, v3);
+            r4 && (v3.query = r4(v3.query)), s4 && t4.slashes && v3.pathname.charAt(0) !== "/" && (v3.pathname !== "" || t4.pathname !== "") && (v3.pathname = function(e5, t5) {
               if (e5 === "")
                 return t5;
-              for (var r5 = (t5 || "/").split("/").slice(0, -1).concat(e5.split("/")), n3 = r5.length, o4 = r5[n3 - 1], s4 = false, i5 = 0; n3--; )
-                r5[n3] === "." ? r5.splice(n3, 1) : r5[n3] === ".." ? (r5.splice(n3, 1), i5++) : i5 && (n3 === 0 && (s4 = true), r5.splice(n3, 1), i5--);
-              return s4 && r5.unshift(""), o4 !== "." && o4 !== ".." || r5.push(""), r5.join("/");
+              for (var r5 = (t5 || "/").split("/").slice(0, -1).concat(e5.split("/")), n3 = r5.length, o4 = r5[n3 - 1], i4 = false, s5 = 0; n3--; )
+                r5[n3] === "." ? r5.splice(n3, 1) : r5[n3] === ".." ? (r5.splice(n3, 1), s5++) : s5 && (n3 === 0 && (i4 = true), r5.splice(n3, 1), s5--);
+              return i4 && r5.unshift(""), o4 !== "." && o4 !== ".." || r5.push(""), r5.join("/");
             }(v3.pathname, t4.pathname)), v3.pathname.charAt(0) !== "/" && d3(v3.protocol) && (v3.pathname = "/" + v3.pathname), n2(v3.port, v3.protocol) || (v3.host = v3.hostname, v3.port = ""), v3.username = v3.password = "", v3.auth && (~(m3 = v3.auth.indexOf(":")) ? (v3.username = v3.auth.slice(0, m3), v3.username = encodeURIComponent(decodeURIComponent(v3.username)), v3.password = v3.auth.slice(m3 + 1), v3.password = encodeURIComponent(decodeURIComponent(v3.password))) : v3.username = encodeURIComponent(decodeURIComponent(v3.auth)), v3.auth = v3.password ? v3.username + ":" + v3.password : v3.username), v3.origin = v3.protocol !== "file:" && d3(v3.protocol) && v3.host ? v3.protocol + "//" + v3.host : "null", v3.href = v3.toString();
           }
           y3.prototype = { set: function(e4, t4, r4) {
-            var s4 = this;
+            var i4 = this;
             switch (e4) {
               case "query":
-                typeof t4 == "string" && t4.length && (t4 = (r4 || o3.parse)(t4)), s4[e4] = t4;
+                typeof t4 == "string" && t4.length && (t4 = (r4 || o3.parse)(t4)), i4[e4] = t4;
                 break;
               case "port":
-                s4[e4] = t4, n2(t4, s4.protocol) ? t4 && (s4.host = s4.hostname + ":" + t4) : (s4.host = s4.hostname, s4[e4] = "");
+                i4[e4] = t4, n2(t4, i4.protocol) ? t4 && (i4.host = i4.hostname + ":" + t4) : (i4.host = i4.hostname, i4[e4] = "");
                 break;
               case "hostname":
-                s4[e4] = t4, s4.port && (t4 += ":" + s4.port), s4.host = t4;
+                i4[e4] = t4, i4.port && (t4 += ":" + i4.port), i4.host = t4;
                 break;
               case "host":
-                s4[e4] = t4, /:\d+$/.test(t4) ? (t4 = t4.split(":"), s4.port = t4.pop(), s4.hostname = t4.join(":")) : (s4.hostname = t4, s4.port = "");
+                i4[e4] = t4, /:\d+$/.test(t4) ? (t4 = t4.split(":"), i4.port = t4.pop(), i4.hostname = t4.join(":")) : (i4.hostname = t4, i4.port = "");
                 break;
               case "protocol":
-                s4.protocol = t4.toLowerCase(), s4.slashes = !r4;
+                i4.protocol = t4.toLowerCase(), i4.slashes = !r4;
                 break;
               case "pathname":
               case "hash":
                 if (t4) {
-                  var i4 = e4 === "pathname" ? "/" : "#";
-                  s4[e4] = t4.charAt(0) !== i4 ? i4 + t4 : t4;
+                  var s4 = e4 === "pathname" ? "/" : "#";
+                  i4[e4] = t4.charAt(0) !== s4 ? s4 + t4 : t4;
                 } else
-                  s4[e4] = t4;
+                  i4[e4] = t4;
                 break;
               case "username":
               case "password":
-                s4[e4] = encodeURIComponent(t4);
+                i4[e4] = encodeURIComponent(t4);
                 break;
               case "auth":
                 var a4 = t4.indexOf(":");
-                ~a4 ? (s4.username = t4.slice(0, a4), s4.username = encodeURIComponent(decodeURIComponent(s4.username)), s4.password = t4.slice(a4 + 1), s4.password = encodeURIComponent(decodeURIComponent(s4.password))) : s4.username = encodeURIComponent(decodeURIComponent(t4));
+                ~a4 ? (i4.username = t4.slice(0, a4), i4.username = encodeURIComponent(decodeURIComponent(i4.username)), i4.password = t4.slice(a4 + 1), i4.password = encodeURIComponent(decodeURIComponent(i4.password))) : i4.username = encodeURIComponent(decodeURIComponent(t4));
             }
             for (var c4 = 0; c4 < h3.length; c4++) {
               var u4 = h3[c4];
-              u4[4] && (s4[u4[1]] = s4[u4[1]].toLowerCase());
+              u4[4] && (i4[u4[1]] = i4[u4[1]].toLowerCase());
             }
-            return s4.auth = s4.password ? s4.username + ":" + s4.password : s4.username, s4.origin = s4.protocol !== "file:" && d3(s4.protocol) && s4.host ? s4.protocol + "//" + s4.host : "null", s4.href = s4.toString(), s4;
+            return i4.auth = i4.password ? i4.username + ":" + i4.password : i4.username, i4.origin = i4.protocol !== "file:" && d3(i4.protocol) && i4.host ? i4.protocol + "//" + i4.host : "null", i4.href = i4.toString(), i4;
           }, toString: function(e4) {
             e4 && typeof e4 == "function" || (e4 = o3.stringify);
-            var t4, r4 = this, n3 = r4.host, s4 = r4.protocol;
-            s4 && s4.charAt(s4.length - 1) !== ":" && (s4 += ":");
-            var i4 = s4 + (r4.protocol && r4.slashes || d3(r4.protocol) ? "//" : "");
-            return r4.username ? (i4 += r4.username, r4.password && (i4 += ":" + r4.password), i4 += "@") : r4.password ? (i4 += ":" + r4.password, i4 += "@") : r4.protocol !== "file:" && d3(r4.protocol) && !n3 && r4.pathname !== "/" && (i4 += "@"), n3[n3.length - 1] === ":" && (n3 += ":"), i4 += n3 + r4.pathname, (t4 = typeof r4.query == "object" ? e4(r4.query) : r4.query) && (i4 += t4.charAt(0) !== "?" ? "?" + t4 : t4), r4.hash && (i4 += r4.hash), i4;
+            var t4, r4 = this, n3 = r4.host, i4 = r4.protocol;
+            i4 && i4.charAt(i4.length - 1) !== ":" && (i4 += ":");
+            var s4 = i4 + (r4.protocol && r4.slashes || d3(r4.protocol) ? "//" : "");
+            return r4.username ? (s4 += r4.username, r4.password && (s4 += ":" + r4.password), s4 += "@") : r4.password ? (s4 += ":" + r4.password, s4 += "@") : r4.protocol !== "file:" && d3(r4.protocol) && !n3 && r4.pathname !== "/" && (s4 += "@"), n3[n3.length - 1] === ":" && (n3 += ":"), s4 += n3 + r4.pathname, (t4 = typeof r4.query == "object" ? e4(r4.query) : r4.query) && (s4 += t4.charAt(0) !== "?" ? "?" + t4 : t4), r4.hash && (s4 += r4.hash), s4;
           } }, y3.extractProtocol = g3, y3.location = f3, y3.trimLeft = l3, y3.qs = o3, e3.exports = y3;
         }, 5922: (e3, t3, r3) => {
           var n2 = r3(2486).Buffer;
-          const { default: o3 } = r3(1113), { setSendTransactionHeaders: s3 } = r3(5180);
-          e3.exports = { Algod: function(e4 = "", t4 = "http://r2.algorand.network", r4 = 4180, i3 = {}) {
+          const { default: o3 } = r3(1113), { setSendTransactionHeaders: i3 } = r3(5180);
+          e3.exports = { Algod: function(e4 = "", t4 = "http://r2.algorand.network", r4 = 4180, s3 = {}) {
             let a3 = e4;
             typeof a3 == "string" && (a3 = { "X-Algo-API-Token": a3 });
-            const c3 = new o3(a3, t4, r4, i3);
+            const c3 = new o3(a3, t4, r4, s3);
             function u3(e5) {
               return e5.noteb64 !== void 0 && e5.noteb64 !== null && (e5.note = n2.from(e5.noteb64, "base64")), e5;
             }
@@ -12038,17 +12044,17 @@ var require_algosdk_min = __commonJS({
                 throw Error("first round should be an integer");
               if (r5 !== null && !Number.isInteger(r5))
                 throw Error("last round should be an integer");
-              const s4 = await c3.get(`/v1/account/${e5}/transactions`, { firstRound: t5, lastRound: r5, max: n3 }, o4);
-              if (s4.statusCode === 200 && s4.body.transactions !== void 0)
-                for (let e6 = 0; e6 < s4.body.transactions.length; e6++)
-                  s4.body.transactions[e6] = u3(s4.body.transactions[e6]);
-              return s4.body;
+              const i4 = await c3.get(`/v1/account/${e5}/transactions`, { firstRound: t5, lastRound: r5, max: n3 }, o4);
+              if (i4.statusCode === 200 && i4.body.transactions !== void 0)
+                for (let e6 = 0; e6 < i4.body.transactions.length; e6++)
+                  i4.body.transactions[e6] = u3(i4.body.transactions[e6]);
+              return i4.body;
             }, this.transactionByAddressAndDate = async (e5, t5, r5, n3 = null, o4 = {}) => {
-              const s4 = await c3.get(`/v1/account/${e5}/transactions`, { fromDate: t5, toDate: r5, max: n3 }, o4);
-              if (s4.statusCode === 200 && s4.body.transactions !== void 0)
-                for (let e6 = 0; e6 < s4.body.transactions.length; e6++)
-                  s4.body.transactions[e6] = u3(s4.body.transactions[e6]);
-              return s4.body;
+              const i4 = await c3.get(`/v1/account/${e5}/transactions`, { fromDate: t5, toDate: r5, max: n3 }, o4);
+              if (i4.statusCode === 200 && i4.body.transactions !== void 0)
+                for (let e6 = 0; e6 < i4.body.transactions.length; e6++)
+                  i4.body.transactions[e6] = u3(i4.body.transactions[e6]);
+              return i4.body;
             }, this.transactionById = async (e5, t5 = {}) => {
               const r5 = await c3.get(`/v1/transaction/${e5}`, {}, t5);
               return r5.statusCode === 200 && (r5.body = u3(r5.body)), r5.body;
@@ -12059,10 +12065,10 @@ var require_algosdk_min = __commonJS({
               const r5 = await c3.get(`/v1/transactions/pending/${e5}`, {}, t5);
               return r5.statusCode === 200 && (r5.body = u3(r5.body)), r5.body;
             }, this.accountInformation = async (e5, t5 = {}) => (await c3.get(`/v1/account/${e5}`, {}, t5)).body, this.assetInformation = async (e5, t5 = {}) => (await c3.get(`/v1/asset/${e5}`, {}, t5)).body, this.suggestedFee = async (e5 = {}) => (await c3.get("/v1/transactions/fee", {}, e5)).body, this.sendRawTransaction = async (e5, t5 = {}) => {
-              const r5 = s3(t5);
+              const r5 = i3(t5);
               return (await c3.post("/v1/transactions", n2.from(e5), r5)).body;
             }, this.sendRawTransactions = async (e5, t5 = {}) => {
-              const r5 = s3(t5), o4 = Array.prototype.concat(...e5.map((e6) => Array.from(e6)));
+              const r5 = i3(t5), o4 = Array.prototype.concat(...e5.map((e6) => Array.from(e6)));
               return (await c3.post("/v1/transactions", n2.from(o4), r5)).body;
             }, this.getTransactionParams = async (e5 = {}) => (await c3.get("/v1/transactions/params", {}, e5)).body, this.suggestParams = async (e5 = {}) => {
               const t5 = await this.getTransactionParams(e5);
@@ -12079,20 +12085,20 @@ var require_algosdk_min = __commonJS({
           } };
         }, 1834: (e3, t3, r3) => {
           var n2 = r3(2486).Buffer;
-          const o3 = r3(7116), s3 = r3(3033), i3 = r3(1063), a3 = r3(5583), c3 = r3(8800), u3 = r3(9404), l3 = r3(2514), h3 = r3(9417);
+          const o3 = r3(7116), i3 = r3(3033), s3 = r3(1063), a3 = r3(5583), c3 = r3(8800), u3 = r3(9404), l3 = r3(2514), h3 = r3(9417);
           e3.exports = { DynamicFee: class {
-            constructor(e4, t4, r4, s4, i4, a4) {
+            constructor(e4, t4, r4, i4, s4, a4) {
               if (!Number.isSafeInteger(t4) || t4 < 0)
                 throw Error("amount must be a positive number and smaller than 2^53-1");
               if (!Number.isSafeInteger(r4) || r4 < 0)
                 throw Error("firstValid must be a positive number and smaller than 2^53-1");
-              if (!Number.isSafeInteger(s4) || s4 < 0)
+              if (!Number.isSafeInteger(i4) || i4 < 0)
                 throw Error("lastValid must be a positive number and smaller than 2^53-1");
-              if (i4 === void 0 && (i4 = o3.ALGORAND_ZERO_ADDRESS_STRING), a4 === void 0) {
+              if (s4 === void 0 && (s4 = o3.ALGORAND_ZERO_ADDRESS_STRING), a4 === void 0) {
                 const e5 = u3.randomBytes(32);
                 a4 = n2.from(e5).toString("base64");
               }
-              const h4 = n2.from("ASAFAgEHBgUmAyD+vKC7FEpaTqe0OKRoGsgObKEFvLYH/FZTJclWlfaiEyDmmpYeby1feshmB5JlUr6YI17TM2PKiJGLuck4qRW2+SB/g7Flf/H8U7ktwYFIodZd/C1LH6PWdyhK3dIAEm2QaTIEIhIzABAjEhAzAAcxABIQMwAIMQESEDEWIxIQMRAjEhAxBygSEDEJKRIQMQgkEhAxAiUSEDEEIQQSEDEGKhIQ", "base64"), p3 = [t4, r4, s4, e4, i4, a4], f3 = [l3.valTypes.INT, l3.valTypes.INT, l3.valTypes.INT, l3.valTypes.ADDRESS, l3.valTypes.ADDRESS, l3.valTypes.BASE64], d3 = l3.inject(h4, [5, 6, 7, 11, 44, 76], p3, f3);
+              const h4 = n2.from("ASAFAgEHBgUmAyD+vKC7FEpaTqe0OKRoGsgObKEFvLYH/FZTJclWlfaiEyDmmpYeby1feshmB5JlUr6YI17TM2PKiJGLuck4qRW2+SB/g7Flf/H8U7ktwYFIodZd/C1LH6PWdyhK3dIAEm2QaTIEIhIzABAjEhAzAAcxABIQMwAIMQESEDEWIxIQMRAjEhAxBygSEDEJKRIQMQgkEhAxAiUSEDEEIQQSEDEGKhIQ", "base64"), p3 = [t4, r4, i4, e4, s4, a4], f3 = [l3.valTypes.INT, l3.valTypes.INT, l3.valTypes.INT, l3.valTypes.ADDRESS, l3.valTypes.ADDRESS, l3.valTypes.BASE64], d3 = l3.inject(h4, [5, 6, 7, 11, 44, 76], p3, f3);
               this.programBytes = d3;
               const g3 = new c3.LogicSig(d3, void 0);
               this.address = g3.address();
@@ -12113,20 +12119,20 @@ var require_algosdk_min = __commonJS({
             p3.addLease(l4, n3);
             const f3 = { from: c4, to: e4.from, fee: n3, amount: p3.fee, firstRound: e4.firstRound, lastRound: e4.lastRound, genesisHash: e4.genesisHash, type: "pay" }, d3 = new h3.Transaction(f3);
             d3.addLease(l4, n3);
-            const g3 = i3.assignGroupID([d3, p3], void 0), y3 = g3[0], m3 = g3[1], b2 = { lsig: t4.get_obj_for_encoding(), txn: m3.get_obj_for_encoding() }, A4 = y3.signTxn(r4), w4 = s3.encode(b2), v3 = new Uint8Array(A4.length + w4.length);
+            const g3 = s3.assignGroupID([d3, p3], void 0), y3 = g3[0], m3 = g3[1], b2 = { lsig: t4.get_obj_for_encoding(), txn: m3.get_obj_for_encoding() }, A4 = y3.signTxn(r4), w4 = i3.encode(b2), v3 = new Uint8Array(A4.length + w4.length);
             return v3.set(A4), v3.set(w4, A4.length), v3;
           }, signDynamicFee: function(e4, t4, r4) {
-            const n3 = a3.readProgram(e4, void 0), s4 = n3[0], i4 = n3[1], l4 = u3.keyPairFromSecretKey(t4), h4 = { from: o3.encodeAddress(l4.publicKey), to: o3.encodeAddress(i4[0]), fee: 0, amount: s4[2], closeRemainderTo: o3.encodeAddress(i4[1]), firstRound: s4[3], lastRound: s4[4], genesisHash: r4, type: "pay", lease: new Uint8Array(i4[2]) }, p3 = new c3.LogicSig(e4, void 0);
+            const n3 = a3.readProgram(e4, void 0), i4 = n3[0], s4 = n3[1], l4 = u3.keyPairFromSecretKey(t4), h4 = { from: o3.encodeAddress(l4.publicKey), to: o3.encodeAddress(s4[0]), fee: 0, amount: i4[2], closeRemainderTo: o3.encodeAddress(s4[1]), firstRound: i4[3], lastRound: i4[4], genesisHash: r4, type: "pay", lease: new Uint8Array(s4[2]) }, p3 = new c3.LogicSig(e4, void 0);
             return p3.sign(t4), { txn: h4, lsig: p3 };
           } };
         }, 1786: (e3, t3, r3) => {
           var n2 = r3(2486).Buffer;
-          const o3 = r3(3477), { keccak256: s3 } = r3(583), i3 = r3(5583), a3 = r3(8800), c3 = r3(2514), u3 = r3(9417);
+          const o3 = r3(3477), { keccak256: i3 } = r3(583), s3 = r3(5583), a3 = r3(8800), c3 = r3(2514), u3 = r3(9417);
           e3.exports = { HTLC: class {
-            constructor(e4, t4, r4, o4, s4, i4) {
-              if (!Number.isSafeInteger(s4) || s4 < 0)
-                throw Error("expiryRound must be a positive number and smaller than 2^53-1");
+            constructor(e4, t4, r4, o4, i4, s4) {
               if (!Number.isSafeInteger(i4) || i4 < 0)
+                throw Error("expiryRound must be a positive number and smaller than 2^53-1");
+              if (!Number.isSafeInteger(s4) || s4 < 0)
                 throw Error("maxFee must be a positive number and smaller than 2^53-1");
               let u4 = "";
               if (r4 === "sha256")
@@ -12138,7 +12144,7 @@ var require_algosdk_min = __commonJS({
               }
               if (n2.from(o4, "base64").length !== 32)
                 throw Error("hash image must be 32 bytes");
-              const l3 = n2.from(u4, "base64"), h3 = [i4, s4, t4, o4, e4], p3 = [c3.valTypes.INT, c3.valTypes.INT, c3.valTypes.ADDRESS, c3.valTypes.BASE64, c3.valTypes.ADDRESS], f3 = c3.inject(l3, [3, 6, 10, 42, 76], h3, p3);
+              const l3 = n2.from(u4, "base64"), h3 = [s4, i4, t4, o4, e4], p3 = [c3.valTypes.INT, c3.valTypes.INT, c3.valTypes.ADDRESS, c3.valTypes.BASE64, c3.valTypes.ADDRESS], f3 = c3.inject(l3, [3, 6, 10, 42, 76], h3, p3);
               this.programBytes = f3;
               const d3 = new a3.LogicSig(f3, void 0);
               this.address = d3.address();
@@ -12150,7 +12156,7 @@ var require_algosdk_min = __commonJS({
               return this.address;
             }
           }, signTransactionWithHTLCUnlock: function(e4, t4, r4) {
-            const c4 = n2.from(r4, "base64"), l3 = i3.readProgram(e4, void 0), h3 = l3[0], p3 = l3[1][1], f3 = e4[e4.length - 15];
+            const c4 = n2.from(r4, "base64"), l3 = s3.readProgram(e4, void 0), h3 = l3[0], p3 = l3[1][1], f3 = e4[e4.length - 15];
             if (f3 === 1) {
               const e5 = o3.create();
               if (e5.update(c4), !n2.from(e5.hex(), "hex").equals(p3))
@@ -12159,7 +12165,7 @@ var require_algosdk_min = __commonJS({
               if (f3 !== 2)
                 throw new Error("hash function in contract unrecognized");
               {
-                const e5 = s3.create();
+                const e5 = i3.create();
                 if (e5.update(c4), !n2.from(e5.hex(), "hex").equals(p3))
                   throw new Error("keccak256 hash of preimage did not match stored contract hash");
               }
@@ -12172,26 +12178,26 @@ var require_algosdk_min = __commonJS({
             return a3.signLogicSigTransaction(t4, g3);
           } };
         }, 8886: (e3, t3, r3) => {
-          const n2 = r3(1834), o3 = r3(1786), s3 = r3(4748), i3 = r3(3758), a3 = r3(2200);
-          e3.exports = { DynamicFee: n2.DynamicFee, getDynamicFeeTransactions: n2.getDynamicFeeTransactions, signDynamicFee: n2.signDynamicFee, HTLC: o3.HTLC, signTransactionWithHTLCUnlock: o3.signTransactionWithHTLCUnlock, LimitOrder: s3.LimitOrder, getSwapAssetsTransaction: s3.getSwapAssetsTransaction, Split: i3.Split, getSplitFundsTransaction: i3.getSplitFundsTransaction, PeriodicPayment: a3.PeriodicPayment, getPeriodicPaymentWithdrawalTransaction: a3.getPeriodicPaymentWithdrawalTransaction };
+          const n2 = r3(1834), o3 = r3(1786), i3 = r3(4748), s3 = r3(3758), a3 = r3(2200);
+          e3.exports = { DynamicFee: n2.DynamicFee, getDynamicFeeTransactions: n2.getDynamicFeeTransactions, signDynamicFee: n2.signDynamicFee, HTLC: o3.HTLC, signTransactionWithHTLCUnlock: o3.signTransactionWithHTLCUnlock, LimitOrder: i3.LimitOrder, getSwapAssetsTransaction: i3.getSwapAssetsTransaction, Split: s3.Split, getSplitFundsTransaction: s3.getSplitFundsTransaction, PeriodicPayment: a3.PeriodicPayment, getPeriodicPaymentWithdrawalTransaction: a3.getPeriodicPaymentWithdrawalTransaction };
         }, 4748: (e3, t3, r3) => {
           var n2 = r3(2486).Buffer;
-          const o3 = r3(7116), s3 = r3(1988), i3 = r3(1063), a3 = r3(5583), c3 = r3(8800), u3 = r3(9404), l3 = r3(2514), h3 = r3(413);
+          const o3 = r3(7116), i3 = r3(1988), s3 = r3(1063), a3 = r3(5583), c3 = r3(8800), u3 = r3(9404), l3 = r3(2514), h3 = r3(413);
           e3.exports = { LimitOrder: class {
-            constructor(e4, t4, r4, o4, s4, i4, a4) {
+            constructor(e4, t4, r4, o4, i4, s4, a4) {
               if (!Number.isSafeInteger(t4) || t4 < 0)
                 throw Error("assetid must be a positive number and smaller than 2^53-1");
               if (!Number.isSafeInteger(r4) || r4 < 0)
                 throw Error("ratn must be a positive number and smaller than 2^53-1");
               if (!Number.isSafeInteger(o4) || o4 < 0)
                 throw Error("ratd must be a positive number and smaller than 2^53-1");
-              if (!Number.isSafeInteger(s4) || s4 < 0)
-                throw Error("expiryRound must be a positive number and smaller than 2^53-1");
               if (!Number.isSafeInteger(i4) || i4 < 0)
+                throw Error("expiryRound must be a positive number and smaller than 2^53-1");
+              if (!Number.isSafeInteger(s4) || s4 < 0)
                 throw Error("minTrade must be a positive number and smaller than 2^53-1");
               if (!Number.isSafeInteger(a4) || a4 < 0)
                 throw Error("maxFee must be a positive number and smaller than 2^53-1");
-              const u4 = n2.from("ASAKAAEFAgYEBwgJCiYBIP68oLsUSlpOp7Q4pGgayA5soQW8tgf8VlMlyVaV9qITMRYiEjEQIxIQMQEkDhAyBCMSQABVMgQlEjEIIQQNEDEJMgMSEDMBECEFEhAzAREhBhIQMwEUKBIQMwETMgMSEDMBEiEHHTUCNQExCCEIHTUENQM0ATQDDUAAJDQBNAMSNAI0BA8QQAAWADEJKBIxAiEJDRAxBzIDEhAxCCISEBA=", "base64"), h4 = [a4, i4, t4, o4, r4, s4, e4], p3 = [l3.valTypes.INT, l3.valTypes.INT, l3.valTypes.INT, l3.valTypes.INT, l3.valTypes.INT, l3.valTypes.INT, l3.valTypes.ADDRESS], f3 = l3.inject(u4, [5, 7, 9, 10, 11, 12, 16], h4, p3);
+              const u4 = n2.from("ASAKAAEFAgYEBwgJCiYBIP68oLsUSlpOp7Q4pGgayA5soQW8tgf8VlMlyVaV9qITMRYiEjEQIxIQMQEkDhAyBCMSQABVMgQlEjEIIQQNEDEJMgMSEDMBECEFEhAzAREhBhIQMwEUKBIQMwETMgMSEDMBEiEHHTUCNQExCCEIHTUENQM0ATQDDUAAJDQBNAMSNAI0BA8QQAAWADEJKBIxAiEJDRAxBzIDEhAxCCISEBA=", "base64"), h4 = [a4, s4, t4, o4, r4, i4, e4], p3 = [l3.valTypes.INT, l3.valTypes.INT, l3.valTypes.INT, l3.valTypes.INT, l3.valTypes.INT, l3.valTypes.INT, l3.valTypes.ADDRESS], f3 = l3.inject(u4, [5, 7, 9, 10, 11, 12, 16], h4, p3);
               this.programBytes = f3;
               const d3 = new c3.LogicSig(f3, void 0);
               this.address = d3.address(), this.owner = e4, this.assetid = t4;
@@ -12205,7 +12211,7 @@ var require_algosdk_min = __commonJS({
           }, getSwapAssetsTransaction: function(e4, t4, r4, n3, l4, p3, f3, d3) {
             const g3 = u3.keyPairFromSecretKey(n3), y3 = o3.encodeAddress(g3.publicKey), m3 = a3.readProgram(e4, void 0), b2 = m3[0], A4 = m3[1];
             let w4;
-            const v3 = b2[6], x3 = o3.encodeAddress(A4[0]), S2 = c3.makeLogicSig(e4, void 0), E4 = S2.address(), T4 = [s3.makePaymentTxn(E4, y3, l4, r4, w4, p3, f3, void 0, d3, void 0), s3.makeAssetTransferTxn(y3, x3, w4, void 0, l4, t4, p3, f3, void 0, d3, void 0, v3)], _4 = i3.assignGroupID(T4), B2 = b2[7], U2 = b2[8];
+            const v3 = b2[6], x3 = o3.encodeAddress(A4[0]), S2 = c3.makeLogicSig(e4, void 0), E4 = S2.address(), T4 = [i3.makePaymentTxn(E4, y3, l4, r4, w4, p3, f3, void 0, d3, void 0), i3.makeAssetTransferTxn(y3, x3, w4, void 0, l4, t4, p3, f3, void 0, d3, void 0, v3)], _4 = s3.assignGroupID(T4), B2 = b2[7], U2 = b2[8];
             if (t4 * B2 < r4 * U2)
               throw new Error(`bad payment ratio, ${t4.toString()}*${B2.toString()} !>= ${r4.toString()}*${U2.toString()}`);
             const k3 = b2[4];
@@ -12221,20 +12227,20 @@ var require_algosdk_min = __commonJS({
           } };
         }, 2200: (e3, t3, r3) => {
           var n2 = r3(2486).Buffer;
-          const o3 = r3(7116), s3 = r3(1988), i3 = r3(5583), a3 = r3(8800), c3 = r3(9404), u3 = r3(2514);
+          const o3 = r3(7116), i3 = r3(1988), s3 = r3(5583), a3 = r3(8800), c3 = r3(9404), u3 = r3(2514);
           e3.exports = { PeriodicPayment: class {
-            constructor(e4, t4, r4, o4, s4, i4, u4) {
+            constructor(e4, t4, r4, o4, i4, s4, u4) {
               if (this.receiver = e4, !Number.isSafeInteger(t4) || t4 < 0)
                 throw Error("amount must be a positive number and smaller than 2^53-1");
               if (this.amount = t4, !Number.isSafeInteger(r4) || r4 < 0)
                 throw Error("withdrawalWindow must be a positive number and smaller than 2^53-1");
               if (this.withdrawalWindow = r4, !Number.isSafeInteger(o4) || o4 < 0)
                 throw Error("period must be a positive number and smaller than 2^53-1");
-              if (this.period = o4, !Number.isSafeInteger(s4) || s4 < 0)
+              if (this.period = o4, !Number.isSafeInteger(i4) || i4 < 0)
                 throw Error("expiryRound must be a positive number and smaller than 2^53-1");
-              if (this.expiryRound = s4, !Number.isSafeInteger(i4) || i4 < 0)
+              if (this.expiryRound = i4, !Number.isSafeInteger(s4) || s4 < 0)
                 throw Error("maxFee must be a positive number and smaller than 2^53-1");
-              if (this.maxFee = i4, u4 === void 0) {
+              if (this.maxFee = s4, u4 === void 0) {
                 const e5 = c3.randomBytes(32);
                 this.lease = n2.from(e5).toString("base64");
               } else
@@ -12251,32 +12257,32 @@ var require_algosdk_min = __commonJS({
               return this.address;
             }
           }, getPeriodicPaymentWithdrawalTransaction: function(e4, t4, r4, n3) {
-            const c4 = i3.readProgram(e4, void 0), u4 = c4[0], l3 = c4[1], h3 = u4[2], p3 = u4[4], f3 = u4[5];
+            const c4 = s3.readProgram(e4, void 0), u4 = c4[0], l3 = c4[1], h3 = u4[2], p3 = u4[4], f3 = u4[5];
             if (r4 % h3 != 0)
               throw new Error(`firstValid round ${r4.toString()} was not a multiple of contract period ${h3.toString()}`);
             const d3 = l3[1], g3 = o3.encodeAddress(d3), y3 = l3[0], m3 = new Uint8Array(y3), b2 = r4 + p3, A4 = g3;
             let w4, v3;
-            const x3 = a3.makeLogicSig(e4, void 0), S2 = x3.address(), E4 = { from: S2, to: A4, fee: t4, amount: f3, closeRemainderTo: w4, firstRound: r4, lastRound: b2, note: v3, genesisHash: n3, genesisID: "", type: "pay", lease: m3 }, T4 = s3.makePaymentTxn(S2, A4, t4, f3, w4, r4, b2, v3, n3, "");
+            const x3 = a3.makeLogicSig(e4, void 0), S2 = x3.address(), E4 = { from: S2, to: A4, fee: t4, amount: f3, closeRemainderTo: w4, firstRound: r4, lastRound: b2, note: v3, genesisHash: n3, genesisID: "", type: "pay", lease: m3 }, T4 = i3.makePaymentTxn(S2, A4, t4, f3, w4, r4, b2, v3, n3, "");
             if (T4.fee > u4[1])
               throw new Error(`final fee of payment transaction${T4.fee.toString()}greater than transaction max fee${u4[1].toString()}`);
             return a3.signLogicSigTransaction(E4, x3);
           } };
         }, 3758: (e3, t3, r3) => {
           var n2 = r3(2486).Buffer;
-          const o3 = r3(7116), s3 = r3(1988), i3 = r3(1063), a3 = r3(8800), c3 = r3(5583), u3 = r3(2514), l3 = r3(413);
+          const o3 = r3(7116), i3 = r3(1988), s3 = r3(1063), a3 = r3(8800), c3 = r3(5583), u3 = r3(2514), l3 = r3(413);
           e3.exports = { Split: class {
-            constructor(e4, t4, r4, o4, s4, i4, c4, l4) {
-              if (!Number.isSafeInteger(s4) || s4 < 0)
+            constructor(e4, t4, r4, o4, i4, s4, c4, l4) {
+              if (!Number.isSafeInteger(i4) || i4 < 0)
                 throw Error("rat2 must be a positive number and smaller than 2^53-1");
               if (!Number.isSafeInteger(o4) || o4 < 0)
                 throw Error("rat1 must be a positive number and smaller than 2^53-1");
-              if (!Number.isSafeInteger(i4) || i4 < 0)
+              if (!Number.isSafeInteger(s4) || s4 < 0)
                 throw Error("expiryRound must be a positive number and smaller than 2^53-1");
               if (!Number.isSafeInteger(c4) || c4 < 0)
                 throw Error("minPay must be a positive number and smaller than 2^53-1");
               if (!Number.isSafeInteger(l4) || l4 < 0)
                 throw Error("maxFee must be a positive number and smaller than 2^53-1");
-              const h3 = n2.from("ASAIAQUCAAYHCAkmAyCztwQn0+DycN+vsk+vJWcsoz/b7NDS6i33HOkvTpf+YiC3qUpIgHGWE8/1LPh9SGCalSN7IaITeeWSXbfsS5wsXyC4kBQ38Z8zcwWVAym4S8vpFB/c0XC6R4mnPi9EBADsPDEQIhIxASMMEDIEJBJAABkxCSgSMQcyAxIQMQglEhAxAiEEDRAiQAAuMwAAMwEAEjEJMgMSEDMABykSEDMBByoSEDMACCEFCzMBCCEGCxIQMwAIIQcPEBA=", "base64"), p3 = [l4, i4, s4, o4, c4, e4, t4, r4], f3 = [u3.valTypes.INT, u3.valTypes.INT, u3.valTypes.INT, u3.valTypes.INT, u3.valTypes.INT, u3.valTypes.ADDRESS, u3.valTypes.ADDRESS, u3.valTypes.ADDRESS], d3 = u3.inject(h3, [4, 7, 8, 9, 10, 14, 47, 80], p3, f3);
+              const h3 = n2.from("ASAIAQUCAAYHCAkmAyCztwQn0+DycN+vsk+vJWcsoz/b7NDS6i33HOkvTpf+YiC3qUpIgHGWE8/1LPh9SGCalSN7IaITeeWSXbfsS5wsXyC4kBQ38Z8zcwWVAym4S8vpFB/c0XC6R4mnPi9EBADsPDEQIhIxASMMEDIEJBJAABkxCSgSMQcyAxIQMQglEhAxAiEEDRAiQAAuMwAAMwEAEjEJMgMSEDMABykSEDMBByoSEDMACCEFCzMBCCEGCxIQMwAIIQcPEBA=", "base64"), p3 = [l4, s4, i4, o4, c4, e4, t4, r4], f3 = [u3.valTypes.INT, u3.valTypes.INT, u3.valTypes.INT, u3.valTypes.INT, u3.valTypes.INT, u3.valTypes.ADDRESS, u3.valTypes.ADDRESS, u3.valTypes.ADDRESS], d3 = u3.inject(h3, [4, 7, 8, 9, 10, 14, 47, 80], p3, f3);
               this.programBytes = d3;
               const g3 = a3.makeLogicSig(d3, void 0);
               this.address = g3.address();
@@ -12301,40 +12307,40 @@ var require_algosdk_min = __commonJS({
             const v3 = t4 - m3;
             if (y3 * m3 != g3 * v3)
               throw Error("could not split funds in a way that satisfied the contract ratio");
-            const x3 = a3.makeLogicSig(e4, void 0).address(), S2 = o3.encodeAddress(d3[1]), E4 = o3.encodeAddress(d3[2]), T4 = [s3.makePaymentTxn(x3, S2, u4, m3, void 0, r4, n3, void 0, h3), s3.makePaymentTxn(x3, E4, u4, v3, void 0, r4, n3, void 0, h3)], _4 = i3.assignGroupID(T4).map((e5) => a3.signLogicSigTransactionObject(e5, a3).blob);
+            const x3 = a3.makeLogicSig(e4, void 0).address(), S2 = o3.encodeAddress(d3[1]), E4 = o3.encodeAddress(d3[2]), T4 = [i3.makePaymentTxn(x3, S2, u4, m3, void 0, r4, n3, void 0, h3), i3.makePaymentTxn(x3, E4, u4, v3, void 0, r4, n3, void 0, h3)], _4 = s3.assignGroupID(T4).map((e5) => a3.signLogicSigTransactionObject(e5, a3).blob);
             return l3.concatArrays(_4[0], _4[1]);
           } };
         }, 2514: (e3, t3, r3) => {
           var n2 = r3(2486).Buffer;
           const o3 = r3(7116);
-          function s3(e4, t4) {
+          function i3(e4, t4) {
             let r4 = 0;
             for (; t4 > 128; )
               e4.push(255 & t4 | 128), t4 >>= 7, r4 += 1;
             return e4.push(255 & t4), r4 + 1;
           }
-          const i3 = { INT: 1, ADDRESS: 2, BASE64: 3 };
+          const s3 = { INT: 1, ADDRESS: 2, BASE64: 3 };
           e3.exports = { inject: function(e4, t4, r4, a3) {
             if (t4.length !== r4.length || t4.length !== a3.length)
               throw new Error("Lengths do not match");
             let c3 = e4;
             function u3(e5, t5, r5, o4) {
-              const s4 = e5.slice(0, r5), i4 = e5.slice(r5 + o4, e5.length), a4 = [s4, n2.from(t5), i4];
+              const i4 = e5.slice(0, r5), s4 = e5.slice(r5 + o4, e5.length), a4 = [i4, n2.from(t5), s4];
               return n2.concat(a4);
             }
             for (let e5 = 0; e5 < t4.length; e5++) {
               let l3 = 0, h3 = r4[e5];
               switch (a3[e5]) {
-                case i3.INT:
+                case s3.INT:
                   const r5 = [];
-                  l3 = s3(r5, h3), c3 = u3(c3, r5, t4[e5], 1);
+                  l3 = i3(r5, h3), c3 = u3(c3, r5, t4[e5], 1);
                   break;
-                case i3.ADDRESS:
+                case s3.ADDRESS:
                   h3 = o3.decodeAddress(h3), c3 = u3(c3, h3.publicKey, t4[e5], 32);
                   break;
-                case i3.BASE64:
+                case s3.BASE64:
                   const a4 = [];
-                  h3 = n2.from(h3, "base64"), s3(a4, h3.length), h3 = n2.concat([n2.from(a4), h3]), c3 = u3(c3, h3, t4[e5], 33);
+                  h3 = n2.from(h3, "base64"), i3(a4, h3.length), h3 = n2.concat([n2.from(a4), h3]), c3 = u3(c3, h3, t4[e5], 33);
                   break;
                 default:
                   throw new Error("unrecognized value type");
@@ -12344,11 +12350,11 @@ var require_algosdk_min = __commonJS({
                   t4[e6] += l3 - 1;
             }
             return c3;
-          }, valTypes: i3 };
+          }, valTypes: s3 };
         }, 7677: (e3, t3, r3) => {
           "use strict";
           r3.d(t3, { JQ: () => m3, _4: () => x3, X3: () => v3, R0: () => b2, jD: () => A4, Yh: () => O2, bL: () => D3, Ls: () => R2, UV: () => B2, Ax: () => w4, A9: () => _4, w1: () => S2, NK: () => d3, RY: () => y3, Pu: () => g3, Vk: () => c3, nh: () => h3, kG: () => a3, qH: () => l3, JH: () => u3, vJ: () => I3, o5: () => C3, AE: () => k3 });
-          var n2 = r3(7116), o3 = r3(8922), s3 = r3(413), i3 = r3(2486).Buffer;
+          var n2 = r3(7116), o3 = r3(8922), i3 = r3(413), s3 = r3(2486).Buffer;
           const a3 = 65535, c3 = 32, u3 = 1, l3 = 1, h3 = 2, p3 = /^([a-z\d[\](),]+)\[([1-9][\d]*)]$/, f3 = /^ufixed([1-9][\d]*)x([1-9][\d]*)$/;
           class d3 {
             static from(e4) {
@@ -12568,16 +12574,16 @@ var require_algosdk_min = __commonJS({
             encode(e4) {
               if (typeof e4 != "string" && !(e4 instanceof Uint8Array))
                 throw new Error(`Cannot encode value as string: ${e4}`);
-              const t4 = i3.from(e4), r4 = (0, o3.j)(e4.length, h3), n3 = new Uint8Array(e4.length + h3);
+              const t4 = s3.from(e4), r4 = (0, o3.j)(e4.length, h3), n3 = new Uint8Array(e4.length + h3);
               return n3.set(r4), n3.set(t4, h3), n3;
             }
             decode(e4) {
               if (e4.length < h3)
                 throw new Error(`byte string is too short to be decoded. Actual length is ${e4.length}, but expected at least ${h3}`);
-              const t4 = i3.from(e4).readUIntBE(0, h3), r4 = e4.slice(h3, e4.length);
+              const t4 = s3.from(e4).readUIntBE(0, h3), r4 = e4.slice(h3, e4.length);
               if (t4 !== r4.length)
                 throw new Error(`string length bytes do not match the actual length of string. Expected ${t4}, got ${r4.length}`);
-              return i3.from(r4).toString("utf-8");
+              return s3.from(r4).toString("utf-8");
             }
           }
           class v3 extends d3 {
@@ -12632,10 +12638,10 @@ var require_algosdk_min = __commonJS({
               if (!(Array.isArray(e4) || e4 instanceof Uint8Array))
                 throw new Error(`Cannot encode value as ${this.toString()}: ${e4}`);
               const t4 = this.toABITupleType(e4.length), r4 = t4.encode(e4), n3 = (0, o3.j)(t4.childTypes.length, h3);
-              return (0, s3.concatArrays)(n3, r4);
+              return (0, i3.concatArrays)(n3, r4);
             }
             decode(e4) {
-              const t4 = i3.from(e4).readUIntBE(0, h3);
+              const t4 = s3.from(e4).readUIntBE(0, h3);
               return this.toABITupleType(t4).decode(e4.slice(h3, e4.length));
             }
             toABITupleType(e4) {
@@ -12676,26 +12682,26 @@ var require_algosdk_min = __commonJS({
               const t4 = Array.from(e4);
               if (e4.length > a3)
                 throw new Error("length of tuple array should not exceed a uint16");
-              const r4 = this.childTypes, n3 = [], i4 = [], c4 = /* @__PURE__ */ new Map();
+              const r4 = this.childTypes, n3 = [], s4 = [], c4 = /* @__PURE__ */ new Map();
               let u4 = 0;
               for (; u4 < r4.length; ) {
                 const e5 = r4[u4];
                 if (e5.isDynamic())
-                  c4.set(n3.length, true), n3.push(new Uint8Array([0, 0])), i4.push(e5.encode(t4[u4]));
+                  c4.set(n3.length, true), n3.push(new Uint8Array([0, 0])), s4.push(e5.encode(t4[u4]));
                 else {
                   if (e5.constructor === b2) {
                     const e6 = T4(r4, u4, -1);
-                    let s4 = T4(r4, u4, 1);
+                    let i4 = T4(r4, u4, 1);
                     if (e6 % 8 != 0)
                       throw new Error("expected before index should have number of bool mod 8 equal 0");
-                    s4 = Math.min(7, s4);
-                    const i5 = E4(t4.slice(u4, u4 + s4 + 1));
-                    n3.push((0, o3.j)(i5, 1)), u4 += s4;
+                    i4 = Math.min(7, i4);
+                    const s5 = E4(t4.slice(u4, u4 + i4 + 1));
+                    n3.push((0, o3.j)(s5, 1)), u4 += i4;
                   } else {
                     const r5 = e5.encode(t4[u4]);
                     n3.push(r5);
                   }
-                  c4.set(u4, false), i4.push(new Uint8Array());
+                  c4.set(u4, false), s4.push(new Uint8Array());
                 }
                 u4 += 1;
               }
@@ -12710,25 +12716,25 @@ var require_algosdk_min = __commonJS({
                     throw new Error(`byte length of ${t5} should not exceed a uint16`);
                   n3[e5] = (0, o3.j)(t5, h3);
                 }
-                p4 += i4[e5].length;
+                p4 += s4[e5].length;
               }
-              return (0, s3.concatArrays)(...n3, ...i4);
+              return (0, i3.concatArrays)(...n3, ...s4);
             }
             decode(e4) {
               const t4 = this.childTypes, r4 = [], n3 = [];
-              let o4 = 0, s4 = 0;
-              const a4 = i3.from(e4);
+              let o4 = 0, i4 = 0;
+              const a4 = s3.from(e4);
               for (; o4 < t4.length; ) {
-                const i4 = t4[o4];
-                if (i4.isDynamic()) {
-                  if (e4.slice(s4, e4.length).length < h3)
+                const s4 = t4[o4];
+                if (s4.isDynamic()) {
+                  if (e4.slice(i4, e4.length).length < h3)
                     throw new Error("dynamic type in tuple is too short to be decoded");
-                  const t5 = a4.readUIntBE(s4, h3);
+                  const t5 = a4.readUIntBE(i4, h3);
                   if (r4.length > 0 && (r4[r4.length - 1].right = t5, t5 < r4[r4.length - 1].left))
                     throw new Error("dynamic index segment miscalculation: left is greater than right index");
                   const o5 = { left: t5, right: -1 };
-                  r4.push(o5), n3.push(null), s4 += h3;
-                } else if (i4.constructor === b2) {
+                  r4.push(o5), n3.push(null), i4 += h3;
+                } else if (s4.constructor === b2) {
                   const t5 = T4(this.childTypes, o4, -1);
                   let r5 = T4(this.childTypes, o4, 1);
                   if (t5 % 8 != 0)
@@ -12736,18 +12742,18 @@ var require_algosdk_min = __commonJS({
                   r5 = Math.min(7, r5);
                   for (let t6 = 0; t6 <= r5; t6++) {
                     const r6 = 128 >> t6;
-                    (e4[s4] & r6) > 0 ? n3.push(new Uint8Array([128])) : n3.push(new Uint8Array([0]));
+                    (e4[i4] & r6) > 0 ? n3.push(new Uint8Array([128])) : n3.push(new Uint8Array([0]));
                   }
-                  o4 += r5, s4 += 1;
+                  o4 += r5, i4 += 1;
                 } else {
-                  const t5 = i4.byteLen();
-                  n3.push(e4.slice(s4, s4 + t5)), s4 += t5;
+                  const t5 = s4.byteLen();
+                  n3.push(e4.slice(i4, i4 + t5)), i4 += t5;
                 }
-                if (o4 !== t4.length - 1 && s4 >= e4.length)
+                if (o4 !== t4.length - 1 && i4 >= e4.length)
                   throw new Error("input byte not enough to decode");
                 o4 += 1;
               }
-              if (r4.length > 0 && (r4[r4.length - 1].right = e4.length, s4 = e4.length), s4 < e4.length)
+              if (r4.length > 0 && (r4[r4.length - 1].right = e4.length, i4 = e4.length), i4 < e4.length)
                 throw new Error("input byte not fully consumed");
               for (let e5 = 0; e5 < r4.length; e5++) {
                 const t5 = r4[e5];
@@ -12898,50 +12904,50 @@ var require_algosdk_min = __commonJS({
           }
         }, 7988: (e3, t3, r3) => {
           "use strict";
-          r3.d(t3, { Z: () => s3 });
+          r3.d(t3, { Z: () => i3 });
           var n2 = r3(9404), o3 = r3(7116);
-          function s3() {
+          function i3() {
             const e4 = n2.keyPair();
             return { addr: o3.encodeAddress(e4.publicKey), sk: e4.secretKey };
           }
         }, 2691: (e3, t3, r3) => {
           "use strict";
           r3.d(t3, { Z: () => c3 });
-          var n2 = r3(7116), o3 = r3(3033), s3 = r3(9404), i3 = r3(413), a3 = r3(2486).Buffer;
+          var n2 = r3(7116), o3 = r3(3033), i3 = r3(9404), s3 = r3(413), a3 = r3(2486).Buffer;
           class c3 {
-            constructor({ bidderKey: e4, bidAmount: t4, bidID: r4, auctionKey: o4, auctionID: s4, maxPrice: i4 }) {
+            constructor({ bidderKey: e4, bidAmount: t4, bidID: r4, auctionKey: o4, auctionID: i4, maxPrice: s4 }) {
               this.name = "Bid", this.tag = a3.from([97, 66]);
               const c4 = n2.decodeAddress(e4), u3 = n2.decodeAddress(o4);
               if (!Number.isSafeInteger(t4) || t4 < 0)
                 throw Error("Bid amount must be positive and 2^53-1");
               if (!Number.isSafeInteger(r4) || r4 < 0)
                 throw Error("BidID must be positive and 2^53-1");
-              if (!Number.isSafeInteger(s4) || s4 < 0)
+              if (!Number.isSafeInteger(i4) || i4 < 0)
                 throw Error("auctionID must be positive");
-              Object.assign(this, { bidderKey: c4, bidAmount: t4, bidID: r4, auctionKey: u3, auctionID: s4, maxPrice: i4 });
+              Object.assign(this, { bidderKey: c4, bidAmount: t4, bidID: r4, auctionKey: u3, auctionID: i4, maxPrice: s4 });
             }
             get_obj_for_encoding() {
               return { bidder: a3.from(this.bidderKey.publicKey), cur: this.bidAmount, price: this.maxPrice, id: this.bidID, auc: a3.from(this.auctionKey.publicKey), aid: this.auctionID };
             }
             signBid(e4) {
-              const t4 = o3.encode(this.get_obj_for_encoding()), r4 = a3.from(i3.concatArrays(this.tag, t4)), n3 = s3.sign(r4, e4), c4 = { t: "b", b: { sig: a3.from(n3), bid: this.get_obj_for_encoding() } };
+              const t4 = o3.encode(this.get_obj_for_encoding()), r4 = a3.from(s3.concatArrays(this.tag, t4)), n3 = i3.sign(r4, e4), c4 = { t: "b", b: { sig: a3.from(n3), bid: this.get_obj_for_encoding() } };
               return new Uint8Array(o3.encode(c4));
             }
           }
         }, 1113: (e3, t3, r3) => {
           "use strict";
           r3.r(t3), r3.d(t3, { default: () => f3 });
-          var n2 = r3(413), o3 = r3(1042), s3 = r3.n(o3), i3 = r3(9368), a3 = r3.n(i3), c3 = r3(5391), u3 = r3(2486).Buffer;
+          var n2 = r3(413), o3 = r3(1042), i3 = r3.n(o3), s3 = r3(9368), a3 = r3.n(s3), c3 = r3(5391), u3 = r3(2486).Buffer;
           class l3 {
             constructor(e4, t4, r4, n3 = {}) {
               this.defaultHeaders = n3;
-              const o4 = new (s3())(t4, {});
+              const o4 = new (i3())(t4, {});
               if (r4 !== void 0 && o4.set("port", r4.toString()), o4.protocol.length === 0)
                 throw new Error("Invalid base server URL, protocol must be defined.");
               this.baseURL = o4, this.tokenHeader = e4;
             }
             addressWithPath(e4) {
-              return new (s3())(a3().posix.join(this.baseURL.pathname, e4), this.baseURL).toString();
+              return new (i3())(a3().posix.join(this.baseURL.pathname, e4), this.baseURL).toString();
             }
             static superagentToHTTPClientResponse(e4) {
               return e4.body instanceof ArrayBuffer && (e4.body = new Uint8Array(e4.body)), e4;
@@ -13028,13 +13034,13 @@ var require_algosdk_min = __commonJS({
                   default:
                     return "application/json";
                 }
-              }(t4), s4 = { ...r4, accept: o4 };
+              }(t4), i4 = { ...r4, accept: o4 };
               try {
                 const r5 = await this.bc.get(e4, function(e5) {
                   for (const t5 in e5)
                     Object.prototype.hasOwnProperty.call(e5, t5) && (e5[t5] && e5[t5].length !== 0 || delete e5[t5]);
                   return e5;
-                }(t4), s4);
+                }(t4), i4);
                 return f3.prepareResponse(r5, o4, n3);
               } catch (e5) {
                 throw f3.prepareResponseError(e5);
@@ -13056,9 +13062,9 @@ var require_algosdk_min = __commonJS({
           }
         }, 6477: (e3, t3, r3) => {
           "use strict";
-          r3.d(t3, { Z: () => i3 });
-          var n2 = r3(3480), o3 = r3(9417), s3 = r3(2486).Buffer;
-          class i3 extends n2.Z {
+          r3.d(t3, { Z: () => s3 });
+          var n2 = r3(3480), o3 = r3(9417), i3 = r3(2486).Buffer;
+          class s3 extends n2.Z {
             constructor(e4, t4 = "http://127.0.0.1", r4 = 7833, n3 = {}) {
               super("X-KMD-API-Token", e4, t4, r4, n3);
             }
@@ -13069,7 +13075,7 @@ var require_algosdk_min = __commonJS({
               return (await this.c.get("/v1/wallets")).body;
             }
             async createWallet(e4, t4, r4 = "", n3 = "sqlite") {
-              const o4 = { wallet_name: e4, wallet_driver_name: n3, wallet_password: t4, master_derivation_key: s3.from(r4).toString("base64") };
+              const o4 = { wallet_name: e4, wallet_driver_name: n3, wallet_password: t4, master_derivation_key: i3.from(r4).toString("base64") };
               return (await this.c.post("/v1/wallet", o4)).body;
             }
             async initWalletHandle(e4, t4) {
@@ -13094,15 +13100,15 @@ var require_algosdk_min = __commonJS({
             }
             async exportMasterDerivationKey(e4, t4) {
               const r4 = { wallet_handle_token: e4, wallet_password: t4 }, n3 = await this.c.post("/v1/master-key/export", r4);
-              return { master_derivation_key: s3.from(n3.body.master_derivation_key, "base64") };
+              return { master_derivation_key: i3.from(n3.body.master_derivation_key, "base64") };
             }
             async importKey(e4, t4) {
-              const r4 = { wallet_handle_token: e4, private_key: s3.from(t4).toString("base64") };
+              const r4 = { wallet_handle_token: e4, private_key: i3.from(t4).toString("base64") };
               return (await this.c.post("/v1/key/import", r4)).body;
             }
             async exportKey(e4, t4, r4) {
               const n3 = { wallet_handle_token: e4, address: r4, wallet_password: t4 }, o4 = await this.c.post("/v1/key/export", n3);
-              return { private_key: s3.from(o4.body.private_key, "base64") };
+              return { private_key: i3.from(o4.body.private_key, "base64") };
             }
             async generateKey(e4) {
               const t4 = { wallet_handle_token: e4, display_mnemonic: false };
@@ -13117,12 +13123,12 @@ var require_algosdk_min = __commonJS({
               return (await this.c.post("/v1/key/list", t4)).body;
             }
             async signTransaction(e4, t4, r4) {
-              const n3 = o3.instantiateTxnIfNeeded(r4), i4 = { wallet_handle_token: e4, wallet_password: t4, transaction: s3.from(n3.toByte()).toString("base64") }, a3 = await this.c.post("/v1/transaction/sign", i4);
-              return a3.status === 200 ? s3.from(a3.body.signed_transaction, "base64") : a3.body;
+              const n3 = o3.instantiateTxnIfNeeded(r4), s4 = { wallet_handle_token: e4, wallet_password: t4, transaction: i3.from(n3.toByte()).toString("base64") }, a3 = await this.c.post("/v1/transaction/sign", s4);
+              return a3.status === 200 ? i3.from(a3.body.signed_transaction, "base64") : a3.body;
             }
             async signTransactionWithSpecificPublicKey(e4, t4, r4, n3) {
-              const i4 = o3.instantiateTxnIfNeeded(r4), a3 = { wallet_handle_token: e4, wallet_password: t4, transaction: s3.from(i4.toByte()).toString("base64"), public_key: s3.from(n3).toString("base64") }, c3 = await this.c.post("/v1/transaction/sign", a3);
-              return c3.status === 200 ? s3.from(c3.body.signed_transaction, "base64") : c3.body;
+              const s4 = o3.instantiateTxnIfNeeded(r4), a3 = { wallet_handle_token: e4, wallet_password: t4, transaction: i3.from(s4.toByte()).toString("base64"), public_key: i3.from(n3).toString("base64") }, c3 = await this.c.post("/v1/transaction/sign", a3);
+              return c3.status === 200 ? i3.from(c3.body.signed_transaction, "base64") : c3.body;
             }
             async listMultisig(e4) {
               const t4 = { wallet_handle_token: e4 };
@@ -13136,8 +13142,8 @@ var require_algosdk_min = __commonJS({
               const r4 = { wallet_handle_token: e4, address: t4 };
               return (await this.c.post("/v1/multisig/export", r4)).body;
             }
-            async signMultisigTransaction(e4, t4, r4, n3, i4) {
-              const a3 = o3.instantiateTxnIfNeeded(r4), c3 = { wallet_handle_token: e4, transaction: s3.from(a3.toByte()).toString("base64"), public_key: s3.from(n3).toString("base64"), partial_multisig: i4, wallet_password: t4 };
+            async signMultisigTransaction(e4, t4, r4, n3, s4) {
+              const a3 = o3.instantiateTxnIfNeeded(r4), c3 = { wallet_handle_token: e4, transaction: i3.from(a3.toByte()).toString("base64"), public_key: i3.from(n3).toString("base64"), partial_multisig: s4, wallet_password: t4 };
               return (await this.c.post("/v1/multisig/sign", c3)).body;
             }
             async deleteMultisig(e4, t4, r4) {
@@ -13145,39 +13151,20 @@ var require_algosdk_min = __commonJS({
               return (await this.c.delete("/v1/multisig", n3)).body;
             }
           }
-        }, 1663: (e3, t3, r3) => {
+        }, 5427: (e3, t3, r3) => {
           "use strict";
-          r3.d(t3, { Z: () => k3 });
+          r3.d(t3, { Z: () => B2 });
           var n2 = r3(3480), o3 = r3(8680);
-          class s3 extends o3.Z {
+          class i3 extends o3.Z {
             constructor(e4, t4, r4) {
               super(e4, t4), this.account = r4, this.account = r4;
             }
             path() {
               return `/v2/accounts/${this.account}`;
             }
-            exclude(e4) {
-              return this.query.exclude = e4, this;
-            }
           }
-          class i3 extends o3.Z {
-            constructor(e4, t4, r4, n3) {
-              super(e4, t4), this.account = r4, this.assetID = n3, this.account = r4, this.assetID = n3;
-            }
-            path() {
-              return `/v2/accounts/${this.account}/assets/${this.assetID}`;
-            }
-          }
+          var s3 = r3(3033);
           class a3 extends o3.Z {
-            constructor(e4, t4, r4, n3) {
-              super(e4, t4), this.account = r4, this.applicationID = n3, this.account = r4, this.applicationID = n3;
-            }
-            path() {
-              return `/v2/accounts/${this.account}/applications/${this.applicationID}`;
-            }
-          }
-          var c3 = r3(3033);
-          class u3 extends o3.Z {
             constructor(e4, t4) {
               if (super(e4), !Number.isInteger(t4))
                 throw Error("roundNumber should be an integer");
@@ -13188,15 +13175,15 @@ var require_algosdk_min = __commonJS({
             }
             prepare(e4) {
               if (e4 && e4.byteLength > 0)
-                return c3.decode(e4);
+                return s3.decode(e4);
             }
           }
-          var l3 = r3(2486).Buffer;
-          function h3(e4 = {}) {
+          var c3 = r3(2486).Buffer;
+          function u3(e4 = {}) {
             let t4 = e4;
             return Object.keys(t4).every((e5) => e5.toLowerCase() !== "content-type") && (t4 = { ...e4 }, t4["Content-Type"] = "text/plain"), t4;
           }
-          class p3 extends o3.Z {
+          class l3 extends o3.Z {
             constructor(e4, t4) {
               super(e4), this.source = t4, this.source = t4;
             }
@@ -13204,24 +13191,24 @@ var require_algosdk_min = __commonJS({
               return "/v2/teal/compile";
             }
             async do(e4 = {}) {
-              const t4 = h3(e4);
-              return (await this.c.post(this.path(), l3.from(this.source), t4)).body;
+              const t4 = u3(e4);
+              return (await this.c.post(this.path(), c3.from(this.source), t4)).body;
             }
           }
-          var f3 = r3(2486).Buffer;
-          class d3 extends o3.Z {
+          var h3 = r3(2486).Buffer;
+          class p3 extends o3.Z {
             constructor(e4, t4) {
-              super(e4), this.blob = c3.encode(t4.get_obj_for_encoding(true));
+              super(e4), this.blob = s3.encode(t4.get_obj_for_encoding(true));
             }
             path() {
               return "/v2/teal/dryrun";
             }
             async do(e4 = {}) {
-              const t4 = h3(e4);
-              return (await this.c.post(this.path(), f3.from(this.blob), t4)).body;
+              const t4 = u3(e4);
+              return (await this.c.post(this.path(), h3.from(this.blob), t4)).body;
             }
           }
-          class g3 extends o3.Z {
+          class f3 extends o3.Z {
             constructor(e4, t4, r4) {
               super(e4, t4), this.index = r4, this.index = r4;
             }
@@ -13229,7 +13216,7 @@ var require_algosdk_min = __commonJS({
               return `/v2/assets/${this.index}`;
             }
           }
-          class y3 extends o3.Z {
+          class d3 extends o3.Z {
             constructor(e4, t4, r4) {
               super(e4, t4), this.index = r4, this.index = r4;
             }
@@ -13237,7 +13224,7 @@ var require_algosdk_min = __commonJS({
               return `/v2/applications/${this.index}`;
             }
           }
-          class m3 extends o3.Z {
+          class g3 extends o3.Z {
             path() {
               return "/health";
             }
@@ -13248,13 +13235,13 @@ var require_algosdk_min = __commonJS({
               return {};
             }
           }
-          class b2 extends o3.Z {
+          class y3 extends o3.Z {
             constructor(e4, t4) {
               super(e4), this.txid = t4, this.txid = t4, this.query.format = "msgpack";
             }
             prepare(e4) {
               if (e4 && e4.byteLength > 0)
-                return c3.decode(e4);
+                return s3.decode(e4);
             }
             path() {
               return `/v2/transactions/pending/${this.txid}`;
@@ -13263,7 +13250,7 @@ var require_algosdk_min = __commonJS({
               return this.query.max = e4, this;
             }
           }
-          class A4 extends o3.Z {
+          class m3 extends o3.Z {
             constructor(e4) {
               super(e4), this.query.format = "msgpack";
             }
@@ -13272,19 +13259,19 @@ var require_algosdk_min = __commonJS({
             }
             prepare(e4) {
               if (e4 && e4.byteLength > 0)
-                return c3.decode(e4);
+                return s3.decode(e4);
             }
             max(e4) {
               return this.query.max = e4, this;
             }
           }
-          class w4 extends o3.Z {
+          class b2 extends o3.Z {
             constructor(e4, t4) {
               super(e4), this.address = t4, this.address = t4, this.query.format = "msgpack";
             }
             prepare(e4) {
               if (e4 && e4.byteLength > 0)
-                return c3.decode(e4);
+                return s3.decode(e4);
             }
             path() {
               return `/v2/accounts/${this.address}/transactions/pending`;
@@ -13293,13 +13280,13 @@ var require_algosdk_min = __commonJS({
               return this.query.max = e4, this;
             }
           }
-          var v3 = r3(5180);
-          class x3 extends o3.Z {
+          var A4 = r3(5180);
+          class w4 extends o3.Z {
             path() {
               return "/v2/status";
             }
           }
-          class S2 extends o3.Z {
+          class v3 extends o3.Z {
             constructor(e4, t4, r4) {
               if (super(e4, t4), this.round = r4, !Number.isInteger(r4))
                 throw Error("round should be an integer");
@@ -13309,7 +13296,7 @@ var require_algosdk_min = __commonJS({
               return `/v2/status/wait-for-block-after/${this.round}`;
             }
           }
-          class E4 extends o3.Z {
+          class x3 extends o3.Z {
             path() {
               return "/v2/transactions/params";
             }
@@ -13317,22 +13304,22 @@ var require_algosdk_min = __commonJS({
               return { flatFee: false, fee: e4.fee, firstRound: e4["last-round"], lastRound: e4["last-round"] + 1e3, genesisID: e4["genesis-id"], genesisHash: e4["genesis-hash"] };
             }
           }
-          class T4 extends o3.Z {
+          class S2 extends o3.Z {
             path() {
               return "/v2/ledger/supply";
             }
           }
-          class _4 extends o3.Z {
+          class E4 extends o3.Z {
             path() {
               return "/versions";
             }
           }
-          class B2 extends o3.Z {
+          class T4 extends o3.Z {
             path() {
               return "/genesis";
             }
           }
-          class U2 extends o3.Z {
+          class _4 extends o3.Z {
             constructor(e4, t4, r4, n3) {
               super(e4, t4), this.round = r4, this.txID = n3, this.round = r4, this.txID = n3;
             }
@@ -13340,74 +13327,68 @@ var require_algosdk_min = __commonJS({
               return `/v2/blocks/${this.round}/transactions/${this.txID}/proof`;
             }
           }
-          class k3 extends n2.Z {
+          class B2 extends n2.Z {
             constructor(e4, t4 = "http://r2.algorand.network", r4 = 4180, n3 = {}) {
               super("X-Algo-API-Token", e4, t4, r4, n3);
             }
             healthCheck() {
-              return new m3(this.c);
+              return new g3(this.c);
             }
             versionsCheck() {
-              return new _4(this.c);
-            }
-            sendRawTransaction(e4) {
-              return new v3.default(this.c, e4);
-            }
-            accountInformation(e4) {
-              return new s3(this.c, this.intDecoding, e4);
-            }
-            accountAssetInformation(e4, t4) {
-              return new i3(this.c, this.intDecoding, e4, t4);
-            }
-            accountApplicationInformation(e4, t4) {
-              return new a3(this.c, this.intDecoding, e4, t4);
-            }
-            block(e4) {
-              return new u3(this.c, e4);
-            }
-            pendingTransactionInformation(e4) {
-              return new b2(this.c, e4);
-            }
-            pendingTransactionsInformation() {
-              return new A4(this.c);
-            }
-            pendingTransactionByAddress(e4) {
-              return new w4(this.c, e4);
-            }
-            status() {
-              return new x3(this.c, this.intDecoding);
-            }
-            statusAfterBlock(e4) {
-              return new S2(this.c, this.intDecoding, e4);
-            }
-            getTransactionParams() {
               return new E4(this.c);
             }
+            sendRawTransaction(e4) {
+              return new A4.default(this.c, e4);
+            }
+            accountInformation(e4) {
+              return new i3(this.c, this.intDecoding, e4);
+            }
+            block(e4) {
+              return new a3(this.c, e4);
+            }
+            pendingTransactionInformation(e4) {
+              return new y3(this.c, e4);
+            }
+            pendingTransactionsInformation() {
+              return new m3(this.c);
+            }
+            pendingTransactionByAddress(e4) {
+              return new b2(this.c, e4);
+            }
+            status() {
+              return new w4(this.c, this.intDecoding);
+            }
+            statusAfterBlock(e4) {
+              return new v3(this.c, this.intDecoding, e4);
+            }
+            getTransactionParams() {
+              return new x3(this.c);
+            }
             supply() {
-              return new T4(this.c, this.intDecoding);
+              return new S2(this.c, this.intDecoding);
             }
             compile(e4) {
-              return new p3(this.c, e4);
+              return new l3(this.c, e4);
             }
             dryrun(e4) {
-              return new d3(this.c, e4);
+              return new p3(this.c, e4);
             }
             getAssetByID(e4) {
-              return new g3(this.c, this.intDecoding, e4);
+              return new f3(this.c, this.intDecoding, e4);
             }
             getApplicationByID(e4) {
-              return new y3(this.c, this.intDecoding, e4);
+              return new d3(this.c, this.intDecoding, e4);
             }
             genesis() {
-              return new B2(this.c, this.intDecoding);
+              return new T4(this.c, this.intDecoding);
             }
             getProof(e4, t4) {
-              return new U2(this.c, this.intDecoding, e4, t4);
+              return new _4(this.c, this.intDecoding, e4, t4);
             }
           }
         }, 227: (e3, t3, r3) => {
           "use strict";
-          r3.r(t3), r3.d(t3, { Account: () => a3, AccountApplicationResponse: () => c3, AccountAssetResponse: () => u3, AccountParticipation: () => l3, AccountStateDelta: () => h3, Application: () => p3, ApplicationLocalState: () => f3, ApplicationParams: () => d3, ApplicationStateSchema: () => g3, Asset: () => y3, AssetHolding: () => m3, AssetParams: () => b2, BlockResponse: () => A4, BuildVersion: () => w4, CatchpointAbortResponse: () => v3, CatchpointStartResponse: () => x3, CompileResponse: () => S2, DryrunRequest: () => E4, DryrunResponse: () => T4, DryrunSource: () => _4, DryrunState: () => B2, DryrunTxnResult: () => U2, ErrorResponse: () => k3, EvalDelta: () => I3, EvalDeltaKeyValue: () => C3, NodeStatusResponse: () => R2, PendingTransactionResponse: () => O2, PendingTransactionsResponse: () => D3, PostTransactionsResponse: () => N3, ProofResponse: () => P3, SupplyResponse: () => L3, TealKeyValue: () => F3, TealValue: () => z3, TransactionParametersResponse: () => j3, Version: () => M3 });
+          r3.r(t3), r3.d(t3, { Account: () => a3, AccountParticipation: () => c3, AccountStateDelta: () => u3, Application: () => l3, ApplicationLocalState: () => h3, ApplicationParams: () => p3, ApplicationStateSchema: () => f3, Asset: () => d3, AssetHolding: () => g3, AssetParams: () => y3, BlockResponse: () => m3, BuildVersion: () => b2, CatchpointAbortResponse: () => A4, CatchpointStartResponse: () => w4, CompileResponse: () => v3, DryrunRequest: () => x3, DryrunResponse: () => S2, DryrunSource: () => E4, DryrunState: () => T4, DryrunTxnResult: () => _4, ErrorResponse: () => B2, EvalDelta: () => U2, EvalDeltaKeyValue: () => k3, NodeStatusResponse: () => I3, PendingTransactionResponse: () => C3, PendingTransactionsResponse: () => R2, PostTransactionsResponse: () => O2, ProofResponse: () => D3, SupplyResponse: () => N3, TealKeyValue: () => P3, TealValue: () => L3, TransactionParametersResponse: () => F3, Version: () => z3 });
           var n2 = r3(2486).Buffer;
           function o3(e4, t4) {
             let r4;
@@ -13433,197 +13414,187 @@ var require_algosdk_min = __commonJS({
             }
             return r4;
           }
-          class s3 {
+          class i3 {
             get_obj_for_encoding(e4 = false) {
               const t4 = {};
               for (const r4 of Object.keys(this.attribute_map)) {
-                const n3 = this.attribute_map[r4], s4 = this[r4];
-                s4 !== void 0 && (t4[n3] = s4 === null ? null : o3(s4, e4));
+                const n3 = this.attribute_map[r4], i4 = this[r4];
+                i4 !== void 0 && (t4[n3] = i4 === null ? null : o3(i4, e4));
               }
               return t4;
             }
           }
-          var i3 = r3(2486).Buffer;
-          class a3 extends s3 {
-            constructor({ address: e4, amount: t4, amountWithoutPendingRewards: r4, minBalance: n3, pendingRewards: o4, rewards: s4, round: i4, status: a4, totalAppsOptedIn: c4, totalAssetsOptedIn: u4, totalCreatedApps: l4, totalCreatedAssets: h4, appsLocalState: p4, appsTotalExtraPages: f4, appsTotalSchema: d4, assets: g4, authAddr: y4, createdApps: m4, createdAssets: b3, participation: A5, rewardBase: w5, sigType: v4 }) {
-              super(), this.address = e4, this.amount = t4, this.amountWithoutPendingRewards = r4, this.minBalance = n3, this.pendingRewards = o4, this.rewards = s4, this.round = i4, this.status = a4, this.totalAppsOptedIn = c4, this.totalAssetsOptedIn = u4, this.totalCreatedApps = l4, this.totalCreatedAssets = h4, this.appsLocalState = p4, this.appsTotalExtraPages = f4, this.appsTotalSchema = d4, this.assets = g4, this.authAddr = y4, this.createdApps = m4, this.createdAssets = b3, this.participation = A5, this.rewardBase = w5, this.sigType = v4, this.attribute_map = { address: "address", amount: "amount", amountWithoutPendingRewards: "amount-without-pending-rewards", minBalance: "min-balance", pendingRewards: "pending-rewards", rewards: "rewards", round: "round", status: "status", totalAppsOptedIn: "total-apps-opted-in", totalAssetsOptedIn: "total-assets-opted-in", totalCreatedApps: "total-created-apps", totalCreatedAssets: "total-created-assets", appsLocalState: "apps-local-state", appsTotalExtraPages: "apps-total-extra-pages", appsTotalSchema: "apps-total-schema", assets: "assets", authAddr: "auth-addr", createdApps: "created-apps", createdAssets: "created-assets", participation: "participation", rewardBase: "reward-base", sigType: "sig-type" };
+          var s3 = r3(2486).Buffer;
+          class a3 extends i3 {
+            constructor({ address: e4, amount: t4, amountWithoutPendingRewards: r4, minBalance: n3, pendingRewards: o4, rewards: i4, round: s4, status: a4, appsLocalState: c4, appsTotalExtraPages: u4, appsTotalSchema: l4, assets: h4, authAddr: p4, createdApps: f4, createdAssets: d4, participation: g4, rewardBase: y4, sigType: m4 }) {
+              super(), this.address = e4, this.amount = t4, this.amountWithoutPendingRewards = r4, this.minBalance = n3, this.pendingRewards = o4, this.rewards = i4, this.round = s4, this.status = a4, this.appsLocalState = c4, this.appsTotalExtraPages = u4, this.appsTotalSchema = l4, this.assets = h4, this.authAddr = p4, this.createdApps = f4, this.createdAssets = d4, this.participation = g4, this.rewardBase = y4, this.sigType = m4, this.attribute_map = { address: "address", amount: "amount", amountWithoutPendingRewards: "amount-without-pending-rewards", minBalance: "min-balance", pendingRewards: "pending-rewards", rewards: "rewards", round: "round", status: "status", appsLocalState: "apps-local-state", appsTotalExtraPages: "apps-total-extra-pages", appsTotalSchema: "apps-total-schema", assets: "assets", authAddr: "auth-addr", createdApps: "created-apps", createdAssets: "created-assets", participation: "participation", rewardBase: "reward-base", sigType: "sig-type" };
             }
           }
-          class c3 extends s3 {
-            constructor(e4, t4, r4) {
-              super(), this.round = e4, this.appLocalState = t4, this.createdApp = r4, this.attribute_map = { round: "round", appLocalState: "app-local-state", createdApp: "created-app" };
+          class c3 extends i3 {
+            constructor({ selectionParticipationKey: e4, voteFirstValid: t4, voteKeyDilution: r4, voteLastValid: n3, voteParticipationKey: o4, stateProofKey: i4 }) {
+              super(), this.selectionParticipationKey = typeof e4 == "string" ? new Uint8Array(s3.from(e4, "base64")) : e4, this.voteFirstValid = t4, this.voteKeyDilution = r4, this.voteLastValid = n3, this.voteParticipationKey = typeof o4 == "string" ? new Uint8Array(s3.from(o4, "base64")) : o4, this.stateProofKey = typeof i4 == "string" ? new Uint8Array(s3.from(i4, "base64")) : i4, this.attribute_map = { selectionParticipationKey: "selection-participation-key", voteFirstValid: "vote-first-valid", voteKeyDilution: "vote-key-dilution", voteLastValid: "vote-last-valid", voteParticipationKey: "vote-participation-key", stateProofKey: "state-proof-key" };
             }
           }
-          class u3 extends s3 {
-            constructor(e4, t4, r4) {
-              super(), this.round = e4, this.assetHolding = t4, this.createdAsset = r4, this.attribute_map = { round: "round", assetHolding: "asset-holding", createdAsset: "created-asset" };
-            }
-          }
-          class l3 extends s3 {
-            constructor({ selectionParticipationKey: e4, voteFirstValid: t4, voteKeyDilution: r4, voteLastValid: n3, voteParticipationKey: o4, stateProofKey: s4 }) {
-              super(), this.selectionParticipationKey = typeof e4 == "string" ? new Uint8Array(i3.from(e4, "base64")) : e4, this.voteFirstValid = t4, this.voteKeyDilution = r4, this.voteLastValid = n3, this.voteParticipationKey = typeof o4 == "string" ? new Uint8Array(i3.from(o4, "base64")) : o4, this.stateProofKey = typeof s4 == "string" ? new Uint8Array(i3.from(s4, "base64")) : s4, this.attribute_map = { selectionParticipationKey: "selection-participation-key", voteFirstValid: "vote-first-valid", voteKeyDilution: "vote-key-dilution", voteLastValid: "vote-last-valid", voteParticipationKey: "vote-participation-key", stateProofKey: "state-proof-key" };
-            }
-          }
-          class h3 extends s3 {
+          class u3 extends i3 {
             constructor(e4, t4) {
               super(), this.address = e4, this.delta = t4, this.attribute_map = { address: "address", delta: "delta" };
             }
           }
-          class p3 extends s3 {
+          class l3 extends i3 {
             constructor(e4, t4) {
               super(), this.id = e4, this.params = t4, this.attribute_map = { id: "id", params: "params" };
             }
           }
-          class f3 extends s3 {
+          class h3 extends i3 {
             constructor(e4, t4, r4) {
               super(), this.id = e4, this.schema = t4, this.keyValue = r4, this.attribute_map = { id: "id", schema: "schema", keyValue: "key-value" };
             }
           }
-          class d3 extends s3 {
-            constructor({ approvalProgram: e4, clearStateProgram: t4, creator: r4, extraProgramPages: n3, globalState: o4, globalStateSchema: s4, localStateSchema: a4 }) {
-              super(), this.approvalProgram = typeof e4 == "string" ? new Uint8Array(i3.from(e4, "base64")) : e4, this.clearStateProgram = typeof t4 == "string" ? new Uint8Array(i3.from(t4, "base64")) : t4, this.creator = r4, this.extraProgramPages = n3, this.globalState = o4, this.globalStateSchema = s4, this.localStateSchema = a4, this.attribute_map = { approvalProgram: "approval-program", clearStateProgram: "clear-state-program", creator: "creator", extraProgramPages: "extra-program-pages", globalState: "global-state", globalStateSchema: "global-state-schema", localStateSchema: "local-state-schema" };
+          class p3 extends i3 {
+            constructor({ approvalProgram: e4, clearStateProgram: t4, creator: r4, extraProgramPages: n3, globalState: o4, globalStateSchema: i4, localStateSchema: a4 }) {
+              super(), this.approvalProgram = typeof e4 == "string" ? new Uint8Array(s3.from(e4, "base64")) : e4, this.clearStateProgram = typeof t4 == "string" ? new Uint8Array(s3.from(t4, "base64")) : t4, this.creator = r4, this.extraProgramPages = n3, this.globalState = o4, this.globalStateSchema = i4, this.localStateSchema = a4, this.attribute_map = { approvalProgram: "approval-program", clearStateProgram: "clear-state-program", creator: "creator", extraProgramPages: "extra-program-pages", globalState: "global-state", globalStateSchema: "global-state-schema", localStateSchema: "local-state-schema" };
             }
           }
-          class g3 extends s3 {
+          class f3 extends i3 {
             constructor(e4, t4) {
               super(), this.numUint = e4, this.numByteSlice = t4, this.attribute_map = { numUint: "num-uint", numByteSlice: "num-byte-slice" };
             }
           }
-          class y3 extends s3 {
+          class d3 extends i3 {
             constructor(e4, t4) {
               super(), this.index = e4, this.params = t4, this.attribute_map = { index: "index", params: "params" };
             }
           }
-          class m3 extends s3 {
-            constructor(e4, t4, r4) {
-              super(), this.amount = e4, this.assetId = t4, this.isFrozen = r4, this.attribute_map = { amount: "amount", assetId: "asset-id", isFrozen: "is-frozen" };
+          class g3 extends i3 {
+            constructor(e4, t4, r4, n3) {
+              super(), this.amount = e4, this.assetId = t4, this.creator = r4, this.isFrozen = n3, this.attribute_map = { amount: "amount", assetId: "asset-id", creator: "creator", isFrozen: "is-frozen" };
             }
           }
-          class b2 extends s3 {
-            constructor({ creator: e4, decimals: t4, total: r4, clawback: n3, defaultFrozen: o4, freeze: s4, manager: a4, metadataHash: c4, name: u4, nameB64: l4, reserve: h4, unitName: p4, unitNameB64: f4, url: d4, urlB64: g4 }) {
-              super(), this.creator = e4, this.decimals = t4, this.total = r4, this.clawback = n3, this.defaultFrozen = o4, this.freeze = s4, this.manager = a4, this.metadataHash = typeof c4 == "string" ? new Uint8Array(i3.from(c4, "base64")) : c4, this.name = u4, this.nameB64 = typeof l4 == "string" ? new Uint8Array(i3.from(l4, "base64")) : l4, this.reserve = h4, this.unitName = p4, this.unitNameB64 = typeof f4 == "string" ? new Uint8Array(i3.from(f4, "base64")) : f4, this.url = d4, this.urlB64 = typeof g4 == "string" ? new Uint8Array(i3.from(g4, "base64")) : g4, this.attribute_map = { creator: "creator", decimals: "decimals", total: "total", clawback: "clawback", defaultFrozen: "default-frozen", freeze: "freeze", manager: "manager", metadataHash: "metadata-hash", name: "name", nameB64: "name-b64", reserve: "reserve", unitName: "unit-name", unitNameB64: "unit-name-b64", url: "url", urlB64: "url-b64" };
+          class y3 extends i3 {
+            constructor({ creator: e4, decimals: t4, total: r4, clawback: n3, defaultFrozen: o4, freeze: i4, manager: a4, metadataHash: c4, name: u4, nameB64: l4, reserve: h4, unitName: p4, unitNameB64: f4, url: d4, urlB64: g4 }) {
+              super(), this.creator = e4, this.decimals = t4, this.total = r4, this.clawback = n3, this.defaultFrozen = o4, this.freeze = i4, this.manager = a4, this.metadataHash = typeof c4 == "string" ? new Uint8Array(s3.from(c4, "base64")) : c4, this.name = u4, this.nameB64 = typeof l4 == "string" ? new Uint8Array(s3.from(l4, "base64")) : l4, this.reserve = h4, this.unitName = p4, this.unitNameB64 = typeof f4 == "string" ? new Uint8Array(s3.from(f4, "base64")) : f4, this.url = d4, this.urlB64 = typeof g4 == "string" ? new Uint8Array(s3.from(g4, "base64")) : g4, this.attribute_map = { creator: "creator", decimals: "decimals", total: "total", clawback: "clawback", defaultFrozen: "default-frozen", freeze: "freeze", manager: "manager", metadataHash: "metadata-hash", name: "name", nameB64: "name-b64", reserve: "reserve", unitName: "unit-name", unitNameB64: "unit-name-b64", url: "url", urlB64: "url-b64" };
             }
           }
-          class A4 extends s3 {
+          class m3 extends i3 {
             constructor(e4, t4) {
               super(), this.block = e4, this.cert = t4, this.attribute_map = { block: "block", cert: "cert" };
             }
           }
-          class w4 extends s3 {
-            constructor({ branch: e4, buildNumber: t4, channel: r4, commitHash: n3, major: o4, minor: s4 }) {
-              super(), this.branch = e4, this.buildNumber = t4, this.channel = r4, this.commitHash = n3, this.major = o4, this.minor = s4, this.attribute_map = { branch: "branch", buildNumber: "build_number", channel: "channel", commitHash: "commit_hash", major: "major", minor: "minor" };
+          class b2 extends i3 {
+            constructor({ branch: e4, buildNumber: t4, channel: r4, commitHash: n3, major: o4, minor: i4 }) {
+              super(), this.branch = e4, this.buildNumber = t4, this.channel = r4, this.commitHash = n3, this.major = o4, this.minor = i4, this.attribute_map = { branch: "branch", buildNumber: "build_number", channel: "channel", commitHash: "commit_hash", major: "major", minor: "minor" };
             }
           }
-          class v3 extends s3 {
+          class A4 extends i3 {
             constructor(e4) {
               super(), this.catchupMessage = e4, this.attribute_map = { catchupMessage: "catchup-message" };
             }
           }
-          class x3 extends s3 {
+          class w4 extends i3 {
             constructor(e4) {
               super(), this.catchupMessage = e4, this.attribute_map = { catchupMessage: "catchup-message" };
             }
           }
-          class S2 extends s3 {
+          class v3 extends i3 {
             constructor(e4, t4) {
               super(), this.hash = e4, this.result = t4, this.attribute_map = { hash: "hash", result: "result" };
             }
           }
-          class E4 extends s3 {
-            constructor({ accounts: e4, apps: t4, latestTimestamp: r4, protocolVersion: n3, round: o4, sources: s4, txns: i4 }) {
-              super(), this.accounts = e4, this.apps = t4, this.latestTimestamp = r4, this.protocolVersion = n3, this.round = o4, this.sources = s4, this.txns = i4, this.attribute_map = { accounts: "accounts", apps: "apps", latestTimestamp: "latest-timestamp", protocolVersion: "protocol-version", round: "round", sources: "sources", txns: "txns" };
+          class x3 extends i3 {
+            constructor({ accounts: e4, apps: t4, latestTimestamp: r4, protocolVersion: n3, round: o4, sources: i4, txns: s4 }) {
+              super(), this.accounts = e4, this.apps = t4, this.latestTimestamp = r4, this.protocolVersion = n3, this.round = o4, this.sources = i4, this.txns = s4, this.attribute_map = { accounts: "accounts", apps: "apps", latestTimestamp: "latest-timestamp", protocolVersion: "protocol-version", round: "round", sources: "sources", txns: "txns" };
             }
           }
-          class T4 extends s3 {
+          class S2 extends i3 {
             constructor(e4, t4, r4) {
               super(), this.error = e4, this.protocolVersion = t4, this.txns = r4, this.attribute_map = { error: "error", protocolVersion: "protocol-version", txns: "txns" };
             }
           }
-          class _4 extends s3 {
+          class E4 extends i3 {
             constructor(e4, t4, r4, n3) {
               super(), this.fieldName = e4, this.source = t4, this.txnIndex = r4, this.appIndex = n3, this.attribute_map = { fieldName: "field-name", source: "source", txnIndex: "txn-index", appIndex: "app-index" };
             }
           }
-          class B2 extends s3 {
+          class T4 extends i3 {
             constructor({ line: e4, pc: t4, stack: r4, error: n3, scratch: o4 }) {
               super(), this.line = e4, this.pc = t4, this.stack = r4, this.error = n3, this.scratch = o4, this.attribute_map = { line: "line", pc: "pc", stack: "stack", error: "error", scratch: "scratch" };
             }
           }
-          class U2 extends s3 {
-            constructor({ disassembly: e4, appCallMessages: t4, appCallTrace: r4, cost: n3, globalDelta: o4, localDeltas: s4, logicSigDisassembly: i4, logicSigMessages: a4, logicSigTrace: c4, logs: u4 }) {
-              super(), this.disassembly = e4, this.appCallMessages = t4, this.appCallTrace = r4, this.cost = n3, this.globalDelta = o4, this.localDeltas = s4, this.logicSigDisassembly = i4, this.logicSigMessages = a4, this.logicSigTrace = c4, this.logs = u4, this.attribute_map = { disassembly: "disassembly", appCallMessages: "app-call-messages", appCallTrace: "app-call-trace", cost: "cost", globalDelta: "global-delta", localDeltas: "local-deltas", logicSigDisassembly: "logic-sig-disassembly", logicSigMessages: "logic-sig-messages", logicSigTrace: "logic-sig-trace", logs: "logs" };
+          class _4 extends i3 {
+            constructor({ disassembly: e4, appCallMessages: t4, appCallTrace: r4, cost: n3, globalDelta: o4, localDeltas: i4, logicSigDisassembly: s4, logicSigMessages: a4, logicSigTrace: c4, logs: u4 }) {
+              super(), this.disassembly = e4, this.appCallMessages = t4, this.appCallTrace = r4, this.cost = n3, this.globalDelta = o4, this.localDeltas = i4, this.logicSigDisassembly = s4, this.logicSigMessages = a4, this.logicSigTrace = c4, this.logs = u4, this.attribute_map = { disassembly: "disassembly", appCallMessages: "app-call-messages", appCallTrace: "app-call-trace", cost: "cost", globalDelta: "global-delta", localDeltas: "local-deltas", logicSigDisassembly: "logic-sig-disassembly", logicSigMessages: "logic-sig-messages", logicSigTrace: "logic-sig-trace", logs: "logs" };
             }
           }
-          class k3 extends s3 {
+          class B2 extends i3 {
             constructor(e4, t4) {
               super(), this.message = e4, this.data = t4, this.attribute_map = { message: "message", data: "data" };
             }
           }
-          class I3 extends s3 {
+          class U2 extends i3 {
             constructor(e4, t4, r4) {
               super(), this.action = e4, this.bytes = t4, this.uint = r4, this.attribute_map = { action: "action", bytes: "bytes", uint: "uint" };
             }
           }
-          class C3 extends s3 {
+          class k3 extends i3 {
             constructor(e4, t4) {
               super(), this.key = e4, this.value = t4, this.attribute_map = { key: "key", value: "value" };
             }
           }
-          class R2 extends s3 {
-            constructor({ catchupTime: e4, lastRound: t4, lastVersion: r4, nextVersion: n3, nextVersionRound: o4, nextVersionSupported: s4, stoppedAtUnsupportedRound: i4, timeSinceLastRound: a4, catchpoint: c4, catchpointAcquiredBlocks: u4, catchpointProcessedAccounts: l4, catchpointTotalAccounts: h4, catchpointTotalBlocks: p4, catchpointVerifiedAccounts: f4, lastCatchpoint: d4 }) {
-              super(), this.catchupTime = e4, this.lastRound = t4, this.lastVersion = r4, this.nextVersion = n3, this.nextVersionRound = o4, this.nextVersionSupported = s4, this.stoppedAtUnsupportedRound = i4, this.timeSinceLastRound = a4, this.catchpoint = c4, this.catchpointAcquiredBlocks = u4, this.catchpointProcessedAccounts = l4, this.catchpointTotalAccounts = h4, this.catchpointTotalBlocks = p4, this.catchpointVerifiedAccounts = f4, this.lastCatchpoint = d4, this.attribute_map = { catchupTime: "catchup-time", lastRound: "last-round", lastVersion: "last-version", nextVersion: "next-version", nextVersionRound: "next-version-round", nextVersionSupported: "next-version-supported", stoppedAtUnsupportedRound: "stopped-at-unsupported-round", timeSinceLastRound: "time-since-last-round", catchpoint: "catchpoint", catchpointAcquiredBlocks: "catchpoint-acquired-blocks", catchpointProcessedAccounts: "catchpoint-processed-accounts", catchpointTotalAccounts: "catchpoint-total-accounts", catchpointTotalBlocks: "catchpoint-total-blocks", catchpointVerifiedAccounts: "catchpoint-verified-accounts", lastCatchpoint: "last-catchpoint" };
+          class I3 extends i3 {
+            constructor({ catchupTime: e4, lastRound: t4, lastVersion: r4, nextVersion: n3, nextVersionRound: o4, nextVersionSupported: i4, stoppedAtUnsupportedRound: s4, timeSinceLastRound: a4, catchpoint: c4, catchpointAcquiredBlocks: u4, catchpointProcessedAccounts: l4, catchpointTotalAccounts: h4, catchpointTotalBlocks: p4, catchpointVerifiedAccounts: f4, lastCatchpoint: d4 }) {
+              super(), this.catchupTime = e4, this.lastRound = t4, this.lastVersion = r4, this.nextVersion = n3, this.nextVersionRound = o4, this.nextVersionSupported = i4, this.stoppedAtUnsupportedRound = s4, this.timeSinceLastRound = a4, this.catchpoint = c4, this.catchpointAcquiredBlocks = u4, this.catchpointProcessedAccounts = l4, this.catchpointTotalAccounts = h4, this.catchpointTotalBlocks = p4, this.catchpointVerifiedAccounts = f4, this.lastCatchpoint = d4, this.attribute_map = { catchupTime: "catchup-time", lastRound: "last-round", lastVersion: "last-version", nextVersion: "next-version", nextVersionRound: "next-version-round", nextVersionSupported: "next-version-supported", stoppedAtUnsupportedRound: "stopped-at-unsupported-round", timeSinceLastRound: "time-since-last-round", catchpoint: "catchpoint", catchpointAcquiredBlocks: "catchpoint-acquired-blocks", catchpointProcessedAccounts: "catchpoint-processed-accounts", catchpointTotalAccounts: "catchpoint-total-accounts", catchpointTotalBlocks: "catchpoint-total-blocks", catchpointVerifiedAccounts: "catchpoint-verified-accounts", lastCatchpoint: "last-catchpoint" };
             }
           }
-          class O2 extends s3 {
-            constructor({ poolError: e4, txn: t4, applicationIndex: r4, assetClosingAmount: n3, assetIndex: o4, closeRewards: s4, closingAmount: i4, confirmedRound: a4, globalStateDelta: c4, innerTxns: u4, localStateDelta: l4, logs: h4, receiverRewards: p4, senderRewards: f4 }) {
-              super(), this.poolError = e4, this.txn = t4, this.applicationIndex = r4, this.assetClosingAmount = n3, this.assetIndex = o4, this.closeRewards = s4, this.closingAmount = i4, this.confirmedRound = a4, this.globalStateDelta = c4, this.innerTxns = u4, this.localStateDelta = l4, this.logs = h4, this.receiverRewards = p4, this.senderRewards = f4, this.attribute_map = { poolError: "pool-error", txn: "txn", applicationIndex: "application-index", assetClosingAmount: "asset-closing-amount", assetIndex: "asset-index", closeRewards: "close-rewards", closingAmount: "closing-amount", confirmedRound: "confirmed-round", globalStateDelta: "global-state-delta", innerTxns: "inner-txns", localStateDelta: "local-state-delta", logs: "logs", receiverRewards: "receiver-rewards", senderRewards: "sender-rewards" };
+          class C3 extends i3 {
+            constructor({ poolError: e4, txn: t4, applicationIndex: r4, assetClosingAmount: n3, assetIndex: o4, closeRewards: i4, closingAmount: s4, confirmedRound: a4, globalStateDelta: c4, innerTxns: u4, localStateDelta: l4, logs: h4, receiverRewards: p4, senderRewards: f4 }) {
+              super(), this.poolError = e4, this.txn = t4, this.applicationIndex = r4, this.assetClosingAmount = n3, this.assetIndex = o4, this.closeRewards = i4, this.closingAmount = s4, this.confirmedRound = a4, this.globalStateDelta = c4, this.innerTxns = u4, this.localStateDelta = l4, this.logs = h4, this.receiverRewards = p4, this.senderRewards = f4, this.attribute_map = { poolError: "pool-error", txn: "txn", applicationIndex: "application-index", assetClosingAmount: "asset-closing-amount", assetIndex: "asset-index", closeRewards: "close-rewards", closingAmount: "closing-amount", confirmedRound: "confirmed-round", globalStateDelta: "global-state-delta", innerTxns: "inner-txns", localStateDelta: "local-state-delta", logs: "logs", receiverRewards: "receiver-rewards", senderRewards: "sender-rewards" };
             }
           }
-          class D3 extends s3 {
+          class R2 extends i3 {
             constructor(e4, t4) {
               super(), this.topTransactions = e4, this.totalTransactions = t4, this.attribute_map = { topTransactions: "top-transactions", totalTransactions: "total-transactions" };
             }
           }
-          class N3 extends s3 {
+          class O2 extends i3 {
             constructor(e4) {
               super(), this.txid = e4, this.attribute_map = { txid: "txId" };
             }
           }
-          class P3 extends s3 {
+          class D3 extends i3 {
             constructor({ idx: e4, proof: t4, stibhash: r4, treedepth: n3, hashtype: o4 }) {
-              super(), this.idx = e4, this.proof = typeof t4 == "string" ? new Uint8Array(i3.from(t4, "base64")) : t4, this.stibhash = typeof r4 == "string" ? new Uint8Array(i3.from(r4, "base64")) : r4, this.treedepth = n3, this.hashtype = o4, this.attribute_map = { idx: "idx", proof: "proof", stibhash: "stibhash", treedepth: "treedepth", hashtype: "hashtype" };
+              super(), this.idx = e4, this.proof = typeof t4 == "string" ? new Uint8Array(s3.from(t4, "base64")) : t4, this.stibhash = typeof r4 == "string" ? new Uint8Array(s3.from(r4, "base64")) : r4, this.treedepth = n3, this.hashtype = o4, this.attribute_map = { idx: "idx", proof: "proof", stibhash: "stibhash", treedepth: "treedepth", hashtype: "hashtype" };
             }
           }
-          class L3 extends s3 {
+          class N3 extends i3 {
             constructor(e4, t4, r4) {
               super(), this.currentRound = e4, this.onlineMoney = t4, this.totalMoney = r4, this.attribute_map = { currentRound: "current_round", onlineMoney: "online-money", totalMoney: "total-money" };
             }
           }
-          class F3 extends s3 {
+          class P3 extends i3 {
             constructor(e4, t4) {
               super(), this.key = e4, this.value = t4, this.attribute_map = { key: "key", value: "value" };
             }
           }
-          class z3 extends s3 {
+          class L3 extends i3 {
             constructor(e4, t4, r4) {
               super(), this.type = e4, this.bytes = t4, this.uint = r4, this.attribute_map = { type: "type", bytes: "bytes", uint: "uint" };
             }
           }
-          class j3 extends s3 {
-            constructor({ consensusVersion: e4, fee: t4, genesisHash: r4, genesisId: n3, lastRound: o4, minFee: s4 }) {
-              super(), this.consensusVersion = e4, this.fee = t4, this.genesisHash = typeof r4 == "string" ? new Uint8Array(i3.from(r4, "base64")) : r4, this.genesisId = n3, this.lastRound = o4, this.minFee = s4, this.attribute_map = { consensusVersion: "consensus-version", fee: "fee", genesisHash: "genesis-hash", genesisId: "genesis-id", lastRound: "last-round", minFee: "min-fee" };
+          class F3 extends i3 {
+            constructor({ consensusVersion: e4, fee: t4, genesisHash: r4, genesisId: n3, lastRound: o4, minFee: i4 }) {
+              super(), this.consensusVersion = e4, this.fee = t4, this.genesisHash = typeof r4 == "string" ? new Uint8Array(s3.from(r4, "base64")) : r4, this.genesisId = n3, this.lastRound = o4, this.minFee = i4, this.attribute_map = { consensusVersion: "consensus-version", fee: "fee", genesisHash: "genesis-hash", genesisId: "genesis-id", lastRound: "last-round", minFee: "min-fee" };
             }
           }
-          class M3 extends s3 {
+          class z3 extends i3 {
             constructor(e4, t4, r4, n3) {
-              super(), this.build = e4, this.genesisHashB64 = typeof t4 == "string" ? new Uint8Array(i3.from(t4, "base64")) : t4, this.genesisId = r4, this.versions = n3, this.attribute_map = { build: "build", genesisHashB64: "genesis_hash_b64", genesisId: "genesis_id", versions: "versions" };
+              super(), this.build = e4, this.genesisHashB64 = typeof t4 == "string" ? new Uint8Array(s3.from(t4, "base64")) : t4, this.genesisId = r4, this.versions = n3, this.attribute_map = { build: "build", genesisHashB64: "genesis_hash_b64", genesisId: "genesis_id", versions: "versions" };
             }
           }
         }, 5180: (e3, t3, r3) => {
           "use strict";
-          r3.r(t3), r3.d(t3, { setSendTransactionHeaders: () => i3, default: () => c3 });
-          var n2 = r3(8680), o3 = r3(413), s3 = r3(2486).Buffer;
-          function i3(e4 = {}) {
+          r3.r(t3), r3.d(t3, { setSendTransactionHeaders: () => s3, default: () => c3 });
+          var n2 = r3(8680), o3 = r3(413), i3 = r3(2486).Buffer;
+          function s3(e4 = {}) {
             let t4 = e4;
             return Object.keys(t4).every((e5) => e5.toLowerCase() !== "content-type") && (t4 = { ...e4 }, t4["Content-Type"] = "application/x-binary"), t4;
           }
@@ -13646,20 +13617,20 @@ var require_algosdk_min = __commonJS({
               return "/v2/transactions";
             }
             async do(e4 = {}) {
-              const t4 = i3(e4);
-              return (await this.c.post(this.path(), s3.from(this.txnBytesToPost), t4)).body;
+              const t4 = s3(e4);
+              return (await this.c.post(this.path(), i3.from(this.txnBytesToPost), t4)).body;
             }
           }
-        }, 9582: (e3, t3, r3) => {
+        }, 8104: (e3, t3, r3) => {
           "use strict";
-          r3.d(t3, { Z: () => T4 });
+          r3.d(t3, { Z: () => v3 });
           var n2 = r3(3480), o3 = r3(8680);
-          class s3 extends o3.Z {
+          class i3 extends o3.Z {
             path() {
               return "/health";
             }
           }
-          class i3 extends o3.Z {
+          class s3 extends o3.Z {
             constructor(e4, t4, r4) {
               super(e4, t4), this.index = r4, this.index = r4;
             }
@@ -13668,6 +13639,9 @@ var require_algosdk_min = __commonJS({
             }
             limit(e4) {
               return this.query.limit = e4, this;
+            }
+            round(e4) {
+              return this.query.round = e4, this;
             }
             currencyGreaterThan(e4) {
               return this.query["currency-greater-than"] = e4, this;
@@ -13830,103 +13804,8 @@ var require_algosdk_min = __commonJS({
             includeAll(e4 = true) {
               return this.query["include-all"] = e4, this;
             }
-            exclude(e4) {
-              return this.query.exclude = e4, this;
-            }
           }
           class d3 extends o3.Z {
-            constructor(e4, t4, r4) {
-              super(e4, t4), this.account = r4, this.account = r4;
-            }
-            path() {
-              return `/v2/accounts/${this.account}/assets`;
-            }
-            limit(e4) {
-              return this.query.limit = e4, this;
-            }
-            round(e4) {
-              return this.query.round = e4, this;
-            }
-            nextToken(e4) {
-              return this.query.next = e4, this;
-            }
-            includeAll(e4 = true) {
-              return this.query["include-all"] = e4, this;
-            }
-            assetId(e4) {
-              return this.query["asset-id"] = e4, this;
-            }
-          }
-          class g3 extends o3.Z {
-            constructor(e4, t4, r4) {
-              super(e4, t4), this.account = r4, this.account = r4;
-            }
-            path() {
-              return `/v2/accounts/${this.account}/created-assets`;
-            }
-            limit(e4) {
-              return this.query.limit = e4, this;
-            }
-            round(e4) {
-              return this.query.round = e4, this;
-            }
-            nextToken(e4) {
-              return this.query.next = e4, this;
-            }
-            includeAll(e4 = true) {
-              return this.query["include-all"] = e4, this;
-            }
-            assetID(e4) {
-              return this.query["asset-id"] = e4, this;
-            }
-          }
-          class y3 extends o3.Z {
-            constructor(e4, t4, r4) {
-              super(e4, t4), this.account = r4, this.account = r4;
-            }
-            path() {
-              return `/v2/accounts/${this.account}/apps-local-state`;
-            }
-            limit(e4) {
-              return this.query.limit = e4, this;
-            }
-            round(e4) {
-              return this.query.round = e4, this;
-            }
-            nextToken(e4) {
-              return this.query.next = e4, this;
-            }
-            includeAll(e4 = true) {
-              return this.query["include-all"] = e4, this;
-            }
-            applicationID(e4) {
-              return this.query["application-id"] = e4, this;
-            }
-          }
-          class m3 extends o3.Z {
-            constructor(e4, t4, r4) {
-              super(e4, t4), this.account = r4, this.account = r4;
-            }
-            path() {
-              return `/v2/accounts/${this.account}/created-applications`;
-            }
-            limit(e4) {
-              return this.query.limit = e4, this;
-            }
-            round(e4) {
-              return this.query.round = e4, this;
-            }
-            nextToken(e4) {
-              return this.query.next = e4, this;
-            }
-            includeAll(e4 = true) {
-              return this.query["include-all"] = e4, this;
-            }
-            applicationID(e4) {
-              return this.query["application-id"] = e4, this;
-            }
-          }
-          class b2 extends o3.Z {
             constructor(e4, t4, r4) {
               super(e4, t4), this.index = r4, this.index = r4;
             }
@@ -13937,7 +13816,7 @@ var require_algosdk_min = __commonJS({
               return this.query["include-all"] = e4, this;
             }
           }
-          class A4 extends o3.Z {
+          class g3 extends o3.Z {
             constructor(e4, t4, r4) {
               super(e4, t4), this.index = r4, this.index = r4;
             }
@@ -13948,7 +13827,7 @@ var require_algosdk_min = __commonJS({
               return this.query["include-all"] = e4, this;
             }
           }
-          class w4 extends o3.Z {
+          class y3 extends o3.Z {
             constructor(e4, t4, r4) {
               super(e4, t4), this.appID = r4, this.appID = r4;
             }
@@ -13974,7 +13853,7 @@ var require_algosdk_min = __commonJS({
               return this.query.txid = e4, this;
             }
           }
-          class v3 extends o3.Z {
+          class m3 extends o3.Z {
             path() {
               return "/v2/accounts";
             }
@@ -14005,11 +13884,8 @@ var require_algosdk_min = __commonJS({
             includeAll(e4 = true) {
               return this.query["include-all"] = e4, this;
             }
-            exclude(e4) {
-              return this.query.exclude = e4, this;
-            }
           }
-          class x3 extends o3.Z {
+          class b2 extends o3.Z {
             path() {
               return "/v2/transactions";
             }
@@ -14071,7 +13947,7 @@ var require_algosdk_min = __commonJS({
               return this.query["application-id"] = e4, this;
             }
           }
-          class S2 extends o3.Z {
+          class A4 extends o3.Z {
             path() {
               return "/v2/assets";
             }
@@ -14097,15 +13973,12 @@ var require_algosdk_min = __commonJS({
               return this.query["include-all"] = e4, this;
             }
           }
-          class E4 extends o3.Z {
+          class w4 extends o3.Z {
             path() {
               return "/v2/applications";
             }
             index(e4) {
               return this.query["application-id"] = e4, this;
-            }
-            creator(e4) {
-              return this.query.creator = e4, this;
             }
             nextToken(e4) {
               return this.query.next = e4, this;
@@ -14117,15 +13990,15 @@ var require_algosdk_min = __commonJS({
               return this.query["include-all"] = e4, this;
             }
           }
-          class T4 extends n2.Z {
+          class v3 extends n2.Z {
             constructor(e4, t4 = "http://127.0.0.1", r4 = 8080, n3 = {}) {
               super("X-Indexer-API-Token", e4, t4, r4, n3);
             }
             makeHealthCheck() {
-              return new s3(this.c, this.intDecoding);
+              return new i3(this.c, this.intDecoding);
             }
             lookupAssetBalances(e4) {
-              return new i3(this.c, this.intDecoding, e4);
+              return new s3(this.c, this.intDecoding, e4);
             }
             lookupAssetTransactions(e4) {
               return new l3(this.c, this.intDecoding, e4);
@@ -14142,38 +14015,26 @@ var require_algosdk_min = __commonJS({
             lookupAccountByID(e4) {
               return new f3(this.c, this.intDecoding, e4);
             }
-            lookupAccountAssets(e4) {
+            lookupAssetByID(e4) {
               return new d3(this.c, this.intDecoding, e4);
             }
-            lookupAccountCreatedAssets(e4) {
+            lookupApplications(e4) {
               return new g3(this.c, this.intDecoding, e4);
             }
-            lookupAccountAppLocalStates(e4) {
+            lookupApplicationLogs(e4) {
               return new y3(this.c, this.intDecoding, e4);
             }
-            lookupAccountCreatedApplications(e4) {
-              return new m3(this.c, this.intDecoding, e4);
-            }
-            lookupAssetByID(e4) {
-              return new b2(this.c, this.intDecoding, e4);
-            }
-            lookupApplications(e4) {
-              return new A4(this.c, this.intDecoding, e4);
-            }
-            lookupApplicationLogs(e4) {
-              return new w4(this.c, this.intDecoding, e4);
-            }
             searchAccounts() {
-              return new v3(this.c, this.intDecoding);
+              return new m3(this.c, this.intDecoding);
             }
             searchForTransactions() {
-              return new x3(this.c, this.intDecoding);
+              return new b2(this.c, this.intDecoding);
             }
             searchForAssets() {
-              return new S2(this.c, this.intDecoding);
+              return new A4(this.c, this.intDecoding);
             }
             searchForApplications() {
-              return new E4(this.c, this.intDecoding);
+              return new w4(this.c, this.intDecoding);
             }
           }
         }, 8680: (e3, t3, r3) => {
@@ -14201,10 +14062,10 @@ var require_algosdk_min = __commonJS({
           }
         }, 3480: (e3, t3, r3) => {
           "use strict";
-          r3.d(t3, { Z: () => s3 });
+          r3.d(t3, { Z: () => i3 });
           var n2 = r3(1113), o3 = r3(7197);
-          class s3 {
-            constructor(e4, t4, r4, s4, i3 = {}) {
+          class i3 {
+            constructor(e4, t4, r4, i4, s3 = {}) {
               if (typeof t4.get == "function")
                 this.c = new n2.default(t4);
               else {
@@ -14212,7 +14073,7 @@ var require_algosdk_min = __commonJS({
                 o4 = typeof t4 == "string" ? function(e5 = "", t5) {
                   const r5 = {};
                   return r5[t5] = e5, r5;
-                }(t4, e4) : t4, this.c = new n2.default(o4, r4, s4, i3);
+                }(t4, e4) : t4, this.c = new n2.default(o4, r4, i4, s3);
               }
               this.intDecoding = o3.Z.DEFAULT;
             }
@@ -14226,7 +14087,7 @@ var require_algosdk_min = __commonJS({
         }, 3458: (e3, t3, r3) => {
           "use strict";
           r3.d(t3, { b: () => p3, A: () => d3 });
-          var n2 = r3(7677), o3 = r3(9417), s3 = r3(1988), i3 = r3(1063), a3 = r3(5062), c3 = r3(834), u3 = r3(1624), l3 = r3(2486).Buffer;
+          var n2 = r3(7677), o3 = r3(9417), i3 = r3(1988), s3 = r3(1063), a3 = r3(5062), c3 = r3(834), u3 = r3(1624), l3 = r3(2486).Buffer;
           const h3 = l3.from([21, 31, 124, 117]);
           var p3;
           function f3(e4, t4, r4) {
@@ -14264,7 +14125,7 @@ var require_algosdk_min = __commonJS({
                 throw new Error("Cannot add a transaction with nonzero group ID");
               this.transactions.push(e4);
             }
-            addMethodCall({ appID: e4, method: t4, methodArgs: r4, sender: o4, suggestedParams: i4, onComplete: a4, approvalProgram: l4, clearProgram: h4, numGlobalInts: g3, numGlobalByteSlices: y3, numLocalInts: m3, numLocalByteSlices: b2, extraPages: A4, note: w4, lease: v3, rekeyTo: x3, signer: S2 }) {
+            addMethodCall({ appID: e4, method: t4, methodArgs: r4, sender: o4, suggestedParams: s4, onComplete: a4, approvalProgram: l4, clearProgram: h4, numGlobalInts: g3, numGlobalByteSlices: y3, numLocalInts: m3, numLocalByteSlices: b2, extraPages: A4, note: w4, lease: v3, rekeyTo: x3, signer: S2 }) {
               if (this.status !== p3.BUILDING)
                 throw new Error("Cannot add transactions when composer status is not BUILDING");
               if (this.transactions.length + t4.txnCount() > d3.MAX_GROUP_SIZE)
@@ -14285,49 +14146,49 @@ var require_algosdk_min = __commonJS({
               const _4 = [], B2 = [], U2 = [], k3 = /* @__PURE__ */ new Map();
               for (let e5 = 0; e5 < r4.length; e5++) {
                 let o5 = t4.args[e5].type;
-                const s4 = r4[e5];
+                const i4 = r4[e5];
                 if ((0, n2.AE)(o5)) {
-                  if (!(0, c3.Xw)(s4) || !(0, n2.vJ)(o5, s4.txn))
+                  if (!(0, c3.Xw)(i4) || !(0, n2.vJ)(o5, i4.txn))
                     throw new Error(`Expected ${o5} transaction for argument at index ${e5}`);
-                  if (s4.txn.group && s4.txn.group.some((e6) => e6 !== 0))
+                  if (i4.txn.group && i4.txn.group.some((e6) => e6 !== 0))
                     throw new Error("Cannot add a transaction with nonzero group ID");
-                  _4.push(s4);
+                  _4.push(i4);
                 } else {
-                  if ((0, c3.Xw)(s4))
+                  if ((0, c3.Xw)(i4))
                     throw new Error(`Expected non-transaction value for argument at index ${e5}`);
-                  if ((0, n2.o5)(o5) && (k3.set(B2.length, E4.length), B2.push(o5), U2.push(s4), o5 = new n2.Pu(8)), typeof o5 == "string")
+                  if ((0, n2.o5)(o5) && (k3.set(B2.length, E4.length), B2.push(o5), U2.push(i4), o5 = new n2.Pu(8)), typeof o5 == "string")
                     throw new Error(`Unknown ABI type: ${o5}`);
-                  E4.push(o5), T4.push(s4);
+                  E4.push(o5), T4.push(i4);
                 }
               }
               const I3 = [], C3 = [], R2 = [], O2 = [];
               for (let t5 = 0; t5 < B2.length; t5++) {
-                const r5 = B2[t5], s4 = U2[t5];
-                let i5 = 0;
+                const r5 = B2[t5], i4 = U2[t5];
+                let s5 = 0;
                 switch (r5) {
                   case n2.UV.account: {
                     const e5 = new n2.JQ();
-                    i5 = f3(e5.decode(e5.encode(s4)), C3, o4);
+                    s5 = f3(e5.decode(e5.encode(i4)), C3, o4);
                     break;
                   }
                   case n2.UV.application: {
-                    const t6 = new n2.Pu(64), r6 = t6.decode(t6.encode(s4));
+                    const t6 = new n2.Pu(64), r6 = t6.decode(t6.encode(i4));
                     if (r6 > Number.MAX_SAFE_INTEGER)
                       throw new Error(`Expected safe integer for application value, got ${r6}`);
-                    i5 = f3(Number(r6), R2, e4);
+                    s5 = f3(Number(r6), R2, e4);
                     break;
                   }
                   case n2.UV.asset: {
-                    const e5 = new n2.Pu(64), t6 = e5.decode(e5.encode(s4));
+                    const e5 = new n2.Pu(64), t6 = e5.decode(e5.encode(i4));
                     if (t6 > Number.MAX_SAFE_INTEGER)
                       throw new Error(`Expected safe integer for asset value, got ${t6}`);
-                    i5 = f3(Number(t6), O2);
+                    s5 = f3(Number(t6), O2);
                     break;
                   }
                   default:
                     throw new Error(`Unknown reference type: ${r5}`);
                 }
-                I3.push(i5);
+                I3.push(s5);
               }
               for (let e5 = 0; e5 < I3.length; e5++)
                 T4[k3.get(e5)] = I3[e5];
@@ -14338,14 +14199,14 @@ var require_algosdk_min = __commonJS({
               const D3 = [t4.getSelector()];
               for (let e5 = 0; e5 < E4.length; e5++)
                 D3.push(E4[e5].encode(T4[e5]));
-              const N3 = { txn: (0, s3.makeApplicationCallTxnFromObject)({ from: o4, appIndex: e4, appArgs: D3, accounts: C3, foreignApps: R2, foreignAssets: O2, onComplete: a4 == null ? u3.hq.NoOpOC : a4, approvalProgram: l4, clearProgram: h4, numGlobalInts: g3, numGlobalByteSlices: y3, numLocalInts: m3, numLocalByteSlices: b2, extraPages: A4, lease: v3, note: w4, rekeyTo: x3, suggestedParams: i4 }), signer: S2 };
+              const N3 = { txn: (0, i3.makeApplicationCallTxnFromObject)({ from: o4, appIndex: e4, appArgs: D3, accounts: C3, foreignApps: R2, foreignAssets: O2, onComplete: a4 == null ? u3.hq.NoOpOC : a4, approvalProgram: l4, clearProgram: h4, numGlobalInts: g3, numGlobalByteSlices: y3, numLocalInts: m3, numLocalByteSlices: b2, extraPages: A4, lease: v3, note: w4, rekeyTo: x3, suggestedParams: s4 }), signer: S2 };
               this.transactions.push(..._4, N3), this.methodCalls.set(this.transactions.length - 1, t4);
             }
             buildGroup() {
               if (this.status === p3.BUILDING) {
                 if (this.transactions.length === 0)
                   throw new Error("Cannot build a group with 0 transactions");
-                this.transactions.length > 1 && (0, i3.assignGroupID)(this.transactions.map((e4) => e4.txn)), this.status = p3.BUILT;
+                this.transactions.length > 1 && (0, s3.assignGroupID)(this.transactions.map((e4) => e4.txn)), this.status = p3.BUILT;
               }
               return this.transactions;
             }
@@ -14357,22 +14218,22 @@ var require_algosdk_min = __commonJS({
                 const { signer: n4 } = e4[t5];
                 r4.has(n4) || r4.set(n4, []), r4.get(n4).push(t5);
               }
-              const n3 = Array.from(r4), s4 = await Promise.all(n3.map(([e5, r5]) => e5(t4, r5))), i4 = e4.map(() => null);
+              const n3 = Array.from(r4), i4 = await Promise.all(n3.map(([e5, r5]) => e5(t4, r5))), s4 = e4.map(() => null);
               for (let e5 = 0; e5 < n3.length; e5++) {
-                const t5 = n3[e5][1], r5 = s4[e5];
+                const t5 = n3[e5][1], r5 = i4[e5];
                 for (let e6 = 0; e6 < t5.length; e6++)
-                  i4[t5[e6]] = r5[e6];
+                  s4[t5[e6]] = r5[e6];
               }
-              if (!i4.every((e5) => e5 != null))
-                throw new Error(`Missing signatures. Got ${i4}`);
-              const a4 = i4.map((e5, t5) => {
+              if (!s4.every((e5) => e5 != null))
+                throw new Error(`Missing signatures. Got ${s4}`);
+              const a4 = s4.map((e5, t5) => {
                 try {
                   return (0, o3.decodeSignedTransaction)(e5).txn.txID();
                 } catch (e6) {
                   throw new Error(`Cannot decode signed transaction at index ${t5}. ${e6}`);
                 }
               });
-              return this.signedTxns = i4, this.txIDs = a4, this.status = p3.SIGNED, i4;
+              return this.signedTxns = s4, this.txIDs = a4, this.status = p3.SIGNED, s4;
             }
             async submit(e4) {
               if (this.status > p3.SUBMITTED)
@@ -14385,13 +14246,13 @@ var require_algosdk_min = __commonJS({
                 throw new Error("Transaction group has already been executed successfully");
               const r4 = await this.submit(e4);
               this.status = p3.SUBMITTED;
-              const n3 = this.transactions.findIndex((e5, t5) => this.methodCalls.has(t5)), o4 = n3 === -1 ? 0 : n3, s4 = await (0, a3.K)(e4, r4[o4], t4);
+              const n3 = this.transactions.findIndex((e5, t5) => this.methodCalls.has(t5)), o4 = n3 === -1 ? 0 : n3, i4 = await (0, a3.K)(e4, r4[o4], t4);
               this.status = p3.COMMITTED;
-              const i4 = s4["confirmed-round"], c4 = [];
+              const s4 = i4["confirmed-round"], c4 = [];
               for (const [t5, o5] of this.methodCalls) {
-                const i5 = r4[t5], a4 = { txID: i5, rawReturnValue: new Uint8Array() };
+                const s5 = r4[t5], a4 = { txID: s5, rawReturnValue: new Uint8Array() };
                 try {
-                  const r5 = t5 === n3 ? s4 : await e4.pendingTransactionInformation(i5).do();
+                  const r5 = t5 === n3 ? i4 : await e4.pendingTransactionInformation(s5).do();
                   if (a4.txInfo = r5, o5.returns.type !== "void") {
                     const e5 = r5.logs || [];
                     if (e5.length === 0)
@@ -14406,34 +14267,34 @@ var require_algosdk_min = __commonJS({
                 }
                 c4.push(a4);
               }
-              return { confirmedRound: i4, txIDs: r4, methodResults: c4 };
+              return { confirmedRound: s4, txIDs: r4, methodResults: c4 };
             }
           }
           d3.MAX_GROUP_SIZE = 16;
         }, 9070: (e3, t3, r3) => {
           "use strict";
-          r3.d(t3, { rD: () => o3, _: () => s3, HN: () => i3 });
+          r3.d(t3, { rD: () => o3, _: () => i3, HN: () => s3 });
           const n2 = 1e6, o3 = "Microalgos should be positive and less than 2^53 - 1.";
-          function s3(e4) {
+          function i3(e4) {
             if (e4 < 0 || !Number.isSafeInteger(e4))
               throw new Error(o3);
             return e4 / n2;
           }
-          function i3(e4) {
+          function s3(e4) {
             const t4 = e4 * n2;
             return Math.round(t4);
           }
         }, 4383: (e3, t3, r3) => {
           "use strict";
           r3.d(t3, { P: () => c3 });
-          var n2 = r3(227), o3 = r3(1824), s3 = r3(7116), i3 = r3(2486).Buffer;
+          var n2 = r3(227), o3 = r3(1824), i3 = r3(7116), s3 = r3(2486).Buffer;
           function a3(e4) {
-            return e4.params["approval-program"] = i3.from(e4.params["approval-program"].toString(), "base64"), e4.params["clear-state-program"] = i3.from(e4.params["clear-state-program"].toString(), "base64"), e4;
+            return e4.params["approval-program"] = s3.from(e4.params["approval-program"].toString(), "base64"), e4.params["clear-state-program"] = s3.from(e4.params["clear-state-program"].toString(), "base64"), e4;
           }
-          async function c3({ client: e4, txns: t4, protocolVersion: r4, latestTimestamp: i4, round: c4, sources: u3 }) {
+          async function c3({ client: e4, txns: t4, protocolVersion: r4, latestTimestamp: s4, round: c4, sources: u3 }) {
             const l3 = [], h3 = [], p3 = [], f3 = [], d3 = [];
             for (const e5 of t4)
-              e5.txn.type === o3.i.appl && (d3.push((0, s3.encodeAddress)(e5.txn.from.publicKey)), e5.txn.appAccounts && d3.push(...e5.txn.appAccounts.map((e6) => (0, s3.encodeAddress)(e6.publicKey))), e5.txn.appForeignApps && p3.push(...e5.txn.appForeignApps), e5.txn.appForeignAssets && f3.push(...e5.txn.appForeignAssets), e5.txn.appIndex === void 0 || e5.txn.appIndex === 0 ? l3.push(new n2.Application(1380011588, new n2.ApplicationParams({ creator: (0, s3.encodeAddress)(e5.txn.from.publicKey), approvalProgram: e5.txn.appApprovalProgram, clearStateProgram: e5.txn.appClearProgram, localStateSchema: new n2.ApplicationStateSchema(e5.txn.appLocalInts, e5.txn.appLocalByteSlices), globalStateSchema: new n2.ApplicationStateSchema(e5.txn.appGlobalInts, e5.txn.appGlobalByteSlices) }))) : (p3.push(e5.txn.appIndex), d3.push((0, s3.getApplicationAddress)(e5.txn.appIndex))));
+              e5.txn.type === o3.i.appl && (d3.push((0, i3.encodeAddress)(e5.txn.from.publicKey)), e5.txn.appAccounts && d3.push(...e5.txn.appAccounts.map((e6) => (0, i3.encodeAddress)(e6.publicKey))), e5.txn.appForeignApps && p3.push(...e5.txn.appForeignApps), e5.txn.appForeignAssets && f3.push(...e5.txn.appForeignAssets), e5.txn.appIndex === 0 ? l3.push(new n2.Application(1380011588, new n2.ApplicationParams({ creator: (0, i3.encodeAddress)(e5.txn.from.publicKey), approvalProgram: e5.txn.appApprovalProgram, clearStateProgram: e5.txn.appClearProgram, localStateSchema: new n2.ApplicationStateSchema(e5.txn.appLocalInts, e5.txn.appLocalByteSlices), globalStateSchema: new n2.ApplicationStateSchema(e5.txn.appGlobalInts, e5.txn.appGlobalByteSlices) }))) : (p3.push(e5.txn.appIndex), d3.push((0, i3.getApplicationAddress)(e5.txn.appIndex))));
             const g3 = [];
             for (const t5 of [...new Set(f3)])
               g3.push(e4.getAssetByID(t5).do().then((e5) => {
@@ -14452,12 +14313,12 @@ var require_algosdk_min = __commonJS({
               m3.push(e4.accountInformation(t5).do().then((e5) => {
                 "created-apps" in e5 && (e5["created-apps"] = e5["created-apps"].map((e6) => a3(e6))), h3.push(e5);
               }));
-            return await Promise.all(m3), new n2.DryrunRequest({ txns: t4.map((e5) => ({ ...e5, txn: e5.txn.get_obj_for_encoding() })), accounts: h3, apps: l3, latestTimestamp: i4, round: c4, protocolVersion: r4, sources: u3 });
+            return await Promise.all(m3), new n2.DryrunRequest({ txns: t4.map((e5) => ({ ...e5, txn: e5.txn.get_obj_for_encoding() })), accounts: h3, apps: l3, latestTimestamp: s4, round: c4, protocolVersion: r4, sources: u3 });
           }
         }, 7116: (e3, t3, r3) => {
           "use strict";
           r3.r(t3), r3.d(t3, { ALGORAND_ZERO_ADDRESS_STRING: () => u3, MALFORMED_ADDRESS_ERROR_MSG: () => p3, CHECKSUM_ADDRESS_ERROR_MSG: () => f3, INVALID_MSIG_VERSION_ERROR_MSG: () => d3, INVALID_MSIG_THRESHOLD_ERROR_MSG: () => g3, INVALID_MSIG_PK_ERROR_MSG: () => y3, UNEXPECTED_PK_LEN_ERROR_MSG: () => m3, decodeAddress: () => b2, isValidAddress: () => A4, encodeAddress: () => w4, fromMultisigPreImg: () => v3, fromMultisigPreImgAddrs: () => x3, getApplicationAddress: () => S2 });
-          var n2 = r3(7267), o3 = r3.n(n2), s3 = r3(9404), i3 = r3(413), a3 = r3(6963), c3 = r3(2486).Buffer;
+          var n2 = r3(7267), o3 = r3.n(n2), i3 = r3(9404), s3 = r3(413), a3 = r3(6963), c3 = r3(2486).Buffer;
           const u3 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY5HFKQ", l3 = new Uint8Array([77, 117, 108, 116, 105, 115, 105, 103, 65, 100, 100, 114]), h3 = c3.from("appID"), p3 = "address seems to be malformed", f3 = "wrong checksum for address", d3 = "invalid multisig version", g3 = "bad multisig threshold", y3 = "bad multisig public key - wrong length", m3 = "nacl public key length is not 32 bytes";
           function b2(e4) {
             if (typeof e4 != "string" || e4.length !== 58)
@@ -14465,8 +14326,8 @@ var require_algosdk_min = __commonJS({
             const t4 = o3().decode.asBytes(e4.toString());
             if (t4.length !== 36)
               throw new Error(p3);
-            const r4 = new Uint8Array(t4.slice(0, 32)), n3 = new Uint8Array(t4.slice(s3.PUBLIC_KEY_LENGTH, 36)), a4 = s3.genericHash(r4).slice(s3.HASH_BYTES_LENGTH - 4, s3.HASH_BYTES_LENGTH);
-            if (!i3.arrayEqual(a4, n3))
+            const r4 = new Uint8Array(t4.slice(0, 32)), n3 = new Uint8Array(t4.slice(i3.PUBLIC_KEY_LENGTH, 36)), a4 = i3.genericHash(r4).slice(i3.HASH_BYTES_LENGTH - 4, i3.HASH_BYTES_LENGTH);
+            if (!s3.arrayEqual(a4, n3))
               throw new Error(f3);
             return { publicKey: r4, checksum: n3 };
           }
@@ -14479,15 +14340,15 @@ var require_algosdk_min = __commonJS({
             return true;
           }
           function w4(e4) {
-            const t4 = s3.genericHash(e4).slice(s3.PUBLIC_KEY_LENGTH - 4, s3.PUBLIC_KEY_LENGTH);
-            return o3().encode(i3.concatArrays(e4, t4)).toString().slice(0, 58);
+            const t4 = i3.genericHash(e4).slice(i3.PUBLIC_KEY_LENGTH - 4, i3.PUBLIC_KEY_LENGTH);
+            return o3().encode(s3.concatArrays(e4, t4)).toString().slice(0, 58);
           }
           function v3({ version: e4, threshold: t4, pks: r4 }) {
             if (e4 !== 1 || e4 > 255 || e4 < 0)
               throw new Error(d3);
             if (t4 === 0 || r4.length === 0 || t4 > r4.length || t4 > 255)
               throw new Error(g3);
-            if (s3.PUBLIC_KEY_LENGTH !== 32)
+            if (i3.PUBLIC_KEY_LENGTH !== 32)
               throw new Error(m3);
             const n3 = new Uint8Array(l3.length + 2 + 32 * r4.length);
             n3.set(l3, 0), n3.set([e4], l3.length), n3.set([t4], l3.length + 1);
@@ -14496,18 +14357,18 @@ var require_algosdk_min = __commonJS({
                 throw new Error(y3);
               n3.set(r4[e5], l3.length + 2 + 32 * e5);
             }
-            return new Uint8Array(s3.genericHash(n3));
+            return new Uint8Array(i3.genericHash(n3));
           }
           function x3({ version: e4, threshold: t4, addrs: r4 }) {
             return w4(v3({ version: e4, threshold: t4, pks: r4.map((e5) => b2(e5).publicKey) }));
           }
           function S2(e4) {
-            const t4 = i3.concatArrays(h3, (0, a3.T)(e4)), r4 = s3.genericHash(t4);
+            const t4 = s3.concatArrays(h3, (0, a3.T)(e4)), r4 = i3.genericHash(t4);
             return w4(new Uint8Array(r4));
           }
         }, 8922: (e3, t3, r3) => {
           "use strict";
-          r3.d(t3, { j: () => o3, v: () => s3 });
+          r3.d(t3, { j: () => o3, v: () => i3 });
           var n2 = r3(2486).Buffer;
           function o3(e4, t4) {
             let r4 = e4.toString(16);
@@ -14517,7 +14378,7 @@ var require_algosdk_min = __commonJS({
               n3[e5] = parseInt(r4.slice(t5, t5 + 2), 16);
             return n3;
           }
-          function s3(e4) {
+          function i3(e4) {
             let t4 = BigInt(0);
             const r4 = n2.from(e4);
             for (let n3 = 0; n3 < e4.length; n3++)
@@ -14526,10 +14387,10 @@ var require_algosdk_min = __commonJS({
           }
         }, 3033: (e3, t3, r3) => {
           "use strict";
-          r3.r(t3), r3.d(t3, { ERROR_CONTAINS_EMPTY_STRING: () => o3, encode: () => s3, decode: () => i3 });
+          r3.r(t3), r3.d(t3, { ERROR_CONTAINS_EMPTY_STRING: () => o3, encode: () => i3, decode: () => s3 });
           var n2 = r3(5406);
           const o3 = "The object contains empty or 0 values. First empty or 0 value encountered during encoding: ";
-          function s3(e4) {
+          function i3(e4) {
             const t4 = function(e5) {
               for (const t5 in e5)
                 if (Object.prototype.hasOwnProperty.call(e5, t5) && (!e5[t5] || e5[t5].length === 0))
@@ -14540,12 +14401,12 @@ var require_algosdk_min = __commonJS({
               throw new Error(o3 + t4.firstEmptyKey);
             return n2.encode(e4, { sortKeys: true });
           }
-          function i3(e4) {
+          function s3(e4) {
             return n2.decode(e4);
           }
         }, 6963: (e3, t3, r3) => {
           "use strict";
-          r3.d(t3, { T: () => o3, u: () => s3 });
+          r3.d(t3, { T: () => o3, u: () => i3 });
           var n2 = r3(2486).Buffer;
           function o3(e4) {
             if (typeof e4 != "bigint" && !Number.isInteger(e4) || e4 < 0 || e4 > BigInt("0xffffffffffffffff"))
@@ -14553,25 +14414,25 @@ var require_algosdk_min = __commonJS({
             const t4 = n2.allocUnsafe(8);
             return t4.writeBigUInt64BE(BigInt(e4)), new Uint8Array(t4);
           }
-          function s3(e4, t4 = "safe") {
+          function i3(e4, t4 = "safe") {
             if (t4 !== "safe" && t4 !== "mixed" && t4 !== "bigint")
               throw new Error(`Unknown decodingMode option: ${t4}`);
             if (e4.byteLength === 0 || e4.byteLength > 8)
               throw new Error(`Data has unacceptable length. Expected length is between 1 and 8, got ${e4.byteLength}`);
             const r4 = n2.allocUnsafe(8 - e4.byteLength);
             r4.fill(0);
-            const o4 = n2.concat([r4, n2.from(e4)]).readBigUInt64BE(), s4 = o4 > Number.MAX_SAFE_INTEGER;
+            const o4 = n2.concat([r4, n2.from(e4)]).readBigUInt64BE(), i4 = o4 > Number.MAX_SAFE_INTEGER;
             if (t4 === "safe") {
-              if (s4)
+              if (i4)
                 throw new Error(`Integer exceeds maximum safe integer: ${o4.toString()}. Try decoding with "mixed" or "safe" decodingMode.`);
               return Number(o4);
             }
-            return t4 !== "mixed" || s4 ? o4 : Number(o4);
+            return t4 !== "mixed" || i4 ? o4 : Number(o4);
           }
         }, 1063: (e3, t3, r3) => {
           "use strict";
           r3.r(t3), r3.d(t3, { TxGroup: () => u3, computeGroupID: () => l3, assignGroupID: () => h3, default: () => p3 });
-          var n2 = r3(9417), o3 = r3(9404), s3 = r3(3033), i3 = r3(7116), a3 = r3(413), c3 = r3(2486).Buffer;
+          var n2 = r3(9417), o3 = r3(9404), i3 = r3(3033), s3 = r3(7116), a3 = r3(413), c3 = r3(2486).Buffer;
           class u3 {
             constructor(e4) {
               if (this.name = "Transaction group", this.tag = c3.from("TG"), e4.length > 16) {
@@ -14591,7 +14452,7 @@ var require_algosdk_min = __commonJS({
               return t4;
             }
             toByte() {
-              return s3.encode(this.get_obj_for_encoding());
+              return i3.encode(this.get_obj_for_encoding());
             }
           }
           function l3(e4) {
@@ -14600,24 +14461,24 @@ var require_algosdk_min = __commonJS({
               const e5 = n2.instantiateTxnIfNeeded(r5);
               t4.push(e5.rawTxID());
             }
-            const r4 = new u3(t4), s4 = r4.toByte(), i4 = c3.from(a3.concatArrays(r4.tag, s4)), l4 = o3.genericHash(i4);
+            const r4 = new u3(t4), i4 = r4.toByte(), s4 = c3.from(a3.concatArrays(r4.tag, i4)), l4 = o3.genericHash(s4);
             return c3.from(l4);
           }
           function h3(e4, t4) {
             const r4 = l3(e4), o4 = [];
-            for (const s4 of e4) {
-              const e5 = n2.instantiateTxnIfNeeded(s4);
-              t4 && i3.encodeAddress(e5.from.publicKey) !== t4 || (e5.group = r4, o4.push(e5));
+            for (const i4 of e4) {
+              const e5 = n2.instantiateTxnIfNeeded(i4);
+              t4 && s3.encodeAddress(e5.from.publicKey) !== t4 || (e5.group = r4, o4.push(e5));
             }
             return o4;
           }
           const p3 = u3;
         }, 5583: (e3, t3, r3) => {
           "use strict";
-          r3.r(t3), r3.d(t3, { checkByteConstBlock: () => f3, checkIntConstBlock: () => p3, checkProgram: () => h3, checkPushByteOp: () => g3, checkPushIntOp: () => d3, langspecEvalMaxVersion: () => y3, langspecLogicSigVersion: () => m3, parseUvarint: () => s3, readProgram: () => l3 });
+          r3.r(t3), r3.d(t3, { checkByteConstBlock: () => f3, checkIntConstBlock: () => p3, checkProgram: () => h3, checkPushByteOp: () => g3, checkPushIntOp: () => d3, langspecEvalMaxVersion: () => y3, langspecLogicSigVersion: () => m3, parseUvarint: () => i3, readProgram: () => l3 });
           const n2 = JSON.parse('{"z_":6,"BV":5,"AP":[{"Opcode":0,"Name":"err","Cost":1,"Size":1,"Doc":"Fail immediately.","Groups":["Flow Control"]},{"Opcode":1,"Name":"sha256","Args":"B","Returns":"B","Cost":35,"Size":1,"Doc":"SHA256 hash of value A, yields [32]byte","Groups":["Arithmetic"]},{"Opcode":2,"Name":"keccak256","Args":"B","Returns":"B","Cost":130,"Size":1,"Doc":"Keccak256 hash of value A, yields [32]byte","Groups":["Arithmetic"]},{"Opcode":3,"Name":"sha512_256","Args":"B","Returns":"B","Cost":45,"Size":1,"Doc":"SHA512_256 hash of value A, yields [32]byte","Groups":["Arithmetic"]},{"Opcode":4,"Name":"ed25519verify","Args":"BBB","Returns":"U","Cost":1900,"Size":1,"Doc":"for (data A, signature B, pubkey C) verify the signature of (\\"ProgData\\" || program_hash || data) against the pubkey => {0 or 1}","DocExtra":"The 32 byte public key is the last element on the stack, preceded by the 64 byte signature at the second-to-last element on the stack, preceded by the data which was signed at the third-to-last element on the stack.","Groups":["Arithmetic"]},{"Opcode":5,"Name":"ecdsa_verify","Args":"BBBBB","Returns":"U","Cost":1700,"Size":2,"Doc":"for (data A, signature B, C and pubkey D, E) verify the signature of the data against the pubkey => {0 or 1}","DocExtra":"The 32 byte Y-component of a public key is the last element on the stack, preceded by X-component of a pubkey, preceded by S and R components of a signature, preceded by the data that is fifth element on the stack. All values are big-endian encoded. The signed data must be 32 bytes long, and signatures in lower-S form are only accepted.","ImmediateNote":"{uint8 curve index}","Groups":["Arithmetic"]},{"Opcode":6,"Name":"ecdsa_pk_decompress","Args":"B","Returns":"BB","Cost":650,"Size":2,"Doc":"decompress pubkey A into components X, Y","DocExtra":"The 33 byte public key in a compressed form to be decompressed into X and Y (top) components. All values are big-endian encoded.","ImmediateNote":"{uint8 curve index}","Groups":["Arithmetic"]},{"Opcode":7,"Name":"ecdsa_pk_recover","Args":"BUBB","Returns":"BB","Cost":2000,"Size":2,"Doc":"for (data A, recovery id B, signature C, D) recover a public key","DocExtra":"S (top) and R elements of a signature, recovery id and data (bottom) are expected on the stack and used to deriver a public key. All values are big-endian encoded. The signed data must be 32 bytes long.","ImmediateNote":"{uint8 curve index}","Groups":["Arithmetic"]},{"Opcode":8,"Name":"+","Args":"UU","Returns":"U","Cost":1,"Size":1,"Doc":"A plus B. Fail on overflow.","DocExtra":"Overflow is an error condition which halts execution and fails the transaction. Full precision is available from `addw`.","Groups":["Arithmetic"]},{"Opcode":9,"Name":"-","Args":"UU","Returns":"U","Cost":1,"Size":1,"Doc":"A minus B. Fail if B > A.","Groups":["Arithmetic"]},{"Opcode":10,"Name":"/","Args":"UU","Returns":"U","Cost":1,"Size":1,"Doc":"A divided by B (truncated division). Fail if B == 0.","DocExtra":"`divmodw` is available to divide the two-element values produced by `mulw` and `addw`.","Groups":["Arithmetic"]},{"Opcode":11,"Name":"*","Args":"UU","Returns":"U","Cost":1,"Size":1,"Doc":"A times B. Fail on overflow.","DocExtra":"Overflow is an error condition which halts execution and fails the transaction. Full precision is available from `mulw`.","Groups":["Arithmetic"]},{"Opcode":12,"Name":"<","Args":"UU","Returns":"U","Cost":1,"Size":1,"Doc":"A less than B => {0 or 1}","Groups":["Arithmetic"]},{"Opcode":13,"Name":">","Args":"UU","Returns":"U","Cost":1,"Size":1,"Doc":"A greater than B => {0 or 1}","Groups":["Arithmetic"]},{"Opcode":14,"Name":"<=","Args":"UU","Returns":"U","Cost":1,"Size":1,"Doc":"A less than or equal to B => {0 or 1}","Groups":["Arithmetic"]},{"Opcode":15,"Name":">=","Args":"UU","Returns":"U","Cost":1,"Size":1,"Doc":"A greater than or equal to B => {0 or 1}","Groups":["Arithmetic"]},{"Opcode":16,"Name":"&&","Args":"UU","Returns":"U","Cost":1,"Size":1,"Doc":"A is not zero and B is not zero => {0 or 1}","Groups":["Arithmetic"]},{"Opcode":17,"Name":"||","Args":"UU","Returns":"U","Cost":1,"Size":1,"Doc":"A is not zero or B is not zero => {0 or 1}","Groups":["Arithmetic"]},{"Opcode":18,"Name":"==","Args":"..","Returns":"U","Cost":1,"Size":1,"Doc":"A is equal to B => {0 or 1}","Groups":["Arithmetic"]},{"Opcode":19,"Name":"!=","Args":"..","Returns":"U","Cost":1,"Size":1,"Doc":"A is not equal to B => {0 or 1}","Groups":["Arithmetic"]},{"Opcode":20,"Name":"!","Args":"U","Returns":"U","Cost":1,"Size":1,"Doc":"A == 0 yields 1; else 0","Groups":["Arithmetic"]},{"Opcode":21,"Name":"len","Args":"B","Returns":"U","Cost":1,"Size":1,"Doc":"yields length of byte value A","Groups":["Arithmetic"]},{"Opcode":22,"Name":"itob","Args":"U","Returns":"B","Cost":1,"Size":1,"Doc":"converts uint64 A to big endian bytes","Groups":["Arithmetic"]},{"Opcode":23,"Name":"btoi","Args":"B","Returns":"U","Cost":1,"Size":1,"Doc":"converts bytes A as big endian to uint64","DocExtra":"`btoi` fails if the input is longer than 8 bytes.","Groups":["Arithmetic"]},{"Opcode":24,"Name":"%","Args":"UU","Returns":"U","Cost":1,"Size":1,"Doc":"A modulo B. Fail if B == 0.","Groups":["Arithmetic"]},{"Opcode":25,"Name":"|","Args":"UU","Returns":"U","Cost":1,"Size":1,"Doc":"A bitwise-or B","Groups":["Arithmetic"]},{"Opcode":26,"Name":"&","Args":"UU","Returns":"U","Cost":1,"Size":1,"Doc":"A bitwise-and B","Groups":["Arithmetic"]},{"Opcode":27,"Name":"^","Args":"UU","Returns":"U","Cost":1,"Size":1,"Doc":"A bitwise-xor B","Groups":["Arithmetic"]},{"Opcode":28,"Name":"~","Args":"U","Returns":"U","Cost":1,"Size":1,"Doc":"bitwise invert value A","Groups":["Arithmetic"]},{"Opcode":29,"Name":"mulw","Args":"UU","Returns":"UU","Cost":1,"Size":1,"Doc":"A times B as a 128-bit result in two uint64s. X is the high 64 bits, Y is the low","Groups":["Arithmetic"]},{"Opcode":30,"Name":"addw","Args":"UU","Returns":"UU","Cost":1,"Size":1,"Doc":"A plus B as a 128-bit result. X is the carry-bit, Y is the low-order 64 bits.","Groups":["Arithmetic"]},{"Opcode":31,"Name":"divmodw","Args":"UUUU","Returns":"UUUU","Cost":20,"Size":1,"Doc":"W,X = (A,B / C,D); Y,Z = (A,B modulo C,D)","DocExtra":"The notation J,K indicates that two uint64 values J and K are interpreted as a uint128 value, with J as the high uint64 and K the low.","Groups":["Arithmetic"]},{"Opcode":32,"Name":"intcblock","Cost":1,"Size":0,"Doc":"prepare block of uint64 constants for use by intc","DocExtra":"`intcblock` loads following program bytes into an array of integer constants in the evaluator. These integer constants can be referred to by `intc` and `intc_*` which will push the value onto the stack. Subsequent calls to `intcblock` reset and replace the integer constants available to the script.","ImmediateNote":"{varuint length} [{varuint value}, ...]","Groups":["Loading Values"]},{"Opcode":33,"Name":"intc","Returns":"U","Cost":1,"Size":2,"Doc":"Ith constant from intcblock","ImmediateNote":"{uint8 int constant index}","Groups":["Loading Values"]},{"Opcode":34,"Name":"intc_0","Returns":"U","Cost":1,"Size":1,"Doc":"constant 0 from intcblock","Groups":["Loading Values"]},{"Opcode":35,"Name":"intc_1","Returns":"U","Cost":1,"Size":1,"Doc":"constant 1 from intcblock","Groups":["Loading Values"]},{"Opcode":36,"Name":"intc_2","Returns":"U","Cost":1,"Size":1,"Doc":"constant 2 from intcblock","Groups":["Loading Values"]},{"Opcode":37,"Name":"intc_3","Returns":"U","Cost":1,"Size":1,"Doc":"constant 3 from intcblock","Groups":["Loading Values"]},{"Opcode":38,"Name":"bytecblock","Cost":1,"Size":0,"Doc":"prepare block of byte-array constants for use by bytec","DocExtra":"`bytecblock` loads the following program bytes into an array of byte-array constants in the evaluator. These constants can be referred to by `bytec` and `bytec_*` which will push the value onto the stack. Subsequent calls to `bytecblock` reset and replace the bytes constants available to the script.","ImmediateNote":"{varuint length} [({varuint value length} bytes), ...]","Groups":["Loading Values"]},{"Opcode":39,"Name":"bytec","Returns":"B","Cost":1,"Size":2,"Doc":"Ith constant from bytecblock","ImmediateNote":"{uint8 byte constant index}","Groups":["Loading Values"]},{"Opcode":40,"Name":"bytec_0","Returns":"B","Cost":1,"Size":1,"Doc":"constant 0 from bytecblock","Groups":["Loading Values"]},{"Opcode":41,"Name":"bytec_1","Returns":"B","Cost":1,"Size":1,"Doc":"constant 1 from bytecblock","Groups":["Loading Values"]},{"Opcode":42,"Name":"bytec_2","Returns":"B","Cost":1,"Size":1,"Doc":"constant 2 from bytecblock","Groups":["Loading Values"]},{"Opcode":43,"Name":"bytec_3","Returns":"B","Cost":1,"Size":1,"Doc":"constant 3 from bytecblock","Groups":["Loading Values"]},{"Opcode":44,"Name":"arg","Returns":"B","Cost":1,"Size":2,"Doc":"Nth LogicSig argument","ImmediateNote":"{uint8 arg index N}","Groups":["Loading Values"]},{"Opcode":45,"Name":"arg_0","Returns":"B","Cost":1,"Size":1,"Doc":"LogicSig argument 0","Groups":["Loading Values"]},{"Opcode":46,"Name":"arg_1","Returns":"B","Cost":1,"Size":1,"Doc":"LogicSig argument 1","Groups":["Loading Values"]},{"Opcode":47,"Name":"arg_2","Returns":"B","Cost":1,"Size":1,"Doc":"LogicSig argument 2","Groups":["Loading Values"]},{"Opcode":48,"Name":"arg_3","Returns":"B","Cost":1,"Size":1,"Doc":"LogicSig argument 3","Groups":["Loading Values"]},{"Opcode":49,"Name":"txn","Returns":".","Cost":1,"Size":2,"ArgEnum":["Sender","Fee","FirstValid","FirstValidTime","LastValid","Note","Lease","Receiver","Amount","CloseRemainderTo","VotePK","SelectionPK","VoteFirst","VoteLast","VoteKeyDilution","Type","TypeEnum","XferAsset","AssetAmount","AssetSender","AssetReceiver","AssetCloseTo","GroupIndex","TxID","ApplicationID","OnCompletion","ApplicationArgs","NumAppArgs","Accounts","NumAccounts","ApprovalProgram","ClearStateProgram","RekeyTo","ConfigAsset","ConfigAssetTotal","ConfigAssetDecimals","ConfigAssetDefaultFrozen","ConfigAssetUnitName","ConfigAssetName","ConfigAssetURL","ConfigAssetMetadataHash","ConfigAssetManager","ConfigAssetReserve","ConfigAssetFreeze","ConfigAssetClawback","FreezeAsset","FreezeAssetAccount","FreezeAssetFrozen","Assets","NumAssets","Applications","NumApplications","GlobalNumUint","GlobalNumByteSlice","LocalNumUint","LocalNumByteSlice","ExtraProgramPages","Nonparticipation","Logs","NumLogs","CreatedAssetID","CreatedApplicationID","LastLog","StateProofPK"],"ArgEnumTypes":"BUUUUBBBUBBBUUUBUUUBBBUBUUBUBUBBBUUUUBBBBBBBBUBUUUUUUUUUUUBUUUBB","Doc":"field F of current transaction","DocExtra":"FirstValidTime causes the program to fail. The field is reserved for future use.","ImmediateNote":"{uint8 transaction field index}","Groups":["Loading Values"]},{"Opcode":50,"Name":"global","Returns":".","Cost":1,"Size":2,"Doc":"global field F","ImmediateNote":"{uint8 global field index}","Groups":["Loading Values"]},{"Opcode":51,"Name":"gtxn","Returns":".","Cost":1,"Size":3,"ArgEnum":["Sender","Fee","FirstValid","FirstValidTime","LastValid","Note","Lease","Receiver","Amount","CloseRemainderTo","VotePK","SelectionPK","VoteFirst","VoteLast","VoteKeyDilution","Type","TypeEnum","XferAsset","AssetAmount","AssetSender","AssetReceiver","AssetCloseTo","GroupIndex","TxID","ApplicationID","OnCompletion","ApplicationArgs","NumAppArgs","Accounts","NumAccounts","ApprovalProgram","ClearStateProgram","RekeyTo","ConfigAsset","ConfigAssetTotal","ConfigAssetDecimals","ConfigAssetDefaultFrozen","ConfigAssetUnitName","ConfigAssetName","ConfigAssetURL","ConfigAssetMetadataHash","ConfigAssetManager","ConfigAssetReserve","ConfigAssetFreeze","ConfigAssetClawback","FreezeAsset","FreezeAssetAccount","FreezeAssetFrozen","Assets","NumAssets","Applications","NumApplications","GlobalNumUint","GlobalNumByteSlice","LocalNumUint","LocalNumByteSlice","ExtraProgramPages","Nonparticipation","Logs","NumLogs","CreatedAssetID","CreatedApplicationID","LastLog","StateProofPK"],"ArgEnumTypes":"BUUUUBBBUBBBUUUBUUUBBBUBUUBUBUBBBUUUUBBBBBBBBUBUUUUUUUUUUUBUUUBB","Doc":"field F of the Tth transaction in the current group","DocExtra":"for notes on transaction fields available, see `txn`. If this transaction is _i_ in the group, `gtxn i field` is equivalent to `txn field`.","ImmediateNote":"{uint8 transaction group index} {uint8 transaction field index}","Groups":["Loading Values"]},{"Opcode":52,"Name":"load","Returns":".","Cost":1,"Size":2,"Doc":"Ith scratch space value. All scratch spaces are 0 at program start.","ImmediateNote":"{uint8 position in scratch space to load from}","Groups":["Loading Values"]},{"Opcode":53,"Name":"store","Args":".","Cost":1,"Size":2,"Doc":"store A to the Ith scratch space","ImmediateNote":"{uint8 position in scratch space to store to}","Groups":["Loading Values"]},{"Opcode":54,"Name":"txna","Returns":".","Cost":1,"Size":3,"ArgEnum":["ApplicationArgs","Accounts","Assets","Applications","Logs"],"ArgEnumTypes":"BBUUB","Doc":"Ith value of the array field F of the current transaction","ImmediateNote":"{uint8 transaction field index} {uint8 transaction field array index}","Groups":["Loading Values"]},{"Opcode":55,"Name":"gtxna","Returns":".","Cost":1,"Size":4,"ArgEnum":["ApplicationArgs","Accounts","Assets","Applications","Logs"],"ArgEnumTypes":"BBUUB","Doc":"Ith value of the array field F from the Tth transaction in the current group","ImmediateNote":"{uint8 transaction group index} {uint8 transaction field index} {uint8 transaction field array index}","Groups":["Loading Values"]},{"Opcode":56,"Name":"gtxns","Args":"U","Returns":".","Cost":1,"Size":2,"ArgEnum":["Sender","Fee","FirstValid","FirstValidTime","LastValid","Note","Lease","Receiver","Amount","CloseRemainderTo","VotePK","SelectionPK","VoteFirst","VoteLast","VoteKeyDilution","Type","TypeEnum","XferAsset","AssetAmount","AssetSender","AssetReceiver","AssetCloseTo","GroupIndex","TxID","ApplicationID","OnCompletion","ApplicationArgs","NumAppArgs","Accounts","NumAccounts","ApprovalProgram","ClearStateProgram","RekeyTo","ConfigAsset","ConfigAssetTotal","ConfigAssetDecimals","ConfigAssetDefaultFrozen","ConfigAssetUnitName","ConfigAssetName","ConfigAssetURL","ConfigAssetMetadataHash","ConfigAssetManager","ConfigAssetReserve","ConfigAssetFreeze","ConfigAssetClawback","FreezeAsset","FreezeAssetAccount","FreezeAssetFrozen","Assets","NumAssets","Applications","NumApplications","GlobalNumUint","GlobalNumByteSlice","LocalNumUint","LocalNumByteSlice","ExtraProgramPages","Nonparticipation","Logs","NumLogs","CreatedAssetID","CreatedApplicationID","LastLog","StateProofPK"],"ArgEnumTypes":"BUUUUBBBUBBBUUUBUUUBBBUBUUBUBUBBBUUUUBBBBBBBBUBUUUUUUUUUUUBUUUBB","Doc":"field F of the Ath transaction in the current group","DocExtra":"for notes on transaction fields available, see `txn`. If top of stack is _i_, `gtxns field` is equivalent to `gtxn _i_ field`. gtxns exists so that _i_ can be calculated, often based on the index of the current transaction.","ImmediateNote":"{uint8 transaction field index}","Groups":["Loading Values"]},{"Opcode":57,"Name":"gtxnsa","Args":"U","Returns":".","Cost":1,"Size":3,"ArgEnum":["ApplicationArgs","Accounts","Assets","Applications","Logs"],"ArgEnumTypes":"BBUUB","Doc":"Ith value of the array field F from the Ath transaction in the current group","ImmediateNote":"{uint8 transaction field index} {uint8 transaction field array index}","Groups":["Loading Values"]},{"Opcode":58,"Name":"gload","Returns":".","Cost":1,"Size":3,"Doc":"Ith scratch space value of the Tth transaction in the current group","DocExtra":"`gload` fails unless the requested transaction is an ApplicationCall and T < GroupIndex.","ImmediateNote":"{uint8 transaction group index} {uint8 position in scratch space to load from}","Groups":["Loading Values"]},{"Opcode":59,"Name":"gloads","Args":"U","Returns":".","Cost":1,"Size":2,"Doc":"Ith scratch space value of the Ath transaction in the current group","DocExtra":"`gloads` fails unless the requested transaction is an ApplicationCall and A < GroupIndex.","ImmediateNote":"{uint8 position in scratch space to load from}","Groups":["Loading Values"]},{"Opcode":60,"Name":"gaid","Returns":"U","Cost":1,"Size":2,"Doc":"ID of the asset or application created in the Tth transaction of the current group","DocExtra":"`gaid` fails unless the requested transaction created an asset or application and T < GroupIndex.","ImmediateNote":"{uint8 transaction group index}","Groups":["Loading Values"]},{"Opcode":61,"Name":"gaids","Args":"U","Returns":"U","Cost":1,"Size":1,"Doc":"ID of the asset or application created in the Ath transaction of the current group","DocExtra":"`gaids` fails unless the requested transaction created an asset or application and A < GroupIndex.","Groups":["Loading Values"]},{"Opcode":62,"Name":"loads","Args":"U","Returns":".","Cost":1,"Size":1,"Doc":"Ath scratch space value.  All scratch spaces are 0 at program start.","Groups":["Loading Values"]},{"Opcode":63,"Name":"stores","Args":"U.","Cost":1,"Size":1,"Doc":"store B to the Ath scratch space","Groups":["Loading Values"]},{"Opcode":64,"Name":"bnz","Args":"U","Cost":1,"Size":3,"Doc":"branch to TARGET if value A is not zero","DocExtra":"The `bnz` instruction opcode 0x40 is followed by two immediate data bytes which are a high byte first and low byte second which together form a 16 bit offset which the instruction may branch to. For a bnz instruction at `pc`, if the last element of the stack is not zero then branch to instruction at `pc + 3 + N`, else proceed to next instruction at `pc + 3`. Branch targets must be aligned instructions. (e.g. Branching to the second byte of a 2 byte op will be rejected.) Starting at v4, the offset is treated as a signed 16 bit integer allowing for backward branches and looping. In prior version (v1 to v3), branch offsets are limited to forward branches only, 0-0x7fff.\\n\\nAt v2 it became allowed to branch to the end of the program exactly after the last instruction: bnz to byte N (with 0-indexing) was illegal for a TEAL program with N bytes before v2, and is legal after it. This change eliminates the need for a last instruction of no-op as a branch target at the end. (Branching beyond the end--in other words, to a byte larger than N--is still illegal and will cause the program to fail.)","ImmediateNote":"{int16 branch offset, big endian}","Groups":["Flow Control"]},{"Opcode":65,"Name":"bz","Args":"U","Cost":1,"Size":3,"Doc":"branch to TARGET if value A is zero","DocExtra":"See `bnz` for details on how branches work. `bz` inverts the behavior of `bnz`.","ImmediateNote":"{int16 branch offset, big endian}","Groups":["Flow Control"]},{"Opcode":66,"Name":"b","Cost":1,"Size":3,"Doc":"branch unconditionally to TARGET","DocExtra":"See `bnz` for details on how branches work. `b` always jumps to the offset.","ImmediateNote":"{int16 branch offset, big endian}","Groups":["Flow Control"]},{"Opcode":67,"Name":"return","Args":"U","Cost":1,"Size":1,"Doc":"use A as success value; end","Groups":["Flow Control"]},{"Opcode":68,"Name":"assert","Args":"U","Cost":1,"Size":1,"Doc":"immediately fail unless A is a non-zero number","Groups":["Flow Control"]},{"Opcode":72,"Name":"pop","Args":".","Cost":1,"Size":1,"Doc":"discard A","Groups":["Flow Control"]},{"Opcode":73,"Name":"dup","Args":".","Returns":"..","Cost":1,"Size":1,"Doc":"duplicate A","Groups":["Flow Control"]},{"Opcode":74,"Name":"dup2","Args":"..","Returns":"....","Cost":1,"Size":1,"Doc":"duplicate A and B","Groups":["Flow Control"]},{"Opcode":75,"Name":"dig","Args":".","Returns":"..","Cost":1,"Size":2,"Doc":"Nth value from the top of the stack. dig 0 is equivalent to dup","ImmediateNote":"{uint8 depth}","Groups":["Flow Control"]},{"Opcode":76,"Name":"swap","Args":"..","Returns":"..","Cost":1,"Size":1,"Doc":"swaps A and B on stack","Groups":["Flow Control"]},{"Opcode":77,"Name":"select","Args":"..U","Returns":".","Cost":1,"Size":1,"Doc":"selects one of two values based on top-of-stack: B if C != 0, else A","Groups":["Flow Control"]},{"Opcode":78,"Name":"cover","Args":".","Returns":".","Cost":1,"Size":2,"Doc":"remove top of stack, and place it deeper in the stack such that N elements are above it. Fails if stack depth <= N.","ImmediateNote":"{uint8 depth}","Groups":["Flow Control"]},{"Opcode":79,"Name":"uncover","Args":".","Returns":".","Cost":1,"Size":2,"Doc":"remove the value at depth N in the stack and shift above items down so the Nth deep value is on top of the stack. Fails if stack depth <= N.","ImmediateNote":"{uint8 depth}","Groups":["Flow Control"]},{"Opcode":80,"Name":"concat","Args":"BB","Returns":"B","Cost":1,"Size":1,"Doc":"join A and B","DocExtra":"`concat` fails if the result would be greater than 4096 bytes.","Groups":["Arithmetic"]},{"Opcode":81,"Name":"substring","Args":"B","Returns":"B","Cost":1,"Size":3,"Doc":"A range of bytes from A starting at S up to but not including E. If E < S, or either is larger than the array length, the program fails","ImmediateNote":"{uint8 start position} {uint8 end position}","Groups":["Byte Array Manipulation"]},{"Opcode":82,"Name":"substring3","Args":"BUU","Returns":"B","Cost":1,"Size":1,"Doc":"A range of bytes from A starting at B up to but not including C. If C < B, or either is larger than the array length, the program fails","Groups":["Byte Array Manipulation"]},{"Opcode":83,"Name":"getbit","Args":".U","Returns":"U","Cost":1,"Size":1,"Doc":"Bth bit of (byte-array or integer) A.","DocExtra":"see explanation of bit ordering in setbit","Groups":["Arithmetic"]},{"Opcode":84,"Name":"setbit","Args":".UU","Returns":".","Cost":1,"Size":1,"Doc":"Copy of (byte-array or integer) A, with the Bth bit set to (0 or 1) C","DocExtra":"When A is a uint64, index 0 is the least significant bit. Setting bit 3 to 1 on the integer 0 yields 8, or 2^3. When A is a byte array, index 0 is the leftmost bit of the leftmost byte. Setting bits 0 through 11 to 1 in a 4-byte-array of 0s yields the byte array 0xfff00000. Setting bit 3 to 1 on the 1-byte-array 0x00 yields the byte array 0x10.","Groups":["Arithmetic"]},{"Opcode":85,"Name":"getbyte","Args":"BU","Returns":"U","Cost":1,"Size":1,"Doc":"Bth byte of A, as an integer","Groups":["Arithmetic"]},{"Opcode":86,"Name":"setbyte","Args":"BUU","Returns":"B","Cost":1,"Size":1,"Doc":"Copy of A with the Bth byte set to small integer (between 0..255) C","Groups":["Arithmetic"]},{"Opcode":87,"Name":"extract","Args":"B","Returns":"B","Cost":1,"Size":3,"Doc":"A range of bytes from A starting at S up to but not including S+L. If L is 0, then extract to the end of the string. If S or S+L is larger than the array length, the program fails","ImmediateNote":"{uint8 start position} {uint8 length}","Groups":["Byte Array Manipulation"]},{"Opcode":88,"Name":"extract3","Args":"BUU","Returns":"B","Cost":1,"Size":1,"Doc":"A range of bytes from A starting at B up to but not including B+C. If B+C is larger than the array length, the program fails","Groups":["Byte Array Manipulation"]},{"Opcode":89,"Name":"extract_uint16","Args":"BU","Returns":"U","Cost":1,"Size":1,"Doc":"A uint16 formed from a range of big-endian bytes from A starting at B up to but not including B+2. If B+2 is larger than the array length, the program fails","Groups":["Byte Array Manipulation"]},{"Opcode":90,"Name":"extract_uint32","Args":"BU","Returns":"U","Cost":1,"Size":1,"Doc":"A uint32 formed from a range of big-endian bytes from A starting at B up to but not including B+4. If B+4 is larger than the array length, the program fails","Groups":["Byte Array Manipulation"]},{"Opcode":91,"Name":"extract_uint64","Args":"BU","Returns":"U","Cost":1,"Size":1,"Doc":"A uint64 formed from a range of big-endian bytes from A starting at B up to but not including B+8. If B+8 is larger than the array length, the program fails","Groups":["Byte Array Manipulation"]},{"Opcode":96,"Name":"balance","Args":".","Returns":"U","Cost":1,"Size":1,"Doc":"get balance for account A, in microalgos. The balance is observed after the effects of previous transactions in the group, and after the fee for the current transaction is deducted.","DocExtra":"params: Txn.Accounts offset (or, since v4, an _available_ account address), _available_ application id (or, since v4, a Txn.ForeignApps offset). Return: value.","Groups":["State Access"]},{"Opcode":97,"Name":"app_opted_in","Args":".U","Returns":"U","Cost":1,"Size":1,"Doc":"1 if account A is opted in to application B, else 0","DocExtra":"params: Txn.Accounts offset (or, since v4, an _available_ account address), _available_ application id (or, since v4, a Txn.ForeignApps offset). Return: 1 if opted in and 0 otherwise.","Groups":["State Access"]},{"Opcode":98,"Name":"app_local_get","Args":".B","Returns":".","Cost":1,"Size":1,"Doc":"local state of the key B in the current application in account A","DocExtra":"params: Txn.Accounts offset (or, since v4, an _available_ account address), state key. Return: value. The value is zero (of type uint64) if the key does not exist.","Groups":["State Access"]},{"Opcode":99,"Name":"app_local_get_ex","Args":".UB","Returns":".U","Cost":1,"Size":1,"Doc":"X is the local state of application B, key C in account A. Y is 1 if key existed, else 0","DocExtra":"params: Txn.Accounts offset (or, since v4, an _available_ account address), _available_ application id (or, since v4, a Txn.ForeignApps offset), state key. Return: did_exist flag (top of the stack, 1 if the application and key existed and 0 otherwise), value. The value is zero (of type uint64) if the key does not exist.","Groups":["State Access"]},{"Opcode":100,"Name":"app_global_get","Args":"B","Returns":".","Cost":1,"Size":1,"Doc":"global state of the key A in the current application","DocExtra":"params: state key. Return: value. The value is zero (of type uint64) if the key does not exist.","Groups":["State Access"]},{"Opcode":101,"Name":"app_global_get_ex","Args":"UB","Returns":".U","Cost":1,"Size":1,"Doc":"X is the global state of application A, key B. Y is 1 if key existed, else 0","DocExtra":"params: Txn.ForeignApps offset (or, since v4, an _available_ application id), state key. Return: did_exist flag (top of the stack, 1 if the application and key existed and 0 otherwise), value. The value is zero (of type uint64) if the key does not exist.","Groups":["State Access"]},{"Opcode":102,"Name":"app_local_put","Args":".B.","Cost":1,"Size":1,"Doc":"write C to key B in account A\'s local state of the current application","DocExtra":"params: Txn.Accounts offset (or, since v4, an _available_ account address), state key, value.","Groups":["State Access"]},{"Opcode":103,"Name":"app_global_put","Args":"B.","Cost":1,"Size":1,"Doc":"write B to key A in the global state of the current application","Groups":["State Access"]},{"Opcode":104,"Name":"app_local_del","Args":".B","Cost":1,"Size":1,"Doc":"delete key B from account A\'s local state of the current application","DocExtra":"params: Txn.Accounts offset (or, since v4, an _available_ account address), state key.\\n\\nDeleting a key which is already absent has no effect on the application local state. (In particular, it does _not_ cause the program to fail.)","Groups":["State Access"]},{"Opcode":105,"Name":"app_global_del","Args":"B","Cost":1,"Size":1,"Doc":"delete key A from the global state of the current application","DocExtra":"params: state key.\\n\\nDeleting a key which is already absent has no effect on the application global state. (In particular, it does _not_ cause the program to fail.)","Groups":["State Access"]},{"Opcode":112,"Name":"asset_holding_get","Args":".U","Returns":".U","Cost":1,"Size":2,"ArgEnum":["AssetBalance","AssetFrozen"],"ArgEnumTypes":"UU","Doc":"X is field F from account A\'s holding of asset B. Y is 1 if A is opted into B, else 0","DocExtra":"params: Txn.Accounts offset (or, since v4, an _available_ address), asset id (or, since v4, a Txn.ForeignAssets offset). Return: did_exist flag (1 if the asset existed and 0 otherwise), value.","ImmediateNote":"{uint8 asset holding field index}","Groups":["State Access"]},{"Opcode":113,"Name":"asset_params_get","Args":"U","Returns":".U","Cost":1,"Size":2,"ArgEnum":["AssetTotal","AssetDecimals","AssetDefaultFrozen","AssetUnitName","AssetName","AssetURL","AssetMetadataHash","AssetManager","AssetReserve","AssetFreeze","AssetClawback","AssetCreator"],"ArgEnumTypes":"UUUBBBBBBBBB","Doc":"X is field F from asset A. Y is 1 if A exists, else 0","DocExtra":"params: Txn.ForeignAssets offset (or, since v4, an _available_ asset id. Return: did_exist flag (1 if the asset existed and 0 otherwise), value.","ImmediateNote":"{uint8 asset params field index}","Groups":["State Access"]},{"Opcode":114,"Name":"app_params_get","Args":"U","Returns":".U","Cost":1,"Size":2,"ArgEnum":["AppApprovalProgram","AppClearStateProgram","AppGlobalNumUint","AppGlobalNumByteSlice","AppLocalNumUint","AppLocalNumByteSlice","AppExtraProgramPages","AppCreator","AppAddress"],"ArgEnumTypes":"BBUUUUUBB","Doc":"X is field F from app A. Y is 1 if A exists, else 0","DocExtra":"params: Txn.ForeignApps offset or an _available_ app id. Return: did_exist flag (1 if the application existed and 0 otherwise), value.","ImmediateNote":"{uint8 app params field index}","Groups":["State Access"]},{"Opcode":115,"Name":"acct_params_get","Args":".","Returns":".U","Cost":1,"Size":2,"Doc":"X is field F from account A. Y is 1 if A owns positive algos, else 0","ImmediateNote":"{uint8 account params field index}","Groups":["State Access"]},{"Opcode":120,"Name":"min_balance","Args":".","Returns":"U","Cost":1,"Size":1,"Doc":"get minimum required balance for account A, in microalgos. Required balance is affected by [ASA](https://developer.algorand.org/docs/features/asa/#assets-overview) and [App](https://developer.algorand.org/docs/features/asc1/stateful/#minimum-balance-requirement-for-a-smart-contract) usage. When creating or opting into an app, the minimum balance grows before the app code runs, therefore the increase is visible there. When deleting or closing out, the minimum balance decreases after the app executes.","DocExtra":"params: Txn.Accounts offset (or, since v4, an _available_ account address), _available_ application id (or, since v4, a Txn.ForeignApps offset). Return: value.","Groups":["State Access"]},{"Opcode":128,"Name":"pushbytes","Returns":"B","Cost":1,"Size":0,"Doc":"immediate BYTES","DocExtra":"pushbytes args are not added to the bytecblock during assembly processes","ImmediateNote":"{varuint length} {bytes}","Groups":["Loading Values"]},{"Opcode":129,"Name":"pushint","Returns":"U","Cost":1,"Size":0,"Doc":"immediate UINT","DocExtra":"pushint args are not added to the intcblock during assembly processes","ImmediateNote":"{varuint int}","Groups":["Loading Values"]},{"Opcode":136,"Name":"callsub","Cost":1,"Size":3,"Doc":"branch unconditionally to TARGET, saving the next instruction on the call stack","DocExtra":"The call stack is separate from the data stack. Only `callsub` and `retsub` manipulate it.","ImmediateNote":"{int16 branch offset, big endian}","Groups":["Flow Control"]},{"Opcode":137,"Name":"retsub","Cost":1,"Size":1,"Doc":"pop the top instruction from the call stack and branch to it","DocExtra":"The call stack is separate from the data stack. Only `callsub` and `retsub` manipulate it.","Groups":["Flow Control"]},{"Opcode":144,"Name":"shl","Args":"UU","Returns":"U","Cost":1,"Size":1,"Doc":"A times 2^B, modulo 2^64","Groups":["Arithmetic"]},{"Opcode":145,"Name":"shr","Args":"UU","Returns":"U","Cost":1,"Size":1,"Doc":"A divided by 2^B","Groups":["Arithmetic"]},{"Opcode":146,"Name":"sqrt","Args":"U","Returns":"U","Cost":4,"Size":1,"Doc":"The largest integer I such that I^2 <= A","Groups":["Arithmetic"]},{"Opcode":147,"Name":"bitlen","Args":".","Returns":"U","Cost":1,"Size":1,"Doc":"The highest set bit in A. If A is a byte-array, it is interpreted as a big-endian unsigned integer. bitlen of 0 is 0, bitlen of 8 is 4","DocExtra":"bitlen interprets arrays as big-endian integers, unlike setbit/getbit","Groups":["Arithmetic"]},{"Opcode":148,"Name":"exp","Args":"UU","Returns":"U","Cost":1,"Size":1,"Doc":"A raised to the Bth power. Fail if A == B == 0 and on overflow","Groups":["Arithmetic"]},{"Opcode":149,"Name":"expw","Args":"UU","Returns":"UU","Cost":10,"Size":1,"Doc":"A raised to the Bth power as a 128-bit result in two uint64s. X is the high 64 bits, Y is the low. Fail if A == B == 0 or if the results exceeds 2^128-1","Groups":["Arithmetic"]},{"Opcode":150,"Name":"bsqrt","Args":"B","Returns":"B","Cost":40,"Size":1,"Doc":"The largest integer I such that I^2 <= A. A and I are interpreted as big-endian unsigned integers","Groups":["Byte Array Arithmetic"]},{"Opcode":151,"Name":"divw","Args":"UUU","Returns":"U","Cost":1,"Size":1,"Doc":"A,B / C. Fail if C == 0 or if result overflows.","DocExtra":"The notation A,B indicates that A and B are interpreted as a uint128 value, with A as the high uint64 and B the low.","Groups":["Arithmetic"]},{"Opcode":160,"Name":"b+","Args":"BB","Returns":"B","Cost":10,"Size":1,"Doc":"A plus B. A and B are interpreted as big-endian unsigned integers","Groups":["Byte Array Arithmetic"]},{"Opcode":161,"Name":"b-","Args":"BB","Returns":"B","Cost":10,"Size":1,"Doc":"A minus B. A and B are interpreted as big-endian unsigned integers. Fail on underflow.","Groups":["Byte Array Arithmetic"]},{"Opcode":162,"Name":"b/","Args":"BB","Returns":"B","Cost":20,"Size":1,"Doc":"A divided by B (truncated division). A and B are interpreted as big-endian unsigned integers. Fail if B is zero.","Groups":["Byte Array Arithmetic"]},{"Opcode":163,"Name":"b*","Args":"BB","Returns":"B","Cost":20,"Size":1,"Doc":"A times B. A and B are interpreted as big-endian unsigned integers.","Groups":["Byte Array Arithmetic"]},{"Opcode":164,"Name":"b<","Args":"BB","Returns":"U","Cost":1,"Size":1,"Doc":"1 if A is less than B, else 0. A and B are interpreted as big-endian unsigned integers","Groups":["Byte Array Arithmetic"]},{"Opcode":165,"Name":"b>","Args":"BB","Returns":"U","Cost":1,"Size":1,"Doc":"1 if A is greater than B, else 0. A and B are interpreted as big-endian unsigned integers","Groups":["Byte Array Arithmetic"]},{"Opcode":166,"Name":"b<=","Args":"BB","Returns":"U","Cost":1,"Size":1,"Doc":"1 if A is less than or equal to B, else 0. A and B are interpreted as big-endian unsigned integers","Groups":["Byte Array Arithmetic"]},{"Opcode":167,"Name":"b>=","Args":"BB","Returns":"U","Cost":1,"Size":1,"Doc":"1 if A is greater than or equal to B, else 0. A and B are interpreted as big-endian unsigned integers","Groups":["Byte Array Arithmetic"]},{"Opcode":168,"Name":"b==","Args":"BB","Returns":"U","Cost":1,"Size":1,"Doc":"1 if A is equal to B, else 0. A and B are interpreted as big-endian unsigned integers","Groups":["Byte Array Arithmetic"]},{"Opcode":169,"Name":"b!=","Args":"BB","Returns":"U","Cost":1,"Size":1,"Doc":"0 if A is equal to B, else 1. A and B are interpreted as big-endian unsigned integers","Groups":["Byte Array Arithmetic"]},{"Opcode":170,"Name":"b%","Args":"BB","Returns":"B","Cost":20,"Size":1,"Doc":"A modulo B. A and B are interpreted as big-endian unsigned integers. Fail if B is zero.","Groups":["Byte Array Arithmetic"]},{"Opcode":171,"Name":"b|","Args":"BB","Returns":"B","Cost":6,"Size":1,"Doc":"A bitwise-or B. A and B are zero-left extended to the greater of their lengths","Groups":["Byte Array Logic"]},{"Opcode":172,"Name":"b&","Args":"BB","Returns":"B","Cost":6,"Size":1,"Doc":"A bitwise-and B. A and B are zero-left extended to the greater of their lengths","Groups":["Byte Array Logic"]},{"Opcode":173,"Name":"b^","Args":"BB","Returns":"B","Cost":6,"Size":1,"Doc":"A bitwise-xor B. A and B are zero-left extended to the greater of their lengths","Groups":["Byte Array Logic"]},{"Opcode":174,"Name":"b~","Args":"B","Returns":"B","Cost":4,"Size":1,"Doc":"A with all bits inverted","Groups":["Byte Array Logic"]},{"Opcode":175,"Name":"bzero","Args":"U","Returns":"B","Cost":1,"Size":1,"Doc":"zero filled byte-array of length A","Groups":["Loading Values"]},{"Opcode":176,"Name":"log","Args":"B","Cost":1,"Size":1,"Doc":"write A to log state of the current application","DocExtra":"`log` fails if called more than MaxLogCalls times in a program, or if the sum of logged bytes exceeds 1024 bytes.","Groups":["State Access"]},{"Opcode":177,"Name":"itxn_begin","Cost":1,"Size":1,"Doc":"begin preparation of a new inner transaction in a new transaction group","DocExtra":"`itxn_begin` initializes Sender to the application address; Fee to the minimum allowable, taking into account MinTxnFee and credit from overpaying in earlier transactions; FirstValid/LastValid to the values in the invoking transaction, and all other fields to zero or empty values.","Groups":["Inner Transactions"]},{"Opcode":178,"Name":"itxn_field","Args":".","Cost":1,"Size":2,"ArgEnum":["Sender","Fee","FirstValid","FirstValidTime","LastValid","Note","Lease","Receiver","Amount","CloseRemainderTo","VotePK","SelectionPK","VoteFirst","VoteLast","VoteKeyDilution","Type","TypeEnum","XferAsset","AssetAmount","AssetSender","AssetReceiver","AssetCloseTo","GroupIndex","TxID","ApplicationID","OnCompletion","ApplicationArgs","NumAppArgs","Accounts","NumAccounts","ApprovalProgram","ClearStateProgram","RekeyTo","ConfigAsset","ConfigAssetTotal","ConfigAssetDecimals","ConfigAssetDefaultFrozen","ConfigAssetUnitName","ConfigAssetName","ConfigAssetURL","ConfigAssetMetadataHash","ConfigAssetManager","ConfigAssetReserve","ConfigAssetFreeze","ConfigAssetClawback","FreezeAsset","FreezeAssetAccount","FreezeAssetFrozen","Assets","NumAssets","Applications","NumApplications","GlobalNumUint","GlobalNumByteSlice","LocalNumUint","LocalNumByteSlice","ExtraProgramPages","Nonparticipation","Logs","NumLogs","CreatedAssetID","CreatedApplicationID","LastLog","StateProofPK"],"ArgEnumTypes":"BUUUUBBBUBBBUUUBUUUBBBUBUUBUBUBBBUUUUBBBBBBBBUBUUUUUUUUUUUBUUUBB","Doc":"set field F of the current inner transaction to A","DocExtra":"`itxn_field` fails if A is of the wrong type for F, including a byte array of the wrong size for use as an address when F is an address field. `itxn_field` also fails if A is an account, asset, or app that is not _available_, or an attempt is made extend an array field beyond the limit imposed by consensus parameters. (Addresses set into asset params of acfg transactions need not be _available_.)","ImmediateNote":"{uint8 transaction field index}","Groups":["Inner Transactions"]},{"Opcode":179,"Name":"itxn_submit","Cost":1,"Size":1,"Doc":"execute the current inner transaction group. Fail if executing this group would exceed the inner transaction limit, or if any transaction in the group fails.","DocExtra":"`itxn_submit` resets the current transaction so that it can not be resubmitted. A new `itxn_begin` is required to prepare another inner transaction.","Groups":["Inner Transactions"]},{"Opcode":180,"Name":"itxn","Returns":".","Cost":1,"Size":2,"ArgEnum":["Sender","Fee","FirstValid","FirstValidTime","LastValid","Note","Lease","Receiver","Amount","CloseRemainderTo","VotePK","SelectionPK","VoteFirst","VoteLast","VoteKeyDilution","Type","TypeEnum","XferAsset","AssetAmount","AssetSender","AssetReceiver","AssetCloseTo","GroupIndex","TxID","ApplicationID","OnCompletion","ApplicationArgs","NumAppArgs","Accounts","NumAccounts","ApprovalProgram","ClearStateProgram","RekeyTo","ConfigAsset","ConfigAssetTotal","ConfigAssetDecimals","ConfigAssetDefaultFrozen","ConfigAssetUnitName","ConfigAssetName","ConfigAssetURL","ConfigAssetMetadataHash","ConfigAssetManager","ConfigAssetReserve","ConfigAssetFreeze","ConfigAssetClawback","FreezeAsset","FreezeAssetAccount","FreezeAssetFrozen","Assets","NumAssets","Applications","NumApplications","GlobalNumUint","GlobalNumByteSlice","LocalNumUint","LocalNumByteSlice","ExtraProgramPages","Nonparticipation","Logs","NumLogs","CreatedAssetID","CreatedApplicationID","LastLog","StateProofPK"],"ArgEnumTypes":"BUUUUBBBUBBBUUUBUUUBBBUBUUBUBUBBBUUUUBBBBBBBBUBUUUUUUUUUUUBUUUBB","Doc":"field F of the last inner transaction","ImmediateNote":"{uint8 transaction field index}","Groups":["Inner Transactions"]},{"Opcode":181,"Name":"itxna","Returns":".","Cost":1,"Size":3,"ArgEnum":["ApplicationArgs","Accounts","Assets","Applications","Logs"],"ArgEnumTypes":"BBUUB","Doc":"Ith value of the array field F of the last inner transaction","ImmediateNote":"{uint8 transaction field index} {uint8 transaction field array index}","Groups":["Inner Transactions"]},{"Opcode":182,"Name":"itxn_next","Cost":1,"Size":1,"Doc":"begin preparation of a new inner transaction in the same transaction group","DocExtra":"`itxn_next` initializes the transaction exactly as `itxn_begin` does","Groups":["Inner Transactions"]},{"Opcode":183,"Name":"gitxn","Returns":".","Cost":1,"Size":3,"ArgEnum":["Sender","Fee","FirstValid","FirstValidTime","LastValid","Note","Lease","Receiver","Amount","CloseRemainderTo","VotePK","SelectionPK","VoteFirst","VoteLast","VoteKeyDilution","Type","TypeEnum","XferAsset","AssetAmount","AssetSender","AssetReceiver","AssetCloseTo","GroupIndex","TxID","ApplicationID","OnCompletion","ApplicationArgs","NumAppArgs","Accounts","NumAccounts","ApprovalProgram","ClearStateProgram","RekeyTo","ConfigAsset","ConfigAssetTotal","ConfigAssetDecimals","ConfigAssetDefaultFrozen","ConfigAssetUnitName","ConfigAssetName","ConfigAssetURL","ConfigAssetMetadataHash","ConfigAssetManager","ConfigAssetReserve","ConfigAssetFreeze","ConfigAssetClawback","FreezeAsset","FreezeAssetAccount","FreezeAssetFrozen","Assets","NumAssets","Applications","NumApplications","GlobalNumUint","GlobalNumByteSlice","LocalNumUint","LocalNumByteSlice","ExtraProgramPages","Nonparticipation","Logs","NumLogs","CreatedAssetID","CreatedApplicationID","LastLog","StateProofPK"],"ArgEnumTypes":"BUUUUBBBUBBBUUUBUUUBBBUBUUBUBUBBBUUUUBBBBBBBBUBUUUUUUUUUUUBUUUBB","Doc":"field F of the Tth transaction in the last inner group submitted","ImmediateNote":"{uint8 transaction group index} {uint8 transaction field index}","Groups":["Inner Transactions"]},{"Opcode":184,"Name":"gitxna","Returns":".","Cost":1,"Size":4,"ArgEnum":["ApplicationArgs","Accounts","Assets","Applications","Logs"],"ArgEnumTypes":"BBUUB","Doc":"Ith value of the array field F from the Tth transaction in the last inner group submitted","ImmediateNote":"{uint8 transaction group index} {uint8 transaction field index} {uint8 transaction field array index}","Groups":["Inner Transactions"]},{"Opcode":192,"Name":"txnas","Args":"U","Returns":".","Cost":1,"Size":2,"ArgEnum":["ApplicationArgs","Accounts","Assets","Applications","Logs"],"ArgEnumTypes":"BBUUB","Doc":"Ath value of the array field F of the current transaction","ImmediateNote":"{uint8 transaction field index}","Groups":["Loading Values"]},{"Opcode":193,"Name":"gtxnas","Args":"U","Returns":".","Cost":1,"Size":3,"ArgEnum":["ApplicationArgs","Accounts","Assets","Applications","Logs"],"ArgEnumTypes":"BBUUB","Doc":"Ath value of the array field F from the Tth transaction in the current group","ImmediateNote":"{uint8 transaction group index} {uint8 transaction field index}","Groups":["Loading Values"]},{"Opcode":194,"Name":"gtxnsas","Args":"UU","Returns":".","Cost":1,"Size":2,"ArgEnum":["ApplicationArgs","Accounts","Assets","Applications","Logs"],"ArgEnumTypes":"BBUUB","Doc":"Bth value of the array field F from the Ath transaction in the current group","ImmediateNote":"{uint8 transaction field index}","Groups":["Loading Values"]},{"Opcode":195,"Name":"args","Args":"U","Returns":"B","Cost":1,"Size":1,"Doc":"Ath LogicSig argument","Groups":["Loading Values"]},{"Opcode":196,"Name":"gloadss","Args":"UU","Returns":".","Cost":1,"Size":1,"Doc":"Bth scratch space value of the Ath transaction in the current group","Groups":["Loading Values"]},{"Opcode":197,"Name":"itxnas","Args":"U","Returns":".","Cost":1,"Size":2,"Doc":"Ath value of the array field F of the last inner transaction","ImmediateNote":"{uint8 transaction field index}","Groups":["Inner Transactions"]},{"Opcode":198,"Name":"gitxnas","Args":"U","Returns":".","Cost":1,"Size":3,"Doc":"Ath value of the array field F from the Tth transaction in the last inner group submitted","ImmediateNote":"{uint8 transaction group index} {uint8 transaction field index}","Groups":["Inner Transactions"]}]}');
           let o3;
-          function s3(e4) {
+          function i3(e4) {
             let t4 = 0, r4 = 0;
             for (let n3 = 0; n3 < e4.length; n3++) {
               const o4 = e4[n3];
@@ -14627,39 +14488,39 @@ var require_algosdk_min = __commonJS({
             }
             return [0, 0];
           }
-          function i3(e4, t4) {
+          function s3(e4, t4) {
             let r4 = 1;
-            const n3 = s3(e4.slice(t4 + r4)), o4 = n3[0];
-            let i4 = n3[1];
-            if (i4 <= 0)
+            const n3 = i3(e4.slice(t4 + r4)), o4 = n3[0];
+            let s4 = n3[1];
+            if (s4 <= 0)
               throw new Error(`could not decode int const block size at pc=${t4 + r4}`);
             const a4 = [];
-            r4 += i4;
+            r4 += s4;
             for (let n4 = 0; n4 < o4; n4++) {
               if (t4 + r4 >= e4.length)
                 throw new Error("intcblock ran past end of program");
               let o5;
-              if ([o5, i4] = s3(e4.slice(t4 + r4)), i4 <= 0)
+              if ([o5, s4] = i3(e4.slice(t4 + r4)), s4 <= 0)
                 throw new Error(`could not decode int const[${n4}] block size at pc=${t4 + r4}`);
-              a4.push(o5), r4 += i4;
+              a4.push(o5), r4 += s4;
             }
             return [r4, a4];
           }
           function a3(e4, t4) {
             let r4 = 1;
-            const n3 = s3(e4.slice(t4 + r4)), o4 = n3[0];
-            let i4 = n3[1];
-            if (i4 <= 0)
+            const n3 = i3(e4.slice(t4 + r4)), o4 = n3[0];
+            let s4 = n3[1];
+            if (s4 <= 0)
               throw new Error(`could not decode []byte const block size at pc=${t4 + r4}`);
             const a4 = [];
-            r4 += i4;
+            r4 += s4;
             for (let n4 = 0; n4 < o4; n4++) {
               if (t4 + r4 >= e4.length)
                 throw new Error("bytecblock ran past end of program");
               let o5;
-              if ([o5, i4] = s3(e4.slice(t4 + r4)), i4 <= 0)
+              if ([o5, s4] = i3(e4.slice(t4 + r4)), s4 <= 0)
                 throw new Error(`could not decode []byte] const[${n4}] block size at pc=${t4 + r4}`);
-              if (r4 += i4, t4 + r4 + o5 > e4.length)
+              if (r4 += s4, t4 + r4 + o5 > e4.length)
                 throw new Error("bytecblock ran past end of program");
               const c4 = e4.slice(t4 + r4, t4 + r4 + o5);
               a4.push(c4), r4 += o5;
@@ -14668,27 +14529,27 @@ var require_algosdk_min = __commonJS({
           }
           function c3(e4, t4) {
             let r4 = 1;
-            const [n3, o4] = s3(e4.slice(t4 + r4));
+            const [n3, o4] = i3(e4.slice(t4 + r4));
             if (o4 <= 0)
               throw new Error(`could not decode push int const at pc=${t4 + r4}`);
             return r4 += o4, [r4, n3];
           }
           function u3(e4, t4) {
             let r4 = 1;
-            const [n3, o4] = s3(e4.slice(t4 + r4));
+            const [n3, o4] = i3(e4.slice(t4 + r4));
             if (o4 <= 0)
               throw new Error(`could not decode push []byte const size at pc=${t4 + r4}`);
             if (r4 += o4, t4 + r4 + n3 > e4.length)
               throw new Error("pushbytes ran past end of program");
-            const i4 = e4.slice(t4 + r4, t4 + r4 + n3);
-            return r4 += n3, [r4, i4];
+            const s4 = e4.slice(t4 + r4, t4 + r4 + n3);
+            return r4 += n3, [r4, s4];
           }
           function l3(e4, t4) {
             if (!e4)
               throw new Error("empty program");
             if (t4 === void 0 && (t4 = []), !Array.isArray(t4))
               throw new Error("invalid arguments");
-            const [r4, l4] = s3(e4);
+            const [r4, l4] = i3(e4);
             if (l4 <= 0)
               throw new Error("version parsing error");
             if (r4 > n2.z_)
@@ -14714,7 +14575,7 @@ var require_algosdk_min = __commonJS({
                 switch (t5.Opcode) {
                   case 32: {
                     let t6;
-                    [r5, t6] = i3(e4, f4), d4 = d4.concat(t6);
+                    [r5, t6] = s3(e4, f4), d4 = d4.concat(t6);
                     break;
                   }
                   case 38: {
@@ -14746,7 +14607,7 @@ var require_algosdk_min = __commonJS({
             return r4;
           }
           function p3(e4, t4) {
-            const [r4] = i3(e4, t4);
+            const [r4] = s3(e4, t4);
             return r4;
           }
           function f3(e4, t4) {
@@ -14765,13 +14626,13 @@ var require_algosdk_min = __commonJS({
         }, 8800: (e3, t3, r3) => {
           "use strict";
           r3.r(t3), r3.d(t3, { LogicSig: () => h3, LogicSigAccount: () => p3, makeLogicSig: () => f3, signLogicSigTransactionObject: () => d3, signLogicSigTransaction: () => g3, logicSigFromByte: () => y3, tealSign: () => b2, tealSignFromProgram: () => A4 });
-          var n2 = r3(9404), o3 = r3(7116), s3 = r3(3033), i3 = r3(5583), a3 = r3(4158), c3 = r3(413), u3 = r3(9417), l3 = r3(2486).Buffer;
+          var n2 = r3(9404), o3 = r3(7116), i3 = r3(3033), s3 = r3(5583), a3 = r3(4158), c3 = r3(413), u3 = r3(9417), l3 = r3(2486).Buffer;
           class h3 {
             constructor(e4, t4) {
               if (this.tag = l3.from("Program"), t4 && (!Array.isArray(t4) || !t4.every((e5) => e5.constructor === Uint8Array || l3.isBuffer(e5))))
                 throw new TypeError("Invalid arguments");
               let r4;
-              if (t4 != null && (r4 = t4.map((e5) => new Uint8Array(e5))), !i3.checkProgram(e4, r4))
+              if (t4 != null && (r4 = t4.map((e5) => new Uint8Array(e5))), !s3.checkProgram(e4, r4))
                 throw new Error("Invalid program");
               this.logic = e4, this.args = r4, this.sig = void 0, this.msig = void 0;
             }
@@ -14787,7 +14648,7 @@ var require_algosdk_min = __commonJS({
               if (this.sig && this.msig)
                 return false;
               try {
-                i3.checkProgram(this.logic, this.args);
+                s3.checkProgram(this.logic, this.args);
               } catch (e5) {
                 return false;
               }
@@ -14808,8 +14669,8 @@ var require_algosdk_min = __commonJS({
               else {
                 const r4 = t4.addrs.map((e5) => ({ pk: o3.decodeAddress(e5).publicKey }));
                 this.msig = { v: t4.version, thr: t4.threshold, subsig: r4 };
-                const [n3, s4] = this.singleSignMultisig(e4, this.msig);
-                this.msig.subsig[s4].s = n3;
+                const [n3, i4] = this.singleSignMultisig(e4, this.msig);
+                this.msig.subsig[i4].s = n3;
               }
             }
             appendToMultisig(e4) {
@@ -14837,10 +14698,10 @@ var require_algosdk_min = __commonJS({
               return [this.signProgram(e4), r4];
             }
             toByte() {
-              return s3.encode(this.get_obj_for_encoding());
+              return i3.encode(this.get_obj_for_encoding());
             }
             static fromByte(e4) {
-              const t4 = s3.decode(e4);
+              const t4 = i3.decode(e4);
               return h3.from_obj_for_encoding(t4);
             }
           }
@@ -14857,10 +14718,10 @@ var require_algosdk_min = __commonJS({
               return t4.lsig = h3.from_obj_for_encoding(e4.lsig), t4.sigkey = e4.sigkey, t4;
             }
             toByte() {
-              return s3.encode(this.get_obj_for_encoding());
+              return i3.encode(this.get_obj_for_encoding());
             }
             static fromByte(e4) {
-              const t4 = s3.decode(e4);
+              const t4 = i3.decode(e4);
               return p3.from_obj_for_encoding(t4);
             }
             isDelegated() {
@@ -14898,22 +14759,22 @@ var require_algosdk_min = __commonJS({
             return new h3(e4, t4);
           }
           function d3(e4, t4) {
-            let r4, i4;
+            let r4, s4;
             if (t4 instanceof p3)
-              r4 = t4.lsig, i4 = o3.decodeAddress(t4.address()).publicKey;
+              r4 = t4.lsig, s4 = o3.decodeAddress(t4.address()).publicKey;
             else if (r4 = t4, r4.sig)
-              i4 = e4.from.publicKey;
+              s4 = e4.from.publicKey;
             else if (r4.msig) {
               const e5 = { version: r4.msig.v, threshold: r4.msig.thr, pks: r4.msig.subsig.map((e6) => e6.pk) };
-              i4 = o3.fromMultisigPreImg(e5);
+              s4 = o3.fromMultisigPreImg(e5);
             } else
-              i4 = o3.decodeAddress(r4.address()).publicKey;
+              s4 = o3.decodeAddress(r4.address()).publicKey;
             return function(e5, t5, r5) {
               if (!t5.verify(r5))
                 throw new Error("Logic signature verification failed. Ensure the program and signature are valid.");
               const o4 = { lsig: t5.get_obj_for_encoding(), txn: e5.get_obj_for_encoding() };
-              return n2.bytesEqual(r5, e5.from.publicKey) || (o4.sgnr = l3.from(r5)), { txID: e5.txID().toString(), blob: s3.encode(o4) };
-            }(e4, r4, i4);
+              return n2.bytesEqual(r5, e5.from.publicKey) || (o4.sgnr = l3.from(r5)), { txID: e5.txID().toString(), blob: i3.encode(o4) };
+            }(e4, r4, s4);
           }
           function g3(e4, t4) {
             return d3(u3.instantiateTxnIfNeeded(e4), t4);
@@ -14923,27 +14784,27 @@ var require_algosdk_min = __commonJS({
           }
           const m3 = l3.from("ProgData");
           function b2(e4, t4, r4) {
-            const s4 = c3.concatArrays(o3.decodeAddress(r4).publicKey, t4), i4 = l3.from(c3.concatArrays(m3, s4));
-            return n2.sign(i4, e4);
+            const i4 = c3.concatArrays(o3.decodeAddress(r4).publicKey, t4), s4 = l3.from(c3.concatArrays(m3, i4));
+            return n2.sign(s4, e4);
           }
           function A4(e4, t4, r4) {
             return b2(e4, t4, new h3(r4).address());
           }
         }, 6608: (e3, t3, r3) => {
           "use strict";
-          r3.r(t3), r3.d(t3, { MULTISIG_BAD_SENDER_ERROR_MSG: () => N3, signTransaction: () => P3, signBid: () => L3, signBytes: () => F3, verifyBytes: () => z3, encodeObj: () => j3, decodeObj: () => M3, ERROR_MULTISIG_BAD_SENDER: () => H3, ERROR_INVALID_MICROALGOS: () => G2, Algodv2: () => d3.Z, Kmd: () => g3.Z, IntDecoding: () => y3.Z, Indexer: () => m3.Z, waitForConfirmation: () => b2.K, isValidAddress: () => o3.isValidAddress, encodeAddress: () => o3.encodeAddress, decodeAddress: () => o3.decodeAddress, getApplicationAddress: () => o3.getApplicationAddress, bytesToBigInt: () => A4.v, bigIntToBytes: () => A4.j, encodeUint64: () => w4.T, decodeUint64: () => w4.u, generateAccount: () => v3.Z, modelsv2: () => x3, mnemonicToMasterDerivationKey: () => S2.OF, masterDerivationKeyToMnemonic: () => S2.vC, secretKeyToMnemonic: () => S2.QX, mnemonicToSecretKey: () => S2.Ch, seedFromMnemonic: () => S2.mE, mnemonicFromSeed: () => S2.w3, microalgosToAlgos: () => l3._, algosToMicroalgos: () => l3.HN, INVALID_MICROALGOS_ERROR_MSG: () => l3.rD, computeGroupID: () => E4.computeGroupID, assignGroupID: () => E4.assignGroupID, LogicSigAccount: () => T4.LogicSigAccount, makeLogicSig: () => T4.makeLogicSig, signLogicSigTransaction: () => T4.signLogicSigTransaction, signLogicSigTransactionObject: () => T4.signLogicSigTransactionObject, logicSigFromByte: () => T4.logicSigFromByte, tealSign: () => T4.tealSign, tealSignFromProgram: () => T4.tealSignFromProgram, signMultisigTransaction: () => _4.PU, mergeMultisigTransactions: () => _4.J6, appendSignMultisigTransaction: () => _4.PO, multisigAddress: () => _4.vH, LogicTemplates: () => K3, createDryrun: () => B2.P, OnApplicationComplete: () => U2.OnApplicationComplete, makeApplicationCallTxnFromObject: () => U2.makeApplicationCallTxnFromObject, makeApplicationClearStateTxn: () => U2.makeApplicationClearStateTxn, makeApplicationClearStateTxnFromObject: () => U2.makeApplicationClearStateTxnFromObject, makeApplicationCloseOutTxn: () => U2.makeApplicationCloseOutTxn, makeApplicationCloseOutTxnFromObject: () => U2.makeApplicationCloseOutTxnFromObject, makeApplicationCreateTxn: () => U2.makeApplicationCreateTxn, makeApplicationCreateTxnFromObject: () => U2.makeApplicationCreateTxnFromObject, makeApplicationDeleteTxn: () => U2.makeApplicationDeleteTxn, makeApplicationDeleteTxnFromObject: () => U2.makeApplicationDeleteTxnFromObject, makeApplicationNoOpTxn: () => U2.makeApplicationNoOpTxn, makeApplicationNoOpTxnFromObject: () => U2.makeApplicationNoOpTxnFromObject, makeApplicationOptInTxn: () => U2.makeApplicationOptInTxn, makeApplicationOptInTxnFromObject: () => U2.makeApplicationOptInTxnFromObject, makeApplicationUpdateTxn: () => U2.makeApplicationUpdateTxn, makeApplicationUpdateTxnFromObject: () => U2.makeApplicationUpdateTxnFromObject, makeAssetConfigTxn: () => U2.makeAssetConfigTxn, makeAssetConfigTxnWithSuggestedParams: () => U2.makeAssetConfigTxnWithSuggestedParams, makeAssetConfigTxnWithSuggestedParamsFromObject: () => U2.makeAssetConfigTxnWithSuggestedParamsFromObject, makeAssetCreateTxn: () => U2.makeAssetCreateTxn, makeAssetCreateTxnWithSuggestedParams: () => U2.makeAssetCreateTxnWithSuggestedParams, makeAssetCreateTxnWithSuggestedParamsFromObject: () => U2.makeAssetCreateTxnWithSuggestedParamsFromObject, makeAssetDestroyTxn: () => U2.makeAssetDestroyTxn, makeAssetDestroyTxnWithSuggestedParams: () => U2.makeAssetDestroyTxnWithSuggestedParams, makeAssetDestroyTxnWithSuggestedParamsFromObject: () => U2.makeAssetDestroyTxnWithSuggestedParamsFromObject, makeAssetFreezeTxn: () => U2.makeAssetFreezeTxn, makeAssetFreezeTxnWithSuggestedParams: () => U2.makeAssetFreezeTxnWithSuggestedParams, makeAssetFreezeTxnWithSuggestedParamsFromObject: () => U2.makeAssetFreezeTxnWithSuggestedParamsFromObject, makeAssetTransferTxn: () => U2.makeAssetTransferTxn, makeAssetTransferTxnWithSuggestedParams: () => U2.makeAssetTransferTxnWithSuggestedParams, makeAssetTransferTxnWithSuggestedParamsFromObject: () => U2.makeAssetTransferTxnWithSuggestedParamsFromObject, makeKeyRegistrationTxn: () => U2.makeKeyRegistrationTxn, makeKeyRegistrationTxnWithSuggestedParams: () => U2.makeKeyRegistrationTxnWithSuggestedParams, makeKeyRegistrationTxnWithSuggestedParamsFromObject: () => U2.makeKeyRegistrationTxnWithSuggestedParamsFromObject, makePaymentTxn: () => U2.makePaymentTxn, makePaymentTxnWithSuggestedParams: () => U2.makePaymentTxnWithSuggestedParams, makePaymentTxnWithSuggestedParamsFromObject: () => U2.makePaymentTxnWithSuggestedParamsFromObject, ALGORAND_MIN_TX_FEE: () => i3.ALGORAND_MIN_TX_FEE, Transaction: () => i3.Transaction, decodeSignedTransaction: () => i3.decodeSignedTransaction, decodeUnsignedTransaction: () => i3.decodeUnsignedTransaction, encodeUnsignedTransaction: () => i3.encodeUnsignedTransaction, instantiateTxnIfNeeded: () => i3.instantiateTxnIfNeeded, isTransactionWithSigner: () => k3.Xw, makeBasicAccountTransactionSigner: () => k3.x7, makeLogicSigAccountTransactionSigner: () => k3.i1, makeMultiSigAccountTransactionSigner: () => k3.Vj, AtomicTransactionComposer: () => I3.A, AtomicTransactionComposerStatus: () => I3.b, TransactionType: () => C3.i, ABIAddressType: () => R2.JQ, ABIArrayDynamicType: () => R2._4, ABIArrayStaticType: () => R2.X3, ABIBoolType: () => R2.R0, ABIByteType: () => R2.jD, ABIContract: () => R2.Yh, ABIInterface: () => R2.bL, ABIMethod: () => R2.Ls, ABIReferenceType: () => R2.UV, ABIStringType: () => R2.Ax, ABITransactionType: () => R2.A9, ABITupleType: () => R2.w1, ABIType: () => R2.NK, ABIUfixedType: () => R2.RY, ABIUintType: () => R2.Pu, ADDR_BYTE_SIZE: () => R2.Vk, LENGTH_ENCODE_BYTE_SIZE: () => R2.nh, MAX_LEN: () => R2.kG, SINGLE_BOOL_SIZE: () => R2.qH, SINGLE_BYTE_SIZE: () => R2.JH, abiCheckTransactionType: () => R2.vJ, abiTypeIsReference: () => R2.o5, abiTypeIsTransaction: () => R2.AE });
-          var n2 = r3(9404), o3 = r3(7116), s3 = r3(3033), i3 = r3(9417), a3 = r3(8886), c3 = r3.n(a3), u3 = r3(2691), l3 = r3(9070), h3 = r3(413), p3 = r3(5922), f3 = {};
+          r3.r(t3), r3.d(t3, { MULTISIG_BAD_SENDER_ERROR_MSG: () => N3, signTransaction: () => P3, signBid: () => L3, signBytes: () => F3, verifyBytes: () => z3, encodeObj: () => j3, decodeObj: () => M3, ERROR_MULTISIG_BAD_SENDER: () => H3, ERROR_INVALID_MICROALGOS: () => G2, Algodv2: () => d3.Z, Kmd: () => g3.Z, IntDecoding: () => y3.Z, Indexer: () => m3.Z, waitForConfirmation: () => b2.K, isValidAddress: () => o3.isValidAddress, encodeAddress: () => o3.encodeAddress, decodeAddress: () => o3.decodeAddress, getApplicationAddress: () => o3.getApplicationAddress, bytesToBigInt: () => A4.v, bigIntToBytes: () => A4.j, encodeUint64: () => w4.T, decodeUint64: () => w4.u, generateAccount: () => v3.Z, modelsv2: () => x3, mnemonicToMasterDerivationKey: () => S2.OF, masterDerivationKeyToMnemonic: () => S2.vC, secretKeyToMnemonic: () => S2.QX, mnemonicToSecretKey: () => S2.Ch, seedFromMnemonic: () => S2.mE, mnemonicFromSeed: () => S2.w3, microalgosToAlgos: () => l3._, algosToMicroalgos: () => l3.HN, INVALID_MICROALGOS_ERROR_MSG: () => l3.rD, computeGroupID: () => E4.computeGroupID, assignGroupID: () => E4.assignGroupID, LogicSigAccount: () => T4.LogicSigAccount, makeLogicSig: () => T4.makeLogicSig, signLogicSigTransaction: () => T4.signLogicSigTransaction, signLogicSigTransactionObject: () => T4.signLogicSigTransactionObject, logicSigFromByte: () => T4.logicSigFromByte, tealSign: () => T4.tealSign, tealSignFromProgram: () => T4.tealSignFromProgram, signMultisigTransaction: () => _4.PU, mergeMultisigTransactions: () => _4.J6, appendSignMultisigTransaction: () => _4.PO, multisigAddress: () => _4.vH, LogicTemplates: () => K3, createDryrun: () => B2.P, OnApplicationComplete: () => U2.OnApplicationComplete, makeApplicationCallTxnFromObject: () => U2.makeApplicationCallTxnFromObject, makeApplicationClearStateTxn: () => U2.makeApplicationClearStateTxn, makeApplicationClearStateTxnFromObject: () => U2.makeApplicationClearStateTxnFromObject, makeApplicationCloseOutTxn: () => U2.makeApplicationCloseOutTxn, makeApplicationCloseOutTxnFromObject: () => U2.makeApplicationCloseOutTxnFromObject, makeApplicationCreateTxn: () => U2.makeApplicationCreateTxn, makeApplicationCreateTxnFromObject: () => U2.makeApplicationCreateTxnFromObject, makeApplicationDeleteTxn: () => U2.makeApplicationDeleteTxn, makeApplicationDeleteTxnFromObject: () => U2.makeApplicationDeleteTxnFromObject, makeApplicationNoOpTxn: () => U2.makeApplicationNoOpTxn, makeApplicationNoOpTxnFromObject: () => U2.makeApplicationNoOpTxnFromObject, makeApplicationOptInTxn: () => U2.makeApplicationOptInTxn, makeApplicationOptInTxnFromObject: () => U2.makeApplicationOptInTxnFromObject, makeApplicationUpdateTxn: () => U2.makeApplicationUpdateTxn, makeApplicationUpdateTxnFromObject: () => U2.makeApplicationUpdateTxnFromObject, makeAssetConfigTxn: () => U2.makeAssetConfigTxn, makeAssetConfigTxnWithSuggestedParams: () => U2.makeAssetConfigTxnWithSuggestedParams, makeAssetConfigTxnWithSuggestedParamsFromObject: () => U2.makeAssetConfigTxnWithSuggestedParamsFromObject, makeAssetCreateTxn: () => U2.makeAssetCreateTxn, makeAssetCreateTxnWithSuggestedParams: () => U2.makeAssetCreateTxnWithSuggestedParams, makeAssetCreateTxnWithSuggestedParamsFromObject: () => U2.makeAssetCreateTxnWithSuggestedParamsFromObject, makeAssetDestroyTxn: () => U2.makeAssetDestroyTxn, makeAssetDestroyTxnWithSuggestedParams: () => U2.makeAssetDestroyTxnWithSuggestedParams, makeAssetDestroyTxnWithSuggestedParamsFromObject: () => U2.makeAssetDestroyTxnWithSuggestedParamsFromObject, makeAssetFreezeTxn: () => U2.makeAssetFreezeTxn, makeAssetFreezeTxnWithSuggestedParams: () => U2.makeAssetFreezeTxnWithSuggestedParams, makeAssetFreezeTxnWithSuggestedParamsFromObject: () => U2.makeAssetFreezeTxnWithSuggestedParamsFromObject, makeAssetTransferTxn: () => U2.makeAssetTransferTxn, makeAssetTransferTxnWithSuggestedParams: () => U2.makeAssetTransferTxnWithSuggestedParams, makeAssetTransferTxnWithSuggestedParamsFromObject: () => U2.makeAssetTransferTxnWithSuggestedParamsFromObject, makeKeyRegistrationTxn: () => U2.makeKeyRegistrationTxn, makeKeyRegistrationTxnWithSuggestedParams: () => U2.makeKeyRegistrationTxnWithSuggestedParams, makeKeyRegistrationTxnWithSuggestedParamsFromObject: () => U2.makeKeyRegistrationTxnWithSuggestedParamsFromObject, makePaymentTxn: () => U2.makePaymentTxn, makePaymentTxnWithSuggestedParams: () => U2.makePaymentTxnWithSuggestedParams, makePaymentTxnWithSuggestedParamsFromObject: () => U2.makePaymentTxnWithSuggestedParamsFromObject, ALGORAND_MIN_TX_FEE: () => s3.ALGORAND_MIN_TX_FEE, Transaction: () => s3.Transaction, decodeSignedTransaction: () => s3.decodeSignedTransaction, decodeUnsignedTransaction: () => s3.decodeUnsignedTransaction, encodeUnsignedTransaction: () => s3.encodeUnsignedTransaction, instantiateTxnIfNeeded: () => s3.instantiateTxnIfNeeded, isTransactionWithSigner: () => k3.Xw, makeBasicAccountTransactionSigner: () => k3.x7, makeLogicSigAccountTransactionSigner: () => k3.i1, makeMultiSigAccountTransactionSigner: () => k3.Vj, AtomicTransactionComposer: () => I3.A, AtomicTransactionComposerStatus: () => I3.b, TransactionType: () => C3.i, ABIAddressType: () => R2.JQ, ABIArrayDynamicType: () => R2._4, ABIArrayStaticType: () => R2.X3, ABIBoolType: () => R2.R0, ABIByteType: () => R2.jD, ABIContract: () => R2.Yh, ABIInterface: () => R2.bL, ABIMethod: () => R2.Ls, ABIReferenceType: () => R2.UV, ABIStringType: () => R2.Ax, ABITransactionType: () => R2.A9, ABITupleType: () => R2.w1, ABIType: () => R2.NK, ABIUfixedType: () => R2.RY, ABIUintType: () => R2.Pu, ADDR_BYTE_SIZE: () => R2.Vk, LENGTH_ENCODE_BYTE_SIZE: () => R2.nh, MAX_LEN: () => R2.kG, SINGLE_BOOL_SIZE: () => R2.qH, SINGLE_BYTE_SIZE: () => R2.JH, abiCheckTransactionType: () => R2.vJ, abiTypeIsReference: () => R2.o5, abiTypeIsTransaction: () => R2.AE });
+          var n2 = r3(9404), o3 = r3(7116), i3 = r3(3033), s3 = r3(9417), a3 = r3(8886), c3 = r3.n(a3), u3 = r3(2691), l3 = r3(9070), h3 = r3(413), p3 = r3(5922), f3 = {};
           for (const e4 in p3)
             ["default", "MULTISIG_BAD_SENDER_ERROR_MSG", "signTransaction", "signBid", "signBytes", "verifyBytes", "encodeObj", "decodeObj", "ERROR_MULTISIG_BAD_SENDER", "ERROR_INVALID_MICROALGOS", "Algodv2", "Kmd", "IntDecoding", "Indexer", "waitForConfirmation", "isValidAddress", "encodeAddress", "decodeAddress", "getApplicationAddress", "bytesToBigInt", "bigIntToBytes", "encodeUint64", "decodeUint64", "generateAccount", "modelsv2", "mnemonicToMasterDerivationKey", "masterDerivationKeyToMnemonic", "secretKeyToMnemonic", "mnemonicToSecretKey", "seedFromMnemonic", "mnemonicFromSeed", "microalgosToAlgos", "algosToMicroalgos", "INVALID_MICROALGOS_ERROR_MSG", "computeGroupID", "assignGroupID", "LogicSigAccount", "makeLogicSig", "signLogicSigTransaction", "signLogicSigTransactionObject", "logicSigFromByte", "tealSign", "tealSignFromProgram", "signMultisigTransaction", "mergeMultisigTransactions", "appendSignMultisigTransaction", "multisigAddress", "LogicTemplates"].indexOf(e4) < 0 && (f3[e4] = () => p3[e4]);
           r3.d(t3, f3);
-          var d3 = r3(1663), g3 = r3(6477), y3 = r3(7197), m3 = r3(9582), b2 = r3(5062), A4 = r3(8922), w4 = r3(6963), v3 = r3(7988), x3 = r3(227), S2 = r3(3510), E4 = r3(1063), T4 = r3(8800), _4 = r3(4158), B2 = r3(4383), U2 = r3(1988), k3 = r3(834), I3 = r3(3458), C3 = r3(2380), R2 = r3(7677), O2 = r3(2486).Buffer;
+          var d3 = r3(5427), g3 = r3(6477), y3 = r3(7197), m3 = r3(8104), b2 = r3(5062), A4 = r3(8922), w4 = r3(6963), v3 = r3(7988), x3 = r3(227), S2 = r3(3510), E4 = r3(1063), T4 = r3(8800), _4 = r3(4158), B2 = r3(4383), U2 = r3(1988), k3 = r3(834), I3 = r3(3458), C3 = r3(2380), R2 = r3(7677), O2 = r3(2486).Buffer;
           const D3 = O2.from([77, 88]), N3 = "The transaction sender address and multisig preimage do not match.";
           function P3(e4, t4) {
             if (e4.from === void 0) {
               const r5 = n2.keyPairFromSecretKey(t4);
               e4.from = o3.encodeAddress(r5.publicKey);
             }
-            const r4 = i3.instantiateTxnIfNeeded(e4);
+            const r4 = s3.instantiateTxnIfNeeded(e4);
             return { txID: r4.txID().toString(), blob: r4.signTxn(t4) };
           }
           function L3(e4, t4) {
@@ -14954,151 +14815,151 @@ var require_algosdk_min = __commonJS({
             return n2.sign(r4, t4);
           }
           function z3(e4, t4, r4) {
-            const s4 = O2.from(h3.concatArrays(D3, e4)), i4 = o3.decodeAddress(r4).publicKey;
-            return n2.verify(s4, t4, i4);
+            const i4 = O2.from(h3.concatArrays(D3, e4)), s4 = o3.decodeAddress(r4).publicKey;
+            return n2.verify(i4, t4, s4);
           }
           function j3(e4) {
-            return new Uint8Array(s3.encode(e4));
+            return new Uint8Array(i3.encode(e4));
           }
           function M3(e4) {
-            return s3.decode(e4);
+            return i3.decode(e4);
           }
           const H3 = new Error(N3), G2 = new Error(l3.rD), K3 = c3();
         }, 1988: (e3, t3, r3) => {
           "use strict";
-          r3.r(t3), r3.d(t3, { makePaymentTxnWithSuggestedParams: () => i3, makePaymentTxn: () => a3, makePaymentTxnWithSuggestedParamsFromObject: () => c3, makeKeyRegistrationTxnWithSuggestedParams: () => u3, makeKeyRegistrationTxn: () => l3, makeKeyRegistrationTxnWithSuggestedParamsFromObject: () => h3, makeAssetCreateTxnWithSuggestedParams: () => p3, makeAssetCreateTxn: () => f3, makeAssetCreateTxnWithSuggestedParamsFromObject: () => d3, makeAssetConfigTxnWithSuggestedParams: () => g3, makeAssetConfigTxn: () => y3, makeAssetConfigTxnWithSuggestedParamsFromObject: () => m3, makeAssetDestroyTxnWithSuggestedParams: () => b2, makeAssetDestroyTxn: () => A4, makeAssetDestroyTxnWithSuggestedParamsFromObject: () => w4, makeAssetFreezeTxnWithSuggestedParams: () => v3, makeAssetFreezeTxn: () => x3, makeAssetFreezeTxnWithSuggestedParamsFromObject: () => S2, makeAssetTransferTxnWithSuggestedParams: () => E4, makeAssetTransferTxn: () => T4, makeAssetTransferTxnWithSuggestedParamsFromObject: () => _4, makeApplicationCreateTxn: () => B2, makeApplicationCreateTxnFromObject: () => U2, makeApplicationUpdateTxn: () => k3, makeApplicationUpdateTxnFromObject: () => I3, makeApplicationDeleteTxn: () => C3, makeApplicationDeleteTxnFromObject: () => R2, makeApplicationOptInTxn: () => O2, makeApplicationOptInTxnFromObject: () => D3, makeApplicationCloseOutTxn: () => N3, makeApplicationCloseOutTxnFromObject: () => P3, makeApplicationClearStateTxn: () => L3, makeApplicationClearStateTxnFromObject: () => F3, makeApplicationNoOpTxn: () => z3, makeApplicationNoOpTxnFromObject: () => j3, OnApplicationComplete: () => o3.hq, makeApplicationCallTxnFromObject: () => M3 });
-          var n2 = r3(9417), o3 = r3(1624), s3 = r3(1824);
-          function i3(e4, t4, r4, o4, i4, a4, c4) {
-            const u4 = { from: e4, to: t4, amount: r4, closeRemainderTo: o4, note: i4, suggestedParams: a4, type: s3.i.pay, reKeyTo: c4 };
+          r3.r(t3), r3.d(t3, { makePaymentTxnWithSuggestedParams: () => s3, makePaymentTxn: () => a3, makePaymentTxnWithSuggestedParamsFromObject: () => c3, makeKeyRegistrationTxnWithSuggestedParams: () => u3, makeKeyRegistrationTxn: () => l3, makeKeyRegistrationTxnWithSuggestedParamsFromObject: () => h3, makeAssetCreateTxnWithSuggestedParams: () => p3, makeAssetCreateTxn: () => f3, makeAssetCreateTxnWithSuggestedParamsFromObject: () => d3, makeAssetConfigTxnWithSuggestedParams: () => g3, makeAssetConfigTxn: () => y3, makeAssetConfigTxnWithSuggestedParamsFromObject: () => m3, makeAssetDestroyTxnWithSuggestedParams: () => b2, makeAssetDestroyTxn: () => A4, makeAssetDestroyTxnWithSuggestedParamsFromObject: () => w4, makeAssetFreezeTxnWithSuggestedParams: () => v3, makeAssetFreezeTxn: () => x3, makeAssetFreezeTxnWithSuggestedParamsFromObject: () => S2, makeAssetTransferTxnWithSuggestedParams: () => E4, makeAssetTransferTxn: () => T4, makeAssetTransferTxnWithSuggestedParamsFromObject: () => _4, makeApplicationCreateTxn: () => B2, makeApplicationCreateTxnFromObject: () => U2, makeApplicationUpdateTxn: () => k3, makeApplicationUpdateTxnFromObject: () => I3, makeApplicationDeleteTxn: () => C3, makeApplicationDeleteTxnFromObject: () => R2, makeApplicationOptInTxn: () => O2, makeApplicationOptInTxnFromObject: () => D3, makeApplicationCloseOutTxn: () => N3, makeApplicationCloseOutTxnFromObject: () => P3, makeApplicationClearStateTxn: () => L3, makeApplicationClearStateTxnFromObject: () => F3, makeApplicationNoOpTxn: () => z3, makeApplicationNoOpTxnFromObject: () => j3, OnApplicationComplete: () => o3.hq, makeApplicationCallTxnFromObject: () => M3 });
+          var n2 = r3(9417), o3 = r3(1624), i3 = r3(1824);
+          function s3(e4, t4, r4, o4, s4, a4, c4) {
+            const u4 = { from: e4, to: t4, amount: r4, closeRemainderTo: o4, note: s4, suggestedParams: a4, type: i3.i.pay, reKeyTo: c4 };
             return new n2.Transaction(u4);
           }
-          function a3(e4, t4, r4, n3, o4, s4, a4, c4, u4, l4, h4) {
-            return i3(e4, t4, n3, o4, c4, { genesisHash: u4, genesisID: l4, firstRound: s4, lastRound: a4, fee: r4 }, h4);
+          function a3(e4, t4, r4, n3, o4, i4, a4, c4, u4, l4, h4) {
+            return s3(e4, t4, n3, o4, c4, { genesisHash: u4, genesisID: l4, firstRound: i4, lastRound: a4, fee: r4 }, h4);
           }
           function c3(e4) {
-            return i3(e4.from, e4.to, e4.amount, e4.closeRemainderTo, e4.note, e4.suggestedParams, e4.rekeyTo);
+            return s3(e4.from, e4.to, e4.amount, e4.closeRemainderTo, e4.note, e4.suggestedParams, e4.rekeyTo);
           }
-          function u3(e4, t4, r4, o4, i4, a4, c4, u4, l4, h4 = false, p4) {
-            const f4 = { from: e4, note: t4, voteKey: r4, selectionKey: o4, voteFirst: i4, voteLast: a4, voteKeyDilution: c4, suggestedParams: u4, type: s3.i.keyreg, reKeyTo: l4, nonParticipation: h4, stateProofKey: p4 };
+          function u3(e4, t4, r4, o4, s4, a4, c4, u4, l4, h4 = false, p4) {
+            const f4 = { from: e4, note: t4, voteKey: r4, selectionKey: o4, voteFirst: s4, voteLast: a4, voteKeyDilution: c4, suggestedParams: u4, type: i3.i.keyreg, reKeyTo: l4, nonParticipation: h4, stateProofKey: p4 };
             return new n2.Transaction(f4);
           }
-          function l3(e4, t4, r4, n3, o4, s4, i4, a4, c4, l4, h4, p4, f4, d4 = false, g4) {
-            return u3(e4, o4, a4, c4, l4, h4, p4, { genesisHash: s4, genesisID: i4, firstRound: r4, lastRound: n3, fee: t4 }, f4, d4, g4);
+          function l3(e4, t4, r4, n3, o4, i4, s4, a4, c4, l4, h4, p4, f4, d4 = false, g4) {
+            return u3(e4, o4, a4, c4, l4, h4, p4, { genesisHash: i4, genesisID: s4, firstRound: r4, lastRound: n3, fee: t4 }, f4, d4, g4);
           }
           function h3(e4) {
             return u3(e4.from, e4.note, e4.voteKey, e4.selectionKey, e4.voteFirst, e4.voteLast, e4.voteKeyDilution, e4.suggestedParams, e4.rekeyTo, e4.nonParticipation, e4.stateProofKey);
           }
-          function p3(e4, t4, r4, o4, i4, a4, c4, u4, l4, h4, p4, f4, d4, g4, y4) {
-            const m4 = { from: e4, note: t4, suggestedParams: g4, assetTotal: r4, assetDecimals: o4, assetDefaultFrozen: i4, assetUnitName: h4, assetName: p4, assetURL: f4, assetMetadataHash: d4, assetManager: a4, assetReserve: c4, assetFreeze: u4, assetClawback: l4, type: s3.i.acfg, reKeyTo: y4 };
+          function p3(e4, t4, r4, o4, s4, a4, c4, u4, l4, h4, p4, f4, d4, g4, y4) {
+            const m4 = { from: e4, note: t4, suggestedParams: g4, assetTotal: r4, assetDecimals: o4, assetDefaultFrozen: s4, assetUnitName: h4, assetName: p4, assetURL: f4, assetMetadataHash: d4, assetManager: a4, assetReserve: c4, assetFreeze: u4, assetClawback: l4, type: i3.i.acfg, reKeyTo: y4 };
             return new n2.Transaction(m4);
           }
-          function f3(e4, t4, r4, n3, o4, s4, i4, a4, c4, u4, l4, h4, f4, d4, g4, y4, m4, b3, A5) {
-            return p3(e4, o4, a4, c4, u4, l4, h4, f4, d4, g4, y4, m4, b3, { genesisHash: s4, genesisID: i4, firstRound: r4, lastRound: n3, fee: t4 }, A5);
+          function f3(e4, t4, r4, n3, o4, i4, s4, a4, c4, u4, l4, h4, f4, d4, g4, y4, m4, b3, A5) {
+            return p3(e4, o4, a4, c4, u4, l4, h4, f4, d4, g4, y4, m4, b3, { genesisHash: i4, genesisID: s4, firstRound: r4, lastRound: n3, fee: t4 }, A5);
           }
           function d3(e4) {
             return p3(e4.from, e4.note, e4.total, e4.decimals, e4.defaultFrozen, e4.manager, e4.reserve, e4.freeze, e4.clawback, e4.unitName, e4.assetName, e4.assetURL, e4.assetMetadataHash, e4.suggestedParams, e4.rekeyTo);
           }
-          function g3(e4, t4, r4, o4, i4, a4, c4, u4, l4 = true, h4) {
-            if (l4 && (o4 === void 0 || i4 === void 0 || a4 === void 0 || c4 === void 0))
+          function g3(e4, t4, r4, o4, s4, a4, c4, u4, l4 = true, h4) {
+            if (l4 && (o4 === void 0 || s4 === void 0 || a4 === void 0 || c4 === void 0))
               throw Error("strict empty address checking was turned on, but at least one empty address was provided");
-            const p4 = { from: e4, suggestedParams: u4, assetIndex: r4, assetManager: o4, assetReserve: i4, assetFreeze: a4, assetClawback: c4, type: s3.i.acfg, note: t4, reKeyTo: h4 };
+            const p4 = { from: e4, suggestedParams: u4, assetIndex: r4, assetManager: o4, assetReserve: s4, assetFreeze: a4, assetClawback: c4, type: i3.i.acfg, note: t4, reKeyTo: h4 };
             return new n2.Transaction(p4);
           }
-          function y3(e4, t4, r4, n3, o4, s4, i4, a4, c4, u4, l4, h4, p4 = true, f4) {
-            return g3(e4, o4, a4, c4, u4, l4, h4, { genesisHash: s4, genesisID: i4, firstRound: r4, lastRound: n3, fee: t4 }, p4, f4);
+          function y3(e4, t4, r4, n3, o4, i4, s4, a4, c4, u4, l4, h4, p4 = true, f4) {
+            return g3(e4, o4, a4, c4, u4, l4, h4, { genesisHash: i4, genesisID: s4, firstRound: r4, lastRound: n3, fee: t4 }, p4, f4);
           }
           function m3(e4) {
             return g3(e4.from, e4.note, e4.assetIndex, e4.manager, e4.reserve, e4.freeze, e4.clawback, e4.suggestedParams, e4.strictEmptyAddressChecking, e4.rekeyTo);
           }
-          function b2(e4, t4, r4, o4, i4) {
-            const a4 = { from: e4, suggestedParams: o4, assetIndex: r4, type: s3.i.acfg, note: t4, reKeyTo: i4 };
+          function b2(e4, t4, r4, o4, s4) {
+            const a4 = { from: e4, suggestedParams: o4, assetIndex: r4, type: i3.i.acfg, note: t4, reKeyTo: s4 };
             return new n2.Transaction(a4);
           }
-          function A4(e4, t4, r4, n3, o4, s4, i4, a4, c4) {
-            return b2(e4, o4, a4, { genesisHash: s4, genesisID: i4, firstRound: r4, lastRound: n3, fee: t4 }, c4);
+          function A4(e4, t4, r4, n3, o4, i4, s4, a4, c4) {
+            return b2(e4, o4, a4, { genesisHash: i4, genesisID: s4, firstRound: r4, lastRound: n3, fee: t4 }, c4);
           }
           function w4(e4) {
             return b2(e4.from, e4.note, e4.assetIndex, e4.suggestedParams, e4.rekeyTo);
           }
-          function v3(e4, t4, r4, o4, i4, a4, c4) {
-            const u4 = { from: e4, type: s3.i.afrz, freezeAccount: o4, assetIndex: r4, freezeState: i4, note: t4, suggestedParams: a4, reKeyTo: c4 };
+          function v3(e4, t4, r4, o4, s4, a4, c4) {
+            const u4 = { from: e4, type: i3.i.afrz, freezeAccount: o4, assetIndex: r4, freezeState: s4, note: t4, suggestedParams: a4, reKeyTo: c4 };
             return new n2.Transaction(u4);
           }
-          function x3(e4, t4, r4, n3, o4, s4, i4, a4, c4, u4, l4) {
-            return v3(e4, o4, a4, c4, u4, { genesisHash: s4, genesisID: i4, firstRound: r4, lastRound: n3, fee: t4 }, l4);
+          function x3(e4, t4, r4, n3, o4, i4, s4, a4, c4, u4, l4) {
+            return v3(e4, o4, a4, c4, u4, { genesisHash: i4, genesisID: s4, firstRound: r4, lastRound: n3, fee: t4 }, l4);
           }
           function S2(e4) {
             return v3(e4.from, e4.note, e4.assetIndex, e4.freezeTarget, e4.freezeState, e4.suggestedParams, e4.rekeyTo);
           }
-          function E4(e4, t4, r4, o4, i4, a4, c4, u4, l4) {
-            const h4 = { type: s3.i.axfer, from: e4, to: t4, amount: i4, suggestedParams: u4, assetIndex: c4, note: a4, assetRevocationTarget: o4, closeRemainderTo: r4, reKeyTo: l4 };
+          function E4(e4, t4, r4, o4, s4, a4, c4, u4, l4) {
+            const h4 = { type: i3.i.axfer, from: e4, to: t4, amount: s4, suggestedParams: u4, assetIndex: c4, note: a4, assetRevocationTarget: o4, closeRemainderTo: r4, reKeyTo: l4 };
             return new n2.Transaction(h4);
           }
-          function T4(e4, t4, r4, n3, o4, s4, i4, a4, c4, u4, l4, h4, p4) {
-            return E4(e4, t4, r4, n3, s4, c4, h4, { genesisHash: u4, genesisID: l4, firstRound: i4, lastRound: a4, fee: o4 }, p4);
+          function T4(e4, t4, r4, n3, o4, i4, s4, a4, c4, u4, l4, h4, p4) {
+            return E4(e4, t4, r4, n3, i4, c4, h4, { genesisHash: u4, genesisID: l4, firstRound: s4, lastRound: a4, fee: o4 }, p4);
           }
           function _4(e4) {
             return E4(e4.from, e4.to, e4.closeRemainderTo, e4.revocationTarget, e4.amount, e4.note, e4.assetIndex, e4.suggestedParams, e4.rekeyTo);
           }
-          function B2(e4, t4, r4, o4, i4, a4, c4, u4, l4, h4, p4, f4, d4, g4, y4, m4, b3) {
-            const A5 = { type: s3.i.appl, from: e4, suggestedParams: t4, appIndex: 0, appOnComplete: r4, appLocalInts: a4, appLocalByteSlices: c4, appGlobalInts: u4, appGlobalByteSlices: l4, appApprovalProgram: o4, appClearProgram: i4, appArgs: h4, appAccounts: p4, appForeignApps: f4, appForeignAssets: d4, note: g4, lease: y4, reKeyTo: m4, extraPages: b3 };
+          function B2(e4, t4, r4, o4, s4, a4, c4, u4, l4, h4, p4, f4, d4, g4, y4, m4, b3) {
+            const A5 = { type: i3.i.appl, from: e4, suggestedParams: t4, appIndex: 0, appOnComplete: r4, appLocalInts: a4, appLocalByteSlices: c4, appGlobalInts: u4, appGlobalByteSlices: l4, appApprovalProgram: o4, appClearProgram: s4, appArgs: h4, appAccounts: p4, appForeignApps: f4, appForeignAssets: d4, note: g4, lease: y4, reKeyTo: m4, extraPages: b3 };
             return new n2.Transaction(A5);
           }
           function U2(e4) {
             return B2(e4.from, e4.suggestedParams, e4.onComplete, e4.approvalProgram, e4.clearProgram, e4.numLocalInts, e4.numLocalByteSlices, e4.numGlobalInts, e4.numGlobalByteSlices, e4.appArgs, e4.accounts, e4.foreignApps, e4.foreignAssets, e4.note, e4.lease, e4.rekeyTo, e4.extraPages);
           }
-          function k3(e4, t4, r4, i4, a4, c4, u4, l4, h4, p4, f4, d4) {
-            const g4 = { type: s3.i.appl, from: e4, suggestedParams: t4, appIndex: r4, appApprovalProgram: i4, appOnComplete: o3.hq.UpdateApplicationOC, appClearProgram: a4, appArgs: c4, appAccounts: u4, appForeignApps: l4, appForeignAssets: h4, note: p4, lease: f4, reKeyTo: d4 };
+          function k3(e4, t4, r4, s4, a4, c4, u4, l4, h4, p4, f4, d4) {
+            const g4 = { type: i3.i.appl, from: e4, suggestedParams: t4, appIndex: r4, appApprovalProgram: s4, appOnComplete: o3.hq.UpdateApplicationOC, appClearProgram: a4, appArgs: c4, appAccounts: u4, appForeignApps: l4, appForeignAssets: h4, note: p4, lease: f4, reKeyTo: d4 };
             return new n2.Transaction(g4);
           }
           function I3(e4) {
             return k3(e4.from, e4.suggestedParams, e4.appIndex, e4.approvalProgram, e4.clearProgram, e4.appArgs, e4.accounts, e4.foreignApps, e4.foreignAssets, e4.note, e4.lease, e4.rekeyTo);
           }
-          function C3(e4, t4, r4, i4, a4, c4, u4, l4, h4, p4) {
-            const f4 = { type: s3.i.appl, from: e4, suggestedParams: t4, appIndex: r4, appOnComplete: o3.hq.DeleteApplicationOC, appArgs: i4, appAccounts: a4, appForeignApps: c4, appForeignAssets: u4, note: l4, lease: h4, reKeyTo: p4 };
+          function C3(e4, t4, r4, s4, a4, c4, u4, l4, h4, p4) {
+            const f4 = { type: i3.i.appl, from: e4, suggestedParams: t4, appIndex: r4, appOnComplete: o3.hq.DeleteApplicationOC, appArgs: s4, appAccounts: a4, appForeignApps: c4, appForeignAssets: u4, note: l4, lease: h4, reKeyTo: p4 };
             return new n2.Transaction(f4);
           }
           function R2(e4) {
             return C3(e4.from, e4.suggestedParams, e4.appIndex, e4.appArgs, e4.accounts, e4.foreignApps, e4.foreignAssets, e4.note, e4.lease, e4.rekeyTo);
           }
-          function O2(e4, t4, r4, i4, a4, c4, u4, l4, h4, p4) {
-            const f4 = { type: s3.i.appl, from: e4, suggestedParams: t4, appIndex: r4, appOnComplete: o3.hq.OptInOC, appArgs: i4, appAccounts: a4, appForeignApps: c4, appForeignAssets: u4, note: l4, lease: h4, reKeyTo: p4 };
+          function O2(e4, t4, r4, s4, a4, c4, u4, l4, h4, p4) {
+            const f4 = { type: i3.i.appl, from: e4, suggestedParams: t4, appIndex: r4, appOnComplete: o3.hq.OptInOC, appArgs: s4, appAccounts: a4, appForeignApps: c4, appForeignAssets: u4, note: l4, lease: h4, reKeyTo: p4 };
             return new n2.Transaction(f4);
           }
           function D3(e4) {
             return O2(e4.from, e4.suggestedParams, e4.appIndex, e4.appArgs, e4.accounts, e4.foreignApps, e4.foreignAssets, e4.note, e4.lease, e4.rekeyTo);
           }
-          function N3(e4, t4, r4, i4, a4, c4, u4, l4, h4, p4) {
-            const f4 = { type: s3.i.appl, from: e4, suggestedParams: t4, appIndex: r4, appOnComplete: o3.hq.CloseOutOC, appArgs: i4, appAccounts: a4, appForeignApps: c4, appForeignAssets: u4, note: l4, lease: h4, reKeyTo: p4 };
+          function N3(e4, t4, r4, s4, a4, c4, u4, l4, h4, p4) {
+            const f4 = { type: i3.i.appl, from: e4, suggestedParams: t4, appIndex: r4, appOnComplete: o3.hq.CloseOutOC, appArgs: s4, appAccounts: a4, appForeignApps: c4, appForeignAssets: u4, note: l4, lease: h4, reKeyTo: p4 };
             return new n2.Transaction(f4);
           }
           function P3(e4) {
             return N3(e4.from, e4.suggestedParams, e4.appIndex, e4.appArgs, e4.accounts, e4.foreignApps, e4.foreignAssets, e4.note, e4.lease, e4.rekeyTo);
           }
-          function L3(e4, t4, r4, i4, a4, c4, u4, l4, h4, p4) {
-            const f4 = { type: s3.i.appl, from: e4, suggestedParams: t4, appIndex: r4, appOnComplete: o3.hq.ClearStateOC, appArgs: i4, appAccounts: a4, appForeignApps: c4, appForeignAssets: u4, note: l4, lease: h4, reKeyTo: p4 };
+          function L3(e4, t4, r4, s4, a4, c4, u4, l4, h4, p4) {
+            const f4 = { type: i3.i.appl, from: e4, suggestedParams: t4, appIndex: r4, appOnComplete: o3.hq.ClearStateOC, appArgs: s4, appAccounts: a4, appForeignApps: c4, appForeignAssets: u4, note: l4, lease: h4, reKeyTo: p4 };
             return new n2.Transaction(f4);
           }
           function F3(e4) {
             return L3(e4.from, e4.suggestedParams, e4.appIndex, e4.appArgs, e4.accounts, e4.foreignApps, e4.foreignAssets, e4.note, e4.lease, e4.rekeyTo);
           }
-          function z3(e4, t4, r4, i4, a4, c4, u4, l4, h4, p4) {
-            const f4 = { type: s3.i.appl, from: e4, suggestedParams: t4, appIndex: r4, appOnComplete: o3.hq.NoOpOC, appArgs: i4, appAccounts: a4, appForeignApps: c4, appForeignAssets: u4, note: l4, lease: h4, reKeyTo: p4 };
+          function z3(e4, t4, r4, s4, a4, c4, u4, l4, h4, p4) {
+            const f4 = { type: i3.i.appl, from: e4, suggestedParams: t4, appIndex: r4, appOnComplete: o3.hq.NoOpOC, appArgs: s4, appAccounts: a4, appForeignApps: c4, appForeignAssets: u4, note: l4, lease: h4, reKeyTo: p4 };
             return new n2.Transaction(f4);
           }
           function j3(e4) {
             return z3(e4.from, e4.suggestedParams, e4.appIndex, e4.appArgs, e4.accounts, e4.foreignApps, e4.foreignAssets, e4.note, e4.lease, e4.rekeyTo);
           }
           function M3(e4) {
-            const t4 = { type: s3.i.appl, from: e4.from, suggestedParams: e4.suggestedParams, appIndex: e4.appIndex, appOnComplete: e4.onComplete, appLocalInts: e4.numLocalInts, appLocalByteSlices: e4.numLocalByteSlices, appGlobalInts: e4.numGlobalInts, appGlobalByteSlices: e4.numGlobalByteSlices, appApprovalProgram: e4.approvalProgram, appClearProgram: e4.clearProgram, appArgs: e4.appArgs, appAccounts: e4.accounts, appForeignApps: e4.foreignApps, appForeignAssets: e4.foreignAssets, note: e4.note, lease: e4.lease, reKeyTo: e4.rekeyTo, extraPages: e4.extraPages };
+            const t4 = { type: i3.i.appl, from: e4.from, suggestedParams: e4.suggestedParams, appIndex: e4.appIndex, appOnComplete: e4.onComplete, appLocalInts: e4.numLocalInts, appLocalByteSlices: e4.numLocalByteSlices, appGlobalInts: e4.numGlobalInts, appGlobalByteSlices: e4.numGlobalByteSlices, appApprovalProgram: e4.approvalProgram, appClearProgram: e4.clearProgram, appArgs: e4.appArgs, appAccounts: e4.accounts, appForeignApps: e4.foreignApps, appForeignAssets: e4.foreignAssets, note: e4.note, lease: e4.lease, reKeyTo: e4.rekeyTo, extraPages: e4.extraPages };
             return new n2.Transaction(t4);
           }
         }, 3510: (e3, t3, r3) => {
           "use strict";
           r3.d(t3, { vC: () => g3, w3: () => l3, OF: () => d3, Ch: () => p3, QX: () => f3, mE: () => h3 });
           const n2 = ["abandon", "ability", "able", "about", "above", "absent", "absorb", "abstract", "absurd", "abuse", "access", "accident", "account", "accuse", "achieve", "acid", "acoustic", "acquire", "across", "act", "action", "actor", "actress", "actual", "adapt", "add", "addict", "address", "adjust", "admit", "adult", "advance", "advice", "aerobic", "affair", "afford", "afraid", "again", "age", "agent", "agree", "ahead", "aim", "air", "airport", "aisle", "alarm", "album", "alcohol", "alert", "alien", "all", "alley", "allow", "almost", "alone", "alpha", "already", "also", "alter", "always", "amateur", "amazing", "among", "amount", "amused", "analyst", "anchor", "ancient", "anger", "angle", "angry", "animal", "ankle", "announce", "annual", "another", "answer", "antenna", "antique", "anxiety", "any", "apart", "apology", "appear", "apple", "approve", "april", "arch", "arctic", "area", "arena", "argue", "arm", "armed", "armor", "army", "around", "arrange", "arrest", "arrive", "arrow", "art", "artefact", "artist", "artwork", "ask", "aspect", "assault", "asset", "assist", "assume", "asthma", "athlete", "atom", "attack", "attend", "attitude", "attract", "auction", "audit", "august", "aunt", "author", "auto", "autumn", "average", "avocado", "avoid", "awake", "aware", "away", "awesome", "awful", "awkward", "axis", "baby", "bachelor", "bacon", "badge", "bag", "balance", "balcony", "ball", "bamboo", "banana", "banner", "bar", "barely", "bargain", "barrel", "base", "basic", "basket", "battle", "beach", "bean", "beauty", "because", "become", "beef", "before", "begin", "behave", "behind", "believe", "below", "belt", "bench", "benefit", "best", "betray", "better", "between", "beyond", "bicycle", "bid", "bike", "bind", "biology", "bird", "birth", "bitter", "black", "blade", "blame", "blanket", "blast", "bleak", "bless", "blind", "blood", "blossom", "blouse", "blue", "blur", "blush", "board", "boat", "body", "boil", "bomb", "bone", "bonus", "book", "boost", "border", "boring", "borrow", "boss", "bottom", "bounce", "box", "boy", "bracket", "brain", "brand", "brass", "brave", "bread", "breeze", "brick", "bridge", "brief", "bright", "bring", "brisk", "broccoli", "broken", "bronze", "broom", "brother", "brown", "brush", "bubble", "buddy", "budget", "buffalo", "build", "bulb", "bulk", "bullet", "bundle", "bunker", "burden", "burger", "burst", "bus", "business", "busy", "butter", "buyer", "buzz", "cabbage", "cabin", "cable", "cactus", "cage", "cake", "call", "calm", "camera", "camp", "can", "canal", "cancel", "candy", "cannon", "canoe", "canvas", "canyon", "capable", "capital", "captain", "car", "carbon", "card", "cargo", "carpet", "carry", "cart", "case", "cash", "casino", "castle", "casual", "cat", "catalog", "catch", "category", "cattle", "caught", "cause", "caution", "cave", "ceiling", "celery", "cement", "census", "century", "cereal", "certain", "chair", "chalk", "champion", "change", "chaos", "chapter", "charge", "chase", "chat", "cheap", "check", "cheese", "chef", "cherry", "chest", "chicken", "chief", "child", "chimney", "choice", "choose", "chronic", "chuckle", "chunk", "churn", "cigar", "cinnamon", "circle", "citizen", "city", "civil", "claim", "clap", "clarify", "claw", "clay", "clean", "clerk", "clever", "click", "client", "cliff", "climb", "clinic", "clip", "clock", "clog", "close", "cloth", "cloud", "clown", "club", "clump", "cluster", "clutch", "coach", "coast", "coconut", "code", "coffee", "coil", "coin", "collect", "color", "column", "combine", "come", "comfort", "comic", "common", "company", "concert", "conduct", "confirm", "congress", "connect", "consider", "control", "convince", "cook", "cool", "copper", "copy", "coral", "core", "corn", "correct", "cost", "cotton", "couch", "country", "couple", "course", "cousin", "cover", "coyote", "crack", "cradle", "craft", "cram", "crane", "crash", "crater", "crawl", "crazy", "cream", "credit", "creek", "crew", "cricket", "crime", "crisp", "critic", "crop", "cross", "crouch", "crowd", "crucial", "cruel", "cruise", "crumble", "crunch", "crush", "cry", "crystal", "cube", "culture", "cup", "cupboard", "curious", "current", "curtain", "curve", "cushion", "custom", "cute", "cycle", "dad", "damage", "damp", "dance", "danger", "daring", "dash", "daughter", "dawn", "day", "deal", "debate", "debris", "decade", "december", "decide", "decline", "decorate", "decrease", "deer", "defense", "define", "defy", "degree", "delay", "deliver", "demand", "demise", "denial", "dentist", "deny", "depart", "depend", "deposit", "depth", "deputy", "derive", "describe", "desert", "design", "desk", "despair", "destroy", "detail", "detect", "develop", "device", "devote", "diagram", "dial", "diamond", "diary", "dice", "diesel", "diet", "differ", "digital", "dignity", "dilemma", "dinner", "dinosaur", "direct", "dirt", "disagree", "discover", "disease", "dish", "dismiss", "disorder", "display", "distance", "divert", "divide", "divorce", "dizzy", "doctor", "document", "dog", "doll", "dolphin", "domain", "donate", "donkey", "donor", "door", "dose", "double", "dove", "draft", "dragon", "drama", "drastic", "draw", "dream", "dress", "drift", "drill", "drink", "drip", "drive", "drop", "drum", "dry", "duck", "dumb", "dune", "during", "dust", "dutch", "duty", "dwarf", "dynamic", "eager", "eagle", "early", "earn", "earth", "easily", "east", "easy", "echo", "ecology", "economy", "edge", "edit", "educate", "effort", "egg", "eight", "either", "elbow", "elder", "electric", "elegant", "element", "elephant", "elevator", "elite", "else", "embark", "embody", "embrace", "emerge", "emotion", "employ", "empower", "empty", "enable", "enact", "end", "endless", "endorse", "enemy", "energy", "enforce", "engage", "engine", "enhance", "enjoy", "enlist", "enough", "enrich", "enroll", "ensure", "enter", "entire", "entry", "envelope", "episode", "equal", "equip", "era", "erase", "erode", "erosion", "error", "erupt", "escape", "essay", "essence", "estate", "eternal", "ethics", "evidence", "evil", "evoke", "evolve", "exact", "example", "excess", "exchange", "excite", "exclude", "excuse", "execute", "exercise", "exhaust", "exhibit", "exile", "exist", "exit", "exotic", "expand", "expect", "expire", "explain", "expose", "express", "extend", "extra", "eye", "eyebrow", "fabric", "face", "faculty", "fade", "faint", "faith", "fall", "false", "fame", "family", "famous", "fan", "fancy", "fantasy", "farm", "fashion", "fat", "fatal", "father", "fatigue", "fault", "favorite", "feature", "february", "federal", "fee", "feed", "feel", "female", "fence", "festival", "fetch", "fever", "few", "fiber", "fiction", "field", "figure", "file", "film", "filter", "final", "find", "fine", "finger", "finish", "fire", "firm", "first", "fiscal", "fish", "fit", "fitness", "fix", "flag", "flame", "flash", "flat", "flavor", "flee", "flight", "flip", "float", "flock", "floor", "flower", "fluid", "flush", "fly", "foam", "focus", "fog", "foil", "fold", "follow", "food", "foot", "force", "forest", "forget", "fork", "fortune", "forum", "forward", "fossil", "foster", "found", "fox", "fragile", "frame", "frequent", "fresh", "friend", "fringe", "frog", "front", "frost", "frown", "frozen", "fruit", "fuel", "fun", "funny", "furnace", "fury", "future", "gadget", "gain", "galaxy", "gallery", "game", "gap", "garage", "garbage", "garden", "garlic", "garment", "gas", "gasp", "gate", "gather", "gauge", "gaze", "general", "genius", "genre", "gentle", "genuine", "gesture", "ghost", "giant", "gift", "giggle", "ginger", "giraffe", "girl", "give", "glad", "glance", "glare", "glass", "glide", "glimpse", "globe", "gloom", "glory", "glove", "glow", "glue", "goat", "goddess", "gold", "good", "goose", "gorilla", "gospel", "gossip", "govern", "gown", "grab", "grace", "grain", "grant", "grape", "grass", "gravity", "great", "green", "grid", "grief", "grit", "grocery", "group", "grow", "grunt", "guard", "guess", "guide", "guilt", "guitar", "gun", "gym", "habit", "hair", "half", "hammer", "hamster", "hand", "happy", "harbor", "hard", "harsh", "harvest", "hat", "have", "hawk", "hazard", "head", "health", "heart", "heavy", "hedgehog", "height", "hello", "helmet", "help", "hen", "hero", "hidden", "high", "hill", "hint", "hip", "hire", "history", "hobby", "hockey", "hold", "hole", "holiday", "hollow", "home", "honey", "hood", "hope", "horn", "horror", "horse", "hospital", "host", "hotel", "hour", "hover", "hub", "huge", "human", "humble", "humor", "hundred", "hungry", "hunt", "hurdle", "hurry", "hurt", "husband", "hybrid", "ice", "icon", "idea", "identify", "idle", "ignore", "ill", "illegal", "illness", "image", "imitate", "immense", "immune", "impact", "impose", "improve", "impulse", "inch", "include", "income", "increase", "index", "indicate", "indoor", "industry", "infant", "inflict", "inform", "inhale", "inherit", "initial", "inject", "injury", "inmate", "inner", "innocent", "input", "inquiry", "insane", "insect", "inside", "inspire", "install", "intact", "interest", "into", "invest", "invite", "involve", "iron", "island", "isolate", "issue", "item", "ivory", "jacket", "jaguar", "jar", "jazz", "jealous", "jeans", "jelly", "jewel", "job", "join", "joke", "journey", "joy", "judge", "juice", "jump", "jungle", "junior", "junk", "just", "kangaroo", "keen", "keep", "ketchup", "key", "kick", "kid", "kidney", "kind", "kingdom", "kiss", "kit", "kitchen", "kite", "kitten", "kiwi", "knee", "knife", "knock", "know", "lab", "label", "labor", "ladder", "lady", "lake", "lamp", "language", "laptop", "large", "later", "latin", "laugh", "laundry", "lava", "law", "lawn", "lawsuit", "layer", "lazy", "leader", "leaf", "learn", "leave", "lecture", "left", "leg", "legal", "legend", "leisure", "lemon", "lend", "length", "lens", "leopard", "lesson", "letter", "level", "liar", "liberty", "library", "license", "life", "lift", "light", "like", "limb", "limit", "link", "lion", "liquid", "list", "little", "live", "lizard", "load", "loan", "lobster", "local", "lock", "logic", "lonely", "long", "loop", "lottery", "loud", "lounge", "love", "loyal", "lucky", "luggage", "lumber", "lunar", "lunch", "luxury", "lyrics", "machine", "mad", "magic", "magnet", "maid", "mail", "main", "major", "make", "mammal", "man", "manage", "mandate", "mango", "mansion", "manual", "maple", "marble", "march", "margin", "marine", "market", "marriage", "mask", "mass", "master", "match", "material", "math", "matrix", "matter", "maximum", "maze", "meadow", "mean", "measure", "meat", "mechanic", "medal", "media", "melody", "melt", "member", "memory", "mention", "menu", "mercy", "merge", "merit", "merry", "mesh", "message", "metal", "method", "middle", "midnight", "milk", "million", "mimic", "mind", "minimum", "minor", "minute", "miracle", "mirror", "misery", "miss", "mistake", "mix", "mixed", "mixture", "mobile", "model", "modify", "mom", "moment", "monitor", "monkey", "monster", "month", "moon", "moral", "more", "morning", "mosquito", "mother", "motion", "motor", "mountain", "mouse", "move", "movie", "much", "muffin", "mule", "multiply", "muscle", "museum", "mushroom", "music", "must", "mutual", "myself", "mystery", "myth", "naive", "name", "napkin", "narrow", "nasty", "nation", "nature", "near", "neck", "need", "negative", "neglect", "neither", "nephew", "nerve", "nest", "net", "network", "neutral", "never", "news", "next", "nice", "night", "noble", "noise", "nominee", "noodle", "normal", "north", "nose", "notable", "note", "nothing", "notice", "novel", "now", "nuclear", "number", "nurse", "nut", "oak", "obey", "object", "oblige", "obscure", "observe", "obtain", "obvious", "occur", "ocean", "october", "odor", "off", "offer", "office", "often", "oil", "okay", "old", "olive", "olympic", "omit", "once", "one", "onion", "online", "only", "open", "opera", "opinion", "oppose", "option", "orange", "orbit", "orchard", "order", "ordinary", "organ", "orient", "original", "orphan", "ostrich", "other", "outdoor", "outer", "output", "outside", "oval", "oven", "over", "own", "owner", "oxygen", "oyster", "ozone", "pact", "paddle", "page", "pair", "palace", "palm", "panda", "panel", "panic", "panther", "paper", "parade", "parent", "park", "parrot", "party", "pass", "patch", "path", "patient", "patrol", "pattern", "pause", "pave", "payment", "peace", "peanut", "pear", "peasant", "pelican", "pen", "penalty", "pencil", "people", "pepper", "perfect", "permit", "person", "pet", "phone", "photo", "phrase", "physical", "piano", "picnic", "picture", "piece", "pig", "pigeon", "pill", "pilot", "pink", "pioneer", "pipe", "pistol", "pitch", "pizza", "place", "planet", "plastic", "plate", "play", "please", "pledge", "pluck", "plug", "plunge", "poem", "poet", "point", "polar", "pole", "police", "pond", "pony", "pool", "popular", "portion", "position", "possible", "post", "potato", "pottery", "poverty", "powder", "power", "practice", "praise", "predict", "prefer", "prepare", "present", "pretty", "prevent", "price", "pride", "primary", "print", "priority", "prison", "private", "prize", "problem", "process", "produce", "profit", "program", "project", "promote", "proof", "property", "prosper", "protect", "proud", "provide", "public", "pudding", "pull", "pulp", "pulse", "pumpkin", "punch", "pupil", "puppy", "purchase", "purity", "purpose", "purse", "push", "put", "puzzle", "pyramid", "quality", "quantum", "quarter", "question", "quick", "quit", "quiz", "quote", "rabbit", "raccoon", "race", "rack", "radar", "radio", "rail", "rain", "raise", "rally", "ramp", "ranch", "random", "range", "rapid", "rare", "rate", "rather", "raven", "raw", "razor", "ready", "real", "reason", "rebel", "rebuild", "recall", "receive", "recipe", "record", "recycle", "reduce", "reflect", "reform", "refuse", "region", "regret", "regular", "reject", "relax", "release", "relief", "rely", "remain", "remember", "remind", "remove", "render", "renew", "rent", "reopen", "repair", "repeat", "replace", "report", "require", "rescue", "resemble", "resist", "resource", "response", "result", "retire", "retreat", "return", "reunion", "reveal", "review", "reward", "rhythm", "rib", "ribbon", "rice", "rich", "ride", "ridge", "rifle", "right", "rigid", "ring", "riot", "ripple", "risk", "ritual", "rival", "river", "road", "roast", "robot", "robust", "rocket", "romance", "roof", "rookie", "room", "rose", "rotate", "rough", "round", "route", "royal", "rubber", "rude", "rug", "rule", "run", "runway", "rural", "sad", "saddle", "sadness", "safe", "sail", "salad", "salmon", "salon", "salt", "salute", "same", "sample", "sand", "satisfy", "satoshi", "sauce", "sausage", "save", "say", "scale", "scan", "scare", "scatter", "scene", "scheme", "school", "science", "scissors", "scorpion", "scout", "scrap", "screen", "script", "scrub", "sea", "search", "season", "seat", "second", "secret", "section", "security", "seed", "seek", "segment", "select", "sell", "seminar", "senior", "sense", "sentence", "series", "service", "session", "settle", "setup", "seven", "shadow", "shaft", "shallow", "share", "shed", "shell", "sheriff", "shield", "shift", "shine", "ship", "shiver", "shock", "shoe", "shoot", "shop", "short", "shoulder", "shove", "shrimp", "shrug", "shuffle", "shy", "sibling", "sick", "side", "siege", "sight", "sign", "silent", "silk", "silly", "silver", "similar", "simple", "since", "sing", "siren", "sister", "situate", "six", "size", "skate", "sketch", "ski", "skill", "skin", "skirt", "skull", "slab", "slam", "sleep", "slender", "slice", "slide", "slight", "slim", "slogan", "slot", "slow", "slush", "small", "smart", "smile", "smoke", "smooth", "snack", "snake", "snap", "sniff", "snow", "soap", "soccer", "social", "sock", "soda", "soft", "solar", "soldier", "solid", "solution", "solve", "someone", "song", "soon", "sorry", "sort", "soul", "sound", "soup", "source", "south", "space", "spare", "spatial", "spawn", "speak", "special", "speed", "spell", "spend", "sphere", "spice", "spider", "spike", "spin", "spirit", "split", "spoil", "sponsor", "spoon", "sport", "spot", "spray", "spread", "spring", "spy", "square", "squeeze", "squirrel", "stable", "stadium", "staff", "stage", "stairs", "stamp", "stand", "start", "state", "stay", "steak", "steel", "stem", "step", "stereo", "stick", "still", "sting", "stock", "stomach", "stone", "stool", "story", "stove", "strategy", "street", "strike", "strong", "struggle", "student", "stuff", "stumble", "style", "subject", "submit", "subway", "success", "such", "sudden", "suffer", "sugar", "suggest", "suit", "summer", "sun", "sunny", "sunset", "super", "supply", "supreme", "sure", "surface", "surge", "surprise", "surround", "survey", "suspect", "sustain", "swallow", "swamp", "swap", "swarm", "swear", "sweet", "swift", "swim", "swing", "switch", "sword", "symbol", "symptom", "syrup", "system", "table", "tackle", "tag", "tail", "talent", "talk", "tank", "tape", "target", "task", "taste", "tattoo", "taxi", "teach", "team", "tell", "ten", "tenant", "tennis", "tent", "term", "test", "text", "thank", "that", "theme", "then", "theory", "there", "they", "thing", "this", "thought", "three", "thrive", "throw", "thumb", "thunder", "ticket", "tide", "tiger", "tilt", "timber", "time", "tiny", "tip", "tired", "tissue", "title", "toast", "tobacco", "today", "toddler", "toe", "together", "toilet", "token", "tomato", "tomorrow", "tone", "tongue", "tonight", "tool", "tooth", "top", "topic", "topple", "torch", "tornado", "tortoise", "toss", "total", "tourist", "toward", "tower", "town", "toy", "track", "trade", "traffic", "tragic", "train", "transfer", "trap", "trash", "travel", "tray", "treat", "tree", "trend", "trial", "tribe", "trick", "trigger", "trim", "trip", "trophy", "trouble", "truck", "true", "truly", "trumpet", "trust", "truth", "try", "tube", "tuition", "tumble", "tuna", "tunnel", "turkey", "turn", "turtle", "twelve", "twenty", "twice", "twin", "twist", "two", "type", "typical", "ugly", "umbrella", "unable", "unaware", "uncle", "uncover", "under", "undo", "unfair", "unfold", "unhappy", "uniform", "unique", "unit", "universe", "unknown", "unlock", "until", "unusual", "unveil", "update", "upgrade", "uphold", "upon", "upper", "upset", "urban", "urge", "usage", "use", "used", "useful", "useless", "usual", "utility", "vacant", "vacuum", "vague", "valid", "valley", "valve", "van", "vanish", "vapor", "various", "vast", "vault", "vehicle", "velvet", "vendor", "venture", "venue", "verb", "verify", "version", "very", "vessel", "veteran", "viable", "vibrant", "vicious", "victory", "video", "view", "village", "vintage", "violin", "virtual", "virus", "visa", "visit", "visual", "vital", "vivid", "vocal", "voice", "void", "volcano", "volume", "vote", "voyage", "wage", "wagon", "wait", "walk", "wall", "walnut", "want", "warfare", "warm", "warrior", "wash", "wasp", "waste", "water", "wave", "way", "wealth", "weapon", "wear", "weasel", "weather", "web", "wedding", "weekend", "weird", "welcome", "west", "wet", "whale", "what", "wheat", "wheel", "when", "where", "whip", "whisper", "wide", "width", "wife", "wild", "will", "win", "window", "wine", "wing", "wink", "winner", "winter", "wire", "wisdom", "wise", "wish", "witness", "wolf", "woman", "wonder", "wood", "wool", "word", "work", "world", "worry", "worth", "wrap", "wreck", "wrestle", "wrist", "write", "wrong", "yard", "year", "yellow", "you", "young", "youth", "zebra", "zero", "zone", "zoo"];
-          var o3 = r3(9404), s3 = r3(7116);
-          const i3 = "failed to decode mnemonic";
+          var o3 = r3(9404), i3 = r3(7116);
+          const s3 = "failed to decode mnemonic";
           function a3(e4) {
             const t4 = [];
             let r4 = 0, n3 = 0;
@@ -15124,7 +14985,7 @@ var require_algosdk_min = __commonJS({
               if (n2.indexOf(e5) === -1)
                 throw new Error("the mnemonic contains a word that is not in the wordlist");
             const o4 = t4[t4.length - 1];
-            let s4 = function(e5) {
+            let i4 = function(e5) {
               const t5 = [];
               let r5 = 0, n3 = 0;
               return e5.forEach(function(e6) {
@@ -15132,17 +14993,17 @@ var require_algosdk_min = __commonJS({
                   t5.push(255 & r5), r5 >>= 8, n3 -= 8;
               }), n3 && t5.push(r5), new Uint8Array(t5);
             }(r4.map((e5) => n2.indexOf(e5)));
-            if (s4.length !== 33)
-              throw new Error(i3);
-            if (s4[s4.length - 1] !== 0)
-              throw new Error(i3);
-            if (s4 = s4.slice(0, s4.length - 1), u3(s4) === o4)
-              return s4;
-            throw new Error(i3);
+            if (i4.length !== 33)
+              throw new Error(s3);
+            if (i4[i4.length - 1] !== 0)
+              throw new Error(s3);
+            if (i4 = i4.slice(0, i4.length - 1), u3(i4) === o4)
+              return i4;
+            throw new Error(s3);
           }
           function p3(e4) {
             const t4 = h3(e4), r4 = o3.keyPairFromSeed(t4);
-            return { addr: s3.encodeAddress(r4.publicKey), sk: r4.secretKey };
+            return { addr: i3.encodeAddress(r4.publicKey), sk: r4.secretKey };
           }
           function f3(e4) {
             return l3(e4.slice(0, o3.SEED_BTYES_LENGTH));
@@ -15156,9 +15017,9 @@ var require_algosdk_min = __commonJS({
         }, 4158: (e3, t3, r3) => {
           "use strict";
           r3.d(t3, { J6: () => p3, F2: () => f3, PU: () => d3, PO: () => g3, vH: () => y3 });
-          var n2 = r3(9404), o3 = r3(7116), s3 = r3(3033), i3 = r3(9417), a3 = r3(413), c3 = r3(2486).Buffer;
+          var n2 = r3(9404), o3 = r3(7116), i3 = r3(3033), s3 = r3(9417), a3 = r3(413), c3 = r3(2486).Buffer;
           const u3 = "Cannot merge txs. Multisig preimages differ", l3 = "Cannot mutate a multisig field as it would invalidate all existing signatures.";
-          class h3 extends i3.Transaction {
+          class h3 extends s3.Transaction {
             addLease() {
               throw new Error(l3);
             }
@@ -15168,16 +15029,16 @@ var require_algosdk_min = __commonJS({
             signTxn(e4) {
               throw new Error("Cannot sign a multisig transaction using `signTxn`. Use `partialSignTxn` instead.");
             }
-            partialSignTxn({ version: e4, threshold: t4, pks: r4 }, i4) {
-              const a4 = n2.keyPairFromSecretKey(i4).publicKey;
-              return function(e5, { rawSig: t5, myPk: r5 }, { version: i5, threshold: a5, pks: u4 }) {
+            partialSignTxn({ version: e4, threshold: t4, pks: r4 }, s4) {
+              const a4 = n2.keyPairFromSecretKey(s4).publicKey;
+              return function(e5, { rawSig: t5, myPk: r5 }, { version: s5, threshold: a5, pks: u4 }) {
                 let l4 = false;
                 const h4 = u4.map((e6) => n2.bytesEqual(e6, r5) ? (l4 = true, { pk: c3.from(e6), s: t5 }) : { pk: c3.from(e6) });
                 if (l4 === false)
                   throw new Error("Key does not exist");
-                const p4 = { msig: { v: i5, thr: a5, subsig: h4 }, txn: e5 }, f4 = o3.fromMultisigPreImg({ version: i5, threshold: a5, pks: u4 });
-                return o3.encodeAddress(e5.snd) !== o3.encodeAddress(f4) && (p4.sgnr = c3.from(f4)), new Uint8Array(s3.encode(p4));
-              }(this.get_obj_for_encoding(), { rawSig: this.rawSignTxn(i4), myPk: a4 }, { version: e4, threshold: t4, pks: r4 });
+                const p4 = { msig: { v: s5, thr: a5, subsig: h4 }, txn: e5 }, f4 = o3.fromMultisigPreImg({ version: s5, threshold: a5, pks: u4 });
+                return o3.encodeAddress(e5.snd) !== o3.encodeAddress(f4) && (p4.sgnr = c3.from(f4)), new Uint8Array(i3.encode(p4));
+              }(this.get_obj_for_encoding(), { rawSig: this.rawSignTxn(s4), myPk: a4 }, { version: e4, threshold: t4, pks: r4 });
             }
             static from_obj_for_encoding(e4) {
               return super.from_obj_for_encoding(e4);
@@ -15186,10 +15047,10 @@ var require_algosdk_min = __commonJS({
           function p3(e4) {
             if (e4.length < 2)
               throw new Error("Not enough multisig transactions to merge. Need at least two");
-            const t4 = s3.decode(e4[0]), r4 = h3.from_obj_for_encoding(t4.txn).txID(), n3 = t4.sgnr ? o3.encodeAddress(t4.sgnr) : void 0, i4 = { version: t4.msig.v, threshold: t4.msig.thr, pks: t4.msig.subsig.map((e5) => e5.pk) }, a4 = o3.encodeAddress(o3.fromMultisigPreImg(i4));
+            const t4 = i3.decode(e4[0]), r4 = h3.from_obj_for_encoding(t4.txn).txID(), n3 = t4.sgnr ? o3.encodeAddress(t4.sgnr) : void 0, s4 = { version: t4.msig.v, threshold: t4.msig.thr, pks: t4.msig.subsig.map((e5) => e5.pk) }, a4 = o3.encodeAddress(o3.fromMultisigPreImg(s4));
             let l4 = t4.msig.subsig;
-            for (let i5 = 0; i5 < e4.length; i5++) {
-              const p5 = s3.decode(e4[i5]);
+            for (let s5 = 0; s5 < e4.length; s5++) {
+              const p5 = i3.decode(e4[s5]);
               if (h3.from_obj_for_encoding(p5.txn).txID() !== r4)
                 throw new Error("Cannot merge txs. txIDs differ");
               if (n3 !== (p5.sgnr ? o3.encodeAddress(p5.sgnr) : void 0))
@@ -15210,15 +15071,15 @@ var require_algosdk_min = __commonJS({
               });
             }
             const p4 = { msig: { v: t4.msig.v, thr: t4.msig.thr, subsig: l4 }, txn: t4.txn };
-            return n3 !== void 0 && (p4.sgnr = c3.from(o3.decodeAddress(n3).publicKey)), new Uint8Array(s3.encode(p4));
+            return n3 !== void 0 && (p4.sgnr = c3.from(o3.decodeAddress(n3).publicKey)), new Uint8Array(i3.encode(p4));
           }
           function f3(e4, t4, r4) {
-            const s4 = t4.v, i4 = t4.thr, c4 = t4.subsig, u4 = c4.map((e5) => e5.pk);
-            if (t4.subsig.length < i4)
+            const i4 = t4.v, s4 = t4.thr, c4 = t4.subsig, u4 = c4.map((e5) => e5.pk);
+            if (t4.subsig.length < s4)
               return false;
             let l4;
             try {
-              l4 = o3.fromMultisigPreImg({ version: s4, threshold: i4, pks: u4 });
+              l4 = o3.fromMultisigPreImg({ version: i4, threshold: s4, pks: u4 });
             } catch (e5) {
               return false;
             }
@@ -15227,22 +15088,22 @@ var require_algosdk_min = __commonJS({
             let h4 = 0;
             for (const e5 of c4)
               e5.s !== void 0 && (h4 += 1);
-            if (h4 < i4)
+            if (h4 < s4)
               return false;
             let p4 = 0;
             for (const t5 of c4)
               t5.s !== void 0 && n2.verify(e4, t5.s, t5.pk) && (p4 += 1);
-            return !(p4 < i4);
+            return !(p4 < s4);
           }
-          function d3(e4, { version: t4, threshold: r4, addrs: n3 }, s4) {
+          function d3(e4, { version: t4, threshold: r4, addrs: n3 }, i4) {
             const a4 = o3.fromMultisigPreImgAddrs({ version: t4, threshold: r4, addrs: n3 });
             Object.prototype.hasOwnProperty.call(e4, "from") || (e4.from = a4);
             const c4 = n3.map((e5) => o3.decodeAddress(e5).publicKey);
             let u4, l4;
-            return e4 instanceof i3.Transaction ? (u4 = e4, l4 = h3.prototype.partialSignTxn.call(u4, { version: t4, threshold: r4, pks: c4 }, s4)) : (u4 = new h3(e4), l4 = u4.partialSignTxn({ version: t4, threshold: r4, pks: c4 }, s4)), { txID: u4.txID().toString(), blob: l4 };
+            return e4 instanceof s3.Transaction ? (u4 = e4, l4 = h3.prototype.partialSignTxn.call(u4, { version: t4, threshold: r4, pks: c4 }, i4)) : (u4 = new h3(e4), l4 = u4.partialSignTxn({ version: t4, threshold: r4, pks: c4 }, i4)), { txID: u4.txID().toString(), blob: l4 };
           }
-          function g3(e4, { version: t4, threshold: r4, addrs: n3 }, i4) {
-            const a4 = n3.map((e5) => o3.decodeAddress(e5).publicKey), c4 = s3.decode(e4), u4 = h3.from_obj_for_encoding(c4.txn), l4 = u4.partialSignTxn({ version: t4, threshold: r4, pks: a4 }, i4);
+          function g3(e4, { version: t4, threshold: r4, addrs: n3 }, s4) {
+            const a4 = n3.map((e5) => o3.decodeAddress(e5).publicKey), c4 = i3.decode(e4), u4 = h3.from_obj_for_encoding(c4.txn), l4 = u4.partialSignTxn({ version: t4, threshold: r4, pks: a4 }, s4);
             return { txID: u4.txID().toString(), blob: p3([e4, l4]) };
           }
           function y3({ version: e4, threshold: t4, addrs: r4 }) {
@@ -15251,9 +15112,9 @@ var require_algosdk_min = __commonJS({
         }, 9404: (e3, t3, r3) => {
           "use strict";
           r3.r(t3), r3.d(t3, { genericHash: () => a3, randomBytes: () => c3, keyPairFromSeed: () => u3, keyPair: () => l3, keyPairFromSecretKey: () => h3, sign: () => p3, bytesEqual: () => f3, verify: () => d3, PUBLIC_KEY_LENGTH: () => g3, SECRET_KEY_LENGTH: () => y3, HASH_BYTES_LENGTH: () => m3, SEED_BTYES_LENGTH: () => b2 });
-          var n2 = r3(7765), o3 = r3.n(n2), s3 = r3(9757), i3 = r3.n(s3);
+          var n2 = r3(7765), o3 = r3.n(n2), i3 = r3(9757), s3 = r3.n(i3);
           function a3(e4) {
-            return i3().sha512_256.array(e4);
+            return s3().sha512_256.array(e4);
           }
           function c3(e4) {
             return o3().randomBytes(e4);
@@ -15279,9 +15140,9 @@ var require_algosdk_min = __commonJS({
           const g3 = o3().sign.publicKeyLength, y3 = o3().sign.secretKeyLength, m3 = 32, b2 = 32;
         }, 834: (e3, t3, r3) => {
           "use strict";
-          r3.d(t3, { x7: () => s3, i1: () => i3, Vj: () => a3, Xw: () => c3 });
+          r3.d(t3, { x7: () => i3, i1: () => s3, Vj: () => a3, Xw: () => c3 });
           var n2 = r3(8800), o3 = r3(4158);
-          function s3(e4) {
+          function i3(e4) {
             return (t4, r4) => {
               const n3 = [];
               for (const o4 of r4)
@@ -15289,11 +15150,11 @@ var require_algosdk_min = __commonJS({
               return Promise.resolve(n3);
             };
           }
-          function i3(e4) {
+          function s3(e4) {
             return (t4, r4) => {
               const o4 = [];
-              for (const s4 of r4) {
-                const { blob: r5 } = (0, n2.signLogicSigTransactionObject)(t4[s4], e4);
+              for (const i4 of r4) {
+                const { blob: r5 } = (0, n2.signLogicSigTransactionObject)(t4[i4], e4);
                 o4.push(r5);
               }
               return Promise.resolve(o4);
@@ -15301,16 +15162,16 @@ var require_algosdk_min = __commonJS({
           }
           function a3(e4, t4) {
             return (r4, n3) => {
-              const s4 = [];
-              for (const i4 of n3) {
-                const n4 = r4[i4], a4 = [];
+              const i4 = [];
+              for (const s4 of n3) {
+                const n4 = r4[s4], a4 = [];
                 for (const r5 of t4) {
                   const { blob: t5 } = (0, o3.PU)(n4, e4, r5);
                   a4.push(t5);
                 }
-                s4.push((0, o3.J6)(a4));
+                i4.push((0, o3.J6)(a4));
               }
-              return Promise.resolve(s4);
+              return Promise.resolve(i4);
             };
           }
           function c3(e4) {
@@ -15319,7 +15180,7 @@ var require_algosdk_min = __commonJS({
         }, 9417: (e3, t3, r3) => {
           "use strict";
           r3.r(t3), r3.d(t3, { ALGORAND_MIN_TX_FEE: () => h3, Transaction: () => f3, encodeUnsignedTransaction: () => d3, decodeUnsignedTransaction: () => g3, decodeSignedTransaction: () => y3, instantiateTxnIfNeeded: () => m3, default: () => b2 });
-          var n2 = r3(7267), o3 = r3.n(n2), s3 = r3(7116), i3 = r3(3033), a3 = r3(9404), c3 = r3(413), u3 = r3(1624), l3 = r3(2486).Buffer;
+          var n2 = r3(7267), o3 = r3.n(n2), i3 = r3(7116), s3 = r3(3033), a3 = r3(9404), c3 = r3(413), u3 = r3(1624), l3 = r3(2486).Buffer;
           const h3 = 1e3;
           function p3(e4, t4, r4) {
             if (e4 == null)
@@ -15338,7 +15199,7 @@ var require_algosdk_min = __commonJS({
                 t5.genesisHash = t5.suggestedParams.genesisHash, t5.fee = t5.suggestedParams.fee, t5.suggestedParams.flatFee !== void 0 && (t5.flatFee = t5.suggestedParams.flatFee), t5.firstRound = t5.suggestedParams.firstRound, t5.lastRound = t5.suggestedParams.lastRound, t5.genesisID = t5.suggestedParams.genesisID;
               }
               const r4 = e4;
-              if (r4.from = s3.decodeAddress(r4.from), r4.to !== void 0 && (r4.to = s3.decodeAddress(r4.to)), r4.closeRemainderTo !== void 0 && (r4.closeRemainderTo = s3.decodeAddress(r4.closeRemainderTo)), r4.assetManager !== void 0 && (r4.assetManager = s3.decodeAddress(r4.assetManager)), r4.assetReserve !== void 0 && (r4.assetReserve = s3.decodeAddress(r4.assetReserve)), r4.assetFreeze !== void 0 && (r4.assetFreeze = s3.decodeAddress(r4.assetFreeze)), r4.assetClawback !== void 0 && (r4.assetClawback = s3.decodeAddress(r4.assetClawback)), r4.assetRevocationTarget !== void 0 && (r4.assetRevocationTarget = s3.decodeAddress(r4.assetRevocationTarget)), r4.freezeAccount !== void 0 && (r4.freezeAccount = s3.decodeAddress(r4.freezeAccount)), r4.reKeyTo !== void 0 && (r4.reKeyTo = s3.decodeAddress(r4.reKeyTo)), r4.genesisHash === void 0)
+              if (r4.from = i3.decodeAddress(r4.from), r4.to !== void 0 && (r4.to = i3.decodeAddress(r4.to)), r4.closeRemainderTo !== void 0 && (r4.closeRemainderTo = i3.decodeAddress(r4.closeRemainderTo)), r4.assetManager !== void 0 && (r4.assetManager = i3.decodeAddress(r4.assetManager)), r4.assetReserve !== void 0 && (r4.assetReserve = i3.decodeAddress(r4.assetReserve)), r4.assetFreeze !== void 0 && (r4.assetFreeze = i3.decodeAddress(r4.assetFreeze)), r4.assetClawback !== void 0 && (r4.assetClawback = i3.decodeAddress(r4.assetClawback)), r4.assetRevocationTarget !== void 0 && (r4.assetRevocationTarget = i3.decodeAddress(r4.assetRevocationTarget)), r4.freezeAccount !== void 0 && (r4.freezeAccount = i3.decodeAddress(r4.freezeAccount)), r4.reKeyTo !== void 0 && (r4.reKeyTo = i3.decodeAddress(r4.reKeyTo)), r4.genesisHash === void 0)
                 throw Error("genesis hash must be specified and in a base64 string.");
               if (r4.genesisHash = l3.from(r4.genesisHash, "base64"), r4.amount !== void 0 && (!(Number.isSafeInteger(r4.amount) || typeof r4.amount == "bigint" && r4.amount <= BigInt("0xffffffffffffffff")) || r4.amount < 0))
                 throw Error("Amount must be a positive number and smaller than 2^64-1. If the number is larger than 2^53-1, use bigint.");
@@ -15382,7 +15243,7 @@ var require_algosdk_min = __commonJS({
               if (r4.appAccounts !== void 0) {
                 if (!Array.isArray(r4.appAccounts))
                   throw Error("appAccounts must be an Array of addresses.");
-                r4.appAccounts = r4.appAccounts.map((e5) => s3.decodeAddress(e5));
+                r4.appAccounts = r4.appAccounts.map((e5) => i3.decodeAddress(e5));
               }
               if (r4.appForeignApps !== void 0) {
                 if (!Array.isArray(r4.appForeignApps))
@@ -15428,7 +15289,7 @@ var require_algosdk_min = __commonJS({
             get_obj_for_encoding() {
               if (this.type === "pay") {
                 const e4 = { amt: this.amount, fee: this.fee, fv: this.firstRound, lv: this.lastRound, note: l3.from(this.note), snd: l3.from(this.from.publicKey), type: "pay", gen: this.genesisID, gh: this.genesisHash, lx: l3.from(this.lease), grp: this.group };
-                return this.closeRemainderTo !== void 0 && s3.encodeAddress(this.closeRemainderTo.publicKey) !== s3.ALGORAND_ZERO_ADDRESS_STRING && (e4.close = l3.from(this.closeRemainderTo.publicKey)), this.reKeyTo !== void 0 && (e4.rekey = l3.from(this.reKeyTo.publicKey)), this.to !== void 0 && (e4.rcv = l3.from(this.to.publicKey)), e4.note.length || delete e4.note, e4.amt || delete e4.amt, e4.fee || delete e4.fee, e4.fv || delete e4.fv, e4.gen || delete e4.gen, e4.grp === void 0 && delete e4.grp, e4.lx.length || delete e4.lx, e4.rekey || delete e4.rekey, e4;
+                return this.closeRemainderTo !== void 0 && i3.encodeAddress(this.closeRemainderTo.publicKey) !== i3.ALGORAND_ZERO_ADDRESS_STRING && (e4.close = l3.from(this.closeRemainderTo.publicKey)), this.reKeyTo !== void 0 && (e4.rekey = l3.from(this.reKeyTo.publicKey)), this.to !== void 0 && (e4.rcv = l3.from(this.to.publicKey)), e4.note.length || delete e4.note, e4.amt || delete e4.amt, e4.fee || delete e4.fee, e4.fv || delete e4.fv, e4.gen || delete e4.gen, e4.grp === void 0 && delete e4.grp, e4.lx.length || delete e4.lx, e4.rekey || delete e4.rekey, e4;
               }
               if (this.type === "keyreg") {
                 const e4 = { fee: this.fee, fv: this.firstRound, lv: this.lastRound, note: l3.from(this.note), snd: l3.from(this.from.publicKey), type: this.type, gen: this.genesisID, gh: this.genesisHash, lx: l3.from(this.lease), grp: this.group, votekey: this.voteKey, selkey: this.selectionKey, sprfkey: this.stateProofKey, votefst: this.voteFirst, votelst: this.voteLast, votekd: this.voteKeyDilution };
@@ -15455,7 +15316,7 @@ var require_algosdk_min = __commonJS({
               const t4 = Object.create(this.prototype);
               if (t4.name = "Transaction", t4.tag = l3.from("TX"), t4.genesisID = e4.gen, t4.genesisHash = l3.from(e4.gh), !(0, u3.v8)(e4.type))
                 throw new Error(`Unrecognized transaction type: ${e4.type}`);
-              return t4.type = e4.type, t4.fee = e4.fee, t4.firstRound = e4.fv, t4.lastRound = e4.lv, t4.note = new Uint8Array(e4.note), t4.lease = new Uint8Array(e4.lx), t4.from = s3.decodeAddress(s3.encodeAddress(new Uint8Array(e4.snd))), e4.grp !== void 0 && (t4.group = l3.from(e4.grp)), e4.rekey !== void 0 && (t4.reKeyTo = s3.decodeAddress(s3.encodeAddress(new Uint8Array(e4.rekey)))), e4.type === "pay" ? (t4.amount = e4.amt, t4.to = s3.decodeAddress(s3.encodeAddress(new Uint8Array(e4.rcv))), e4.close !== void 0 && (t4.closeRemainderTo = s3.decodeAddress(s3.encodeAddress(e4.close)))) : e4.type === "keyreg" ? (e4.votekey !== void 0 && (t4.voteKey = l3.from(e4.votekey)), e4.selkey !== void 0 && (t4.selectionKey = l3.from(e4.selkey)), e4.sprfkey !== void 0 && (t4.stateProofKey = l3.from(e4.sprfkey)), e4.votekd !== void 0 && (t4.voteKeyDilution = e4.votekd), e4.votefst !== void 0 && (t4.voteFirst = e4.votefst), e4.votelst !== void 0 && (t4.voteLast = e4.votelst), e4.nonpart !== void 0 && (t4.nonParticipation = e4.nonpart)) : e4.type === "acfg" ? (e4.caid !== void 0 && (t4.assetIndex = e4.caid), e4.apar !== void 0 && (t4.assetTotal = e4.apar.t, t4.assetDefaultFrozen = e4.apar.df, e4.apar.dc !== void 0 && (t4.assetDecimals = e4.apar.dc), e4.apar.m !== void 0 && (t4.assetManager = s3.decodeAddress(s3.encodeAddress(new Uint8Array(e4.apar.m)))), e4.apar.r !== void 0 && (t4.assetReserve = s3.decodeAddress(s3.encodeAddress(new Uint8Array(e4.apar.r)))), e4.apar.f !== void 0 && (t4.assetFreeze = s3.decodeAddress(s3.encodeAddress(new Uint8Array(e4.apar.f)))), e4.apar.c !== void 0 && (t4.assetClawback = s3.decodeAddress(s3.encodeAddress(new Uint8Array(e4.apar.c)))), e4.apar.un !== void 0 && (t4.assetUnitName = e4.apar.un), e4.apar.an !== void 0 && (t4.assetName = e4.apar.an), e4.apar.au !== void 0 && (t4.assetURL = e4.apar.au), e4.apar.am !== void 0 && (t4.assetMetadataHash = e4.apar.am))) : e4.type === "axfer" ? (e4.xaid !== void 0 && (t4.assetIndex = e4.xaid), e4.aamt !== void 0 && (t4.amount = e4.aamt), e4.aclose !== void 0 && (t4.closeRemainderTo = s3.decodeAddress(s3.encodeAddress(new Uint8Array(e4.aclose)))), e4.asnd !== void 0 && (t4.assetRevocationTarget = s3.decodeAddress(s3.encodeAddress(new Uint8Array(e4.asnd)))), t4.to = s3.decodeAddress(s3.encodeAddress(new Uint8Array(e4.arcv)))) : e4.type === "afrz" ? (e4.afrz !== void 0 && (t4.freezeState = e4.afrz), e4.faid !== void 0 && (t4.assetIndex = e4.faid), t4.freezeAccount = s3.decodeAddress(s3.encodeAddress(new Uint8Array(e4.fadd)))) : e4.type === "appl" && (e4.apid !== void 0 && (t4.appIndex = e4.apid), e4.apan !== void 0 && (t4.appOnComplete = e4.apan), e4.apls !== void 0 && (e4.apls.nui !== void 0 && (t4.appLocalInts = e4.apls.nui), e4.apls.nbs !== void 0 && (t4.appLocalByteSlices = e4.apls.nbs)), e4.apgs !== void 0 && (e4.apgs.nui !== void 0 && (t4.appGlobalInts = e4.apgs.nui), e4.apgs.nbs !== void 0 && (t4.appGlobalByteSlices = e4.apgs.nbs)), e4.apep !== void 0 && (t4.extraPages = e4.apep), e4.apap !== void 0 && (t4.appApprovalProgram = new Uint8Array(e4.apap)), e4.apsu !== void 0 && (t4.appClearProgram = new Uint8Array(e4.apsu)), e4.apaa !== void 0 && (t4.appArgs = e4.apaa.map((e5) => new Uint8Array(e5))), e4.apat !== void 0 && (t4.appAccounts = e4.apat.map((e5) => s3.decodeAddress(s3.encodeAddress(new Uint8Array(e5))))), e4.apfa !== void 0 && (t4.appForeignApps = e4.apfa), e4.apas !== void 0 && (t4.appForeignAssets = e4.apas)), t4;
+              return t4.type = e4.type, t4.fee = e4.fee, t4.firstRound = e4.fv, t4.lastRound = e4.lv, t4.note = new Uint8Array(e4.note), t4.lease = new Uint8Array(e4.lx), t4.from = i3.decodeAddress(i3.encodeAddress(new Uint8Array(e4.snd))), e4.grp !== void 0 && (t4.group = l3.from(e4.grp)), e4.rekey !== void 0 && (t4.reKeyTo = i3.decodeAddress(i3.encodeAddress(new Uint8Array(e4.rekey)))), e4.type === "pay" ? (t4.amount = e4.amt, t4.to = i3.decodeAddress(i3.encodeAddress(new Uint8Array(e4.rcv))), e4.close !== void 0 && (t4.closeRemainderTo = i3.decodeAddress(i3.encodeAddress(e4.close)))) : e4.type === "keyreg" ? (e4.votekey !== void 0 && (t4.voteKey = l3.from(e4.votekey)), e4.selkey !== void 0 && (t4.selectionKey = l3.from(e4.selkey)), e4.sprfkey !== void 0 && (t4.stateProofKey = l3.from(e4.sprfkey)), e4.votekd !== void 0 && (t4.voteKeyDilution = e4.votekd), e4.votefst !== void 0 && (t4.voteFirst = e4.votefst), e4.votelst !== void 0 && (t4.voteLast = e4.votelst), e4.nonpart !== void 0 && (t4.nonParticipation = e4.nonpart)) : e4.type === "acfg" ? (e4.caid !== void 0 && (t4.assetIndex = e4.caid), e4.apar !== void 0 && (t4.assetTotal = e4.apar.t, t4.assetDefaultFrozen = e4.apar.df, e4.apar.dc !== void 0 && (t4.assetDecimals = e4.apar.dc), e4.apar.m !== void 0 && (t4.assetManager = i3.decodeAddress(i3.encodeAddress(new Uint8Array(e4.apar.m)))), e4.apar.r !== void 0 && (t4.assetReserve = i3.decodeAddress(i3.encodeAddress(new Uint8Array(e4.apar.r)))), e4.apar.f !== void 0 && (t4.assetFreeze = i3.decodeAddress(i3.encodeAddress(new Uint8Array(e4.apar.f)))), e4.apar.c !== void 0 && (t4.assetClawback = i3.decodeAddress(i3.encodeAddress(new Uint8Array(e4.apar.c)))), e4.apar.un !== void 0 && (t4.assetUnitName = e4.apar.un), e4.apar.an !== void 0 && (t4.assetName = e4.apar.an), e4.apar.au !== void 0 && (t4.assetURL = e4.apar.au), e4.apar.am !== void 0 && (t4.assetMetadataHash = e4.apar.am))) : e4.type === "axfer" ? (e4.xaid !== void 0 && (t4.assetIndex = e4.xaid), e4.aamt !== void 0 && (t4.amount = e4.aamt), e4.aclose !== void 0 && (t4.closeRemainderTo = i3.decodeAddress(i3.encodeAddress(new Uint8Array(e4.aclose)))), e4.asnd !== void 0 && (t4.assetRevocationTarget = i3.decodeAddress(i3.encodeAddress(new Uint8Array(e4.asnd)))), t4.to = i3.decodeAddress(i3.encodeAddress(new Uint8Array(e4.arcv)))) : e4.type === "afrz" ? (e4.afrz !== void 0 && (t4.freezeState = e4.afrz), e4.faid !== void 0 && (t4.assetIndex = e4.faid), t4.freezeAccount = i3.decodeAddress(i3.encodeAddress(new Uint8Array(e4.fadd)))) : e4.type === "appl" && (e4.apid !== void 0 && (t4.appIndex = e4.apid), e4.apan !== void 0 && (t4.appOnComplete = e4.apan), e4.apls !== void 0 && (e4.apls.nui !== void 0 && (t4.appLocalInts = e4.apls.nui), e4.apls.nbs !== void 0 && (t4.appLocalByteSlices = e4.apls.nbs)), e4.apgs !== void 0 && (e4.apgs.nui !== void 0 && (t4.appGlobalInts = e4.apgs.nui), e4.apgs.nbs !== void 0 && (t4.appGlobalByteSlices = e4.apgs.nbs)), e4.apep !== void 0 && (t4.extraPages = e4.apep), e4.apap !== void 0 && (t4.appApprovalProgram = new Uint8Array(e4.apap)), e4.apsu !== void 0 && (t4.appClearProgram = new Uint8Array(e4.apsu)), e4.apaa !== void 0 && (t4.appArgs = e4.apaa.map((e5) => new Uint8Array(e5))), e4.apat !== void 0 && (t4.appAccounts = e4.apat.map((e5) => i3.decodeAddress(i3.encodeAddress(new Uint8Array(e5))))), e4.apfa !== void 0 && (t4.appForeignApps = e4.apfa), e4.apas !== void 0 && (t4.appForeignAssets = e4.apas)), t4;
             }
             estimateSize() {
               return this.toByte().length + 75;
@@ -15465,7 +15326,7 @@ var require_algosdk_min = __commonJS({
               return l3.from(c3.concatArrays(this.tag, e4));
             }
             toByte() {
-              return i3.encode(this.get_obj_for_encoding());
+              return s3.encode(this.get_obj_for_encoding());
             }
             rawSignTxn(e4) {
               const t4 = this.bytesToSign(), r4 = a3.sign(t4, e4);
@@ -15473,7 +15334,7 @@ var require_algosdk_min = __commonJS({
             }
             signTxn(e4) {
               const t4 = { sig: this.rawSignTxn(e4), txn: this.get_obj_for_encoding() }, r4 = a3.keyPairFromSecretKey(e4).publicKey;
-              return s3.encodeAddress(r4) !== s3.encodeAddress(this.from.publicKey) && (t4.sgnr = l3.from(r4)), new Uint8Array(i3.encode(t4));
+              return i3.encodeAddress(r4) !== i3.encodeAddress(this.from.publicKey) && (t4.sgnr = l3.from(r4)), new Uint8Array(s3.encode(t4));
             }
             rawTxID() {
               const e4 = this.toByte(), t4 = l3.from(c3.concatArrays(this.tag, e4));
@@ -15496,11 +15357,11 @@ var require_algosdk_min = __commonJS({
               this.lease = r4, t4 !== 0 && (this.fee += 37 * t4);
             }
             addRekey(e4, t4 = 0) {
-              e4 !== void 0 && (this.reKeyTo = s3.decodeAddress(e4)), t4 !== 0 && (this.fee += 37 * t4);
+              e4 !== void 0 && (this.reKeyTo = i3.decodeAddress(e4)), t4 !== 0 && (this.fee += 37 * t4);
             }
             _getDictForDisplay() {
               const e4 = { ...this };
-              return e4.tag = e4.tag.toString(), e4.from = s3.encodeAddress(e4.from.publicKey), e4.to !== void 0 && (e4.to = s3.encodeAddress(e4.to.publicKey)), e4.freezeAccount !== void 0 && (e4.freezeAccount = s3.encodeAddress(e4.freezeAccount.publicKey)), e4.closeRemainderTo !== void 0 && (e4.closeRemainderTo = s3.encodeAddress(e4.closeRemainderTo.publicKey)), e4.assetManager !== void 0 && (e4.assetManager = s3.encodeAddress(e4.assetManager.publicKey)), e4.assetReserve !== void 0 && (e4.assetReserve = s3.encodeAddress(e4.assetReserve.publicKey)), e4.assetFreeze !== void 0 && (e4.assetFreeze = s3.encodeAddress(e4.assetFreeze.publicKey)), e4.assetClawback !== void 0 && (e4.assetClawback = s3.encodeAddress(e4.assetClawback.publicKey)), e4.assetRevocationTarget !== void 0 && (e4.assetRevocationTarget = s3.encodeAddress(e4.assetRevocationTarget.publicKey)), e4.reKeyTo !== void 0 && (e4.reKeyTo = s3.encodeAddress(e4.reKeyTo.publicKey)), e4.genesisHash = e4.genesisHash.toString("base64"), e4;
+              return e4.tag = e4.tag.toString(), e4.from = i3.encodeAddress(e4.from.publicKey), e4.to !== void 0 && (e4.to = i3.encodeAddress(e4.to.publicKey)), e4.freezeAccount !== void 0 && (e4.freezeAccount = i3.encodeAddress(e4.freezeAccount.publicKey)), e4.closeRemainderTo !== void 0 && (e4.closeRemainderTo = i3.encodeAddress(e4.closeRemainderTo.publicKey)), e4.assetManager !== void 0 && (e4.assetManager = i3.encodeAddress(e4.assetManager.publicKey)), e4.assetReserve !== void 0 && (e4.assetReserve = i3.encodeAddress(e4.assetReserve.publicKey)), e4.assetFreeze !== void 0 && (e4.assetFreeze = i3.encodeAddress(e4.assetFreeze.publicKey)), e4.assetClawback !== void 0 && (e4.assetClawback = i3.encodeAddress(e4.assetClawback.publicKey)), e4.assetRevocationTarget !== void 0 && (e4.assetRevocationTarget = i3.encodeAddress(e4.assetRevocationTarget.publicKey)), e4.reKeyTo !== void 0 && (e4.reKeyTo = i3.encodeAddress(e4.reKeyTo.publicKey)), e4.genesisHash = e4.genesisHash.toString("base64"), e4;
             }
             prettyPrint() {
               console.log(this._getDictForDisplay());
@@ -15511,14 +15372,14 @@ var require_algosdk_min = __commonJS({
           }
           function d3(e4) {
             const t4 = e4.get_obj_for_encoding();
-            return i3.encode(t4);
+            return s3.encode(t4);
           }
           function g3(e4) {
-            const t4 = i3.decode(e4);
+            const t4 = s3.decode(e4);
             return f3.from_obj_for_encoding(t4);
           }
           function y3(e4) {
-            const t4 = i3.decode(e4);
+            const t4 = s3.decode(e4);
             return { ...t4, txn: f3.from_obj_for_encoding(t4.txn) };
           }
           function m3(e4) {
@@ -15539,10 +15400,10 @@ var require_algosdk_min = __commonJS({
         }, 1624: (e3, t3, r3) => {
           "use strict";
           var n2, o3;
-          function s3(e4) {
+          function i3(e4) {
             return e4 === n2.pay || e4 === n2.keyreg || e4 === n2.acfg || e4 === n2.axfer || e4 === n2.afrz || e4 === n2.appl;
           }
-          r3.d(t3, { iU: () => n2, v8: () => s3, hq: () => o3 }), function(e4) {
+          r3.d(t3, { iU: () => n2, v8: () => i3, hq: () => o3 }), function(e4) {
             e4.pay = "pay", e4.keyreg = "keyreg", e4.acfg = "acfg", e4.axfer = "axfer", e4.afrz = "afrz", e4.appl = "appl";
           }(n2 || (n2 = {})), function(e4) {
             e4[e4.NoOpOC = 0] = "NoOpOC", e4[e4.OptInOC = 1] = "OptInOC", e4[e4.CloseOutOC = 2] = "CloseOutOC", e4[e4.ClearStateOC = 3] = "ClearStateOC", e4[e4.UpdateApplicationOC = 4] = "UpdateApplicationOC", e4[e4.DeleteApplicationOC = 5] = "DeleteApplicationOC";
@@ -15554,11 +15415,11 @@ var require_algosdk_min = __commonJS({
         }, 413: (e3, t3, r3) => {
           "use strict";
           r3.r(t3), r3.d(t3, { parseJSON: () => a3, arrayEqual: () => c3, concatArrays: () => u3, removeUndefinedProperties: () => l3, isNode: () => h3 });
-          var n2 = r3(4360), o3 = r3.n(n2), s3 = r3(7197);
-          const i3 = o3()({ useNativeBigInt: true, strict: true });
+          var n2 = r3(4360), o3 = r3.n(n2), i3 = r3(7197);
+          const s3 = o3()({ useNativeBigInt: true, strict: true });
           function a3(e4, t4) {
-            const r4 = t4 && t4.intDecoding ? t4.intDecoding : s3.Z.DEFAULT;
-            return i3.parse(e4, (e5, t5) => {
+            const r4 = t4 && t4.intDecoding ? t4.intDecoding : i3.Z.DEFAULT;
+            return s3.parse(e4, (e5, t5) => {
               if (t5 != null && typeof t5 == "object" && Object.getPrototypeOf(t5) == null && Object.setPrototypeOf(t5, Object.prototype), typeof t5 == "bigint") {
                 if (r4 === "bigint" || r4 === "mixed" && t5 > Number.MAX_SAFE_INTEGER)
                   return t5;
@@ -15595,8 +15456,8 @@ var require_algosdk_min = __commonJS({
             if (n3 === void 0)
               throw new Error("Unable to get node status");
             const o3 = n3["last-round"] + 1;
-            let s3 = o3;
-            for (; s3 < o3 + r4; ) {
+            let i3 = o3;
+            for (; i3 < o3 + r4; ) {
               let r5 = false;
               try {
                 const n4 = await e4.pendingTransactionInformation(t4).do();
@@ -15608,7 +15469,7 @@ var require_algosdk_min = __commonJS({
                 if (r5)
                   throw e5;
               }
-              await e4.statusAfterBlock(s3).do(), s3 += 1;
+              await e4.statusAfterBlock(i3).do(), i3 += 1;
             }
             throw new Error(`Transaction not confirmed after ${r4} rounds`);
           }
@@ -30727,13 +30588,6 @@ var require_query_string = __commonJS({
   }
 });
 
-// src/assets/rhodes.mp3
-var require_rhodes = __commonJS({
-  "src/assets/rhodes.mp3"(exports2, module2) {
-    module2.exports = "./assets/rhodes.mp3";
-  }
-});
-
 // node_modules/@walletconnect/utils/dist/esm/constants.js
 var reservedEvents = [
   "session_request",
@@ -31577,17 +31431,23 @@ function parseWalletConnectUri(str) {
 // node_modules/@walletconnect/utils/dist/esm/index.js
 init_esm2();
 
+// src/lowtone.ts
+var lowTone = "data:audio/mp3;base64,SUQzAgAAAAAfdlRTUwAAEwBMb2dpYyBQcm8gWCAxMC43LjNDT00AAGgAZW5naVR1bk5PUk0AIDAwMDAwMDBGIDAwMDAwMDBFIDAwMDAwMDM4IDAwMDAwMDM5IDAwMDAwMTg3IDAwMDAwMTg3IDAwMDAxMTM4IDAwMDAxMTM0IDAwMDAwMTg3IDAwMDAwMTg3AENPTQAAggBlbmdpVHVuU01QQgAgMDAwMDAwMDAgMDAwMDAyMTAgMDAwMDA4NDMgMDAwMDAwMDAwMDAzMzYyRCAwMDAwMDAwMCAwMDAwRDhCQyAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cEAAAAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JAioAAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA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BDWaiISBltAPHVAqmTJMG4Ionj6rHG4pGYqbBqGBCXMADsrCZEEn/hLDFiiz6/10f/q////////////0gDI4fEOfkxozUS3zICDpM1gJg0aBsjIQGvMJYWIx5gIzBcCoO7KzM3IZBCJTVQiM/YPPXxvp9u7//////////////+///ogAy3W6DhxHQMnko8y3gdjENBTtyiT/+3BAoAABiwnFg93JIDLBOLB7uSQH4CcUD3skgQQEYoHu8FDXCZQW9hptG5i0Eg2YzEByEIVHhmgY8PbyRhFS5sDf////////////////pMlJdgzlFGTLGOVMSkH40TQs8NNg1bbs4iGA1JdYxtNw/0GNmXR0eHiZK2IX8cd6M3FyQ1wkgzO2PBMLwV87TQg9hqg59bo8UJYykvYwlI87+MDCajStKCWvuZngsNa5j///6LN2n/+gMLoEfjR7QfkxQ4OpMJ/AvzOVBwMP0Fcy5CbjSED7MKAxUwYA+gW6jS5sAg6GgkTAN2pZbSjq/+3f/////v/V/////+ru/0oV/9BiaYvYaIWHamJzB6ZhcYK2YUYCmGF3BgB8M9RqZMJtDBJh2H4le5hKTwGQJ3lAnawv+DRBaypJ//tyQLgAAiwJRQPe2KBBQSixe7wUBeglFg93YojjBGKB7vBQb70dnf//7H/9NCf9f3/27fp///7v//qNHokMyG3NjUYAIMmEMs0CiAjQ0SrMmcI4xmRCTF0MgMAUEk+6NDGhxBo+e1Bybor4MNdW3u0UfZ/dZ2Wrto2e13fo9XX+///+j//30f//QhJn4g8GYK2cZlg55mHilGMwJmY2qKJkChvGdqFUY0wSZg6CLnUhxm7OIRImKkWZqxo1xtUf/////R//7v/R//////////9INBJNk+KUSTHZPWMUkWg3Gek8d0w0tuw75Qk4jRkxxB07GOTOpQCgWDAQjbN1Tj+/R/+rr//sr///////b/////2/+5BqBmCnr6uiZXpYRjmhsGaqI2YhoWhnwuJ3OB5rDKhlWppgiAD/+3BAy4ACTwlEg/7goE5hOJB/uSQKFCUQD3uCgRcEooHvbFBiUOw7wWUgPzs2OBa9Ct1avX/q////7P///q////9yuz//3VmjE3yY5sJxn6nXGG+EAfGlKbXaca7U+e9oQbBJ+YzEyJ2Zrw6KAhWHKSq2+Jt9P///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DLP3stXsyHb//////Zs///t7/9W/2/r3/////0HKnHebdbmZiOmRGOQeGadqDBlanoGM0SsZHIhZhggLGAqAeA55YLPYxazTAJpjLsUljlI0//twQL0AAf0HwwPe2JA7gPhgf9wSCUgdCg/7gkD2A+GB7uxIp9////81//r/2d//7Pt/v6FUW6P7+7ssQoyeoEwNRiERDBdgu8xBALuM2sksyEkcjAPAeMkAEw5s1MRSgFaDR44M/k0wqvt/2/T9v/+630aPoq/09X9Svu/+nX6v7lf2es3dXVTt0jQMBcKY0YxBTZQCsMaEJ8xMBGzJ/BEMFAM8wGATxAssszDKzoWVUtj/b/q7v9///bv/3f//7Po///+3V/6wOPhswxPn+zDPFoNK4sk0CSujSdGmMkYAoypgdzDiB3MEgD4bg0NwI3U2GB7WK//t/9L2rt1L9/R7VJq3IZ/VUn///dZ/u///+zFFajdVL9OiyLEw3CUTItNsMak88yZEyzBFE1MJcPwwBQ1jAhBNB//7ckDGAAIVCMMD3tCgTaEIUHvaFAkAHwoP+2JBDQQhge9gUNglYiVO28TTKGsu2+r/Jf///////1/7P/////0HQVJgefEvRggleGbiXWbSgnBlXKnmA4P4CQxzJs0MOkKMGMQRR2+B4nyF61tFNCddcv1/0X9/+++n69mu6///9vf7uxlz0f+y/2466s4BxCjiYm0MbojU1JAQzaZKAMacgIyIRWTK6A0NVywuBmeBQiI6oUCT3C6Zuhl+9TcV3f0aqKX+3/kv9Sf/X7aPb//V////vo7VrDf0pSMD6w8weQrjXBJYMHrpOKoPN1Q6OGRdMiz9CoTAwZnest3qtYmdxdLDJtw2utPu/0SV/6vp/f//VQ7u//9v+jZf/2f//pNu9ho+dnYTFMGOM0gtk16iqjGoSqMM4box//twQMMAAmAIQoPewKBAYQhge9kUCZwfCA97gkEqA2FB72xIxgiTC8AYMDwAkwCQcR8p7206hT/1f///XR/////2f/////9v/s9JtTOcHIW84YVA0JgvDKGrOFoY66gAOHXMh8F48GQwAJDmAhi3Z4WuSKX/7uj/f9Tf///////q////oqOBeKA26UkDIBDENPsRI4y9k4Psk4YJY0NNE3PKKD8xgBAycwIaQpxRtpZm5dVWz+r6fTkW9tr///mO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Bg8BBGAACOAglpBo71Tl/3/Xp/+r2//939X///9n///////s0jUfmaNE1zQ2sRbTMZEsN9sG8wWRRjEZAVMNwAIxvlygCRsM9cllIy1DqKGJRv77tH92xK6vR78Y7/7f+nbWjYnR5T//u9/bL079tZnwOjGMargasQehioBSGxEOkYBAlZhzAaGFmAKFHRFY6lUe4Bxjm13/6v1fRdVq0L////////T//vt///tyQMAAAc8HQYPewJBEINgge7gSCEwfBA93AkDmA+DB72BI0///6zSxicMf6Y0xW1CzN2EpOJNoMYIyMhiSMkg7AYA0Imc6kOdAaSSmC6+329lbatr/9P/93/b///o//qp////9vqM/Jl48w4wTYqYsM44VgxekDTC4KvMKkKcwqwODrDEi1WsvfuwHqX9n+ZR9//d+2+zb/7KvV//d6lv/7rE9rui2m7W2nVxl7esxa0ayNE1CRjEghYcxd4CiNqYj0wmxszC+BGMDsCE14b+uilDQtcHmqptdV0yX26a/ZZS+q6z18po6P+j/27bV/6bev/Zq//6TOiENPFmcAwwFojLVGzNk8XIwMxXDDdAhMEACIEVfl9EUYiZMr1M8V/7//X9++/Y7/v///929P7O//u7//+s0jyX/+3BAzgACWQdAg97AkD7g6CB72BIH8B0ED3ciQSIDoEHvZEiDHhFLNigYMynQ0TUrJDMHEdMwVwASgVsL9qrFc+J8GIe5iv9kp/3f+3/0e77/v//2//7fu////0GnssabebIps0mQGXaCuazhwBiRFfGD0A0Ch7QJZHS7TQYYCxkCtFC18mpF901xddhP19PQrZ8iNs/4m93///7a9HQ3sjHJYhz2O2aVt1Jo01AxisO/NTfA6DDrgtYyQMLtM/lCgxmhjjEVApMJEBIU0zGEF8Y/07DZiq33HL0Gukb3+kVfv2qq9Vbud69kvv+nfVSq9e7X1+1v1faK9FNdv/Z1GKHEypoW42gZA+HYmNfCDBoLIlmK2KCYigGxg6AJmfqnNGXGgh3e+iQjn7U+/1bv9Hq777tjjp5l//tyQM+AAkQGwIP+wJA+gNgge9gSB3QdBA97AkFEA2AB72RIeg29i5e/Qvi7f22LrexivXL/dZpFqK+7/6DUvi1MgGmozKTmjTDLOOAQDEwnSdjCOA5MHADI8rSiGgKQfzMeljkM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fu/d6Varmf6ClDdq/S6gX9Lam///+3BAyYABwwbAg97AkEgA6AB7uBIJzBz+D3sCQP0DYAHvPEjp609ldT0pN66bKfoZroMu0g07xGRDacYjMbQqA26x9TCuC8FhcwUKoCvL0PQNFtFDoFDKGtpmSu5ld6DXYX7v9WLI/1y6f21bZn7Nuj9/6+r7kfaxXT0qWdqd3rkTP8XgPHo4I2p1VTM9FlOysPMWquMMwLMKAIKiXcfJZsJv9etKogmHLaLilHo9jv8ky6Mem/o1u936/do1f6/oZU61T/0dVmuhp963q7WOf3LAMpc846Vk7TXidfNOYbcz71QzncgxEHQw0DMW4W8TzfyWGm6nanmLU+n3/1f/+9F3/6kr////+n/rr1/1fvp+gyvnfjFmjtMY8uk3twhzWJCyAxF5iDAIAIMk+MQAOWtCmzG7taEm//tyQM0AAi4GwAPeeJBNwNfwe9gSCeAa/g954kFDA9/B7uBI77ksd3v9Uh//9XTUz5b00zPs/9eK9iP23df9ezv/ckyR0wDH2ZAMTpHUxjhLTWEC7MCYLkwkgJjBDADISVobZVQaoPWtaj2VLs/T/u/////////////6///6zLafKMsU9o2SAhDRLDMPlLKMWZZBgDGJAKgLSOUxFrXFzYQpqpomx/ToZb2v9t/8t9voutn/0q3fT+nrd9y9X/s/yD3JZQn39YAygW4jeEJNNEkPA2nwgD4GxTCl1TEUQzIEAASeHmIufGzhwxuvp/3dN3/9n1fb1/pryfFab//q/9H/7v///1GRczAZHqkJt0J/GaANsflUOanA+ZmgQGDuCYsDdxd8pBgvFQp42nr9SSA7/fo5f9f1//3/+3BAvgAB/AbAA93AkEXA6AB72BIHYB0CD3sCQSODn8HuvEibv//b//////WZP66BwAg4mrag4a+IMp/HEQAQAMQsBB0GAmqjhbcOSNjtyPXmNn////+3////////+77NtJjwHLHd2yAZMzRBinB/moqE2YS45QOBWEg8iQm46+UtApEaWav/uSv/+vdFe7/q61v////tu6fR///3+in+3QAyq1PDCaLZMx1c4yPBYjWcFQMIwZAwXgCQUFIIcnmwxHnQlKl7Nb7mdno///9H9Dv9tV3j+37vo+j/s2/07P9fSZLAJRnGksGtCmQZTo05pJhRlmXhmgCYhBID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";
+var lowtone_default = lowTone;
+
+// src/finished.ts
+var finished = "data:audio/mp3;base64,SUQzAgAAAAAfdlRTUwAAEwBMb2dpYyBQcm8gWCAxMC43LjNDT00AAGgAZW5naVR1bk5PUk0AIDAwMDAwMUM0IDAwMDAwMUM0IDAwMDAwNkVBIDAwMDAwNkVBIDAwMDAwMDlDIDAwMDAwMDlDIDAwMDAxQ0E1IDAwMDAxQ0E1IDAwMDAwMDlDIDAwMDAwMDlDAENPTQAAggBlbmdpVHVuU01QQgAgMDAwMDAwMDAgMDAwMDAyMTAgMDAwMDA3Q0YgMDAwMDAwMDAwMDAzQUJBMSAwMDAwMDAwMCAwMDAwRjg5MiAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cEAAAAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JAioAAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA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f0a2/upjEeKsRIg5djnFQokhyIEAAC9rC0ASgnejl//7cGDiAAQ3j01wtKNwAAAG8AAAABGyPzfUWgAAAAAbwoAAAHvc2TMUR/dInCkGrQGry1AUJBxROpA1MAikEimtABI8GgcgyRTAoZBj0elJg3IAxIInWKbKPUEXWnljSWXj5a8jzxafmpdLXnIz4FgaSn1MOQFji1ew5YWnrU3WozJGTD0Vdy/NmW66pmQrlHdifCyMbzsWnDdk6YGwuVsvBYEhWOLSEYj2UC0MkvLQJBi8ikV2HIG+oqjAbuQrj6Hh0buo0PCUUxQ4bUmZoFgVoC10ZchoFBZP1kUWZEsfSqZTLHKNxERzFmLnQmOAaQi8I4BwIeqiZplVJGzKRNiMNRnQ0hjDBqSC5sZVgueGgCgpREQIAAAHLjUpZ+g3bv0nKwO5Ko//qcyAfTdv6m//31t///9EciX/+3JA4gAE/JBPdgogAPwyCXTBUAAKcj0/3BaAAUfHqDuE0AD///+tD+///UPxBR/1fyl+nqT//+/7f///+X2+omo/v+pR8F51JH9bTo6IgoQcRMiABgB00FtSmvoI9u/Sc6EnLqP/6nMgUJu3//W31H9bf///WSiX///+tD+///UTii3+r+bfp6k///v/////8vt9RNb9/6nCmeo/radHRgByYACDAQwA9Zr/6Hd/+wGH//1NAMG3//r/Jtf///4/////////+Li3//yX/zv//v+n////kP8ff/+VAsap3bFAA5MABBgIYAes1/9Du//YDD//6mgGDb//1/k2v///8f/////////Fxb//5L/53//3/T////yH+Pv//KgWNU7tigBwOAg/m//19Dt9w7t//qcL0UP+/6/qdv/7cEBMgAIFjtDwKlNwQLHaHgVKbgfqOz0AtU3Q/UdnoBapur////Hn////m////i4t//8v+urf/+r/u3////f+LP9v8oE/Ut2lBNAcDgIP5v/9fQ7fcO7f/6nC9FD/v+v6na////x5////5v///4uLf//L/rq3//q/7t////3/iz/b/KBP1LdpQTQACADMAGAH+//1df/YRz//9QOE1/7/r+vX///+P/////T///8XN//8k/83//1/q3////GP8bf/+eA0+b8oSgAQAZgAwA/3/+rr/7COf//qBwmv/f9f16////x/////6f///i5v//kn/m//+v9W////4x/jb//zwGnzflCUAOAAMAGAH8n//53f0cJrf/6mguCn//1/U3////yD////1////GX//5//R///X///////+3JAVwAB747O4C1TcD3x2dwFqm4Hqjs1gKlNwPVHZrAVKbi/1Lf/+QgQtR/i5wA4AAwAYAfyf//nd/Rwmt//qaC4Kf//X9Tf////IP////X///8Zf//n/9H//9f/////7/Ut//5CBC1H+LnAAAAuAP+rZ31CSAWGzf/zB+BMFM3///qb////1It////od///+PDZ////p///qb//////+hz//5oqB0SnHP4jCU4AAFwB/1bO+oSQCw2b/+YPwJgpm///9Tf///+pFv///9Dv///x4bP///9P//9Tf//////0Of//NFQOiU45/EYSn//5kTTVlh3q/5iZZWNFgUgOA0CwcFzD0BwXZ///Coq3///6QWFhH/9Tf/////8KiM0FRWpH//MiaassO9X/MTLKxosCkBwGgWDguf/7cEBmgAIHj0jACjtwQPHpGAFHbgaceN4ABQlA048bwAChKIegOC7P//4VFW////SCwsI//qb//////hURmgqK1IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BAewAAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tyQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3BA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7ckD/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//twQP+AAAAAN4AAAAAAAAbwAAAAAAAA3gAAAAAAABvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+3JA/4AAAAA3gAAAAAAABvAAAAAAAADeAAAAAAAAG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cED/gAAAADeAAAAAAAAG8AAAAAAAAN4AAAAAAAAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+var finished_default = finished;
+
 // src/index.ts
 var import_buffer = __toESM(require_buffer());
 var import_algosdk = __toESM(require_algosdk_min());
 var import_index_min = __toESM(require_index_min());
 var import_algorand_walletconnect_qrcode_modal = __toESM(require_cjs3());
 var import_utils = __toESM(require_cjs6());
-var import_rhodes = __toESM(require_rhodes());
 var wcReqAF = 0;
 var wcS;
-import_rhodes.default;
-var wcAud = new URL("./assets/rhodes.mp3", import.meta.url);
+var wcSDone;
 var Algonaut = class {
   algodClient;
   indexerClient = void 0;
@@ -32355,6 +32215,7 @@ var Algonaut = class {
   }
   async sendWalletConnectTxns(walletTxns, callbacks) {
     if (this.walletConnect.connected) {
+      this.startReqAF();
       let txns = walletTxns.map((txn) => txn.transaction);
       if (walletTxns.length > 1) {
         txns = import_algosdk.default.assignGroupID(txns);
@@ -32399,9 +32260,11 @@ var Algonaut = class {
         txStatus.meta = transactionResponse;
         if (callbacks?.onConfirm)
           callbacks.onConfirm(txStatus);
+        this.stopReqAF(true);
         return txStatus;
       } else {
         throw new Error("there were no signed transactions returned");
+        this.stopReqAF();
       }
     } else {
       throw new Error("There is no wallet connect session");
@@ -32486,6 +32349,9 @@ var Algonaut = class {
       bridge,
       qrcodeModal: import_algorand_walletconnect_qrcode_modal.default
     });
+    wcConnector.on("disconnect", () => {
+      console.log("session update");
+    });
     this.walletConnect.connector = wcConnector;
     if (!this.walletConnect.connector.connected) {
       this.walletConnect.connector.createSession();
@@ -32498,6 +32364,7 @@ var Algonaut = class {
       return;
     }
     this.walletConnect.connector.on("session_update", async (error, payload) => {
+      console.log('connector.on("session_update")');
       if (error) {
         throw error;
       }
@@ -32507,6 +32374,7 @@ var Algonaut = class {
       this.onSessionUpdate(accounts);
     });
     this.walletConnect.connector.on("connect", (error, payload) => {
+      console.log('connector.on("connect")');
       if (error) {
         throw error;
       }
@@ -32515,6 +32383,7 @@ var Algonaut = class {
       this.onConnect(payload);
     });
     this.walletConnect.connector.on("disconnect", (error, payload) => {
+      console.log('connector.on("disconnect")');
       if (error) {
         console.log(payload);
         throw error;
@@ -32548,24 +32417,42 @@ var Algonaut = class {
   startReqAF() {
     if (isBrowser()) {
       const keepAlive = () => {
+        const qrIsOpen = document.querySelector("#walletconnect-qrcode-modal");
+        if (!qrIsOpen) {
+          this.stopReqAF();
+          return;
+        }
         wcReqAF = requestAnimationFrame(keepAlive);
       };
       requestAnimationFrame(keepAlive);
       wcReqAF = 1;
       wcS = new Audio();
-      wcS.src = wcAud.href;
+      wcS.src = lowtone_default;
       wcS.autoplay = true;
+      wcS.volume = 0.6;
+      wcS.loop = true;
       wcS.play();
+      wcSDone = new Audio();
+      wcSDone.src = finished_default;
+      wcSDone.volume = 0.1;
+      wcSDone.play();
+      wcSDone.pause();
     }
   }
-  stopReqAF() {
+  stopReqAF(playSound) {
     if (wcReqAF) {
       cancelAnimationFrame(wcReqAF);
       wcReqAF = 0;
       wcS.pause();
+      if (playSound) {
+        wcSDone.play();
+      }
     } else {
       console.log("no wcReqAF to cancel");
     }
+  }
+  pauseWaitSound() {
+    wcS.pause();
   }
   async onConnect(payload) {
     const { accounts } = payload.params[0];
@@ -32574,7 +32461,7 @@ var Algonaut = class {
     this.walletConnect.connected = true;
     this.walletConnect.accounts = accounts;
     this.walletConnect.address = address;
-    this.stopReqAF();
+    this.stopReqAF(true);
   }
   onDisconnect() {
     this.walletConnect.connected = false;

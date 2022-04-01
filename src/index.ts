@@ -37,18 +37,16 @@ import {
 	isAndroid,
 	isIOS,
 	isMobile
-} from "@walletconnect/utils";
+} from '@walletconnect/utils';
 
 // fix for wallectconnect websocket issue when backgrounded on mobile (uses request animation frame)
-var wcReqAF = 0;
+let wcReqAF = 0;
 
 // wc fix (audio)
-var wcS: HTMLAudioElement;
-// FYI imports must be in this order!
-import wcAudImport from './assets/rhodes.mp3'; // makes file avail in /dist build
-wcAudImport;
-// TODO should probably make this a hosted mp3 on twin-frogs so we can swap out any time
-const wcAud = new URL('./assets/rhodes.mp3', import.meta.url);
+let wcS: HTMLAudioElement;
+let wcSDone: HTMLAudioElement;
+import waitSound from './lowtone';
+import finishedSound from './finished';
 
 /*
 
@@ -1363,6 +1361,7 @@ export default class Algonaut {
 	async sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | algosdk.Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
 		if (!this.account) throw new Error('There is no account');
 		if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === 'walletconnect') {
+
 			// walletconnect must be sent as atomic transactions
 			if (Array.isArray(txnOrTxns)) {
 				return await this.sendWalletConnectTxns(txnOrTxns, callbacks);
@@ -1487,6 +1486,10 @@ export default class Algonaut {
 	async sendWalletConnectTxns(walletTxns: AlgonautAtomicTransaction[], callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
 
 		if (this.walletConnect.connected) {
+
+			// start BG audio to keep socket open on mobile
+			this.startReqAF();
+
 			let txns = walletTxns.map(txn => txn.transaction);
 
 			// this is critical, if the group doesn't have an id
@@ -1554,9 +1557,13 @@ export default class Algonaut {
 					.do();
 				txStatus.meta = transactionResponse;
 				if (callbacks?.onConfirm) callbacks.onConfirm(txStatus);
+
+				this.stopReqAF(true);
+
 				return txStatus;
 			} else {
 				throw new Error('there were no signed transactions returned');
+				this.stopReqAF();
 			}
 
 		} else {
@@ -1742,9 +1749,14 @@ export default class Algonaut {
 
 		const bridge = 'https://bridge.walletconnect.org';
 
+
 		const wcConnector = new WalletConnect({
 			bridge,
 			qrcodeModal: QRCodeModal
+		});
+
+		wcConnector.on('disconnect', () => {
+			console.log('session update');
 		});
 		this.walletConnect.connector = wcConnector;
 
@@ -1776,7 +1788,7 @@ export default class Algonaut {
 		}
 
 		this.walletConnect.connector.on('session_update', async (error: any, payload: any) => {
-			// console.log('connector.on("session_update")');
+			console.log('connector.on("session_update")');
 			if (error) {
 				throw error;
 			}
@@ -1787,7 +1799,7 @@ export default class Algonaut {
 		});
 
 		this.walletConnect.connector.on('connect', (error: any, payload: any) => {
-			// console.log('connector.on("connect")');
+			console.log('connector.on("connect")');
 			if (error) {
 				throw error;
 			}
@@ -1796,7 +1808,7 @@ export default class Algonaut {
 		});
 
 		this.walletConnect.connector.on('disconnect', (error: any, payload: any) => {
-			// console.log('connector.on("disconnect")');
+			console.log('connector.on("disconnect")');
 			if (error) {
 				console.log(payload);
 				throw error;
@@ -1843,25 +1855,40 @@ export default class Algonaut {
 
 		// TODO helpful for desktop debugging but redo isMobile check
 		if (isBrowser()) {
-			// if (isBrowser() && isMobile()) {
+		//if (isBrowser() && isMobile()) {
 			// reqaf fix
 			const keepAlive = () => {
 				// console.log('keepAlive');
+
+				const qrIsOpen = document.querySelector('#walletconnect-qrcode-modal');
+				if (!qrIsOpen) {
+					this.stopReqAF();
+					return;
+				}
+
 				wcReqAF = requestAnimationFrame(keepAlive);
-			}
+			};
 			requestAnimationFrame(keepAlive);
 			wcReqAF = 1;
 
 			// audio fix
 			wcS = new Audio();
-			wcS.src = wcAud.href;
+			wcS.src = waitSound; // the base64 string of the sound
 			wcS.autoplay = true;
+			wcS.volume = 0.6;
+			wcS.loop = true;
 			wcS.play();
-			// console.log('wcS', wcS);
+
+			wcSDone = new Audio();
+			wcSDone.src = finishedSound; // the base64 string of the sound
+			wcSDone.volume = 0.1;
+			wcSDone.play();
+			wcSDone.pause();
+
 		}
 	}
 
-	stopReqAF() {
+	stopReqAF(playSound?: boolean) {
 		// console.log('stopReqAF', wcReqAF);
 		// CANCEL wcReqAF to free up CPU
 		if (wcReqAF) {
@@ -1871,9 +1898,18 @@ export default class Algonaut {
 			// TODO make audio end gracefully + upon return to dapp
 			// audio fix
 			wcS.pause();
+
+			if (playSound) {
+				wcSDone.play();
+			}
+
 		} else {
 			console.log('no wcReqAF to cancel'); // is this the browser?
 		}
+	}
+
+	pauseWaitSound() {
+		wcS.pause();
 	}
 
 	/**
@@ -1893,7 +1929,7 @@ export default class Algonaut {
 		this.walletConnect.address = address;
 
 		// CANCEL wcReqAF to free up CPU
-		this.stopReqAF(); // if ticking...
+		this.stopReqAF(true); // if ticking...
 	}
 
 	/**
