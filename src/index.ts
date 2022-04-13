@@ -872,7 +872,6 @@ export default class Algonaut {
 		try {
 
 			const sender = this.account.addr;
-			const onComplete = algosdk.OnApplicationComplete.NoOpOC;
 			const params = await this.algodClient.getTransactionParams().do();
 
 			let approvalProgram = new Uint8Array();
@@ -881,25 +880,28 @@ export default class Algonaut {
 			approvalProgram = await this.compileProgram(args.tealApprovalCode);
 			clearProgram = await this.compileProgram(args.tealClearCode);
 
+			console.log('approval', approvalProgram);
+			console.log('clear', clearProgram);
+
 			// create unsigned transaction
 			if (approvalProgram && clearProgram) {
 
-				const txn = algosdk.makeApplicationCreateTxn(
-					sender,
-					params,
-					onComplete,
+				const txn = algosdk.makeApplicationCreateTxnFromObject({
+					from: sender,
+					suggestedParams: params,
+					onComplete: algosdk.OnApplicationComplete.NoOpOC,
 					approvalProgram,
 					clearProgram,
-					args.schema.localInts,
-					args.schema.localBytes,
-					args.schema.globalInts,
-					args.schema.globalBytes,
-					this.encodeArguments(args.appArgs),
-					args.optionalFields?.accounts ? args.optionalFields.accounts : undefined,
-					args.optionalFields?.applications ? args.optionalFields.applications : undefined,
-					args.optionalFields?.assets ? args.optionalFields.assets : undefined,
-					args.optionalFields?.note ? new Uint8Array(Buffer.from(args.optionalFields.note, 'utf8')) : undefined
-				);
+					numLocalInts: args.schema.localInts,
+					numLocalByteSlices: args.schema.localBytes,
+					numGlobalInts: args.schema.globalInts,
+					numGlobalByteSlices: args.schema.globalBytes,
+					appArgs: this.encodeArguments(args.appArgs),
+					accounts: args.optionalFields?.accounts ? args.optionalFields.accounts : undefined,
+					foreignApps: args.optionalFields?.applications ? args.optionalFields.applications : undefined,
+					foreignAssets: args.optionalFields?.assets ? args.optionalFields.assets : undefined,
+					note: args.optionalFields?.note ? new Uint8Array(Buffer.from(args.optionalFields.note, 'utf8')) : undefined
+				});
 				const txId = txn.txID().toString();
 
 				// Wait for confirmation

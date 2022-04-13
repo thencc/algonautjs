@@ -473,14 +473,30 @@ class Algonaut {
       throw new Error("There was no account!");
     try {
       const sender = this.account.addr;
-      const onComplete = import_algosdk.default.OnApplicationComplete.NoOpOC;
       const params = await this.algodClient.getTransactionParams().do();
       let approvalProgram = new Uint8Array();
       let clearProgram = new Uint8Array();
       approvalProgram = await this.compileProgram(args.tealApprovalCode);
       clearProgram = await this.compileProgram(args.tealClearCode);
+      console.log("approval", approvalProgram);
+      console.log("clear", clearProgram);
       if (approvalProgram && clearProgram) {
-        const txn = import_algosdk.default.makeApplicationCreateTxn(sender, params, onComplete, approvalProgram, clearProgram, args.schema.localInts, args.schema.localBytes, args.schema.globalInts, args.schema.globalBytes, this.encodeArguments(args.appArgs), args.optionalFields?.accounts ? args.optionalFields.accounts : void 0, args.optionalFields?.applications ? args.optionalFields.applications : void 0, args.optionalFields?.assets ? args.optionalFields.assets : void 0, args.optionalFields?.note ? new Uint8Array(import_buffer.Buffer.from(args.optionalFields.note, "utf8")) : void 0);
+        const txn = import_algosdk.default.makeApplicationCreateTxnFromObject({
+          from: sender,
+          suggestedParams: params,
+          onComplete: import_algosdk.default.OnApplicationComplete.NoOpOC,
+          approvalProgram,
+          clearProgram,
+          numLocalInts: args.schema.localInts,
+          numLocalByteSlices: args.schema.localBytes,
+          numGlobalInts: args.schema.globalInts,
+          numGlobalByteSlices: args.schema.globalBytes,
+          appArgs: this.encodeArguments(args.appArgs),
+          accounts: args.optionalFields?.accounts ? args.optionalFields.accounts : void 0,
+          foreignApps: args.optionalFields?.applications ? args.optionalFields.applications : void 0,
+          foreignAssets: args.optionalFields?.assets ? args.optionalFields.assets : void 0,
+          note: args.optionalFields?.note ? new Uint8Array(import_buffer.Buffer.from(args.optionalFields.note, "utf8")) : void 0
+        });
         const txId = txn.txID().toString();
         const result = await this.sendTransaction(txn, callbacks);
         const transactionResponse = await this.algodClient.pendingTransactionInformation(txId).do();
