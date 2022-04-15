@@ -45,6 +45,7 @@ export default class Algonaut {
      * @param config config object
      */
     constructor(config: AlgonautConfig);
+    checkSound(): void;
     /**
      * @returns config object or `false` if no config is set
      */

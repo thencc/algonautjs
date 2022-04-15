@@ -9,6 +9,7 @@ build({
 	minify: false,
 	treeShaking: false,
 	target: ['esnext'],
+	//external: ['src/lowtone.ts', 'src/finished.ts'],
 	assetNames: 'assets/[name]',
 	loader: { '.mp3': 'file' },
 

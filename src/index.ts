@@ -8,6 +8,7 @@ import {
 	AlgonautTransactionFields,
 	AlgonautAppState,
 	AlgonautStateData,
+	AlgonautError,
 	WalletConnectListener,
 	AlgonautTxnCallbacks,
 	AlgonautContractSchema,
@@ -45,8 +46,12 @@ let wcReqAF = 0;
 // wc fix (audio)
 let wcS: HTMLAudioElement;
 let wcSDone: HTMLAudioElement;
+
 import waitSound from './lowtone';
 import finishedSound from './finished';
+
+console.log(waitSound);
+console.log(finishedSound);
 
 /*
 
@@ -1140,6 +1145,8 @@ export default class Algonaut {
 	}
 
 	async atomicPayment(args: AlgonautPaymentArguments): Promise<AlgonautAtomicTransaction> {
+		if (!args.amount) throw new Error('You did not specify an amount!');
+		if (!args.to) throw new Error('You did not specify a to address');
 
 		if (this.account) {
 			const encodedNote = args.note ? new Uint8Array(Buffer.from(args.note, 'utf8')) : new Uint8Array();
@@ -1173,7 +1180,7 @@ export default class Algonaut {
 	async sendAlgo(args: AlgonautPaymentArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
 		if (!this.account) throw new Error('there was no account!');
 		const { transaction } = await this.atomicPayment(args);
-		return await this.sendTransaction(transaction);
+		return await this.sendTransaction(transaction, callbacks);
 	}
 
 	/**
@@ -1852,6 +1859,7 @@ export default class Algonaut {
 	}
 
 	startReqAF() {
+		
 		// console.log('startReqAF');
 		// keeps some background tasks running while navigating to Pera Wallet to approve wc session link handshake
 

@@ -2,13 +2,15 @@
   "compilerOptions": {
     "module": "esnext",
     "moduleResolution": "Node",
+    "resolveJsonModule": true,
     "noImplicitReturns": true,
     "noUnusedLocals": false,
     "outDir": "dist",
     "sourceMap": true,
     "declaration": true,
     "strict": true,
-    "target": "es2017"
+    "target": "es2017",
+    "allowJs": true
   },
   "compileOnSave": true,
   "include": [

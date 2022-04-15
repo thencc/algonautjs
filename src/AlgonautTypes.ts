@@ -110,6 +110,7 @@ export interface AlgonautTxnCallbacks {
 
 export type AlgonautError = {
 	message: string;
+	code: string;
 	rawError: Error;
 }
 
@@ -146,6 +147,3 @@ export type AlgonautAtomicTransaction = {
 	transactionSigner: algosdk.Account | algosdk.LogicSigAccount;
 	isLogigSig: boolean;
 }
-
-
-
