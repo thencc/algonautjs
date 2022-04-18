@@ -110,8 +110,7 @@ export interface AlgonautTxnCallbacks {
 
 export type AlgonautError = {
 	message: string;
-	code: string;
-	rawError: Error;
+	rawError?: any;
 }
 
 export type AlgonautTransactionStatus = {

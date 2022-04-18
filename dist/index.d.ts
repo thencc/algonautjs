@@ -1,5 +1,5 @@
 import algosdk from 'algosdk';
-import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautAppState, WalletConnectListener, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments } from './AlgonautTypes';
+import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautAppState, AlgonautError, WalletConnectListener, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments } from './AlgonautTypes';
 import WalletConnect from '@walletconnect/client/dist/umd/index.min.js';
 import { IInternalEvent } from '@walletconnect/types';
 declare global {
@@ -45,7 +45,6 @@ export default class Algonaut {
      * @param config config object
      */
     constructor(config: AlgonautConfig);
-    checkSound(): void;
     /**
      * @returns config object or `false` if no config is set
      */
@@ -54,12 +53,12 @@ export default class Algonaut {
      * Checks status of Algorand network
      * @returns Promise resolving to status of Algorand network
      */
-    checkStatus(): Promise<any>;
+    checkStatus(): Promise<any | AlgonautError>;
     /**
      * if you already have an account, set it here
      * @param account an algosdk account already created
      */
-    setAccount(account: algosdk.Account): void;
+    setAccount(account: algosdk.Account): void | AlgonautError;
     /**
      * Sets account connected via WalletConnect
      * @param address account address
@@ -75,7 +74,7 @@ export default class Algonaut {
      * @param mnemonic Mnemonic associated with Algonaut account
      * @returns If mnemonic is valid, returns account. Otherwise, returns false.
      */
-    recoverAccount(mnemonic: string): algosdk.Account | boolean;
+    recoverAccount(mnemonic: string): algosdk.Account;
     /**
      * General purpose method to await transaction confirmation
      * @param txId a string id of the transacion you want to watch
@@ -101,8 +100,8 @@ export default class Algonaut {
     /**
      * You can be opted into an asset but still have a zero balance. Use this call
      * for cases where you just need to know the address's opt-in state
-     * @param assetId
-     * @returns
+     * @param args object containing `account` and `assetId` properties
+     * @returns boolean true if account holds asset
      */
     isOptedIntoAsset(args: {
         account: string;

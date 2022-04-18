@@ -89,7 +89,7 @@ export interface AlgonautTxnCallbacks {
 }
 export declare type AlgonautError = {
     message: string;
-    rawError: Error;
+    rawError?: any;
 };
 export declare type AlgonautTransactionStatus = {
     status: 'success' | 'fail';
