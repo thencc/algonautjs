@@ -5,7 +5,6 @@ export type AlgonautConfig = {
 	BASE_SERVER: string;
 	INDEX_SERVER?: string; // optional, but helpful
 	LEDGER: string;
-	STORAGE_SECRET?: string; // necessary if we use EncryptStorage
 	PORT: string;
 	API_TOKEN: any;
 	SIGNING_MODE?: 'local' | 'walletconnect' | 'algosigner';

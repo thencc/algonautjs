@@ -31,7 +31,6 @@ import {
 import WalletConnect from '@walletconnect/client/dist/umd/index.min.js'; // umd works in node + browser
 import { IInternalEvent } from '@walletconnect/types';
 import QRCodeModal from 'algorand-walletconnect-qrcode-modal';
-import { EncryptStorage } from 'encrypt-storage';
 import { formatJsonRpcRequest } from '@json-rpc-tools/utils';
 import {
 	isBrowser,
@@ -110,7 +109,6 @@ export default class Algonaut {
 	account = undefined as undefined | algosdk.Account;
 	address = undefined as undefined | string;
 	sKey = undefined as undefined | Uint8Array;
-	encryptedStorage = undefined as undefined | EncryptStorage;
 	mnemonic = undefined as undefined | string;
 	config = undefined as undefined | AlgonautConfig;
 	sdk = undefined as undefined | typeof algosdk;
@@ -151,12 +149,6 @@ export default class Algonaut {
 			this.indexerClient = new algosdk.Indexer(config.API_TOKEN, config.INDEX_SERVER, config.PORT);
 		} else {
 			console.warn('No indexer configured because INDEX_SERVER was not provided.');
-		}
-
-		if (config.STORAGE_SECRET) {
-			this.encryptedStorage = new EncryptStorage(config.STORAGE_SECRET);
-		} else {
-			console.warn('No encrypted storage configured. `storeAccount` and similar methods will fail.');
 		}
 
 		this.sdk = algosdk;
@@ -256,22 +248,6 @@ export default class Algonaut {
 			// should we throw an error here instead of returning false?
 			console.log(error);
 			throw new Error('Could not recover account from mnemonic.');
-		}
-	}
-
-	storeAccount () {
-		if (!this.encryptedStorage) throw new Error('You must configure EncryptStorage by providing STORAGE_SECRET when instantiating Algonaut');
-		if (!this.mnemonic) throw new Error('There is no account to store.');
-		this.encryptedStorage.setItem('account', this.mnemonic);
-	}
-
-	loadAccount () : algosdk.Account | boolean {
-		if (!this.encryptedStorage) throw new Error('You must configure EncryptStorage by providing STORAGE_SECRET when instantiating Algonaut');
-		const mnemonic = this.encryptedStorage.getItem('account');
-		if (mnemonic) {
-			return this.recoverAccount(mnemonic);
-		} else {
-			return false;
 		}
 	}
 
