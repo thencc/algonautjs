@@ -115,7 +115,7 @@ export default class Algonaut {
 	uiLoading = false;
 	walletConnect = {
 		connected: false,
-		connector: undefined as undefined | WalletConnect,
+		connector: undefined as undefined | any,
 		accounts: [] as any[],
 		address: '',
 		assets: [] as any[],
@@ -745,7 +745,7 @@ export default class Algonaut {
 		if (!this.account) throw new Error('There was no account!');
 		if (!args.appIndex) throw new Error('Must provide appIndex');
 		if (!args.appArgs.length) throw new Error('Must provide at least one appArgs');
-	
+
 		const processedArgs = this.encodeArguments(args.appArgs);
 		const params = await this.algodClient.getTransactionParams().do();
 		const callAppTransaction = algosdk.makeApplicationNoOpTxnFromObject({
@@ -808,7 +808,7 @@ export default class Algonaut {
 	async closeOutApp(args: AlgonautCallAppArguments, callbacks?: AlgonautTxnCallbacks) {
 		const { transaction } = await this.atomicCloseOutApp(args);
 		return await this.sendTransaction(transaction, callbacks);
-		
+
 	}
 
 	/**
@@ -1877,7 +1877,7 @@ export default class Algonaut {
 	}
 
 	startReqAF() {
-		
+
 		// console.log('startReqAF');
 		// keeps some background tasks running while navigating to Pera Wallet to approve wc session link handshake
 

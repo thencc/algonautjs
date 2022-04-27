@@ -1,6 +1,5 @@
 import algosdk from 'algosdk';
 import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautAppState, AlgonautError, WalletConnectListener, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments } from './AlgonautTypes';
-import WalletConnect from '@walletconnect/client/dist/umd/index.min.js';
 import { IInternalEvent } from '@walletconnect/types';
 declare global {
     interface Window {
@@ -19,7 +18,7 @@ export default class Algonaut {
     uiLoading: boolean;
     walletConnect: {
         connected: boolean;
-        connector: WalletConnect | undefined;
+        connector: any;
         accounts: any[];
         address: string;
         assets: any[];
