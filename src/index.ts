@@ -1405,6 +1405,39 @@ export default class Algonaut {
 					}], callbacks);
 				}
 			}
+		} else if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === 'hippo') {
+			// let's do the hippo thing
+			
+			// 1. depending on how txns are sent into `sendTransaction`, we need to deal with them
+			let signedTxns;
+			if (Array.isArray(txnOrTxns) && txnOrTxns[0] && txnOrTxns[0].transaction) {
+				// array of AlgonautAtomicTransaction, map these to get .transaction out
+				const unwrappedTxns = txnOrTxns.map(txn => txn.transaction);
+				signedTxns = await this.hippoSignTxns(unwrappedTxns);
+			} else if (txnOrTxns && (txnOrTxns as any).transaction) {
+				// single AlgonautAtomicTransaction, just send the `transaction` property wrapped in array
+				signedTxns = await this.hippoSignTxns([(txnOrTxns as AlgonautAtomicTransaction).transaction]);
+			} else {
+				// single algosdk.Transaction, wrap in array and send to hippo
+				signedTxns = await this.hippoSignTxns([(txnOrTxns as algosdk.Transaction)]);
+			}
+
+			if (callbacks?.onSign) callbacks.onSign(signedTxns);
+
+			// send txn group
+			const tx = await this.algodClient.sendRawTransaction(signedTxns).do();
+			if (callbacks?.onSend) callbacks.onSend(tx);
+
+			// Wait for transaction to be confirmed
+			const txStatus = await this.waitForConfirmation(tx.txId);
+			const transactionResponse = await this.algodClient
+				.pendingTransactionInformation(tx.txId)
+				.do();
+			txStatus.meta = transactionResponse;
+
+			if (callbacks?.onConfirm) callbacks.onConfirm(txStatus);
+
+			return txStatus;
 		} else {
 			// assume local signing
 			if (Array.isArray(txnOrTxns)) {
@@ -1437,6 +1470,11 @@ export default class Algonaut {
 		}
 	}
 
+	async hippoSignTxns(txns: algosdk.Transaction[]) {
+		// hippo expects algosdk.Transaction[]
+		// todo: write this function
+		return [new Uint8Array()];
+	}
 
 	/**
 	 * run atomic takes an array of transactions to run in order, each
