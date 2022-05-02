@@ -109,10 +109,13 @@ export default class Algonaut {
 	// TBD: add algo wallet for mobile
 	algodClient: algosdk.Algodv2;
 	indexerClient = undefined as undefined | algosdk.Indexer;
-	account = undefined as undefined | algosdk.Account;
+
+	// FYI undefined if using wallet-connect, etc. perhaps rename to .accountLocal ?
+	account = undefined as undefined | algosdk.Account; // ONLY defined if using local signing, not wallet-connet or hippo
 	address = undefined as undefined | string;
 	sKey = undefined as undefined | Uint8Array;
 	mnemonic = undefined as undefined | string;
+
 	config = undefined as undefined | AlgonautConfig;
 	sdk = undefined as undefined | typeof algosdk;
 	uiLoading = false;
