@@ -159,8 +159,10 @@ export class FrameBus {
 
 		if (
 			event.data.source &&
-			event.data.source.substring(0, 4) == 'ncc-') {
-			console.log('client mess', event.data);
+			event.data.source == 'ncc-hippo-wallet') {
+			// event.data.source.substring(0, 4) == 'ncc-') {
+			// event.data.source.substring(0, 16) == 'ncc-hippo-wallet') {
+			console.log('client got mess', event.data);
 
 			// async message handling back to callee resolver
 			if (event.data['async'] && event.data.async == true && event.data.uuid) {

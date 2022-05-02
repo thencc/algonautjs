@@ -31689,8 +31689,8 @@ var FrameBus = class {
     });
   }
   onMessage(event) {
-    if (event.data.source && event.data.source.substring(0, 4) == "ncc-") {
-      console.log("client mess", event.data);
+    if (event.data.source && event.data.source == "ncc-hippo-wallet") {
+      console.log("client got mess", event.data);
       if (event.data["async"] && event.data.async == true && event.data.uuid) {
         const outgoing = this.requests.get(event.data.uuid);
         if (!outgoing) {
