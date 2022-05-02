@@ -49,9 +49,12 @@ let wcSDone: HTMLAudioElement;
 
 import waitSound from './lowtone';
 import finishedSound from './finished';
+waitSound;
+finishedSound;
+// console.log(waitSound);
+// console.log(finishedSound);
 
-console.log(waitSound);
-console.log(finishedSound);
+import { FrameBus } from './FrameBus';
 
 /*
 
@@ -113,6 +116,19 @@ export default class Algonaut {
 	config = undefined as undefined | AlgonautConfig;
 	sdk = undefined as undefined | typeof algosdk;
 	uiLoading = false;
+
+	// microwallet aka hippo
+	hippoWallet = {
+		// private hippoWallet = { // for extra security we should do this
+
+		// frameId: '',
+		// ready: false,
+		defaultSrc: '123',
+		otherConfig: {},
+		frameBus: undefined as undefined | FrameBus
+	};
+
+	// everything wallet connect
 	walletConnect = {
 		connected: false,
 		connector: undefined as undefined | WalletConnect,
@@ -145,14 +161,57 @@ export default class Algonaut {
 
 		this.config = config;
 		this.algodClient = new algosdk.Algodv2(config.API_TOKEN, config.BASE_SERVER, config.PORT);
+
 		if (config.INDEX_SERVER) {
 			this.indexerClient = new algosdk.Indexer(config.API_TOKEN, config.INDEX_SERVER, config.PORT);
 		} else {
 			console.warn('No indexer configured because INDEX_SERVER was not provided.');
 		}
 
+		// expose entire algosdk in case the dapp needs more
 		this.sdk = algosdk;
 
+		// hippo init
+		if (config.SIGNING_MODE && config.SIGNING_MODE == 'hippo') {
+			this.initHippo({
+				id: config.HIPPO_ID,
+				src: config.HIPPO_SRC
+			});
+		}
+
+	}
+
+	/*
+	* @param mountConfig either an id or src (id meaning existing iframe and takes precedence)
+	*/
+	initHippo(mountConfig: {
+		id?: string
+		src?: string
+	}) {
+		console.log('initHippo');
+
+		if (!mountConfig.id && !mountConfig.src) {
+			console.warn('not enough hippo config provided, try init again...');
+			return;
+		}
+
+		// reset
+		if (this.hippoWallet.frameBus) {
+			this.hippoWallet.frameBus.destroy();
+			this.hippoWallet.frameBus = undefined;
+		}
+
+		if (mountConfig.id) {
+			this.hippoWallet.frameBus = new FrameBus({
+				id: mountConfig.id
+			});
+		} else if (mountConfig.src) {
+			this.hippoWallet.frameBus = new FrameBus({
+				src: mountConfig.src
+			});
+		} else {
+			console.warn('cannot init hippo');
+		}
 	}
 
 	/**
@@ -430,10 +489,10 @@ export default class Algonaut {
 	*/
 	async atomicCreateAsset(args: AlgonautCreateAssetArguments): Promise<AlgonautAtomicTransaction> {
 		if (!args.assetName) throw new Error('args.assetName not provided.');
-		if (!args.symbol) 	 throw new Error('args.symbol not provided');
-		if (!args.decimals)  throw new Error('args.decimals not provided.');
-		if (!args.amount) 	 throw new Error('args.amount not provided.');
-		if (!this.account) 	 throw new Error('There was no account set in Algonaut');
+		if (!args.symbol) throw new Error('args.symbol not provided');
+		if (!args.decimals) throw new Error('args.decimals not provided.');
+		if (!args.amount) throw new Error('args.amount not provided.');
+		if (!this.account) throw new Error('There was no account set in Algonaut');
 
 
 		if (!args.metaBlock) {
@@ -745,7 +804,7 @@ export default class Algonaut {
 		if (!this.account) throw new Error('There was no account!');
 		if (!args.appIndex) throw new Error('Must provide appIndex');
 		if (!args.appArgs.length) throw new Error('Must provide at least one appArgs');
-	
+
 		const processedArgs = this.encodeArguments(args.appArgs);
 		const params = await this.algodClient.getTransactionParams().do();
 		const callAppTransaction = algosdk.makeApplicationNoOpTxnFromObject({
@@ -808,7 +867,7 @@ export default class Algonaut {
 	async closeOutApp(args: AlgonautCallAppArguments, callbacks?: AlgonautTxnCallbacks) {
 		const { transaction } = await this.atomicCloseOutApp(args);
 		return await this.sendTransaction(transaction, callbacks);
-		
+
 	}
 
 	/**
@@ -1153,6 +1212,7 @@ export default class Algonaut {
 		return compiledBytes;
 	}
 
+	// TODO rename atomicSendAlgo
 	async atomicPayment(args: AlgonautPaymentArguments): Promise<AlgonautAtomicTransaction> {
 		if (!args.amount) throw new Error('You did not specify an amount!');
 		if (!args.to) throw new Error('You did not specify a to address');
@@ -1407,7 +1467,7 @@ export default class Algonaut {
 			}
 		} else if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === 'hippo') {
 			// let's do the hippo thing
-			
+
 			// 1. depending on how txns are sent into `sendTransaction`, we need to deal with them
 			let signedTxns;
 			if (Array.isArray(txnOrTxns) && txnOrTxns[0] && txnOrTxns[0].transaction) {
@@ -1471,9 +1531,32 @@ export default class Algonaut {
 	}
 
 	async hippoSignTxns(txns: algosdk.Transaction[]) {
+		console.log('hippoSignTxns');
+
 		// hippo expects algosdk.Transaction[]
-		// todo: write this function
-		return [new Uint8Array()];
+		if (!this.hippoWallet.frameBus) {
+			throw new Error('no hippo frameBus');
+		}
+
+		if (!this.hippoWallet.frameBus.ready) {
+			await this.hippoWallet.frameBus.isReady();
+		}
+
+		const data = {
+			source: 'ncc-hippo-client',
+			async: true, // tells frameBus to add to await queue + wallet to return
+			type: 'sign-txns', // determines payload type
+			payload: {
+				txns
+			},
+		}
+		// this.hippoWallet.frameBus.emit(data);
+		const res = await this.hippoWallet.frameBus.emitAsync<Uint8Array[]>(data);
+		console.log('res', res);
+		return res;
+
+		// return expects:
+		// return [new Uint8Array()];
 	}
 
 	/**
@@ -1628,7 +1711,6 @@ export default class Algonaut {
 				return txStatus;
 			} else {
 				throw new Error('there were no signed transactions returned');
-				this.stopReqAF();
 			}
 
 		} else {
@@ -1644,6 +1726,19 @@ export default class Algonaut {
 		if (this.config &&
 			this.config.SIGNING_MODE &&
 			this.config.SIGNING_MODE === 'walletconnect') {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Interally used to determine how to sign transactions on more generic functions (e.g. {@link deployFromTeal})
+	 * @returns true if we are signing transactions with hippo, false otherwise
+	 */
+	usingHippoWallet(): boolean {
+		if (this.config &&
+			this.config.SIGNING_MODE &&
+			this.config.SIGNING_MODE === 'hippo') {
 			return true;
 		}
 		return false;
@@ -1915,13 +2010,12 @@ export default class Algonaut {
 	}
 
 	startReqAF() {
-		
 		// console.log('startReqAF');
 		// keeps some background tasks running while navigating to Pera Wallet to approve wc session link handshake
 
 		// TODO helpful for desktop debugging but redo isMobile check
-		if (isBrowser()) {
-		//if (isBrowser() && isMobile()) {
+		// if (isBrowser()) {
+		if (isBrowser() && isMobile()) {
 			// reqaf fix
 			const keepAlive = () => {
 				// console.log('keepAlive');
@@ -1935,7 +2029,7 @@ export default class Algonaut {
 				wcReqAF = requestAnimationFrame(keepAlive);
 			};
 			requestAnimationFrame(keepAlive);
-			wcReqAF = 1;
+			// wcReqAF = 1;
 
 			// audio fix
 			wcS = new Audio();
@@ -2109,5 +2203,4 @@ export default class Algonaut {
 
 }
 
-
-
+export const buffer = Buffer; // sometimes this is helpful on the frontend

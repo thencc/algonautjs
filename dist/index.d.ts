@@ -1,7 +1,9 @@
+/// <reference types="node" />
 import algosdk from 'algosdk';
 import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautAppState, AlgonautError, WalletConnectListener, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments } from './AlgonautTypes';
 import WalletConnect from '@walletconnect/client/dist/umd/index.min.js';
 import { IInternalEvent } from '@walletconnect/types';
+import { FrameBus } from './FrameBus';
 declare global {
     interface Window {
         AlgoSigner: any;
@@ -17,6 +19,11 @@ export default class Algonaut {
     config: AlgonautConfig | undefined;
     sdk: typeof algosdk | undefined;
     uiLoading: boolean;
+    hippoWallet: {
+        defaultSrc: string;
+        otherConfig: {};
+        frameBus: FrameBus | undefined;
+    };
     walletConnect: {
         connected: boolean;
         connector: WalletConnect | undefined;
@@ -45,6 +52,10 @@ export default class Algonaut {
      * @param config config object
      */
     constructor(config: AlgonautConfig);
+    initHippo(mountConfig: {
+        id?: string;
+        src?: string;
+    }): void;
     /**
      * @returns config object or `false` if no config is set
      */
@@ -326,6 +337,7 @@ export default class Algonaut {
      * @returns Promise resolving to AlgonautTransactionStatus
      */
     sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | algosdk.Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
+    hippoSignTxns(txns: algosdk.Transaction[]): Promise<Uint8Array[]>;
     /**
      * run atomic takes an array of transactions to run in order, each
      * of the atomic transaction methods needs to return an object containing
@@ -353,6 +365,11 @@ export default class Algonaut {
      * @returns true if we are signing transactions with WalletConnect, false otherwise
      */
     usingWalletConnect(): boolean;
+    /**
+     * Interally used to determine how to sign transactions on more generic functions (e.g. {@link deployFromTeal})
+     * @returns true if we are signing transactions with hippo, false otherwise
+     */
+    usingHippoWallet(): boolean;
     /**
      * Prepare one or more transactions for wallet connect signature
      *
@@ -473,3 +490,4 @@ export default class Algonaut {
      */
     getAccounts(ledger: string): Promise<any>;
 }
+export declare const buffer: BufferConstructor;

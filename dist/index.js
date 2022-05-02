@@ -20,6 +20,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var src_exports = {};
 __export(src_exports, {
+  buffer: () => buffer,
   default: () => Algonaut
 });
 module.exports = __toCommonJS(src_exports);
@@ -31,11 +32,12 @@ var import_utils = require("@json-rpc-tools/utils");
 var import_utils2 = require("@walletconnect/utils");
 var import_lowtone = __toESM(require("./lowtone"));
 var import_finished = __toESM(require("./finished"));
+var import_FrameBus = require("./FrameBus");
 let wcReqAF = 0;
 let wcS;
 let wcSDone;
-console.log(import_lowtone.default);
-console.log(import_finished.default);
+import_lowtone.default;
+import_finished.default;
 class Algonaut {
   algodClient;
   indexerClient = void 0;
@@ -46,6 +48,11 @@ class Algonaut {
   config = void 0;
   sdk = void 0;
   uiLoading = false;
+  hippoWallet = {
+    defaultSrc: "123",
+    otherConfig: {},
+    frameBus: void 0
+  };
   walletConnect = {
     connected: false,
     connector: void 0,
@@ -63,6 +70,34 @@ class Algonaut {
       console.warn("No indexer configured because INDEX_SERVER was not provided.");
     }
     this.sdk = import_algosdk.default;
+    if (config.SIGNING_MODE && config.SIGNING_MODE == "hippo") {
+      this.initHippo({
+        id: config.HIPPO_ID,
+        src: config.HIPPO_SRC
+      });
+    }
+  }
+  initHippo(mountConfig) {
+    console.log("initHippo");
+    if (!mountConfig.id && !mountConfig.src) {
+      console.warn("not enough hippo config provided, try init again...");
+      return;
+    }
+    if (this.hippoWallet.frameBus) {
+      this.hippoWallet.frameBus.destroy();
+      this.hippoWallet.frameBus = void 0;
+    }
+    if (mountConfig.id) {
+      this.hippoWallet.frameBus = new import_FrameBus.FrameBus({
+        id: mountConfig.id
+      });
+    } else if (mountConfig.src) {
+      this.hippoWallet.frameBus = new import_FrameBus.FrameBus({
+        src: mountConfig.src
+      });
+    } else {
+      console.warn("cannot init hippo");
+    }
   }
   getConfig() {
     if (this.config)
@@ -819,6 +854,27 @@ class Algonaut {
           }], callbacks);
         }
       }
+    } else if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === "hippo") {
+      let signedTxns;
+      if (Array.isArray(txnOrTxns) && txnOrTxns[0] && txnOrTxns[0].transaction) {
+        const unwrappedTxns = txnOrTxns.map((txn) => txn.transaction);
+        signedTxns = await this.hippoSignTxns(unwrappedTxns);
+      } else if (txnOrTxns && txnOrTxns.transaction) {
+        signedTxns = await this.hippoSignTxns([txnOrTxns.transaction]);
+      } else {
+        signedTxns = await this.hippoSignTxns([txnOrTxns]);
+      }
+      if (callbacks?.onSign)
+        callbacks.onSign(signedTxns);
+      const tx = await this.algodClient.sendRawTransaction(signedTxns).do();
+      if (callbacks?.onSend)
+        callbacks.onSend(tx);
+      const txStatus = await this.waitForConfirmation(tx.txId);
+      const transactionResponse = await this.algodClient.pendingTransactionInformation(tx.txId).do();
+      txStatus.meta = transactionResponse;
+      if (callbacks?.onConfirm)
+        callbacks.onConfirm(txStatus);
+      return txStatus;
     } else {
       if (Array.isArray(txnOrTxns)) {
         return await this.sendAtomicTransaction(txnOrTxns, callbacks);
@@ -845,6 +901,26 @@ class Algonaut {
         return txStatus;
       }
     }
+  }
+  async hippoSignTxns(txns) {
+    console.log("hippoSignTxns");
+    if (!this.hippoWallet.frameBus) {
+      throw new Error("no hippo frameBus");
+    }
+    if (!this.hippoWallet.frameBus.ready) {
+      await this.hippoWallet.frameBus.isReady();
+    }
+    const data = {
+      source: "ncc-hippo-client",
+      async: true,
+      type: "sign-txns",
+      payload: {
+        txns
+      }
+    };
+    const res = await this.hippoWallet.frameBus.emitAsync(data);
+    console.log("res", res);
+    return res;
   }
   async sendAtomicTransaction(transactions, callbacks) {
     try {
@@ -930,7 +1006,6 @@ class Algonaut {
         return txStatus;
       } else {
         throw new Error("there were no signed transactions returned");
-        this.stopReqAF();
       }
     } else {
       throw new Error("There is no wallet connect session");
@@ -938,6 +1013,12 @@ class Algonaut {
   }
   usingWalletConnect() {
     if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === "walletconnect") {
+      return true;
+    }
+    return false;
+  }
+  usingHippoWallet() {
+    if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === "hippo") {
       return true;
     }
     return false;
@@ -1081,7 +1162,7 @@ class Algonaut {
     console.log("TBD!");
   }
   startReqAF() {
-    if ((0, import_utils2.isBrowser)()) {
+    if ((0, import_utils2.isBrowser)() && (0, import_utils2.isMobile)()) {
       const keepAlive = () => {
         const qrIsOpen = document.querySelector("#walletconnect-qrcode-modal");
         if (!qrIsOpen) {
@@ -1091,7 +1172,6 @@ class Algonaut {
         wcReqAF = requestAnimationFrame(keepAlive);
       };
       requestAnimationFrame(keepAlive);
-      wcReqAF = 1;
       wcS = new Audio();
       wcS.src = import_lowtone.default;
       wcS.autoplay = true;
@@ -1189,6 +1269,9 @@ class Algonaut {
     return accounts;
   }
 }
+const buffer = import_buffer.Buffer;
 // Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {});
+0 && (module.exports = {
+  buffer
+});
 //# sourceMappingURL=index.js.map
