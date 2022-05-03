@@ -50,9 +50,6 @@ let wcSDone: HTMLAudioElement;
 import waitSound from './lowtone';
 import finishedSound from './finished';
 
-console.log(waitSound);
-console.log(finishedSound);
-
 /*
 
 AlgonautJS should have some "signing modes" which you set at invocation time

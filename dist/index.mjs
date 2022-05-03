@@ -31448,8 +31448,6 @@ var import_utils = __toESM(require_cjs6());
 var wcReqAF = 0;
 var wcS;
 var wcSDone;
-console.log(lowtone_default);
-console.log(finished_default);
 var Algonaut = class {
   algodClient;
   indexerClient = void 0;

@@ -40,8 +40,6 @@ var import_finished = __toESM(require("./finished"));
 let wcReqAF = 0;
 let wcS;
 let wcSDone;
-console.log(import_lowtone.default);
-console.log(import_finished.default);
 class Algonaut {
   algodClient;
   indexerClient = void 0;
