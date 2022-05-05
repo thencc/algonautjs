@@ -396,6 +396,7 @@ export default class Algonaut {
 		if (!assetIndex) throw new Error('No asset index provided.');
 
 		const params = await this.algodClient.getTransactionParams().do();
+
 		const optInTransaction = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
 			from: this.account.addr,
 			to: this.account.addr,
@@ -1479,25 +1480,55 @@ export default class Algonaut {
 			}
 		} else if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === 'hippo') {
 			// let's do the hippo thing
+			console.log('sendTransaction: hippo');
+			console.log(txnOrTxns);
 
 			// 1. depending on how txns are sent into `sendTransaction`, we need to deal with them
 			let signedTxns;
-			if (Array.isArray(txnOrTxns) && txnOrTxns[0] && txnOrTxns[0].transaction) {
+
+
+			// HANDLE ARRAY OF TRANSACTIONS
+			if (Array.isArray(txnOrTxns) && txnOrTxns[0] && txnOrTxns[0].transaction && txnOrTxns.length > 1) {
 				// array of AlgonautAtomicTransaction, map these to get .transaction out
 				const unwrappedTxns = txnOrTxns.map(txn => txn.transaction);
-				signedTxns = await this.hippoSignTxns(unwrappedTxns);
-			} else if (txnOrTxns && (txnOrTxns as any).transaction) {
-				// single AlgonautAtomicTransaction, just send the `transaction` property wrapped in array
-				signedTxns = await this.hippoSignTxns([(txnOrTxns as AlgonautAtomicTransaction).transaction]);
+
+
+
+				// assign group ID
+				const txnGroup = algosdk.assignGroupID(unwrappedTxns);
+
+
+				
+				// encode txns
+				const txnsToSign = txnGroup.map(txn => {
+					const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString('base64');
+					return encodedTxn;
+				});
+
+				signedTxns = await this.hippoSignTxns(txnsToSign);
+
+
+
+			// HANDLE SINGLE ATOMIC TRANSACTION
 			} else {
-				// single algosdk.Transaction, wrap in array and send to hippo
-				signedTxns = await this.hippoSignTxns([(txnOrTxns as algosdk.Transaction)]);
+				let txn: algosdk.Transaction;
+				if (txnOrTxns && (txnOrTxns as any).transaction) {
+					txn = (txnOrTxns as AlgonautAtomicTransaction).transaction;
+				} else {
+					txn = (txnOrTxns as algosdk.Transaction);
+				}
+
+				// send base64 to hippo
+				const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString('base64');
+				signedTxns = await this.hippoSignTxns([encodedTxn]);
 			}
 
 			if (callbacks?.onSign) callbacks.onSign(signedTxns);
 
-			// send txn group
 			const tx = await this.algodClient.sendRawTransaction(signedTxns).do();
+
+			console.log('tx', tx);
+
 			if (callbacks?.onSend) callbacks.onSend(tx);
 
 			// Wait for transaction to be confirmed
@@ -1511,6 +1542,7 @@ export default class Algonaut {
 
 			return txStatus;
 		} else {
+			console.log('sendTransaction: local');
 			// assume local signing
 			if (Array.isArray(txnOrTxns)) {
 				return await this.sendAtomicTransaction(txnOrTxns, callbacks);
@@ -1558,17 +1590,17 @@ export default class Algonaut {
 
 		if (options?.showFrame) this.hippoWallet.frameBus.showFrame();
 
-		const res = await this.hippoWallet.frameBus.emitAsync<any>(data);
-		console.log('hippo res', res);
-		return res;
+		const payload = await this.hippoWallet.frameBus.emitAsync<any>(data);
+		console.log('hippo payload', payload);
+		return payload;
 	}
 
 	/**
 	 * Sends unsigned transactions to Hippo, awaits signing, returns signed txns
-	 * @param txns Array of Transaction(s)
+	 * @param txns Array of base64 encoded transactions
 	 * @returns {Uint8Array} Signed transactions
 	 */
-	async hippoSignTxns(txns: algosdk.Transaction[]) {
+	async hippoSignTxns(txns: string[]) {
 		console.log('hippoSignTxns');
 
 		const data = {
@@ -1580,7 +1612,14 @@ export default class Algonaut {
 			},
 		}
 
-		return await this.hippoMessageAsync(data, { showFrame: true });
+		const res = await this.hippoMessageAsync(data, { showFrame: true });
+
+		this.hippoWallet.frameBus?.hideFrame();
+
+		if (res.error) throw new Error(res.error);
+		if (res.reject) throw new Error('Transaction request rejected');
+		
+		return res.signedTxns;
 	}
 
 	async hippoSetApp(appCode: string) {
@@ -1669,32 +1708,49 @@ export default class Algonaut {
 
 	}
 
+	signBase64Transactions(txns: string[]): Uint8Array[] | Uint8Array {
+		let decodedTxns: algosdk.Transaction[] = [];
+		txns.forEach(txn => {
+			const decodedTxn = algosdk.decodeUnsignedTransaction(Buffer.from(txn, 'base64'));
+			decodedTxns.push(decodedTxn);
+		});
+		return this.signTransactionGroup(decodedTxns);
+	}
+
 	/**
 	 * Signs an array of Transactions (used in Hippo)
 	 * @param txns Array of algosdk.Transaction
 	 * @returns Uint8Array[] of signed transactions
 	 */
-	signTransactionGroup(txns: algosdk.Transaction[]): Uint8Array[] {
+	signTransactionGroup(txns: algosdk.Transaction[]): Uint8Array[] | Uint8Array {
 		if (!this.account) throw new Error('There is no account!');
 
 		// this is critical, if the group doesn't have an id
 		// the transactions are processed as one-offs!
-		const txnGroup = algosdk.assignGroupID(txns);
-
-		const signed = [] as Uint8Array[];
-
-		// sign all transactions in the group
 		const account = this.account;
-		txns.forEach((txn: algosdk.Transaction, i) => {
-			let signedTx: {
-				txID: string;
-				blob: Uint8Array;
-			};
-			signedTx = algosdk.signTransaction(txnGroup[i], account.sk);
-			signed.push(signedTx.blob);
-		});
+		if (txns.length > 1) {
+			console.log('signing transaction group');
+			const txnGroup = algosdk.assignGroupID(txns);
 
-		return signed;
+			const signed = [] as Uint8Array[];
+
+			// sign all transactions in the group
+			txns.forEach((txn: algosdk.Transaction, i) => {
+				let signedTx: {
+					txID: string;
+					blob: Uint8Array;
+				};
+				signedTx = algosdk.signTransaction(txnGroup[i], account.sk);
+				signed.push(signedTx.blob);
+			});
+
+			return signed;
+		} else {
+			console.log('signing single transaction');
+			console.log(txns);
+			const signedTx = algosdk.signTransaction(txns[0], account.sk);
+			return signedTx.blob;
+		}
 	}
 
 	/**

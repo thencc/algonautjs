@@ -32594,18 +32594,31 @@ var Algonaut = class {
         }
       }
     } else if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === "hippo") {
+      console.log("sendTransaction: hippo");
+      console.log(txnOrTxns);
       let signedTxns;
-      if (Array.isArray(txnOrTxns) && txnOrTxns[0] && txnOrTxns[0].transaction) {
+      if (Array.isArray(txnOrTxns) && txnOrTxns[0] && txnOrTxns[0].transaction && txnOrTxns.length > 1) {
         const unwrappedTxns = txnOrTxns.map((txn) => txn.transaction);
-        signedTxns = await this.hippoSignTxns(unwrappedTxns);
-      } else if (txnOrTxns && txnOrTxns.transaction) {
-        signedTxns = await this.hippoSignTxns([txnOrTxns.transaction]);
+        const txnGroup = import_algosdk.default.assignGroupID(unwrappedTxns);
+        const txnsToSign = txnGroup.map((txn) => {
+          const encodedTxn = import_buffer.Buffer.from(import_algosdk.default.encodeUnsignedTransaction(txn)).toString("base64");
+          return encodedTxn;
+        });
+        signedTxns = await this.hippoSignTxns(txnsToSign);
       } else {
-        signedTxns = await this.hippoSignTxns([txnOrTxns]);
+        let txn;
+        if (txnOrTxns && txnOrTxns.transaction) {
+          txn = txnOrTxns.transaction;
+        } else {
+          txn = txnOrTxns;
+        }
+        const encodedTxn = import_buffer.Buffer.from(import_algosdk.default.encodeUnsignedTransaction(txn)).toString("base64");
+        signedTxns = await this.hippoSignTxns([encodedTxn]);
       }
       if (callbacks?.onSign)
         callbacks.onSign(signedTxns);
       const tx = await this.algodClient.sendRawTransaction(signedTxns).do();
+      console.log("tx", tx);
       if (callbacks?.onSend)
         callbacks.onSend(tx);
       const txStatus = await this.waitForConfirmation(tx.txId);
@@ -32615,6 +32628,7 @@ var Algonaut = class {
         callbacks.onConfirm(txStatus);
       return txStatus;
     } else {
+      console.log("sendTransaction: local");
       if (Array.isArray(txnOrTxns)) {
         return await this.sendAtomicTransaction(txnOrTxns, callbacks);
       } else {
@@ -32650,9 +32664,9 @@ var Algonaut = class {
     }
     if (options?.showFrame)
       this.hippoWallet.frameBus.showFrame();
-    const res = await this.hippoWallet.frameBus.emitAsync(data);
-    console.log("hippo res", res);
-    return res;
+    const payload = await this.hippoWallet.frameBus.emitAsync(data);
+    console.log("hippo payload", payload);
+    return payload;
   }
   async hippoSignTxns(txns) {
     console.log("hippoSignTxns");
@@ -32664,7 +32678,13 @@ var Algonaut = class {
         txns
       }
     };
-    return await this.hippoMessageAsync(data, { showFrame: true });
+    const res = await this.hippoMessageAsync(data, { showFrame: true });
+    this.hippoWallet.frameBus?.hideFrame();
+    if (res.error)
+      throw new Error(res.error);
+    if (res.reject)
+      throw new Error("Transaction request rejected");
+    return res.signedTxns;
   }
   async hippoSetApp(appCode) {
     const data = {
@@ -32720,18 +32740,34 @@ var Algonaut = class {
       throw new Error(e3);
     }
   }
+  signBase64Transactions(txns) {
+    let decodedTxns = [];
+    txns.forEach((txn) => {
+      const decodedTxn = import_algosdk.default.decodeUnsignedTransaction(import_buffer.Buffer.from(txn, "base64"));
+      decodedTxns.push(decodedTxn);
+    });
+    return this.signTransactionGroup(decodedTxns);
+  }
   signTransactionGroup(txns) {
     if (!this.account)
       throw new Error("There is no account!");
-    const txnGroup = import_algosdk.default.assignGroupID(txns);
-    const signed = [];
     const account = this.account;
-    txns.forEach((txn, i3) => {
-      let signedTx;
-      signedTx = import_algosdk.default.signTransaction(txnGroup[i3], account.sk);
-      signed.push(signedTx.blob);
-    });
-    return signed;
+    if (txns.length > 1) {
+      console.log("signing transaction group");
+      const txnGroup = import_algosdk.default.assignGroupID(txns);
+      const signed = [];
+      txns.forEach((txn, i3) => {
+        let signedTx;
+        signedTx = import_algosdk.default.signTransaction(txnGroup[i3], account.sk);
+        signed.push(signedTx.blob);
+      });
+      return signed;
+    } else {
+      console.log("signing single transaction");
+      console.log(txns);
+      const signedTx = import_algosdk.default.signTransaction(txns[0], account.sk);
+      return signedTx.blob;
+    }
   }
   async sendWalletConnectTxns(walletTxns, callbacks) {
     if (this.walletConnect.connected) {

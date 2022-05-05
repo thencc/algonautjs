@@ -352,10 +352,10 @@ export default class Algonaut {
     }): Promise<any>;
     /**
      * Sends unsigned transactions to Hippo, awaits signing, returns signed txns
-     * @param txns Array of Transaction(s)
+     * @param txns Array of base64 encoded transactions
      * @returns {Uint8Array} Signed transactions
      */
-    hippoSignTxns(txns: algosdk.Transaction[]): Promise<any>;
+    hippoSignTxns(txns: string[]): Promise<any>;
     hippoSetApp(appCode: string): Promise<any>;
     hippoConnect(message: string): Promise<any>;
     /**
@@ -368,12 +368,13 @@ export default class Algonaut {
      * @param transactions a Uint8Array of ALREADY SIGNED transactions
      */
     sendAtomicTransaction(transactions: AlgonautAtomicTransaction[], callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
+    signBase64Transactions(txns: string[]): Uint8Array[] | Uint8Array;
     /**
      * Signs an array of Transactions (used in Hippo)
      * @param txns Array of algosdk.Transaction
      * @returns Uint8Array[] of signed transactions
      */
-    signTransactionGroup(txns: algosdk.Transaction[]): Uint8Array[];
+    signTransactionGroup(txns: algosdk.Transaction[]): Uint8Array[] | Uint8Array;
     /**
      * Sends one or multiple transactions via WalletConnect, prompting the user to approve transaction on their phone.
      *
