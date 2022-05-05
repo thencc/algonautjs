@@ -76,6 +76,11 @@ export default class Algonaut {
      */
     setWalletConnectAccount(address: string): void;
     /**
+     * This is the same as setting the WC account
+     * @param address account address
+     */
+    setHippoAccount(address: string): void;
+    /**
      * Creates a wallet address + mnemonic from account's secret key
      * @returns AlgonautWallet Object containing `address` and `mnemonic`
      */
@@ -337,7 +342,22 @@ export default class Algonaut {
      * @returns Promise resolving to AlgonautTransactionStatus
      */
     sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | algosdk.Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
-    hippoSignTxns(txns: algosdk.Transaction[]): Promise<Uint8Array[]>;
+    /**
+     * Sends messages to Hippo via FrameBus
+     * @param data Message to send
+     * @returns Whatever Hippo gives us
+     */
+    hippoMessageAsync(data: any, options?: {
+        showFrame: boolean;
+    }): Promise<any>;
+    /**
+     * Sends unsigned transactions to Hippo, awaits signing, returns signed txns
+     * @param txns Array of Transaction(s)
+     * @returns {Uint8Array} Signed transactions
+     */
+    hippoSignTxns(txns: algosdk.Transaction[]): Promise<any>;
+    hippoSetApp(appCode: string): Promise<any>;
+    hippoConnect(message: string): Promise<any>;
     /**
      * run atomic takes an array of transactions to run in order, each
      * of the atomic transaction methods needs to return an object containing
@@ -348,6 +368,12 @@ export default class Algonaut {
      * @param transactions a Uint8Array of ALREADY SIGNED transactions
      */
     sendAtomicTransaction(transactions: AlgonautAtomicTransaction[], callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
+    /**
+     * Signs an array of Transactions (used in Hippo)
+     * @param txns Array of algosdk.Transaction
+     * @returns Uint8Array[] of signed transactions
+     */
+    signTransactionGroup(txns: algosdk.Transaction[]): Uint8Array[];
     /**
      * Sends one or multiple transactions via WalletConnect, prompting the user to approve transaction on their phone.
      *

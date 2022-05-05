@@ -118,8 +118,6 @@ class Algonaut {
     }
     this.account = account;
     this.address = account.addr;
-    if (this.config)
-      this.config.SIGNING_MODE = "local";
     this.mnemonic = import_algosdk.default.secretKeyToMnemonic(account.sk);
   }
   setWalletConnectAccount(address) {
@@ -130,8 +128,11 @@ class Algonaut {
       addr: address,
       sk: new Uint8Array([])
     };
-    if (this.config)
-      this.config.SIGNING_MODE = "walletconnect";
+  }
+  setHippoAccount(address) {
+    if (!address)
+      throw new Error("No address provided");
+    this.setWalletConnectAccount(address);
   }
   createWallet() {
     this.account = import_algosdk.default.generateAccount();
@@ -152,8 +153,6 @@ class Algonaut {
     try {
       this.account = import_algosdk.default.mnemonicToSecretKey(mnemonic);
       if (import_algosdk.default.isValidAddress(this.account?.addr)) {
-        if (this.config)
-          this.config.SIGNING_MODE = "local";
         return this.account;
       } else {
         throw new Error("Not a valid mnemonic.");
@@ -902,14 +901,21 @@ class Algonaut {
       }
     }
   }
-  async hippoSignTxns(txns) {
-    console.log("hippoSignTxns");
+  async hippoMessageAsync(data, options) {
     if (!this.hippoWallet.frameBus) {
-      throw new Error("no hippo frameBus");
+      throw new Error("No hippo frameBus");
     }
     if (!this.hippoWallet.frameBus.ready) {
       await this.hippoWallet.frameBus.isReady();
     }
+    if (options?.showFrame)
+      this.hippoWallet.frameBus.showFrame();
+    const res = await this.hippoWallet.frameBus.emitAsync(data);
+    console.log("hippo res", res);
+    return res;
+  }
+  async hippoSignTxns(txns) {
+    console.log("hippoSignTxns");
     const data = {
       source: "ncc-hippo-client",
       async: true,
@@ -918,9 +924,28 @@ class Algonaut {
         txns
       }
     };
-    const res = await this.hippoWallet.frameBus.emitAsync(data);
-    console.log("res", res);
-    return res;
+    return await this.hippoMessageAsync(data, { showFrame: true });
+  }
+  async hippoSetApp(appCode) {
+    const data = {
+      source: "ncc-hippo-client",
+      async: true,
+      type: "set-app",
+      payload: { appCode }
+    };
+    return await this.hippoMessageAsync(data);
+  }
+  async hippoConnect(message) {
+    const data = {
+      source: "ncc-hippo-client",
+      async: true,
+      type: "connect",
+      payload: { message }
+    };
+    const account = await this.hippoMessageAsync(data, { showFrame: true });
+    console.log(account);
+    this.setHippoAccount(account.address);
+    return account;
   }
   async sendAtomicTransaction(transactions, callbacks) {
     try {
@@ -954,6 +979,19 @@ class Algonaut {
       console.error("Error sending atomic transaction:");
       throw new Error(e);
     }
+  }
+  signTransactionGroup(txns) {
+    if (!this.account)
+      throw new Error("There is no account!");
+    const txnGroup = import_algosdk.default.assignGroupID(txns);
+    const signed = [];
+    const account = this.account;
+    txns.forEach((txn, i) => {
+      let signedTx;
+      signedTx = import_algosdk.default.signTransaction(txnGroup[i], account.sk);
+      signed.push(signedTx.blob);
+    });
+    return signed;
   }
   async sendWalletConnectTxns(walletTxns, callbacks) {
     if (this.walletConnect.connected) {

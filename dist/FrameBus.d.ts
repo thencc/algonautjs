@@ -15,9 +15,12 @@ export declare class FrameBus {
     });
     initId(walElId: string): void;
     initSrc(src?: string): Promise<void>;
+    showFrame(): void;
+    hideFrame(): void;
     destroy(): void;
     isReady(): Promise<boolean>;
     onMessage(event: MessageEvent): void;
     emit(data: Record<string, any>): void;
     emitAsync<T>(data: Record<string, any>): Promise<T>;
+    getStyles(): string;
 }

@@ -31604,6 +31604,9 @@ var FrameBus = class {
         console.error("err constructing FrameBus");
       }
     }
+    const stylesheet = document.createElement("style");
+    stylesheet.innerText = this.getStyles();
+    document.head.appendChild(stylesheet);
   }
   initId(walElId) {
     console.log("initId");
@@ -31615,6 +31618,7 @@ var FrameBus = class {
     }
     this.walEl = walEl;
     const walWin = walEl.contentWindow;
+    walEl.classList.add("hippo-frame");
     if (!walWin) {
       console.error("no walWin");
       return;
@@ -31630,12 +31634,7 @@ var FrameBus = class {
     this.initing = true;
     const walEl = document.createElement("iframe");
     walEl.src = src;
-    walEl.setAttribute("style", `
-			position: fixed;
-			top: 100px;
-			left: 0;
-			width: 100vw;
-			height: 100vh;`);
+    walEl.classList.add("hippo-frame");
     walEl.setAttribute("name", "walFrame");
     walEl.setAttribute("frameborder", "0");
     this.walEl = walEl;
@@ -31652,6 +31651,16 @@ var FrameBus = class {
       this.onMsgHandler = this.onMessage.bind(this);
       window.addEventListener("message", this.onMsgHandler, false);
     });
+  }
+  showFrame() {
+    if (this.walEl) {
+      this.walEl.classList.add("visible");
+    }
+  }
+  hideFrame() {
+    if (this.walEl) {
+      this.walEl.classList.remove("visible");
+    }
   }
   destroy() {
     if (this.walEl) {
@@ -31691,6 +31700,9 @@ var FrameBus = class {
   onMessage(event) {
     if (event.data.source && event.data.source == "ncc-hippo-wallet") {
       console.log("client got mess", event.data);
+      if (event.data.type === "hide") {
+        this.hideFrame();
+      }
       if (event.data["async"] && event.data.async == true && event.data.uuid) {
         const outgoing = this.requests.get(event.data.uuid);
         if (!outgoing) {
@@ -31729,6 +31741,29 @@ var FrameBus = class {
     return new Promise((resolve) => {
       this.requests.set(uuid2, { req: data, resolve });
     });
+  }
+  getStyles() {
+    return `.hippo-frame {
+			position: fixed;
+			top: 100vh;
+			left: 0;
+			width: 100vw;
+			height: 100vh;
+			transition: 0.1s top ease-out;
+			box-shadow: 0 -2px 20px rgba(0,0,0,0.4);
+		}
+		
+		.hippo-frame.visible {
+			top: 50px;
+			transition: 0.1s top ease-in;
+		}
+		
+		@media screen and (min-width: 500px) {
+			.hippo-frame {
+				max-width: 400px;
+				left: calc(50% - 200px);
+			}
+		}`;
   }
 };
 
@@ -31823,8 +31858,6 @@ var Algonaut = class {
     }
     this.account = account;
     this.address = account.addr;
-    if (this.config)
-      this.config.SIGNING_MODE = "local";
     this.mnemonic = import_algosdk.default.secretKeyToMnemonic(account.sk);
   }
   setWalletConnectAccount(address) {
@@ -31835,8 +31868,11 @@ var Algonaut = class {
       addr: address,
       sk: new Uint8Array([])
     };
-    if (this.config)
-      this.config.SIGNING_MODE = "walletconnect";
+  }
+  setHippoAccount(address) {
+    if (!address)
+      throw new Error("No address provided");
+    this.setWalletConnectAccount(address);
   }
   createWallet() {
     this.account = import_algosdk.default.generateAccount();
@@ -31857,8 +31893,6 @@ var Algonaut = class {
     try {
       this.account = import_algosdk.default.mnemonicToSecretKey(mnemonic);
       if (import_algosdk.default.isValidAddress(this.account?.addr)) {
-        if (this.config)
-          this.config.SIGNING_MODE = "local";
         return this.account;
       } else {
         throw new Error("Not a valid mnemonic.");
@@ -32607,14 +32641,21 @@ var Algonaut = class {
       }
     }
   }
-  async hippoSignTxns(txns) {
-    console.log("hippoSignTxns");
+  async hippoMessageAsync(data, options) {
     if (!this.hippoWallet.frameBus) {
-      throw new Error("no hippo frameBus");
+      throw new Error("No hippo frameBus");
     }
     if (!this.hippoWallet.frameBus.ready) {
       await this.hippoWallet.frameBus.isReady();
     }
+    if (options?.showFrame)
+      this.hippoWallet.frameBus.showFrame();
+    const res = await this.hippoWallet.frameBus.emitAsync(data);
+    console.log("hippo res", res);
+    return res;
+  }
+  async hippoSignTxns(txns) {
+    console.log("hippoSignTxns");
     const data = {
       source: "ncc-hippo-client",
       async: true,
@@ -32623,9 +32664,28 @@ var Algonaut = class {
         txns
       }
     };
-    const res = await this.hippoWallet.frameBus.emitAsync(data);
-    console.log("res", res);
-    return res;
+    return await this.hippoMessageAsync(data, { showFrame: true });
+  }
+  async hippoSetApp(appCode) {
+    const data = {
+      source: "ncc-hippo-client",
+      async: true,
+      type: "set-app",
+      payload: { appCode }
+    };
+    return await this.hippoMessageAsync(data);
+  }
+  async hippoConnect(message) {
+    const data = {
+      source: "ncc-hippo-client",
+      async: true,
+      type: "connect",
+      payload: { message }
+    };
+    const account = await this.hippoMessageAsync(data, { showFrame: true });
+    console.log(account);
+    this.setHippoAccount(account.address);
+    return account;
   }
   async sendAtomicTransaction(transactions, callbacks) {
     try {
@@ -32659,6 +32719,19 @@ var Algonaut = class {
       console.error("Error sending atomic transaction:");
       throw new Error(e3);
     }
+  }
+  signTransactionGroup(txns) {
+    if (!this.account)
+      throw new Error("There is no account!");
+    const txnGroup = import_algosdk.default.assignGroupID(txns);
+    const signed = [];
+    const account = this.account;
+    txns.forEach((txn, i3) => {
+      let signedTx;
+      signedTx = import_algosdk.default.signTransaction(txnGroup[i3], account.sk);
+      signed.push(signedTx.blob);
+    });
+    return signed;
   }
   async sendWalletConnectTxns(walletTxns, callbacks) {
     if (this.walletConnect.connected) {

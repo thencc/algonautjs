@@ -250,7 +250,7 @@ export default class Algonaut {
 
 		this.account = account;
 		this.address = account.addr;
-		if (this.config) this.config.SIGNING_MODE = 'local';
+		// if (this.config) this.config.SIGNING_MODE = 'local';
 		this.mnemonic = algosdk.secretKeyToMnemonic(account.sk);
 	}
 
@@ -267,7 +267,16 @@ export default class Algonaut {
 			addr: address,
 			sk: new Uint8Array([])
 		};
-		if (this.config) this.config.SIGNING_MODE = 'walletconnect';
+		// if (this.config) this.config.SIGNING_MODE = 'walletconnect';
+	}
+
+	/**
+	 * This is the same as setting the WC account
+	 * @param address account address
+	 */
+	setHippoAccount(address: string): void {
+		if (!address) throw new Error('No address provided');
+		this.setWalletConnectAccount(address);
 	}
 
 	/**
@@ -301,7 +310,7 @@ export default class Algonaut {
 		try {
 			this.account = algosdk.mnemonicToSecretKey(mnemonic);
 			if (algosdk.isValidAddress(this.account?.addr)) {
-				if (this.config) this.config.SIGNING_MODE = 'local';
+				//if (this.config) this.config.SIGNING_MODE = 'local';
 				return this.account;
 			} else {
 				throw new Error('Not a valid mnemonic.');
@@ -1533,17 +1542,34 @@ export default class Algonaut {
 		}
 	}
 
-	async hippoSignTxns(txns: algosdk.Transaction[]) {
-		console.log('hippoSignTxns');
-
-		// hippo expects algosdk.Transaction[]
+	/**
+	 * Sends messages to Hippo via FrameBus
+	 * @param data Message to send
+	 * @returns Whatever Hippo gives us
+	 */
+	async hippoMessageAsync(data: any, options?: { showFrame: boolean }): Promise<any> {
 		if (!this.hippoWallet.frameBus) {
-			throw new Error('no hippo frameBus');
+			throw new Error('No hippo frameBus');
 		}
 
 		if (!this.hippoWallet.frameBus.ready) {
 			await this.hippoWallet.frameBus.isReady();
 		}
+
+		if (options?.showFrame) this.hippoWallet.frameBus.showFrame();
+
+		const res = await this.hippoWallet.frameBus.emitAsync<any>(data);
+		console.log('hippo res', res);
+		return res;
+	}
+
+	/**
+	 * Sends unsigned transactions to Hippo, awaits signing, returns signed txns
+	 * @param txns Array of Transaction(s)
+	 * @returns {Uint8Array} Signed transactions
+	 */
+	async hippoSignTxns(txns: algosdk.Transaction[]) {
+		console.log('hippoSignTxns');
 
 		const data = {
 			source: 'ncc-hippo-client',
@@ -1553,13 +1579,33 @@ export default class Algonaut {
 				txns
 			},
 		}
-		// this.hippoWallet.frameBus.emit(data);
-		const res = await this.hippoWallet.frameBus.emitAsync<Uint8Array[]>(data);
-		console.log('res', res);
-		return res;
 
-		// return expects:
-		// return [new Uint8Array()];
+		return await this.hippoMessageAsync(data, { showFrame: true });
+	}
+
+	async hippoSetApp(appCode: string) {
+		const data = {
+			source: 'ncc-hippo-client',
+			async: true,
+			type: 'set-app',
+			payload: { appCode }
+		}
+
+		return await this.hippoMessageAsync(data);
+	}
+
+	async hippoConnect(message: string): Promise<any> {
+		const data = {
+			source: 'ncc-hippo-client',
+			async: true,
+			type: 'connect',
+			payload: { message }
+		};
+
+		const account = await this.hippoMessageAsync(data, { showFrame: true });
+		console.log(account);
+		this.setHippoAccount(account.address);
+		return account;
 	}
 
 	/**
@@ -1621,6 +1667,34 @@ export default class Algonaut {
 			throw new Error(e);
 		}
 
+	}
+
+	/**
+	 * Signs an array of Transactions (used in Hippo)
+	 * @param txns Array of algosdk.Transaction
+	 * @returns Uint8Array[] of signed transactions
+	 */
+	signTransactionGroup(txns: algosdk.Transaction[]): Uint8Array[] {
+		if (!this.account) throw new Error('There is no account!');
+
+		// this is critical, if the group doesn't have an id
+		// the transactions are processed as one-offs!
+		const txnGroup = algosdk.assignGroupID(txns);
+
+		const signed = [] as Uint8Array[];
+
+		// sign all transactions in the group
+		const account = this.account;
+		txns.forEach((txn: algosdk.Transaction, i) => {
+			let signedTx: {
+				txID: string;
+				blob: Uint8Array;
+			};
+			signedTx = algosdk.signTransaction(txnGroup[i], account.sk);
+			signed.push(signedTx.blob);
+		});
+
+		return signed;
 	}
 
 	/**

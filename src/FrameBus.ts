@@ -39,6 +39,11 @@ export class FrameBus {
 				console.error('err constructing FrameBus');
 			}
 		}
+
+		// insert styles
+		const stylesheet = document.createElement('style');
+		stylesheet.innerText = this.getStyles();
+		document.head.appendChild(stylesheet);
 	}
 
 	initId(walElId: string) {
@@ -55,6 +60,7 @@ export class FrameBus {
 		this.walEl = walEl;
 
 		const walWin = walEl.contentWindow;
+		walEl.classList.add('hippo-frame');
 		// console.log('walWin', walWin);
 		if (!walWin) {
 			console.error('no walWin');
@@ -79,13 +85,16 @@ export class FrameBus {
 		// make element
 		const walEl = document.createElement('iframe');
 		walEl.src = src;
-		walEl.setAttribute('style', `
-			position: fixed;
-			top: 100px;
-			left: 0;
-			width: 100vw;
-			height: 100vh;`
-		);
+		// walEl.setAttribute('style', `
+		// 	position: fixed;
+		// 	top: 100px;
+		// 	left: 0;
+		// 	width: 100vw;
+		// 	height: 100vh;
+		// 	transition: 0.1s top ease-out;
+		// 	box-shadow: 0 -2px 20px rgba(0,0,0,0.4);`
+		// );
+		walEl.classList.add('hippo-frame');
 		walEl.setAttribute('name', 'walFrame');
 		walEl.setAttribute('frameborder', '0');
 		this.walEl = walEl;
@@ -109,6 +118,18 @@ export class FrameBus {
 			this.onMsgHandler = this.onMessage.bind(this);
 			window.addEventListener('message', this.onMsgHandler, false);
 		});
+	}
+
+	showFrame() {
+		if (this.walEl) {
+			this.walEl.classList.add('visible');
+		}
+	}
+
+	hideFrame() {
+		if (this.walEl) {
+			this.walEl.classList.remove('visible');
+		}
 	}
 
 	destroy() {
@@ -163,6 +184,11 @@ export class FrameBus {
 			// event.data.source.substring(0, 4) == 'ncc-') {
 			// event.data.source.substring(0, 16) == 'ncc-hippo-wallet') {
 			console.log('client got mess', event.data);
+			
+			// handle hide messages
+			if (event.data.type === 'hide') {
+				this.hideFrame();
+			}
 
 			// async message handling back to callee resolver
 			if (event.data['async'] && event.data.async == true && event.data.uuid) {
@@ -229,6 +255,30 @@ export class FrameBus {
 			// this.requests.set(uuid, resolve); // works
 			this.requests.set(uuid, { req: data, resolve }); // works, more info
 		});
+	}
+
+	getStyles(): string {
+		return `.hippo-frame {
+			position: fixed;
+			top: 100vh;
+			left: 0;
+			width: 100vw;
+			height: 100vh;
+			transition: 0.1s top ease-out;
+			box-shadow: 0 -2px 20px rgba(0,0,0,0.4);
+		}
+		
+		.hippo-frame.visible {
+			top: 50px;
+			transition: 0.1s top ease-in;
+		}
+		
+		@media screen and (min-width: 500px) {
+			.hippo-frame {
+				max-width: 400px;
+				left: calc(50% - 200px);
+			}
+		}`;
 	}
 
 	// wallet needs to handle asyncMessages like...
