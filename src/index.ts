@@ -176,6 +176,11 @@ export default class Algonaut {
 
 		// hippo init
 		if (config.SIGNING_MODE && config.SIGNING_MODE == 'hippo') {
+			if (!config.HIPPO_SRC) {
+				// default hippo
+				config.HIPPO_SRC = 'https://hippoz.web.app';
+			}
+			
 			this.initHippo({
 				id: config.HIPPO_ID,
 				src: config.HIPPO_SRC
