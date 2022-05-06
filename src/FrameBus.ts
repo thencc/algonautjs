@@ -95,6 +95,7 @@ export class FrameBus {
 		// 	box-shadow: 0 -2px 20px rgba(0,0,0,0.4);`
 		// );
 		walEl.classList.add('hippo-frame');
+		walEl.setAttribute('allow', 'clipboard-write'); // needed to copy stuff to clipboard
 		walEl.setAttribute('name', 'walFrame');
 		walEl.setAttribute('frameborder', '0');
 		this.walEl = walEl;

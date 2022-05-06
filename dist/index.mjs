@@ -31635,6 +31635,7 @@ var FrameBus = class {
     const walEl = document.createElement("iframe");
     walEl.src = src;
     walEl.classList.add("hippo-frame");
+    walEl.setAttribute("allow", "clipboard-write");
     walEl.setAttribute("name", "walFrame");
     walEl.setAttribute("frameborder", "0");
     this.walEl = walEl;
