@@ -188,7 +188,7 @@ class Algonaut {
         returnValue.message = "Transaction confirmed in round " + pendingInfo["confirmed-round"];
         break;
       }
-      lastround++;
+      lastround = (await this.algodClient.status().do())["last-round"];
     }
     return returnValue;
   }
@@ -854,8 +854,6 @@ class Algonaut {
         }
       }
     } else if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === "hippo") {
-      console.log("sendTransaction: hippo");
-      console.log(txnOrTxns);
       let signedTxns;
       if (Array.isArray(txnOrTxns) && txnOrTxns[0] && txnOrTxns[0].transaction && txnOrTxns.length > 1) {
         const unwrappedTxns = txnOrTxns.map((txn) => txn.transaction);
@@ -878,7 +876,6 @@ class Algonaut {
       if (callbacks?.onSign)
         callbacks.onSign(signedTxns);
       const tx = await this.algodClient.sendRawTransaction(signedTxns).do();
-      console.log("tx", tx);
       if (callbacks?.onSend)
         callbacks.onSend(tx);
       const txStatus = await this.waitForConfirmation(tx.txId);

@@ -368,7 +368,7 @@ export default class Algonaut {
 				break;
 			}
 
-			lastround++;
+			lastround = (await this.algodClient.status().do())['last-round'];
 		}
 
 		return returnValue;
@@ -1480,8 +1480,6 @@ export default class Algonaut {
 			}
 		} else if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === 'hippo') {
 			// let's do the hippo thing
-			console.log('sendTransaction: hippo');
-			console.log(txnOrTxns);
 
 			// 1. depending on how txns are sent into `sendTransaction`, we need to deal with them
 			let signedTxns;
@@ -1491,8 +1489,6 @@ export default class Algonaut {
 			if (Array.isArray(txnOrTxns) && txnOrTxns[0] && txnOrTxns[0].transaction && txnOrTxns.length > 1) {
 				// array of AlgonautAtomicTransaction, map these to get .transaction out
 				const unwrappedTxns = txnOrTxns.map(txn => txn.transaction);
-
-
 
 				// assign group ID
 				const txnGroup = algosdk.assignGroupID(unwrappedTxns);
@@ -1506,8 +1502,6 @@ export default class Algonaut {
 				});
 
 				signedTxns = await this.hippoSignTxns(txnsToSign);
-
-
 
 			// HANDLE SINGLE ATOMIC TRANSACTION
 			} else {
@@ -1527,12 +1521,11 @@ export default class Algonaut {
 
 			const tx = await this.algodClient.sendRawTransaction(signedTxns).do();
 
-			console.log('tx', tx);
-
 			if (callbacks?.onSend) callbacks.onSend(tx);
 
 			// Wait for transaction to be confirmed
 			const txStatus = await this.waitForConfirmation(tx.txId);
+
 			const transactionResponse = await this.algodClient
 				.pendingTransactionInformation(tx.txId)
 				.do();
