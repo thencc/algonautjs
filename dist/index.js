@@ -1004,10 +1004,25 @@ class Algonaut {
   signBase64Transactions(txns) {
     let decodedTxns = [];
     txns.forEach((txn) => {
-      const decodedTxn = import_algosdk.default.decodeUnsignedTransaction(import_buffer.Buffer.from(txn, "base64"));
+      const decodedTxn = this.decodeBase64UnsignedTransaction(txn);
       decodedTxns.push(decodedTxn);
     });
     return this.signTransactionGroup(decodedTxns);
+  }
+  decodeBase64UnsignedTransaction(txn) {
+    return import_algosdk.default.decodeUnsignedTransaction(import_buffer.Buffer.from(txn, "base64"));
+  }
+  txnSummary(txn) {
+    if (txn.type) {
+      const to = import_algosdk.default.encodeAddress(txn.to.publicKey);
+      if (txn.type === "pay") {
+        return `Send ${import_algosdk.default.microalgosToAlgos(txn.amount)} ALGO to ${to}`;
+      } else {
+        return `Txn of type ${txn.type} to ${to}`;
+      }
+    } else {
+      return txn.toString();
+    }
   }
   signTransactionGroup(txns) {
     if (!this.account)

@@ -1716,10 +1716,32 @@ export default class Algonaut {
 	signBase64Transactions(txns: string[]): Uint8Array[] | Uint8Array {
 		let decodedTxns: algosdk.Transaction[] = [];
 		txns.forEach(txn => {
-			const decodedTxn = algosdk.decodeUnsignedTransaction(Buffer.from(txn, 'base64'));
+			const decodedTxn = this.decodeBase64UnsignedTransaction(txn);
 			decodedTxns.push(decodedTxn);
 		});
 		return this.signTransactionGroup(decodedTxns);
+	}
+
+	decodeBase64UnsignedTransaction(txn: string) {
+		return algosdk.decodeUnsignedTransaction(Buffer.from(txn, 'base64'));
+	}
+
+	/**
+	 * Describes an Algorand transaction, for display in Hippo
+	 * @param txn Transaction to describe
+	 */
+	txnSummary(txn: algosdk.Transaction): string {
+		if (txn.type) {
+			const to = algosdk.encodeAddress(txn.to.publicKey);
+			if (txn.type === 'pay') {
+				return `Send ${algosdk.microalgosToAlgos(txn.amount as number)} ALGO to ${to}`;
+			} else {
+				return `Txn of type ${txn.type} to ${to}`;
+			}
+		} else {
+			// no better option
+			return txn.toString();
+		}
 	}
 
 	/**

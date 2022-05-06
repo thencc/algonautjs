@@ -374,6 +374,12 @@ export default class Algonaut {
      */
     sendAtomicTransaction(transactions: AlgonautAtomicTransaction[], callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
     signBase64Transactions(txns: string[]): Uint8Array[] | Uint8Array;
+    decodeBase64UnsignedTransaction(txn: string): algosdk.Transaction;
+    /**
+     * Describes an Algorand transaction, for display in Hippo
+     * @param txn Transaction to describe
+     */
+    txnSummary(txn: algosdk.Transaction): string;
     /**
      * Signs an array of Transactions (used in Hippo)
      * @param txns Array of algosdk.Transaction
