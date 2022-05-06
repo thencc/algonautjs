@@ -359,6 +359,11 @@ export default class Algonaut {
     hippoSetApp(appCode: string): Promise<any>;
     hippoConnect(message: string): Promise<any>;
     /**
+     * Tells Hippo to close your session & clear local storage.
+     * @returns Success or fail message
+     */
+    hippoDisconnect(): Promise<any>;
+    /**
      * run atomic takes an array of transactions to run in order, each
      * of the atomic transaction methods needs to return an object containing
      * the transaction and the signed transaction

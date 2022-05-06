@@ -32659,6 +32659,8 @@ var Algonaut = class {
     if (!this.hippoWallet.frameBus.ready) {
       await this.hippoWallet.frameBus.isReady();
     }
+    data.source = "ncc-hippo-client";
+    data.async = true;
     if (options?.showFrame)
       this.hippoWallet.frameBus.showFrame();
     const payload = await this.hippoWallet.frameBus.emitAsync(data);
@@ -32668,8 +32670,6 @@ var Algonaut = class {
   async hippoSignTxns(txns) {
     console.log("hippoSignTxns");
     const data = {
-      source: "ncc-hippo-client",
-      async: true,
       type: "sign-txns",
       payload: {
         txns
@@ -32685,8 +32685,6 @@ var Algonaut = class {
   }
   async hippoSetApp(appCode) {
     const data = {
-      source: "ncc-hippo-client",
-      async: true,
       type: "set-app",
       payload: { appCode }
     };
@@ -32694,8 +32692,6 @@ var Algonaut = class {
   }
   async hippoConnect(message) {
     const data = {
-      source: "ncc-hippo-client",
-      async: true,
       type: "connect",
       payload: { message }
     };
@@ -32703,6 +32699,14 @@ var Algonaut = class {
     console.log(account);
     this.setHippoAccount(account.address);
     return account;
+  }
+  async hippoDisconnect() {
+    const data = {
+      type: "disconnect"
+    };
+    const res = await this.hippoMessageAsync(data, { showFrame: false });
+    console.log(res);
+    return res;
   }
   async sendAtomicTransaction(transactions, callbacks) {
     try {

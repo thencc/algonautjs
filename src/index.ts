@@ -1581,6 +1581,9 @@ export default class Algonaut {
 			await this.hippoWallet.frameBus.isReady();
 		}
 
+		data.source = 'ncc-hippo-client';
+		data.async = true;
+
 		if (options?.showFrame) this.hippoWallet.frameBus.showFrame();
 
 		const payload = await this.hippoWallet.frameBus.emitAsync<any>(data);
@@ -1597,8 +1600,6 @@ export default class Algonaut {
 		console.log('hippoSignTxns');
 
 		const data = {
-			source: 'ncc-hippo-client',
-			async: true, // tells frameBus to add to await queue + wallet to return
 			type: 'sign-txns', // determines payload type
 			payload: {
 				txns
@@ -1617,8 +1618,6 @@ export default class Algonaut {
 
 	async hippoSetApp(appCode: string) {
 		const data = {
-			source: 'ncc-hippo-client',
-			async: true,
 			type: 'set-app',
 			payload: { appCode }
 		}
@@ -1628,8 +1627,6 @@ export default class Algonaut {
 
 	async hippoConnect(message: string): Promise<any> {
 		const data = {
-			source: 'ncc-hippo-client',
-			async: true,
 			type: 'connect',
 			payload: { message }
 		};
@@ -1638,6 +1635,21 @@ export default class Algonaut {
 		console.log(account);
 		this.setHippoAccount(account.address);
 		return account;
+	}
+
+	/**
+	 * Tells Hippo to close your session & clear local storage.
+	 * @returns Success or fail message
+	 */
+	async hippoDisconnect(): Promise<any> {
+		const data = {
+			type: 'disconnect'
+		}
+
+		const res = await this.hippoMessageAsync(data, { showFrame: false });
+		console.log(res);
+
+		return res;
 	}
 
 	/**
