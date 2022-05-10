@@ -26,7 +26,7 @@ jobs:
 
     - run: npm i semver-compare
 
-    - run: semver-compare $PKG_VERSION_LOCAL gt $PKG_VERSION_PUBLISHED && SHOULD_PUBLISH=1
+    - run: npx semver-compare $PKG_VERSION_LOCAL gt $PKG_VERSION_PUBLISHED && SHOULD_PUBLISH=1
 
     # - run: if [[ $PKG_VERSION_LOCAL > $PKG_VERSION_PUBLISHED ]] ; then SHOULD_PUBLISH=1; else SHOULD_PUBLISH=0 ; fi
     # - run: echo $SHOULD_PUBLISH
