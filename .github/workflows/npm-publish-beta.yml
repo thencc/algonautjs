@@ -16,9 +16,10 @@ jobs:
     - run: echo $PKG_VERSION_LOCAL
     - run: if [[ $PKG_VERSION_LOCAL > $PKG_VERSION_PUBLISHED ]] ; then SHOULD_DEPLOY=1; else SHOULD_DEPLOY=0 ; fi
     - run: echo $SHOULD_DEPLOY
+    - run: echo "DO_PUBLISH=$SHOULD_DEPLOY" >> $GITHUB_ENV
 
   publish:
-    if: $SHOULD_DEPLOY == 1
+    if: ${{ env.DO_PUBLISH == 1 }}
     runs-on: ubuntu-latest
     steps:
       - name: "checkout"
