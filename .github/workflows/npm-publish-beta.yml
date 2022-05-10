@@ -1,4 +1,4 @@
-name: NPM Publish (beta version)
+name: NPM Publish@beta
 
 on:
   push:
@@ -9,14 +9,16 @@ jobs:
   check_pkg_version:
     runs-on: ubuntu-latest
     steps:
-    - name: "should publish?"
-      run: PKG_VERSION_PUBLISHED=`npm view algonaut.js version`
+    - run: echo '::set-output name=action_echo::enabled'
+    - run: PKG_VERSION_PUBLISHED=`npm view algonaut.js version`
     - run: echo $PKG_VERSION_PUBLISHED
     - run: PKG_VERSION_LOCAL=`cat package.json | jq -r '.version'`
     - run: echo $PKG_VERSION_LOCAL
     - run: if [[ $PKG_VERSION_LOCAL > $PKG_VERSION_PUBLISHED ]] ; then SHOULD_DEPLOY=1; else SHOULD_DEPLOY=0 ; fi
     - run: echo $SHOULD_DEPLOY
-    - run: echo "DO_PUBLISH=$SHOULD_DEPLOY" >> $GITHUB_ENV
+    - run: if [[ $SHOULD_DEPLOY ]] ; then echo "will npm publish@beta"; else echo "no npm publish needed" ; fi
+    - name: "save result to job env"
+      run: echo "DO_PUBLISH=$SHOULD_DEPLOY" >> $GITHUB_ENV
 
   publish:
     needs: [ check_pkg_version ]
