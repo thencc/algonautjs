@@ -427,10 +427,10 @@ export default class Algonaut {
 	*/
 	async atomicCreateAsset(args: AlgonautCreateAssetArguments): Promise<AlgonautAtomicTransaction> {
 		if (!args.assetName) throw new Error('args.assetName not provided.');
-		if (!args.symbol) 	 throw new Error('args.symbol not provided');
-		if (!args.decimals)  throw new Error('args.decimals not provided.');
-		if (!args.amount) 	 throw new Error('args.amount not provided.');
-		if (!this.account) 	 throw new Error('There was no account set in Algonaut');
+		if (!args.symbol) throw new Error('args.symbol not provided');
+		if (!args.decimals) throw new Error('args.decimals not provided.');
+		if (!args.amount) throw new Error('args.amount not provided.');
+		if (!this.account) throw new Error('There was no account set in Algonaut');
 
 
 		if (!args.metaBlock) {
@@ -718,7 +718,8 @@ export default class Algonaut {
 			appArgs: processedArgs,
 			accounts: args.optionalFields?.accounts || undefined,
 			foreignApps: args.optionalFields?.applications || undefined,
-			foreignAssets: args.optionalFields?.assets || undefined
+			foreignAssets: args.optionalFields?.assets || undefined,
+			note: args.optionalFields?.note ? this.to8Arr(args.optionalFields.note) : undefined
 		});
 
 		return {
@@ -904,7 +905,7 @@ export default class Algonaut {
 					accounts: args.optionalFields?.accounts ? args.optionalFields.accounts : undefined,
 					foreignApps: args.optionalFields?.applications ? args.optionalFields.applications : undefined,
 					foreignAssets: args.optionalFields?.assets ? args.optionalFields.assets : undefined,
-					note: args.optionalFields?.note ? new Uint8Array(Buffer.from(args.optionalFields.note, 'utf8')) : undefined
+					note: args.optionalFields?.note ? this.to8Arr(args.optionalFields.note) : undefined
 				});
 				const txId = txn.txID().toString();
 
@@ -975,7 +976,7 @@ export default class Algonaut {
 					args.optionalFields?.accounts ? args.optionalFields.accounts : undefined,
 					args.optionalFields?.applications ? args.optionalFields.applications : undefined,
 					args.optionalFields?.assets ? args.optionalFields.assets : undefined,
-					args.optionalFields?.note ? new Uint8Array(Buffer.from(args.optionalFields.note, 'utf8')) : undefined
+					args.optionalFields?.note ? this.to8Arr(args.optionalFields.note) : undefined
 				);
 
 				return {
@@ -1110,7 +1111,7 @@ export default class Algonaut {
 				args.optionalFields?.accounts ? args.optionalFields.accounts : undefined,
 				args.optionalFields?.applications ? args.optionalFields.applications : undefined,
 				args.optionalFields?.assets ? args.optionalFields.assets : undefined,
-				args.optionalFields?.note ? new Uint8Array(Buffer.from(args.optionalFields.note, 'utf8')) : undefined
+				args.optionalFields?.note ? this.to8Arr(args.optionalFields.note) : undefined
 			);
 
 			return {
@@ -1155,7 +1156,7 @@ export default class Algonaut {
 		if (!args.to) throw new Error('You did not specify a to address');
 
 		if (this.account) {
-			const encodedNote = args.note ? new Uint8Array(Buffer.from(args.note, 'utf8')) : new Uint8Array();
+			const encodedNote = args.note ? this.to8Arr(args.note) : new Uint8Array();
 
 			const transaction =
 				algosdk.makePaymentTxnWithSuggestedParamsFromObject({
@@ -1587,7 +1588,6 @@ export default class Algonaut {
 				return txStatus;
 			} else {
 				throw new Error('there were no signed transactions returned');
-				this.stopReqAF();
 			}
 
 		} else {
@@ -1880,7 +1880,7 @@ export default class Algonaut {
 
 		// TODO helpful for desktop debugging but redo isMobile check
 		if (isBrowser()) {
-		//if (isBrowser() && isMobile()) {
+			//if (isBrowser() && isMobile()) {
 			// reqaf fix
 			const keepAlive = () => {
 				// console.log('keepAlive');
@@ -2065,6 +2065,15 @@ export default class Algonaut {
 		return accounts;
 	}
 
+	/**
+	 *
+	 * @param str string
+	 * @param enc the encoding type of the string (defaults to utf8)
+	 * @returns string encoded as Uint8Array
+	 */
+	to8Arr(str: string, enc: BufferEncoding = 'utf8'): Uint8Array {
+		return new Uint8Array(Buffer.from(str, enc));
+	}
 
 }
 

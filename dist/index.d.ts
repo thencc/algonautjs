@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import algosdk from 'algosdk';
 import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautAppState, AlgonautError, WalletConnectListener, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments } from './AlgonautTypes';
 import { IInternalEvent } from '@walletconnect/types';
@@ -471,4 +472,11 @@ export default class Algonaut {
      * @returns Array of Objects with address fields: [{ address: <String> }, ...]
      */
     getAccounts(ledger: string): Promise<any>;
+    /**
+     *
+     * @param str string
+     * @param enc the encoding type of the string (defaults to utf8)
+     * @returns string encoded as Uint8Array
+     */
+    to8Arr(str: string, enc?: BufferEncoding): Uint8Array;
 }

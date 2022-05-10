@@ -31952,7 +31952,8 @@ var Algonaut = class {
       appArgs: processedArgs,
       accounts: args.optionalFields?.accounts || void 0,
       foreignApps: args.optionalFields?.applications || void 0,
-      foreignAssets: args.optionalFields?.assets || void 0
+      foreignAssets: args.optionalFields?.assets || void 0,
+      note: args.optionalFields?.note ? this.to8Arr(args.optionalFields.note) : void 0
     });
     return {
       transaction: callAppTransaction,
@@ -32076,7 +32077,7 @@ var Algonaut = class {
           accounts: args.optionalFields?.accounts ? args.optionalFields.accounts : void 0,
           foreignApps: args.optionalFields?.applications ? args.optionalFields.applications : void 0,
           foreignAssets: args.optionalFields?.assets ? args.optionalFields.assets : void 0,
-          note: args.optionalFields?.note ? new Uint8Array(import_buffer.Buffer.from(args.optionalFields.note, "utf8")) : void 0
+          note: args.optionalFields?.note ? this.to8Arr(args.optionalFields.note) : void 0
         });
         const txId = txn.txID().toString();
         const result = await this.sendTransaction(txn, callbacks);
@@ -32116,7 +32117,7 @@ var Algonaut = class {
         if (!approvalProgram || !clearProgram) {
           throw new Error("Error: you must provide an approval program and a clear state program.");
         }
-        const applicationCreateTransaction = import_algosdk.default.makeApplicationCreateTxn(sender, params, onComplete, approvalProgram, clearProgram, args.schema.localInts, args.schema.localBytes, args.schema.globalInts, args.schema.globalBytes, this.encodeArguments(args.appArgs), args.optionalFields?.accounts ? args.optionalFields.accounts : void 0, args.optionalFields?.applications ? args.optionalFields.applications : void 0, args.optionalFields?.assets ? args.optionalFields.assets : void 0, args.optionalFields?.note ? new Uint8Array(import_buffer.Buffer.from(args.optionalFields.note, "utf8")) : void 0);
+        const applicationCreateTransaction = import_algosdk.default.makeApplicationCreateTxn(sender, params, onComplete, approvalProgram, clearProgram, args.schema.localInts, args.schema.localBytes, args.schema.globalInts, args.schema.globalBytes, this.encodeArguments(args.appArgs), args.optionalFields?.accounts ? args.optionalFields.accounts : void 0, args.optionalFields?.applications ? args.optionalFields.applications : void 0, args.optionalFields?.assets ? args.optionalFields.assets : void 0, args.optionalFields?.note ? this.to8Arr(args.optionalFields.note) : void 0);
         return {
           transaction: applicationCreateTransaction,
           transactionSigner: this.account,
@@ -32189,7 +32190,7 @@ var Algonaut = class {
       if (!approvalProgram || !clearProgram) {
         throw new Error("Error: you must provide an approval program and a clear state program.");
       }
-      const applicationCreateTransaction = import_algosdk.default.makeApplicationUpdateTxn(sender, params, args.appIndex, approvalProgram, clearProgram, this.encodeArguments(args.appArgs), args.optionalFields?.accounts ? args.optionalFields.accounts : void 0, args.optionalFields?.applications ? args.optionalFields.applications : void 0, args.optionalFields?.assets ? args.optionalFields.assets : void 0, args.optionalFields?.note ? new Uint8Array(import_buffer.Buffer.from(args.optionalFields.note, "utf8")) : void 0);
+      const applicationCreateTransaction = import_algosdk.default.makeApplicationUpdateTxn(sender, params, args.appIndex, approvalProgram, clearProgram, this.encodeArguments(args.appArgs), args.optionalFields?.accounts ? args.optionalFields.accounts : void 0, args.optionalFields?.applications ? args.optionalFields.applications : void 0, args.optionalFields?.assets ? args.optionalFields.assets : void 0, args.optionalFields?.note ? this.to8Arr(args.optionalFields.note) : void 0);
       return {
         transaction: applicationCreateTransaction,
         transactionSigner: this.account,
@@ -32216,7 +32217,7 @@ var Algonaut = class {
     if (!args.to)
       throw new Error("You did not specify a to address");
     if (this.account) {
-      const encodedNote = args.note ? new Uint8Array(import_buffer.Buffer.from(args.note, "utf8")) : new Uint8Array();
+      const encodedNote = args.note ? this.to8Arr(args.note) : new Uint8Array();
       const transaction = import_algosdk.default.makePaymentTxnWithSuggestedParamsFromObject({
         from: this.account.addr,
         to: args.to,
@@ -32481,7 +32482,6 @@ var Algonaut = class {
         return txStatus;
       } else {
         throw new Error("there were no signed transactions returned");
-        this.stopReqAF();
       }
     } else {
       throw new Error("There is no wallet connect session");
@@ -32738,6 +32738,9 @@ var Algonaut = class {
     await this.connectToAlgoSigner();
     const accounts = await window.AlgoSigner.accounts({ ledger });
     return accounts;
+  }
+  to8Arr(str, enc = "utf8") {
+    return new Uint8Array(import_buffer.Buffer.from(str, enc));
   }
 };
 export {
