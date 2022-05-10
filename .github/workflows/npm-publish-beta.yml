@@ -6,7 +6,19 @@ on:
       - main
 
 jobs:
+  check_pkg_version:
+    runs-on: ubuntu-latest
+    steps:
+    - name: "should publish?"
+      run: PKG_VERSION_PUBLISHED=`npm view algonaut.js version`
+      run: echo $PKG_VERSION_PUBLISHED
+      run: PKG_VERSION_LOCAL=`cat package.json | jq -r '.version'`
+      run: echo $PKG_VERSION_LOCAL
+      run: if [[ $PKG_VERSION_LOCAL > $PKG_VERSION_PUBLISHED ]] ; then SHOULD_DEPLOY=1; else SHOULD_DEPLOY=0 ; fi
+      run: echo $SHOULD_DEPLOY
+
   publish:
+    if: $SHOULD_DEPLOY == 1
     runs-on: ubuntu-latest
     steps:
       - name: "checkout"
@@ -26,6 +38,6 @@ jobs:
         run: npm run build
 
       - name: "publish"
-        run: npm publish --tag beta
+        run: npm publish --access public --tag beta
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
