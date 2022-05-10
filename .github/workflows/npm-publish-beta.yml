@@ -19,7 +19,8 @@ jobs:
     - run: echo "DO_PUBLISH=$SHOULD_DEPLOY" >> $GITHUB_ENV
 
   publish:
-    if: ${{ env.DO_PUBLISH == 1 }}
+    needs: check_pkg_version
+    if: ${{ jobs.check_pkg_version.env.DO_PUBLISH == 1 }}
     runs-on: ubuntu-latest
     steps:
       - name: "checkout"
