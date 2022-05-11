@@ -1781,19 +1781,74 @@ export default class Algonaut {
 	 * @param txn Transaction to describe
 	 */
 	txnSummary(txn: algosdk.Transaction): string {
+		// for reference: https://developer.algorand.org/docs/get-details/transactions/transactions/
+
 		if (txn.type) {
-			const to = algosdk.encodeAddress(txn.to.publicKey);
-			const from = algosdk.encodeAddress(txn.from.publicKey);
+			const to = txn.to ? algosdk.encodeAddress(txn.to.publicKey) : '';
+			const from = txn.from ? algosdk.encodeAddress(txn.from.publicKey) : '';
+
 			// sending algo
 			if (txn.type === 'pay') {
 				return `Send ${algosdk.microalgosToAlgos(txn.amount as number)} ALGO to ${to}`;
+			
 			// sending assets
 			} else if (txn.type === 'axfer') {
-				if (!txn.amount && txn.to === txn.from) {
+				if (!txn.amount && to === from) {
 					return `Opt-in to asset ID ${txn.assetIndex}`
 				} else {
-					return `Asset transfer of sset ID ${txn.assetIndex} to ${to}`;
+					const amount = txn.amount ? txn.amount : 0;
+					return `Transfer ${amount} of asset ID ${txn.assetIndex} to ${to}`;
 				}
+			
+			// asset config
+			// this could be creating, destroying, or configuring an asset,
+			// depending on which fields are set
+			} else if (txn.type === 'acfg') {
+
+				// if unit name is supplied, we are creating
+				if (txn.assetUnitName) {
+					return `Create asset ${txn.assetName}, symbol ${txn.assetUnitName}`;
+				}
+
+				return `Configure asset ${txn.assetIndex}`;
+			
+			// asset freeze
+			} else if (txn.type === 'afrz') {
+				return `Freeze asset ${txn.assetIndex}`
+			
+			// application call
+			} else if (txn.type === 'appl') {
+				// let's find out what kind of application call this is
+				// reference: https://developer.algorand.org/docs/get-details/dapps/avm/teal/specification/#oncomplete
+				switch (txn.appOnComplete) {
+					// NoOp
+					case 0:
+						return `Call to application ID ${txn.appIndex}`;
+
+					// OptIn
+					case 1:
+						return `Opt-in to application ID ${txn.appIndex}`;
+					
+					// CloseOut
+					case 2: 
+						return `Close out application ID ${txn.appIndex}`;
+
+					// ClearState
+					case 3:
+						return `Execute clear state program of application ID ${txn.appIndex}`;
+
+					// Update 
+					case 4:
+						return `Update application ID ${txn.appIndex}`;
+
+					// Delete
+					case 5:
+						return `Delete application ID ${txn.appIndex}`;
+
+					default:
+						return `Call to application ID ${txn.appIndex}`;
+				}
+
 			// default case
 			} else {
 				return `Transaction of type ${txn.type} to ${to}`;

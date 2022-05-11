@@ -32772,11 +32772,43 @@ var Algonaut = class {
   }
   txnSummary(txn) {
     if (txn.type) {
-      const to = import_algosdk.default.encodeAddress(txn.to.publicKey);
+      const to = txn.to ? import_algosdk.default.encodeAddress(txn.to.publicKey) : "";
+      const from = txn.from ? import_algosdk.default.encodeAddress(txn.from.publicKey) : "";
       if (txn.type === "pay") {
         return `Send ${import_algosdk.default.microalgosToAlgos(txn.amount)} ALGO to ${to}`;
+      } else if (txn.type === "axfer") {
+        if (!txn.amount && to === from) {
+          return `Opt-in to asset ID ${txn.assetIndex}`;
+        } else {
+          const amount = txn.amount ? txn.amount : 0;
+          return `Transfer ${amount} of asset ID ${txn.assetIndex} to ${to}`;
+        }
+      } else if (txn.type === "acfg") {
+        if (txn.assetUnitName) {
+          return `Create asset ${txn.assetName}, symbol ${txn.assetUnitName}`;
+        }
+        return `Configure asset ${txn.assetIndex}`;
+      } else if (txn.type === "afrz") {
+        return `Freeze asset ${txn.assetIndex}`;
+      } else if (txn.type === "appl") {
+        switch (txn.appOnComplete) {
+          case 0:
+            return `Call to application ID ${txn.appIndex}`;
+          case 1:
+            return `Opt-in to application ID ${txn.appIndex}`;
+          case 2:
+            return `Close out application ID ${txn.appIndex}`;
+          case 3:
+            return `Execute clear state program of application ID ${txn.appIndex}`;
+          case 4:
+            return `Update application ID ${txn.appIndex}`;
+          case 5:
+            return `Delete application ID ${txn.appIndex}`;
+          default:
+            return `Call to application ID ${txn.appIndex}`;
+        }
       } else {
-        return `Txn of type ${txn.type} to ${to}`;
+        return `Transaction of type ${txn.type} to ${to}`;
       }
     } else {
       return txn.toString();
