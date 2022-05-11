@@ -71,6 +71,9 @@ class Algonaut {
     }
     this.sdk = import_algosdk.default;
     if (config.SIGNING_MODE && config.SIGNING_MODE == "hippo") {
+      if (!config.HIPPO_SRC) {
+        config.HIPPO_SRC = "https://hippoz.web.app";
+      }
       this.initHippo({
         id: config.HIPPO_ID,
         src: config.HIPPO_SRC
@@ -943,6 +946,16 @@ class Algonaut {
       throw new Error("Transaction request rejected");
     return res.signedTxns;
   }
+  hippoShow() {
+    if (this.hippoWallet.frameBus) {
+      this.hippoWallet.frameBus.showFrame();
+    }
+  }
+  hippoHide() {
+    if (this.hippoWallet.frameBus) {
+      this.hippoWallet.frameBus.hideFrame();
+    }
+  }
   async hippoSetApp(appCode) {
     const data = {
       type: "set-app",
@@ -966,6 +979,9 @@ class Algonaut {
     };
     const res = await this.hippoMessageAsync(data, { showFrame: false });
     console.log(res);
+    if (res.success) {
+      this.account = void 0;
+    }
     return res;
   }
   async sendAtomicTransaction(transactions, callbacks) {

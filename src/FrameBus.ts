@@ -97,6 +97,7 @@ export class FrameBus {
 		walEl.classList.add('hippo-frame');
 		walEl.setAttribute('allow', 'clipboard-write'); // needed to copy stuff to clipboard
 		walEl.setAttribute('name', 'walFrame');
+		walEl.setAttribute('title', 'Algorand Microwallet');
 		walEl.setAttribute('frameborder', '0');
 		this.walEl = walEl;
 		// mount el
@@ -261,17 +262,17 @@ export class FrameBus {
 	getStyles(): string {
 		return `.hippo-frame {
 			position: fixed;
-			top: 100vh;
+			top: -50vh;
 			left: 0;
 			width: 100vw;
-			height: 100vh;
-			transition: 0.1s top ease-out;
+			height: 400px;
+			transition: 0.2s top ease-out;
 			box-shadow: 0 -2px 20px rgba(0,0,0,0.4);
 		}
 		
 		.hippo-frame.visible {
-			top: 50px;
-			transition: 0.1s top ease-in;
+			top: 0;
+			transition: 0.2s top ease-in;
 		}
 		
 		@media screen and (min-width: 500px) {

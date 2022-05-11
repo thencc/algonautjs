@@ -356,7 +356,27 @@ export default class Algonaut {
      * @returns {Uint8Array} Signed transactions
      */
     hippoSignTxns(txns: string[]): Promise<any>;
+    /**
+     * Shows the Hippo wallet frame
+     */
+    hippoShow(): void;
+    /**
+     * Hides the Hippo wallet frame
+     */
+    hippoHide(): void;
+    /**
+     * Sets the app / userbase to use for Hippo accounts. This must be set
+     * before Hippo can be used to login or sign transactions.
+     * @param appCode String determining the namespace for user accounts
+     * @returns Promise resolving to response from Hippo
+     */
     hippoSetApp(appCode: string): Promise<any>;
+    /**
+     * Opens Hippo to allow users to create an account or login with a previously
+     * created account. Must be called before transactions can be signed.
+     * @param message Message to show to users
+     * @returns Promise resolving to an account object of type `{ account: string }`
+     */
     hippoConnect(message: string): Promise<any>;
     /**
      * Tells Hippo to close your session & clear local storage.
@@ -373,7 +393,17 @@ export default class Algonaut {
      * @param transactions a Uint8Array of ALREADY SIGNED transactions
      */
     sendAtomicTransaction(transactions: AlgonautAtomicTransaction[], callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
+    /**
+     * Used by Hippo to sign base64-encoded transactions sent to the iframe
+     * @param txns Array of Base64-encoded unsigned transactions
+     * @returns Uint8Array signed transactions
+     */
     signBase64Transactions(txns: string[]): Uint8Array[] | Uint8Array;
+    /**
+     * Does what it says on the tin.
+     * @param txn base64-encoded unsigned transaction
+     * @returns transaction object
+     */
     decodeBase64UnsignedTransaction(txn: string): algosdk.Transaction;
     /**
      * Describes an Algorand transaction, for display in Hippo

@@ -31637,6 +31637,7 @@ var FrameBus = class {
     walEl.classList.add("hippo-frame");
     walEl.setAttribute("allow", "clipboard-write");
     walEl.setAttribute("name", "walFrame");
+    walEl.setAttribute("title", "Algorand Microwallet");
     walEl.setAttribute("frameborder", "0");
     this.walEl = walEl;
     document.body.append(walEl);
@@ -31746,17 +31747,17 @@ var FrameBus = class {
   getStyles() {
     return `.hippo-frame {
 			position: fixed;
-			top: 100vh;
+			top: -50vh;
 			left: 0;
 			width: 100vw;
-			height: 100vh;
-			transition: 0.1s top ease-out;
+			height: 400px;
+			transition: 0.2s top ease-out;
 			box-shadow: 0 -2px 20px rgba(0,0,0,0.4);
 		}
 		
 		.hippo-frame.visible {
-			top: 50px;
-			transition: 0.1s top ease-in;
+			top: 0;
+			transition: 0.2s top ease-in;
 		}
 		
 		@media screen and (min-width: 500px) {
@@ -31812,6 +31813,9 @@ var Algonaut = class {
     }
     this.sdk = import_algosdk.default;
     if (config.SIGNING_MODE && config.SIGNING_MODE == "hippo") {
+      if (!config.HIPPO_SRC) {
+        config.HIPPO_SRC = "https://hippoz.web.app";
+      }
       this.initHippo({
         id: config.HIPPO_ID,
         src: config.HIPPO_SRC
@@ -32684,6 +32688,16 @@ var Algonaut = class {
       throw new Error("Transaction request rejected");
     return res.signedTxns;
   }
+  hippoShow() {
+    if (this.hippoWallet.frameBus) {
+      this.hippoWallet.frameBus.showFrame();
+    }
+  }
+  hippoHide() {
+    if (this.hippoWallet.frameBus) {
+      this.hippoWallet.frameBus.hideFrame();
+    }
+  }
   async hippoSetApp(appCode) {
     const data = {
       type: "set-app",
@@ -32707,6 +32721,9 @@ var Algonaut = class {
     };
     const res = await this.hippoMessageAsync(data, { showFrame: false });
     console.log(res);
+    if (res.success) {
+      this.account = void 0;
+    }
     return res;
   }
   async sendAtomicTransaction(transactions, callbacks) {

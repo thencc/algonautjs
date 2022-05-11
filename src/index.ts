@@ -1621,6 +1621,30 @@ export default class Algonaut {
 		return res.signedTxns;
 	}
 
+	/**
+	 * Shows the Hippo wallet frame
+	 */
+	hippoShow() {
+		if (this.hippoWallet.frameBus) {
+			this.hippoWallet.frameBus.showFrame();
+		}
+	}
+
+	/**
+	 * Hides the Hippo wallet frame
+	 */
+	hippoHide() {
+		if (this.hippoWallet.frameBus) {
+			this.hippoWallet.frameBus.hideFrame();
+		}
+	}
+
+	/**
+	 * Sets the app / userbase to use for Hippo accounts. This must be set
+	 * before Hippo can be used to login or sign transactions.
+	 * @param appCode String determining the namespace for user accounts
+	 * @returns Promise resolving to response from Hippo
+	 */
 	async hippoSetApp(appCode: string) {
 		const data = {
 			type: 'set-app',
@@ -1630,6 +1654,12 @@ export default class Algonaut {
 		return await this.hippoMessageAsync(data);
 	}
 
+	/**
+	 * Opens Hippo to allow users to create an account or login with a previously
+	 * created account. Must be called before transactions can be signed.
+	 * @param message Message to show to users
+	 * @returns Promise resolving to an account object of type `{ account: string }`
+	 */
 	async hippoConnect(message: string): Promise<any> {
 		const data = {
 			type: 'connect',
@@ -1653,6 +1683,11 @@ export default class Algonaut {
 
 		const res = await this.hippoMessageAsync(data, { showFrame: false });
 		console.log(res);
+
+		if (res.success) {
+			// remove algonaut account
+			this.account = undefined;
+		}
 
 		return res;
 	}
@@ -1718,6 +1753,11 @@ export default class Algonaut {
 
 	}
 
+	/**
+	 * Used by Hippo to sign base64-encoded transactions sent to the iframe
+	 * @param txns Array of Base64-encoded unsigned transactions
+	 * @returns Uint8Array signed transactions
+	 */
 	signBase64Transactions(txns: string[]): Uint8Array[] | Uint8Array {
 		let decodedTxns: algosdk.Transaction[] = [];
 		txns.forEach(txn => {
@@ -1727,7 +1767,12 @@ export default class Algonaut {
 		return this.signTransactionGroup(decodedTxns);
 	}
 
-	decodeBase64UnsignedTransaction(txn: string) {
+	/**
+	 * Does what it says on the tin.
+	 * @param txn base64-encoded unsigned transaction
+	 * @returns transaction object
+	 */
+	decodeBase64UnsignedTransaction(txn: string): algosdk.Transaction {
 		return algosdk.decodeUnsignedTransaction(Buffer.from(txn, 'base64'));
 	}
 
