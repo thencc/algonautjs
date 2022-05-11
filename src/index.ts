@@ -1783,10 +1783,20 @@ export default class Algonaut {
 	txnSummary(txn: algosdk.Transaction): string {
 		if (txn.type) {
 			const to = algosdk.encodeAddress(txn.to.publicKey);
+			const from = algosdk.encodeAddress(txn.from.publicKey);
+			// sending algo
 			if (txn.type === 'pay') {
 				return `Send ${algosdk.microalgosToAlgos(txn.amount as number)} ALGO to ${to}`;
+			// sending assets
+			} else if (txn.type === 'axfer') {
+				if (!txn.amount && txn.to === txn.from) {
+					return `Opt-in to asset ID ${txn.assetIndex}`
+				} else {
+					return `Asset transfer of sset ID ${txn.assetIndex} to ${to}`;
+				}
+			// default case
 			} else {
-				return `Txn of type ${txn.type} to ${to}`;
+				return `Transaction of type ${txn.type} to ${to}`;
 			}
 		} else {
 			// no better option
