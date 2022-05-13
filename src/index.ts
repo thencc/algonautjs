@@ -953,6 +953,8 @@ export default class Algonaut {
 		if (!args.tealClearCode) throw new Error('No clear program provided');
 		if (!args.schema) throw new Error('No schema provided');
 
+		//console.log('CREATING APP')
+
 		try {
 
 			const sender = this.account.addr;
@@ -964,8 +966,8 @@ export default class Algonaut {
 			approvalProgram = await this.compileProgram(args.tealApprovalCode);
 			clearProgram = await this.compileProgram(args.tealClearCode);
 
-			console.log('approval', approvalProgram);
-			console.log('clear', clearProgram);
+			// console.log('approval', approvalProgram);
+			// console.log('clear', clearProgram);
 
 			// create unsigned transaction
 			if (approvalProgram && clearProgram) {

@@ -32287,8 +32287,6 @@ var Algonaut = class {
       let clearProgram = new Uint8Array();
       approvalProgram = await this.compileProgram(args.tealApprovalCode);
       clearProgram = await this.compileProgram(args.tealClearCode);
-      console.log("approval", approvalProgram);
-      console.log("clear", clearProgram);
       if (approvalProgram && clearProgram) {
         const txn = import_algosdk.default.makeApplicationCreateTxnFromObject({
           from: sender,
