@@ -49,6 +49,12 @@ let wcSDone: HTMLAudioElement;
 
 import waitSound from './lowtone';
 import finishedSound from './finished';
+waitSound;
+finishedSound;
+// console.log(waitSound);
+// console.log(finishedSound);
+
+import { FrameBus } from './FrameBus';
 
 /*
 
@@ -103,13 +109,29 @@ export default class Algonaut {
 	// TBD: add algo wallet for mobile
 	algodClient: algosdk.Algodv2;
 	indexerClient = undefined as undefined | algosdk.Indexer;
-	account = undefined as undefined | algosdk.Account;
+
+	// FYI undefined if using wallet-connect, etc. perhaps rename to .accountLocal ?
+	account = undefined as undefined | algosdk.Account; // ONLY defined if using local signing, not wallet-connet or hippo
 	address = undefined as undefined | string;
 	sKey = undefined as undefined | Uint8Array;
 	mnemonic = undefined as undefined | string;
+
 	config = undefined as undefined | AlgonautConfig;
 	sdk = undefined as undefined | typeof algosdk;
 	uiLoading = false;
+
+	// microwallet aka hippo
+	hippoWallet = {
+		// private hippoWallet = { // for extra security we should do this
+
+		// frameId: '',
+		// ready: false,
+		defaultSrc: '123',
+		otherConfig: {},
+		frameBus: undefined as undefined | FrameBus
+	};
+
+	// everything wallet connect
 	walletConnect = {
 		connected: false,
 		connector: undefined as undefined | any,
@@ -142,14 +164,62 @@ export default class Algonaut {
 
 		this.config = config;
 		this.algodClient = new algosdk.Algodv2(config.API_TOKEN, config.BASE_SERVER, config.PORT);
+
 		if (config.INDEX_SERVER) {
 			this.indexerClient = new algosdk.Indexer(config.API_TOKEN, config.INDEX_SERVER, config.PORT);
 		} else {
 			console.warn('No indexer configured because INDEX_SERVER was not provided.');
 		}
 
+		// expose entire algosdk in case the dapp needs more
 		this.sdk = algosdk;
 
+		// hippo init
+		if (config.SIGNING_MODE && config.SIGNING_MODE == 'hippo') {
+			if (!config.HIPPO_SRC) {
+				// default hippo
+				config.HIPPO_SRC = 'https://hippoz.web.app';
+			}
+			
+			this.initHippo({
+				id: config.HIPPO_ID,
+				src: config.HIPPO_SRC
+			});
+		}
+
+	}
+
+	/*
+	* @param mountConfig either an id or src (id meaning existing iframe and takes precedence)
+	*/
+	initHippo(mountConfig: {
+		id?: string
+		src?: string
+	}) {
+		console.log('initHippo');
+
+		if (!mountConfig.id && !mountConfig.src) {
+			console.warn('not enough hippo config provided, try init again...');
+			return;
+		}
+
+		// reset
+		if (this.hippoWallet.frameBus) {
+			this.hippoWallet.frameBus.destroy();
+			this.hippoWallet.frameBus = undefined;
+		}
+
+		if (mountConfig.id) {
+			this.hippoWallet.frameBus = new FrameBus({
+				id: mountConfig.id
+			});
+		} else if (mountConfig.src) {
+			this.hippoWallet.frameBus = new FrameBus({
+				src: mountConfig.src
+			});
+		} else {
+			console.warn('cannot init hippo');
+		}
 	}
 
 	/**
@@ -185,7 +255,7 @@ export default class Algonaut {
 
 		this.account = account;
 		this.address = account.addr;
-		if (this.config) this.config.SIGNING_MODE = 'local';
+		// if (this.config) this.config.SIGNING_MODE = 'local';
 		this.mnemonic = algosdk.secretKeyToMnemonic(account.sk);
 	}
 
@@ -202,7 +272,16 @@ export default class Algonaut {
 			addr: address,
 			sk: new Uint8Array([])
 		};
-		if (this.config) this.config.SIGNING_MODE = 'walletconnect';
+		// if (this.config) this.config.SIGNING_MODE = 'walletconnect';
+	}
+
+	/**
+	 * This is the same as setting the WC account
+	 * @param address account address
+	 */
+	setHippoAccount(address: string): void {
+		if (!address) throw new Error('No address provided');
+		this.setWalletConnectAccount(address);
 	}
 
 	/**
@@ -236,7 +315,7 @@ export default class Algonaut {
 		try {
 			this.account = algosdk.mnemonicToSecretKey(mnemonic);
 			if (algosdk.isValidAddress(this.account?.addr)) {
-				if (this.config) this.config.SIGNING_MODE = 'local';
+				//if (this.config) this.config.SIGNING_MODE = 'local';
 				return this.account;
 			} else {
 				throw new Error('Not a valid mnemonic.');
@@ -294,7 +373,7 @@ export default class Algonaut {
 				break;
 			}
 
-			lastround++;
+			lastround = (await this.algodClient.status().do())['last-round'];
 		}
 
 		return returnValue;
@@ -322,6 +401,7 @@ export default class Algonaut {
 		if (!assetIndex) throw new Error('No asset index provided.');
 
 		const params = await this.algodClient.getTransactionParams().do();
+
 		const optInTransaction = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
 			from: this.account.addr,
 			to: this.account.addr,
@@ -874,6 +954,8 @@ export default class Algonaut {
 		if (!args.tealClearCode) throw new Error('No clear program provided');
 		if (!args.schema) throw new Error('No schema provided');
 
+		//console.log('CREATING APP')
+
 		try {
 
 			const sender = this.account.addr;
@@ -885,8 +967,8 @@ export default class Algonaut {
 			approvalProgram = await this.compileProgram(args.tealApprovalCode);
 			clearProgram = await this.compileProgram(args.tealClearCode);
 
-			console.log('approval', approvalProgram);
-			console.log('clear', clearProgram);
+			// console.log('approval', approvalProgram);
+			// console.log('clear', clearProgram);
 
 			// create unsigned transaction
 			if (approvalProgram && clearProgram) {
@@ -1151,6 +1233,7 @@ export default class Algonaut {
 		return compiledBytes;
 	}
 
+	// TODO rename atomicSendAlgo
 	async atomicPayment(args: AlgonautPaymentArguments): Promise<AlgonautAtomicTransaction> {
 		if (!args.amount) throw new Error('You did not specify an amount!');
 		if (!args.to) throw new Error('You did not specify a to address');
@@ -1403,7 +1486,64 @@ export default class Algonaut {
 					}], callbacks);
 				}
 			}
+		} else if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === 'hippo') {
+			// let's do the hippo thing
+
+			// 1. depending on how txns are sent into `sendTransaction`, we need to deal with them
+			let signedTxns;
+
+
+			// HANDLE ARRAY OF TRANSACTIONS
+			if (Array.isArray(txnOrTxns) && txnOrTxns[0] && txnOrTxns[0].transaction && txnOrTxns.length > 1) {
+				// array of AlgonautAtomicTransaction, map these to get .transaction out
+				const unwrappedTxns = txnOrTxns.map(txn => txn.transaction);
+
+				// assign group ID
+				const txnGroup = algosdk.assignGroupID(unwrappedTxns);
+
+
+				
+				// encode txns
+				const txnsToSign = txnGroup.map(txn => {
+					const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString('base64');
+					return encodedTxn;
+				});
+
+				signedTxns = await this.hippoSignTxns(txnsToSign);
+
+			// HANDLE SINGLE ATOMIC TRANSACTION
+			} else {
+				let txn: algosdk.Transaction;
+				if (txnOrTxns && (txnOrTxns as any).transaction) {
+					txn = (txnOrTxns as AlgonautAtomicTransaction).transaction;
+				} else {
+					txn = (txnOrTxns as algosdk.Transaction);
+				}
+
+				// send base64 to hippo
+				const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString('base64');
+				signedTxns = await this.hippoSignTxns([encodedTxn]);
+			}
+
+			if (callbacks?.onSign) callbacks.onSign(signedTxns);
+
+			const tx = await this.algodClient.sendRawTransaction(signedTxns).do();
+
+			if (callbacks?.onSend) callbacks.onSend(tx);
+
+			// Wait for transaction to be confirmed
+			const txStatus = await this.waitForConfirmation(tx.txId);
+
+			const transactionResponse = await this.algodClient
+				.pendingTransactionInformation(tx.txId)
+				.do();
+			txStatus.meta = transactionResponse;
+
+			if (callbacks?.onConfirm) callbacks.onConfirm(txStatus);
+
+			return txStatus;
 		} else {
+			console.log('sendTransaction: local');
 			// assume local signing
 			if (Array.isArray(txnOrTxns)) {
 				return await this.sendAtomicTransaction(txnOrTxns, callbacks);
@@ -1435,6 +1575,125 @@ export default class Algonaut {
 		}
 	}
 
+	/**
+	 * Sends messages to Hippo via FrameBus
+	 * @param data Message to send
+	 * @returns Whatever Hippo gives us
+	 */
+	async hippoMessageAsync(data: any, options?: { showFrame: boolean }): Promise<any> {
+		if (!this.hippoWallet.frameBus) {
+			throw new Error('No hippo frameBus');
+		}
+
+		if (!this.hippoWallet.frameBus.ready) {
+			await this.hippoWallet.frameBus.isReady();
+		}
+
+		data.source = 'ncc-hippo-client';
+		data.async = true;
+
+		if (options?.showFrame) this.hippoWallet.frameBus.showFrame();
+
+		const payload = await this.hippoWallet.frameBus.emitAsync<any>(data);
+		console.log('hippo payload', payload);
+		return payload;
+	}
+
+	/**
+	 * Sends unsigned transactions to Hippo, awaits signing, returns signed txns
+	 * @param txns Array of base64 encoded transactions
+	 * @returns {Uint8Array} Signed transactions
+	 */
+	async hippoSignTxns(txns: string[]) {
+		console.log('hippoSignTxns');
+
+		const data = {
+			type: 'sign-txns', // determines payload type
+			payload: {
+				txns
+			},
+		}
+
+		const res = await this.hippoMessageAsync(data, { showFrame: true });
+
+		this.hippoWallet.frameBus?.hideFrame();
+
+		if (res.error) throw new Error(res.error);
+		if (res.reject) throw new Error('Transaction request rejected');
+		
+		return res.signedTxns;
+	}
+
+	/**
+	 * Shows the Hippo wallet frame
+	 */
+	hippoShow() {
+		if (this.hippoWallet.frameBus) {
+			this.hippoWallet.frameBus.showFrame();
+		}
+	}
+
+	/**
+	 * Hides the Hippo wallet frame
+	 */
+	hippoHide() {
+		if (this.hippoWallet.frameBus) {
+			this.hippoWallet.frameBus.hideFrame();
+		}
+	}
+
+	/**
+	 * Sets the app / userbase to use for Hippo accounts. This must be set
+	 * before Hippo can be used to login or sign transactions.
+	 * @param appCode String determining the namespace for user accounts
+	 * @returns Promise resolving to response from Hippo
+	 */
+	async hippoSetApp(appCode: string) {
+		const data = {
+			type: 'set-app',
+			payload: { appCode }
+		}
+
+		return await this.hippoMessageAsync(data);
+	}
+
+	/**
+	 * Opens Hippo to allow users to create an account or login with a previously
+	 * created account. Must be called before transactions can be signed.
+	 * @param message Message to show to users
+	 * @returns Promise resolving to an account object of type `{ account: string }`
+	 */
+	async hippoConnect(message: string): Promise<any> {
+		const data = {
+			type: 'connect',
+			payload: { message }
+		};
+
+		const account = await this.hippoMessageAsync(data, { showFrame: true });
+		console.log(account);
+		this.setHippoAccount(account.address);
+		return account;
+	}
+
+	/**
+	 * Tells Hippo to close your session & clear local storage.
+	 * @returns Success or fail message
+	 */
+	async hippoDisconnect(): Promise<any> {
+		const data = {
+			type: 'disconnect'
+		}
+
+		const res = await this.hippoMessageAsync(data, { showFrame: false });
+		console.log(res);
+
+		if (res.success) {
+			// remove algonaut account
+			this.account = undefined;
+		}
+
+		return res;
+	}
 
 	/**
 	 * run atomic takes an array of transactions to run in order, each
@@ -1495,6 +1754,148 @@ export default class Algonaut {
 			throw new Error(e);
 		}
 
+	}
+
+	/**
+	 * Used by Hippo to sign base64-encoded transactions sent to the iframe
+	 * @param txns Array of Base64-encoded unsigned transactions
+	 * @returns Uint8Array signed transactions
+	 */
+	signBase64Transactions(txns: string[]): Uint8Array[] | Uint8Array {
+		let decodedTxns: algosdk.Transaction[] = [];
+		txns.forEach(txn => {
+			const decodedTxn = this.decodeBase64UnsignedTransaction(txn);
+			decodedTxns.push(decodedTxn);
+		});
+		return this.signTransactionGroup(decodedTxns);
+	}
+
+	/**
+	 * Does what it says on the tin.
+	 * @param txn base64-encoded unsigned transaction
+	 * @returns transaction object
+	 */
+	decodeBase64UnsignedTransaction(txn: string): algosdk.Transaction {
+		return algosdk.decodeUnsignedTransaction(Buffer.from(txn, 'base64'));
+	}
+
+	/**
+	 * Describes an Algorand transaction, for display in Hippo
+	 * @param txn Transaction to describe
+	 */
+	txnSummary(txn: algosdk.Transaction): string {
+		// for reference: https://developer.algorand.org/docs/get-details/transactions/transactions/
+
+		if (txn.type) {
+			const to = txn.to ? algosdk.encodeAddress(txn.to.publicKey) : '';
+			const from = txn.from ? algosdk.encodeAddress(txn.from.publicKey) : '';
+
+			// sending algo
+			if (txn.type === 'pay') {
+				return `Send ${algosdk.microalgosToAlgos(txn.amount as number)} ALGO to ${to}`;
+			
+			// sending assets
+			} else if (txn.type === 'axfer') {
+				if (!txn.amount && to === from) {
+					return `Opt-in to asset ID ${txn.assetIndex}`
+				} else {
+					const amount = txn.amount ? txn.amount : 0;
+					return `Transfer ${amount} of asset ID ${txn.assetIndex} to ${to}`;
+				}
+			
+			// asset config
+			// this could be creating, destroying, or configuring an asset,
+			// depending on which fields are set
+			} else if (txn.type === 'acfg') {
+
+				// if unit name is supplied, we are creating
+				if (txn.assetUnitName) {
+					return `Create asset ${txn.assetName}, symbol ${txn.assetUnitName}`;
+				}
+
+				return `Configure asset ${txn.assetIndex}`;
+			
+			// asset freeze
+			} else if (txn.type === 'afrz') {
+				return `Freeze asset ${txn.assetIndex}`
+			
+			// application call
+			} else if (txn.type === 'appl') {
+				// let's find out what kind of application call this is
+				// reference: https://developer.algorand.org/docs/get-details/dapps/avm/teal/specification/#oncomplete
+				switch (txn.appOnComplete) {
+					// NoOp
+					case 0:
+						return `Call to application ID ${txn.appIndex}`;
+
+					// OptIn
+					case 1:
+						return `Opt-in to application ID ${txn.appIndex}`;
+					
+					// CloseOut
+					case 2: 
+						return `Close out application ID ${txn.appIndex}`;
+
+					// ClearState
+					case 3:
+						return `Execute clear state program of application ID ${txn.appIndex}`;
+
+					// Update 
+					case 4:
+						return `Update application ID ${txn.appIndex}`;
+
+					// Delete
+					case 5:
+						return `Delete application ID ${txn.appIndex}`;
+
+					default:
+						return `Call to application ID ${txn.appIndex}`;
+				}
+
+			// default case
+			} else {
+				return `Transaction of type ${txn.type} to ${to}`;
+			}
+		} else {
+			// no better option
+			return txn.toString();
+		}
+	}
+
+	/**
+	 * Signs an array of Transactions (used in Hippo)
+	 * @param txns Array of algosdk.Transaction
+	 * @returns Uint8Array[] of signed transactions
+	 */
+	signTransactionGroup(txns: algosdk.Transaction[]): Uint8Array[] | Uint8Array {
+		if (!this.account) throw new Error('There is no account!');
+
+		// this is critical, if the group doesn't have an id
+		// the transactions are processed as one-offs!
+		const account = this.account;
+		if (txns.length > 1) {
+			console.log('signing transaction group');
+			const txnGroup = algosdk.assignGroupID(txns);
+
+			const signed = [] as Uint8Array[];
+
+			// sign all transactions in the group
+			txns.forEach((txn: algosdk.Transaction, i) => {
+				let signedTx: {
+					txID: string;
+					blob: Uint8Array;
+				};
+				signedTx = algosdk.signTransaction(txnGroup[i], account.sk);
+				signed.push(signedTx.blob);
+			});
+
+			return signed;
+		} else {
+			console.log('signing single transaction');
+			console.log(txns);
+			const signedTx = algosdk.signTransaction(txns[0], account.sk);
+			return signedTx.blob;
+		}
 	}
 
 	/**
@@ -1603,6 +2004,19 @@ export default class Algonaut {
 		if (this.config &&
 			this.config.SIGNING_MODE &&
 			this.config.SIGNING_MODE === 'walletconnect') {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Interally used to determine how to sign transactions on more generic functions (e.g. {@link deployFromTeal})
+	 * @returns true if we are signing transactions with hippo, false otherwise
+	 */
+	usingHippoWallet(): boolean {
+		if (this.config &&
+			this.config.SIGNING_MODE &&
+			this.config.SIGNING_MODE === 'hippo') {
 			return true;
 		}
 		return false;
@@ -1874,13 +2288,12 @@ export default class Algonaut {
 	}
 
 	startReqAF() {
-
 		// console.log('startReqAF');
 		// keeps some background tasks running while navigating to Pera Wallet to approve wc session link handshake
 
 		// TODO helpful for desktop debugging but redo isMobile check
-		if (isBrowser()) {
-			//if (isBrowser() && isMobile()) {
+		// if (isBrowser()) {
+		if (isBrowser() && isMobile()) {
 			// reqaf fix
 			const keepAlive = () => {
 				// console.log('keepAlive');
@@ -1894,7 +2307,7 @@ export default class Algonaut {
 				wcReqAF = requestAnimationFrame(keepAlive);
 			};
 			requestAnimationFrame(keepAlive);
-			wcReqAF = 1;
+			// wcReqAF = 1;
 
 			// audio fix
 			wcS = new Audio();
@@ -2077,5 +2490,4 @@ export default class Algonaut {
 
 }
 
-
-
+export const buffer = Buffer; // sometimes this is helpful on the frontend
