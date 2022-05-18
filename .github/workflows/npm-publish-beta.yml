@@ -67,7 +67,7 @@ jobs:
 
   publish:
     needs: [ check_pkg_version ]
-    if: ${{ needs.check_pkg_version.outputs.output1 == 1 }}
+    if: needs.check_pkg_version.outputs.output1 == 1
     runs-on: ubuntu-latest
     steps:
       - name: "checkout"
