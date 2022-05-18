@@ -26,8 +26,13 @@ jobs:
     - run: PKG_VERSION_LOCAL=`cat package.json | jq -r '.version'`
     # - run: echo $PKG_VERSION_LOCAL
 
-    - run: SOME_ENV_VAR="this is an env var!"
-    - run: echo "::set-output $SOME_ENV_VAR"
+    - run: |
+      SOME_ENV_VAR="this is an env var!"
+      echo '::echo::on'
+      echo $SOME_ENV_VAR
+      echo "$SOME_ENV_VAR"
+      echo "::set-output name=action_echo::$SOME_ENV_VAR"
+      echo "it is... ${{env.action_echo}}"
     # - run: echo "::set-output name=packageJson::$PKG_VERSION_LOCAL"
 
     # - run: npx semver-compare $PKG_VERSION_LOCAL gt $PKG_VERSION_PUBLISHED && SHOULD_PUBLISH=1
