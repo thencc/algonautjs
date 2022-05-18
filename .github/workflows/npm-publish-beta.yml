@@ -8,6 +8,12 @@ on:
 jobs:
   check_pkg_version:
     runs-on: ubuntu-latest
+
+    # outputs:
+    #   doPublish:
+    outputs:
+      output1: ${{ steps.step1.outputs.test }}
+
     steps:
     - name: "checkout"
       uses: actions/checkout@v2
@@ -35,7 +41,8 @@ jobs:
     #     echo "it is... ${{env.action_echo}}"
     # - run: echo "::set-output name=packageJson::$PKG_VERSION_LOCAL"
 
-    - run: |
+    - name: step1
+      run: |
         echo '::echo::on'
         SHOULD_PUBLISH=0
         PKG_VERSION_PUBLISHED=`npm view algonaut.js version`
@@ -46,6 +53,7 @@ jobs:
         echo "publish?"
         echo $SHOULD_PUBLISH
         if [[ $SHOULD_PUBLISH ]] ; then echo "will npm publish beta"; else echo "no npm publish needed" ; fi
+        echo "::set-output name=test::$SHOULD_PUBLISH"
         echo "DO_PUBLISH=$SHOULD_PUBLISH" >> $GITHUB_ENV
 
     # - run: npx semver-compare $PKG_VERSION_LOCAL gt $PKG_VERSION_PUBLISHED && SHOULD_PUBLISH=1
@@ -59,7 +67,7 @@ jobs:
 
   publish:
     needs: [ check_pkg_version ]
-    if: ${{ needs.check_pkg_version.env.DO_PUBLISH == 1 }}
+    if: ${{ needs.check_pkg_version.outputs.output1 == 1 }}
     runs-on: ubuntu-latest
     steps:
       - name: "checkout"
