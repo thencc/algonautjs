@@ -19,14 +19,16 @@ jobs:
 
     - run: SHOULD_PUBLISH=0
 
-    - run: npm i semver-compare-cli
+    # - run: npm i semver-compare-cli
 
     - run: PKG_VERSION_PUBLISHED=`npm view algonaut.js version`
-    # - run: echo $PKG_VERSION_PUBLISHED
+    - run: echo $PKG_VERSION_PUBLISHED
     - run: PKG_VERSION_LOCAL=`cat package.json | jq -r '.version'`
     # - run: echo $PKG_VERSION_LOCAL
+    - run: echo "::set-output $PKG_VERSION_LOCAL"
+    - run: echo "::set-output name=packageJson::$PKG_VERSION_LOCAL"
 
-    - run: semver-compare $PKG_VERSION_LOCAL gt $PKG_VERSION_PUBLISHED && SHOULD_PUBLISH=1
+    # - run: npx semver-compare $PKG_VERSION_LOCAL gt $PKG_VERSION_PUBLISHED && SHOULD_PUBLISH=1
 
     # - run: if [[ $PKG_VERSION_LOCAL > $PKG_VERSION_PUBLISHED ]] ; then SHOULD_PUBLISH=1; else SHOULD_PUBLISH=0 ; fi
     # - run: echo $SHOULD_PUBLISH
