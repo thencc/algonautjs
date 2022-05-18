@@ -65,6 +65,15 @@ jobs:
     #   run: if [[ $SHOULD_PUBLISH ]] ; then echo "will npm publish@beta"; else echo "no npm publish needed" ; fi
     # - run: echo "DO_PUBLISH=$SHOULD_PUBLISH" >> $GITHUB_ENV
 
+  prepublish:
+    needs: [ check_pkg_version ]
+    # if: needs.check_pkg_version.outputs.output1 == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo '::echo::on'
+          echo ${{ needs.check_pkg_version.outputs.output1 }}
+
   publish:
     needs: [ check_pkg_version ]
     if: needs.check_pkg_version.outputs.output1 == 'true'
