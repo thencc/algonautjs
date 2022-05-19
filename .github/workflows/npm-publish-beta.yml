@@ -42,7 +42,8 @@ jobs:
     #     echo "it is... ${{env.action_echo}}"
     # - run: echo "::set-output name=packageJson::$PKG_VERSION_LOCAL"
 
-    - name: step1
+    - id: "step1"
+      name: "compare package versions"
       run: |
         echo '::echo::on'
         SHOULD_PUBLISH=0
