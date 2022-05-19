@@ -262,7 +262,7 @@ export class FrameBus {
 	getStyles(): string {
 		return `.hippo-frame {
 			position: fixed;
-			top: -50vh;
+			top: -450px;
 			left: 0;
 			width: 100vw;
 			height: 400px;
