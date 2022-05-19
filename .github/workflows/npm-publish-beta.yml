@@ -9,11 +9,8 @@ jobs:
   check_pkg_version:
     runs-on: ubuntu-latest
 
-    # outputs:
-    #   doPublish:
     outputs:
-      output1: ${{ steps.step1.outputs.output1 }}
-      output2: "TESTOUT"
+      publishBeta: ${{ steps.compare.outputs.publishBinary }}
 
     steps:
     - name: "checkout"
@@ -24,63 +21,34 @@ jobs:
       with:
         node-version: '14'
 
-    # - run: SHOULD_PUBLISH=0
-
     - run: npm i semver-compare-cli
 
-    # - run: PKG_VERSION_PUBLISHED=`npm view algonaut.js version`
-    # - run: echo $PKG_VERSION_PUBLISHED
-    # - run: PKG_VERSION_LOCAL=`cat package.json | jq -r '.version'`
-    # - run: echo $PKG_VERSION_LOCAL
-
-    # - run: |
-    #     SOME_ENV_VAR="this is an env var!"
-    #     echo '::echo::on'
-    #     echo $SOME_ENV_VAR
-    #     echo "$SOME_ENV_VAR"
-    #     echo "::set-output name=action_echo::$SOME_ENV_VAR"
-    #     echo "it is... ${{env.action_echo}}"
-    # - run: echo "::set-output name=packageJson::$PKG_VERSION_LOCAL"
-
-    - id: "step1"
-      name: "compare package versions"
+    - id: "compare"
+      name: "compare local/live package versions"
       run: |
         echo '::echo::on'
         SHOULD_PUBLISH=0
-        PKG_VERSION_PUBLISHED=`npm view algonaut.js version`
-        echo $PKG_VERSION_PUBLISHED
         PKG_VERSION_LOCAL=`cat package.json | jq -r '.version'`
-        echo $PKG_VERSION_LOCAL
-        npx semver-compare $PKG_VERSION_LOCAL gt $PKG_VERSION_PUBLISHED && SHOULD_PUBLISH='true'
-        echo "publish?"
-        echo $SHOULD_PUBLISH
-        if [[ $SHOULD_PUBLISH ]] ; then echo "will npm publish beta"; else echo "no npm publish needed" ; fi
-        echo "::set-output name=output1::$SHOULD_PUBLISH"
-        echo "DO_PUBLISH=$SHOULD_PUBLISH" >> $GITHUB_ENV
-
-    # - run: npx semver-compare $PKG_VERSION_LOCAL gt $PKG_VERSION_PUBLISHED && SHOULD_PUBLISH=1
-
-    # - run: if [[ $PKG_VERSION_LOCAL > $PKG_VERSION_PUBLISHED ]] ; then SHOULD_PUBLISH=1; else SHOULD_PUBLISH=0 ; fi
-    # - run: echo $SHOULD_PUBLISH
-
-    # - name: "should action npm publish?"
-    #   run: if [[ $SHOULD_PUBLISH ]] ; then echo "will npm publish@beta"; else echo "no npm publish needed" ; fi
-    # - run: echo "DO_PUBLISH=$SHOULD_PUBLISH" >> $GITHUB_ENV
+        echo 'local pkg: '$PKG_VERSION_LOCAL
+        PKG_VERSION_PUBLISHED=`npm view algonaut.js@beta version`
+        echo 'beta pkg: '$PKG_VERSION_PUBLISHED
+        npx semver-compare $PKG_VERSION_LOCAL gt $PKG_VERSION_PUBLISHED && SHOULD_PUBLISH=1
+        echo 'publish beta?: '$SHOULD_PUBLISH
+        if [[ $SHOULD_PUBLISH ]] ; then echo "WILL npm publish beta"; else echo "NO npm publish needed" ; fi
+        echo "::set-output name=publishBinary::$SHOULD_PUBLISH"
 
   prepublish:
     needs: [ check_pkg_version ]
-    # if: needs.check_pkg_version.outputs.output1 == 'true'
     runs-on: ubuntu-latest
     steps:
       - run: |
           echo '::echo::on'
           echo "hello world"
-          echo ${{ needs.check_pkg_version.outputs.output2 }}
-          echo ${{ needs.check_pkg_version.outputs.output1 }}
+          echo ${{ needs.check_pkg_version.outputs.publishBeta }}
 
   publish:
     needs: [ check_pkg_version ]
-    if: needs.check_pkg_version.outputs.output1 == 'true'
+    if: needs.check_pkg_version.outputs.publishBeta == 1
     runs-on: ubuntu-latest
     steps:
       - name: "checkout"
