@@ -12,7 +12,8 @@ jobs:
     # outputs:
     #   doPublish:
     outputs:
-      output1: ${{ steps.step1.outputs.test }}
+      output1: ${{ steps.step1.outputs.output1 }}
+      output2: "TESTOUT"
 
     steps:
     - name: "checkout"
@@ -53,7 +54,7 @@ jobs:
         echo "publish?"
         echo $SHOULD_PUBLISH
         if [[ $SHOULD_PUBLISH ]] ; then echo "will npm publish beta"; else echo "no npm publish needed" ; fi
-        echo "::set-output name=test::$SHOULD_PUBLISH"
+        echo "::set-output name=output1::$SHOULD_PUBLISH"
         echo "DO_PUBLISH=$SHOULD_PUBLISH" >> $GITHUB_ENV
 
     # - run: npx semver-compare $PKG_VERSION_LOCAL gt $PKG_VERSION_PUBLISHED && SHOULD_PUBLISH=1
@@ -72,6 +73,8 @@ jobs:
     steps:
       - run: |
           echo '::echo::on'
+          echo "hello world"
+          echo ${{ needs.check_pkg_version.outputs.output2 }}
           echo ${{ needs.check_pkg_version.outputs.output1 }}
 
   publish:
