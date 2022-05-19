@@ -37,14 +37,14 @@ jobs:
         if [[ $SHOULD_PUBLISH ]] ; then echo "WILL npm publish beta"; else echo "NO npm publish needed" ; fi
         echo "::set-output name=publishBinary::$SHOULD_PUBLISH"
 
-  prepublish:
-    needs: [ check_pkg_version ]
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          echo '::echo::on'
-          echo "hello world"
-          echo ${{ needs.check_pkg_version.outputs.publishBeta }}
+  # check_job_output:
+  #   needs: [ check_pkg_version ]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - run: |
+  #         echo '::echo::on'
+  #         echo "hello world"
+  #         echo ${{ needs.check_pkg_version.outputs.publishBeta }}
 
   publish:
     needs: [ check_pkg_version ]
