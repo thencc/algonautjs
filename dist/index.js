@@ -56022,6 +56022,7 @@ var Algonaut = class {
     }
   }
   async connectAlgoWallet(clientListener) {
+    console.log("connectAlgoWallet");
     if ((0, import_utils2.isNode)()) {
       console.warn("NOTE: this lib isnt made for using wallet connect in node yet...");
       return;
@@ -56037,14 +56038,18 @@ var Algonaut = class {
       console.log("session update");
     });
     this.walletConnect.connector = wcConnector;
+    console.log(this.walletConnect.connector);
+    console.log("trying to create session");
     if (!this.walletConnect.connector.connected) {
       this.walletConnect.connector.createSession();
+      console.log("session created");
       this.startReqAF();
     }
     this.subscribeToEvents(clientListener);
   }
   subscribeToEvents(clientListener) {
     if (!this.walletConnect.connector) {
+      console.log("no connector");
       return;
     }
     this.walletConnect.connector.on("session_update", async (error, payload) => {
@@ -56099,7 +56104,8 @@ var Algonaut = class {
     console.log("TBD!");
   }
   startReqAF() {
-    if ((0, import_utils2.isBrowser)() && (0, import_utils2.isMobile)()) {
+    console.log("startReqAF");
+    if ((0, import_utils2.isBrowser)()) {
       const keepAlive = () => {
         const qrIsOpen = document.querySelector("#walletconnect-qrcode-modal");
         if (!qrIsOpen) {

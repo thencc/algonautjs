@@ -2175,7 +2175,7 @@ export default class Algonaut {
 	 * @param clientListener object of listener functions (see {@link WalletConnectListener})
 	 */
 	async connectAlgoWallet(clientListener?: WalletConnectListener): Promise<void> {
-		// console.log('connectAlgoWallet');
+		console.log('connectAlgoWallet');
 
 		if (isNode()) {
 			console.warn('NOTE: this lib isnt made for using wallet connect in node yet...');
@@ -2199,15 +2199,15 @@ export default class Algonaut {
 		this.walletConnect.connector = wcConnector;
 
 		// console.log('connector created');
-		// console.log(this.walletConnect.connector);
+		console.log(this.walletConnect.connector);
 
-		//console.log('trying to create session');
+		console.log('trying to create session');
 
 		// Check if connection is already established
 		if (!this.walletConnect.connector.connected) {
 			// create new session
 			this.walletConnect.connector.createSession();
-			// console.log('session created');
+			console.log('session created');
 
 			// keeps some background tasks running while navigating to Pera Wallet to approve wc session link handshake
 			this.startReqAF();
@@ -2222,6 +2222,7 @@ export default class Algonaut {
 	 */
 	subscribeToEvents(clientListener?: WalletConnectListener): void {
 		if (!this.walletConnect.connector) {
+			console.log('no connector');
 			return;
 		}
 
@@ -2288,12 +2289,12 @@ export default class Algonaut {
 	}
 
 	startReqAF() {
-		// console.log('startReqAF');
+		console.log('startReqAF');
 		// keeps some background tasks running while navigating to Pera Wallet to approve wc session link handshake
 
 		// TODO helpful for desktop debugging but redo isMobile check
-		// if (isBrowser()) {
-		if (isBrowser() && isMobile()) {
+		if (isBrowser()) {
+		// if (isBrowser() && isMobile()) {
 			// reqaf fix
 			const keepAlive = () => {
 				// console.log('keepAlive');
