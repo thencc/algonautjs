@@ -1,5 +1,5 @@
 import { Buffer } from 'buffer';
-import algosdk from 'algosdk';
+import algosdk, { appendSignMultisigTransaction } from 'algosdk';
 import {
 	AlgonautConfig,
 	AlgonautWallet,
@@ -8,6 +8,7 @@ import {
 	AlgonautTransactionFields,
 	AlgonautAppState,
 	AlgonautStateData,
+	AlgonautError,
 	WalletConnectListener,
 	AlgonautTxnCallbacks,
 	AlgonautContractSchema,
@@ -33,13 +34,27 @@ import QRCodeModal from 'algorand-walletconnect-qrcode-modal';
 import { formatJsonRpcRequest } from '@json-rpc-tools/utils';
 import {
 	isBrowser,
+	isNode,
 	isAndroid,
 	isIOS,
 	isMobile
-} from "@walletconnect/utils";
+} from '@walletconnect/utils';
 
 // fix for wallectconnect websocket issue when backgrounded on mobile (uses request animation frame)
-var wcReqAF = 0;
+let wcReqAF = 0;
+
+// wc fix (audio)
+let wcS: HTMLAudioElement;
+let wcSDone: HTMLAudioElement;
+
+import waitSound from './lowtone';
+import finishedSound from './finished';
+waitSound;
+finishedSound;
+// console.log(waitSound);
+// console.log(finishedSound);
+
+import { FrameBus } from './FrameBus';
 
 /*
 
@@ -94,16 +109,32 @@ export default class Algonaut {
 	// TBD: add algo wallet for mobile
 	algodClient: algosdk.Algodv2;
 	indexerClient = undefined as undefined | algosdk.Indexer;
-	account = undefined as undefined | algosdk.Account;
+
+	// FYI undefined if using wallet-connect, etc. perhaps rename to .accountLocal ?
+	account = undefined as undefined | algosdk.Account; // ONLY defined if using local signing, not wallet-connet or hippo
 	address = undefined as undefined | string;
 	sKey = undefined as undefined | Uint8Array;
 	mnemonic = undefined as undefined | string;
+
 	config = undefined as undefined | AlgonautConfig;
 	sdk = undefined as undefined | typeof algosdk;
 	uiLoading = false;
+
+	// microwallet aka hippo
+	hippoWallet = {
+		// private hippoWallet = { // for extra security we should do this
+
+		// frameId: '',
+		// ready: false,
+		defaultSrc: '123',
+		otherConfig: {},
+		frameBus: undefined as undefined | FrameBus
+	};
+
+	// everything wallet connect
 	walletConnect = {
 		connected: false,
-		connector: undefined as undefined | WalletConnect,
+		connector: undefined as undefined | any,
 		accounts: [] as any[],
 		address: '',
 		assets: [] as any[],
@@ -133,14 +164,62 @@ export default class Algonaut {
 
 		this.config = config;
 		this.algodClient = new algosdk.Algodv2(config.API_TOKEN, config.BASE_SERVER, config.PORT);
+
 		if (config.INDEX_SERVER) {
 			this.indexerClient = new algosdk.Indexer(config.API_TOKEN, config.INDEX_SERVER, config.PORT);
 		} else {
 			console.warn('No indexer configured because INDEX_SERVER was not provided.');
 		}
 
+		// expose entire algosdk in case the dapp needs more
 		this.sdk = algosdk;
 
+		// hippo init
+		if (config.SIGNING_MODE && config.SIGNING_MODE == 'hippo') {
+			if (!config.HIPPO_SRC) {
+				// default hippo
+				config.HIPPO_SRC = 'https://hippoz.web.app';
+			}
+			
+			this.initHippo({
+				id: config.HIPPO_ID,
+				src: config.HIPPO_SRC
+			});
+		}
+
+	}
+
+	/*
+	* @param mountConfig either an id or src (id meaning existing iframe and takes precedence)
+	*/
+	initHippo(mountConfig: {
+		id?: string
+		src?: string
+	}) {
+		console.log('initHippo');
+
+		if (!mountConfig.id && !mountConfig.src) {
+			console.warn('not enough hippo config provided, try init again...');
+			return;
+		}
+
+		// reset
+		if (this.hippoWallet.frameBus) {
+			this.hippoWallet.frameBus.destroy();
+			this.hippoWallet.frameBus = undefined;
+		}
+
+		if (mountConfig.id) {
+			this.hippoWallet.frameBus = new FrameBus({
+				id: mountConfig.id
+			});
+		} else if (mountConfig.src) {
+			this.hippoWallet.frameBus = new FrameBus({
+				src: mountConfig.src
+			});
+		} else {
+			console.warn('cannot init hippo');
+		}
 	}
 
 	/**
@@ -155,7 +234,11 @@ export default class Algonaut {
 	 * Checks status of Algorand network
 	 * @returns Promise resolving to status of Algorand network
 	 */
-	async checkStatus(): Promise<any> {
+	async checkStatus(): Promise<any | AlgonautError> {
+		if (!this.getConfig()) {
+			throw new Error('No node configuration set.');
+		}
+
 		const status = await this.algodClient.status().do();
 		console.log('Algorand network status: %o', status);
 		return status;
@@ -165,10 +248,14 @@ export default class Algonaut {
 	 * if you already have an account, set it here
 	 * @param account an algosdk account already created
 	 */
-	setAccount(account: algosdk.Account): void {
+	setAccount(account: algosdk.Account): void | AlgonautError {
+		if (!account) {
+			throw new Error('No account provided.');
+		}
+
 		this.account = account;
 		this.address = account.addr;
-		if (this.config) this.config.SIGNING_MODE = 'local';
+		// if (this.config) this.config.SIGNING_MODE = 'local';
 		this.mnemonic = algosdk.secretKeyToMnemonic(account.sk);
 	}
 
@@ -176,12 +263,25 @@ export default class Algonaut {
 	 * Sets account connected via WalletConnect
 	 * @param address account address
 	 */
-	setWalletConnectAccount(address: string) {
+	setWalletConnectAccount(address: string): void {
+		if (!address) {
+			throw new Error('No address provided.');
+		}
+
 		this.account = {
 			addr: address,
 			sk: new Uint8Array([])
 		};
-		if (this.config) this.config.SIGNING_MODE = 'walletconnect';
+		// if (this.config) this.config.SIGNING_MODE = 'walletconnect';
+	}
+
+	/**
+	 * This is the same as setting the WC account
+	 * @param address account address
+	 */
+	setHippoAccount(address: string): void {
+		if (!address) throw new Error('No address provided');
+		this.setWalletConnectAccount(address);
 	}
 
 	/**
@@ -209,19 +309,22 @@ export default class Algonaut {
 	 * @param mnemonic Mnemonic associated with Algonaut account
 	 * @returns If mnemonic is valid, returns account. Otherwise, returns false.
 	 */
-	recoverAccount(mnemonic: string): algosdk.Account | boolean {
+	recoverAccount(mnemonic: string): algosdk.Account {
+		if (!mnemonic) throw new Error('algonaut.recoverAccount: No mnemonic provided.');
+
 		try {
 			this.account = algosdk.mnemonicToSecretKey(mnemonic);
 			if (algosdk.isValidAddress(this.account?.addr)) {
-				return this.account || false;
+				//if (this.config) this.config.SIGNING_MODE = 'local';
+				return this.account;
+			} else {
+				throw new Error('Not a valid mnemonic.');
 			}
-			if (this.config) this.config.SIGNING_MODE = 'local';
-		} catch (error) {
+		} catch (error: any) {
 			// should we throw an error here instead of returning false?
 			console.log(error);
-			return false;
+			throw new Error('Could not recover account from mnemonic.');
 		}
-		return false;
 	}
 
 	/**
@@ -231,6 +334,8 @@ export default class Algonaut {
 	 * @param log set to true if you'd like to see "waiting for confirmation" log messages
 	 */
 	async waitForConfirmation(txId: string, limitDelta?: number, log = false): Promise<AlgonautTransactionStatus> {
+		if (!txId) throw new Error('waitForConfirmation: No transaction ID provided.');
+
 		let lastround = (await this.algodClient.status().do())['last-round'];
 		const limit = lastround + (limitDelta ? limitDelta : 50);
 
@@ -268,7 +373,7 @@ export default class Algonaut {
 				break;
 			}
 
-			lastround++;
+			lastround = (await this.algodClient.status().do())['last-round'];
 		}
 
 		return returnValue;
@@ -282,6 +387,8 @@ export default class Algonaut {
 	 * @returns an algosdk LogicSigAccount
 	 */
 	generateLogicSig(base64ProgramString: string): algosdk.LogicSigAccount {
+		if (!base64ProgramString) throw new Error('No program string provided.');
+
 		const program = new Uint8Array(
 			Buffer.from(base64ProgramString, 'base64')
 		);
@@ -290,27 +397,24 @@ export default class Algonaut {
 	}
 
 	async atomicOptInAsset(assetIndex: number): Promise<AlgonautAtomicTransaction> {
+		if (!this.account) throw new Error('No account set in Algonaut.');
+		if (!assetIndex) throw new Error('No asset index provided.');
 
-		if (this.account && assetIndex) {
+		const params = await this.algodClient.getTransactionParams().do();
 
-			const params = await this.algodClient.getTransactionParams().do();
-			const optInTransaction = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
-				from: this.account.addr,
-				to: this.account.addr,
-				suggestedParams: params,
-				assetIndex: assetIndex,
-				amount: 0
-			});
+		const optInTransaction = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
+			from: this.account.addr,
+			to: this.account.addr,
+			suggestedParams: params,
+			assetIndex: assetIndex,
+			amount: 0
+		});
 
-			return {
-				transaction: optInTransaction,
-				transactionSigner: this.account,
-				isLogigSig: false
-			};
-
-		} else {
-			throw new Error('there was no account!');
-		}
+		return {
+			transaction: optInTransaction,
+			transactionSigner: this.account,
+			isLogigSig: false
+		};
 
 	}
 
@@ -322,6 +426,7 @@ export default class Algonaut {
 	 */
 	async optInAsset(assetIndex: number, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
 		if (!this.account) throw new Error('There was no account!');
+		if (!assetIndex) throw new Error('No asset index provided.');
 		const { transaction } = await this.atomicOptInAsset(assetIndex);
 		return await this.sendTransaction(transaction, callbacks);
 	}
@@ -352,12 +457,14 @@ export default class Algonaut {
 	/**
 	 * You can be opted into an asset but still have a zero balance. Use this call
 	 * for cases where you just need to know the address's opt-in state
-	 * @param assetId
-	 * @returns
+	 * @param args object containing `account` and `assetId` properties
+	 * @returns boolean true if account holds asset
 	 */
 	async isOptedIntoAsset(args: { account: string, assetId: number }): Promise<boolean> {
-		let optInState = false;
+		if (!args.account) throw new Error('No account provided.');
+		if (!args.assetId) throw new Error('No asset ID provided.');
 
+		let optInState = false;
 		const accountInfo = await this.getAccountInfo(args.account);
 		accountInfo.assets.forEach((asset: any) => {
 			if (asset['asset-id'] == args.assetId) {
@@ -399,8 +506,15 @@ export default class Algonaut {
 	 * @returns atomic txn to create asset
 	*/
 	async atomicCreateAsset(args: AlgonautCreateAssetArguments): Promise<AlgonautAtomicTransaction> {
+		if (!args.assetName) throw new Error('args.assetName not provided.');
+		if (!args.symbol) throw new Error('args.symbol not provided');
+		if (!args.decimals) throw new Error('args.decimals not provided.');
+		if (!args.amount) throw new Error('args.amount not provided.');
+		if (!this.account) throw new Error('There was no account set in Algonaut');
+
+
 		if (!args.metaBlock) {
-			args.metaBlock = 'wot? wot wot?';
+			args.metaBlock = ' ';
 		}
 
 		if (!args.defaultFrozen) args.defaultFrozen = false;
@@ -414,11 +528,6 @@ export default class Algonaut {
 		}
 
 		const enc = new TextEncoder();
-
-		if (!this.account) throw new Error('There was no account');
-
-
-		//console.log('ok, starting ASA deploy');
 
 		// arbitrary data: 512 bytes, ~512 characters
 		const note = enc.encode(args.metaBlock);
@@ -490,6 +599,7 @@ export default class Algonaut {
 
 	async atomicDeleteAsset(assetId: number): Promise<AlgonautAtomicTransaction> {
 		if (!this.account) throw new Error('there was no account!');
+		if (!assetId) throw new Error('No assetId provided!');
 
 		const enc = new TextEncoder();
 
@@ -514,6 +624,7 @@ export default class Algonaut {
 	 * @returns Promise resolving to confirmed transaction or error
 	 */
 	async deleteAsset(assetId: number, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
+		if (!assetId) throw new Error('No asset ID provided!');
 		const { transaction } = await this.atomicDeleteAsset(assetId);
 		return await this.sendTransaction(transaction, callbacks);
 	}
@@ -528,7 +639,9 @@ export default class Algonaut {
 	 * @returns Promise resolving to `AlgonautAtomicTransaction`
 	 */
 	async atomicSendAsset(args: AlgonautSendAssetArguments): Promise<AlgonautAtomicTransaction> {
-
+		if (!args.to) throw new Error('No to address provided');
+		if (!args.assetIndex) throw new Error('No asset index provided');
+		if (!args.amount) throw new Error('No amount provided');
 		if (!this.account) throw new Error('there is no account!');
 
 		const transaction =
@@ -569,6 +682,8 @@ export default class Algonaut {
 	 * @returns
 	 */
 	async getAssetInfo(assetIndex: number): Promise<any> {
+		if (!assetIndex) throw new Error('No asset ID provided');
+
 		const info = await this.algodClient.getAssetByID(assetIndex).do();
 		return info;
 	}
@@ -579,30 +694,26 @@ export default class Algonaut {
 	 * @returns AlgonautAtomicTransaction
 	 */
 	async atomicOptInApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
-		if (this.account && args.appIndex) {
+		if (!args.appIndex) throw new Error('No app ID provided');
+		if (!this.account) throw new Error('No account in algonaut');
 
-			const sender = this.account.addr;
-			const params = await this.algodClient.getTransactionParams().do();
-			const optInTransaction = algosdk.makeApplicationOptInTxnFromObject({
-				from: sender,
-				appIndex: args.appIndex,
-				suggestedParams: params,
-				appArgs: args.appArgs ? this.encodeArguments(args.appArgs) : undefined,
-				accounts: args.optionalFields?.accounts ? args.optionalFields?.accounts : undefined,
-				foreignApps: args.optionalFields?.applications ? args.optionalFields?.applications : undefined,
-				foreignAssets: args.optionalFields?.assets ? args.optionalFields?.assets : undefined
-			});
+		const sender = this.account.addr;
+		const params = await this.algodClient.getTransactionParams().do();
+		const optInTransaction = algosdk.makeApplicationOptInTxnFromObject({
+			from: sender,
+			appIndex: args.appIndex,
+			suggestedParams: params,
+			appArgs: args.appArgs ? this.encodeArguments(args.appArgs) : undefined,
+			accounts: args.optionalFields?.accounts ? args.optionalFields?.accounts : undefined,
+			foreignApps: args.optionalFields?.applications ? args.optionalFields?.applications : undefined,
+			foreignAssets: args.optionalFields?.assets ? args.optionalFields?.assets : undefined
+		});
 
-			return {
-				transaction: optInTransaction,
-				transactionSigner: this.account,
-				isLogigSig: false
-			};
-
-		} else {
-			throw new Error('algonautjs has no account loaded!');
-		}
-
+		return {
+			transaction: optInTransaction,
+			transactionSigner: this.account,
+			isLogigSig: false
+		};
 	}
 
 	/**
@@ -612,14 +723,8 @@ export default class Algonaut {
 	 * @returns Promise resolving to confirmed transaction or error
 	 */
 	async optInApp(args: AlgonautCallAppArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
-		if (this.account && args.appIndex) {
-			const { transaction } = await this.atomicOptInApp(args);
-			//const txId = transaction.txID().toString();
-			return await this.sendTransaction(transaction, callbacks);
-		} else {
-			if (!this.account) throw new Error('No account set.');
-			throw new Error('Must provide appIndex');
-		}
+		const { transaction } = await this.atomicOptInApp(args);
+		return await this.sendTransaction(transaction, callbacks);
 	}
 
 	/**
@@ -628,28 +733,21 @@ export default class Algonaut {
 	 * @returns Promise resolving to atomic transaction that deletes application
 	 */
 	async atomicDeleteApplication(appIndex: number): Promise<AlgonautAtomicTransaction> {
+		if (!this.account) throw new Error('No account set.');
+		if (!appIndex) throw new Error('No app ID provided');
 
-		if (this.account && appIndex) {
-			try {
-				const sender = this.account.addr;
-				const params = await this.algodClient.getTransactionParams().do();
+		const sender = this.account.addr;
+		const params = await this.algodClient.getTransactionParams().do();
 
-				//console.log('delete: ' + appIndex);
+		//console.log('delete: ' + appIndex);
 
-				const txn = algosdk.makeApplicationDeleteTxn(sender, params, appIndex);
+		const txn = algosdk.makeApplicationDeleteTxn(sender, params, appIndex);
 
-				return {
-					transaction: txn,
-					transactionSigner: this.account,
-					isLogigSig: false
-				};
-
-			} catch (e: any) {
-				throw new Error(e);
-			}
-		} else {
-			throw new Error('No account loaded');
-		}
+		return {
+			transaction: txn,
+			transactionSigner: this.account,
+			isLogigSig: false
+		};
 	}
 
 	/**
@@ -687,12 +785,78 @@ export default class Algonaut {
 	}
 
 	async atomicCallApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
+		if (!this.account) throw new Error('There was no account!');
+		if (!args.appIndex) throw new Error('Must provide appIndex');
+		if (!args.appArgs.length) throw new Error('Must provide at least one appArgs');
 
-		if (this.account && args.appIndex && args.appArgs.length) {
+		const processedArgs = this.encodeArguments(args.appArgs);
+		const params = await this.algodClient.getTransactionParams().do();
+		const callAppTransaction = algosdk.makeApplicationNoOpTxnFromObject({
+			from: this.account.addr,
+			suggestedParams: params,
+			appIndex: args.appIndex,
+			appArgs: processedArgs,
+			accounts: args.optionalFields?.accounts || undefined,
+			foreignApps: args.optionalFields?.applications || undefined,
+			foreignAssets: args.optionalFields?.assets || undefined,
+			note: args.optionalFields?.note ? this.to8Arr(args.optionalFields.note) : undefined
+		});
 
-			const processedArgs = this.encodeArguments(args.appArgs);
+		return {
+			transaction: callAppTransaction,
+			transactionSigner: this.account,
+			isLogigSig: false
+		};
+	}
+
+	/**
+	 * Call a "method" on a stateful contract.  In TEAL, you're really giving
+	 * an argument which branches to a specific place and reads the other args
+	 * @param args Object containing `appIndex`, `appArgs`, and `optionalFields` properties
+	 */
+	async callApp(args: AlgonautCallAppArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
+		const { transaction } = await this.atomicCallApp(args);
+		return await this.sendTransaction(transaction, callbacks);
+	}
+
+	async atomicCallAppWithLSig(args: AlgonautLsigCallAppArguments): Promise<AlgonautAtomicTransaction> {
+		if (!this.account) throw new Error('There was no account!');
+		if (!args.appIndex) throw new Error('Must provide appIndex');
+		if (!args.appArgs.length) throw new Error('Must provide at least one appArgs');
+
+		const processedArgs = this.encodeArguments(args.appArgs);
+		const params = await this.algodClient.getTransactionParams().do();
+		const callAppTransaction = algosdk.makeApplicationNoOpTxnFromObject({
+			from: args.lsig.address(),
+			suggestedParams: params,
+			appIndex: args.appIndex,
+			appArgs: processedArgs,
+			accounts: args.optionalFields?.accounts || undefined,
+			foreignApps: args.optionalFields?.applications || undefined,
+			foreignAssets: args.optionalFields?.assets || undefined
+		});
+
+		return {
+			transaction: callAppTransaction,
+			transactionSigner: args.lsig,
+			isLogigSig: true
+		};
+	}
+
+	/**
+	 * Returns an atomic transaction that closes out the user's local state in an application.
+	 * The opposite of {@link atomicOptInApp}.
+	 * @param args Object containing `appIndex`, `appArgs`, and `optionalFields` properties
+	 * @returns Promise resolving to atomic transaction
+	 */
+	async atomicCloseOutApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
+		if (!this.account) throw new Error('There was no account!');
+		if (!args.appIndex) throw new Error('Must provide appIndex');
+
+		try {
 			const params = await this.algodClient.getTransactionParams().do();
-			const callAppTransaction = algosdk.makeApplicationNoOpTxnFromObject({
+			const processedArgs = this.encodeArguments(args.appArgs);
+			const closeOutTxn = algosdk.makeApplicationCloseOutTxnFromObject({
 				from: this.account.addr,
 				suggestedParams: params,
 				appIndex: args.appIndex,
@@ -703,87 +867,12 @@ export default class Algonaut {
 			});
 
 			return {
-				transaction: callAppTransaction,
+				transaction: closeOutTxn,
 				transactionSigner: this.account,
 				isLogigSig: false
 			};
-
-		} else {
-			throw new Error('there was no account!');
-		}
-	}
-
-	/**
-	 * Call a "method" on a stateful contract.  In TEAL, you're really giving
-	 * an argument which branches to a specific place and reads the other args
-	 * @param args Object containing `appIndex`, `appArgs`, and `optionalFields` properties
-	 */
-	async callApp(args: AlgonautCallAppArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
-		if (!this.account) throw new Error('There was no account!');
-		if (!args.appIndex) throw new Error('Must provide appIndex');
-		if (!args.appArgs.length) throw new Error('Must provide at least one appArgs');
-
-		const { transaction } = await this.atomicCallApp(args);
-		return await this.sendTransaction(transaction, callbacks);
-	}
-
-	async atomicCallAppWithLSig(args: AlgonautLsigCallAppArguments): Promise<AlgonautAtomicTransaction> {
-
-		if (this.account && args.appIndex && args.appArgs.length) {
-			const processedArgs = this.encodeArguments(args.appArgs);
-			const params = await this.algodClient.getTransactionParams().do();
-			const callAppTransaction = algosdk.makeApplicationNoOpTxnFromObject({
-				from: args.lsig.address(),
-				suggestedParams: params,
-				appIndex: args.appIndex,
-				appArgs: processedArgs,
-				accounts: args.optionalFields?.accounts || undefined,
-				foreignApps: args.optionalFields?.applications || undefined,
-				foreignAssets: args.optionalFields?.assets || undefined
-			});
-
-			return {
-				transaction: callAppTransaction,
-				transactionSigner: args.lsig,
-				isLogigSig: true
-			};
-
-		} else {
-			throw new Error('there was no account!');
-		}
-	}
-
-	/**
-	 * Returns an atomic transaction that closes out the user's local state in an application.
-	 * The opposite of {@link atomicOptInApp}.
-	 * @param args Object containing `appIndex`, `appArgs`, and `optionalFields` properties
-	 * @returns Promise resolving to atomic transaction
-	 */
-	async atomicCloseOutApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
-		if (this.account && args.appIndex && args.appArgs.length) {
-			try {
-				const params = await this.algodClient.getTransactionParams().do();
-				const processedArgs = this.encodeArguments(args.appArgs);
-				const closeOutTxn = algosdk.makeApplicationCloseOutTxnFromObject({
-					from: this.account.addr,
-					suggestedParams: params,
-					appIndex: args.appIndex,
-					appArgs: processedArgs,
-					accounts: args.optionalFields?.accounts || undefined,
-					foreignApps: args.optionalFields?.applications || undefined,
-					foreignAssets: args.optionalFields?.assets || undefined
-				});
-
-				return {
-					transaction: closeOutTxn,
-					transactionSigner: this.account,
-					isLogigSig: false
-				};
-			} catch (e: any) {
-				throw new Error(e);
-			}
-		} else {
-			throw new Error('requires app index');
+		} catch (e: any) {
+			throw new Error(e);
 		}
 	}
 
@@ -795,12 +884,9 @@ export default class Algonaut {
 	 * @returns Promise resolving to atomic transaction
 	 */
 	async closeOutApp(args: AlgonautCallAppArguments, callbacks?: AlgonautTxnCallbacks) {
-		if (!this.account) throw new Error('There was no account!');
-		if (!args.appIndex) throw new Error('Must provide appIndex');
-		if (!args.appArgs.length) throw new Error('Must provide at least one appArgs');
-
 		const { transaction } = await this.atomicCloseOutApp(args);
 		return await this.sendTransaction(transaction, callbacks);
+
 	}
 
 	/**
@@ -809,6 +895,7 @@ export default class Algonaut {
 	 * @returns Escrow account address as string
 	 */
 	getAppEscrowAccount(appId: number | bigint): string {
+		if (!appId) throw new Error('No appId provided');
 
 		return algosdk.getApplicationAddress(appId);
 
@@ -824,6 +911,7 @@ export default class Algonaut {
 	 * @returns Promise resolving to application state
 	 */
 	async getAppInfo(appId: number): Promise<AlgonautAppState> {
+		if (!appId) throw new Error('No appId provided');
 
 		const info = await this.algodClient.getApplicationByID(appId).do();
 
@@ -862,10 +950,15 @@ export default class Algonaut {
 			throw new Error('Your note is too long');
 		}
 		if (!this.account) throw new Error('There was no account!');
+		if (!args.tealApprovalCode) throw new Error('No approval program provided');
+		if (!args.tealClearCode) throw new Error('No clear program provided');
+		if (!args.schema) throw new Error('No schema provided');
+
+		//console.log('CREATING APP')
+
 		try {
 
 			const sender = this.account.addr;
-			const onComplete = algosdk.OnApplicationComplete.NoOpOC;
 			const params = await this.algodClient.getTransactionParams().do();
 
 			let approvalProgram = new Uint8Array();
@@ -874,25 +967,28 @@ export default class Algonaut {
 			approvalProgram = await this.compileProgram(args.tealApprovalCode);
 			clearProgram = await this.compileProgram(args.tealClearCode);
 
+			// console.log('approval', approvalProgram);
+			// console.log('clear', clearProgram);
+
 			// create unsigned transaction
 			if (approvalProgram && clearProgram) {
 
-				const txn = algosdk.makeApplicationCreateTxn(
-					sender,
-					params,
-					onComplete,
+				const txn = algosdk.makeApplicationCreateTxnFromObject({
+					from: sender,
+					suggestedParams: params,
+					onComplete: algosdk.OnApplicationComplete.NoOpOC,
 					approvalProgram,
 					clearProgram,
-					args.schema.localInts,
-					args.schema.localBytes,
-					args.schema.globalInts,
-					args.schema.globalBytes,
-					this.encodeArguments(args.appArgs),
-					args.optionalFields?.accounts ? args.optionalFields.accounts : undefined,
-					args.optionalFields?.applications ? args.optionalFields.applications : undefined,
-					args.optionalFields?.assets ? args.optionalFields.assets : undefined,
-					args.optionalFields?.note ? new Uint8Array(Buffer.from(args.optionalFields.note, 'utf8')) : undefined
-				);
+					numLocalInts: args.schema.localInts,
+					numLocalByteSlices: args.schema.localBytes,
+					numGlobalInts: args.schema.globalInts,
+					numGlobalByteSlices: args.schema.globalBytes,
+					appArgs: this.encodeArguments(args.appArgs),
+					accounts: args.optionalFields?.accounts ? args.optionalFields.accounts : undefined,
+					foreignApps: args.optionalFields?.applications ? args.optionalFields.applications : undefined,
+					foreignAssets: args.optionalFields?.assets ? args.optionalFields.assets : undefined,
+					note: args.optionalFields?.note ? this.to8Arr(args.optionalFields.note) : undefined
+				});
 				const txId = txn.txID().toString();
 
 				// Wait for confirmation
@@ -924,6 +1020,11 @@ export default class Algonaut {
 	 * @returns AlgonautAtomicTransaction
 	 */
 	async atomicCreateApp(args: AlgonautDeployArguments): Promise<AlgonautAtomicTransaction> {
+		if (!this.account) throw new Error('There was no account!');
+		if (!args.tealApprovalCode) throw new Error('No approval program provided');
+		if (!args.tealClearCode) throw new Error('No clear program provided');
+		if (!args.schema) throw new Error('No schema provided');
+
 		if (args.optionalFields && args.optionalFields.note && args.optionalFields.note.length > 1023) {
 			throw new Error('Your NOTE is too long, it must be less thatn 1024 Bytes');
 		} else if (this.account) {
@@ -957,7 +1058,7 @@ export default class Algonaut {
 					args.optionalFields?.accounts ? args.optionalFields.accounts : undefined,
 					args.optionalFields?.applications ? args.optionalFields.applications : undefined,
 					args.optionalFields?.assets ? args.optionalFields.assets : undefined,
-					args.optionalFields?.note ? new Uint8Array(Buffer.from(args.optionalFields.note, 'utf8')) : undefined
+					args.optionalFields?.note ? this.to8Arr(args.optionalFields.note) : undefined
 				);
 
 				return {
@@ -1060,6 +1161,8 @@ export default class Algonaut {
 	 */
 	async atomicUpdateApp(args: AlgonautUpdateAppArguments): Promise<AlgonautAtomicTransaction> {
 		if (!this.account) throw new Error('Algonaut.js has no account loaded!');
+		if (!args.tealApprovalCode) throw new Error('No approval program provided');
+		if (!args.tealClearCode) throw new Error('No clear program provided');
 		if (args.optionalFields && args.optionalFields.note && args.optionalFields.note.length > 1023) {
 			throw new Error('Your NOTE is too long, it must be less thatn 1024 Bytes');
 		}
@@ -1090,7 +1193,7 @@ export default class Algonaut {
 				args.optionalFields?.accounts ? args.optionalFields.accounts : undefined,
 				args.optionalFields?.applications ? args.optionalFields.applications : undefined,
 				args.optionalFields?.assets ? args.optionalFields.assets : undefined,
-				args.optionalFields?.note ? new Uint8Array(Buffer.from(args.optionalFields.note, 'utf8')) : undefined
+				args.optionalFields?.note ? this.to8Arr(args.optionalFields.note) : undefined
 			);
 
 			return {
@@ -1130,10 +1233,13 @@ export default class Algonaut {
 		return compiledBytes;
 	}
 
+	// TODO rename atomicSendAlgo
 	async atomicPayment(args: AlgonautPaymentArguments): Promise<AlgonautAtomicTransaction> {
+		if (!args.amount) throw new Error('You did not specify an amount!');
+		if (!args.to) throw new Error('You did not specify a to address');
 
 		if (this.account) {
-			const encodedNote = args.note ? new Uint8Array(Buffer.from(args.note, 'utf8')) : new Uint8Array();
+			const encodedNote = args.note ? this.to8Arr(args.note) : new Uint8Array();
 
 			const transaction =
 				algosdk.makePaymentTxnWithSuggestedParamsFromObject({
@@ -1164,7 +1270,7 @@ export default class Algonaut {
 	async sendAlgo(args: AlgonautPaymentArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
 		if (!this.account) throw new Error('there was no account!');
 		const { transaction } = await this.atomicPayment(args);
-		return await this.sendTransaction(transaction);
+		return await this.sendTransaction(transaction, callbacks);
 	}
 
 	/**
@@ -1173,6 +1279,8 @@ export default class Algonaut {
 	 * @returns Promise of type AccountInfo
 	 */
 	async getAccountInfo(address: string): Promise<any> {
+		if (!address) throw new Error('No address provided');
+
 		//console.log//('checking algo balance');
 		const accountInfo = await this.algodClient.accountInformation(address).do();
 		return accountInfo;
@@ -1185,6 +1293,7 @@ export default class Algonaut {
 	 * @returns Promise resolving to Algo balance
 	 */
 	async getAlgoBalance(address: string): Promise<any> {
+		if (!address) throw new Error('No address provided');
 		//console.log('checking algo balance');
 		const accountInfo = await this.algodClient.accountInformation(address).do();
 		return accountInfo.amount;
@@ -1197,6 +1306,9 @@ export default class Algonaut {
 	 * @returns Promise resolving to token balance
 	 */
 	async getTokenBalance(address: string, assetIndex: number): Promise<number> {
+		if (!address) throw new Error('No address provided');
+		if (!assetIndex) throw new Error('No asset index provided');
+
 		const accountInfo = await this.algodClient.accountInformation(address).do();
 		//console.log(accountInfo);
 
@@ -1227,6 +1339,8 @@ export default class Algonaut {
 	 * @returns {object} object representing global state
 	 */
 	async getAppGlobalState(applicationIndex: number): Promise<any> {
+		if (!applicationIndex) throw new Error('No application ID provided');
+
 		const info = await this.getAppInfo(applicationIndex);
 		if (info.hasState) {
 			return this.stateArrayToObject(info.globals);
@@ -1242,6 +1356,7 @@ export default class Algonaut {
 	 * @param applicationIndex the applications index
 	 */
 	async getAppLocalState(applicationIndex: number): Promise<AlgonautAppState> {
+		if (!applicationIndex) throw new Error('No application ID provided');
 
 		if (this.account) {
 			const state = {
@@ -1354,6 +1469,7 @@ export default class Algonaut {
 	async sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | algosdk.Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
 		if (!this.account) throw new Error('There is no account');
 		if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === 'walletconnect') {
+
 			// walletconnect must be sent as atomic transactions
 			if (Array.isArray(txnOrTxns)) {
 				return await this.sendWalletConnectTxns(txnOrTxns, callbacks);
@@ -1370,7 +1486,64 @@ export default class Algonaut {
 					}], callbacks);
 				}
 			}
+		} else if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === 'hippo') {
+			// let's do the hippo thing
+
+			// 1. depending on how txns are sent into `sendTransaction`, we need to deal with them
+			let signedTxns;
+
+
+			// HANDLE ARRAY OF TRANSACTIONS
+			if (Array.isArray(txnOrTxns) && txnOrTxns[0] && txnOrTxns[0].transaction && txnOrTxns.length > 1) {
+				// array of AlgonautAtomicTransaction, map these to get .transaction out
+				const unwrappedTxns = txnOrTxns.map(txn => txn.transaction);
+
+				// assign group ID
+				const txnGroup = algosdk.assignGroupID(unwrappedTxns);
+
+
+				
+				// encode txns
+				const txnsToSign = txnGroup.map(txn => {
+					const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString('base64');
+					return encodedTxn;
+				});
+
+				signedTxns = await this.hippoSignTxns(txnsToSign);
+
+			// HANDLE SINGLE ATOMIC TRANSACTION
+			} else {
+				let txn: algosdk.Transaction;
+				if (txnOrTxns && (txnOrTxns as any).transaction) {
+					txn = (txnOrTxns as AlgonautAtomicTransaction).transaction;
+				} else {
+					txn = (txnOrTxns as algosdk.Transaction);
+				}
+
+				// send base64 to hippo
+				const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString('base64');
+				signedTxns = await this.hippoSignTxns([encodedTxn]);
+			}
+
+			if (callbacks?.onSign) callbacks.onSign(signedTxns);
+
+			const tx = await this.algodClient.sendRawTransaction(signedTxns).do();
+
+			if (callbacks?.onSend) callbacks.onSend(tx);
+
+			// Wait for transaction to be confirmed
+			const txStatus = await this.waitForConfirmation(tx.txId);
+
+			const transactionResponse = await this.algodClient
+				.pendingTransactionInformation(tx.txId)
+				.do();
+			txStatus.meta = transactionResponse;
+
+			if (callbacks?.onConfirm) callbacks.onConfirm(txStatus);
+
+			return txStatus;
 		} else {
+			console.log('sendTransaction: local');
 			// assume local signing
 			if (Array.isArray(txnOrTxns)) {
 				return await this.sendAtomicTransaction(txnOrTxns, callbacks);
@@ -1402,6 +1575,125 @@ export default class Algonaut {
 		}
 	}
 
+	/**
+	 * Sends messages to Hippo via FrameBus
+	 * @param data Message to send
+	 * @returns Whatever Hippo gives us
+	 */
+	async hippoMessageAsync(data: any, options?: { showFrame: boolean }): Promise<any> {
+		if (!this.hippoWallet.frameBus) {
+			throw new Error('No hippo frameBus');
+		}
+
+		if (!this.hippoWallet.frameBus.ready) {
+			await this.hippoWallet.frameBus.isReady();
+		}
+
+		data.source = 'ncc-hippo-client';
+		data.async = true;
+
+		if (options?.showFrame) this.hippoWallet.frameBus.showFrame();
+
+		const payload = await this.hippoWallet.frameBus.emitAsync<any>(data);
+		console.log('hippo payload', payload);
+		return payload;
+	}
+
+	/**
+	 * Sends unsigned transactions to Hippo, awaits signing, returns signed txns
+	 * @param txns Array of base64 encoded transactions
+	 * @returns {Uint8Array} Signed transactions
+	 */
+	async hippoSignTxns(txns: string[]) {
+		console.log('hippoSignTxns');
+
+		const data = {
+			type: 'sign-txns', // determines payload type
+			payload: {
+				txns
+			},
+		}
+
+		const res = await this.hippoMessageAsync(data, { showFrame: true });
+
+		this.hippoWallet.frameBus?.hideFrame();
+
+		if (res.error) throw new Error(res.error);
+		if (res.reject) throw new Error('Transaction request rejected');
+		
+		return res.signedTxns;
+	}
+
+	/**
+	 * Shows the Hippo wallet frame
+	 */
+	hippoShow() {
+		if (this.hippoWallet.frameBus) {
+			this.hippoWallet.frameBus.showFrame();
+		}
+	}
+
+	/**
+	 * Hides the Hippo wallet frame
+	 */
+	hippoHide() {
+		if (this.hippoWallet.frameBus) {
+			this.hippoWallet.frameBus.hideFrame();
+		}
+	}
+
+	/**
+	 * Sets the app / userbase to use for Hippo accounts. This must be set
+	 * before Hippo can be used to login or sign transactions.
+	 * @param appCode String determining the namespace for user accounts
+	 * @returns Promise resolving to response from Hippo
+	 */
+	async hippoSetApp(appCode: string) {
+		const data = {
+			type: 'set-app',
+			payload: { appCode }
+		}
+
+		return await this.hippoMessageAsync(data);
+	}
+
+	/**
+	 * Opens Hippo to allow users to create an account or login with a previously
+	 * created account. Must be called before transactions can be signed.
+	 * @param message Message to show to users
+	 * @returns Promise resolving to an account object of type `{ account: string }`
+	 */
+	async hippoConnect(message: string): Promise<any> {
+		const data = {
+			type: 'connect',
+			payload: { message }
+		};
+
+		const account = await this.hippoMessageAsync(data, { showFrame: true });
+		console.log(account);
+		this.setHippoAccount(account.address);
+		return account;
+	}
+
+	/**
+	 * Tells Hippo to close your session & clear local storage.
+	 * @returns Success or fail message
+	 */
+	async hippoDisconnect(): Promise<any> {
+		const data = {
+			type: 'disconnect'
+		}
+
+		const res = await this.hippoMessageAsync(data, { showFrame: false });
+		console.log(res);
+
+		if (res.success) {
+			// remove algonaut account
+			this.account = undefined;
+		}
+
+		return res;
+	}
 
 	/**
 	 * run atomic takes an array of transactions to run in order, each
@@ -1465,6 +1757,148 @@ export default class Algonaut {
 	}
 
 	/**
+	 * Used by Hippo to sign base64-encoded transactions sent to the iframe
+	 * @param txns Array of Base64-encoded unsigned transactions
+	 * @returns Uint8Array signed transactions
+	 */
+	signBase64Transactions(txns: string[]): Uint8Array[] | Uint8Array {
+		let decodedTxns: algosdk.Transaction[] = [];
+		txns.forEach(txn => {
+			const decodedTxn = this.decodeBase64UnsignedTransaction(txn);
+			decodedTxns.push(decodedTxn);
+		});
+		return this.signTransactionGroup(decodedTxns);
+	}
+
+	/**
+	 * Does what it says on the tin.
+	 * @param txn base64-encoded unsigned transaction
+	 * @returns transaction object
+	 */
+	decodeBase64UnsignedTransaction(txn: string): algosdk.Transaction {
+		return algosdk.decodeUnsignedTransaction(Buffer.from(txn, 'base64'));
+	}
+
+	/**
+	 * Describes an Algorand transaction, for display in Hippo
+	 * @param txn Transaction to describe
+	 */
+	txnSummary(txn: algosdk.Transaction): string {
+		// for reference: https://developer.algorand.org/docs/get-details/transactions/transactions/
+
+		if (txn.type) {
+			const to = txn.to ? algosdk.encodeAddress(txn.to.publicKey) : '';
+			const from = txn.from ? algosdk.encodeAddress(txn.from.publicKey) : '';
+
+			// sending algo
+			if (txn.type === 'pay') {
+				return `Send ${algosdk.microalgosToAlgos(txn.amount as number)} ALGO to ${to}`;
+			
+			// sending assets
+			} else if (txn.type === 'axfer') {
+				if (!txn.amount && to === from) {
+					return `Opt-in to asset ID ${txn.assetIndex}`
+				} else {
+					const amount = txn.amount ? txn.amount : 0;
+					return `Transfer ${amount} of asset ID ${txn.assetIndex} to ${to}`;
+				}
+			
+			// asset config
+			// this could be creating, destroying, or configuring an asset,
+			// depending on which fields are set
+			} else if (txn.type === 'acfg') {
+
+				// if unit name is supplied, we are creating
+				if (txn.assetUnitName) {
+					return `Create asset ${txn.assetName}, symbol ${txn.assetUnitName}`;
+				}
+
+				return `Configure asset ${txn.assetIndex}`;
+			
+			// asset freeze
+			} else if (txn.type === 'afrz') {
+				return `Freeze asset ${txn.assetIndex}`
+			
+			// application call
+			} else if (txn.type === 'appl') {
+				// let's find out what kind of application call this is
+				// reference: https://developer.algorand.org/docs/get-details/dapps/avm/teal/specification/#oncomplete
+				switch (txn.appOnComplete) {
+					// NoOp
+					case 0:
+						return `Call to application ID ${txn.appIndex}`;
+
+					// OptIn
+					case 1:
+						return `Opt-in to application ID ${txn.appIndex}`;
+					
+					// CloseOut
+					case 2: 
+						return `Close out application ID ${txn.appIndex}`;
+
+					// ClearState
+					case 3:
+						return `Execute clear state program of application ID ${txn.appIndex}`;
+
+					// Update 
+					case 4:
+						return `Update application ID ${txn.appIndex}`;
+
+					// Delete
+					case 5:
+						return `Delete application ID ${txn.appIndex}`;
+
+					default:
+						return `Call to application ID ${txn.appIndex}`;
+				}
+
+			// default case
+			} else {
+				return `Transaction of type ${txn.type} to ${to}`;
+			}
+		} else {
+			// no better option
+			return txn.toString();
+		}
+	}
+
+	/**
+	 * Signs an array of Transactions (used in Hippo)
+	 * @param txns Array of algosdk.Transaction
+	 * @returns Uint8Array[] of signed transactions
+	 */
+	signTransactionGroup(txns: algosdk.Transaction[]): Uint8Array[] | Uint8Array {
+		if (!this.account) throw new Error('There is no account!');
+
+		// this is critical, if the group doesn't have an id
+		// the transactions are processed as one-offs!
+		const account = this.account;
+		if (txns.length > 1) {
+			console.log('signing transaction group');
+			const txnGroup = algosdk.assignGroupID(txns);
+
+			const signed = [] as Uint8Array[];
+
+			// sign all transactions in the group
+			txns.forEach((txn: algosdk.Transaction, i) => {
+				let signedTx: {
+					txID: string;
+					blob: Uint8Array;
+				};
+				signedTx = algosdk.signTransaction(txnGroup[i], account.sk);
+				signed.push(signedTx.blob);
+			});
+
+			return signed;
+		} else {
+			console.log('signing single transaction');
+			console.log(txns);
+			const signedTx = algosdk.signTransaction(txns[0], account.sk);
+			return signedTx.blob;
+		}
+	}
+
+	/**
 	 * Sends one or multiple transactions via WalletConnect, prompting the user to approve transaction on their phone.
 	 *
 	 * @remarks
@@ -1478,6 +1912,10 @@ export default class Algonaut {
 	async sendWalletConnectTxns(walletTxns: AlgonautAtomicTransaction[], callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
 
 		if (this.walletConnect.connected) {
+
+			// start BG audio to keep socket open on mobile
+			this.startReqAF();
+
 			let txns = walletTxns.map(txn => txn.transaction);
 
 			// this is critical, if the group doesn't have an id
@@ -1545,6 +1983,9 @@ export default class Algonaut {
 					.do();
 				txStatus.meta = transactionResponse;
 				if (callbacks?.onConfirm) callbacks.onConfirm(txStatus);
+
+				this.stopReqAF(true);
+
 				return txStatus;
 			} else {
 				throw new Error('there were no signed transactions returned');
@@ -1563,6 +2004,19 @@ export default class Algonaut {
 		if (this.config &&
 			this.config.SIGNING_MODE &&
 			this.config.SIGNING_MODE === 'walletconnect') {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Interally used to determine how to sign transactions on more generic functions (e.g. {@link deployFromTeal})
+	 * @returns true if we are signing transactions with hippo, false otherwise
+	 */
+	usingHippoWallet(): boolean {
+		if (this.config &&
+			this.config.SIGNING_MODE &&
+			this.config.SIGNING_MODE === 'hippo') {
 			return true;
 		}
 		return false;
@@ -1721,29 +2175,39 @@ export default class Algonaut {
 	 * @param clientListener object of listener functions (see {@link WalletConnectListener})
 	 */
 	async connectAlgoWallet(clientListener?: WalletConnectListener): Promise<void> {
-		// console.log('connectAlgoWallet');
+		console.log('connectAlgoWallet');
+
+		if (isNode()) {
+			console.warn('NOTE: this lib isnt made for using wallet connect in node yet...');
+			return;
+		}
 
 		// 4067ab2454244fb39835bfeafc285c8d
 		if (!clientListener) clientListener = undefined;
 
 		const bridge = 'https://bridge.walletconnect.org';
 
+
 		const wcConnector = new WalletConnect({
 			bridge,
 			qrcodeModal: QRCodeModal
 		});
+
+		wcConnector.on('disconnect', () => {
+			console.log('session update');
+		});
 		this.walletConnect.connector = wcConnector;
 
 		// console.log('connector created');
-		// console.log(this.walletConnect.connector);
+		console.log(this.walletConnect.connector);
 
-		//console.log('trying to create session');
+		console.log('trying to create session');
 
 		// Check if connection is already established
 		if (!this.walletConnect.connector.connected) {
 			// create new session
 			this.walletConnect.connector.createSession();
-			// console.log('session created');
+			console.log('session created');
 
 			// keeps some background tasks running while navigating to Pera Wallet to approve wc session link handshake
 			this.startReqAF();
@@ -1758,11 +2222,12 @@ export default class Algonaut {
 	 */
 	subscribeToEvents(clientListener?: WalletConnectListener): void {
 		if (!this.walletConnect.connector) {
+			console.log('no connector');
 			return;
 		}
 
 		this.walletConnect.connector.on('session_update', async (error: any, payload: any) => {
-			// console.log('connector.on("session_update")');
+			console.log('connector.on("session_update")');
 			if (error) {
 				throw error;
 			}
@@ -1773,7 +2238,7 @@ export default class Algonaut {
 		});
 
 		this.walletConnect.connector.on('connect', (error: any, payload: any) => {
-			// console.log('connector.on("connect")');
+			console.log('connector.on("connect")');
 			if (error) {
 				throw error;
 			}
@@ -1782,7 +2247,7 @@ export default class Algonaut {
 		});
 
 		this.walletConnect.connector.on('disconnect', (error: any, payload: any) => {
-			// console.log('connector.on("disconnect")');
+			console.log('connector.on("disconnect")');
 			if (error) {
 				console.log(payload);
 				throw error;
@@ -1824,26 +2289,66 @@ export default class Algonaut {
 	}
 
 	startReqAF() {
-		// console.log('startReqAF');
+		console.log('startReqAF');
 		// keeps some background tasks running while navigating to Pera Wallet to approve wc session link handshake
-		if (isBrowser() && isMobile()) {
+
+		// TODO helpful for desktop debugging but redo isMobile check
+		if (isBrowser()) {
+		// if (isBrowser() && isMobile()) {
+			// reqaf fix
 			const keepAlive = () => {
 				// console.log('keepAlive');
+
+				const qrIsOpen = document.querySelector('#walletconnect-qrcode-modal');
+				if (!qrIsOpen) {
+					this.stopReqAF();
+					return;
+				}
+
 				wcReqAF = requestAnimationFrame(keepAlive);
-			}
+			};
 			requestAnimationFrame(keepAlive);
+			// wcReqAF = 1;
+
+			// audio fix
+			wcS = new Audio();
+			wcS.src = waitSound; // the base64 string of the sound
+			wcS.autoplay = true;
+			wcS.volume = 0.6;
+			wcS.loop = true;
+			wcS.play();
+
+			wcSDone = new Audio();
+			wcSDone.src = finishedSound; // the base64 string of the sound
+			wcSDone.volume = 0.1;
+			wcSDone.play();
+			wcSDone.pause();
+
 		}
 	}
 
-	stopReqAF() {
-		// console.log('stopReqAF');
+	stopReqAF(playSound?: boolean) {
+		// console.log('stopReqAF', wcReqAF);
 		// CANCEL wcReqAF to free up CPU
 		if (wcReqAF) {
 			cancelAnimationFrame(wcReqAF);
 			wcReqAF = 0; // reset
+
+			// TODO make audio end gracefully + upon return to dapp
+			// audio fix
+			wcS.pause();
+
+			if (playSound) {
+				wcSDone.play();
+			}
+
 		} else {
 			console.log('no wcReqAF to cancel'); // is this the browser?
 		}
+	}
+
+	pauseWaitSound() {
+		wcS.pause();
 	}
 
 	/**
@@ -1863,7 +2368,7 @@ export default class Algonaut {
 		this.walletConnect.address = address;
 
 		// CANCEL wcReqAF to free up CPU
-		this.stopReqAF(); // if ticking...
+		this.stopReqAF(true); // if ticking...
 	}
 
 	/**
@@ -1974,8 +2479,16 @@ export default class Algonaut {
 		return accounts;
 	}
 
+	/**
+	 *
+	 * @param str string
+	 * @param enc the encoding type of the string (defaults to utf8)
+	 * @returns string encoded as Uint8Array
+	 */
+	to8Arr(str: string, enc: BufferEncoding = 'utf8'): Uint8Array {
+		return new Uint8Array(Buffer.from(str, enc));
+	}
 
 }
 
-
-
+export const buffer = Buffer; // sometimes this is helpful on the frontend

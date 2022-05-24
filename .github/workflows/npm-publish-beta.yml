@@ -1,0 +1,73 @@
+name: NPM Publish@beta
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  check_pkg_version:
+    runs-on: ubuntu-latest
+
+    outputs:
+      publishBeta: ${{ steps.compare.outputs.publishBinary }}
+
+    steps:
+    - name: "checkout"
+      uses: actions/checkout@v2
+
+    - name: "setup node"
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - run: npm i semver-compare-cli
+
+    - id: "compare"
+      name: "compare local/live package versions"
+      run: |
+        echo '::echo::on'
+        SHOULD_PUBLISH=0
+        PKG_VERSION_LOCAL=`cat package.json | jq -r '.version'`
+        echo 'local pkg: '$PKG_VERSION_LOCAL
+        PKG_VERSION_PUBLISHED=`npm view algonaut.js@beta version`
+        echo 'beta pkg: '$PKG_VERSION_PUBLISHED
+        npx semver-compare $PKG_VERSION_LOCAL gt $PKG_VERSION_PUBLISHED && SHOULD_PUBLISH=1
+        echo 'publish beta?: '$SHOULD_PUBLISH
+        if [[ $SHOULD_PUBLISH ]] ; then echo "WILL npm publish beta"; else echo "NO npm publish needed" ; fi
+        echo "::set-output name=publishBinary::$SHOULD_PUBLISH"
+
+  # check_job_output:
+  #   needs: [ check_pkg_version ]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - run: |
+  #         echo '::echo::on'
+  #         echo "hello world"
+  #         echo ${{ needs.check_pkg_version.outputs.publishBeta }}
+
+  publish:
+    needs: [ check_pkg_version ]
+    if: needs.check_pkg_version.outputs.publishBeta == 1
+    runs-on: ubuntu-latest
+    steps:
+      - name: "checkout"
+        uses: actions/checkout@v2
+
+      - name: "setup node"
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          registry-url: 'https://registry.npmjs.org'
+          # creates an .npmrc
+
+      - name: "install"
+        run: npm ci
+
+      - name: "build"
+        run: npm run build
+
+      - name: "publish"
+        run: npm publish --access public --tag beta
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

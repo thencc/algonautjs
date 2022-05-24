@@ -1,7 +1,8 @@
+/// <reference types="node" />
 import algosdk from 'algosdk';
-import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautAppState, WalletConnectListener, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments } from './AlgonautTypes';
-import WalletConnect from '@walletconnect/client/dist/umd/index.min.js';
+import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautAppState, AlgonautError, WalletConnectListener, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments } from './AlgonautTypes';
 import { IInternalEvent } from '@walletconnect/types';
+import { FrameBus } from './FrameBus';
 declare global {
     interface Window {
         AlgoSigner: any;
@@ -17,9 +18,14 @@ export default class Algonaut {
     config: AlgonautConfig | undefined;
     sdk: typeof algosdk | undefined;
     uiLoading: boolean;
+    hippoWallet: {
+        defaultSrc: string;
+        otherConfig: {};
+        frameBus: FrameBus | undefined;
+    };
     walletConnect: {
         connected: boolean;
-        connector: WalletConnect | undefined;
+        connector: any;
         accounts: any[];
         address: string;
         assets: any[];
@@ -45,6 +51,10 @@ export default class Algonaut {
      * @param config config object
      */
     constructor(config: AlgonautConfig);
+    initHippo(mountConfig: {
+        id?: string;
+        src?: string;
+    }): void;
     /**
      * @returns config object or `false` if no config is set
      */
@@ -53,17 +63,22 @@ export default class Algonaut {
      * Checks status of Algorand network
      * @returns Promise resolving to status of Algorand network
      */
-    checkStatus(): Promise<any>;
+    checkStatus(): Promise<any | AlgonautError>;
     /**
      * if you already have an account, set it here
      * @param account an algosdk account already created
      */
-    setAccount(account: algosdk.Account): void;
+    setAccount(account: algosdk.Account): void | AlgonautError;
     /**
      * Sets account connected via WalletConnect
      * @param address account address
      */
     setWalletConnectAccount(address: string): void;
+    /**
+     * This is the same as setting the WC account
+     * @param address account address
+     */
+    setHippoAccount(address: string): void;
     /**
      * Creates a wallet address + mnemonic from account's secret key
      * @returns AlgonautWallet Object containing `address` and `mnemonic`
@@ -74,7 +89,7 @@ export default class Algonaut {
      * @param mnemonic Mnemonic associated with Algonaut account
      * @returns If mnemonic is valid, returns account. Otherwise, returns false.
      */
-    recoverAccount(mnemonic: string): algosdk.Account | boolean;
+    recoverAccount(mnemonic: string): algosdk.Account;
     /**
      * General purpose method to await transaction confirmation
      * @param txId a string id of the transacion you want to watch
@@ -100,8 +115,8 @@ export default class Algonaut {
     /**
      * You can be opted into an asset but still have a zero balance. Use this call
      * for cases where you just need to know the address's opt-in state
-     * @param assetId
-     * @returns
+     * @param args object containing `account` and `assetId` properties
+     * @returns boolean true if account holds asset
      */
     isOptedIntoAsset(args: {
         account: string;
@@ -327,6 +342,47 @@ export default class Algonaut {
      */
     sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | algosdk.Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
     /**
+     * Sends messages to Hippo via FrameBus
+     * @param data Message to send
+     * @returns Whatever Hippo gives us
+     */
+    hippoMessageAsync(data: any, options?: {
+        showFrame: boolean;
+    }): Promise<any>;
+    /**
+     * Sends unsigned transactions to Hippo, awaits signing, returns signed txns
+     * @param txns Array of base64 encoded transactions
+     * @returns {Uint8Array} Signed transactions
+     */
+    hippoSignTxns(txns: string[]): Promise<any>;
+    /**
+     * Shows the Hippo wallet frame
+     */
+    hippoShow(): void;
+    /**
+     * Hides the Hippo wallet frame
+     */
+    hippoHide(): void;
+    /**
+     * Sets the app / userbase to use for Hippo accounts. This must be set
+     * before Hippo can be used to login or sign transactions.
+     * @param appCode String determining the namespace for user accounts
+     * @returns Promise resolving to response from Hippo
+     */
+    hippoSetApp(appCode: string): Promise<any>;
+    /**
+     * Opens Hippo to allow users to create an account or login with a previously
+     * created account. Must be called before transactions can be signed.
+     * @param message Message to show to users
+     * @returns Promise resolving to an account object of type `{ account: string }`
+     */
+    hippoConnect(message: string): Promise<any>;
+    /**
+     * Tells Hippo to close your session & clear local storage.
+     * @returns Success or fail message
+     */
+    hippoDisconnect(): Promise<any>;
+    /**
      * run atomic takes an array of transactions to run in order, each
      * of the atomic transaction methods needs to return an object containing
      * the transaction and the signed transaction
@@ -336,6 +392,29 @@ export default class Algonaut {
      * @param transactions a Uint8Array of ALREADY SIGNED transactions
      */
     sendAtomicTransaction(transactions: AlgonautAtomicTransaction[], callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
+    /**
+     * Used by Hippo to sign base64-encoded transactions sent to the iframe
+     * @param txns Array of Base64-encoded unsigned transactions
+     * @returns Uint8Array signed transactions
+     */
+    signBase64Transactions(txns: string[]): Uint8Array[] | Uint8Array;
+    /**
+     * Does what it says on the tin.
+     * @param txn base64-encoded unsigned transaction
+     * @returns transaction object
+     */
+    decodeBase64UnsignedTransaction(txn: string): algosdk.Transaction;
+    /**
+     * Describes an Algorand transaction, for display in Hippo
+     * @param txn Transaction to describe
+     */
+    txnSummary(txn: algosdk.Transaction): string;
+    /**
+     * Signs an array of Transactions (used in Hippo)
+     * @param txns Array of algosdk.Transaction
+     * @returns Uint8Array[] of signed transactions
+     */
+    signTransactionGroup(txns: algosdk.Transaction[]): Uint8Array[] | Uint8Array;
     /**
      * Sends one or multiple transactions via WalletConnect, prompting the user to approve transaction on their phone.
      *
@@ -353,6 +432,11 @@ export default class Algonaut {
      * @returns true if we are signing transactions with WalletConnect, false otherwise
      */
     usingWalletConnect(): boolean;
+    /**
+     * Interally used to determine how to sign transactions on more generic functions (e.g. {@link deployFromTeal})
+     * @returns true if we are signing transactions with hippo, false otherwise
+     */
+    usingHippoWallet(): boolean;
     /**
      * Prepare one or more transactions for wallet connect signature
      *
@@ -424,7 +508,8 @@ export default class Algonaut {
     chainUpdate(newChain: any): Promise<void>;
     resetApp(): Promise<void>;
     startReqAF(): void;
-    stopReqAF(): void;
+    stopReqAF(playSound?: boolean): void;
+    pauseWaitSound(): void;
     /**
      * Function called upon connection to WalletConnect. Sets account in AlgonautJS via {@link setWalletConnectAccount}.
      * @param payload Event payload, containing an array of account addresses
@@ -471,4 +556,12 @@ export default class Algonaut {
      * @returns Array of Objects with address fields: [{ address: <String> }, ...]
      */
     getAccounts(ledger: string): Promise<any>;
+    /**
+     *
+     * @param str string
+     * @param enc the encoding type of the string (defaults to utf8)
+     * @returns string encoded as Uint8Array
+     */
+    to8Arr(str: string, enc?: BufferEncoding): Uint8Array;
 }
+export declare const buffer: BufferConstructor;

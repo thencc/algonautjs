@@ -1,4 +1,4 @@
-const { default: Algonaut } = require('../dist/cjs/index');
+const { default: Algonaut } = require('../dist/index');
 const approvalProgram = require('./contract');
 const clearProgram = require('./contract-clear');
 const accountv1 = require('./accountv1');

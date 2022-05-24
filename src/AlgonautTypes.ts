@@ -7,7 +7,9 @@ export type AlgonautConfig = {
 	LEDGER: string;
 	PORT: string;
 	API_TOKEN: any;
-	SIGNING_MODE?: 'local' | 'walletconnect' | 'algosigner';
+	SIGNING_MODE?: 'local' | 'walletconnect' | 'algosigner' | 'hippo';
+	HIPPO_ID?: string;
+	HIPPO_SRC?: string;
 }
 
 export interface AlgonautStateData {
@@ -61,7 +63,7 @@ export interface AlgonautCallAppArguments {
 	optionalFields?: AlgonautTransactionFields;
 }
 
-export interface AlgonautLsigCallAppArguments extends AlgonautCallAppArguments{
+export interface AlgonautLsigCallAppArguments extends AlgonautCallAppArguments {
 	lsig: algosdk.LogicSigAccount;
 }
 
@@ -79,7 +81,7 @@ export interface AlgonautCreateAssetArguments {
 export interface AlgonautSendAssetArguments {
 	to: string;
 	assetIndex: number;
-	amount: number|bigint;
+	amount: number | bigint;
 }
 
 export interface AlgonautLsigSendAssetArguments extends AlgonautSendAssetArguments {
@@ -88,7 +90,7 @@ export interface AlgonautLsigSendAssetArguments extends AlgonautSendAssetArgumen
 
 export interface AlgonautPaymentArguments {
 	to: string;
-	amount: number|bigint;
+	amount: number | bigint;
 	note?: string;
 }
 
@@ -110,7 +112,7 @@ export interface AlgonautTxnCallbacks {
 
 export type AlgonautError = {
 	message: string;
-	rawError: Error;
+	rawError?: any;
 }
 
 export type AlgonautTransactionStatus = {
@@ -146,6 +148,3 @@ export type AlgonautAtomicTransaction = {
 	transactionSigner: algosdk.Account | algosdk.LogicSigAccount;
 	isLogigSig: boolean;
 }
-
-
-

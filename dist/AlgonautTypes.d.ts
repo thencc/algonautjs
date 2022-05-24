@@ -5,7 +5,9 @@ export declare type AlgonautConfig = {
     LEDGER: string;
     PORT: string;
     API_TOKEN: any;
-    SIGNING_MODE?: 'local' | 'walletconnect' | 'algosigner';
+    SIGNING_MODE?: 'local' | 'walletconnect' | 'algosigner' | 'hippo';
+    HIPPO_ID?: string;
+    HIPPO_SRC?: string;
 };
 export interface AlgonautStateData {
     key: string;
@@ -89,7 +91,7 @@ export interface AlgonautTxnCallbacks {
 }
 export declare type AlgonautError = {
     message: string;
-    rawError: Error;
+    rawError?: any;
 };
 export declare type AlgonautTransactionStatus = {
     status: 'success' | 'fail';
