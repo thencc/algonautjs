@@ -88,7 +88,7 @@ algonaut.setAccount(account);
 const txnStatus = await algonaut.sendAlgo({
   to: "toAddress",
   amount: 1000,
-  optionalFields: { note: "a note for the transaction"
+  optionalFields: { note: "a note for the transaction" }
 });
 console.log(txnStatus);
 ```

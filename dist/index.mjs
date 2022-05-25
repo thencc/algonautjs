@@ -31753,6 +31753,7 @@ var FrameBus = class {
 			height: 400px;
 			transition: 0.2s top ease-out;
 			box-shadow: 0 -2px 20px rgba(0,0,0,0.4);
+			z-index: 10001;
 		}
 		
 		.hippo-frame.visible {
