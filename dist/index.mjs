@@ -13068,7 +13068,7 @@ var require_algosdk_min = __commonJS({
             async listWallets() {
               return (await this.c.get("/v1/wallets")).body;
             }
-            async createWallet(e4, t4, r4 = "", n3 = "sqlite") {
+            async createWallet(e4, t4, r4 = new Uint8Array(), n3 = "sqlite") {
               const o4 = { wallet_name: e4, wallet_driver_name: n3, wallet_password: t4, master_derivation_key: s3.from(r4).toString("base64") };
               return (await this.c.post("/v1/wallet", o4)).body;
             }
@@ -14425,34 +14425,123 @@ var require_algosdk_min = __commonJS({
           }
         }, 4383: (e3, t3, r3) => {
           "use strict";
-          r3.d(t3, { P: () => c3 });
+          r3.d(t3, { P: () => c3, x: () => y3 });
           var n2 = r3(227), o3 = r3(1824), s3 = r3(7116), i3 = r3(2486).Buffer;
           function a3(e4) {
             return e4.params["approval-program"] = i3.from(e4.params["approval-program"].toString(), "base64"), e4.params["clear-state-program"] = i3.from(e4.params["clear-state-program"].toString(), "base64"), e4;
           }
-          async function c3({ client: e4, txns: t4, protocolVersion: r4, latestTimestamp: i4, round: c4, sources: u3 }) {
-            const l3 = [], h3 = [], p3 = [], f3 = [], d3 = [];
+          async function c3({ client: e4, txns: t4, protocolVersion: r4, latestTimestamp: i4, round: c4, sources: u4 }) {
+            const l4 = [], h4 = [], p4 = [], f4 = [], d4 = [];
             for (const e5 of t4)
-              e5.txn.type === o3.i.appl && (d3.push((0, s3.encodeAddress)(e5.txn.from.publicKey)), e5.txn.appAccounts && d3.push(...e5.txn.appAccounts.map((e6) => (0, s3.encodeAddress)(e6.publicKey))), e5.txn.appForeignApps && p3.push(...e5.txn.appForeignApps), e5.txn.appForeignAssets && f3.push(...e5.txn.appForeignAssets), e5.txn.appIndex === void 0 || e5.txn.appIndex === 0 ? l3.push(new n2.Application(1380011588, new n2.ApplicationParams({ creator: (0, s3.encodeAddress)(e5.txn.from.publicKey), approvalProgram: e5.txn.appApprovalProgram, clearStateProgram: e5.txn.appClearProgram, localStateSchema: new n2.ApplicationStateSchema(e5.txn.appLocalInts, e5.txn.appLocalByteSlices), globalStateSchema: new n2.ApplicationStateSchema(e5.txn.appGlobalInts, e5.txn.appGlobalByteSlices) }))) : (p3.push(e5.txn.appIndex), d3.push((0, s3.getApplicationAddress)(e5.txn.appIndex))));
-            const g3 = [];
-            for (const t5 of [...new Set(f3)])
-              g3.push(e4.getAssetByID(t5).do().then((e5) => {
-                d3.push(e5.params.creator);
+              e5.txn.type === o3.i.appl && (d4.push((0, s3.encodeAddress)(e5.txn.from.publicKey)), e5.txn.appAccounts && d4.push(...e5.txn.appAccounts.map((e6) => (0, s3.encodeAddress)(e6.publicKey))), e5.txn.appForeignApps && (p4.push(...e5.txn.appForeignApps), d4.push(...e5.txn.appForeignApps.map((e6) => (0, s3.getApplicationAddress)(e6)))), e5.txn.appForeignAssets && f4.push(...e5.txn.appForeignAssets), e5.txn.appIndex === void 0 || e5.txn.appIndex === 0 ? l4.push(new n2.Application(1380011588, new n2.ApplicationParams({ creator: (0, s3.encodeAddress)(e5.txn.from.publicKey), approvalProgram: e5.txn.appApprovalProgram, clearStateProgram: e5.txn.appClearProgram, localStateSchema: new n2.ApplicationStateSchema(e5.txn.appLocalInts, e5.txn.appLocalByteSlices), globalStateSchema: new n2.ApplicationStateSchema(e5.txn.appGlobalInts, e5.txn.appGlobalByteSlices) }))) : (p4.push(e5.txn.appIndex), d4.push((0, s3.getApplicationAddress)(e5.txn.appIndex))));
+            const g4 = [];
+            for (const t5 of [...new Set(f4)])
+              g4.push(e4.getAssetByID(t5).do().then((e5) => {
+                d4.push(e5.params.creator);
               }));
-            await Promise.all(g3);
-            const y3 = [];
-            for (const t5 of [...new Set(p3)])
-              y3.push(e4.getApplicationByID(t5).do().then((e5) => {
+            await Promise.all(g4);
+            const y4 = [];
+            for (const t5 of [...new Set(p4)])
+              y4.push(e4.getApplicationByID(t5).do().then((e5) => {
                 const t6 = a3(e5);
-                l3.push(t6), d3.push(t6.params.creator);
+                l4.push(t6), d4.push(t6.params.creator);
               }));
-            await Promise.all(y3);
+            await Promise.all(y4);
             const m3 = [];
-            for (const t5 of [...new Set(d3)])
+            for (const t5 of [...new Set(d4)])
               m3.push(e4.accountInformation(t5).do().then((e5) => {
-                "created-apps" in e5 && (e5["created-apps"] = e5["created-apps"].map((e6) => a3(e6))), h3.push(e5);
+                "created-apps" in e5 && (e5["created-apps"] = e5["created-apps"].map((e6) => a3(e6))), h4.push(e5);
               }));
-            return await Promise.all(m3), new n2.DryrunRequest({ txns: t4.map((e5) => ({ ...e5, txn: e5.txn.get_obj_for_encoding() })), accounts: h3, apps: l3, latestTimestamp: i4, round: c4, protocolVersion: r4, sources: u3 });
+            return await Promise.all(m3), new n2.DryrunRequest({ txns: t4.map((e5) => ({ ...e5, txn: e5.txn.get_obj_for_encoding() })), accounts: h4, apps: l4, latestTimestamp: i4, round: c4, protocolVersion: r4, sources: u4 });
+          }
+          class u3 {
+            constructor(e4) {
+              this.type = 0, this.bytes = "", this.uint = 0, this.type = e4.type, this.bytes = e4.bytes, this.uint = e4.uint;
+            }
+            toString() {
+              return this.type === 1 ? `0x${i3.from(this.bytes, "base64").toString("hex")}` : this.uint.toString();
+            }
+          }
+          class l3 {
+            constructor(e4) {
+              this.error = "", this.line = 0, this.pc = 0, this.scratch = [], this.stack = [], this.error = e4.error === void 0 ? "" : e4.error, this.line = e4.line, this.pc = e4.pc, this.scratch = e4.scratch, this.stack = e4.stack.map((e5) => new u3(e5));
+            }
+          }
+          class h3 {
+            constructor(e4) {
+              this.trace = [], e4 !== void 0 && (this.trace = e4.map((e5) => new l3(e5)));
+            }
+          }
+          function p3(e4, t4) {
+            return e4.length > t4 && t4 > 0 ? `${e4.slice(0, t4)}...` : e4;
+          }
+          function f3(e4, t4) {
+            if (t4.length === 0)
+              return "";
+            let r4 = null;
+            for (let n4 = 0; n4 < t4.length; n4++)
+              (n4 > e4.length || JSON.stringify(e4[n4]) !== JSON.stringify(t4[n4])) && (r4 = n4);
+            if (r4 == null)
+              return "";
+            const n3 = t4[r4];
+            return n3.bytes.length > 0 ? `${r4} = 0x${i3.from(n3.bytes, "base64").toString("hex")}` : `${r4} = ${n3.uint.toString()}`;
+          }
+          function d3(e4, t4) {
+            return `[${(t4 ? e4.reverse() : e4).map((e5) => {
+              switch (e5.type) {
+                case 1:
+                  return `0x${i3.from(e5.bytes, "base64").toString("hex")}`;
+                case 2:
+                  return `${e5.uint.toString()}`;
+                default:
+                  return "";
+              }
+            }).join(", ")}]`;
+          }
+          class g3 {
+            constructor(e4) {
+              this.disassembly = [], this.appCallMessages = [], this.localDeltas = [], this.globalDelta = [], this.cost = 0, this.logicSigMessages = [], this.logicSigDisassembly = [], this.logs = [], this.appCallTrace = void 0, this.logicSigTrace = void 0, this.required = ["disassembly"], this.optionals = ["app-call-messages", "local-deltas", "global-delta", "cost", "logic-sig-messages", "logic-sig-disassembly", "logs"], this.traces = ["app-call-trace", "logic-sig-trace"], this.disassembly = e4.disassembly, this.appCallMessages = e4["app-call-messages"], this.localDeltas = e4["local-deltas"], this.globalDelta = e4["global-delta"], this.cost = e4.cost, this.logicSigMessages = e4["logic-sig-messages"], this.logicSigDisassembly = e4["logic-sig-disassembly"], this.logs = e4.logs, this.appCallTrace = new h3(e4["app-call-trace"]), this.logicSigTrace = new h3(e4["logic-sig-trace"]);
+            }
+            appCallRejected() {
+              return this.appCallMessages !== void 0 && this.appCallMessages.includes("REJECT");
+            }
+            logicSigRejected() {
+              return this.logicSigMessages !== void 0 && this.logicSigMessages.includes("REJECT");
+            }
+            static trace(e4, t4, r4) {
+              let n3 = 30;
+              r4.maxValueWidth === void 0 && (n3 = r4.maxValueWidth);
+              const o4 = [["pc#", "ln#", "source", "scratch", "stack"]];
+              for (let s5 = 0; s5 < e4.trace.length; s5++) {
+                const { line: i4, error: a4, pc: c4, scratch: u4, stack: l4 } = e4.trace[s5], h4 = u4 !== void 0 ? u4 : [], g4 = s5 > 0 && e4.trace[s5 - 1].scratch !== void 0 ? e4.trace[s5 - 1].scratch : [], y4 = a4 === "" ? t4[i4] : `!! ${a4} !!`;
+                o4.push([c4.toString().padEnd(3, " "), i4.toString().padEnd(3, " "), p3(y4, n3), p3(f3(g4, h4), n3), p3(d3(l4, r4.topOfStackFirst), n3)]);
+              }
+              const s4 = o4.reduce((e5, t5) => {
+                const r5 = new Array(o4[0].length).fill(0);
+                for (let n4 = 0; n4 < e5.length; n4++)
+                  r5[n4] = t5[n4].length > e5[n4] ? t5[n4].length : e5[n4];
+                return r5;
+              }, new Array(o4[0].length).fill(0));
+              return `${o4.map((e5) => e5.map((e6, t5) => e6.padEnd(s4[t5] + 1, " ")).join("|").trim()).join("\n")}
+`;
+            }
+            appTrace(e4) {
+              if (this.appCallTrace === void 0 || !this.disassembly)
+                return "";
+              let t4 = e4;
+              return e4 === void 0 && (t4 = { maxValueWidth: 30, topOfStackFirst: false }), g3.trace(this.appCallTrace, this.disassembly, t4);
+            }
+            lsigTrace(e4) {
+              if (this.logicSigTrace === void 0 || this.logicSigDisassembly === void 0)
+                return "";
+              let t4 = e4;
+              return e4 === void 0 && (t4 = { maxValueWidth: 30, topOfStackFirst: true }), g3.trace(this.logicSigTrace, this.logicSigDisassembly, t4);
+            }
+          }
+          class y3 {
+            constructor(e4) {
+              this.error = "", this.protocolVersion = "", this.txns = [], this.error = e4.error, this.protocolVersion = e4["protocol-version"], this.txns = e4.txns.map((e5) => new g3(e5));
+            }
           }
         }, 7116: (e3, t3, r3) => {
           "use strict";
@@ -14931,7 +15020,7 @@ var require_algosdk_min = __commonJS({
           }
         }, 6608: (e3, t3, r3) => {
           "use strict";
-          r3.r(t3), r3.d(t3, { MULTISIG_BAD_SENDER_ERROR_MSG: () => N3, signTransaction: () => P3, signBid: () => L3, signBytes: () => F3, verifyBytes: () => z3, encodeObj: () => j3, decodeObj: () => M3, ERROR_MULTISIG_BAD_SENDER: () => H3, ERROR_INVALID_MICROALGOS: () => G2, Algodv2: () => d3.Z, Kmd: () => g3.Z, IntDecoding: () => y3.Z, Indexer: () => m3.Z, waitForConfirmation: () => b2.K, isValidAddress: () => o3.isValidAddress, encodeAddress: () => o3.encodeAddress, decodeAddress: () => o3.decodeAddress, getApplicationAddress: () => o3.getApplicationAddress, bytesToBigInt: () => A4.v, bigIntToBytes: () => A4.j, encodeUint64: () => w4.T, decodeUint64: () => w4.u, generateAccount: () => v3.Z, modelsv2: () => x3, mnemonicToMasterDerivationKey: () => S2.OF, masterDerivationKeyToMnemonic: () => S2.vC, secretKeyToMnemonic: () => S2.QX, mnemonicToSecretKey: () => S2.Ch, seedFromMnemonic: () => S2.mE, mnemonicFromSeed: () => S2.w3, microalgosToAlgos: () => l3._, algosToMicroalgos: () => l3.HN, INVALID_MICROALGOS_ERROR_MSG: () => l3.rD, computeGroupID: () => E4.computeGroupID, assignGroupID: () => E4.assignGroupID, LogicSigAccount: () => T4.LogicSigAccount, makeLogicSig: () => T4.makeLogicSig, signLogicSigTransaction: () => T4.signLogicSigTransaction, signLogicSigTransactionObject: () => T4.signLogicSigTransactionObject, logicSigFromByte: () => T4.logicSigFromByte, tealSign: () => T4.tealSign, tealSignFromProgram: () => T4.tealSignFromProgram, signMultisigTransaction: () => _4.PU, mergeMultisigTransactions: () => _4.J6, appendSignMultisigTransaction: () => _4.PO, multisigAddress: () => _4.vH, LogicTemplates: () => K3, createDryrun: () => B2.P, OnApplicationComplete: () => U2.OnApplicationComplete, makeApplicationCallTxnFromObject: () => U2.makeApplicationCallTxnFromObject, makeApplicationClearStateTxn: () => U2.makeApplicationClearStateTxn, makeApplicationClearStateTxnFromObject: () => U2.makeApplicationClearStateTxnFromObject, makeApplicationCloseOutTxn: () => U2.makeApplicationCloseOutTxn, makeApplicationCloseOutTxnFromObject: () => U2.makeApplicationCloseOutTxnFromObject, makeApplicationCreateTxn: () => U2.makeApplicationCreateTxn, makeApplicationCreateTxnFromObject: () => U2.makeApplicationCreateTxnFromObject, makeApplicationDeleteTxn: () => U2.makeApplicationDeleteTxn, makeApplicationDeleteTxnFromObject: () => U2.makeApplicationDeleteTxnFromObject, makeApplicationNoOpTxn: () => U2.makeApplicationNoOpTxn, makeApplicationNoOpTxnFromObject: () => U2.makeApplicationNoOpTxnFromObject, makeApplicationOptInTxn: () => U2.makeApplicationOptInTxn, makeApplicationOptInTxnFromObject: () => U2.makeApplicationOptInTxnFromObject, makeApplicationUpdateTxn: () => U2.makeApplicationUpdateTxn, makeApplicationUpdateTxnFromObject: () => U2.makeApplicationUpdateTxnFromObject, makeAssetConfigTxn: () => U2.makeAssetConfigTxn, makeAssetConfigTxnWithSuggestedParams: () => U2.makeAssetConfigTxnWithSuggestedParams, makeAssetConfigTxnWithSuggestedParamsFromObject: () => U2.makeAssetConfigTxnWithSuggestedParamsFromObject, makeAssetCreateTxn: () => U2.makeAssetCreateTxn, makeAssetCreateTxnWithSuggestedParams: () => U2.makeAssetCreateTxnWithSuggestedParams, makeAssetCreateTxnWithSuggestedParamsFromObject: () => U2.makeAssetCreateTxnWithSuggestedParamsFromObject, makeAssetDestroyTxn: () => U2.makeAssetDestroyTxn, makeAssetDestroyTxnWithSuggestedParams: () => U2.makeAssetDestroyTxnWithSuggestedParams, makeAssetDestroyTxnWithSuggestedParamsFromObject: () => U2.makeAssetDestroyTxnWithSuggestedParamsFromObject, makeAssetFreezeTxn: () => U2.makeAssetFreezeTxn, makeAssetFreezeTxnWithSuggestedParams: () => U2.makeAssetFreezeTxnWithSuggestedParams, makeAssetFreezeTxnWithSuggestedParamsFromObject: () => U2.makeAssetFreezeTxnWithSuggestedParamsFromObject, makeAssetTransferTxn: () => U2.makeAssetTransferTxn, makeAssetTransferTxnWithSuggestedParams: () => U2.makeAssetTransferTxnWithSuggestedParams, makeAssetTransferTxnWithSuggestedParamsFromObject: () => U2.makeAssetTransferTxnWithSuggestedParamsFromObject, makeKeyRegistrationTxn: () => U2.makeKeyRegistrationTxn, makeKeyRegistrationTxnWithSuggestedParams: () => U2.makeKeyRegistrationTxnWithSuggestedParams, makeKeyRegistrationTxnWithSuggestedParamsFromObject: () => U2.makeKeyRegistrationTxnWithSuggestedParamsFromObject, makePaymentTxn: () => U2.makePaymentTxn, makePaymentTxnWithSuggestedParams: () => U2.makePaymentTxnWithSuggestedParams, makePaymentTxnWithSuggestedParamsFromObject: () => U2.makePaymentTxnWithSuggestedParamsFromObject, ALGORAND_MIN_TX_FEE: () => i3.ALGORAND_MIN_TX_FEE, Transaction: () => i3.Transaction, decodeSignedTransaction: () => i3.decodeSignedTransaction, decodeUnsignedTransaction: () => i3.decodeUnsignedTransaction, encodeUnsignedTransaction: () => i3.encodeUnsignedTransaction, instantiateTxnIfNeeded: () => i3.instantiateTxnIfNeeded, isTransactionWithSigner: () => k3.Xw, makeBasicAccountTransactionSigner: () => k3.x7, makeLogicSigAccountTransactionSigner: () => k3.i1, makeMultiSigAccountTransactionSigner: () => k3.Vj, AtomicTransactionComposer: () => I3.A, AtomicTransactionComposerStatus: () => I3.b, TransactionType: () => C3.i, ABIAddressType: () => R2.JQ, ABIArrayDynamicType: () => R2._4, ABIArrayStaticType: () => R2.X3, ABIBoolType: () => R2.R0, ABIByteType: () => R2.jD, ABIContract: () => R2.Yh, ABIInterface: () => R2.bL, ABIMethod: () => R2.Ls, ABIReferenceType: () => R2.UV, ABIStringType: () => R2.Ax, ABITransactionType: () => R2.A9, ABITupleType: () => R2.w1, ABIType: () => R2.NK, ABIUfixedType: () => R2.RY, ABIUintType: () => R2.Pu, ADDR_BYTE_SIZE: () => R2.Vk, LENGTH_ENCODE_BYTE_SIZE: () => R2.nh, MAX_LEN: () => R2.kG, SINGLE_BOOL_SIZE: () => R2.qH, SINGLE_BYTE_SIZE: () => R2.JH, abiCheckTransactionType: () => R2.vJ, abiTypeIsReference: () => R2.o5, abiTypeIsTransaction: () => R2.AE });
+          r3.r(t3), r3.d(t3, { MULTISIG_BAD_SENDER_ERROR_MSG: () => N3, signTransaction: () => P3, signBid: () => L3, signBytes: () => F3, verifyBytes: () => z3, encodeObj: () => j3, decodeObj: () => M3, ERROR_MULTISIG_BAD_SENDER: () => H3, ERROR_INVALID_MICROALGOS: () => G2, Algodv2: () => d3.Z, Kmd: () => g3.Z, IntDecoding: () => y3.Z, Indexer: () => m3.Z, waitForConfirmation: () => b2.K, isValidAddress: () => o3.isValidAddress, encodeAddress: () => o3.encodeAddress, decodeAddress: () => o3.decodeAddress, getApplicationAddress: () => o3.getApplicationAddress, bytesToBigInt: () => A4.v, bigIntToBytes: () => A4.j, encodeUint64: () => w4.T, decodeUint64: () => w4.u, generateAccount: () => v3.Z, modelsv2: () => x3, mnemonicToMasterDerivationKey: () => S2.OF, masterDerivationKeyToMnemonic: () => S2.vC, secretKeyToMnemonic: () => S2.QX, mnemonicToSecretKey: () => S2.Ch, seedFromMnemonic: () => S2.mE, mnemonicFromSeed: () => S2.w3, microalgosToAlgos: () => l3._, algosToMicroalgos: () => l3.HN, INVALID_MICROALGOS_ERROR_MSG: () => l3.rD, computeGroupID: () => E4.computeGroupID, assignGroupID: () => E4.assignGroupID, LogicSigAccount: () => T4.LogicSigAccount, makeLogicSig: () => T4.makeLogicSig, signLogicSigTransaction: () => T4.signLogicSigTransaction, signLogicSigTransactionObject: () => T4.signLogicSigTransactionObject, logicSigFromByte: () => T4.logicSigFromByte, tealSign: () => T4.tealSign, tealSignFromProgram: () => T4.tealSignFromProgram, signMultisigTransaction: () => _4.PU, mergeMultisigTransactions: () => _4.J6, appendSignMultisigTransaction: () => _4.PO, multisigAddress: () => _4.vH, LogicTemplates: () => K3, DryrunResult: () => B2.x, createDryrun: () => B2.P, OnApplicationComplete: () => U2.OnApplicationComplete, makeApplicationCallTxnFromObject: () => U2.makeApplicationCallTxnFromObject, makeApplicationClearStateTxn: () => U2.makeApplicationClearStateTxn, makeApplicationClearStateTxnFromObject: () => U2.makeApplicationClearStateTxnFromObject, makeApplicationCloseOutTxn: () => U2.makeApplicationCloseOutTxn, makeApplicationCloseOutTxnFromObject: () => U2.makeApplicationCloseOutTxnFromObject, makeApplicationCreateTxn: () => U2.makeApplicationCreateTxn, makeApplicationCreateTxnFromObject: () => U2.makeApplicationCreateTxnFromObject, makeApplicationDeleteTxn: () => U2.makeApplicationDeleteTxn, makeApplicationDeleteTxnFromObject: () => U2.makeApplicationDeleteTxnFromObject, makeApplicationNoOpTxn: () => U2.makeApplicationNoOpTxn, makeApplicationNoOpTxnFromObject: () => U2.makeApplicationNoOpTxnFromObject, makeApplicationOptInTxn: () => U2.makeApplicationOptInTxn, makeApplicationOptInTxnFromObject: () => U2.makeApplicationOptInTxnFromObject, makeApplicationUpdateTxn: () => U2.makeApplicationUpdateTxn, makeApplicationUpdateTxnFromObject: () => U2.makeApplicationUpdateTxnFromObject, makeAssetConfigTxn: () => U2.makeAssetConfigTxn, makeAssetConfigTxnWithSuggestedParams: () => U2.makeAssetConfigTxnWithSuggestedParams, makeAssetConfigTxnWithSuggestedParamsFromObject: () => U2.makeAssetConfigTxnWithSuggestedParamsFromObject, makeAssetCreateTxn: () => U2.makeAssetCreateTxn, makeAssetCreateTxnWithSuggestedParams: () => U2.makeAssetCreateTxnWithSuggestedParams, makeAssetCreateTxnWithSuggestedParamsFromObject: () => U2.makeAssetCreateTxnWithSuggestedParamsFromObject, makeAssetDestroyTxn: () => U2.makeAssetDestroyTxn, makeAssetDestroyTxnWithSuggestedParams: () => U2.makeAssetDestroyTxnWithSuggestedParams, makeAssetDestroyTxnWithSuggestedParamsFromObject: () => U2.makeAssetDestroyTxnWithSuggestedParamsFromObject, makeAssetFreezeTxn: () => U2.makeAssetFreezeTxn, makeAssetFreezeTxnWithSuggestedParams: () => U2.makeAssetFreezeTxnWithSuggestedParams, makeAssetFreezeTxnWithSuggestedParamsFromObject: () => U2.makeAssetFreezeTxnWithSuggestedParamsFromObject, makeAssetTransferTxn: () => U2.makeAssetTransferTxn, makeAssetTransferTxnWithSuggestedParams: () => U2.makeAssetTransferTxnWithSuggestedParams, makeAssetTransferTxnWithSuggestedParamsFromObject: () => U2.makeAssetTransferTxnWithSuggestedParamsFromObject, makeKeyRegistrationTxn: () => U2.makeKeyRegistrationTxn, makeKeyRegistrationTxnWithSuggestedParams: () => U2.makeKeyRegistrationTxnWithSuggestedParams, makeKeyRegistrationTxnWithSuggestedParamsFromObject: () => U2.makeKeyRegistrationTxnWithSuggestedParamsFromObject, makePaymentTxn: () => U2.makePaymentTxn, makePaymentTxnWithSuggestedParams: () => U2.makePaymentTxnWithSuggestedParams, makePaymentTxnWithSuggestedParamsFromObject: () => U2.makePaymentTxnWithSuggestedParamsFromObject, ALGORAND_MIN_TX_FEE: () => i3.ALGORAND_MIN_TX_FEE, Transaction: () => i3.Transaction, decodeSignedTransaction: () => i3.decodeSignedTransaction, decodeUnsignedTransaction: () => i3.decodeUnsignedTransaction, encodeUnsignedTransaction: () => i3.encodeUnsignedTransaction, instantiateTxnIfNeeded: () => i3.instantiateTxnIfNeeded, isTransactionWithSigner: () => k3.Xw, makeBasicAccountTransactionSigner: () => k3.x7, makeLogicSigAccountTransactionSigner: () => k3.i1, makeMultiSigAccountTransactionSigner: () => k3.Vj, AtomicTransactionComposer: () => I3.A, AtomicTransactionComposerStatus: () => I3.b, TransactionType: () => C3.i, ABIAddressType: () => R2.JQ, ABIArrayDynamicType: () => R2._4, ABIArrayStaticType: () => R2.X3, ABIBoolType: () => R2.R0, ABIByteType: () => R2.jD, ABIContract: () => R2.Yh, ABIInterface: () => R2.bL, ABIMethod: () => R2.Ls, ABIReferenceType: () => R2.UV, ABIStringType: () => R2.Ax, ABITransactionType: () => R2.A9, ABITupleType: () => R2.w1, ABIType: () => R2.NK, ABIUfixedType: () => R2.RY, ABIUintType: () => R2.Pu, ADDR_BYTE_SIZE: () => R2.Vk, LENGTH_ENCODE_BYTE_SIZE: () => R2.nh, MAX_LEN: () => R2.kG, SINGLE_BOOL_SIZE: () => R2.qH, SINGLE_BYTE_SIZE: () => R2.JH, abiCheckTransactionType: () => R2.vJ, abiTypeIsReference: () => R2.o5, abiTypeIsTransaction: () => R2.AE });
           var n2 = r3(9404), o3 = r3(7116), s3 = r3(3033), i3 = r3(9417), a3 = r3(8886), c3 = r3.n(a3), u3 = r3(2691), l3 = r3(9070), h3 = r3(413), p3 = r3(5922), f3 = {};
           for (const e4 in p3)
             ["default", "MULTISIG_BAD_SENDER_ERROR_MSG", "signTransaction", "signBid", "signBytes", "verifyBytes", "encodeObj", "decodeObj", "ERROR_MULTISIG_BAD_SENDER", "ERROR_INVALID_MICROALGOS", "Algodv2", "Kmd", "IntDecoding", "Indexer", "waitForConfirmation", "isValidAddress", "encodeAddress", "decodeAddress", "getApplicationAddress", "bytesToBigInt", "bigIntToBytes", "encodeUint64", "decodeUint64", "generateAccount", "modelsv2", "mnemonicToMasterDerivationKey", "masterDerivationKeyToMnemonic", "secretKeyToMnemonic", "mnemonicToSecretKey", "seedFromMnemonic", "mnemonicFromSeed", "microalgosToAlgos", "algosToMicroalgos", "INVALID_MICROALGOS_ERROR_MSG", "computeGroupID", "assignGroupID", "LogicSigAccount", "makeLogicSig", "signLogicSigTransaction", "signLogicSigTransactionObject", "logicSigFromByte", "tealSign", "tealSignFromProgram", "signMultisigTransaction", "mergeMultisigTransactions", "appendSignMultisigTransaction", "multisigAddress", "LogicTemplates"].indexOf(e4) < 0 && (f3[e4] = () => p3[e4]);
@@ -16004,9 +16093,9 @@ var require_index_min = __commonJS({
               return t6 === "" || typeof t6 == "string" && t6.trim() === "";
             }(t5)) && (C3(t5) ? typeof t5 == "string" && (e5 = T4(t5)) : e5 = E4(t5)), typeof e5 == "string" && (r5 = e5, e5 = S2.w(S2.a(r5))), e5;
           }
-          const n3 = { from: T4(t4.from), to: t4.to === void 0 ? "" : T4(t4.to), gasPrice: t4.gasPrice === void 0 ? "" : r4(t4.gasPrice), gas: t4.gas === void 0 ? t4.gasLimit === void 0 ? "" : r4(t4.gasLimit) : r4(t4.gas), value: t4.value === void 0 ? "" : r4(t4.value), nonce: t4.nonce === void 0 ? "" : r4(t4.nonce), data: t4.data === void 0 ? "" : T4(t4.data) || "0x" }, i4 = ["gasPrice", "gas", "value", "nonce"];
+          const n3 = { from: T4(t4.from), to: t4.to === void 0 ? void 0 : T4(t4.to), gasPrice: t4.gasPrice === void 0 ? "" : r4(t4.gasPrice), gas: t4.gas === void 0 ? t4.gasLimit === void 0 ? "" : r4(t4.gasLimit) : r4(t4.gas), value: t4.value === void 0 ? "" : r4(t4.value), nonce: t4.nonce === void 0 ? "" : r4(t4.nonce), data: t4.data === void 0 ? "" : T4(t4.data) || "0x" }, i4 = ["gasPrice", "gas", "value", "nonce"];
           return Object.keys(n3).forEach((t5) => {
-            !n3[t5].trim().length && i4.includes(t5) && delete n3[t5];
+            (n3[t5] === void 0 || typeof n3[t5] == "string" && !n3[t5].trim().length) && i4.includes(t5) && delete n3[t5];
           }), n3;
         }
         function Y2(t4) {
@@ -19708,13 +19797,13 @@ var require_index_min = __commonJS({
           }
           _subscribeToSessionResponse(t4, e4) {
             this._subscribeToResponse(t4, (t5, r4) => {
-              t5 ? this._handleSessionResponse(t5.message) : r4.result ? this._handleSessionResponse(e4, r4.result) : r4.error && r4.error.message ? this._handleSessionResponse(r4.error.message) : this._handleSessionResponse(e4);
+              t5 ? this._handleSessionResponse(t5.message) : Object(n2.q)(r4) ? this._handleSessionResponse(e4, r4.result) : r4.error && r4.error.message ? this._handleSessionResponse(r4.error.message) : this._handleSessionResponse(e4);
             });
           }
           _subscribeToCallResponse(t4) {
             return new Promise((e4, r4) => {
-              this._subscribeToResponse(t4, (t5, n3) => {
-                t5 ? r4(t5) : n3.result ? e4(n3.result) : n3.error && n3.error.message ? r4(new Error(n3.error.message)) : r4(new Error("JSON RPC response format is invalid"));
+              this._subscribeToResponse(t4, (t5, i4) => {
+                t5 ? r4(t5) : Object(n2.q)(i4) ? e4(i4.result) : i4.error && i4.error.message ? r4(new Error(i4.error.message)) : r4(new Error("JSON RPC response format is invalid"));
               });
             });
           }
@@ -25875,6 +25964,7 @@ var require_tslib = __commonJS({
     var __importDefault;
     var __classPrivateFieldGet;
     var __classPrivateFieldSet;
+    var __classPrivateFieldIn;
     var __createBinding;
     (function(factory) {
       var root2 = typeof global === "object" ? global : typeof self === "object" ? self : typeof this === "object" ? this : {};
@@ -26067,9 +26157,13 @@ var require_tslib = __commonJS({
       __createBinding = Object.create ? function(o3, m3, k3, k22) {
         if (k22 === void 0)
           k22 = k3;
-        Object.defineProperty(o3, k22, { enumerable: true, get: function() {
-          return m3[k3];
-        } });
+        var desc = Object.getOwnPropertyDescriptor(m3, k3);
+        if (!desc || ("get" in desc ? !m3.__esModule : desc.writable || desc.configurable)) {
+          desc = { enumerable: true, get: function() {
+            return m3[k3];
+          } };
+        }
+        Object.defineProperty(o3, k22, desc);
       } : function(o3, m3, k3, k22) {
         if (k22 === void 0)
           k22 = k3;
@@ -26250,6 +26344,11 @@ var require_tslib = __commonJS({
           throw new TypeError("Cannot write private member to an object whose class did not declare it");
         return kind === "a" ? f3.call(receiver, value) : f3 ? f3.value = value : state.set(receiver, value), value;
       };
+      __classPrivateFieldIn = function(state, receiver) {
+        if (receiver === null || typeof receiver !== "object" && typeof receiver !== "function")
+          throw new TypeError("Cannot use 'in' operator on non-object");
+        return typeof state === "function" ? receiver === state : state.has(receiver);
+      };
       exporter("__extends", __extends);
       exporter("__assign", __assign);
       exporter("__rest", __rest);
@@ -26274,6 +26373,7 @@ var require_tslib = __commonJS({
       exporter("__importDefault", __importDefault);
       exporter("__classPrivateFieldGet", __classPrivateFieldGet);
       exporter("__classPrivateFieldSet", __classPrivateFieldSet);
+      exporter("__classPrivateFieldIn", __classPrivateFieldIn);
     });
   }
 });
@@ -31498,7 +31598,7 @@ function parseTransactionData(txData) {
   }
   const txDataRPC = {
     from: sanitizeHex2(txData.from),
-    to: typeof txData.to === "undefined" ? "" : sanitizeHex2(txData.to),
+    to: typeof txData.to === "undefined" ? void 0 : sanitizeHex2(txData.to),
     gasPrice: typeof txData.gasPrice === "undefined" ? "" : parseHexValues(txData.gasPrice),
     gas: typeof txData.gas === "undefined" ? typeof txData.gasLimit === "undefined" ? "" : parseHexValues(txData.gasLimit) : parseHexValues(txData.gas),
     value: typeof txData.value === "undefined" ? "" : parseHexValues(txData.value),
@@ -31507,7 +31607,7 @@ function parseTransactionData(txData) {
   };
   const prunable = ["gasPrice", "gas", "value", "nonce"];
   Object.keys(txDataRPC).forEach((key) => {
-    if (!txDataRPC[key].trim().length && prunable.includes(key)) {
+    if ((typeof txDataRPC[key] === "undefined" || typeof txDataRPC[key] === "string" && !txDataRPC[key].trim().length) && prunable.includes(key)) {
       delete txDataRPC[key];
     }
   });
@@ -31639,6 +31739,8 @@ var FrameBus = class {
     walEl.setAttribute("name", "walFrame");
     walEl.setAttribute("title", "Algorand Microwallet");
     walEl.setAttribute("frameborder", "0");
+    walEl.setAttribute("sandbox", "allow-scripts allow-same-origin allow-forms allow-modals allow-popups");
+    walEl.setAttribute("allow", "publickey-credentials-get");
     this.walEl = walEl;
     document.body.append(walEl);
     const walWin = walEl.contentWindow;
@@ -31755,12 +31857,12 @@ var FrameBus = class {
 			box-shadow: 0 -2px 20px rgba(0,0,0,0.4);
 			z-index: 10001;
 		}
-		
+
 		.hippo-frame.visible {
 			top: 0;
 			transition: 0.2s top ease-in;
 		}
-		
+
 		@media screen and (min-width: 500px) {
 			.hippo-frame {
 				max-width: 400px;
@@ -33175,20 +33277,6 @@ export {
  * @author   Feross Aboukhadijeh <https://feross.org>
  * @license  MIT
  */
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use

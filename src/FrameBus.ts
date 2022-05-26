@@ -99,6 +99,9 @@ export class FrameBus {
 		walEl.setAttribute('name', 'walFrame');
 		walEl.setAttribute('title', 'Algorand Microwallet');
 		walEl.setAttribute('frameborder', '0');
+		walEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-modals allow-popups');
+		walEl.setAttribute('allow', 'publickey-credentials-get');
+		// walEl.setAttribute('allow', 'publickey-credentials-create'); // gah, wish this existed...
 		this.walEl = walEl;
 		// mount el
 		document.body.append(walEl);
@@ -186,7 +189,7 @@ export class FrameBus {
 			// event.data.source.substring(0, 4) == 'ncc-') {
 			// event.data.source.substring(0, 16) == 'ncc-hippo-wallet') {
 			console.log('client got mess', event.data);
-			
+
 			// handle hide messages
 			if (event.data.type === 'hide') {
 				this.hideFrame();
@@ -270,12 +273,12 @@ export class FrameBus {
 			box-shadow: 0 -2px 20px rgba(0,0,0,0.4);
 			z-index: 10001;
 		}
-		
+
 		.hippo-frame.visible {
 			top: 0;
 			transition: 0.2s top ease-in;
 		}
-		
+
 		@media screen and (min-width: 500px) {
 			.hippo-frame {
 				max-width: 400px;
