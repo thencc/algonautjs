@@ -276,7 +276,7 @@ export class FrameBus {
 
 		.hippo-frame.visible {
 			top: 0;
-			transition: 0.2s top ease-in;
+			transition: 0.2s top ease-out;
 		}
 
 		@media screen and (min-width: 500px) {
