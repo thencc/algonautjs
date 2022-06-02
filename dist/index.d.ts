@@ -330,7 +330,7 @@ export default class Algonaut {
      *
      * @param applicationIndex the applications index
      */
-    getAppLocalState(applicationIndex: number): Promise<AlgonautAppState>;
+    getAppLocalState(applicationIndex: number): Promise<AlgonautAppState | void>;
     atomicAssetTransferWithLSig(args: AlgonautLsigSendAssetArguments): Promise<AlgonautAtomicTransaction>;
     atomicPaymentWithLSig(args: AlgonautLsigPaymentArguments): Promise<AlgonautAtomicTransaction>;
     /**

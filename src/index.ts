@@ -922,13 +922,13 @@ export default class Algonaut {
 		];
 		const promsRes = await Promise.all(proms);
 		const info = promsRes[0] as AlgonautGetApplicationResponse;
-		const localState = promsRes[1] as AlgonautAppState;
+		const localState = promsRes[1] as AlgonautAppState | void;
 
 		// decode state
 		const state = {
 			hasState: true,
 			globals: [],
-			locals: localState.locals,
+			locals: localState?.locals || [],
 			creatorAddress: info.params.creator,
 			index: appId
 		} as AlgonautAppState;
@@ -1363,7 +1363,7 @@ export default class Algonaut {
 	 *
 	 * @param applicationIndex the applications index
 	 */
-	async getAppLocalState(applicationIndex: number): Promise<AlgonautAppState> {
+	async getAppLocalState(applicationIndex: number): Promise<AlgonautAppState | void> {
 		if (!applicationIndex) throw new Error('No application ID provided');
 
 		if (this.account) {
@@ -1381,7 +1381,7 @@ export default class Algonaut {
 			// maybe a 32-byte field gets an address field added?
 
 			const accountInfoResponse = await this.algodClient
-				.accountInformation(this.account?.addr)
+				.accountInformation(this.account.addr)
 				.do();
 
 			//console.log(accountInfoResponse);
@@ -1420,7 +1420,8 @@ export default class Algonaut {
 
 			return state;
 		} else {
-			throw new Error('there is no account');
+			// throw new Error('there is no account');
+			console.warn('there is no account in algonaut, thus no local state to get');
 		}
 	}
 

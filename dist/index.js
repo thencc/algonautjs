@@ -55561,7 +55561,7 @@ var Algonaut = class {
     const state = {
       hasState: true,
       globals: [],
-      locals: localState.locals,
+      locals: localState?.locals || [],
       creatorAddress: info.params.creator,
       index: appId
     };
@@ -55818,7 +55818,7 @@ var Algonaut = class {
         creatorAddress: "",
         index: applicationIndex
       };
-      const accountInfoResponse = await this.algodClient.accountInformation(this.account?.addr).do();
+      const accountInfoResponse = await this.algodClient.accountInformation(this.account.addr).do();
       for (let i = 0; i < accountInfoResponse["apps-local-state"].length; i++) {
         if (accountInfoResponse["apps-local-state"][i].id == applicationIndex) {
           state.hasState = true;
@@ -55844,7 +55844,7 @@ var Algonaut = class {
       }
       return state;
     } else {
-      throw new Error("there is no account");
+      console.warn("there is no account in algonaut, thus no local state to get");
     }
   }
   async atomicAssetTransferWithLSig(args) {
