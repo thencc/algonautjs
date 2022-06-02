@@ -32358,11 +32358,15 @@ var Algonaut = class {
   async getAppInfo(appId) {
     if (!appId)
       throw new Error("No appId provided");
-    const info = await this.algodClient.getApplicationByID(appId).do();
+    const proms = [
+      this.algodClient.getApplicationByID(appId).do(),
+      this.getAppLocalState(appId)
+    ];
+    const [info, localState] = await Promise.all(proms);
     const state = {
       hasState: true,
       globals: [],
-      locals: [],
+      locals: localState.locals,
       creatorAddress: info.params.creator,
       index: appId
     };
@@ -32862,7 +32866,7 @@ var Algonaut = class {
     }
   }
   signBase64Transactions(txns) {
-    let decodedTxns = [];
+    const decodedTxns = [];
     txns.forEach((txn) => {
       const decodedTxn = this.decodeBase64UnsignedTransaction(txn);
       decodedTxns.push(decodedTxn);
@@ -32925,8 +32929,7 @@ var Algonaut = class {
       const txnGroup = import_algosdk.default.assignGroupID(txns);
       const signed = [];
       txns.forEach((txn, i3) => {
-        let signedTx;
-        signedTx = import_algosdk.default.signTransaction(txnGroup[i3], account.sk);
+        const signedTx = import_algosdk.default.signTransaction(txnGroup[i3], account.sk);
         signed.push(signedTx.blob);
       });
       return signed;
