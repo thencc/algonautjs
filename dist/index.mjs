@@ -32362,7 +32362,9 @@ var Algonaut = class {
       this.algodClient.getApplicationByID(appId).do(),
       this.getAppLocalState(appId)
     ];
-    const [info, localState] = await Promise.all(proms);
+    const promsRes = await Promise.all(proms);
+    const info = promsRes[0];
+    const localState = promsRes[1];
     const state = {
       hasState: true,
       globals: [],

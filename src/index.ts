@@ -21,7 +21,9 @@ import {
 	AlgonautLsigSendAssetArguments,
 	AlgonautPaymentArguments,
 	AlgonautLsigPaymentArguments,
-	AlgonautUpdateAppArguments
+	AlgonautUpdateAppArguments,
+	AlgonautGetApplicationResponse,
+	AlgonautAppStateEncoded
 } from './AlgonautTypes';
 // import * as sha512 from 'js-sha512';
 // import * as CryptoJS from 'crypto-js';
@@ -55,8 +57,7 @@ finishedSound;
 // console.log(finishedSound);
 
 import { FrameBus } from './FrameBus';
-
-import type GetApplicationByID from 'algosdk/dist/types/src/client/v2/algod/getApplicationByID';
+import type { Application } from 'algosdk/dist/types/src/client/v2/algod/models/types';
 
 /*
 
@@ -915,16 +916,13 @@ export default class Algonaut {
 	async getAppInfo(appId: number): Promise<AlgonautAppState> {
 		if (!appId) throw new Error('No appId provided');
 
-		// 2 calls:
-		// const info = await this.algodClient.getApplicationByID(appId).do();
-		// const localState = await this.getAppLocalState(appId);
-
-		// slightly faster
 		const proms = [
-			this.algodClient.getApplicationByID(appId).do(), // as Promise<GetApplicationByID>,
+			this.algodClient.getApplicationByID(appId).do(),
 			this.getAppLocalState(appId) // TODO get rid of this call / only return locals (not incorrect duplicate state obj)
 		];
-		const [info, localState] = await Promise.all(proms);
+		const promsRes = await Promise.all(proms);
+		const info = promsRes[0] as AlgonautGetApplicationResponse;
+		const localState = promsRes[1] as AlgonautAppState;
 
 		// decode state
 		const state = {
@@ -2424,8 +2422,8 @@ export default class Algonaut {
 		return algosdk.encodeAddress(Buffer.from(encoded, 'base64'));
 	}
 
-	decodeStateArray(stateArray: { key: string, value: { bytes: string, type: number, uint: number } }[]) {
-		const result: any[] = [];
+	decodeStateArray(stateArray: AlgonautAppStateEncoded[]) {
+		const result: AlgonautStateData[] = [];
 
 		for (let n = 0;
 			n < stateArray.length;
