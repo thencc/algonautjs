@@ -1,7 +1,5 @@
 # Algonaut.js
 
-FYI - README docs need an update....
-
 [Examples](https://thencc.github.io/algonautjs/examples/) | [API Docs](https://thencc.github.io/algonautjs/docs/)
 
 Algonaut.js is designed to be a front end developer friendly and browser friendly library to facilitate intuitive transactions on the Algorand network.  Algorand is incredibly fast, powerful and secure, but it's early days and the tooling is still a little intense.
@@ -76,10 +74,10 @@ Usage:
 ```js
 import Algonaut from 'algonaut.js';
 const algonaut = new Algonaut({
-	BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
-	LEDGER: 'TestNet',
-	PORT: '',
-	API_TOKEN: { 'X-API-Key': 'YOUR_API_TOKEN' }
+  BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
+  LEDGER: 'TestNet',
+  PORT: '',
+  API_TOKEN: { 'X-API-Key': 'YOUR_API_TOKEN' }
 });
 
 const account = algonaut.recoverAccount("a mnemonic phrase");
@@ -92,14 +90,6 @@ const txnStatus = await algonaut.sendAlgo({
 });
 console.log(txnStatus);
 ```
-
-Algonaut.js also supports use in a Node runtime (e.g. you can use it with the algob script to emulate what browser APIs might look like).  To do this, requore the CJS package like this
-
-```js
-const { default: AlgonautJS } = require('algonaut.js/dist/cjs');
-```
-
-and then use the librarys APIs the same way you do on the front end.
 
 ## Testing
 
