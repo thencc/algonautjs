@@ -1,6 +1,6 @@
 /// <reference types="node" />
 import algosdk from 'algosdk';
-import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautAppState, AlgonautError, WalletConnectListener, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments } from './AlgonautTypes';
+import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautAppState, AlgonautStateData, AlgonautError, WalletConnectListener, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments, AlgonautAppStateEncoded } from './AlgonautTypes';
 import { IInternalEvent } from '@walletconnect/types';
 import { FrameBus } from './FrameBus';
 declare global {
@@ -330,7 +330,7 @@ export default class Algonaut {
      *
      * @param applicationIndex the applications index
      */
-    getAppLocalState(applicationIndex: number): Promise<AlgonautAppState>;
+    getAppLocalState(applicationIndex: number): Promise<AlgonautAppState | void>;
     atomicAssetTransferWithLSig(args: AlgonautLsigSendAssetArguments): Promise<AlgonautAtomicTransaction>;
     atomicPaymentWithLSig(args: AlgonautLsigPaymentArguments): Promise<AlgonautAtomicTransaction>;
     /**
@@ -533,14 +533,7 @@ export default class Algonaut {
     stateArrayToObject(stateArray: object[]): any;
     fromBase64(encoded: string): string;
     valueAsAddr(encoded: string): string;
-    decodeStateArray(stateArray: {
-        key: string;
-        value: {
-            bytes: string;
-            type: number;
-            uint: number;
-        };
-    }[]): any[];
+    decodeStateArray(stateArray: AlgonautAppStateEncoded[]): AlgonautStateData[];
     /**
      * Function to determine if the AlgoSigner extension is installed.
      * @returns true if `window.AlgoSigner` is defined

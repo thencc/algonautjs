@@ -1,4 +1,5 @@
-import algosdk from 'algosdk';
+import type algosdk from 'algosdk';
+import type { ApplicationStateSchema } from 'algosdk/dist/types/src/client/v2/algod/models/types';
 
 
 export type AlgonautConfig = {
@@ -47,6 +48,28 @@ export interface AlgonautUpdateAppArguments {
 export interface AlgonautLsigDeployArguments extends AlgonautDeployArguments {
 	lsig: algosdk.LogicSigAccount;
 	noteText?: string;
+}
+
+export interface AlgonautAppStateEncoded {
+	key: string;
+	value: {
+		bytes: string;
+		type: number;
+		uint: number
+	}
+}
+
+export interface AlgonautGetApplicationResponse {
+	id: number;
+	params: {
+		'approval-program': string;
+		'clear-state-program': string;
+		creator: string;
+		extraProgramPages?: number;
+		'global-state'?: AlgonautAppStateEncoded[];
+		'global-state-schema'?: ApplicationStateSchema;
+		'local-state-schema'?: ApplicationStateSchema;
+	}
 }
 
 export interface AlgonautAppState {

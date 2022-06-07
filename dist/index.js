@@ -14459,7 +14459,7 @@ var require_object_inspect = __commonJS({
         }
         return inspect_(value, opts, depth + 1, seen);
       }
-      if (typeof obj === "function") {
+      if (typeof obj === "function" && !isRegExp(obj)) {
         var name = nameOf(obj);
         var keys = arrObjKeys(obj, inspect);
         return "[Function" + (name ? ": " + name : " (anonymous)") + "]" + (keys.length > 0 ? " { " + $join.call(keys, ", ") + " }" : "");
@@ -27012,7 +27012,7 @@ var require_re = __commonJS({
     var R = 0;
     var createToken = (name, value, isGlobal) => {
       const index = R++;
-      debug(index, value);
+      debug(name, index, value);
       t[name] = index;
       src[index] = value;
       re[index] = new RegExp(value, isGlobal ? "g" : void 0);
@@ -27058,8 +27058,8 @@ var require_re = __commonJS({
     createToken("HYPHENRANGE", `^\\s*(${src[t.XRANGEPLAIN]})\\s+-\\s+(${src[t.XRANGEPLAIN]})\\s*$`);
     createToken("HYPHENRANGELOOSE", `^\\s*(${src[t.XRANGEPLAINLOOSE]})\\s+-\\s+(${src[t.XRANGEPLAINLOOSE]})\\s*$`);
     createToken("STAR", "(<|>)?=?\\s*\\*");
-    createToken("GTE0", "^\\s*>=\\s*0.0.0\\s*$");
-    createToken("GTE0PRE", "^\\s*>=\\s*0.0.0-0\\s*$");
+    createToken("GTE0", "^\\s*>=\\s*0\\.0\\.0\\s*$");
+    createToken("GTE0PRE", "^\\s*>=\\s*0\\.0\\.0-0\\s*$");
   }
 });
 
@@ -27067,9 +27067,9 @@ var require_re = __commonJS({
 var require_parse_options = __commonJS({
   "node_modules/semver/internal/parse-options.js"(exports2, module2) {
     var opts = ["includePrerelease", "loose", "rtl"];
-    var parseOptions = (options) => !options ? {} : typeof options !== "object" ? { loose: true } : opts.filter((k) => options[k]).reduce((options2, k) => {
-      options2[k] = true;
-      return options2;
+    var parseOptions = (options) => !options ? {} : typeof options !== "object" ? { loose: true } : opts.filter((k) => options[k]).reduce((o, k) => {
+      o[k] = true;
+      return o;
     }, {});
     module2.exports = parseOptions;
   }
@@ -27299,7 +27299,7 @@ var require_semver = __commonJS({
               }
             }
             if (identifier) {
-              if (this.prerelease[0] === identifier) {
+              if (compareIdentifiers(this.prerelease[0], identifier) === 0) {
                 if (isNaN(this.prerelease[1])) {
                   this.prerelease = [identifier, 0];
                 }
@@ -27386,7 +27386,7 @@ var require_inc = __commonJS({
         options = void 0;
       }
       try {
-        return new SemVer(version, options).inc(release, identifier).version;
+        return new SemVer(version instanceof SemVer ? version.version : version, options).inc(release, identifier).version;
       } catch (er) {
         return null;
       }
@@ -27586,16 +27586,20 @@ var require_cmp = __commonJS({
     var cmp = (a, op, b, loose) => {
       switch (op) {
         case "===":
-          if (typeof a === "object")
+          if (typeof a === "object") {
             a = a.version;
-          if (typeof b === "object")
+          }
+          if (typeof b === "object") {
             b = b.version;
+          }
           return a === b;
         case "!==":
-          if (typeof a === "object")
+          if (typeof a === "object") {
             a = a.version;
-          if (typeof b === "object")
+          }
+          if (typeof b === "object") {
             b = b.version;
+          }
           return a !== b;
         case "":
         case "=":
@@ -27649,8 +27653,9 @@ var require_coerce = __commonJS({
         }
         re[t.COERCERTL].lastIndex = -1;
       }
-      if (match === null)
+      if (match === null) {
         return null;
+      }
       return parse(`${match[2]}.${match[3] || "0"}.${match[4] || "0"}`, options);
     };
     module2.exports = coerce;
@@ -28331,16 +28336,16 @@ var require_range = __commonJS({
         this.loose = !!options.loose;
         this.includePrerelease = !!options.includePrerelease;
         this.raw = range;
-        this.set = range.split(/\s*\|\|\s*/).map((range2) => this.parseRange(range2.trim())).filter((c) => c.length);
+        this.set = range.split("||").map((r) => this.parseRange(r.trim())).filter((c) => c.length);
         if (!this.set.length) {
           throw new TypeError(`Invalid SemVer Range: ${range}`);
         }
         if (this.set.length > 1) {
           const first = this.set[0];
           this.set = this.set.filter((c) => !isNullSet(c[0]));
-          if (this.set.length === 0)
+          if (this.set.length === 0) {
             this.set = [first];
-          else if (this.set.length > 1) {
+          } else if (this.set.length > 1) {
             for (const c of this.set) {
               if (c.length === 1 && isAny(c[0])) {
                 this.set = [c];
@@ -28365,28 +28370,37 @@ var require_range = __commonJS({
         const memoOpts = Object.keys(this.options).join(",");
         const memoKey = `parseRange:${memoOpts}:${range}`;
         const cached = cache.get(memoKey);
-        if (cached)
+        if (cached) {
           return cached;
+        }
         const loose = this.options.loose;
         const hr = loose ? re[t.HYPHENRANGELOOSE] : re[t.HYPHENRANGE];
         range = range.replace(hr, hyphenReplace(this.options.includePrerelease));
         debug("hyphen replace", range);
         range = range.replace(re[t.COMPARATORTRIM], comparatorTrimReplace);
-        debug("comparator trim", range, re[t.COMPARATORTRIM]);
+        debug("comparator trim", range);
         range = range.replace(re[t.TILDETRIM], tildeTrimReplace);
         range = range.replace(re[t.CARETTRIM], caretTrimReplace);
         range = range.split(/\s+/).join(" ");
-        const compRe = loose ? re[t.COMPARATORLOOSE] : re[t.COMPARATOR];
-        const rangeList = range.split(" ").map((comp) => parseComparator(comp, this.options)).join(" ").split(/\s+/).map((comp) => replaceGTE0(comp, this.options)).filter(this.options.loose ? (comp) => !!comp.match(compRe) : () => true).map((comp) => new Comparator(comp, this.options));
-        const l = rangeList.length;
+        let rangeList = range.split(" ").map((comp) => parseComparator(comp, this.options)).join(" ").split(/\s+/).map((comp) => replaceGTE0(comp, this.options));
+        if (loose) {
+          rangeList = rangeList.filter((comp) => {
+            debug("loose invalid filter", comp, this.options);
+            return !!comp.match(re[t.COMPARATORLOOSE]);
+          });
+        }
+        debug("range list", rangeList);
         const rangeMap = /* @__PURE__ */ new Map();
-        for (const comp of rangeList) {
-          if (isNullSet(comp))
+        const comparators = rangeList.map((comp) => new Comparator(comp, this.options));
+        for (const comp of comparators) {
+          if (isNullSet(comp)) {
             return [comp];
+          }
           rangeMap.set(comp.value, comp);
         }
-        if (rangeMap.size > 1 && rangeMap.has(""))
+        if (rangeMap.size > 1 && rangeMap.has("")) {
           rangeMap.delete("");
+        }
         const result = [...rangeMap.values()];
         cache.set(memoKey, result);
         return result;
@@ -28465,8 +28479,8 @@ var require_range = __commonJS({
       return comp;
     };
     var isX = (id) => !id || id.toLowerCase() === "x" || id === "*";
-    var replaceTildes = (comp, options) => comp.trim().split(/\s+/).map((comp2) => {
-      return replaceTilde(comp2, options);
+    var replaceTildes = (comp, options) => comp.trim().split(/\s+/).map((c) => {
+      return replaceTilde(c, options);
     }).join(" ");
     var replaceTilde = (comp, options) => {
       const r = options.loose ? re[t.TILDELOOSE] : re[t.TILDE];
@@ -28489,8 +28503,8 @@ var require_range = __commonJS({
         return ret;
       });
     };
-    var replaceCarets = (comp, options) => comp.trim().split(/\s+/).map((comp2) => {
-      return replaceCaret(comp2, options);
+    var replaceCarets = (comp, options) => comp.trim().split(/\s+/).map((c) => {
+      return replaceCaret(c, options);
     }).join(" ");
     var replaceCaret = (comp, options) => {
       debug("caret", comp, options);
@@ -28538,8 +28552,8 @@ var require_range = __commonJS({
     };
     var replaceXRanges = (comp, options) => {
       debug("replaceXRanges", comp, options);
-      return comp.split(/\s+/).map((comp2) => {
-        return replaceXRange(comp2, options);
+      return comp.split(/\s+/).map((c) => {
+        return replaceXRange(c, options);
       }).join(" ");
     };
     var replaceXRange = (comp, options) => {
@@ -28584,8 +28598,9 @@ var require_range = __commonJS({
               m = +m + 1;
             }
           }
-          if (gtlt === "<")
+          if (gtlt === "<") {
             pr = "-0";
+          }
           ret = `${gtlt + M}.${m}.${p}${pr}`;
         } else if (xm) {
           ret = `>=${M}.0.0${pr} <${+M + 1}.0.0-0`;
@@ -28882,8 +28897,9 @@ var require_min_version = __commonJS({
               throw new Error(`Unexpected operation: ${comparator.operator}`);
           }
         });
-        if (setMin && (!minver || gt(minver, setMin)))
+        if (setMin && (!minver || gt(minver, setMin))) {
           minver = setMin;
+        }
       }
       if (minver && range.test(minver)) {
         return minver;
@@ -29015,37 +29031,40 @@ var require_simplify = __commonJS({
     var compare = require_compare();
     module2.exports = (versions, range, options) => {
       const set = [];
-      let min = null;
+      let first = null;
       let prev = null;
       const v = versions.sort((a, b) => compare(a, b, options));
       for (const version of v) {
         const included = satisfies(version, range, options);
         if (included) {
           prev = version;
-          if (!min)
-            min = version;
+          if (!first) {
+            first = version;
+          }
         } else {
           if (prev) {
-            set.push([min, prev]);
+            set.push([first, prev]);
           }
           prev = null;
-          min = null;
+          first = null;
         }
       }
-      if (min)
-        set.push([min, null]);
+      if (first) {
+        set.push([first, null]);
+      }
       const ranges = [];
-      for (const [min2, max] of set) {
-        if (min2 === max)
-          ranges.push(min2);
-        else if (!max && min2 === v[0])
+      for (const [min, max] of set) {
+        if (min === max) {
+          ranges.push(min);
+        } else if (!max && min === v[0]) {
           ranges.push("*");
-        else if (!max)
-          ranges.push(`>=${min2}`);
-        else if (min2 === v[0])
+        } else if (!max) {
+          ranges.push(`>=${min}`);
+        } else if (min === v[0]) {
           ranges.push(`<=${max}`);
-        else
-          ranges.push(`${min2} - ${max}`);
+        } else {
+          ranges.push(`${min} - ${max}`);
+        }
       }
       const simplified = ranges.join(" || ");
       const original = typeof range.raw === "string" ? range.raw : String(range);
@@ -29063,8 +29082,9 @@ var require_subset = __commonJS({
     var satisfies = require_satisfies();
     var compare = require_compare();
     var subset = (sub, dom, options = {}) => {
-      if (sub === dom)
+      if (sub === dom) {
         return true;
+      }
       sub = new Range(sub, options);
       dom = new Range(dom, options);
       let sawNonNull = false;
@@ -29073,59 +29093,70 @@ var require_subset = __commonJS({
           for (const simpleDom of dom.set) {
             const isSub = simpleSubset(simpleSub, simpleDom, options);
             sawNonNull = sawNonNull || isSub !== null;
-            if (isSub)
+            if (isSub) {
               continue OUTER;
+            }
           }
-          if (sawNonNull)
+          if (sawNonNull) {
             return false;
+          }
         }
       return true;
     };
     var simpleSubset = (sub, dom, options) => {
-      if (sub === dom)
+      if (sub === dom) {
         return true;
+      }
       if (sub.length === 1 && sub[0].semver === ANY) {
-        if (dom.length === 1 && dom[0].semver === ANY)
+        if (dom.length === 1 && dom[0].semver === ANY) {
           return true;
-        else if (options.includePrerelease)
+        } else if (options.includePrerelease) {
           sub = [new Comparator(">=0.0.0-0")];
-        else
+        } else {
           sub = [new Comparator(">=0.0.0")];
+        }
       }
       if (dom.length === 1 && dom[0].semver === ANY) {
-        if (options.includePrerelease)
+        if (options.includePrerelease) {
           return true;
-        else
+        } else {
           dom = [new Comparator(">=0.0.0")];
+        }
       }
       const eqSet = /* @__PURE__ */ new Set();
       let gt, lt;
       for (const c of sub) {
-        if (c.operator === ">" || c.operator === ">=")
+        if (c.operator === ">" || c.operator === ">=") {
           gt = higherGT(gt, c, options);
-        else if (c.operator === "<" || c.operator === "<=")
+        } else if (c.operator === "<" || c.operator === "<=") {
           lt = lowerLT(lt, c, options);
-        else
+        } else {
           eqSet.add(c.semver);
+        }
       }
-      if (eqSet.size > 1)
+      if (eqSet.size > 1) {
         return null;
+      }
       let gtltComp;
       if (gt && lt) {
         gtltComp = compare(gt.semver, lt.semver, options);
-        if (gtltComp > 0)
+        if (gtltComp > 0) {
           return null;
-        else if (gtltComp === 0 && (gt.operator !== ">=" || lt.operator !== "<="))
+        } else if (gtltComp === 0 && (gt.operator !== ">=" || lt.operator !== "<=")) {
           return null;
+        }
       }
       for (const eq of eqSet) {
-        if (gt && !satisfies(eq, String(gt), options))
+        if (gt && !satisfies(eq, String(gt), options)) {
           return null;
-        if (lt && !satisfies(eq, String(lt), options))
+        }
+        if (lt && !satisfies(eq, String(lt), options)) {
           return null;
+        }
         for (const c of dom) {
-          if (!satisfies(eq, String(c), options))
+          if (!satisfies(eq, String(c), options)) {
             return false;
+          }
         }
         return true;
       }
@@ -29147,10 +29178,12 @@ var require_subset = __commonJS({
           }
           if (c.operator === ">" || c.operator === ">=") {
             higher = higherGT(gt, c, options);
-            if (higher === c && higher !== gt)
+            if (higher === c && higher !== gt) {
               return false;
-          } else if (gt.operator === ">=" && !satisfies(gt.semver, String(c), options))
+            }
+          } else if (gt.operator === ">=" && !satisfies(gt.semver, String(c), options)) {
             return false;
+          }
         }
         if (lt) {
           if (needDomLTPre) {
@@ -29160,31 +29193,39 @@ var require_subset = __commonJS({
           }
           if (c.operator === "<" || c.operator === "<=") {
             lower = lowerLT(lt, c, options);
-            if (lower === c && lower !== lt)
+            if (lower === c && lower !== lt) {
               return false;
-          } else if (lt.operator === "<=" && !satisfies(lt.semver, String(c), options))
+            }
+          } else if (lt.operator === "<=" && !satisfies(lt.semver, String(c), options)) {
             return false;
+          }
         }
-        if (!c.operator && (lt || gt) && gtltComp !== 0)
+        if (!c.operator && (lt || gt) && gtltComp !== 0) {
           return false;
+        }
       }
-      if (gt && hasDomLT && !lt && gtltComp !== 0)
+      if (gt && hasDomLT && !lt && gtltComp !== 0) {
         return false;
-      if (lt && hasDomGT && !gt && gtltComp !== 0)
+      }
+      if (lt && hasDomGT && !gt && gtltComp !== 0) {
         return false;
-      if (needDomGTPre || needDomLTPre)
+      }
+      if (needDomGTPre || needDomLTPre) {
         return false;
+      }
       return true;
     };
     var higherGT = (a, b, options) => {
-      if (!a)
+      if (!a) {
         return b;
+      }
       const comp = compare(a.semver, b.semver, options);
       return comp > 0 ? a : comp < 0 ? b : b.operator === ">" && a.operator === ">=" ? b : a;
     };
     var lowerLT = (a, b, options) => {
-      if (!a)
+      if (!a) {
         return b;
+      }
       const comp = compare(a.semver, b.semver, options);
       return comp < 0 ? a : comp > 0 ? b : b.operator === "<" && a.operator === "<=" ? b : a;
     };
@@ -32652,7 +32693,7 @@ var require_kmd = __commonJS({
         const res = await this.c.get("/v1/wallets");
         return res.body;
       }
-      async createWallet(walletName, walletPassword, walletMDK = "", walletDriverName = "sqlite") {
+      async createWallet(walletName, walletPassword, walletMDK = new Uint8Array(), walletDriverName = "sqlite") {
         const req = {
           wallet_name: walletName,
           wallet_driver_name: walletDriverName,
@@ -36771,11 +36812,12 @@ var require_dryrun2 = __commonJS({
   "node_modules/algosdk/dist/cjs/src/dryrun.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.createDryrun = void 0;
+    exports2.DryrunResult = exports2.createDryrun = void 0;
     var types_1 = require_types();
     var transactions_1 = require_transactions();
     var address_1 = require_address();
     var defaultAppId = 1380011588;
+    var defaultMaxWidth = 30;
     function decodePrograms(ap) {
       ap.params["approval-program"] = Buffer.from(ap.params["approval-program"].toString(), "base64");
       ap.params["clear-state-program"] = Buffer.from(ap.params["clear-state-program"].toString(), "base64");
@@ -36792,8 +36834,10 @@ var require_dryrun2 = __commonJS({
           accts.push(address_1.encodeAddress(t.txn.from.publicKey));
           if (t.txn.appAccounts)
             accts.push(...t.txn.appAccounts.map((a) => address_1.encodeAddress(a.publicKey)));
-          if (t.txn.appForeignApps)
+          if (t.txn.appForeignApps) {
             apps.push(...t.txn.appForeignApps);
+            accts.push(...t.txn.appForeignApps.map((aidx) => address_1.getApplicationAddress(aidx)));
+          }
           if (t.txn.appForeignAssets)
             assets.push(...t.txn.appForeignAssets);
           if (t.txn.appIndex === void 0 || t.txn.appIndex === 0) {
@@ -36847,6 +36891,186 @@ var require_dryrun2 = __commonJS({
       });
     }
     exports2.createDryrun = createDryrun;
+    var DryrunStackValue = class {
+      constructor(sv) {
+        this.type = 0;
+        this.bytes = "";
+        this.uint = 0;
+        this.type = sv.type;
+        this.bytes = sv.bytes;
+        this.uint = sv.uint;
+      }
+      toString() {
+        if (this.type === 1) {
+          return `0x${Buffer.from(this.bytes, "base64").toString("hex")}`;
+        }
+        return this.uint.toString();
+      }
+    };
+    var DryrunTraceLine = class {
+      constructor(line) {
+        this.error = "";
+        this.line = 0;
+        this.pc = 0;
+        this.scratch = [];
+        this.stack = [];
+        this.error = line.error === void 0 ? "" : line.error;
+        this.line = line.line;
+        this.pc = line.pc;
+        this.scratch = line.scratch;
+        this.stack = line.stack.map((sv) => new DryrunStackValue(sv));
+      }
+    };
+    var DryrunTrace = class {
+      constructor(t) {
+        this.trace = [];
+        if (t === void 0)
+          return;
+        this.trace = t.map((line) => new DryrunTraceLine(line));
+      }
+    };
+    function truncate(str, maxValueWidth) {
+      if (str.length > maxValueWidth && maxValueWidth > 0) {
+        return `${str.slice(0, maxValueWidth)}...`;
+      }
+      return str;
+    }
+    function scratchToString(prevScratch, currScratch) {
+      if (currScratch.length === 0)
+        return "";
+      let newScratchIdx = null;
+      for (let idx = 0; idx < currScratch.length; idx++) {
+        if (idx > prevScratch.length) {
+          newScratchIdx = idx;
+          continue;
+        }
+        if (JSON.stringify(prevScratch[idx]) !== JSON.stringify(currScratch[idx])) {
+          newScratchIdx = idx;
+        }
+      }
+      if (newScratchIdx == null)
+        return "";
+      const newScratch = currScratch[newScratchIdx];
+      if (newScratch.bytes.length > 0) {
+        return `${newScratchIdx} = 0x${Buffer.from(newScratch.bytes, "base64").toString("hex")}`;
+      }
+      return `${newScratchIdx} = ${newScratch.uint.toString()}`;
+    }
+    function stackToString(stack, reverse) {
+      const svs = reverse ? stack.reverse() : stack;
+      return `[${svs.map((sv) => {
+        switch (sv.type) {
+          case 1:
+            return `0x${Buffer.from(sv.bytes, "base64").toString("hex")}`;
+          case 2:
+            return `${sv.uint.toString()}`;
+          default:
+            return "";
+        }
+      }).join(", ")}]`;
+    }
+    var DryrunTransactionResult = class {
+      constructor(dtr) {
+        this.disassembly = [];
+        this.appCallMessages = [];
+        this.localDeltas = [];
+        this.globalDelta = [];
+        this.cost = 0;
+        this.logicSigMessages = [];
+        this.logicSigDisassembly = [];
+        this.logs = [];
+        this.appCallTrace = void 0;
+        this.logicSigTrace = void 0;
+        this.required = ["disassembly"];
+        this.optionals = [
+          "app-call-messages",
+          "local-deltas",
+          "global-delta",
+          "cost",
+          "logic-sig-messages",
+          "logic-sig-disassembly",
+          "logs"
+        ];
+        this.traces = ["app-call-trace", "logic-sig-trace"];
+        this.disassembly = dtr.disassembly;
+        this.appCallMessages = dtr["app-call-messages"];
+        this.localDeltas = dtr["local-deltas"];
+        this.globalDelta = dtr["global-delta"];
+        this.cost = dtr.cost;
+        this.logicSigMessages = dtr["logic-sig-messages"];
+        this.logicSigDisassembly = dtr["logic-sig-disassembly"];
+        this.logs = dtr.logs;
+        this.appCallTrace = new DryrunTrace(dtr["app-call-trace"]);
+        this.logicSigTrace = new DryrunTrace(dtr["logic-sig-trace"]);
+      }
+      appCallRejected() {
+        return this.appCallMessages !== void 0 && this.appCallMessages.includes("REJECT");
+      }
+      logicSigRejected() {
+        return this.logicSigMessages !== void 0 && this.logicSigMessages.includes("REJECT");
+      }
+      static trace(drt, disassembly, spc) {
+        let maxWidth = defaultMaxWidth;
+        if (spc.maxValueWidth === void 0)
+          maxWidth = spc.maxValueWidth;
+        const lines = [["pc#", "ln#", "source", "scratch", "stack"]];
+        for (let idx = 0; idx < drt.trace.length; idx++) {
+          const { line, error, pc, scratch, stack } = drt.trace[idx];
+          const currScratch = scratch !== void 0 ? scratch : [];
+          const prevScratch = idx > 0 && drt.trace[idx - 1].scratch !== void 0 ? drt.trace[idx - 1].scratch : [];
+          const src = error === "" ? disassembly[line] : `!! ${error} !!`;
+          lines.push([
+            pc.toString().padEnd(3, " "),
+            line.toString().padEnd(3, " "),
+            truncate(src, maxWidth),
+            truncate(scratchToString(prevScratch, currScratch), maxWidth),
+            truncate(stackToString(stack, spc.topOfStackFirst), maxWidth)
+          ]);
+        }
+        const maxLengths = lines.reduce((prev, curr) => {
+          const newVal = new Array(lines[0].length).fill(0);
+          for (let idx = 0; idx < prev.length; idx++) {
+            newVal[idx] = curr[idx].length > prev[idx] ? curr[idx].length : prev[idx];
+          }
+          return newVal;
+        }, new Array(lines[0].length).fill(0));
+        return `${lines.map((line) => line.map((v, idx) => v.padEnd(maxLengths[idx] + 1, " ")).join("|").trim()).join("\n")}
+`;
+      }
+      appTrace(spc) {
+        if (this.appCallTrace === void 0 || !this.disassembly)
+          return "";
+        let conf = spc;
+        if (spc === void 0)
+          conf = {
+            maxValueWidth: defaultMaxWidth,
+            topOfStackFirst: false
+          };
+        return DryrunTransactionResult.trace(this.appCallTrace, this.disassembly, conf);
+      }
+      lsigTrace(spc) {
+        if (this.logicSigTrace === void 0 || this.logicSigDisassembly === void 0)
+          return "";
+        let conf = spc;
+        if (spc === void 0)
+          conf = {
+            maxValueWidth: defaultMaxWidth,
+            topOfStackFirst: true
+          };
+        return DryrunTransactionResult.trace(this.logicSigTrace, this.logicSigDisassembly, conf);
+      }
+    };
+    var DryrunResult = class {
+      constructor(drrResp) {
+        this.error = "";
+        this.protocolVersion = "";
+        this.txns = [];
+        this.error = drrResp.error;
+        this.protocolVersion = drrResp["protocol-version"];
+        this.txns = drrResp.txns.map((txn) => new DryrunTransactionResult(txn));
+      }
+    };
+    exports2.DryrunResult = DryrunResult;
   }
 });
 
@@ -38780,9 +39004,9 @@ var require_index_min = __commonJS({
               return t4 === "" || typeof t4 == "string" && t4.trim() === "";
             }(t3)) && (C(t3) ? typeof t3 == "string" && (e3 = T(t3)) : e3 = E(t3)), typeof e3 == "string" && (r3 = e3, e3 = S.w(S.a(r3))), e3;
           }
-          const n2 = { from: T(t2.from), to: t2.to === void 0 ? "" : T(t2.to), gasPrice: t2.gasPrice === void 0 ? "" : r2(t2.gasPrice), gas: t2.gas === void 0 ? t2.gasLimit === void 0 ? "" : r2(t2.gasLimit) : r2(t2.gas), value: t2.value === void 0 ? "" : r2(t2.value), nonce: t2.nonce === void 0 ? "" : r2(t2.nonce), data: t2.data === void 0 ? "" : T(t2.data) || "0x" }, i2 = ["gasPrice", "gas", "value", "nonce"];
+          const n2 = { from: T(t2.from), to: t2.to === void 0 ? void 0 : T(t2.to), gasPrice: t2.gasPrice === void 0 ? "" : r2(t2.gasPrice), gas: t2.gas === void 0 ? t2.gasLimit === void 0 ? "" : r2(t2.gasLimit) : r2(t2.gas), value: t2.value === void 0 ? "" : r2(t2.value), nonce: t2.nonce === void 0 ? "" : r2(t2.nonce), data: t2.data === void 0 ? "" : T(t2.data) || "0x" }, i2 = ["gasPrice", "gas", "value", "nonce"];
           return Object.keys(n2).forEach((t3) => {
-            !n2[t3].trim().length && i2.includes(t3) && delete n2[t3];
+            (n2[t3] === void 0 || typeof n2[t3] == "string" && !n2[t3].trim().length) && i2.includes(t3) && delete n2[t3];
           }), n2;
         }
         function Y(t2) {
@@ -42484,13 +42708,13 @@ var require_index_min = __commonJS({
           }
           _subscribeToSessionResponse(t2, e2) {
             this._subscribeToResponse(t2, (t3, r2) => {
-              t3 ? this._handleSessionResponse(t3.message) : r2.result ? this._handleSessionResponse(e2, r2.result) : r2.error && r2.error.message ? this._handleSessionResponse(r2.error.message) : this._handleSessionResponse(e2);
+              t3 ? this._handleSessionResponse(t3.message) : Object(n.q)(r2) ? this._handleSessionResponse(e2, r2.result) : r2.error && r2.error.message ? this._handleSessionResponse(r2.error.message) : this._handleSessionResponse(e2);
             });
           }
           _subscribeToCallResponse(t2) {
             return new Promise((e2, r2) => {
-              this._subscribeToResponse(t2, (t3, n2) => {
-                t3 ? r2(t3) : n2.result ? e2(n2.result) : n2.error && n2.error.message ? r2(new Error(n2.error.message)) : r2(new Error("JSON RPC response format is invalid"));
+              this._subscribeToResponse(t2, (t3, i2) => {
+                t3 ? r2(t3) : Object(n.q)(i2) ? e2(i2.result) : i2.error && i2.error.message ? r2(new Error(i2.error.message)) : r2(new Error("JSON RPC response format is invalid"));
               });
             });
           }
@@ -42625,6 +42849,7 @@ var require_tslib = __commonJS({
     var __importDefault;
     var __classPrivateFieldGet;
     var __classPrivateFieldSet;
+    var __classPrivateFieldIn;
     var __createBinding;
     (function(factory) {
       var root2 = typeof global === "object" ? global : typeof self === "object" ? self : typeof this === "object" ? this : {};
@@ -42817,9 +43042,13 @@ var require_tslib = __commonJS({
       __createBinding = Object.create ? function(o, m, k, k2) {
         if (k2 === void 0)
           k2 = k;
-        Object.defineProperty(o, k2, { enumerable: true, get: function() {
-          return m[k];
-        } });
+        var desc = Object.getOwnPropertyDescriptor(m, k);
+        if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+          desc = { enumerable: true, get: function() {
+            return m[k];
+          } };
+        }
+        Object.defineProperty(o, k2, desc);
       } : function(o, m, k, k2) {
         if (k2 === void 0)
           k2 = k;
@@ -43000,6 +43229,11 @@ var require_tslib = __commonJS({
           throw new TypeError("Cannot write private member to an object whose class did not declare it");
         return kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
       };
+      __classPrivateFieldIn = function(state, receiver) {
+        if (receiver === null || typeof receiver !== "object" && typeof receiver !== "function")
+          throw new TypeError("Cannot use 'in' operator on non-object");
+        return typeof state === "function" ? receiver === state : state.has(receiver);
+      };
       exporter("__extends", __extends);
       exporter("__assign", __assign);
       exporter("__rest", __rest);
@@ -43024,6 +43258,7 @@ var require_tslib = __commonJS({
       exporter("__importDefault", __importDefault);
       exporter("__classPrivateFieldGet", __classPrivateFieldGet);
       exporter("__classPrivateFieldSet", __classPrivateFieldSet);
+      exporter("__classPrivateFieldIn", __classPrivateFieldIn);
     });
   }
 });
@@ -54069,7 +54304,7 @@ var require_ethereum = __commonJS({
       }
       const txDataRPC = {
         from: (0, misc_1.sanitizeHex)(txData.from),
-        to: typeof txData.to === "undefined" ? "" : (0, misc_1.sanitizeHex)(txData.to),
+        to: typeof txData.to === "undefined" ? void 0 : (0, misc_1.sanitizeHex)(txData.to),
         gasPrice: typeof txData.gasPrice === "undefined" ? "" : parseHexValues(txData.gasPrice),
         gas: typeof txData.gas === "undefined" ? typeof txData.gasLimit === "undefined" ? "" : parseHexValues(txData.gasLimit) : parseHexValues(txData.gas),
         value: typeof txData.value === "undefined" ? "" : parseHexValues(txData.value),
@@ -54078,7 +54313,7 @@ var require_ethereum = __commonJS({
       };
       const prunable = ["gasPrice", "gas", "value", "nonce"];
       Object.keys(txDataRPC).forEach((key) => {
-        if (!txDataRPC[key].trim().length && prunable.includes(key)) {
+        if ((typeof txDataRPC[key] === "undefined" || typeof txDataRPC[key] === "string" && !txDataRPC[key].trim().length) && prunable.includes(key)) {
           delete txDataRPC[key];
         }
       });
@@ -54696,6 +54931,8 @@ var FrameBus = class {
     walEl.setAttribute("name", "walFrame");
     walEl.setAttribute("title", "Algorand Microwallet");
     walEl.setAttribute("frameborder", "0");
+    walEl.setAttribute("sandbox", "allow-scripts allow-same-origin allow-forms allow-modals allow-popups");
+    walEl.setAttribute("allow", "publickey-credentials-get");
     this.walEl = walEl;
     document.body.append(walEl);
     const walWin = walEl.contentWindow;
@@ -54810,13 +55047,14 @@ var FrameBus = class {
 			height: 400px;
 			transition: 0.2s top ease-out;
 			box-shadow: 0 -2px 20px rgba(0,0,0,0.4);
+			z-index: 10001;
 		}
-		
+
 		.hippo-frame.visible {
 			top: 0;
-			transition: 0.2s top ease-in;
+			transition: 0.2s top ease-out;
 		}
-		
+
 		@media screen and (min-width: 500px) {
 			.hippo-frame {
 				max-width: 400px;
@@ -55313,11 +55551,17 @@ var Algonaut = class {
   async getAppInfo(appId) {
     if (!appId)
       throw new Error("No appId provided");
-    const info = await this.algodClient.getApplicationByID(appId).do();
+    const proms = [
+      this.algodClient.getApplicationByID(appId).do(),
+      this.getAppLocalState(appId)
+    ];
+    const promsRes = await Promise.all(proms);
+    const info = promsRes[0];
+    const localState = promsRes[1];
     const state = {
       hasState: true,
       globals: [],
-      locals: [],
+      locals: localState?.locals || [],
       creatorAddress: info.params.creator,
       index: appId
     };
@@ -55574,7 +55818,7 @@ var Algonaut = class {
         creatorAddress: "",
         index: applicationIndex
       };
-      const accountInfoResponse = await this.algodClient.accountInformation(this.account?.addr).do();
+      const accountInfoResponse = await this.algodClient.accountInformation(this.account.addr).do();
       for (let i = 0; i < accountInfoResponse["apps-local-state"].length; i++) {
         if (accountInfoResponse["apps-local-state"][i].id == applicationIndex) {
           state.hasState = true;
@@ -55600,7 +55844,7 @@ var Algonaut = class {
       }
       return state;
     } else {
-      throw new Error("there is no account");
+      console.warn("there is no account in algonaut, thus no local state to get");
     }
   }
   async atomicAssetTransferWithLSig(args) {
@@ -55817,7 +56061,7 @@ var Algonaut = class {
     }
   }
   signBase64Transactions(txns) {
-    let decodedTxns = [];
+    const decodedTxns = [];
     txns.forEach((txn) => {
       const decodedTxn = this.decodeBase64UnsignedTransaction(txn);
       decodedTxns.push(decodedTxn);
@@ -55880,8 +56124,7 @@ var Algonaut = class {
       const txnGroup = import_algosdk.default.assignGroupID(txns);
       const signed = [];
       txns.forEach((txn, i) => {
-        let signedTx;
-        signedTx = import_algosdk.default.signTransaction(txnGroup[i], account.sk);
+        const signedTx = import_algosdk.default.signTransaction(txnGroup[i], account.sk);
         signed.push(signedTx.blob);
       });
       return signed;
@@ -56260,20 +56503,6 @@ var buffer = import_buffer.Buffer;
  * Copyright(c) 2015 Douglas Christopher Wilson
  * MIT Licensed
  */
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use

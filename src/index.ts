@@ -21,7 +21,9 @@ import {
 	AlgonautLsigSendAssetArguments,
 	AlgonautPaymentArguments,
 	AlgonautLsigPaymentArguments,
-	AlgonautUpdateAppArguments
+	AlgonautUpdateAppArguments,
+	AlgonautGetApplicationResponse,
+	AlgonautAppStateEncoded
 } from './AlgonautTypes';
 // import * as sha512 from 'js-sha512';
 // import * as CryptoJS from 'crypto-js';
@@ -55,6 +57,7 @@ finishedSound;
 // console.log(finishedSound);
 
 import { FrameBus } from './FrameBus';
+import type { Application } from 'algosdk/dist/types/src/client/v2/algod/models/types';
 
 /*
 
@@ -180,7 +183,7 @@ export default class Algonaut {
 				// default hippo
 				config.HIPPO_SRC = 'https://hippoz.web.app';
 			}
-			
+
 			this.initHippo({
 				id: config.HIPPO_ID,
 				src: config.HIPPO_SRC
@@ -913,13 +916,19 @@ export default class Algonaut {
 	async getAppInfo(appId: number): Promise<AlgonautAppState> {
 		if (!appId) throw new Error('No appId provided');
 
-		const info = await this.algodClient.getApplicationByID(appId).do();
+		const proms = [
+			this.algodClient.getApplicationByID(appId).do(),
+			this.getAppLocalState(appId) // TODO get rid of this call / only return locals (not incorrect duplicate state obj)
+		];
+		const promsRes = await Promise.all(proms);
+		const info = promsRes[0] as AlgonautGetApplicationResponse;
+		const localState = promsRes[1] as AlgonautAppState | void;
 
 		// decode state
 		const state = {
 			hasState: true,
 			globals: [],
-			locals: [],
+			locals: localState?.locals || [],
 			creatorAddress: info.params.creator,
 			index: appId
 		} as AlgonautAppState;
@@ -929,7 +938,6 @@ export default class Algonaut {
 		}
 
 		return state;
-
 	}
 
 	/**
@@ -1355,7 +1363,7 @@ export default class Algonaut {
 	 *
 	 * @param applicationIndex the applications index
 	 */
-	async getAppLocalState(applicationIndex: number): Promise<AlgonautAppState> {
+	async getAppLocalState(applicationIndex: number): Promise<AlgonautAppState | void> {
 		if (!applicationIndex) throw new Error('No application ID provided');
 
 		if (this.account) {
@@ -1373,7 +1381,7 @@ export default class Algonaut {
 			// maybe a 32-byte field gets an address field added?
 
 			const accountInfoResponse = await this.algodClient
-				.accountInformation(this.account?.addr)
+				.accountInformation(this.account.addr)
 				.do();
 
 			//console.log(accountInfoResponse);
@@ -1412,7 +1420,8 @@ export default class Algonaut {
 
 			return state;
 		} else {
-			throw new Error('there is no account');
+			// throw new Error('there is no account');
+			console.warn('there is no account in algonaut, thus no local state to get');
 		}
 	}
 
@@ -1502,7 +1511,7 @@ export default class Algonaut {
 				const txnGroup = algosdk.assignGroupID(unwrappedTxns);
 
 
-				
+
 				// encode txns
 				const txnsToSign = txnGroup.map(txn => {
 					const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString('base64');
@@ -1511,7 +1520,7 @@ export default class Algonaut {
 
 				signedTxns = await this.hippoSignTxns(txnsToSign);
 
-			// HANDLE SINGLE ATOMIC TRANSACTION
+				// HANDLE SINGLE ATOMIC TRANSACTION
 			} else {
 				let txn: algosdk.Transaction;
 				if (txnOrTxns && (txnOrTxns as any).transaction) {
@@ -1612,7 +1621,7 @@ export default class Algonaut {
 			payload: {
 				txns
 			},
-		}
+		};
 
 		const res = await this.hippoMessageAsync(data, { showFrame: true });
 
@@ -1620,7 +1629,7 @@ export default class Algonaut {
 
 		if (res.error) throw new Error(res.error);
 		if (res.reject) throw new Error('Transaction request rejected');
-		
+
 		return res.signedTxns;
 	}
 
@@ -1652,7 +1661,7 @@ export default class Algonaut {
 		const data = {
 			type: 'set-app',
 			payload: { appCode }
-		}
+		};
 
 		return await this.hippoMessageAsync(data);
 	}
@@ -1682,7 +1691,7 @@ export default class Algonaut {
 	async hippoDisconnect(): Promise<any> {
 		const data = {
 			type: 'disconnect'
-		}
+		};
 
 		const res = await this.hippoMessageAsync(data, { showFrame: false });
 		console.log(res);
@@ -1762,7 +1771,7 @@ export default class Algonaut {
 	 * @returns Uint8Array signed transactions
 	 */
 	signBase64Transactions(txns: string[]): Uint8Array[] | Uint8Array {
-		let decodedTxns: algosdk.Transaction[] = [];
+		const decodedTxns: algosdk.Transaction[] = [];
 		txns.forEach(txn => {
 			const decodedTxn = this.decodeBase64UnsignedTransaction(txn);
 			decodedTxns.push(decodedTxn);
@@ -1793,19 +1802,19 @@ export default class Algonaut {
 			// sending algo
 			if (txn.type === 'pay') {
 				return `Send ${algosdk.microalgosToAlgos(txn.amount as number)} ALGO to ${to}`;
-			
-			// sending assets
+
+				// sending assets
 			} else if (txn.type === 'axfer') {
 				if (!txn.amount && to === from) {
-					return `Opt-in to asset ID ${txn.assetIndex}`
+					return `Opt-in to asset ID ${txn.assetIndex}`;
 				} else {
 					const amount = txn.amount ? txn.amount : 0;
 					return `Transfer ${amount} of asset ID ${txn.assetIndex} to ${to}`;
 				}
-			
-			// asset config
-			// this could be creating, destroying, or configuring an asset,
-			// depending on which fields are set
+
+				// asset config
+				// this could be creating, destroying, or configuring an asset,
+				// depending on which fields are set
 			} else if (txn.type === 'acfg') {
 
 				// if unit name is supplied, we are creating
@@ -1814,12 +1823,12 @@ export default class Algonaut {
 				}
 
 				return `Configure asset ${txn.assetIndex}`;
-			
-			// asset freeze
+
+				// asset freeze
 			} else if (txn.type === 'afrz') {
-				return `Freeze asset ${txn.assetIndex}`
-			
-			// application call
+				return `Freeze asset ${txn.assetIndex}`;
+
+				// application call
 			} else if (txn.type === 'appl') {
 				// let's find out what kind of application call this is
 				// reference: https://developer.algorand.org/docs/get-details/dapps/avm/teal/specification/#oncomplete
@@ -1831,16 +1840,16 @@ export default class Algonaut {
 					// OptIn
 					case 1:
 						return `Opt-in to application ID ${txn.appIndex}`;
-					
+
 					// CloseOut
-					case 2: 
+					case 2:
 						return `Close out application ID ${txn.appIndex}`;
 
 					// ClearState
 					case 3:
 						return `Execute clear state program of application ID ${txn.appIndex}`;
 
-					// Update 
+					// Update
 					case 4:
 						return `Update application ID ${txn.appIndex}`;
 
@@ -1852,7 +1861,7 @@ export default class Algonaut {
 						return `Call to application ID ${txn.appIndex}`;
 				}
 
-			// default case
+				// default case
 			} else {
 				return `Transaction of type ${txn.type} to ${to}`;
 			}
@@ -1881,11 +1890,7 @@ export default class Algonaut {
 
 			// sign all transactions in the group
 			txns.forEach((txn: algosdk.Transaction, i) => {
-				let signedTx: {
-					txID: string;
-					blob: Uint8Array;
-				};
-				signedTx = algosdk.signTransaction(txnGroup[i], account.sk);
+				const signedTx = algosdk.signTransaction(txnGroup[i], account.sk);
 				signed.push(signedTx.blob);
 			});
 
@@ -2294,7 +2299,7 @@ export default class Algonaut {
 
 		// TODO helpful for desktop debugging but redo isMobile check
 		if (isBrowser()) {
-		// if (isBrowser() && isMobile()) {
+			// if (isBrowser() && isMobile()) {
 			// reqaf fix
 			const keepAlive = () => {
 				// console.log('keepAlive');
@@ -2418,8 +2423,8 @@ export default class Algonaut {
 		return algosdk.encodeAddress(Buffer.from(encoded, 'base64'));
 	}
 
-	decodeStateArray(stateArray: { key: string, value: { bytes: string, type: number, uint: number } }[]) {
-		const result: any[] = [];
+	decodeStateArray(stateArray: AlgonautAppStateEncoded[]) {
+		const result: AlgonautStateData[] = [];
 
 		for (let n = 0;
 			n < stateArray.length;
