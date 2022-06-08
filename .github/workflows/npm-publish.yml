@@ -26,6 +26,8 @@ jobs:
         run: npm run build
 
       - name: "publish"
-        run: npm publish --access public
+        # run: npm publish --access public
+        # npm dist-tag add algonaut.js@0.1.28 latest
+        run: npm dist-tag add algonaut.js@beta latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
