@@ -19,15 +19,18 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           # creates an .npmrc
 
-      - name: "install"
-        run: npm ci
+      # - name: "install"
+      #   run: npm ci
 
-      - name: "build"
-        run: npm run build
+      # - name: "build"
+      #   run: npm run build
 
-      - name: "publish"
+      - name: "publish" # really, re-tags a certain push as @latest, doesnt publish again
         # run: npm publish --access public
-        # npm dist-tag add algonaut.js@0.1.28 latest
-        run: npm dist-tag add algonaut.js@0.1.30 latest
+        # works
+        # npm dist-tag add algonaut.js@0.1.30 latest
+        run: |
+          PKG_VERSION_LOCAL=`cat package.json | jq -r '.version'`
+          npm dist-tag add algonaut.js@$PKG_VERSION_LOCAL latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
