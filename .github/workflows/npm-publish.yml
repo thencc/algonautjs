@@ -28,6 +28,6 @@ jobs:
       - name: "publish"
         # run: npm publish --access public
         # npm dist-tag add algonaut.js@0.1.28 latest
-        run: npm dist-tag add algonaut.js@beta latest
+        run: npm dist-tag add algonaut.js@0.1.30 latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
