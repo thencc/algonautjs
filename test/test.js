@@ -215,8 +215,18 @@ var errors = [];
 			appState = await algonaut.getAppLocalState(ACCOUNT_APP);
 			console.log(JSON.stringify(appState, null, 2));
 		} catch (e) {
-			errors.push('getAppLocalState');
+			errors.push('getAppLocalState(app)');
 			console.error('Error getting state');
+		}
+
+		try {
+			console.log('Getting local state for different address.');
+			appState = await algonaut.getAppLocalState(ACCOUNT_APP, firstWallet.address);
+			console.log(JSON.stringify(appState, null, 2));
+		} catch (e) {
+			errors.push('getAppLocalState(app, address)');
+			console.error('Error getting state');
+			console.error(e);
 		}
 
 		// callApp

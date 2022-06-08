@@ -1360,28 +1360,33 @@ export default class Algonaut {
 
 
 	/**
-	 *
+	 * Gets account local state for an app. Defaults to `this.account` unless
+	 * an address is provided.
 	 * @param applicationIndex the applications index
 	 */
-	async getAppLocalState(applicationIndex: number): Promise<AlgonautAppState | void> {
+	async getAppLocalState(applicationIndex: number, address?: string): Promise<AlgonautAppState | void> {
 		if (!applicationIndex) throw new Error('No application ID provided');
 
-		if (this.account) {
-			const state = {
-				hasState: false,
-				globals: [],
-				locals: [],
-				creatorAddress: '',
-				index: applicationIndex
-			} as AlgonautAppState;
+		const state = {
+			hasState: false,
+			globals: [],
+			locals: [],
+			creatorAddress: '',
+			index: applicationIndex
+		} as AlgonautAppState;
 
-			// read state
+		// read state
 
-			// can we detect addresses values and auto-convert them?
-			// maybe a 32-byte field gets an address field added?
+		// can we detect addresses values and auto-convert them?
+		// maybe a 32-byte field gets an address field added?
 
+		if (this.account && this.account.addr && !address) {
+			address = this.account.addr;
+		}
+
+		if (address) {
 			const accountInfoResponse = await this.algodClient
-				.accountInformation(this.account.addr)
+				.accountInformation(address)
 				.do();
 
 			//console.log(accountInfoResponse);
@@ -1420,8 +1425,7 @@ export default class Algonaut {
 
 			return state;
 		} else {
-			// throw new Error('there is no account');
-			console.warn('there is no account in algonaut, thus no local state to get');
+			throw new Error('No address provided, and no account set.');
 		}
 	}
 
