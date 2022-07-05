@@ -1,6 +1,6 @@
 // [parent-window]<->[iframe] communications class
 export class FrameBus {
-	ready: boolean = false;
+	ready = false;
 	initing = false; // for async init w initSrc
 
 	walEl: null | HTMLIFrameElement = null;
@@ -99,7 +99,7 @@ export class FrameBus {
 		walEl.setAttribute('name', 'walFrame');
 		walEl.setAttribute('title', 'Algorand Microwallet');
 		walEl.setAttribute('frameborder', '0');
-		walEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-modals allow-popups');
+		walEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-modals allow-popups allow-downloads');
 		walEl.setAttribute('allow', 'publickey-credentials-get');
 		// walEl.setAttribute('allow', 'publickey-credentials-create'); // gah, wish this existed...
 		this.walEl = walEl;
@@ -230,7 +230,7 @@ export class FrameBus {
 		data = {
 			...data,
 			uuid,
-		}
+		};
 
 		this.walWin?.postMessage(data, this.walEl!.src);
 	}
