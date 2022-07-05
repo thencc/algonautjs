@@ -54931,7 +54931,7 @@ var FrameBus = class {
     walEl.setAttribute("name", "walFrame");
     walEl.setAttribute("title", "Algorand Microwallet");
     walEl.setAttribute("frameborder", "0");
-    walEl.setAttribute("sandbox", "allow-scripts allow-same-origin allow-forms allow-modals allow-popups");
+    walEl.setAttribute("sandbox", "allow-scripts allow-same-origin allow-forms allow-modals allow-popups allow-downloads");
     walEl.setAttribute("allow", "publickey-credentials-get");
     this.walEl = walEl;
     document.body.append(walEl);
