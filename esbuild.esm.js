@@ -7,7 +7,7 @@ build({
 	bundle: true,
 	sourcemap: true,
 	minify: false,
-	treeShaking: false,
+	treeShaking: true,
 	target: ['esnext'],
 	//external: ['src/lowtone.ts', 'src/finished.ts'],
 	assetNames: 'assets/[name]',
