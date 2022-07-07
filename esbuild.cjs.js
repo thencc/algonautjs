@@ -7,7 +7,7 @@ build({
 	bundle: true,
 	sourcemap: true,
 	minify: false,
-	treeShaking: false,
+	treeShaking: true,
 	target: ['esnext'], // change for browser/node?
 	// assetNames: 'assets/[name]',
 	// loader: { '.mp3': 'file' },
