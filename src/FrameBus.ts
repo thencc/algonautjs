@@ -3,9 +3,10 @@ export class FrameBus {
 	ready: boolean = false;
 	initing = false; // for async init w initSrc
 
-	walEl: null | HTMLIFrameElement = null;
+	walEl: null | any = null; // should be HTMLIFrameElement but that breaks in a Node env
 	walWin: null | Window = null;
-	onMsgHandler: null | ((event: MessageEvent<any>) => void) = null; // need a reference to onMsgHandler since .bind(this) makes a new instance of that method and removeEventListener needs the real thing
+	// need a reference to onMsgHandler since .bind(this) makes a new instance of that method and removeEventListener needs the real thing
+	onMsgHandler: null | ((event: any) => void) = null; // `event` param should be MessageEvent<any> type, but that breaks in Node env
 
 	requests = new Map<
 		string,
@@ -180,7 +181,7 @@ export class FrameBus {
 		});
 	}
 
-	onMessage(event: MessageEvent) {
+	onMessage(event: any) { // should be MessageEvent, but that breaks in a Node env
 		// console.log('client onMess', event);
 
 		if (
