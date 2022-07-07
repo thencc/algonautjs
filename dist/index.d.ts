@@ -18,7 +18,7 @@ export default class Algonaut {
     config: AlgonautConfig | undefined;
     sdk: typeof algosdk | undefined;
     uiLoading: boolean;
-    hippoWallet: {
+    inkeyWallet: {
         defaultSrc: string;
         otherConfig: {};
         frameBus: FrameBus | undefined;
@@ -51,7 +51,7 @@ export default class Algonaut {
      * @param config config object
      */
     constructor(config: AlgonautConfig);
-    initHippo(mountConfig: {
+    initInkey(mountConfig: {
         id?: string;
         src?: string;
     }): void;
@@ -78,7 +78,7 @@ export default class Algonaut {
      * This is the same as setting the WC account
      * @param address account address
      */
-    setHippoAccount(address: string): void;
+    setInkeyAccount(address: string): void;
     /**
      * Creates a wallet address + mnemonic from account's secret key
      * @returns AlgonautWallet Object containing `address` and `mnemonic`
@@ -327,10 +327,11 @@ export default class Algonaut {
      */
     getAppGlobalState(applicationIndex: number): Promise<any>;
     /**
-     *
+     * Gets account local state for an app. Defaults to `this.account` unless
+     * an address is provided.
      * @param applicationIndex the applications index
      */
-    getAppLocalState(applicationIndex: number): Promise<AlgonautAppState | void>;
+    getAppLocalState(applicationIndex: number, address?: string): Promise<AlgonautAppState | void>;
     atomicAssetTransferWithLSig(args: AlgonautLsigSendAssetArguments): Promise<AlgonautAtomicTransaction>;
     atomicPaymentWithLSig(args: AlgonautLsigPaymentArguments): Promise<AlgonautAtomicTransaction>;
     /**
@@ -342,46 +343,46 @@ export default class Algonaut {
      */
     sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | algosdk.Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
     /**
-     * Sends messages to Hippo via FrameBus
+     * Sends messages to Inkey via FrameBus
      * @param data Message to send
-     * @returns Whatever Hippo gives us
+     * @returns Whatever Inkey gives us
      */
-    hippoMessageAsync(data: any, options?: {
+    inkeyMessageAsync(data: any, options?: {
         showFrame: boolean;
     }): Promise<any>;
     /**
-     * Sends unsigned transactions to Hippo, awaits signing, returns signed txns
+     * Sends unsigned transactions to Inkey, awaits signing, returns signed txns
      * @param txns Array of base64 encoded transactions
      * @returns {Uint8Array} Signed transactions
      */
-    hippoSignTxns(txns: string[]): Promise<any>;
+    inkeySignTxns(txns: string[]): Promise<any>;
     /**
-     * Shows the Hippo wallet frame
+     * Shows the Inkey wallet frame
      */
-    hippoShow(): void;
+    inkeyShow(): void;
     /**
-     * Hides the Hippo wallet frame
+     * Hides the Inkey wallet frame
      */
-    hippoHide(): void;
+    inkeyHide(): void;
     /**
-     * Sets the app / userbase to use for Hippo accounts. This must be set
-     * before Hippo can be used to login or sign transactions.
+     * Sets the app / userbase to use for Inkey accounts. This must be set
+     * before Inkey can be used to login or sign transactions.
      * @param appCode String determining the namespace for user accounts
-     * @returns Promise resolving to response from Hippo
+     * @returns Promise resolving to response from Inkey
      */
-    hippoSetApp(appCode: string): Promise<any>;
+    inkeySetApp(appCode: string): Promise<any>;
     /**
-     * Opens Hippo to allow users to create an account or login with a previously
+     * Opens Inkey to allow users to create an account or login with a previously
      * created account. Must be called before transactions can be signed.
      * @param message Message to show to users
      * @returns Promise resolving to an account object of type `{ account: string }`
      */
-    hippoConnect(message: string): Promise<any>;
+    inkeyConnect(message: string): Promise<any>;
     /**
-     * Tells Hippo to close your session & clear local storage.
+     * Tells Inkey to close your session & clear local storage.
      * @returns Success or fail message
      */
-    hippoDisconnect(): Promise<any>;
+    inkeyDisconnect(): Promise<any>;
     /**
      * run atomic takes an array of transactions to run in order, each
      * of the atomic transaction methods needs to return an object containing
@@ -393,7 +394,7 @@ export default class Algonaut {
      */
     sendAtomicTransaction(transactions: AlgonautAtomicTransaction[], callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
     /**
-     * Used by Hippo to sign base64-encoded transactions sent to the iframe
+     * Used by Inkey to sign base64-encoded transactions sent to the iframe
      * @param txns Array of Base64-encoded unsigned transactions
      * @returns Uint8Array signed transactions
      */
@@ -405,12 +406,12 @@ export default class Algonaut {
      */
     decodeBase64UnsignedTransaction(txn: string): algosdk.Transaction;
     /**
-     * Describes an Algorand transaction, for display in Hippo
+     * Describes an Algorand transaction, for display in Inkey
      * @param txn Transaction to describe
      */
     txnSummary(txn: algosdk.Transaction): string;
     /**
-     * Signs an array of Transactions (used in Hippo)
+     * Signs an array of Transactions (used in Inkey)
      * @param txns Array of algosdk.Transaction
      * @returns Uint8Array[] of signed transactions
      */
@@ -434,9 +435,9 @@ export default class Algonaut {
     usingWalletConnect(): boolean;
     /**
      * Interally used to determine how to sign transactions on more generic functions (e.g. {@link deployFromTeal})
-     * @returns true if we are signing transactions with hippo, false otherwise
+     * @returns true if we are signing transactions with inkey, false otherwise
      */
-    usingHippoWallet(): boolean;
+    usingInkeyWallet(): boolean;
     /**
      * Prepare one or more transactions for wallet connect signature
      *

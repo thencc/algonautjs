@@ -54760,7 +54760,7 @@ var FrameBus = class {
     }
     this.walEl = walEl;
     const walWin = walEl.contentWindow;
-    walEl.classList.add("hippo-frame");
+    walEl.classList.add("inkey-frame");
     if (!walWin) {
       console.error("no walWin");
       return;
@@ -54776,7 +54776,7 @@ var FrameBus = class {
     this.initing = true;
     const walEl = document.createElement("iframe");
     walEl.src = src;
-    walEl.classList.add("hippo-frame");
+    walEl.classList.add("inkey-frame");
     walEl.setAttribute("allow", "clipboard-write");
     walEl.setAttribute("name", "walFrame");
     walEl.setAttribute("title", "Algorand Microwallet");
@@ -54844,7 +54844,7 @@ var FrameBus = class {
     });
   }
   onMessage(event) {
-    if (event.data.source && event.data.source == "ncc-hippo-wallet") {
+    if (event.data.source && event.data.source == "ncc-inkey-wallet") {
       console.log("client got mess", event.data);
       if (event.data.type === "hide") {
         this.hideFrame();
@@ -54889,7 +54889,7 @@ var FrameBus = class {
     });
   }
   getStyles() {
-    return `.hippo-frame {
+    return `.inkey-frame {
 			position: fixed;
 			top: -450px;
 			left: 0;
@@ -54900,13 +54900,13 @@ var FrameBus = class {
 			z-index: 10001;
 		}
 
-		.hippo-frame.visible {
+		.inkey-frame.visible {
 			top: 0;
 			transition: 0.2s top ease-out;
 		}
 
 		@media screen and (min-width: 500px) {
-			.hippo-frame {
+			.inkey-frame {
 				max-width: 400px;
 				left: calc(50% - 200px);
 			}
@@ -54928,7 +54928,7 @@ var Algonaut = class {
   config = void 0;
   sdk = void 0;
   uiLoading = false;
-  hippoWallet = {
+  inkeyWallet = {
     defaultSrc: "123",
     otherConfig: {},
     frameBus: void 0
@@ -54950,36 +54950,36 @@ var Algonaut = class {
       console.warn("No indexer configured because INDEX_SERVER was not provided.");
     }
     this.sdk = import_algosdk.default;
-    if (config.SIGNING_MODE && config.SIGNING_MODE == "hippo") {
-      if (!config.HIPPO_SRC) {
-        config.HIPPO_SRC = "https://hippoz.web.app";
+    if (config.SIGNING_MODE && config.SIGNING_MODE == "inkey") {
+      if (!config.INKEY_SRC) {
+        config.INKEY_SRC = "https://hippoz.web.app";
       }
-      this.initHippo({
-        id: config.HIPPO_ID,
-        src: config.HIPPO_SRC
+      this.initInkey({
+        id: config.INKEY_ID,
+        src: config.INKEY_SRC
       });
     }
   }
-  initHippo(mountConfig) {
-    console.log("initHippo");
+  initInkey(mountConfig) {
+    console.log("initInkey");
     if (!mountConfig.id && !mountConfig.src) {
-      console.warn("not enough hippo config provided, try init again...");
+      console.warn("not enough inkey config provided, try init again...");
       return;
     }
-    if (this.hippoWallet.frameBus) {
-      this.hippoWallet.frameBus.destroy();
-      this.hippoWallet.frameBus = void 0;
+    if (this.inkeyWallet.frameBus) {
+      this.inkeyWallet.frameBus.destroy();
+      this.inkeyWallet.frameBus = void 0;
     }
     if (mountConfig.id) {
-      this.hippoWallet.frameBus = new FrameBus({
+      this.inkeyWallet.frameBus = new FrameBus({
         id: mountConfig.id
       });
     } else if (mountConfig.src) {
-      this.hippoWallet.frameBus = new FrameBus({
+      this.inkeyWallet.frameBus = new FrameBus({
         src: mountConfig.src
       });
     } else {
-      console.warn("cannot init hippo");
+      console.warn("cannot init inkey");
     }
   }
   getConfig() {
@@ -55012,7 +55012,7 @@ var Algonaut = class {
       sk: new Uint8Array([])
     };
   }
-  setHippoAccount(address) {
+  setInkeyAccount(address) {
     if (!address)
       throw new Error("No address provided");
     this.setWalletConnectAccount(address);
@@ -55649,18 +55649,21 @@ var Algonaut = class {
       return {};
     }
   }
-  async getAppLocalState(applicationIndex) {
+  async getAppLocalState(applicationIndex, address) {
     if (!applicationIndex)
       throw new Error("No application ID provided");
-    if (this.account) {
-      const state = {
-        hasState: false,
-        globals: [],
-        locals: [],
-        creatorAddress: "",
-        index: applicationIndex
-      };
-      const accountInfoResponse = await this.algodClient.accountInformation(this.account.addr).do();
+    const state = {
+      hasState: false,
+      globals: [],
+      locals: [],
+      creatorAddress: "",
+      index: applicationIndex
+    };
+    if (this.account && this.account.addr && !address) {
+      address = this.account.addr;
+    }
+    if (address) {
+      const accountInfoResponse = await this.algodClient.accountInformation(address).do();
       for (let i = 0; i < accountInfoResponse["apps-local-state"].length; i++) {
         if (accountInfoResponse["apps-local-state"][i].id == applicationIndex) {
           state.hasState = true;
@@ -55686,7 +55689,7 @@ var Algonaut = class {
       }
       return state;
     } else {
-      console.warn("there is no account in algonaut, thus no local state to get");
+      throw new Error("No address provided, and no account set.");
     }
   }
   async atomicAssetTransferWithLSig(args) {
@@ -55741,7 +55744,7 @@ var Algonaut = class {
           }], callbacks);
         }
       }
-    } else if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === "hippo") {
+    } else if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === "inkey") {
       let signedTxns;
       if (Array.isArray(txnOrTxns) && txnOrTxns[0] && txnOrTxns[0].transaction && txnOrTxns.length > 1) {
         const unwrappedTxns = txnOrTxns.map((txn) => txn.transaction);
@@ -55750,7 +55753,7 @@ var Algonaut = class {
           const encodedTxn = import_buffer.Buffer.from(import_algosdk.default.encodeUnsignedTransaction(txn)).toString("base64");
           return encodedTxn;
         });
-        signedTxns = await this.hippoSignTxns(txnsToSign);
+        signedTxns = await this.inkeySignTxns(txnsToSign);
       } else {
         let txn;
         if (txnOrTxns && txnOrTxns.transaction) {
@@ -55759,7 +55762,7 @@ var Algonaut = class {
           txn = txnOrTxns;
         }
         const encodedTxn = import_buffer.Buffer.from(import_algosdk.default.encodeUnsignedTransaction(txn)).toString("base64");
-        signedTxns = await this.hippoSignTxns([encodedTxn]);
+        signedTxns = await this.inkeySignTxns([encodedTxn]);
       }
       if (callbacks?.onSign)
         callbacks.onSign(signedTxns);
@@ -55800,69 +55803,69 @@ var Algonaut = class {
       }
     }
   }
-  async hippoMessageAsync(data, options) {
-    if (!this.hippoWallet.frameBus) {
-      throw new Error("No hippo frameBus");
+  async inkeyMessageAsync(data, options) {
+    if (!this.inkeyWallet.frameBus) {
+      throw new Error("No inkey frameBus");
     }
-    if (!this.hippoWallet.frameBus.ready) {
-      await this.hippoWallet.frameBus.isReady();
+    if (!this.inkeyWallet.frameBus.ready) {
+      await this.inkeyWallet.frameBus.isReady();
     }
-    data.source = "ncc-hippo-client";
+    data.source = "ncc-inkey-client";
     data.async = true;
     if (options?.showFrame)
-      this.hippoWallet.frameBus.showFrame();
-    const payload = await this.hippoWallet.frameBus.emitAsync(data);
-    console.log("hippo payload", payload);
+      this.inkeyWallet.frameBus.showFrame();
+    const payload = await this.inkeyWallet.frameBus.emitAsync(data);
+    console.log("inkey payload", payload);
     return payload;
   }
-  async hippoSignTxns(txns) {
-    console.log("hippoSignTxns");
+  async inkeySignTxns(txns) {
+    console.log("inkeySignTxns");
     const data = {
       type: "sign-txns",
       payload: {
         txns
       }
     };
-    const res = await this.hippoMessageAsync(data, { showFrame: true });
-    this.hippoWallet.frameBus?.hideFrame();
+    const res = await this.inkeyMessageAsync(data, { showFrame: true });
+    this.inkeyWallet.frameBus?.hideFrame();
     if (res.error)
       throw new Error(res.error);
     if (res.reject)
       throw new Error("Transaction request rejected");
     return res.signedTxns;
   }
-  hippoShow() {
-    if (this.hippoWallet.frameBus) {
-      this.hippoWallet.frameBus.showFrame();
+  inkeyShow() {
+    if (this.inkeyWallet.frameBus) {
+      this.inkeyWallet.frameBus.showFrame();
     }
   }
-  hippoHide() {
-    if (this.hippoWallet.frameBus) {
-      this.hippoWallet.frameBus.hideFrame();
+  inkeyHide() {
+    if (this.inkeyWallet.frameBus) {
+      this.inkeyWallet.frameBus.hideFrame();
     }
   }
-  async hippoSetApp(appCode) {
+  async inkeySetApp(appCode) {
     const data = {
       type: "set-app",
       payload: { appCode }
     };
-    return await this.hippoMessageAsync(data);
+    return await this.inkeyMessageAsync(data);
   }
-  async hippoConnect(message) {
+  async inkeyConnect(message) {
     const data = {
       type: "connect",
       payload: { message }
     };
-    const account = await this.hippoMessageAsync(data, { showFrame: true });
+    const account = await this.inkeyMessageAsync(data, { showFrame: true });
     console.log(account);
-    this.setHippoAccount(account.address);
+    this.setInkeyAccount(account.address);
     return account;
   }
-  async hippoDisconnect() {
+  async inkeyDisconnect() {
     const data = {
       type: "disconnect"
     };
-    const res = await this.hippoMessageAsync(data, { showFrame: false });
+    const res = await this.inkeyMessageAsync(data, { showFrame: false });
     console.log(res);
     if (res.success) {
       this.account = void 0;
@@ -56039,8 +56042,8 @@ var Algonaut = class {
     }
     return false;
   }
-  usingHippoWallet() {
-    if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === "hippo") {
+  usingInkeyWallet() {
+    if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === "inkey") {
       return true;
     }
     return false;
