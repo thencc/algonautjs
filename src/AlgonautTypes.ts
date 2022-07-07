@@ -8,9 +8,9 @@ export type AlgonautConfig = {
 	LEDGER: string;
 	PORT: string;
 	API_TOKEN: any;
-	SIGNING_MODE?: 'local' | 'walletconnect' | 'algosigner' | 'hippo';
-	HIPPO_ID?: string;
-	HIPPO_SRC?: string;
+	SIGNING_MODE?: 'local' | 'walletconnect' | 'algosigner' | 'inkey';
+	INKEY_ID?: string;
+	INKEY_SRC?: string;
 }
 
 export interface AlgonautStateData {
