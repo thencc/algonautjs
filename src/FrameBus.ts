@@ -61,7 +61,7 @@ export class FrameBus {
 		this.walEl = walEl;
 
 		const walWin = walEl.contentWindow;
-		walEl.classList.add('hippo-frame');
+		walEl.classList.add('inkey-frame');
 		// console.log('walWin', walWin);
 		if (!walWin) {
 			console.error('no walWin');
@@ -95,7 +95,7 @@ export class FrameBus {
 		// 	transition: 0.1s top ease-out;
 		// 	box-shadow: 0 -2px 20px rgba(0,0,0,0.4);`
 		// );
-		walEl.classList.add('hippo-frame');
+		walEl.classList.add('inkey-frame');
 		walEl.setAttribute('allow', 'clipboard-write'); // needed to copy stuff to clipboard
 		walEl.setAttribute('name', 'walFrame');
 		walEl.setAttribute('title', 'Algorand Microwallet');
@@ -186,9 +186,9 @@ export class FrameBus {
 
 		if (
 			event.data.source &&
-			event.data.source == 'ncc-hippo-wallet') {
+			event.data.source == 'ncc-inkey-wallet') {
 			// event.data.source.substring(0, 4) == 'ncc-') {
-			// event.data.source.substring(0, 16) == 'ncc-hippo-wallet') {
+			// event.data.source.substring(0, 16) == 'ncc-inkey-wallet') {
 			console.log('client got mess', event.data);
 
 			// handle hide messages
@@ -264,7 +264,7 @@ export class FrameBus {
 	}
 
 	getStyles(): string {
-		return `.hippo-frame {
+		return `.inkey-frame {
 			position: fixed;
 			top: -450px;
 			left: 0;
@@ -275,13 +275,13 @@ export class FrameBus {
 			z-index: 10001;
 		}
 
-		.hippo-frame.visible {
+		.inkey-frame.visible {
 			top: 0;
 			transition: 0.2s top ease-out;
 		}
 
 		@media screen and (min-width: 500px) {
-			.hippo-frame {
+			.inkey-frame {
 				max-width: 400px;
 				left: calc(50% - 200px);
 			}
@@ -291,7 +291,7 @@ export class FrameBus {
 	// wallet needs to handle asyncMessages like...
 	/**
 	 * 	event.source?.postMessage({
-			source: 'ncc-hippo-wallet',
+			source: 'ncc-inkey-wallet',
 			payload: {
 				type: 'async works?',
 				a: 'AAA',
