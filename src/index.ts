@@ -181,7 +181,7 @@ export default class Algonaut {
 		if (config.SIGNING_MODE && config.SIGNING_MODE == 'inkey') {
 			if (!config.INKEY_SRC) {
 				// default inkey
-				config.INKEY_SRC = 'https://hippoz.web.app';
+				config.INKEY_SRC = 'https://inkey.ncc.la';
 			}
 
 			this.initInkey({
