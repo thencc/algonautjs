@@ -54952,7 +54952,7 @@ var Algonaut = class {
     this.sdk = import_algosdk.default;
     if (config.SIGNING_MODE && config.SIGNING_MODE == "inkey") {
       if (!config.INKEY_SRC) {
-        config.INKEY_SRC = "https://hippoz.web.app";
+        config.INKEY_SRC = "https://inkey.ncc.la";
       }
       this.initInkey({
         id: config.INKEY_ID,
