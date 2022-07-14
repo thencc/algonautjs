@@ -181,7 +181,7 @@ export default class Algonaut {
 		if (config.SIGNING_MODE && config.SIGNING_MODE == 'inkey') {
 			if (!config.INKEY_SRC) {
 				// default inkey
-				config.INKEY_SRC = 'https://inkeyapp.ncc.la';
+				config.INKEY_SRC = 'https://inkey.app';
 			}
 
 			this.initInkey({
