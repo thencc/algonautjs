@@ -560,4 +560,3 @@ export declare class Algonaut {
 }
 export default Algonaut;
 export declare const buffer: BufferConstructor;
-export default Algonaut;
