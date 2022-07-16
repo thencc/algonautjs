@@ -6,7 +6,7 @@ build({
 	outdir: 'dist',
 	bundle: true,
 	sourcemap: true,
-	minify: false,
+	minify: true,
 	treeShaking: true,
 	target: ['esnext'],
 	//external: ['src/lowtone.ts', 'src/finished.ts'],
@@ -17,6 +17,6 @@ build({
 	platform: 'browser',
 	format: 'esm', // esm works in node+browser, but cjs is better for node
 	splitting: true, // only for esm
-	outExtension: { '.js': '.mjs' }, // .js -> .mjs (change package.json main + modules entry IF doing this)
+	outExtension: { '.js': '.js' }, // .js -> .mjs (change package.json main + modules entry IF doing this)
 })
 	.catch(() => process.exit(1));

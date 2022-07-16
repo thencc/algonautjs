@@ -5,7 +5,7 @@
 	"type": "commonjs",
 	"types": "dist/index.d.ts",
 	"main": "dist/index.js",
-	"module": "dist/index.mjs",
+	"module": "dist/index.js",
 	"browser": {
 		".": "dist/index.mjs",
 		"crypto": "crypto-js"
@@ -16,8 +16,8 @@
 		"README.md"
 	],
 	"exports": {
-		"require": "./dist/index.js",
-		"import": "./dist/index.mjs",
+		"require": "./dist/index.cjs",
+		"import": "./dist/index.js",
 		"default": "./dist/index.js"
 	},
 	"scripts": {

@@ -6,9 +6,9 @@ build({
 	outdir: 'dist',
 	bundle: true,
 	sourcemap: true,
-	minify: false,
+	minify: true,
 	treeShaking: true,
-	target: ['esnext'], // change for browser/node?
+	//target: ['node14'], // change for browser/node?
 	// assetNames: 'assets/[name]',
 	// loader: { '.mp3': 'file' },
 	// target: [
@@ -29,5 +29,6 @@ build({
 	// NODE build
 	platform: 'node',
 	format: 'cjs', // commonJs is for node
+	outExtension: { '.js': '.cjs' }
 })
 	.catch(() => process.exit(1));
