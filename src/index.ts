@@ -2499,6 +2499,7 @@ export class Algonaut {
 	}
 
 }
+export default Algonaut;
 
 export const buffer = Buffer; // sometimes this is helpful on the frontend
 export default Algonaut;

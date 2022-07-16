@@ -558,5 +558,6 @@ export declare class Algonaut {
      */
     to8Arr(str: string, enc?: BufferEncoding): Uint8Array;
 }
+export default Algonaut;
 export declare const buffer: BufferConstructor;
 export default Algonaut;
