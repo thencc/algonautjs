@@ -8,7 +8,7 @@ declare global {
         AlgoSigner: any;
     }
 }
-export default class Algonaut {
+export declare class Algonaut {
     algodClient: algosdk.Algodv2;
     indexerClient: algosdk.Indexer | undefined;
     account: algosdk.Account | undefined;
@@ -559,3 +559,4 @@ export default class Algonaut {
     to8Arr(str: string, enc?: BufferEncoding): Uint8Array;
 }
 export declare const buffer: BufferConstructor;
+export default Algonaut;

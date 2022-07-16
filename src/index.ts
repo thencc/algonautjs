@@ -107,7 +107,7 @@ declare global {
 	}
 }
 
-export default class Algonaut {
+export class Algonaut {
 
 	// TBD: add algo wallet for mobile
 	algodClient: algosdk.Algodv2;
@@ -2501,3 +2501,5 @@ export default class Algonaut {
 }
 
 export const buffer = Buffer; // sometimes this is helpful on the frontend
+export default Algonaut;
+
