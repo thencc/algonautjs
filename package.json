@@ -10,6 +10,24 @@
 		".": "dist/index.mjs",
 		"crypto": "crypto-js"
 	},
+	"imports": {
+		".": {
+			"browser": {
+				"crypto": "crypto-js"
+			}
+		}
+	},
+	"exports": {
+		".": {
+			"browser": {
+				"default": "./dist/index.mjs"
+			},
+			"default": "./dist/index.js",
+			"require": "./dist/index.js",
+			"node": "./dist/index.js",
+			"import": "./dist/index.mjs"
+		}
+	},
 	"files": [
 		"dist/*",
 		"LICENSE",
