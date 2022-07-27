@@ -1,6 +1,7 @@
 export declare class FrameBus {
     ready: boolean;
     initing: boolean;
+    destroying: boolean;
     walEl: null | any;
     walWin: null | Window;
     onMsgHandler: null | ((event: any) => void);
