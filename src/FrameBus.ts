@@ -202,6 +202,13 @@ export class FrameBus {
 		});
 	}
 
+	public setOnDisconnect(f: any) {
+		this.onDisconnect = f;
+	}
+	onDisconnect() {
+		console.log('onDisconnect');
+	}
+
 	onMessage(event: any) { // should be MessageEvent, but that breaks in a Node env
 		// console.log('client onMess', event);
 
@@ -215,6 +222,10 @@ export class FrameBus {
 			// handle hide messages
 			if (event.data.type === 'hide') {
 				this.hideFrame();
+			}
+
+			if (event.data.type === 'disconnect') {
+				this.onDisconnect();
 			}
 
 			// async message handling back to callee resolver
