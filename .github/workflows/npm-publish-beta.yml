@@ -69,6 +69,8 @@ jobs:
         run: npm run build
 
       - name: "publish"
-        run: npm publish --access public --tag beta --greater-version-only
+        run: |
+          npm config set registry https://registry.npmjs.org/
+          npm publish --access public --tag beta --greater-version-only
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
