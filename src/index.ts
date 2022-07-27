@@ -200,7 +200,7 @@ export class Algonaut {
 		id?: string
 		src?: string
 	}) {
-		console.log('initInkey');
+		// console.log('initInkey');
 
 		if (!mountConfig.id && !mountConfig.src) {
 			console.warn('not enough inkey config provided, try init again...');
