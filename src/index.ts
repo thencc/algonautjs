@@ -1676,7 +1676,8 @@ export class Algonaut {
 	 * @param message Message to show to users
 	 * @returns Promise resolving to an account object of type `{ account: string }`
 	 */
-	async inkeyConnect(message: string): Promise<any> {
+	async inkeyConnect(message?: string): Promise<any> {
+		if (!message) message = '';
 		const data = {
 			type: 'connect',
 			payload: { message }
