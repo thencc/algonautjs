@@ -1517,7 +1517,7 @@ export class Algonaut {
 
 
 				// encode txns
-				const txnsToSign = txnGroup.map(txn => {
+				const txnsToSign = txnGroup.map((txn: any) => {
 					const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString('base64');
 					return encodedTxn;
 				});
@@ -1686,6 +1686,7 @@ export class Algonaut {
 		const account = await this.inkeyMessageAsync(data, { showFrame: true });
 		console.log(account);
 		this.setInkeyAccount(account.address);
+		if (this.config) this.config.SIGNING_MODE = 'inkey';
 		return account;
 	}
 
