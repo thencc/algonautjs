@@ -537,10 +537,12 @@ export class Algonaut {
 		const note = enc.encode(args.metaBlock);
 		const addr = this.account.addr;
 		const totalIssuance = args.amount;
-		const manager = this.account.addr;
-		const reserve = this.account.addr;
-		const freeze = this.account.addr;
-		const clawback = this.account.addr;
+		
+		// set accounts
+		const manager = (args.manager && args.manager.length > 0)	 	? args.manager  : this.account.addr;
+		const reserve = (args.reserve && args.reserve.length > 0)	 	? args.reserve  : this.account.addr;
+		const freeze = (args.freeze && args.freeze.length > 0)	 		? args.freeze   : this.account.addr;
+		const clawback = (args.clawback && args.clawback.length > 0)	? args.clawback : this.account.addr;
 
 		const params = await this.algodClient.getTransactionParams().do();
 
