@@ -29,6 +29,6 @@ build({
 	// NODE build
 	platform: 'node',
 	format: 'cjs', // commonJs is for node
-	// outExtension: { '.js': '.cjs' }
+	outExtension: { '.js': '.cjs' }
 })
 	.catch(() => process.exit(1));

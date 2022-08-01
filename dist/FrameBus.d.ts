@@ -1,6 +1,7 @@
 export declare class FrameBus {
     ready: boolean;
     initing: boolean;
+    destroying: boolean;
     walEl: null | any;
     walWin: null | Window;
     onMsgHandler: null | ((event: any) => void);
@@ -19,6 +20,8 @@ export declare class FrameBus {
     hideFrame(): void;
     destroy(): void;
     isReady(): Promise<boolean>;
+    setOnDisconnect(f: any): void;
+    onDisconnect(): void;
     onMessage(event: any): void;
     emit(data: Record<string, any>): void;
     emitAsync<T>(data: Record<string, any>): Promise<T>;

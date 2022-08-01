@@ -25,6 +25,7 @@ import {
 	AlgonautGetApplicationResponse,
 	AlgonautAppStateEncoded
 } from './AlgonautTypes';
+
 // import * as sha512 from 'js-sha512';
 // import * as CryptoJS from 'crypto-js';
 // import { decode, encode } from 'hi-base32';
@@ -199,7 +200,7 @@ export class Algonaut {
 		id?: string
 		src?: string
 	}) {
-		console.log('initInkey');
+		// console.log('initInkey');
 
 		if (!mountConfig.id && !mountConfig.src) {
 			console.warn('not enough inkey config provided, try init again...');
@@ -525,14 +526,14 @@ export class Algonaut {
 
 		const metaBlockLength = args.metaBlock.length;
 
-		if (metaBlockLength > 511) {
+		if (metaBlockLength > 1023) {
 			console.error('meta block is ' + metaBlockLength);
 			throw new Error('drat! this meta block is too long!');
 		}
 
 		const enc = new TextEncoder();
 
-		// arbitrary data: 512 bytes, ~512 characters
+		// arbitrary data: 1024 bytes, or about 1023 characters
 		const note = enc.encode(args.metaBlock);
 		const addr = this.account.addr;
 		const totalIssuance = args.amount;
@@ -2499,7 +2500,6 @@ export class Algonaut {
 	to8Arr(str: string, enc: BufferEncoding = 'utf8'): Uint8Array {
 		return new Uint8Array(Buffer.from(str, enc));
 	}
-
 }
 export default Algonaut;
 
