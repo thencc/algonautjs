@@ -59,6 +59,7 @@ finishedSound;
 
 import { FrameBus } from './FrameBus';
 import type { Application } from 'algosdk/dist/types/src/client/v2/algod/models/types';
+import { decode } from 'hi-base32';
 
 /*
 
@@ -1514,13 +1515,10 @@ export class Algonaut {
 				// array of AlgonautAtomicTransaction, map these to get .transaction out
 				const unwrappedTxns = txnOrTxns.map(txn => txn.transaction);
 
-				// assign group ID
-				const txnGroup = algosdk.assignGroupID(unwrappedTxns);
-
-
+				// don't assign group ID here! inkey will assign it :)
 
 				// encode txns
-				const txnsToSign = txnGroup.map((txn: any) => {
+				const txnsToSign = unwrappedTxns.map((txn: any) => {
 					const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString('base64');
 					return encodedTxn;
 				});

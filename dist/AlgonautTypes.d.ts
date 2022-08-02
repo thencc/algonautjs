@@ -83,6 +83,11 @@ export interface AlgonautCreateAssetArguments {
     assetURL?: string;
     defaultFrozen?: boolean;
     assetMetadataHash?: string;
+    clawback?: string;
+    manager?: string;
+    reserve?: string;
+    freeze?: string;
+    rekeyTo?: string;
 }
 export interface AlgonautSendAssetArguments {
     to: string;

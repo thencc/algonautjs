@@ -377,7 +377,7 @@ export declare class Algonaut {
      * @param message Message to show to users
      * @returns Promise resolving to an account object of type `{ account: string }`
      */
-    inkeyConnect(message: string): Promise<any>;
+    inkeyConnect(message?: string): Promise<any>;
     /**
      * Tells Inkey to close your session & clear local storage.
      * @returns Success or fail message
