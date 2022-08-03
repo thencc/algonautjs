@@ -46,13 +46,14 @@ export declare class Algonaut {
      *	 PORT: '',
      *	 API_TOKEN: { 'X-API-Key': 'YOUR_API_TOKEN' }
      * });
+     *
+     * If using Inkey, add `SIGNING_MODE: 'inkey'`.
      * ```
      *
      * @param config config object
      */
     constructor(config: AlgonautConfig);
     initInkey(mountConfig: {
-        id?: string;
         src?: string;
     }): void;
     /**
