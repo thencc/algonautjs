@@ -187,7 +187,6 @@ export class Algonaut {
 			}
 
 			this.initInkey({
-				id: config.INKEY_ID,
 				src: config.INKEY_SRC
 			});
 		}
@@ -195,16 +194,15 @@ export class Algonaut {
 	}
 
 	/*
-	* @param mountConfig either an id or src (id meaning existing iframe and takes precedence)
+	* @param mountConfig object containing the `src` of the iframe
 	*/
 	initInkey(mountConfig: {
-		id?: string
 		src?: string
 	}) {
 		// console.log('initInkey');
 
-		if (!mountConfig.id && !mountConfig.src) {
-			console.warn('not enough inkey config provided, try init again...');
+		if (!mountConfig.src) {
+			console.warn('You must provide INKEY_SRC in Algonaut.js config');
 			return;
 		}
 
@@ -214,16 +212,12 @@ export class Algonaut {
 			this.inkeyWallet.frameBus = undefined;
 		}
 
-		if (mountConfig.id) {
-			this.inkeyWallet.frameBus = new FrameBus({
-				id: mountConfig.id
-			});
-		} else if (mountConfig.src) {
+		if (mountConfig.src) {
 			this.inkeyWallet.frameBus = new FrameBus({
 				src: mountConfig.src
 			});
 		} else {
-			console.warn('cannot init inkey');
+			console.warn('Cannot init Inkey');
 		}
 	}
 

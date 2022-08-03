@@ -9,7 +9,6 @@ export type AlgonautConfig = {
 	PORT: string;
 	API_TOKEN: any;
 	SIGNING_MODE?: 'local' | 'walletconnect' | 'algosigner' | 'inkey';
-	INKEY_ID?: string;
 	INKEY_SRC?: string;
 }
 
