@@ -1,11 +1,13 @@
 // [parent-window]<->[iframe] communications class
 export class FrameBus {
-	ready: boolean = false;
+	ready = false;
 	initing = false; // for async init w initSrc
+	destroying = false;
 
-	walEl: null | HTMLIFrameElement = null;
+	walEl: null | any = null; // should be HTMLIFrameElement but that breaks in a Node env
 	walWin: null | Window = null;
-	onMsgHandler: null | ((event: MessageEvent<any>) => void) = null; // need a reference to onMsgHandler since .bind(this) makes a new instance of that method and removeEventListener needs the real thing
+	// need a reference to onMsgHandler since .bind(this) makes a new instance of that method and removeEventListener needs the real thing
+	onMsgHandler: null | ((event: any) => void) = null; // `event` param should be MessageEvent<any> type, but that breaks in Node env
 
 	requests = new Map<
 		string,
@@ -42,8 +44,20 @@ export class FrameBus {
 
 		// insert styles
 		const stylesheet = document.createElement('style');
+		stylesheet.setAttribute('id', 'inkey-frame-styles');
 		stylesheet.innerText = this.getStyles();
 		document.head.appendChild(stylesheet);
+
+		// catch case where user/script deletes el from DOM, close/reset properly
+		document.body.addEventListener('DOMNodeRemoved', (evt) => {
+			if (!this.destroying) {
+				const removedNode = evt.target;
+				if (removedNode == this.walEl) {
+					console.log('iframe removed from DOM');
+					this.destroy();
+				}
+			}
+		}, false);
 	}
 
 	initId(walElId: string) {
@@ -60,7 +74,7 @@ export class FrameBus {
 		this.walEl = walEl;
 
 		const walWin = walEl.contentWindow;
-		walEl.classList.add('hippo-frame');
+		walEl.classList.add('inkey-frame');
 		// console.log('walWin', walWin);
 		if (!walWin) {
 			console.error('no walWin');
@@ -78,6 +92,12 @@ export class FrameBus {
 	async initSrc(src = 'http://default-src.com') {
 		console.log('initSrc', src);
 
+		const exEl = document.querySelector('iframe#inkey-frame');
+		if (exEl) {
+			console.warn('dont mount frame to DOM again');
+			return;
+		}
+
 		this.destroy(); // reset
 
 		this.initing = true;
@@ -85,21 +105,13 @@ export class FrameBus {
 		// make element
 		const walEl = document.createElement('iframe');
 		walEl.src = src;
-		// walEl.setAttribute('style', `
-		// 	position: fixed;
-		// 	top: 100px;
-		// 	left: 0;
-		// 	width: 100vw;
-		// 	height: 100vh;
-		// 	transition: 0.1s top ease-out;
-		// 	box-shadow: 0 -2px 20px rgba(0,0,0,0.4);`
-		// );
-		walEl.classList.add('hippo-frame');
+		walEl.classList.add('inkey-frame');
+		walEl.setAttribute('id', 'inkey-frame');
 		walEl.setAttribute('allow', 'clipboard-write'); // needed to copy stuff to clipboard
 		walEl.setAttribute('name', 'walFrame');
 		walEl.setAttribute('title', 'Algorand Microwallet');
 		walEl.setAttribute('frameborder', '0');
-		walEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-modals allow-popups');
+		walEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-modals allow-popups allow-downloads');
 		walEl.setAttribute('allow', 'publickey-credentials-get');
 		// walEl.setAttribute('allow', 'publickey-credentials-create'); // gah, wish this existed...
 		this.walEl = walEl;
@@ -139,6 +151,7 @@ export class FrameBus {
 
 	destroy() {
 		// console.log('destroy FrameBus');
+		this.destroying = true;
 
 		if (this.walEl) {
 			document.body.removeChild(this.walEl);
@@ -154,8 +167,17 @@ export class FrameBus {
 			this.onMsgHandler = null;
 		}
 
+		// remove injected style tag
+		const styleEl = document.querySelector('style#inkey-frame-styles');
+		if (styleEl) {
+			document.head.removeChild(styleEl);
+		}
+
+		// ? emit some disconnect event over bus before close?
+
 		this.ready = false;
 		this.initing = false;
+		this.destroying = false;
 	}
 
 	// async ready for waiting for iframe to mount + load into DOM
@@ -180,19 +202,30 @@ export class FrameBus {
 		});
 	}
 
-	onMessage(event: MessageEvent) {
+	public setOnDisconnect(f: any) {
+		this.onDisconnect = f;
+	}
+	onDisconnect() {
+		console.log('onDisconnect');
+	}
+
+	onMessage(event: any) { // should be MessageEvent, but that breaks in a Node env
 		// console.log('client onMess', event);
 
 		if (
 			event.data.source &&
-			event.data.source == 'ncc-hippo-wallet') {
+			event.data.source == 'ncc-inkey-wallet') {
 			// event.data.source.substring(0, 4) == 'ncc-') {
-			// event.data.source.substring(0, 16) == 'ncc-hippo-wallet') {
+			// event.data.source.substring(0, 16) == 'ncc-inkey-wallet') {
 			console.log('client got mess', event.data);
 
 			// handle hide messages
 			if (event.data.type === 'hide') {
 				this.hideFrame();
+			}
+
+			if (event.data.type === 'disconnect') {
+				this.onDisconnect();
 			}
 
 			// async message handling back to callee resolver
@@ -230,7 +263,7 @@ export class FrameBus {
 		data = {
 			...data,
 			uuid,
-		}
+		};
 
 		this.walWin?.postMessage(data, this.walEl!.src);
 	}
@@ -254,7 +287,11 @@ export class FrameBus {
 			async: true
 		};
 
-		this.walWin?.postMessage(data, this.walEl!.src);
+		if (this.walEl && this.walWin) {
+			this.walWin.postMessage(data, this.walEl.src);
+		} else {
+			throw new Error('no wallEl or walWin');
+		}
 
 		return new Promise<T>((resolve) => {
 			// this.requests.set(uuid, resolve); // works
@@ -263,7 +300,7 @@ export class FrameBus {
 	}
 
 	getStyles(): string {
-		return `.hippo-frame {
+		return `.inkey-frame {
 			position: fixed;
 			top: -450px;
 			left: 0;
@@ -274,13 +311,13 @@ export class FrameBus {
 			z-index: 10001;
 		}
 
-		.hippo-frame.visible {
+		.inkey-frame.visible {
 			top: 0;
 			transition: 0.2s top ease-out;
 		}
 
 		@media screen and (min-width: 500px) {
-			.hippo-frame {
+			.inkey-frame {
 				max-width: 400px;
 				left: calc(50% - 200px);
 			}
@@ -290,7 +327,7 @@ export class FrameBus {
 	// wallet needs to handle asyncMessages like...
 	/**
 	 * 	event.source?.postMessage({
-			source: 'ncc-hippo-wallet',
+			source: 'ncc-inkey-wallet',
 			payload: {
 				type: 'async works?',
 				a: 'AAA',

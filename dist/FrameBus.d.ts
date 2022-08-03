@@ -1,9 +1,10 @@
 export declare class FrameBus {
     ready: boolean;
     initing: boolean;
-    walEl: null | HTMLIFrameElement;
+    destroying: boolean;
+    walEl: null | any;
     walWin: null | Window;
-    onMsgHandler: null | ((event: MessageEvent<any>) => void);
+    onMsgHandler: null | ((event: any) => void);
     requests: Map<string, {
         req: Record<string, any>;
         resolve: (value: any) => void;
@@ -19,7 +20,9 @@ export declare class FrameBus {
     hideFrame(): void;
     destroy(): void;
     isReady(): Promise<boolean>;
-    onMessage(event: MessageEvent): void;
+    setOnDisconnect(f: any): void;
+    onDisconnect(): void;
+    onMessage(event: any): void;
     emit(data: Record<string, any>): void;
     emitAsync<T>(data: Record<string, any>): Promise<T>;
     getStyles(): string;

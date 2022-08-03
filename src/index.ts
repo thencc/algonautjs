@@ -25,6 +25,7 @@ import {
 	AlgonautGetApplicationResponse,
 	AlgonautAppStateEncoded
 } from './AlgonautTypes';
+
 // import * as sha512 from 'js-sha512';
 // import * as CryptoJS from 'crypto-js';
 // import { decode, encode } from 'hi-base32';
@@ -58,6 +59,7 @@ finishedSound;
 
 import { FrameBus } from './FrameBus';
 import type { Application } from 'algosdk/dist/types/src/client/v2/algod/models/types';
+import { decode } from 'hi-base32';
 
 /*
 
@@ -107,14 +109,14 @@ declare global {
 	}
 }
 
-export default class Algonaut {
+export class Algonaut {
 
 	// TBD: add algo wallet for mobile
 	algodClient: algosdk.Algodv2;
 	indexerClient = undefined as undefined | algosdk.Indexer;
 
 	// FYI undefined if using wallet-connect, etc. perhaps rename to .accountLocal ?
-	account = undefined as undefined | algosdk.Account; // ONLY defined if using local signing, not wallet-connet or hippo
+	account = undefined as undefined | algosdk.Account; // ONLY defined if using local signing, not wallet-connet or inkey
 	address = undefined as undefined | string;
 	sKey = undefined as undefined | Uint8Array;
 	mnemonic = undefined as undefined | string;
@@ -123,9 +125,9 @@ export default class Algonaut {
 	sdk = undefined as undefined | typeof algosdk;
 	uiLoading = false;
 
-	// microwallet aka hippo
-	hippoWallet = {
-		// private hippoWallet = { // for extra security we should do this
+	// microwallet aka Inkey
+	inkeyWallet = {
+		// private inkeyWallet = { // for extra security we should do this
 
 		// frameId: '',
 		// ready: false,
@@ -159,6 +161,8 @@ export default class Algonaut {
 	 *	 PORT: '',
 	 *	 API_TOKEN: { 'X-API-Key': 'YOUR_API_TOKEN' }
 	 * });
+	 * 
+	 * If using Inkey, add `SIGNING_MODE: 'inkey'`.
 	 * ```
 	 *
 	 * @param config config object
@@ -177,51 +181,45 @@ export default class Algonaut {
 		// expose entire algosdk in case the dapp needs more
 		this.sdk = algosdk;
 
-		// hippo init
-		if (config.SIGNING_MODE && config.SIGNING_MODE == 'hippo') {
-			if (!config.HIPPO_SRC) {
-				// default hippo
-				config.HIPPO_SRC = 'https://hippoz.web.app';
+		// inkey init
+		if (config.SIGNING_MODE && config.SIGNING_MODE == 'inkey') {
+			if (!config.INKEY_SRC) {
+				// default inkey
+				config.INKEY_SRC = 'https://inkey.app';
 			}
 
-			this.initHippo({
-				id: config.HIPPO_ID,
-				src: config.HIPPO_SRC
+			this.initInkey({
+				src: config.INKEY_SRC
 			});
 		}
 
 	}
 
 	/*
-	* @param mountConfig either an id or src (id meaning existing iframe and takes precedence)
+	* @param mountConfig object containing the `src` of the iframe
 	*/
-	initHippo(mountConfig: {
-		id?: string
+	initInkey(mountConfig: {
 		src?: string
 	}) {
-		console.log('initHippo');
+		// console.log('initInkey');
 
-		if (!mountConfig.id && !mountConfig.src) {
-			console.warn('not enough hippo config provided, try init again...');
+		if (!mountConfig.src) {
+			console.warn('You must provide INKEY_SRC in Algonaut.js config');
 			return;
 		}
 
 		// reset
-		if (this.hippoWallet.frameBus) {
-			this.hippoWallet.frameBus.destroy();
-			this.hippoWallet.frameBus = undefined;
+		if (this.inkeyWallet.frameBus) {
+			this.inkeyWallet.frameBus.destroy();
+			this.inkeyWallet.frameBus = undefined;
 		}
 
-		if (mountConfig.id) {
-			this.hippoWallet.frameBus = new FrameBus({
-				id: mountConfig.id
-			});
-		} else if (mountConfig.src) {
-			this.hippoWallet.frameBus = new FrameBus({
+		if (mountConfig.src) {
+			this.inkeyWallet.frameBus = new FrameBus({
 				src: mountConfig.src
 			});
 		} else {
-			console.warn('cannot init hippo');
+			console.warn('Cannot init Inkey');
 		}
 	}
 
@@ -282,7 +280,7 @@ export default class Algonaut {
 	 * This is the same as setting the WC account
 	 * @param address account address
 	 */
-	setHippoAccount(address: string): void {
+	setInkeyAccount(address: string): void {
 		if (!address) throw new Error('No address provided');
 		this.setWalletConnectAccount(address);
 	}
@@ -525,21 +523,23 @@ export default class Algonaut {
 
 		const metaBlockLength = args.metaBlock.length;
 
-		if (metaBlockLength > 511) {
+		if (metaBlockLength > 1023) {
 			console.error('meta block is ' + metaBlockLength);
 			throw new Error('drat! this meta block is too long!');
 		}
 
 		const enc = new TextEncoder();
 
-		// arbitrary data: 512 bytes, ~512 characters
+		// arbitrary data: 1024 bytes, or about 1023 characters
 		const note = enc.encode(args.metaBlock);
 		const addr = this.account.addr;
 		const totalIssuance = args.amount;
-		const manager = this.account.addr;
-		const reserve = this.account.addr;
-		const freeze = this.account.addr;
-		const clawback = this.account.addr;
+		
+		// set accounts
+		const manager = (args.manager && args.manager.length > 0)	 	? args.manager  : this.account.addr;
+		const reserve = (args.reserve && args.reserve.length > 0)	 	? args.reserve  : this.account.addr;
+		const freeze = (args.freeze && args.freeze.length > 0)	 		? args.freeze   : this.account.addr;
+		const clawback = (args.clawback && args.clawback.length > 0)	? args.clawback : this.account.addr;
 
 		const params = await this.algodClient.getTransactionParams().do();
 
@@ -1360,28 +1360,33 @@ export default class Algonaut {
 
 
 	/**
-	 *
+	 * Gets account local state for an app. Defaults to `this.account` unless
+	 * an address is provided.
 	 * @param applicationIndex the applications index
 	 */
-	async getAppLocalState(applicationIndex: number): Promise<AlgonautAppState | void> {
+	async getAppLocalState(applicationIndex: number, address?: string): Promise<AlgonautAppState | void> {
 		if (!applicationIndex) throw new Error('No application ID provided');
 
-		if (this.account) {
-			const state = {
-				hasState: false,
-				globals: [],
-				locals: [],
-				creatorAddress: '',
-				index: applicationIndex
-			} as AlgonautAppState;
+		const state = {
+			hasState: false,
+			globals: [],
+			locals: [],
+			creatorAddress: '',
+			index: applicationIndex
+		} as AlgonautAppState;
 
-			// read state
+		// read state
 
-			// can we detect addresses values and auto-convert them?
-			// maybe a 32-byte field gets an address field added?
+		// can we detect addresses values and auto-convert them?
+		// maybe a 32-byte field gets an address field added?
 
+		if (this.account && this.account.addr && !address) {
+			address = this.account.addr;
+		}
+
+		if (address) {
 			const accountInfoResponse = await this.algodClient
-				.accountInformation(this.account.addr)
+				.accountInformation(address)
 				.do();
 
 			//console.log(accountInfoResponse);
@@ -1420,8 +1425,7 @@ export default class Algonaut {
 
 			return state;
 		} else {
-			// throw new Error('there is no account');
-			console.warn('there is no account in algonaut, thus no local state to get');
+			throw new Error('No address provided, and no account set.');
 		}
 	}
 
@@ -1495,8 +1499,8 @@ export default class Algonaut {
 					}], callbacks);
 				}
 			}
-		} else if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === 'hippo') {
-			// let's do the hippo thing
+		} else if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === 'inkey') {
+			// let's do the inkey thing
 
 			// 1. depending on how txns are sent into `sendTransaction`, we need to deal with them
 			let signedTxns;
@@ -1507,18 +1511,15 @@ export default class Algonaut {
 				// array of AlgonautAtomicTransaction, map these to get .transaction out
 				const unwrappedTxns = txnOrTxns.map(txn => txn.transaction);
 
-				// assign group ID
-				const txnGroup = algosdk.assignGroupID(unwrappedTxns);
-
-
+				// don't assign group ID here! inkey will assign it :)
 
 				// encode txns
-				const txnsToSign = txnGroup.map(txn => {
+				const txnsToSign = unwrappedTxns.map((txn: any) => {
 					const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString('base64');
 					return encodedTxn;
 				});
 
-				signedTxns = await this.hippoSignTxns(txnsToSign);
+				signedTxns = await this.inkeySignTxns(txnsToSign);
 
 				// HANDLE SINGLE ATOMIC TRANSACTION
 			} else {
@@ -1529,9 +1530,9 @@ export default class Algonaut {
 					txn = (txnOrTxns as algosdk.Transaction);
 				}
 
-				// send base64 to hippo
+				// send base64 to inkey
 				const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString('base64');
-				signedTxns = await this.hippoSignTxns([encodedTxn]);
+				signedTxns = await this.inkeySignTxns([encodedTxn]);
 			}
 
 			if (callbacks?.onSign) callbacks.onSign(signedTxns);
@@ -1585,36 +1586,36 @@ export default class Algonaut {
 	}
 
 	/**
-	 * Sends messages to Hippo via FrameBus
+	 * Sends messages to Inkey via FrameBus
 	 * @param data Message to send
-	 * @returns Whatever Hippo gives us
+	 * @returns Whatever Inkey gives us
 	 */
-	async hippoMessageAsync(data: any, options?: { showFrame: boolean }): Promise<any> {
-		if (!this.hippoWallet.frameBus) {
-			throw new Error('No hippo frameBus');
+	async inkeyMessageAsync(data: any, options?: { showFrame: boolean }): Promise<any> {
+		if (!this.inkeyWallet.frameBus) {
+			throw new Error('No inkey frameBus');
 		}
 
-		if (!this.hippoWallet.frameBus.ready) {
-			await this.hippoWallet.frameBus.isReady();
+		if (!this.inkeyWallet.frameBus.ready) {
+			await this.inkeyWallet.frameBus.isReady();
 		}
 
-		data.source = 'ncc-hippo-client';
+		data.source = 'ncc-inkey-client';
 		data.async = true;
 
-		if (options?.showFrame) this.hippoWallet.frameBus.showFrame();
+		if (options?.showFrame) this.inkeyWallet.frameBus.showFrame();
 
-		const payload = await this.hippoWallet.frameBus.emitAsync<any>(data);
-		console.log('hippo payload', payload);
+		const payload = await this.inkeyWallet.frameBus.emitAsync<any>(data);
+		console.log('inkey payload', payload);
 		return payload;
 	}
 
 	/**
-	 * Sends unsigned transactions to Hippo, awaits signing, returns signed txns
+	 * Sends unsigned transactions to Inkey, awaits signing, returns signed txns
 	 * @param txns Array of base64 encoded transactions
 	 * @returns {Uint8Array} Signed transactions
 	 */
-	async hippoSignTxns(txns: string[]) {
-		console.log('hippoSignTxns');
+	async inkeySignTxns(txns: string[]) {
+		console.log('inkeySignTxns');
 
 		const data = {
 			type: 'sign-txns', // determines payload type
@@ -1623,9 +1624,9 @@ export default class Algonaut {
 			},
 		};
 
-		const res = await this.hippoMessageAsync(data, { showFrame: true });
+		const res = await this.inkeyMessageAsync(data, { showFrame: true });
 
-		this.hippoWallet.frameBus?.hideFrame();
+		this.inkeyWallet.frameBus?.hideFrame();
 
 		if (res.error) throw new Error(res.error);
 		if (res.reject) throw new Error('Transaction request rejected');
@@ -1634,66 +1635,68 @@ export default class Algonaut {
 	}
 
 	/**
-	 * Shows the Hippo wallet frame
+	 * Shows the Inkey wallet frame
 	 */
-	hippoShow() {
-		if (this.hippoWallet.frameBus) {
-			this.hippoWallet.frameBus.showFrame();
+	inkeyShow() {
+		if (this.inkeyWallet.frameBus) {
+			this.inkeyWallet.frameBus.showFrame();
 		}
 	}
 
 	/**
-	 * Hides the Hippo wallet frame
+	 * Hides the Inkey wallet frame
 	 */
-	hippoHide() {
-		if (this.hippoWallet.frameBus) {
-			this.hippoWallet.frameBus.hideFrame();
+	inkeyHide() {
+		if (this.inkeyWallet.frameBus) {
+			this.inkeyWallet.frameBus.hideFrame();
 		}
 	}
 
 	/**
-	 * Sets the app / userbase to use for Hippo accounts. This must be set
-	 * before Hippo can be used to login or sign transactions.
+	 * Sets the app / userbase to use for Inkey accounts. This must be set
+	 * before Inkey can be used to login or sign transactions.
 	 * @param appCode String determining the namespace for user accounts
-	 * @returns Promise resolving to response from Hippo
+	 * @returns Promise resolving to response from Inkey
 	 */
-	async hippoSetApp(appCode: string) {
+	async inkeySetApp(appCode: string) {
 		const data = {
 			type: 'set-app',
 			payload: { appCode }
 		};
 
-		return await this.hippoMessageAsync(data);
+		return await this.inkeyMessageAsync(data);
 	}
 
 	/**
-	 * Opens Hippo to allow users to create an account or login with a previously
+	 * Opens Inkey to allow users to create an account or login with a previously
 	 * created account. Must be called before transactions can be signed.
 	 * @param message Message to show to users
 	 * @returns Promise resolving to an account object of type `{ account: string }`
 	 */
-	async hippoConnect(message: string): Promise<any> {
+	async inkeyConnect(message?: string): Promise<any> {
+		if (!message) message = '';
 		const data = {
 			type: 'connect',
 			payload: { message }
 		};
 
-		const account = await this.hippoMessageAsync(data, { showFrame: true });
+		const account = await this.inkeyMessageAsync(data, { showFrame: true });
 		console.log(account);
-		this.setHippoAccount(account.address);
+		this.setInkeyAccount(account.address);
+		if (this.config) this.config.SIGNING_MODE = 'inkey';
 		return account;
 	}
 
 	/**
-	 * Tells Hippo to close your session & clear local storage.
+	 * Tells Inkey to close your session & clear local storage.
 	 * @returns Success or fail message
 	 */
-	async hippoDisconnect(): Promise<any> {
+	async inkeyDisconnect(): Promise<any> {
 		const data = {
 			type: 'disconnect'
 		};
 
-		const res = await this.hippoMessageAsync(data, { showFrame: false });
+		const res = await this.inkeyMessageAsync(data, { showFrame: false });
 		console.log(res);
 
 		if (res.success) {
@@ -1766,7 +1769,7 @@ export default class Algonaut {
 	}
 
 	/**
-	 * Used by Hippo to sign base64-encoded transactions sent to the iframe
+	 * Used by Inkey to sign base64-encoded transactions sent to the iframe
 	 * @param txns Array of Base64-encoded unsigned transactions
 	 * @returns Uint8Array signed transactions
 	 */
@@ -1789,7 +1792,7 @@ export default class Algonaut {
 	}
 
 	/**
-	 * Describes an Algorand transaction, for display in Hippo
+	 * Describes an Algorand transaction, for display in Inkey
 	 * @param txn Transaction to describe
 	 */
 	txnSummary(txn: algosdk.Transaction): string {
@@ -1872,7 +1875,7 @@ export default class Algonaut {
 	}
 
 	/**
-	 * Signs an array of Transactions (used in Hippo)
+	 * Signs an array of Transactions (used in Inkey)
 	 * @param txns Array of algosdk.Transaction
 	 * @returns Uint8Array[] of signed transactions
 	 */
@@ -2016,12 +2019,12 @@ export default class Algonaut {
 
 	/**
 	 * Interally used to determine how to sign transactions on more generic functions (e.g. {@link deployFromTeal})
-	 * @returns true if we are signing transactions with hippo, false otherwise
+	 * @returns true if we are signing transactions with inkey, false otherwise
 	 */
-	usingHippoWallet(): boolean {
+	usingInkeyWallet(): boolean {
 		if (this.config &&
 			this.config.SIGNING_MODE &&
-			this.config.SIGNING_MODE === 'hippo') {
+			this.config.SIGNING_MODE === 'inkey') {
 			return true;
 		}
 		return false;
@@ -2493,7 +2496,7 @@ export default class Algonaut {
 	to8Arr(str: string, enc: BufferEncoding = 'utf8'): Uint8Array {
 		return new Uint8Array(Buffer.from(str, enc));
 	}
-
 }
+export default Algonaut;
 
 export const buffer = Buffer; // sometimes this is helpful on the frontend

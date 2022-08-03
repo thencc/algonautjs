@@ -6,9 +6,8 @@ export declare type AlgonautConfig = {
     LEDGER: string;
     PORT: string;
     API_TOKEN: any;
-    SIGNING_MODE?: 'local' | 'walletconnect' | 'algosigner' | 'hippo';
-    HIPPO_ID?: string;
-    HIPPO_SRC?: string;
+    SIGNING_MODE?: 'local' | 'walletconnect' | 'algosigner' | 'inkey';
+    INKEY_SRC?: string;
 };
 export interface AlgonautStateData {
     key: string;
@@ -83,6 +82,11 @@ export interface AlgonautCreateAssetArguments {
     assetURL?: string;
     defaultFrozen?: boolean;
     assetMetadataHash?: string;
+    clawback?: string;
+    manager?: string;
+    reserve?: string;
+    freeze?: string;
+    rekeyTo?: string;
 }
 export interface AlgonautSendAssetArguments {
     to: string;
