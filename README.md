@@ -101,14 +101,28 @@ Rudimentary tests done in `test/` dir.
 
 ## Contributing
 
+### To generate docs:
+
+```npm run docs```
+
+[Typedoc options](https://typedoc.org/guides/options/) are set in `typedoc.json`.
+
+---
+### Publishing to NPM:
+
+[ *latest/release* ]
+stable releases have the default npm tag of `latest` (installable via `npm i algonaut.js` or `npm i algonaut.js@latest`) and are automatically published from the repo's `release` branch via a Github Action. so simply pull request the `main` branch (or feature specific branch) into `release` to publish to npm.
+
+[ *beta/main* ]
+similarly, pushing commits or merging pull requests to the repo's `main` branch will automatically publish to the npm `beta` release installable via `npm i algonaut.js@beta`.
+
+note:
+- to update either the `latest` or `beta` releases, the version in `package.json` must be higher than the previous release.
+
+---
+
 TBD:
 
 - setting up a dev env
 - ESLint and code style
 - building and testing with Vite and Node
-
-To generate docs:
-
-```npm run docs```
-
-[Typedoc options](https://typedoc.org/guides/options/) are set in `typedoc.json`.
