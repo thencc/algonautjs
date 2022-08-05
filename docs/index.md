@@ -11,11 +11,11 @@ The goal of this library is simplicity and ease of use for the front end crew. T
 
 Install via NPM:
 
-```npm install algonautjs --save```
+```npm install algonaut.js --save```
 
 Usage:
 
-<pre><code class="hljs language-javascript">import Algonaut from 'algonautjs';
+<pre><code class="hljs language-javascript">import Algonaut from 'algonaut.js';
 const algonaut = new Algonaut({
 	BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
 	LEDGER: 'TestNet',
