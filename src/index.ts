@@ -1,6 +1,6 @@
 import { Buffer } from 'buffer';
 import algosdk, { appendSignMultisigTransaction } from 'algosdk';
-import {
+import type {
 	AlgonautConfig,
 	AlgonautWallet,
 	AlgonautTransactionStatus,
@@ -26,6 +26,7 @@ import {
 	AlgonautAppStateEncoded
 } from './AlgonautTypes';
 
+import { FrameBus } from './FrameBus';
 // import * as sha512 from 'js-sha512';
 // import * as CryptoJS from 'crypto-js';
 // import { decode, encode } from 'hi-base32';
@@ -45,21 +46,13 @@ import {
 
 // fix for wallectconnect websocket issue when backgrounded on mobile (uses request animation frame)
 let wcReqAF = 0;
-
 // wc fix (audio)
 let wcS: HTMLAudioElement;
 let wcSDone: HTMLAudioElement;
-
 import waitSound from './lowtone';
 import finishedSound from './finished';
 waitSound;
 finishedSound;
-// console.log(waitSound);
-// console.log(finishedSound);
-
-import { FrameBus } from './FrameBus';
-import type { Application } from 'algosdk/dist/types/src/client/v2/algod/models/types';
-import { decode } from 'hi-base32';
 
 /*
 
@@ -110,19 +103,18 @@ declare global {
 }
 
 export class Algonaut {
-
-	// TBD: add algo wallet for mobile
-	algodClient: algosdk.Algodv2;
+	// TODO: add algo wallet for mobile
+	algodClient!: algosdk.Algodv2; // it will be set or it throws an Error
 	indexerClient = undefined as undefined | algosdk.Indexer;
+	// expose entire algosdk in case the dapp needs more
+	sdk = algosdk;
+	config = undefined as undefined | AlgonautConfig; // current config
 
 	// FYI undefined if using wallet-connect, etc. perhaps rename to .accountLocal ?
 	account = undefined as undefined | algosdk.Account; // ONLY defined if using local signing, not wallet-connet or inkey
 	address = undefined as undefined | string;
-	sKey = undefined as undefined | Uint8Array;
 	mnemonic = undefined as undefined | string;
 
-	config = undefined as undefined | AlgonautConfig;
-	sdk = undefined as undefined | typeof algosdk;
 	uiLoading = false;
 
 	// microwallet aka Inkey
@@ -161,13 +153,48 @@ export class Algonaut {
 	 *	 PORT: '',
 	 *	 API_TOKEN: { 'X-API-Key': 'YOUR_API_TOKEN' }
 	 * });
-	 * 
+	 *
 	 * If using Inkey, add `SIGNING_MODE: 'inkey'`.
 	 * ```
 	 *
 	 * @param config config object
 	 */
 	constructor(config: AlgonautConfig) {
+		this.setConfig(config);
+	}
+
+	/**
+	 * checks if config obj is valid for use
+	 * @param config algonaut config for network + signing mode
+	 * @returns boolean. true is good.
+	 */
+	isValidConfig(config: AlgonautConfig): boolean {
+		console.log('isValidConfig?', config);
+		let isValid = true;
+
+		// do all checks
+		if (!config.BASE_SERVER || !config.API_TOKEN) {
+			isValid = false;
+		}
+
+		// TODO add more checks...
+
+		// check: if its not a valid signing mode...
+		// if (config.SIGNING_MODE !== 'algosigner')
+
+		return isValid;
+	}
+
+	/**
+	 * sets config for use (new algod, indexerClient, etc)
+	 * @param config algonaut config for network + signing mode
+	 * 		- will throw Error if config is lousy
+	 */
+	setConfig(config: AlgonautConfig) {
+		// console.log('setConfig', config);
+		if (!this.isValidConfig(config)) {
+			throw new Error('bad config!');
+		}
 
 		this.config = config;
 		this.algodClient = new algosdk.Algodv2(config.API_TOKEN, config.BASE_SERVER, config.PORT);
@@ -177,9 +204,6 @@ export class Algonaut {
 		} else {
 			console.warn('No indexer configured because INDEX_SERVER was not provided.');
 		}
-
-		// expose entire algosdk in case the dapp needs more
-		this.sdk = algosdk;
 
 		// inkey init
 		if (config.SIGNING_MODE && config.SIGNING_MODE == 'inkey') {
@@ -192,7 +216,28 @@ export class Algonaut {
 				src: config.INKEY_SRC
 			});
 		}
+	}
 
+	/**
+	 * @returns config object or `false` if no config is set
+	 */
+	getConfig(): AlgonautConfig | boolean {
+		if (this.config) return this.config;
+		return false;
+	}
+
+	/**
+	 * Checks status of Algorand network
+	 * @returns Promise resolving to status of Algorand network
+	 */
+	async checkStatus(): Promise<any | AlgonautError> {
+		if (!this.getConfig()) {
+			throw new Error('No node configuration set.');
+		}
+
+		const status = await this.algodClient.status().do();
+		console.log('Algorand network status: %o', status);
+		return status;
 	}
 
 	/*
@@ -221,28 +266,6 @@ export class Algonaut {
 		} else {
 			console.warn('Cannot init Inkey');
 		}
-	}
-
-	/**
-	 * @returns config object or `false` if no config is set
-	 */
-	getConfig(): AlgonautConfig | boolean {
-		if (this.config) return this.config;
-		return false;
-	}
-
-	/**
-	 * Checks status of Algorand network
-	 * @returns Promise resolving to status of Algorand network
-	 */
-	async checkStatus(): Promise<any | AlgonautError> {
-		if (!this.getConfig()) {
-			throw new Error('No node configuration set.');
-		}
-
-		const status = await this.algodClient.status().do();
-		console.log('Algorand network status: %o', status);
-		return status;
 	}
 
 	/**
@@ -534,12 +557,12 @@ export class Algonaut {
 		const note = enc.encode(args.metaBlock);
 		const addr = this.account.addr;
 		const totalIssuance = args.amount;
-		
+
 		// set accounts
-		const manager = (args.manager && args.manager.length > 0)	 	? args.manager  : this.account.addr;
-		const reserve = (args.reserve && args.reserve.length > 0)	 	? args.reserve  : this.account.addr;
-		const freeze = (args.freeze && args.freeze.length > 0)	 		? args.freeze   : this.account.addr;
-		const clawback = (args.clawback && args.clawback.length > 0)	? args.clawback : this.account.addr;
+		const manager = (args.manager && args.manager.length > 0) ? args.manager : this.account.addr;
+		const reserve = (args.reserve && args.reserve.length > 0) ? args.reserve : this.account.addr;
+		const freeze = (args.freeze && args.freeze.length > 0) ? args.freeze : this.account.addr;
+		const clawback = (args.clawback && args.clawback.length > 0) ? args.clawback : this.account.addr;
 
 		const params = await this.algodClient.getTransactionParams().do();
 
