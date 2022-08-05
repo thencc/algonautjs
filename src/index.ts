@@ -153,7 +153,7 @@ export class Algonaut {
 	 * Usage:
 	 *
 	 * ```js
-	 * import Algonaut from 'algonaut.js';
+	 * import Algonaut from 'algonautjs';
 	 * const algonaut = new Algonaut({
 	 *	 BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
 	 *	 INDEX_SERVER: 'https://testnet-algorand.api.purestake.io/idx2'
@@ -161,7 +161,7 @@ export class Algonaut {
 	 *	 PORT: '',
 	 *	 API_TOKEN: { 'X-API-Key': 'YOUR_API_TOKEN' }
 	 * });
-	 * 
+	 *
 	 * If using Inkey, add `SIGNING_MODE: 'inkey'`.
 	 * ```
 	 *
@@ -534,12 +534,12 @@ export class Algonaut {
 		const note = enc.encode(args.metaBlock);
 		const addr = this.account.addr;
 		const totalIssuance = args.amount;
-		
+
 		// set accounts
-		const manager = (args.manager && args.manager.length > 0)	 	? args.manager  : this.account.addr;
-		const reserve = (args.reserve && args.reserve.length > 0)	 	? args.reserve  : this.account.addr;
-		const freeze = (args.freeze && args.freeze.length > 0)	 		? args.freeze   : this.account.addr;
-		const clawback = (args.clawback && args.clawback.length > 0)	? args.clawback : this.account.addr;
+		const manager = (args.manager && args.manager.length > 0) ? args.manager : this.account.addr;
+		const reserve = (args.reserve && args.reserve.length > 0) ? args.reserve : this.account.addr;
+		const freeze = (args.freeze && args.freeze.length > 0) ? args.freeze : this.account.addr;
+		const clawback = (args.clawback && args.clawback.length > 0) ? args.clawback : this.account.addr;
 
 		const params = await this.algodClient.getTransactionParams().do();
 

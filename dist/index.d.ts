@@ -38,7 +38,7 @@ export declare class Algonaut {
      * Usage:
      *
      * ```js
-     * import Algonaut from 'algonaut.js';
+     * import Algonaut from 'algonautjs';
      * const algonaut = new Algonaut({
      *	 BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
      *	 INDEX_SERVER: 'https://testnet-algorand.api.purestake.io/idx2'
