@@ -512,7 +512,7 @@ export class Algonaut {
 	async atomicCreateAsset(args: AlgonautCreateAssetArguments): Promise<AlgonautAtomicTransaction> {
 		if (!args.assetName) throw new Error('args.assetName not provided.');
 		if (!args.symbol) throw new Error('args.symbol not provided');
-		if (!args.decimals) throw new Error('args.decimals not provided.');
+		if (typeof args.decimals == 'undefined') throw new Error('args.decimals not provided.');
 		if (!args.amount) throw new Error('args.amount not provided.');
 		if (!this.account) throw new Error('There was no account set in Algonaut');
 
