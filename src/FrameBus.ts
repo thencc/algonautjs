@@ -2,6 +2,7 @@
 export class FrameBus {
 	ready = false;
 	initing = false; // for async init w initSrc
+	destroying = false;
 
 	walEl: null | any = null; // should be HTMLIFrameElement but that breaks in a Node env
 	walWin: null | Window = null;
@@ -43,8 +44,20 @@ export class FrameBus {
 
 		// insert styles
 		const stylesheet = document.createElement('style');
+		stylesheet.setAttribute('id', 'inkey-frame-styles');
 		stylesheet.innerText = this.getStyles();
 		document.head.appendChild(stylesheet);
+
+		// catch case where user/script deletes el from DOM, close/reset properly
+		document.body.addEventListener('DOMNodeRemoved', (evt) => {
+			if (!this.destroying) {
+				const removedNode = evt.target;
+				if (removedNode == this.walEl) {
+					console.log('iframe removed from DOM');
+					this.destroy();
+				}
+			}
+		}, false);
 	}
 
 	initId(walElId: string) {
@@ -79,6 +92,12 @@ export class FrameBus {
 	async initSrc(src = 'http://default-src.com') {
 		console.log('initSrc', src);
 
+		const exEl = document.querySelector('iframe#inkey-frame');
+		if (exEl) {
+			console.warn('dont mount frame to DOM again');
+			return;
+		}
+
 		this.destroy(); // reset
 
 		this.initing = true;
@@ -86,16 +105,8 @@ export class FrameBus {
 		// make element
 		const walEl = document.createElement('iframe');
 		walEl.src = src;
-		// walEl.setAttribute('style', `
-		// 	position: fixed;
-		// 	top: 100px;
-		// 	left: 0;
-		// 	width: 100vw;
-		// 	height: 100vh;
-		// 	transition: 0.1s top ease-out;
-		// 	box-shadow: 0 -2px 20px rgba(0,0,0,0.4);`
-		// );
 		walEl.classList.add('inkey-frame');
+		walEl.setAttribute('id', 'inkey-frame');
 		walEl.setAttribute('allow', 'clipboard-write'); // needed to copy stuff to clipboard
 		walEl.setAttribute('name', 'walFrame');
 		walEl.setAttribute('title', 'Algorand Microwallet');
@@ -140,6 +151,7 @@ export class FrameBus {
 
 	destroy() {
 		// console.log('destroy FrameBus');
+		this.destroying = true;
 
 		if (this.walEl) {
 			document.body.removeChild(this.walEl);
@@ -155,8 +167,17 @@ export class FrameBus {
 			this.onMsgHandler = null;
 		}
 
+		// remove injected style tag
+		const styleEl = document.querySelector('style#inkey-frame-styles');
+		if (styleEl) {
+			document.head.removeChild(styleEl);
+		}
+
+		// ? emit some disconnect event over bus before close?
+
 		this.ready = false;
 		this.initing = false;
+		this.destroying = false;
 	}
 
 	// async ready for waiting for iframe to mount + load into DOM
@@ -181,6 +202,13 @@ export class FrameBus {
 		});
 	}
 
+	public setOnDisconnect(f: any) {
+		this.onDisconnect = f;
+	}
+	onDisconnect() {
+		console.log('onDisconnect');
+	}
+
 	onMessage(event: any) { // should be MessageEvent, but that breaks in a Node env
 		// console.log('client onMess', event);
 
@@ -194,6 +222,10 @@ export class FrameBus {
 			// handle hide messages
 			if (event.data.type === 'hide') {
 				this.hideFrame();
+			}
+
+			if (event.data.type === 'disconnect') {
+				this.onDisconnect();
 			}
 
 			// async message handling back to callee resolver
@@ -255,7 +287,11 @@ export class FrameBus {
 			async: true
 		};
 
-		this.walWin?.postMessage(data, this.walEl!.src);
+		if (this.walEl && this.walWin) {
+			this.walWin.postMessage(data, this.walEl.src);
+		} else {
+			throw new Error('no wallEl or walWin');
+		}
 
 		return new Promise<T>((resolve) => {
 			// this.requests.set(uuid, resolve); // works

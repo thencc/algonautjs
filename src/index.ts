@@ -1,6 +1,6 @@
 import { Buffer } from 'buffer';
 import algosdk, { appendSignMultisigTransaction } from 'algosdk';
-import {
+import type {
 	AlgonautConfig,
 	AlgonautWallet,
 	AlgonautTransactionStatus,
@@ -26,6 +26,7 @@ import {
 	AlgonautAppStateEncoded
 } from './AlgonautTypes';
 
+import { FrameBus } from './FrameBus';
 // import * as sha512 from 'js-sha512';
 // import * as CryptoJS from 'crypto-js';
 // import { decode, encode } from 'hi-base32';
@@ -45,20 +46,13 @@ import {
 
 // fix for wallectconnect websocket issue when backgrounded on mobile (uses request animation frame)
 let wcReqAF = 0;
-
 // wc fix (audio)
 let wcS: HTMLAudioElement;
 let wcSDone: HTMLAudioElement;
-
 import waitSound from './lowtone';
 import finishedSound from './finished';
 waitSound;
 finishedSound;
-// console.log(waitSound);
-// console.log(finishedSound);
-
-import { FrameBus } from './FrameBus';
-import type { Application } from 'algosdk/dist/types/src/client/v2/algod/models/types';
 
 /*
 
@@ -109,19 +103,18 @@ declare global {
 }
 
 export class Algonaut {
-
-	// TBD: add algo wallet for mobile
-	algodClient: algosdk.Algodv2;
+	// TODO: add algo wallet for mobile
+	algodClient!: algosdk.Algodv2; // it will be set or it throws an Error
 	indexerClient = undefined as undefined | algosdk.Indexer;
+	// expose entire algosdk in case the dapp needs more
+	sdk = algosdk;
+	config = undefined as undefined | AlgonautConfig; // current config
 
 	// FYI undefined if using wallet-connect, etc. perhaps rename to .accountLocal ?
 	account = undefined as undefined | algosdk.Account; // ONLY defined if using local signing, not wallet-connet or inkey
 	address = undefined as undefined | string;
-	sKey = undefined as undefined | Uint8Array;
 	mnemonic = undefined as undefined | string;
 
-	config = undefined as undefined | AlgonautConfig;
-	sdk = undefined as undefined | typeof algosdk;
 	uiLoading = false;
 
 	// microwallet aka Inkey
@@ -160,11 +153,48 @@ export class Algonaut {
 	 *	 PORT: '',
 	 *	 API_TOKEN: { 'X-API-Key': 'YOUR_API_TOKEN' }
 	 * });
+	 *
+	 * If using Inkey, add `SIGNING_MODE: 'inkey'`.
 	 * ```
 	 *
 	 * @param config config object
 	 */
 	constructor(config: AlgonautConfig) {
+		this.setConfig(config);
+	}
+
+	/**
+	 * checks if config obj is valid for use
+	 * @param config algonaut config for network + signing mode
+	 * @returns boolean. true is good.
+	 */
+	isValidConfig(config: AlgonautConfig): boolean {
+		console.log('isValidConfig?', config);
+		let isValid = true;
+
+		// do all checks
+		if (!config.BASE_SERVER || !config.API_TOKEN) {
+			isValid = false;
+		}
+
+		// TODO add more checks...
+
+		// check: if its not a valid signing mode...
+		// if (config.SIGNING_MODE !== 'algosigner')
+
+		return isValid;
+	}
+
+	/**
+	 * sets config for use (new algod, indexerClient, etc)
+	 * @param config algonaut config for network + signing mode
+	 * 		- will throw Error if config is lousy
+	 */
+	setConfig(config: AlgonautConfig) {
+		// console.log('setConfig', config);
+		if (!this.isValidConfig(config)) {
+			throw new Error('bad config!');
+		}
 
 		this.config = config;
 		this.algodClient = new algosdk.Algodv2(config.API_TOKEN, config.BASE_SERVER, config.PORT);
@@ -175,9 +205,6 @@ export class Algonaut {
 			console.warn('No indexer configured because INDEX_SERVER was not provided.');
 		}
 
-		// expose entire algosdk in case the dapp needs more
-		this.sdk = algosdk;
-
 		// inkey init
 		if (config.SIGNING_MODE && config.SIGNING_MODE == 'inkey') {
 			if (!config.INKEY_SRC) {
@@ -186,43 +213,8 @@ export class Algonaut {
 			}
 
 			this.initInkey({
-				id: config.INKEY_ID,
 				src: config.INKEY_SRC
 			});
-		}
-
-	}
-
-	/*
-	* @param mountConfig either an id or src (id meaning existing iframe and takes precedence)
-	*/
-	initInkey(mountConfig: {
-		id?: string
-		src?: string
-	}) {
-		console.log('initInkey');
-
-		if (!mountConfig.id && !mountConfig.src) {
-			console.warn('not enough inkey config provided, try init again...');
-			return;
-		}
-
-		// reset
-		if (this.inkeyWallet.frameBus) {
-			this.inkeyWallet.frameBus.destroy();
-			this.inkeyWallet.frameBus = undefined;
-		}
-
-		if (mountConfig.id) {
-			this.inkeyWallet.frameBus = new FrameBus({
-				id: mountConfig.id
-			});
-		} else if (mountConfig.src) {
-			this.inkeyWallet.frameBus = new FrameBus({
-				src: mountConfig.src
-			});
-		} else {
-			console.warn('cannot init inkey');
 		}
 	}
 
@@ -246,6 +238,34 @@ export class Algonaut {
 		const status = await this.algodClient.status().do();
 		console.log('Algorand network status: %o', status);
 		return status;
+	}
+
+	/*
+	* @param mountConfig object containing the `src` of the iframe
+	*/
+	initInkey(mountConfig: {
+		src?: string
+	}) {
+		// console.log('initInkey');
+
+		if (!mountConfig.src) {
+			console.warn('You must provide INKEY_SRC in Algonaut.js config');
+			return;
+		}
+
+		// reset
+		if (this.inkeyWallet.frameBus) {
+			this.inkeyWallet.frameBus.destroy();
+			this.inkeyWallet.frameBus = undefined;
+		}
+
+		if (mountConfig.src) {
+			this.inkeyWallet.frameBus = new FrameBus({
+				src: mountConfig.src
+			});
+		} else {
+			console.warn('Cannot init Inkey');
+		}
 	}
 
 	/**
@@ -537,10 +557,12 @@ export class Algonaut {
 		const note = enc.encode(args.metaBlock);
 		const addr = this.account.addr;
 		const totalIssuance = args.amount;
-		const manager = this.account.addr;
-		const reserve = this.account.addr;
-		const freeze = this.account.addr;
-		const clawback = this.account.addr;
+
+		// set accounts
+		const manager = (args.manager && args.manager.length > 0) ? args.manager : this.account.addr;
+		const reserve = (args.reserve && args.reserve.length > 0) ? args.reserve : this.account.addr;
+		const freeze = (args.freeze && args.freeze.length > 0) ? args.freeze : this.account.addr;
+		const clawback = (args.clawback && args.clawback.length > 0) ? args.clawback : this.account.addr;
 
 		const params = await this.algodClient.getTransactionParams().do();
 
@@ -1512,13 +1534,10 @@ export class Algonaut {
 				// array of AlgonautAtomicTransaction, map these to get .transaction out
 				const unwrappedTxns = txnOrTxns.map(txn => txn.transaction);
 
-				// assign group ID
-				const txnGroup = algosdk.assignGroupID(unwrappedTxns);
-
-
+				// don't assign group ID here! inkey will assign it :)
 
 				// encode txns
-				const txnsToSign = txnGroup.map(txn => {
+				const txnsToSign = unwrappedTxns.map((txn: any) => {
 					const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString('base64');
 					return encodedTxn;
 				});
@@ -1677,7 +1696,8 @@ export class Algonaut {
 	 * @param message Message to show to users
 	 * @returns Promise resolving to an account object of type `{ account: string }`
 	 */
-	async inkeyConnect(message: string): Promise<any> {
+	async inkeyConnect(message?: string): Promise<any> {
+		if (!message) message = '';
 		const data = {
 			type: 'connect',
 			payload: { message }
@@ -1686,6 +1706,7 @@ export class Algonaut {
 		const account = await this.inkeyMessageAsync(data, { showFrame: true });
 		console.log(account);
 		this.setInkeyAccount(account.address);
+		if (this.config) this.config.SIGNING_MODE = 'inkey';
 		return account;
 	}
 

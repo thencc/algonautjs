@@ -7,7 +7,6 @@ export declare type AlgonautConfig = {
     PORT: string;
     API_TOKEN: any;
     SIGNING_MODE?: 'local' | 'walletconnect' | 'algosigner' | 'inkey';
-    INKEY_ID?: string;
     INKEY_SRC?: string;
 };
 export interface AlgonautStateData {
@@ -83,6 +82,11 @@ export interface AlgonautCreateAssetArguments {
     assetURL?: string;
     defaultFrozen?: boolean;
     assetMetadataHash?: string;
+    clawback?: string;
+    manager?: string;
+    reserve?: string;
+    freeze?: string;
+    rekeyTo?: string;
 }
 export interface AlgonautSendAssetArguments {
     to: string;
