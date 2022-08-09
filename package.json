@@ -23,8 +23,8 @@
 				"default": "./dist/index.mjs"
 			},
 			"default": "./dist/index.mjs",
-			"require": "./dist/index.cjs",
-			"node": "./dist/index.cjs",
+			"require": "./dist/cjs/index.js",
+			"node": "./dist/cjs/index.js",
 			"import": "./dist/index.mjs"
 		}
 	},
@@ -37,8 +37,10 @@
 		"link": "npm link",
 		"build": "rm -rf dist && run-s build:*",
 		"build:cjs": "node ./esbuild.cjs.js",
+		"build:cjs-file": "node ./esbuild.cjs_file.js",
 		"build:esm": "node ./esbuild.esm.js",
 		"build:types": "tsc --emitDeclarationOnly --outDir dist",
+		"build:cjs-types": "tsc --emitDeclarationOnly --outDir dist/cjs",
 		"build:docs": "npx typedoc",
 		"test": "node test/test.js",
 		"xbuild-test": "vite build test",
