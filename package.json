@@ -1,6 +1,6 @@
 {
 	"name": "algonaut.js",
-	"version": "0.1.51",
+	"version": "0.1.52",
 	"description": "algonaut.js is a simplified Algorand transaction library built specifically for Browsers and Front End Development",
 	"type": "commonjs",
 	"types": "dist/index.d.ts",
@@ -17,6 +17,11 @@
 			}
 		}
 	},
+	"exports": {
+		".": "./dist/index.mjs",
+		"./cjs": "./dist/index.cjs",
+		"./package.json": "./package.json"
+	},
 	"files": [
 		"dist/*",
 		"LICENSE",
@@ -26,10 +31,8 @@
 		"link": "npm link",
 		"build": "rm -rf dist && run-s build:*",
 		"build:cjs": "node ./esbuild.cjs.js",
-		"build:cjs-file": "node ./esbuild.cjs_file.js",
 		"build:esm": "node ./esbuild.esm.js",
 		"build:types": "tsc --emitDeclarationOnly --outDir dist",
-		"build:cjs-types": "tsc --emitDeclarationOnly --outDir dist/cjs",
 		"build:docs": "npx typedoc",
 		"test": "node test/test.js",
 		"xbuild-test": "vite build test",
