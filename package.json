@@ -1,6 +1,6 @@
 {
 	"name": "algonaut.js",
-	"version": "0.1.53",
+	"version": "0.1.54",
 	"description": "algonaut.js is a simplified Algorand transaction library built specifically for Browsers and Front End Development",
 	"type": "commonjs",
 	"types": "dist/index.d.ts",
@@ -18,9 +18,18 @@
 		}
 	},
 	"exports": {
-		".": "./dist/index.mjs",
-		"./cjs": "./dist/index.cjs",
-		"./package.json": "./package.json"
+		".": {
+			"browser": {
+				"default": "./dist/index.mjs"
+			}
+		},
+		"./mjs": {
+			"import": "./dist/index.mjs"
+		},
+		"./cjs": {
+			"import": "./dist/index.cjs",
+			"require": "./dist/index.cjs"
+		}
 	},
 	"files": [
 		"dist/*",
