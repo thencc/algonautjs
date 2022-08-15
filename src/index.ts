@@ -169,7 +169,7 @@ export class Algonaut {
 	 * @returns boolean. true is good.
 	 */
 	isValidConfig(config: AlgonautConfig): boolean {
-		console.log('isValidConfig?', config);
+		// console.log('isValidConfig?', config);
 		let isValid = true;
 
 		// do all checks
@@ -178,6 +178,7 @@ export class Algonaut {
 		}
 
 		// TODO add more checks...
+
 
 		// check: if its not a valid signing mode...
 		// if (config.SIGNING_MODE !== 'algosigner')
