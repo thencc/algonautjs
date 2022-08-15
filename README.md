@@ -15,7 +15,7 @@ We package, expose and depend on the JavaScript Algosdk.  It's there if you need
 To create an instance with a node and get ready to transact:
 
 ```js
-import AlgonautJS from 'algonaut.js';
+import AlgonautJS from '@thencc/algonautjs';
 
 const algonaut = new AlgonautJS({
   BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
@@ -67,12 +67,12 @@ const response = await algonaut.callApp(
 
 Install from NPM:
 
-```npm install algonaut.js --save```
+```npm install @thencc/algonautjs --save```
 
 Usage:
 
 ```js
-import Algonaut from 'algonaut.js';
+import Algonaut from '@thencc/algonautjs';
 const algonaut = new Algonaut({
   BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
   LEDGER: 'TestNet',
@@ -111,10 +111,10 @@ Rudimentary tests done in `test/` dir.
 ### Publishing to NPM:
 
 [ *latest/release* ]
-stable releases have the default npm tag of `latest` (installable via `npm i algonaut.js` or `npm i algonaut.js@latest`) and are automatically published from the repo's `release` branch via a Github Action. so simply pull request the `main` branch (or feature specific branch) into `release` to publish to npm.
+stable releases have the default npm tag of `latest` (installable via `npm i @thencc/algonautjs` or `npm i @thencc/algonautjs@latest`) and are automatically published from the repo's `release` branch via a Github Action. so simply pull request the `main` branch (or feature specific branch) into `release` to publish to npm.
 
 [ *beta/main* ]
-similarly, pushing commits or merging pull requests to the repo's `main` branch will automatically publish to the npm `beta` release installable via `npm i algonaut.js@beta`.
+similarly, pushing commits or merging pull requests to the repo's `main` branch will automatically publish to the npm `beta` release installable via `npm i @thencc/algonautjs@beta`.
 
 note:
 - to update either the `latest` or `beta` releases, the version in `package.json` must be higher than the previous release.
