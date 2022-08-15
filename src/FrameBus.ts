@@ -302,18 +302,25 @@ export class FrameBus {
 	getStyles(): string {
 		return `.inkey-frame {
 			position: fixed;
-			top: -450px;
+			top: 0;
 			left: 0;
 			width: 100vw;
 			height: 400px;
-			transition: 0.2s top ease-out;
+			border-radius: 0 0 4px 4px;
 			box-shadow: 0 -2px 20px rgba(0,0,0,0.4);
+			opacity: 0;
+			will-change: opacity, transform;
+			transition: 0.2s transform ease-out, 0.1s opacity linear, visibility 0.2s linear;
+			transform-origin: center top;
+			transform: translate3d(0px, 0px, -350px) rotateX(70deg);
+			visibility: hidden;
 			z-index: 10001;
 		}
 
 		.inkey-frame.visible {
-			top: 0;
-			transition: 0.2s top ease-out;
+			opacity: 1;
+			transform: translate3d(0px, 0px, 0px) rotateX(0deg);
+			visibility: visible;
 		}
 
 		@media screen and (min-width: 500px) {
@@ -321,6 +328,11 @@ export class FrameBus {
 				max-width: 400px;
 				left: calc(50% - 200px);
 			}
+		}
+
+		body {
+			perspective: 800px;
+			perspective-origin: center top;
 		}`;
 	}
 

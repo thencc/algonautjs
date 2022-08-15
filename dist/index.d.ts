@@ -1,8 +1,8 @@
 /// <reference types="node" />
 import algosdk from 'algosdk';
-import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautAppState, AlgonautStateData, AlgonautError, WalletConnectListener, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments, AlgonautAppStateEncoded } from './AlgonautTypes';
-import { IInternalEvent } from '@walletconnect/types';
+import type { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautAppState, AlgonautStateData, AlgonautError, WalletConnectListener, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments, AlgonautAppStateEncoded } from './AlgonautTypes';
 import { FrameBus } from './FrameBus';
+import { IInternalEvent } from '@walletconnect/types';
 declare global {
     interface Window {
         AlgoSigner: any;
@@ -11,12 +11,11 @@ declare global {
 export declare class Algonaut {
     algodClient: algosdk.Algodv2;
     indexerClient: algosdk.Indexer | undefined;
+    sdk: typeof algosdk;
+    config: AlgonautConfig | undefined;
     account: algosdk.Account | undefined;
     address: string | undefined;
-    sKey: Uint8Array | undefined;
     mnemonic: string | undefined;
-    config: AlgonautConfig | undefined;
-    sdk: typeof algosdk | undefined;
     uiLoading: boolean;
     inkeyWallet: {
         defaultSrc: string;
@@ -38,7 +37,7 @@ export declare class Algonaut {
      * Usage:
      *
      * ```js
-     * import Algonaut from 'algonaut.js';
+     * import Algonaut from '@thencc/algonautjs';
      * const algonaut = new Algonaut({
      *	 BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
      *	 INDEX_SERVER: 'https://testnet-algorand.api.purestake.io/idx2'
@@ -53,9 +52,18 @@ export declare class Algonaut {
      * @param config config object
      */
     constructor(config: AlgonautConfig);
-    initInkey(mountConfig: {
-        src?: string;
-    }): void;
+    /**
+     * checks if config obj is valid for use
+     * @param config algonaut config for network + signing mode
+     * @returns boolean. true is good.
+     */
+    isValidConfig(config: AlgonautConfig): boolean;
+    /**
+     * sets config for use (new algod, indexerClient, etc)
+     * @param config algonaut config for network + signing mode
+     * 		- will throw Error if config is lousy
+     */
+    setConfig(config: AlgonautConfig): void;
     /**
      * @returns config object or `false` if no config is set
      */
@@ -65,6 +73,9 @@ export declare class Algonaut {
      * @returns Promise resolving to status of Algorand network
      */
     checkStatus(): Promise<any | AlgonautError>;
+    initInkey(mountConfig: {
+        src?: string;
+    }): void;
     /**
      * if you already have an account, set it here
      * @param account an algosdk account already created
