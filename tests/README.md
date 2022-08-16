@@ -1,4 +1,4 @@
-# testing algonautjs
+# Testing AlgonautJS
 
 
 ## setup
@@ -31,11 +31,13 @@
 		- `package.json` > type > `module`
 			- `./init-node-ts-esm`
 - browser
-	- js cdn
+	- js cdn (vanilla)
 		- TODO
 	- vue-js
 		- TODO
 	- vue-ts
+		- TODO
+	- react-ts
 		- TODO
 - skypack
 	- typescript

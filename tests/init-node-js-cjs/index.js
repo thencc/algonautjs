@@ -16,9 +16,13 @@ console.log('Algonaut', Algonaut);
 	// console.log('algonaut', algonaut);
 
 	// test api call
-	algonaut.getAppInfo(49584323).then(bricksInfo => {
-		console.log('bricksInfo');
-		console.log(bricksInfo);
+	// algonaut.getAppInfo(49584323).then(bricksInfo => {
+	// 	console.log('bricksInfo');
+	// 	console.log(bricksInfo);
+	// });
+
+	algonaut.getAssetInfo(94345442).then(assetInfo => {
+		console.log('assetInfo', assetInfo);
 	});
 
 	console.log('finished');

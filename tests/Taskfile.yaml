@@ -65,14 +65,19 @@ tasks:
   test:init-node-js-cjs:
     dir: init-node-js-cjs
     cmds:
-      # - npm run link
       - npm run test
 
   test:init-node-js-esm:
     dir: init-node-js-esm
     cmds:
-      # - npm run link
       - npm run test
+
+  test:init-browser-js-skypack:
+    silent: false
+    dir: init-browser-js-skypack
+    cmds:
+      - echo "navigate to http://[::]:8000/ and check logs"
+      - python3 -m http.server
 
 
 
