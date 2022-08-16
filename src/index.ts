@@ -1449,7 +1449,8 @@ export class Algonaut {
 
 			return state;
 		} else {
-			throw new Error('No address provided, and no account set.');
+			// throw new Error('No address provided, and no account set.');
+			console.warn('Algonaut used in non-authd state, not getting local vars');
 		}
 	}
 

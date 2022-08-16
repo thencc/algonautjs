@@ -7,7 +7,7 @@ const algonaut = new AlgonautJS({
 	BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
 	LEDGER: 'TestNet',
 	PORT: '',
-	API_TOKEN: { 'X-API-Key': 'AsSjpC4Q8k5LXOsdJPsvN7Ee8auHi6DD2oubt1Ln' }
+	API_TOKEN: { 'X-API-Key': '' }
 });
 
 algonaut.recoverAccount('wine slice height claw science approve know egg task chase story boost lonely confirm purpose rack kite soldier proud opinion wish pencil hire abstract blade');
@@ -30,14 +30,14 @@ async function runTxTest() {
 	// console.log(optIn);
 
 	const update = await algonaut.callApp(
-	  appIndex,
-	  ['set_all',
-	  'Loopy',
-	  'A really swell guy',
-	  'https://ncc.la/loopy-dawg.png',
-	  'https://ncc.la',
-	  'https://ncc.la/something-loopy.md',
-	  '@loopyloop997']
+		appIndex,
+		['set_all',
+			'Loopy',
+			'A really swell guy',
+			'https://ncc.la/loopy-dawg.png',
+			'https://ncc.la',
+			'https://ncc.la/something-loopy.md',
+			'@loopyloop997']
 	);
 
 
