@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>init-browser-js-skypack</title>
+</head>
+<body>
+	<!-- <script src="../../dist/index.mjs"></script> -->
+
+	<!-- <script type="module">
+		// import { name, draw, reportArea, reportPerimeter } from '../../';
+
+		// import { square } from "./modScript";
+
+		console.log('started');
+		// console.log(window);
+	</script> -->
+
+	<script type="module">
+		import { Algonaut } from 'https://cdn.skypack.dev/@thencc/algonautjs';
+		console.log('from import:', Algonaut);
+
+		const algonaut = new Algonaut({
+			BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
+			INDEX_SERVER: 'https://testnet-algorand.api.purestake.io/idx2',
+			LEDGER: 'TestNet',
+			PORT: '',
+			API_TOKEN: { ['X-API-Key']: '' }
+		});
+		// console.log('algonaut', algonaut);
+
+		// test api call
+		// algonaut.getAppInfo(49584323).then(bricksInfo => {
+		// 	console.log('bricksInfo');
+		// 	console.log(bricksInfo);
+		// });
+
+		// test api call
+		algonaut.getAssetInfo(94345442).then(assetInfo => {
+			console.log('assetInfo', assetInfo);
+		});
+
+		console.log('finished');
+    </script>
+</body>
+</html>

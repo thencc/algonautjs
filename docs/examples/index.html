@@ -37,7 +37,7 @@
         </div>
     </div>
     </nav>
-    
+
 <div class="container-md pt-4">
   <div class="row">
     <div class="col-md-12">
@@ -61,7 +61,7 @@
       <pre class="log" id="log-example-1"></pre> -->
     </div>
     <div class="col-md-6">
-      <pre><code>import Algonaut from 'algonaut.js';
+      <pre><code>import Algonaut from '@thencc/algonautjs';
 
 const algonaut = new Algonaut({
   BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
@@ -120,7 +120,7 @@ algonaut.connectAlgoWallet({
     <div class="col-md-6">
 <pre><code>const txns = await algonaut.createWalletConnectTransactions([
   await algonaut.atomicOptInApp({
-    appIndex: ACCOUNT_CONTRACT_ID, 
+    appIndex: ACCOUNT_CONTRACT_ID,
     appArgs: [
       'set_all',
       account.name,
@@ -133,7 +133,7 @@ const response = await algonaut.sendWalletConnectTxns(txns);
 </code></pre>
     </div>
   </div>
-  
+
 </div>
 
 </body>

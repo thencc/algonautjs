@@ -1,0 +1,12 @@
+{
+	"name": "init-node-js-cjs",
+	"type": "commonjs",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"postinstall": "npm run link",
+		"link": "npm link @thencc/algonautjs",
+		"unlink": "npm unlink @thencc/algonautjs",
+		"test": "node -r dotenv/config index.js dotenv_config_path=../.env"
+	}
+}

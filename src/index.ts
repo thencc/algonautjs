@@ -145,7 +145,7 @@ export class Algonaut {
 	 * Usage:
 	 *
 	 * ```js
-	 * import Algonaut from 'algonaut.js';
+	 * import Algonaut from '@thencc/algonautjs';
 	 * const algonaut = new Algonaut({
 	 *	 BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
 	 *	 INDEX_SERVER: 'https://testnet-algorand.api.purestake.io/idx2'
@@ -169,7 +169,7 @@ export class Algonaut {
 	 * @returns boolean. true is good.
 	 */
 	isValidConfig(config: AlgonautConfig): boolean {
-		console.log('isValidConfig?', config);
+		// console.log('isValidConfig?', config);
 		let isValid = true;
 
 		// do all checks
@@ -178,6 +178,7 @@ export class Algonaut {
 		}
 
 		// TODO add more checks...
+
 
 		// check: if its not a valid signing mode...
 		// if (config.SIGNING_MODE !== 'algosigner')
@@ -1453,7 +1454,8 @@ export class Algonaut {
 
 			return state;
 		} else {
-			throw new Error('No address provided, and no account set.');
+			// throw new Error('No address provided, and no account set.');
+			console.warn('Algonaut used in non-authd state, not getting local vars');
 		}
 	}
 
