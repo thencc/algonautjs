@@ -939,10 +939,15 @@ export class Algonaut {
 	async getAppInfo(appId: number): Promise<AlgonautAppState> {
 		if (!appId) throw new Error('No appId provided');
 
-		const proms = [
+		let proms = [
 			this.algodClient.getApplicationByID(appId).do(),
-			this.getAppLocalState(appId) // TODO get rid of this call / only return locals (not incorrect duplicate state obj)
-		];
+		] as any;
+
+		// get locals if we have an account
+		if (this.account) {
+			proms.push(this.getAppLocalState(appId)) // TODO get rid of this call / only return locals (not incorrect duplicate state obj)
+		}
+
 		const promsRes = await Promise.all(proms);
 		const info = promsRes[0] as AlgonautGetApplicationResponse;
 		const localState = promsRes[1] as AlgonautAppState | void;
