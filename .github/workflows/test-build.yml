@@ -25,6 +25,9 @@ jobs:
           run_install: |
               args: [--frozen-lockfile, --strict-peer-dependencies]
 
+      # old way:
       # - run: npm ci
       # - run: npm run build
+
+      # new way: (faster)
       - run: pnpm build
