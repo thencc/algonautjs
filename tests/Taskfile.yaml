@@ -30,6 +30,11 @@ tasks:
       - echo "hello tasker"
       - echo "env $NAME"
 
+  clean-tests:
+    desc: 'cleans test directories of dist/, node_modules/, package-lock.json etc'
+    cmds:
+      - find . -maxdepth 2 -name package.json -execdir rm -rf dist/ node_modules/ package-lock.json test-results/ playwright-report/ playwright/.cache/ \;
+
   prepare-tests:
     desc: 'install + link all test dirs'
     cmds:
@@ -76,8 +81,12 @@ tasks:
     silent: false
     dir: init-browser-js-skypack
     cmds:
-      - echo "navigate to http://[::]:8000/ and check logs"
-      - python3 -m http.server
+      - |
+        npm run dev &
+        sleep 1 &
+        wait &
+        npm run test
+      - echo 'done'
 
   test:init-browser-vue-vite:
     # silent: false
@@ -91,8 +100,6 @@ tasks:
       - echo 'done'
 
 
-  # TODO
-  # clean-test-dirs
 
 # :::GRAVEYARD:::
 

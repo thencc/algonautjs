@@ -7,29 +7,27 @@
 	<title>init-browser-js-skypack</title>
 </head>
 <body>
-	<!-- <script src="../../dist/index.mjs"></script> -->
-
-	<!-- <script type="module">
-		// import { name, draw, reportArea, reportPerimeter } from '../../';
-
-		// import { square } from "./modScript";
-
-		console.log('started');
-		// console.log(window);
-	</script> -->
+	<p style="font-family: monospace;">
+      see console
+    </p>
 
 	<script type="module">
-		import { Algonaut } from 'https://cdn.skypack.dev/@thencc/algonautjs';
-		console.log('from import:', Algonaut);
+		// works
+		import { Algonaut } from '../../dist/index.mjs';
+		console.log('from local import:', Algonaut);
+
+		// works
+		// import { Algonaut } from 'https://cdn.skypack.dev/@thencc/algonautjs';
+		// console.log('from skypack import:', Algonaut);
 
 		const algonaut = new Algonaut({
-			BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
-			INDEX_SERVER: 'https://testnet-algorand.api.purestake.io/idx2',
-			LEDGER: 'TestNet',
-			PORT: '',
-			API_TOKEN: { ['X-API-Key']: '' }
+			BASE_SERVER: import.meta.env.NCC_BASE_SERVER,
+			INDEX_SERVER: import.meta.env.NCC_INDEX_SERVER,
+			LEDGER: import.meta.env.NCC_LEDGER,
+			PORT: import.meta.env.NCC_PORT,
+			API_TOKEN: { [import.meta.env.NCC_API_TOKEN_HEADER]: import.meta.env.NCC_API_TOKEN }
 		});
-		// console.log('algonaut', algonaut);
+		console.log('algonaut', algonaut);
 
 		// test api call
 		// algonaut.getAppInfo(49584323).then(bricksInfo => {
@@ -40,6 +38,9 @@
 		// test api call
 		algonaut.getAssetInfo(94345442).then(assetInfo => {
 			console.log('assetInfo', assetInfo);
+
+			// dev test
+			// throw new Error('bewm!');
 		});
 
 		console.log('finished');

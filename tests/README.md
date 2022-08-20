@@ -9,6 +9,12 @@
 - configure `.env`
 	- set NCC_BASE_SERVER, NCC_API_TOKEN, etc
 	- FYI env vars need to have prefix `NCC_` to work w vite server
+- prepare `algonautjs` pkg for local use
+	- from repo root dir
+	1. build
+		- `npm run build`
+	2. link
+		- `npm run link`
 
 
 ## run tests
@@ -17,7 +23,7 @@
 2. `task tests`
 	- runs task called "tests" which runs all tasks defined in yaml
 	- FYI, there are many logs... but no errors in the console is a win
-	- list all tasks: `task --list-all`
+	- list all tasks: `task --list`
 	- run 1 specific test: `task TASK_NAME`
 
 ## testing import/require
