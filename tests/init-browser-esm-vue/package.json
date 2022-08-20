@@ -1,5 +1,5 @@
 {
-  "name": "init-browser-vue-vite",
+  "name": "init-browser-esm-vue",
   "private": true,
   "version": "0.0.0",
   "type": "module",

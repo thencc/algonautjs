@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>init-browser-js-skypack</title>
+	<title>init-browser-esm-skypack</title>
 </head>
 <body>
 	<p style="font-family: monospace;">
@@ -13,12 +13,8 @@
 
 	<script type="module">
 		// works
-		import { Algonaut } from '../../dist/index.mjs';
-		console.log('from local import:', Algonaut);
-
-		// works
-		// import { Algonaut } from 'https://cdn.skypack.dev/@thencc/algonautjs';
-		// console.log('from skypack import:', Algonaut);
+		import { Algonaut } from 'https://cdn.skypack.dev/@thencc/algonautjs';
+		console.log('from skypack import:', Algonaut);
 
 		const algonaut = new Algonaut({
 			BASE_SERVER: import.meta.env.NCC_BASE_SERVER,

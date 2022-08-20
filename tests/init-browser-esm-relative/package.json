@@ -1,0 +1,17 @@
+{
+	"name": "init-browser-esm-relative",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"postinstall": "npm run link && npx playwright install",
+		"link": "npm link @thencc/algonautjs",
+		"dev": "vite",
+		"test": "npx playwright test ./tests/browser.test.ts",
+		"test-reports": "npx playwright show-report"
+	},
+	"devDependencies": {
+		"@playwright/test": "^1.25.0",
+		"vite": "^3.0.7"
+	}
+}
