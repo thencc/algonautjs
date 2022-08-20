@@ -70,9 +70,6 @@ jobs:
           run_install: |
               args: [--frozen-lockfile, --strict-peer-dependencies]
 
-      - name: "install"
-        run: npm ci
-
       - name: "build"
         run: pnpm run build
 
