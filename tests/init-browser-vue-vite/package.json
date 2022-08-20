@@ -4,11 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "postinstall": "npm run link",
+    "postinstall": "npm run link && npx playwright install",
     "link": "npm link @thencc/algonautjs",
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "test": "npx playwright test ./tests/browser.test.ts"
+    "test": "npx playwright test ./tests/browser.test.ts",
+    "test-reports": "npx playwright show-report"
   },
   "dependencies": {
     "vue": "^3.2.37"

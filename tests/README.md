@@ -15,10 +15,12 @@
 1. `task prepare-tests`
 	- installs test dir deps + links local instance of `@thencc/algonautjs`
 2. `task tests`
+	- runs task called "tests" which runs all tasks defined in yaml
 	- FYI, there are many logs... but no errors in the console is a win
+	- list all tasks: `task --list-all`
+	- run 1 specific test: `task TASK_NAME`
 
-
-## import/require tests
+## testing import/require
 `algonautjs` should work in all js/ts contexts. but to be sure, we automate the various types of initializations such as:
 - node
 	- javascript

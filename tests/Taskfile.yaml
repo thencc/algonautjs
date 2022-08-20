@@ -79,6 +79,18 @@ tasks:
       - echo "navigate to http://[::]:8000/ and check logs"
       - python3 -m http.server
 
+  test:init-browser-vue-vite:
+    # silent: false
+    dir: init-browser-vue-vite
+    cmds:
+      - |
+        npm run dev &
+        sleep 1 &
+        wait &
+        npm run test
+      - echo 'done'
+
+
   # TODO
   # clean-test-dirs
 
