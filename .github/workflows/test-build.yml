@@ -13,9 +13,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
       - name: "setup node env"
         uses: actions/setup-node@v3
         with:
           node-version: '14'
-      - run: npm ci
-      - run: npm run build --if-present
+
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7.9.3
+          run_install: |
+              args: [--frozen-lockfile, --strict-peer-dependencies]
+
+      # - run: npm ci
+      # - run: npm run build
+      - run: pnpm build

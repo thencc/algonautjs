@@ -49,6 +49,8 @@
 	"dependencies": {
 		"@json-rpc-tools/utils": "^1.7.6",
 		"@walletconnect/client": "^1.7.7",
+		"@walletconnect/types": "^1.8.0",
+		"@walletconnect/utils": "^1.8.0",
 		"algorand-walletconnect-qrcode-modal": "^1.7.4",
 		"algosdk": "^1.19.0",
 		"base32-encode": "^2.0.0",
