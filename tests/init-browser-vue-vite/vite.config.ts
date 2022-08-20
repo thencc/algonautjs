@@ -5,5 +5,8 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   plugins: [vue()],
   envDir: '../',
-  envPrefix: 'NCC_'
+  envPrefix: 'NCC_',
+  server: {
+    port: 5511
+  }
 })

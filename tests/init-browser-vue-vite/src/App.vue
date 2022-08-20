@@ -30,6 +30,8 @@ export default defineComponent({
         PORT: import.meta.env.NCC_PORT!,
         API_TOKEN: { [import.meta.env.NCC_API_TOKEN_HEADER!]: import.meta.env.NCC_API_TOKEN! }
       });
+      console.log('algonaut', algonaut);
+
 
       // test api call
       const appInfo = await algonaut.getAppInfo(49584323);
