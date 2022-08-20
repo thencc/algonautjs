@@ -30,6 +30,14 @@ tasks:
       - echo "hello tasker"
       - echo "env $NAME"
 
+  prepare-algonautjs:
+    desc: 'build + link local algonautjs lib'
+    dir: ..
+    cmds:
+      - npm i
+      - npm run build
+      - npm run link
+
   clean-tests:
     desc: 'cleans test directories of dist/, node_modules/, package-lock.json etc'
     cmds:
