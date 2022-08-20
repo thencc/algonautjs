@@ -30,6 +30,7 @@
 		"build:types": "tsc --emitDeclarationOnly --outDir dist",
 		"build:docs": "npx typedoc",
 		"test": "node test/test.js",
+		"tests": "task prepare-tests && task tests",
 		"xbuild-test": "vite build test",
 		"xdev": "vite serve test --port 8891"
 	},

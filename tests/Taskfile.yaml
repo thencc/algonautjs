@@ -79,7 +79,8 @@ tasks:
       - echo "navigate to http://[::]:8000/ and check logs"
       - python3 -m http.server
 
-
+  # TODO
+  # clean-test-dirs
 
 # :::GRAVEYARD:::
 

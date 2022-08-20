@@ -7,7 +7,8 @@
 - install `dotenv` globally
 	- `npm i -g dotenv`
 - configure `.env`
-	- set BASE_SERVER, API_TOKEN, etc
+	- set NCC_BASE_SERVER, NCC_API_TOKEN, etc
+	- FYI env vars need to have prefix `NCC_` to work w vite server
 
 
 ## run tests
