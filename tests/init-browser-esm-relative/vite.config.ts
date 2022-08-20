@@ -5,6 +5,6 @@ export default defineConfig({
   envDir: '../',
   envPrefix: 'NCC_',
   server: {
-    port: 5512
+    port: 5513
   }
 })

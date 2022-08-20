@@ -16,6 +16,9 @@
 		import { Algonaut } from 'https://cdn.skypack.dev/@thencc/algonautjs';
 		console.log('from skypack import:', Algonaut);
 
+		// devs, you can just do this if needed off of window:
+		// window.Algonaut = Algonaut;
+
 		const algonaut = new Algonaut({
 			BASE_SERVER: import.meta.env.NCC_BASE_SERVER,
 			INDEX_SERVER: import.meta.env.NCC_INDEX_SERVER,

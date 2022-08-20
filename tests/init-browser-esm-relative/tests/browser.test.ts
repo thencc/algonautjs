@@ -5,7 +5,8 @@ test('can execute @thencc/algonautjs within browser', async function ({ page }) 
 		throw new Error(e.message);
 	});
 
-	await page.goto('http://localhost:5512');
+	const port = 5513;
+	await page.goto(`http://localhost:${port}`);
 
 	await new Promise((resolve) => setTimeout(resolve, 1000));
 
