@@ -336,7 +336,8 @@ export class Algonaut {
 	 */
 	recoverAccount(mnemonic: string): algosdk.Account {
 		if (!mnemonic) throw new Error('algonaut.recoverAccount: No mnemonic provided.');
-		return utils.recoverAccount(mnemonic);
+		this.account = utils.recoverAccount(mnemonic);
+		return this.account;
 	}
 
 	/**
