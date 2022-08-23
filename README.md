@@ -15,9 +15,9 @@ We package, expose and depend on the JavaScript Algosdk.  It's there if you need
 To create an instance with a node and get ready to transact:
 
 ```js
-import AlgonautJS from '@thencc/algonautjs';
+import Algonaut from '@thencc/algonautjs';
 
-const algonaut = new AlgonautJS({
+const algonaut = new Algonaut({
   BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
   LEDGER: 'TestNet',
   PORT: '',
