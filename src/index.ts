@@ -1502,7 +1502,7 @@ export class Algonaut {
 
 
 			// HANDLE ARRAY OF TRANSACTIONS
-			if (Array.isArray(txnOrTxns) && txnOrTxns[0] && txnOrTxns[0].transaction && txnOrTxns.length > 1) {
+			if (Array.isArray(txnOrTxns) && txnOrTxns[0] && txnOrTxns[0].transaction) {
 				// array of AlgonautAtomicTransaction, map these to get .transaction out
 				const unwrappedTxns = txnOrTxns.map(txn => txn.transaction);
 
@@ -1518,6 +1518,7 @@ export class Algonaut {
 
 				// HANDLE SINGLE ATOMIC TRANSACTION
 			} else {
+
 				let txn: algosdk.Transaction;
 				if (txnOrTxns && (txnOrTxns as any).transaction) {
 					txn = (txnOrTxns as AlgonautAtomicTransaction).transaction;
@@ -2552,7 +2553,6 @@ export const utils = {
 		// the transactions are processed as one-offs!
 		
 		if (txns.length > 1) {
-			console.log('signing transaction group');
 			const txnGroup = algosdk.assignGroupID(txns);
 
 			const signed = [] as Uint8Array[];
@@ -2565,8 +2565,6 @@ export const utils = {
 
 			return signed;
 		} else {
-			console.log('signing single transaction');
-			console.log(txns);
 			const signedTx = algosdk.signTransaction(txns[0], account.sk);
 			return signedTx.blob;
 		}
