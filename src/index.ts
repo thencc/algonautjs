@@ -1645,6 +1645,7 @@ export class Algonaut {
 	inkeyHide() {
 		if (this.inkeyWallet.frameBus) {
 			this.inkeyWallet.frameBus.hideFrame();
+			this.inkeyMessageAsync({ type: 'reject' });
 		}
 	}
 
