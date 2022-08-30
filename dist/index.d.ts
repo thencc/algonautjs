@@ -92,7 +92,7 @@ export declare class Algonaut {
      */
     setInkeyAccount(address: string): void;
     /**
-     * Creates a wallet address + mnemonic from account's secret key
+     * Creates a wallet address + mnemonic from account's secret key and sets the wallet as the currently authenticated account
      * @returns AlgonautWallet Object containing `address` and `mnemonic`
      */
     createWallet(): AlgonautWallet;
@@ -406,28 +406,17 @@ export declare class Algonaut {
      */
     sendAtomicTransaction(transactions: AlgonautAtomicTransaction[], callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
     /**
-     * Used by Inkey to sign base64-encoded transactions sent to the iframe
+     * Signs an array of Transactions (used in Inkey) with the currently authenticated account
+     * @param txns Array of algosdk.Transaction
+     * @returns Uint8Array[] of signed transactions
+     */
+    signTransactionGroup(txns: algosdk.Transaction[]): Uint8Array | Uint8Array[];
+    /**
+     * Signs base64-encoded transactions with the currently authenticated account
      * @param txns Array of Base64-encoded unsigned transactions
      * @returns Uint8Array signed transactions
      */
     signBase64Transactions(txns: string[]): Uint8Array[] | Uint8Array;
-    /**
-     * Does what it says on the tin.
-     * @param txn base64-encoded unsigned transaction
-     * @returns transaction object
-     */
-    decodeBase64UnsignedTransaction(txn: string): algosdk.Transaction;
-    /**
-     * Describes an Algorand transaction, for display in Inkey
-     * @param txn Transaction to describe
-     */
-    txnSummary(txn: algosdk.Transaction): string;
-    /**
-     * Signs an array of Transactions (used in Inkey)
-     * @param txns Array of algosdk.Transaction
-     * @returns Uint8Array[] of signed transactions
-     */
-    signTransactionGroup(txns: algosdk.Transaction[]): Uint8Array[] | Uint8Array;
     /**
      * Sends one or multiple transactions via WalletConnect, prompting the user to approve transaction on their phone.
      *
@@ -538,16 +527,6 @@ export declare class Algonaut {
      */
     onSessionUpdate(accounts: string[]): Promise<void>;
     /**
-     * Helper function to turn `globals` and `locals` array into more useful objects
-     *
-     * @param stateArray State array returned from functions like {@link getAppInfo}
-     * @returns A more useful object: `{ array[0].key: array[0].value, array[1].key: array[1].value, ... }`
-     */
-    stateArrayToObject(stateArray: object[]): any;
-    fromBase64(encoded: string): string;
-    valueAsAddr(encoded: string): string;
-    decodeStateArray(stateArray: AlgonautAppStateEncoded[]): AlgonautStateData[];
-    /**
      * Function to determine if the AlgoSigner extension is installed.
      * @returns true if `window.AlgoSigner` is defined
      */
@@ -562,6 +541,7 @@ export declare class Algonaut {
      * @returns Array of Objects with address fields: [{ address: <String> }, ...]
      */
     getAccounts(ledger: string): Promise<any>;
+    /** INCLUDE ALL THE UTILITIES IN ALGONAUT EXPORT FOR CONVENIENCE **/
     /**
      *
      * @param str string
@@ -569,6 +549,125 @@ export declare class Algonaut {
      * @returns string encoded as Uint8Array
      */
     to8Arr(str: string, enc?: BufferEncoding): Uint8Array;
+    /**
+     * Helper function to turn `globals` and `locals` array into more useful objects
+     *
+     * @param stateArray State array returned from functions like {@link getAppInfo}
+     * @returns A more useful object: `{ array[0].key: array[0].value, array[1].key: array[1].value, ... }`
+     */
+    stateArrayToObject(stateArray: object[]): any;
+    /**
+     * Used for decoding state
+     * @param encoded Base64 string
+     * @returns Human-readable string
+     */
+    fromBase64(encoded: string): string;
+    /**
+     * Decodes a Base64-encoded Uint8 Algorand address and returns a string
+     * @param encoded An encoded Algorand address
+     * @returns Decoded address
+     */
+    valueAsAddr(encoded: string): string;
+    /**
+     * Decodes app state into a human-readable format
+     * @param stateArray Encoded app state
+     * @returns Array of objects with key, value, and address properties
+     */
+    decodeStateArray(stateArray: AlgonautAppStateEncoded[]): AlgonautStateData[];
+    /**
+     * Does what it says on the tin.
+     * @param txn base64-encoded unsigned transaction
+     * @returns transaction object
+     */
+    decodeBase64UnsignedTransaction(txn: string): algosdk.Transaction;
+    /**
+     * Describes an Algorand transaction, for display in Inkey
+     * @param txn Transaction to describe
+     */
+    txnSummary(txn: algosdk.Transaction): (txn: algosdk.Transaction) => string;
 }
 export default Algonaut;
+/**
+ * This export contains all the offline Algonaut functionality.
+ * Since instantiation of the Algonaut class requires that you
+ * configure a node, if you wish to use certain conveniences of
+ * Algonaut without the need for a network, simply use
+ * `import { utils } from '@thencc/algonautjs'`
+ */
+export declare const utils: {
+    /**
+     * Creates a wallet address + mnemonic from account's secret key
+     * @returns AlgonautWallet Object containing `address` and `mnemonic`
+     */
+    createWallet(): AlgonautWallet;
+    /**
+     * Recovers account from mnemonic
+     * @param mnemonic Mnemonic associated with Algonaut account
+     * @returns If mnemonic is valid, returns account. Otherwise, returns false.
+     */
+    recoverAccount(mnemonic: string): algosdk.Account;
+    /**
+     * Creates a LogicSig from a base64 program string.  Note that this method does not COMPILE
+     * the program, just builds an LSig from an already compiled base64 result!
+     * @param base64ProgramString
+     * @returns an algosdk LogicSigAccount
+     */
+    generateLogicSig(base64ProgramString: string): algosdk.LogicSigAccount;
+    /**
+     * Sync function that returns a correctly-encoded argument array for
+     * an algo transaction
+     * @param args must be an any[] array, as it will often need to be
+     * a mix of strings and numbers. Valid types are: string, number, and bigint
+     * @returns a Uint8Array of encoded arguments
+     */
+    encodeArguments(args: any[]): Uint8Array[];
+    /**
+     * Get an application's escrow account
+     * @param appId - ID of application
+     * @returns Escrow account address as string
+     */
+    getAppEscrowAccount(appId: number | bigint): string;
+    /**
+     *
+     * @param str string
+     * @param enc the encoding type of the string (defaults to utf8)
+     * @returns string encoded as Uint8Array
+     */
+    to8Arr(str: string, enc?: BufferEncoding): Uint8Array;
+    /**
+     * Helper function to turn `globals` and `locals` array into more useful objects
+     *
+     * @param stateArray State array returned from functions like {@link getAppInfo}
+     * @returns A more useful object: `{ array[0].key: array[0].value, array[1].key: array[1].value, ... }`
+     */
+    stateArrayToObject(stateArray: object[]): any;
+    fromBase64(encoded: string): string;
+    valueAsAddr(encoded: string): string;
+    decodeStateArray(stateArray: AlgonautAppStateEncoded[]): AlgonautStateData[];
+    /**
+     * Signs an array of Transactions (used in Inkey)
+     * @param txns Array of algosdk.Transaction
+     * @param account algosdk.Account object with `sk`, that signs the transactions
+     * @returns Uint8Array[] of signed transactions
+     */
+    signTransactionGroup(txns: algosdk.Transaction[], account: algosdk.Account): Uint8Array[] | Uint8Array;
+    /**
+     * Used by Inkey to sign base64-encoded transactions sent to the iframe
+     * @param txns Array of Base64-encoded unsigned transactions
+     * @param account algosdk.Account object with `sk`, that signs the transactions
+     * @returns Uint8Array signed transactions
+     */
+    signBase64Transactions(txns: string[], account: algosdk.Account): Uint8Array[] | Uint8Array;
+    /**
+     * Does what it says on the tin.
+     * @param txn base64-encoded unsigned transaction
+     * @returns transaction object
+     */
+    decodeBase64UnsignedTransaction(txn: string): algosdk.Transaction;
+    /**
+     * Describes an Algorand transaction, for display in Inkey
+     * @param txn Transaction to describe
+     */
+    txnSummary(txn: algosdk.Transaction): string;
+};
 export declare const buffer: BufferConstructor;

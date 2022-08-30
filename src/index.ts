@@ -310,7 +310,7 @@ export class Algonaut {
 	}
 
 	/**
-	 * Creates a wallet address + mnemonic from account's secret key
+	 * Creates a wallet address + mnemonic from account's secret key and sets the wallet as the currently authenticated account
 	 * @returns AlgonautWallet Object containing `address` and `mnemonic`
 	 */
 	createWallet(): AlgonautWallet {
@@ -336,20 +336,8 @@ export class Algonaut {
 	 */
 	recoverAccount(mnemonic: string): algosdk.Account {
 		if (!mnemonic) throw new Error('algonaut.recoverAccount: No mnemonic provided.');
-
-		try {
-			this.account = algosdk.mnemonicToSecretKey(mnemonic);
-			if (algosdk.isValidAddress(this.account?.addr)) {
-				//if (this.config) this.config.SIGNING_MODE = 'local';
-				return this.account;
-			} else {
-				throw new Error('Not a valid mnemonic.');
-			}
-		} catch (error: any) {
-			// should we throw an error here instead of returning false?
-			console.log(error);
-			throw new Error('Could not recover account from mnemonic.');
-		}
+		this.account = utils.recoverAccount(mnemonic);
+		return this.account;
 	}
 
 	/**
@@ -413,12 +401,7 @@ export class Algonaut {
 	 */
 	generateLogicSig(base64ProgramString: string): algosdk.LogicSigAccount {
 		if (!base64ProgramString) throw new Error('No program string provided.');
-
-		const program = new Uint8Array(
-			Buffer.from(base64ProgramString, 'base64')
-		);
-
-		return new algosdk.LogicSigAccount(program);
+		return utils.generateLogicSig(base64ProgramString);
 	}
 
 	async atomicOptInAsset(assetIndex: number): Promise<AlgonautAtomicTransaction> {
@@ -509,20 +492,7 @@ export class Algonaut {
 	 * @returns a Uint8Array of encoded arguments
 	 */
 	encodeArguments(args: any[]): Uint8Array[] {
-		const encodedArgs = [] as Uint8Array[];
-
-		// loop through args and encode them based on type
-		args.forEach((arg: any) => {
-			if (typeof arg == 'number') {
-				encodedArgs.push(algosdk.encodeUint64(arg));
-			} else if (typeof arg == 'bigint') {
-				encodedArgs.push(algosdk.encodeUint64(arg));
-			} else if (typeof arg == 'string') {
-				encodedArgs.push(new Uint8Array(Buffer.from(arg)));
-			}
-		});
-
-		return encodedArgs;
+		return utils.encodeArguments(args);
 	}
 
 	/**
@@ -923,13 +893,8 @@ export class Algonaut {
 	 */
 	getAppEscrowAccount(appId: number | bigint): string {
 		if (!appId) throw new Error('No appId provided');
-
-		return algosdk.getApplicationAddress(appId);
-
+		return utils.getAppEscrowAccount(appId);
 	}
-
-
-
 
 	/**
 	 * Get info about an application (globals, locals, creator address, index)
@@ -1537,7 +1502,7 @@ export class Algonaut {
 
 
 			// HANDLE ARRAY OF TRANSACTIONS
-			if (Array.isArray(txnOrTxns) && txnOrTxns[0] && txnOrTxns[0].transaction && txnOrTxns.length > 1) {
+			if (Array.isArray(txnOrTxns) && txnOrTxns[0] && txnOrTxns[0].transaction) {
 				// array of AlgonautAtomicTransaction, map these to get .transaction out
 				const unwrappedTxns = txnOrTxns.map(txn => txn.transaction);
 
@@ -1553,6 +1518,7 @@ export class Algonaut {
 
 				// HANDLE SINGLE ATOMIC TRANSACTION
 			} else {
+
 				let txn: algosdk.Transaction;
 				if (txnOrTxns && (txnOrTxns as any).transaction) {
 					txn = (txnOrTxns as AlgonautAtomicTransaction).transaction;
@@ -1679,6 +1645,7 @@ export class Algonaut {
 	inkeyHide() {
 		if (this.inkeyWallet.frameBus) {
 			this.inkeyWallet.frameBus.hideFrame();
+			this.inkeyMessageAsync({ type: 'reject' });
 		}
 	}
 
@@ -1799,141 +1766,23 @@ export class Algonaut {
 	}
 
 	/**
-	 * Used by Inkey to sign base64-encoded transactions sent to the iframe
+	 * Signs an array of Transactions (used in Inkey) with the currently authenticated account
+	 * @param txns Array of algosdk.Transaction
+	 * @returns Uint8Array[] of signed transactions
+	 */
+	signTransactionGroup(txns: algosdk.Transaction[]) {
+		if (!this.account) throw new Error('There is no account!');
+		return utils.signTransactionGroup(txns, this.account);
+	}
+
+	/**
+	 * Signs base64-encoded transactions with the currently authenticated account
 	 * @param txns Array of Base64-encoded unsigned transactions
 	 * @returns Uint8Array signed transactions
 	 */
 	signBase64Transactions(txns: string[]): Uint8Array[] | Uint8Array {
-		const decodedTxns: algosdk.Transaction[] = [];
-		txns.forEach(txn => {
-			const decodedTxn = this.decodeBase64UnsignedTransaction(txn);
-			decodedTxns.push(decodedTxn);
-		});
-		return this.signTransactionGroup(decodedTxns);
-	}
-
-	/**
-	 * Does what it says on the tin.
-	 * @param txn base64-encoded unsigned transaction
-	 * @returns transaction object
-	 */
-	decodeBase64UnsignedTransaction(txn: string): algosdk.Transaction {
-		return algosdk.decodeUnsignedTransaction(Buffer.from(txn, 'base64'));
-	}
-
-	/**
-	 * Describes an Algorand transaction, for display in Inkey
-	 * @param txn Transaction to describe
-	 */
-	txnSummary(txn: algosdk.Transaction): string {
-		// for reference: https://developer.algorand.org/docs/get-details/transactions/transactions/
-
-		if (txn.type) {
-			const to = txn.to ? algosdk.encodeAddress(txn.to.publicKey) : '';
-			const from = txn.from ? algosdk.encodeAddress(txn.from.publicKey) : '';
-
-			// sending algo
-			if (txn.type === 'pay') {
-				return `Send ${algosdk.microalgosToAlgos(txn.amount as number)} ALGO to ${to}`;
-
-				// sending assets
-			} else if (txn.type === 'axfer') {
-				if (!txn.amount && to === from) {
-					return `Opt-in to asset ID ${txn.assetIndex}`;
-				} else {
-					const amount = txn.amount ? txn.amount : 0;
-					return `Transfer ${amount} of asset ID ${txn.assetIndex} to ${to}`;
-				}
-
-				// asset config
-				// this could be creating, destroying, or configuring an asset,
-				// depending on which fields are set
-			} else if (txn.type === 'acfg') {
-
-				// if unit name is supplied, we are creating
-				if (txn.assetUnitName) {
-					return `Create asset ${txn.assetName}, symbol ${txn.assetUnitName}`;
-				}
-
-				return `Configure asset ${txn.assetIndex}`;
-
-				// asset freeze
-			} else if (txn.type === 'afrz') {
-				return `Freeze asset ${txn.assetIndex}`;
-
-				// application call
-			} else if (txn.type === 'appl') {
-				// let's find out what kind of application call this is
-				// reference: https://developer.algorand.org/docs/get-details/dapps/avm/teal/specification/#oncomplete
-				switch (txn.appOnComplete) {
-					// NoOp
-					case 0:
-						return `Call to application ID ${txn.appIndex}`;
-
-					// OptIn
-					case 1:
-						return `Opt-in to application ID ${txn.appIndex}`;
-
-					// CloseOut
-					case 2:
-						return `Close out application ID ${txn.appIndex}`;
-
-					// ClearState
-					case 3:
-						return `Execute clear state program of application ID ${txn.appIndex}`;
-
-					// Update
-					case 4:
-						return `Update application ID ${txn.appIndex}`;
-
-					// Delete
-					case 5:
-						return `Delete application ID ${txn.appIndex}`;
-
-					default:
-						return `Call to application ID ${txn.appIndex}`;
-				}
-
-				// default case
-			} else {
-				return `Transaction of type ${txn.type} to ${to}`;
-			}
-		} else {
-			// no better option
-			return txn.toString();
-		}
-	}
-
-	/**
-	 * Signs an array of Transactions (used in Inkey)
-	 * @param txns Array of algosdk.Transaction
-	 * @returns Uint8Array[] of signed transactions
-	 */
-	signTransactionGroup(txns: algosdk.Transaction[]): Uint8Array[] | Uint8Array {
 		if (!this.account) throw new Error('There is no account!');
-
-		// this is critical, if the group doesn't have an id
-		// the transactions are processed as one-offs!
-		const account = this.account;
-		if (txns.length > 1) {
-			console.log('signing transaction group');
-			const txnGroup = algosdk.assignGroupID(txns);
-
-			const signed = [] as Uint8Array[];
-
-			// sign all transactions in the group
-			txns.forEach((txn: algosdk.Transaction, i) => {
-				const signedTx = algosdk.signTransaction(txnGroup[i], account.sk);
-				signed.push(signedTx.blob);
-			});
-
-			return signed;
-		} else {
-			console.log('signing single transaction');
-			console.log(txns);
-			const signedTx = algosdk.signTransaction(txns[0], account.sk);
-			return signedTx.blob;
-		}
+		return utils.signBase64Transactions(txns, this.account);
 	}
 
 	/**
@@ -2170,9 +2019,6 @@ export class Algonaut {
 
 		return tx;
 	}
-
-
-
 
 	/*
 	* Wallet Connect API Stuff
@@ -2434,6 +2280,213 @@ export class Algonaut {
 		this.setWalletConnectAccount(accounts[0]);
 	}
 
+	/* BELOW HERE ARE ALL THE ALGO SIGNER APIS IF WE GO THAT ROUTE */
+
+	/**
+	 * Function to determine if the AlgoSigner extension is installed.
+	 * @returns true if `window.AlgoSigner` is defined
+	 */
+	isAlgoSignerInstalled(): boolean {
+		return typeof window.AlgoSigner !== 'undefined';
+	}
+
+	/**
+	 * Connects to AlgoSigner extension
+	 */
+	async connectToAlgoSigner(): Promise<any> {
+		return await window.AlgoSigner.connect();
+	}
+
+	/**
+	 * Async function that returns list of accounts in the wallet.
+	 * @param ledger must be 'TestNet' or 'MainNet'.
+	 * @returns Array of Objects with address fields: [{ address: <String> }, ...]
+	 */
+	async getAccounts(ledger: string): Promise<any> {
+		await this.connectToAlgoSigner();
+		const accounts = await window.AlgoSigner.accounts({ ledger });
+		return accounts;
+	}
+
+	/** INCLUDE ALL THE UTILITIES IN ALGONAUT EXPORT FOR CONVENIENCE **/
+	
+	/**
+	 *
+	 * @param str string
+	 * @param enc the encoding type of the string (defaults to utf8)
+	 * @returns string encoded as Uint8Array
+	 */
+	to8Arr(str: string, enc: BufferEncoding = 'utf8'): Uint8Array {
+		return utils.to8Arr(str, enc);
+	}
+
+	/**
+	 * Helper function to turn `globals` and `locals` array into more useful objects
+	 *
+	 * @param stateArray State array returned from functions like {@link getAppInfo}
+	 * @returns A more useful object: `{ array[0].key: array[0].value, array[1].key: array[1].value, ... }`
+	 */
+	stateArrayToObject(stateArray: object[]): any {
+		return utils.stateArrayToObject(stateArray);
+	}
+
+	/**
+	 * Used for decoding state
+	 * @param encoded Base64 string
+	 * @returns Human-readable string
+	 */
+	fromBase64(encoded: string): string {
+		return utils.fromBase64(encoded);
+	}
+
+	/**
+	 * Decodes a Base64-encoded Uint8 Algorand address and returns a string
+	 * @param encoded An encoded Algorand address	
+	 * @returns Decoded address
+	 */
+	valueAsAddr(encoded: string): string {
+		return utils.valueAsAddr(encoded);
+	}
+
+	/**
+	 * Decodes app state into a human-readable format
+	 * @param stateArray Encoded app state
+	 * @returns Array of objects with key, value, and address properties
+	 */
+	decodeStateArray(stateArray: AlgonautAppStateEncoded[]) {
+		return utils.decodeStateArray(stateArray);
+	}
+
+	/**
+	 * Does what it says on the tin.
+	 * @param txn base64-encoded unsigned transaction
+	 * @returns transaction object
+	 */
+	decodeBase64UnsignedTransaction(txn: string): algosdk.Transaction {
+		return utils.decodeBase64UnsignedTransaction(txn);
+	}
+
+	/**
+	 * Describes an Algorand transaction, for display in Inkey
+	 * @param txn Transaction to describe
+	 */
+	txnSummary(txn: algosdk.Transaction) {
+		return utils.txnSummary;
+	}
+
+}
+export default Algonaut;
+
+/**
+ * This export contains all the offline Algonaut functionality.
+ * Since instantiation of the Algonaut class requires that you 
+ * configure a node, if you wish to use certain conveniences of
+ * Algonaut without the need for a network, simply use
+ * `import { utils } from '@thencc/algonautjs'`
+ */
+export const utils = {
+	/**
+	 * Creates a wallet address + mnemonic from account's secret key
+	 * @returns AlgonautWallet Object containing `address` and `mnemonic`
+	 */
+	 createWallet(): AlgonautWallet {
+		const account = algosdk.generateAccount();
+
+		if (account) {
+			let mnemonic = algosdk.secretKeyToMnemonic(account.sk);
+			return {
+				address: account.addr,
+				mnemonic: mnemonic || ''
+			};
+		} else {
+			throw new Error('There was no account: could not create algonaut wallet!');
+		}
+
+	}, 
+
+	/**
+	 * Recovers account from mnemonic
+	 * @param mnemonic Mnemonic associated with Algonaut account
+	 * @returns If mnemonic is valid, returns account. Otherwise, returns false.
+	 */
+	 recoverAccount(mnemonic: string): algosdk.Account {
+		if (!mnemonic) throw new Error('utils.recoverAccount: No mnemonic provided.');
+
+		try {
+			const account = algosdk.mnemonicToSecretKey(mnemonic);
+			if (algosdk.isValidAddress(account?.addr)) {
+				//if (this.config) this.config.SIGNING_MODE = 'local';
+				return account;
+			} else {
+				throw new Error('Not a valid mnemonic.');
+			}
+		} catch (error: any) {
+			// should we throw an error here instead of returning false?
+			console.log(error);
+			throw new Error('Could not recover account from mnemonic.');
+		}
+	},
+
+	/**
+	 * Creates a LogicSig from a base64 program string.  Note that this method does not COMPILE
+	 * the program, just builds an LSig from an already compiled base64 result!
+	 * @param base64ProgramString
+	 * @returns an algosdk LogicSigAccount
+	 */
+	generateLogicSig(base64ProgramString: string): algosdk.LogicSigAccount {
+		if (!base64ProgramString) throw new Error('No program string provided.');
+
+		const program = new Uint8Array(
+			Buffer.from(base64ProgramString, 'base64')
+		);
+
+		return new algosdk.LogicSigAccount(program);
+	}, 
+
+	/**
+	 * Sync function that returns a correctly-encoded argument array for
+	 * an algo transaction
+	 * @param args must be an any[] array, as it will often need to be
+	 * a mix of strings and numbers. Valid types are: string, number, and bigint
+	 * @returns a Uint8Array of encoded arguments
+	 */
+	 encodeArguments(args: any[]): Uint8Array[] {
+		const encodedArgs = [] as Uint8Array[];
+
+		// loop through args and encode them based on type
+		args.forEach((arg: any) => {
+			if (typeof arg == 'number') {
+				encodedArgs.push(algosdk.encodeUint64(arg));
+			} else if (typeof arg == 'bigint') {
+				encodedArgs.push(algosdk.encodeUint64(arg));
+			} else if (typeof arg == 'string') {
+				encodedArgs.push(new Uint8Array(Buffer.from(arg)));
+			}
+		});
+
+		return encodedArgs;
+	},
+
+	/**
+	 * Get an application's escrow account
+	 * @param appId - ID of application
+	 * @returns Escrow account address as string
+	 */
+	 getAppEscrowAccount(appId: number | bigint): string {
+		if (!appId) throw new Error('No appId provided');
+		return algosdk.getApplicationAddress(appId);
+	},
+
+	/**
+	 *
+	 * @param str string
+	 * @param enc the encoding type of the string (defaults to utf8)
+	 * @returns string encoded as Uint8Array
+	 */
+	to8Arr(str: string, enc: BufferEncoding = 'utf8'): Uint8Array {
+		return new Uint8Array(Buffer.from(str, enc));
+	},
+
 	/**
 	 * Helper function to turn `globals` and `locals` array into more useful objects
 	 *
@@ -2446,15 +2499,15 @@ export class Algonaut {
 			if (value.key) stateObj[value.key] = value.value || null;
 		});
 		return stateObj;
-	}
+	},
 
 	fromBase64(encoded: string) {
 		return Buffer.from(encoded, 'base64').toString();
-	}
+	},
 
-	valueAsAddr(encoded: string) {
+	valueAsAddr(encoded: string): string {
 		return algosdk.encodeAddress(Buffer.from(encoded, 'base64'));
-	}
+	},
 
 	decodeStateArray(stateArray: AlgonautAppStateEncoded[]) {
 		const result: AlgonautStateData[] = [];
@@ -2487,46 +2540,143 @@ export class Algonaut {
 		}
 
 		return result;
-	}
-
-	/* BELOW HERE ARE ALL THE ALGO SIGNER APIS IF WE GO THAT ROUTE */
+	},
 
 	/**
-	 * Function to determine if the AlgoSigner extension is installed.
-	 * @returns true if `window.AlgoSigner` is defined
+	 * Signs an array of Transactions (used in Inkey)
+	 * @param txns Array of algosdk.Transaction
+	 * @param account algosdk.Account object with `sk`, that signs the transactions
+	 * @returns Uint8Array[] of signed transactions
 	 */
-	isAlgoSignerInstalled(): boolean {
-		return typeof window.AlgoSigner !== 'undefined';
-	}
+	 signTransactionGroup(txns: algosdk.Transaction[], account: algosdk.Account): Uint8Array[] | Uint8Array {
+
+		// this is critical, if the group doesn't have an id
+		// the transactions are processed as one-offs!
+		
+		if (txns.length > 1) {
+			const txnGroup = algosdk.assignGroupID(txns);
+
+			const signed = [] as Uint8Array[];
+
+			// sign all transactions in the group
+			txns.forEach((txn: algosdk.Transaction, i) => {
+				const signedTx = algosdk.signTransaction(txnGroup[i], account.sk);
+				signed.push(signedTx.blob);
+			});
+
+			return signed;
+		} else {
+			const signedTx = algosdk.signTransaction(txns[0], account.sk);
+			return signedTx.blob;
+		}
+	},
 
 	/**
-	 * Connects to AlgoSigner extension
+	 * Used by Inkey to sign base64-encoded transactions sent to the iframe
+	 * @param txns Array of Base64-encoded unsigned transactions
+	 * @param account algosdk.Account object with `sk`, that signs the transactions
+	 * @returns Uint8Array signed transactions
 	 */
-	async connectToAlgoSigner(): Promise<any> {
-		return await window.AlgoSigner.connect();
-	}
+	 signBase64Transactions(txns: string[], account: algosdk.Account): Uint8Array[] | Uint8Array {
+		const decodedTxns: algosdk.Transaction[] = [];
+		txns.forEach(txn => {
+			const decodedTxn = this.decodeBase64UnsignedTransaction(txn);
+			decodedTxns.push(decodedTxn);
+		});
+		return this.signTransactionGroup(decodedTxns, account);
+	},
 
 	/**
-	 * Async function that returns list of accounts in the wallet.
-	 * @param ledger must be 'TestNet' or 'MainNet'.
-	 * @returns Array of Objects with address fields: [{ address: <String> }, ...]
+	 * Does what it says on the tin.
+	 * @param txn base64-encoded unsigned transaction
+	 * @returns transaction object
 	 */
-	async getAccounts(ledger: string): Promise<any> {
-		await this.connectToAlgoSigner();
-		const accounts = await window.AlgoSigner.accounts({ ledger });
-		return accounts;
-	}
+	decodeBase64UnsignedTransaction(txn: string): algosdk.Transaction {
+		return algosdk.decodeUnsignedTransaction(Buffer.from(txn, 'base64'));
+	},
 
 	/**
-	 *
-	 * @param str string
-	 * @param enc the encoding type of the string (defaults to utf8)
-	 * @returns string encoded as Uint8Array
+	 * Describes an Algorand transaction, for display in Inkey
+	 * @param txn Transaction to describe
 	 */
-	to8Arr(str: string, enc: BufferEncoding = 'utf8'): Uint8Array {
-		return new Uint8Array(Buffer.from(str, enc));
+	txnSummary(txn: algosdk.Transaction): string {
+		// for reference: https://developer.algorand.org/docs/get-details/transactions/transactions/
+
+		if (txn.type) {
+			const to = txn.to ? algosdk.encodeAddress(txn.to.publicKey) : '';
+			const from = txn.from ? algosdk.encodeAddress(txn.from.publicKey) : '';
+
+			// sending algo
+			if (txn.type === 'pay') {
+				return `Send ${algosdk.microalgosToAlgos(txn.amount as number)} ALGO to ${to}`;
+
+				// sending assets
+			} else if (txn.type === 'axfer') {
+				if (!txn.amount && to === from) {
+					return `Opt-in to asset ID ${txn.assetIndex}`;
+				} else {
+					const amount = txn.amount ? txn.amount : 0;
+					return `Transfer ${amount} of asset ID ${txn.assetIndex} to ${to}`;
+				}
+
+				// asset config
+				// this could be creating, destroying, or configuring an asset,
+				// depending on which fields are set
+			} else if (txn.type === 'acfg') {
+
+				// if unit name is supplied, we are creating
+				if (txn.assetUnitName) {
+					return `Create asset ${txn.assetName}, symbol ${txn.assetUnitName}`;
+				}
+
+				return `Configure asset ${txn.assetIndex}`;
+
+				// asset freeze
+			} else if (txn.type === 'afrz') {
+				return `Freeze asset ${txn.assetIndex}`;
+
+				// application call
+			} else if (txn.type === 'appl') {
+				// let's find out what kind of application call this is
+				// reference: https://developer.algorand.org/docs/get-details/dapps/avm/teal/specification/#oncomplete
+				switch (txn.appOnComplete) {
+					// NoOp
+					case 0:
+						return `Call to application ID ${txn.appIndex}`;
+
+					// OptIn
+					case 1:
+						return `Opt-in to application ID ${txn.appIndex}`;
+
+					// CloseOut
+					case 2:
+						return `Close out application ID ${txn.appIndex}`;
+
+					// ClearState
+					case 3:
+						return `Execute clear state program of application ID ${txn.appIndex}`;
+
+					// Update
+					case 4:
+						return `Update application ID ${txn.appIndex}`;
+
+					// Delete
+					case 5:
+						return `Delete application ID ${txn.appIndex}`;
+
+					default:
+						return `Call to application ID ${txn.appIndex}`;
+				}
+
+				// default case
+			} else {
+				return `Transaction of type ${txn.type} to ${to}`;
+			}
+		} else {
+			// no better option
+			return txn.toString();
+		}
 	}
 }
-export default Algonaut;
 
 export const buffer = Buffer; // sometimes this is helpful on the frontend
