@@ -99,7 +99,7 @@ export declare class Algonaut {
     /**
      * Recovers account from mnemonic
      * @param mnemonic Mnemonic associated with Algonaut account
-     * @returns If mnemonic is valid, returns account. Otherwise, returns false.
+     * @returns If mnemonic is valid, returns account. Otherwise, throws an error.
      */
     recoverAccount(mnemonic: string): algosdk.Account;
     /**
@@ -603,7 +603,7 @@ export declare const utils: {
     /**
      * Recovers account from mnemonic
      * @param mnemonic Mnemonic associated with Algonaut account
-     * @returns If mnemonic is valid, returns account. Otherwise, returns false.
+     * @returns If mnemonic is valid, returns account. Otherwise, throws an error.
      */
     recoverAccount(mnemonic: string): algosdk.Account;
     /**
