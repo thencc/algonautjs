@@ -142,13 +142,6 @@ export class FrameBus {
 			this.onMsgHandler = this.onMessage.bind(this);
 			window.addEventListener('message', this.onMsgHandler, false);
 		});
-
-		// make it stick to top.
-		// we can't use position: fixed here because `perspective` on the `body` element breaks it
-		window.addEventListener('scroll', function () {
-			walEl.style.top = window.scrollY + 'px';
-		});
-
 	}
 
 	showFrame() {
@@ -168,6 +161,9 @@ export class FrameBus {
 		this.destroying = true;
 
 		if (this.walElContainer) {
+			if (this.walEl) {
+				this.walElContainer.removeChild(this.walEl);
+			}
 			document.body.removeChild(this.walElContainer);
 			this.walElContainer = null;
 		}

@@ -2309,7 +2309,7 @@ export class Algonaut {
 	}
 
 	/** INCLUDE ALL THE UTILITIES IN ALGONAUT EXPORT FOR CONVENIENCE **/
-	
+
 	/**
 	 *
 	 * @param str string
@@ -2341,7 +2341,7 @@ export class Algonaut {
 
 	/**
 	 * Decodes a Base64-encoded Uint8 Algorand address and returns a string
-	 * @param encoded An encoded Algorand address	
+	 * @param encoded An encoded Algorand address
 	 * @returns Decoded address
 	 */
 	valueAsAddr(encoded: string): string {
@@ -2379,7 +2379,7 @@ export default Algonaut;
 
 /**
  * This export contains all the offline Algonaut functionality.
- * Since instantiation of the Algonaut class requires that you 
+ * Since instantiation of the Algonaut class requires that you
  * configure a node, if you wish to use certain conveniences of
  * Algonaut without the need for a network, simply use
  * `import { utils } from '@thencc/algonautjs'`
@@ -2389,11 +2389,11 @@ export const utils = {
 	 * Creates a wallet address + mnemonic from account's secret key
 	 * @returns AlgonautWallet Object containing `address` and `mnemonic`
 	 */
-	 createWallet(): AlgonautWallet {
+	createWallet(): AlgonautWallet {
 		const account = algosdk.generateAccount();
 
 		if (account) {
-			let mnemonic = algosdk.secretKeyToMnemonic(account.sk);
+			const mnemonic = algosdk.secretKeyToMnemonic(account.sk);
 			return {
 				address: account.addr,
 				mnemonic: mnemonic || ''
@@ -2402,14 +2402,14 @@ export const utils = {
 			throw new Error('There was no account: could not create algonaut wallet!');
 		}
 
-	}, 
+	},
 
 	/**
 	 * Recovers account from mnemonic
 	 * @param mnemonic Mnemonic associated with Algonaut account
 	 * @returns If mnemonic is valid, returns account. Otherwise, throws an error.
 	 */
-	 recoverAccount(mnemonic: string): algosdk.Account {
+	recoverAccount(mnemonic: string): algosdk.Account {
 		if (!mnemonic) throw new Error('utils.recoverAccount: No mnemonic provided.');
 
 		try {
@@ -2441,7 +2441,7 @@ export const utils = {
 		);
 
 		return new algosdk.LogicSigAccount(program);
-	}, 
+	},
 
 	/**
 	 * Sync function that returns a correctly-encoded argument array for
@@ -2450,7 +2450,7 @@ export const utils = {
 	 * a mix of strings and numbers. Valid types are: string, number, and bigint
 	 * @returns a Uint8Array of encoded arguments
 	 */
-	 encodeArguments(args: any[]): Uint8Array[] {
+	encodeArguments(args: any[]): Uint8Array[] {
 		const encodedArgs = [] as Uint8Array[];
 
 		// loop through args and encode them based on type
@@ -2472,7 +2472,7 @@ export const utils = {
 	 * @param appId - ID of application
 	 * @returns Escrow account address as string
 	 */
-	 getAppEscrowAccount(appId: number | bigint): string {
+	getAppEscrowAccount(appId: number | bigint): string {
 		if (!appId) throw new Error('No appId provided');
 		return algosdk.getApplicationAddress(appId);
 	},
@@ -2548,11 +2548,11 @@ export const utils = {
 	 * @param account algosdk.Account object with `sk`, that signs the transactions
 	 * @returns Uint8Array[] of signed transactions
 	 */
-	 signTransactionGroup(txns: algosdk.Transaction[], account: algosdk.Account): Uint8Array[] | Uint8Array {
+	signTransactionGroup(txns: algosdk.Transaction[], account: algosdk.Account): Uint8Array[] | Uint8Array {
 
 		// this is critical, if the group doesn't have an id
 		// the transactions are processed as one-offs!
-		
+
 		if (txns.length > 1) {
 			const txnGroup = algosdk.assignGroupID(txns);
 
@@ -2577,7 +2577,7 @@ export const utils = {
 	 * @param account algosdk.Account object with `sk`, that signs the transactions
 	 * @returns Uint8Array signed transactions
 	 */
-	 signBase64Transactions(txns: string[], account: algosdk.Account): Uint8Array[] | Uint8Array {
+	signBase64Transactions(txns: string[], account: algosdk.Account): Uint8Array[] | Uint8Array {
 		const decodedTxns: algosdk.Transaction[] = [];
 		txns.forEach(txn => {
 			const decodedTxn = this.decodeBase64UnsignedTransaction(txn);
@@ -2677,6 +2677,6 @@ export const utils = {
 			return txn.toString();
 		}
 	}
-}
+};
 
 export const buffer = Buffer; // sometimes this is helpful on the frontend
