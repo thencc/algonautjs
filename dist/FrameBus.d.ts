@@ -3,6 +3,7 @@ export declare class FrameBus {
     initing: boolean;
     destroying: boolean;
     walEl: null | any;
+    walElContainer: null | any;
     walWin: null | Window;
     onMsgHandler: null | ((event: any) => void);
     requests: Map<string, {

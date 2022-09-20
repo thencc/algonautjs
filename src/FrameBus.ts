@@ -4,7 +4,10 @@ export class FrameBus {
 	initing = false; // for async init w initSrc
 	destroying = false;
 
+	// this iframe
 	walEl: null | any = null; // should be HTMLIFrameElement but that breaks in a Node env
+	// container for iframe 3d persp
+	walElContainer: null | any = null; // should be HTMLIFrameElement but that breaks in a Node env
 	walWin: null | Window = null;
 	// need a reference to onMsgHandler since .bind(this) makes a new instance of that method and removeEventListener needs the real thing
 	onMsgHandler: null | ((event: any) => void) = null; // `event` param should be MessageEvent<any> type, but that breaks in Node env
@@ -52,8 +55,8 @@ export class FrameBus {
 		document.body.addEventListener('DOMNodeRemoved', (evt) => {
 			if (!this.destroying) {
 				const removedNode = evt.target;
-				if (removedNode == this.walEl) {
-					console.log('iframe removed from DOM');
+				if (removedNode == this.walElContainer) {
+					console.log('iframe container removed from DOM');
 					this.destroy();
 				}
 			}
@@ -103,6 +106,8 @@ export class FrameBus {
 		this.initing = true;
 
 		// make element
+		const walElContainer = document.createElement('div');
+		walElContainer.setAttribute('id', 'inkey-frame-container');
 		const walEl = document.createElement('iframe');
 		walEl.src = src;
 		walEl.classList.add('inkey-frame');
@@ -115,8 +120,10 @@ export class FrameBus {
 		walEl.setAttribute('allow', 'publickey-credentials-get');
 		// walEl.setAttribute('allow', 'publickey-credentials-create'); // gah, wish this existed...
 		this.walEl = walEl;
+		this.walElContainer = walElContainer;
 		// mount el
-		document.body.append(walEl);
+		walElContainer.appendChild(walEl);
+		document.body.append(walElContainer);
 
 		// get iframe window
 		const walWin = walEl.contentWindow;
@@ -160,8 +167,12 @@ export class FrameBus {
 		// console.log('destroy FrameBus');
 		this.destroying = true;
 
+		if (this.walElContainer) {
+			document.body.removeChild(this.walElContainer);
+			this.walElContainer = null;
+		}
+
 		if (this.walEl) {
-			document.body.removeChild(this.walEl);
 			this.walEl = null;
 		}
 
@@ -307,7 +318,17 @@ export class FrameBus {
 	}
 
 	getStyles(): string {
-		return `.inkey-frame {
+		return `#inkey-frame-container {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100vw;
+			perspective: 800px;
+			perspective-origin: center top;
+			z-index: 10001;
+		}
+
+		.inkey-frame {
 			position: absolute;
 			top: 0;
 			left: 4px;
@@ -321,7 +342,6 @@ export class FrameBus {
 			transform-origin: center top;
 			transform: translate3d(0px, 0px, -350px) rotateX(70deg);
 			visibility: hidden;
-			z-index: 10001;
 		}
 
 		.inkey-frame.visible {
@@ -335,11 +355,6 @@ export class FrameBus {
 				max-width: 400px;
 				left: calc(50% - 200px);
 			}
-		}
-
-		body {
-			perspective: 800px;
-			perspective-origin: center top;
 		}`;
 	}
 
