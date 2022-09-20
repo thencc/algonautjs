@@ -112,12 +112,11 @@ export class FrameBus {
 		walEl.src = src;
 		walEl.classList.add('inkey-frame');
 		walEl.setAttribute('id', 'inkey-frame');
-		walEl.setAttribute('allow', 'clipboard-write'); // needed to copy stuff to clipboard
 		walEl.setAttribute('name', 'walFrame');
 		walEl.setAttribute('title', 'Algorand Microwallet');
 		walEl.setAttribute('frameborder', '0');
 		walEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-modals allow-popups allow-downloads');
-		walEl.setAttribute('allow', 'publickey-credentials-get');
+		walEl.setAttribute('allow', 'publickey-credentials-get; clipboard-write');
 		// walEl.setAttribute('allow', 'publickey-credentials-create'); // gah, wish this existed...
 		this.walEl = walEl;
 		this.walElContainer = walElContainer;
