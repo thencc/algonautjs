@@ -45,11 +45,16 @@ export class FrameBus {
 			}
 		}
 
-		// insert styles
-		const stylesheet = document.createElement('style');
-		stylesheet.setAttribute('id', 'inkey-frame-styles');
-		stylesheet.innerText = this.getStyles();
-		document.head.appendChild(stylesheet);
+		// insert styles (if not there)
+		const existingStyles = document.querySelector('style#inkey-frame-styles');
+		if (!existingStyles) {
+			const stylesheet = document.createElement('style');
+			stylesheet.setAttribute('id', 'inkey-frame-styles');
+			stylesheet.innerText = this.getStyles();
+			document.head.appendChild(stylesheet);
+		} else {
+			console.warn('NOT mounting inkey-frame-styles to DOM head again');
+		}
 
 		// catch case where user/script deletes el from DOM, close/reset properly
 		document.body.addEventListener('DOMNodeRemoved', (evt) => {
