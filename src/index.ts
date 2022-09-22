@@ -1667,14 +1667,14 @@ export class Algonaut {
 	/**
 	 * Opens Inkey to allow users to create an account or login with a previously
 	 * created account. Must be called before transactions can be signed.
-	 * @param message Message to show to users
+	 * @param payload Optional payload object, can contain `siteName` parameter to display the name of the application.
 	 * @returns Promise resolving to an account object of type `{ account: string }`
 	 */
-	async inkeyConnect(message?: string): Promise<any> {
-		if (!message) message = '';
+	async inkeyConnect(payload?: { siteName?: '' }): Promise<any> {
+		if (!payload) payload = {}
 		const data = {
 			type: 'connect',
-			payload: { message }
+			payload
 		};
 
 		const account = await this.inkeyMessageAsync(data, { showFrame: true });

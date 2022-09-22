@@ -386,10 +386,12 @@ export declare class Algonaut {
     /**
      * Opens Inkey to allow users to create an account or login with a previously
      * created account. Must be called before transactions can be signed.
-     * @param message Message to show to users
+     * @param payload Optional payload object, can contain `siteName` parameter to display the name of the application.
      * @returns Promise resolving to an account object of type `{ account: string }`
      */
-    inkeyConnect(message?: string): Promise<any>;
+    inkeyConnect(payload?: {
+        siteName?: '';
+    }): Promise<any>;
     /**
      * Tells Inkey to close your session & clear local storage.
      * @returns Success or fail message
