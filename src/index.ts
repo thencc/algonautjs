@@ -2371,7 +2371,7 @@ export class Algonaut {
 	 * @param txn Transaction to describe
 	 */
 	txnSummary(txn: algosdk.Transaction) {
-		return utils.txnSummary;
+		return utils.txnSummary(txn);
 	}
 
 }

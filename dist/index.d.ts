@@ -586,7 +586,7 @@ export declare class Algonaut {
      * Describes an Algorand transaction, for display in Inkey
      * @param txn Transaction to describe
      */
-    txnSummary(txn: algosdk.Transaction): (txn: algosdk.Transaction) => string;
+    txnSummary(txn: algosdk.Transaction): string;
 }
 export default Algonaut;
 /**
