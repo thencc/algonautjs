@@ -23,7 +23,7 @@ jobs:
         with:
           version: 7.9.3
           run_install: |
-              args: [--frozen-lockfile, --strict-peer-dependencies]
+              args: [--no-frozen-lockfile, --strict-peer-dependencies]
 
       # old way:
       # - run: npm ci
