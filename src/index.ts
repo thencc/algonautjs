@@ -23,7 +23,8 @@ import type {
 	AlgonautLsigPaymentArguments,
 	AlgonautUpdateAppArguments,
 	AlgonautGetApplicationResponse,
-	AlgonautAppStateEncoded
+	AlgonautAppStateEncoded,
+	InkeySignTxnResponse
 } from './AlgonautTypes';
 
 import { FrameBus } from './FrameBus';
@@ -1514,9 +1515,26 @@ export class Algonaut {
 					return encodedTxn;
 				});
 
-				signedTxns = await this.inkeySignTxns(txnsToSign);
+				const inkeyResponse = await this.inkeySignTxns(txnsToSign);
+				if (inkeyResponse.success && inkeyResponse.signedTxns) {
+					// user approved transaction
+					signedTxns = inkeyResponse.signedTxns;
+				} else if (inkeyResponse.error) {
+					// there was an error with the transaction
+					throw new Error(inkeyResponse.error);
+				} else if (inkeyResponse.reject) {
+					// user rejected the transaction
+					return {
+						status: 'rejected',
+						message: 'User rejected the message.',
+						txId: ''
+					}
+				} else {
+					// this should never happen
+					throw new Error('Unknown error sending Inkey txn');
+				}
 
-				// HANDLE SINGLE ATOMIC TRANSACTION
+			// HANDLE SINGLE ATOMIC TRANSACTION
 			} else {
 
 				let txn: algosdk.Transaction;
@@ -1528,7 +1546,24 @@ export class Algonaut {
 
 				// send base64 to inkey
 				const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString('base64');
-				signedTxns = await this.inkeySignTxns([encodedTxn]);
+				const inkeyResponse = await this.inkeySignTxns([encodedTxn]);
+				if (inkeyResponse.success && inkeyResponse.signedTxns) {
+					// user approved transaction
+					signedTxns = inkeyResponse.signedTxns;
+				} else if (inkeyResponse.error) {
+					// there was an error with the transaction
+					throw new Error(inkeyResponse.error);
+				} else if (inkeyResponse.reject) {
+					// user rejected the transaction
+					return {
+						status: 'rejected',
+						message: 'User rejected the message.',
+						txId: ''
+					}
+				} else {
+					// this should never happen
+					throw new Error('Unknown error sending Inkey txn');
+				}
 			}
 
 			if (callbacks?.onSign) callbacks.onSign(signedTxns);
@@ -1608,9 +1643,9 @@ export class Algonaut {
 	/**
 	 * Sends unsigned transactions to Inkey, awaits signing, returns signed txns
 	 * @param txns Array of base64 encoded transactions
-	 * @returns {Uint8Array} Signed transactions
+	 * @returns {Promise<InkeySignTxnResponse>} Promise resolving to response object containing signedTxns if successful. Otherwise, provides `error` or `reject` properties. { success, reject, error, signedTxns }
 	 */
-	async inkeySignTxns(txns: string[]) {
+	async inkeySignTxns(txns: string[]): Promise<InkeySignTxnResponse> {
 		console.log('inkeySignTxns');
 
 		const data = {
@@ -1624,10 +1659,26 @@ export class Algonaut {
 
 		this.inkeyWallet.frameBus?.hideFrame();
 
-		if (res.error) throw new Error(res.error);
-		if (res.reject) throw new Error('Transaction request rejected');
+		if (res.error) {
+			return {
+				success: false,
+				reject: false,
+				error: res.error
+			}
+		}
 
-		return res.signedTxns;
+		if (res.reject) {
+			return {
+				success: false,
+				reject: true
+			}
+		}
+
+		return {
+			success: true,
+			reject: false,
+			signedTxns: res.signedTxns as Uint8Array[]
+		}
 	}
 
 	/**

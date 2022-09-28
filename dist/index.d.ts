@@ -1,6 +1,6 @@
 /// <reference types="node" />
 import algosdk from 'algosdk';
-import type { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautAppState, AlgonautStateData, AlgonautError, WalletConnectListener, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments, AlgonautAppStateEncoded } from './AlgonautTypes';
+import type { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautAppState, AlgonautStateData, AlgonautError, WalletConnectListener, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments, AlgonautAppStateEncoded, InkeySignTxnResponse } from './AlgonautTypes';
 import { FrameBus } from './FrameBus';
 import { IInternalEvent } from '@walletconnect/types';
 declare global {
@@ -365,9 +365,9 @@ export declare class Algonaut {
     /**
      * Sends unsigned transactions to Inkey, awaits signing, returns signed txns
      * @param txns Array of base64 encoded transactions
-     * @returns {Uint8Array} Signed transactions
+     * @returns {Promise<InkeySignTxnResponse>} Promise resolving to response object containing signedTxns if successful. Otherwise, provides `error` or `reject` properties. { success, reject, error, signedTxns }
      */
-    inkeySignTxns(txns: string[]): Promise<any>;
+    inkeySignTxns(txns: string[]): Promise<InkeySignTxnResponse>;
     /**
      * Shows the Inkey wallet frame
      */

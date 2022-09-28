@@ -119,7 +119,7 @@ export declare type AlgonautError = {
     rawError?: any;
 };
 export declare type AlgonautTransactionStatus = {
-    status: 'success' | 'fail';
+    status: 'success' | 'fail' | 'rejected';
     message: string;
     index?: number;
     txId: string;
@@ -147,4 +147,10 @@ export declare type AlgonautAtomicTransaction = {
     transaction: algosdk.Transaction;
     transactionSigner: algosdk.Account | algosdk.LogicSigAccount;
     isLogigSig: boolean;
+};
+export declare type InkeySignTxnResponse = {
+    success: boolean;
+    reject?: boolean;
+    error?: any;
+    signedTxns?: Uint8Array[] | Uint8Array;
 };
