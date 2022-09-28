@@ -11,7 +11,7 @@ specifiers:
   '@walletconnect/types': ^1.8.0
   '@walletconnect/utils': ^1.8.0
   algorand-walletconnect-qrcode-modal: ^1.7.4
-  algosdk: ^1.19.0
+  algosdk: ^1.21.0
   base32-encode: ^2.0.0
   buffer: ^6.0.3
   crypto-js: ^4.1.1
@@ -39,7 +39,7 @@ dependencies:
   '@walletconnect/types': 1.8.0
   '@walletconnect/utils': 1.8.0
   algorand-walletconnect-qrcode-modal: 1.8.0
-  algosdk: 1.19.0
+  algosdk: 1.21.0
   base32-encode: 2.0.0
   buffer: 6.0.3
   crypto-js: 4.1.1
@@ -522,7 +522,7 @@ packages:
       qrcode: 1.4.4
     dev: false
 
-  /algosdk/1.19.0:
+  /algosdk/1.21.0:
     resolution: {integrity: sha512-odDyNSsr3RK8oDgmMLqt0PFuukeXpETAVa0TkSCPE3IeUIEslwNu5zA6cXs5ParJOcsWjQENRw+XJ9FMEDHW4w==}
     dependencies:
       algo-msgpack-with-bigint: 2.1.1
