@@ -1,6 +1,5 @@
 # Testing AlgonautJS
 
-
 ## setup
 - install [`taskfile`](https://taskfile.dev/installation/)
 	- `brew install go-task/tap/go-task`
@@ -49,19 +48,11 @@
 			- [`./init-node-ts-esm`](`./init-node-ts-esm`)
 
 
-## unit tests (TODO)
-tests for algonautjs features include:
-- `account-recover.js`
-- `algo-bal.js`
-- `algo-xfr.js`
-- `asset-xfr.js`
-- `asset-create.js`
-- `app-call.js`
-- `app-create.js`
-- ...
+## unit tests
 
-TBD: use jest/mocha/chai for this
+Unit tests for algonaut are in `algonaut.test.ts`. Run them with:
 
+`npm run test`
 
 ## notes
-- ...
+- don't mock code you don't own! APIs change all the time! :)

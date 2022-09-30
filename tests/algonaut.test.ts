@@ -1,5 +1,10 @@
 import {describe, expect, test, beforeAll, beforeEach, afterEach} from '@jest/globals';
+
 import Algonaut from '../src/index';
+import { utils } from '../src/index';
+
+import { accountAppID, bricksID, txnCallApp, txnCloseOutApp, txnCreateAsset, txnDeleteApp, txnOptInApp, txnOptInAsset, txnPayment, txnSendAsset } from './mocks/txns';
+
 import { AlgonautConfig, AlgonautWallet } from '../src/AlgonautTypes';
 
 const validConfig: AlgonautConfig = {
@@ -73,10 +78,26 @@ describe('isValidConfig tests', () => {
 });
 
 // getConfig
+describe('getConfig()', () => {
+    test('getConfig returns config object', () => {
+        const algonaut = new Algonaut(validConfig);
+        expect(algonaut.getConfig()).toEqual(validConfig);
+    });
+
+    test('getConfig returns false if Algonaut is not configured', () => {
+        expect(Algonaut.prototype.getConfig()).toBeFalsy();
+    });
+});
+
 // setConfig
+describe('setConfig()', () => {
+    test('setConfig tests are covered by constructor tests', () => {
+        expect(true).toBeTruthy();
+    });
+});
 
 // ======= algonaut core ========
-describe('offline sync functions', () => {
+describe('Algonaut core: offline sync methods', () => {
     var algonaut: Algonaut;
 
     beforeEach(() => {
@@ -95,6 +116,13 @@ describe('offline sync functions', () => {
         expect((algonaut.account as any).sk).toBeDefined();
     })
 
+    test('utils.createAccount also works', () => {
+        var wallet = utils.createWallet();
+        expect(wallet).toBeDefined();
+        expect(typeof wallet.address).toBe('string');
+        expect(typeof wallet.mnemonic).toBe('string');
+    });
+
     // recoverAccount
     test('recoverAccount works with a newly created wallet', () => {
         let account = algonaut.createWallet();
@@ -103,16 +131,90 @@ describe('offline sync functions', () => {
         expect(recoveredAccount.sk).toBeDefined();
     })
 
+    test('utils.recoverAccount also works', () => {
+        const wallet = utils.createWallet();
+        let recoveredAccount: any = utils.recoverAccount(wallet.mnemonic);
+        expect(recoveredAccount.addr).toBeDefined();
+        expect(recoveredAccount.sk).toBeDefined();
+    })
+
     // decodeBase64UnsignedTransaction
     // decodeStateArray
     // encodeArguments
     // fromBase64
+    test('fromBase64 decodes base64-encoded text', () => {
+        expect(algonaut.fromBase64('SGVsbG8gV29ybGQ=')).toBe('Hello World');
+    })
+
+    test('utils.fromBase64 decodes base64-encoded text', () => {
+        expect(utils.fromBase64('SGVsbG8gV29ybGQ=')).toBe('Hello World');
+    })
     // signBase64Transactions
     // signTransactionGroup
     // stateArrayToObject
     // setAccount
     // to8Arr
+    test('to8Arr returns Uint8Array', () => {
+        expect(algonaut.to8Arr('test note')).toBeInstanceOf(Uint8Array);
+    })
+
+    test('utils.to8Arr returns Uint8Array', () => {
+        expect(utils.to8Arr('test note')).toBeInstanceOf(Uint8Array);
+    })
+
     // txnSummary
+    describe('txnSummary tests', () => {
+        test('txnSummary takes in a txn and returns a string', () => {
+            const summary = utils.txnSummary(txnPayment);
+            expect(typeof summary).toBe('string');
+        })
+
+        test('identifies payment txn', () => {
+            const summary = utils.txnSummary(txnPayment);
+            expect(summary.includes('Send')).toBeTruthy();
+        })
+
+        test('identifies opt in asset txn', () => {
+            const summary = utils.txnSummary(txnOptInAsset);
+            expect (summary.includes(`Opt-in to asset ID ${bricksID}`)).toBeTruthy();
+        })
+
+        test('identifies asset xfer', () => {
+            const summary = utils.txnSummary(txnSendAsset);
+            expect(summary.includes(`Transfer 1 of asset ID ${bricksID}`)).toBeTruthy();
+        })
+
+        test('identifies create asset', () => {
+            const summary = utils.txnSummary(txnCreateAsset);
+            expect(summary.includes(`Create asset Test Asset, symbol TEST`)).toBeTruthy();
+        })
+
+        test('identifies call app', () => {
+            const summary = utils.txnSummary(txnCallApp);
+            expect(summary.includes(`Call to application ID ${accountAppID}`)).toBeTruthy();
+        })
+
+        test('identifies opt in app', () => {
+            const summary = utils.txnSummary(txnOptInApp);
+            expect(summary.includes(`Opt-in to application ID ${accountAppID}`)).toBeTruthy();
+        })
+
+        test('identifies close out app', () => {
+            const summary = utils.txnSummary(txnCloseOutApp);
+            expect(summary.includes(`Close out application ID ${accountAppID}`)).toBeTruthy();
+        })
+
+        test('identifies delete app', () => {
+            const summary = utils.txnSummary(txnDeleteApp);
+            expect(summary.includes(`Delete application ID ${accountAppID}`)).toBeTruthy();
+        })
+
+        // test('identifies update app', () => {
+        //     const summary = utils.txnSummary(txnUpdateApp);
+        //     expect(summary.includes(`Update application ID ${accountAppID}`)).toBeTruthy();
+        // })
+    })
+
     // getAppEscrowAccount
     // valueAsAddr
 })
