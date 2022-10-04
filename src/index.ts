@@ -1584,7 +1584,6 @@ export class Algonaut {
 
 			return txStatus;
 		} else {
-			console.log('sendTransaction: local');
 			// assume local signing
 			if (Array.isArray(txnOrTxns)) {
 				return await this.sendAtomicTransaction(txnOrTxns, callbacks);
