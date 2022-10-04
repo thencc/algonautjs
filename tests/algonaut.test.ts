@@ -587,7 +587,7 @@ describe('Algonaut online methods', () => {
             expect(state.admin).toBeDefined();
         })
 
-        test('valueAsAddr successfully decodes address', async () => {
+        test('valueAsAddr successfully decodes', async () => {
             let state = await algonaut.getAppGlobalState(ACCOUNT_APP);
             let addr = utils.valueAsAddr(state.admin);
             expect(addr).toBeDefined();
