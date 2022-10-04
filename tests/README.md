@@ -54,5 +54,7 @@ Unit tests for algonaut are in `algonaut.test.ts`. Run them with:
 
 `npm run test`
 
+Unit tests require `ALGONAUT_TEST_MNEMONIC` to be set in the environment (.env is fine). This account must have a little bit of Algo in it to run the tests.
+
 ## notes
 - don't mock code you don't own! APIs change all the time! :)
