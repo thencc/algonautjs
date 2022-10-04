@@ -318,6 +318,12 @@ describe('Algonaut online methods', () => {
             expect(txn.transaction instanceof algosdk.Transaction).toBeTruthy()
         })
 
+        test('atomicSendAlgo creates a transaction', async () => {
+            const to = utils.createWallet();
+            const txn = await algonaut.atomicSendAlgo({ to: to.address, amount: 10 });
+            expect(txn.transaction instanceof algosdk.Transaction).toBeTruthy()
+        })
+
         test('sendAlgo sends ALGO successfully', async () => {
             // this test doubles as a way to fund the new wallet for opt-in tests later
             // so if it fails, it causes a bit of a domino effect
@@ -648,12 +654,28 @@ describe('Algonaut online methods', () => {
         })
 
         test('atomicDeleteApp returns a transaction', async () => {
+            const txn = await algonaut.atomicDeleteApp(createdApp);
+            expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
+        })
+
+        test('atomicDeleteApplication returns a transaction', async () => {
             const txn = await algonaut.atomicDeleteApplication(createdApp);
             expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
         })
 
         test('deleteApplication successfully deletes the application', async () => {
             let res = await algonaut.deleteApplication(createdApp);
+            expect(res.status).toBe('success');
+
+            // get info of deleted app
+            await expect(algonaut.getAppInfo(createdApp)).rejects.toThrow();
+        })
+
+        test('deleteApp successfully deletes the application', async () => {
+            const newApp = await algonaut.createApp(createAppArgs);
+            expect(newApp.status).toBe('success');
+
+            let res = await algonaut.deleteApp(newApp.createdIndex as number);
             expect(res.status).toBe('success');
 
             // get info of deleted app

@@ -208,9 +208,24 @@ export declare class Algonaut {
      * @param appIndex - ID of application
      * @returns Promise resolving to atomic transaction that deletes application
      */
+    atomicDeleteApp(appIndex: number): Promise<AlgonautAtomicTransaction>;
+    /**
+     * DEPRECATED! Use `atomicDeleteApp` instead. Returns atomic transaction that deletes application
+     * @deprecated
+     * @param appIndex - ID of application
+     * @returns Promise resolving to atomic transaction that deletes application
+     */
     atomicDeleteApplication(appIndex: number): Promise<AlgonautAtomicTransaction>;
     /**
      * Deletes an application from the blockchain
+     * @param appIndex - ID of application
+     * @param callbacks optional AlgonautTxnCallbacks
+     * @returns Promise resolving to confirmed transaction or error
+     */
+    deleteApp(appIndex: number, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
+    /**
+     * DEPRECATED! Use `deleteApp` instead. This will be removed in future versions.
+     * @deprecated
      * @param appIndex - ID of application
      * @param callbacks optional AlgonautTxnCallbacks
      * @returns Promise resolving to confirmed transaction or error
@@ -297,6 +312,14 @@ export declare class Algonaut {
      * @returns Promise resolving to Buffer of compiled bytes
      */
     compileProgram(programSource: string): Promise<Uint8Array>;
+    atomicSendAlgo(args: AlgonautPaymentArguments): Promise<AlgonautAtomicTransaction>;
+    /**
+     * DEPRECATED. Use `atomicSendAlgo`. This name will be removed in future versions.
+     * @deprecated
+     * @param args `AlgonautPaymentArgs` object containing `to`, `amount`, and optional `note`
+     * @param callbacks optional AlgonautTxnCallbacks
+     * @returns Promise resolving to atomic trasnaction
+     */
     atomicPayment(args: AlgonautPaymentArguments): Promise<AlgonautAtomicTransaction>;
     /**
      * Sends ALGO from own account to `args.to`

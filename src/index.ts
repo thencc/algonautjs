@@ -730,7 +730,7 @@ export class Algonaut {
 	 * @param appIndex - ID of application
 	 * @returns Promise resolving to atomic transaction that deletes application
 	 */
-	async atomicDeleteApplication(appIndex: number): Promise<AlgonautAtomicTransaction> {
+	async atomicDeleteApp(appIndex: number): Promise<AlgonautAtomicTransaction> {
 		if (!this.account) throw new Error('No account set.');
 		if (!appIndex) throw new Error('No app ID provided');
 
@@ -749,16 +749,27 @@ export class Algonaut {
 	}
 
 	/**
+	 * DEPRECATED! Use `atomicDeleteApp` instead. Returns atomic transaction that deletes application
+	 * @deprecated
+	 * @param appIndex - ID of application
+	 * @returns Promise resolving to atomic transaction that deletes application
+	 */
+	 async atomicDeleteApplication(appIndex: number): Promise<AlgonautAtomicTransaction> {
+		console.warn('atomicDeleteApplication is deprecated and will be removed in future versions.')
+		return await this.atomicDeleteApp(appIndex);
+	}
+
+	/**
 	 * Deletes an application from the blockchain
 	 * @param appIndex - ID of application
 	 * @param callbacks optional AlgonautTxnCallbacks
 	 * @returns Promise resolving to confirmed transaction or error
 	 */
-	async deleteApplication(appIndex: number, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
+	async deleteApp(appIndex: number, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
 		if (!this.account) throw new Error('There was no account');
 
 		try {
-			const { transaction } = await this.atomicDeleteApplication(appIndex);
+			const { transaction } = await this.atomicDeleteApp(appIndex);
 			const txId = transaction.txID().toString();
 
 			const status = await this.sendTransaction(transaction, callbacks);
@@ -768,7 +779,6 @@ export class Algonaut {
 				.pendingTransactionInformation(txId)
 				.do();
 			const appId = transactionResponse['txn']['txn'].apid;
-			console.log('Deleted app-id: ', appId);
 
 			return {
 				status: 'success',
@@ -780,6 +790,18 @@ export class Algonaut {
 			console.log(e);
 			throw new Error(e.response?.text);
 		}
+	}
+
+	/**
+	 * DEPRECATED! Use `deleteApp` instead. This will be removed in future versions.
+	 * @deprecated
+	 * @param appIndex - ID of application
+	 * @param callbacks optional AlgonautTxnCallbacks
+	 * @returns Promise resolving to confirmed transaction or error
+	 */
+	async deleteApplication(appIndex: number, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
+		console.warn('deleteApplication is deprecated and will be removed in future versions.')
+		return await this.deleteApp(appIndex, callbacks);
 	}
 
 	async atomicCallApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
@@ -1237,7 +1259,7 @@ export class Algonaut {
 	}
 
 	// TODO rename atomicSendAlgo
-	async atomicPayment(args: AlgonautPaymentArguments): Promise<AlgonautAtomicTransaction> {
+	async atomicSendAlgo(args: AlgonautPaymentArguments): Promise<AlgonautAtomicTransaction> {
 		if (!args.amount) throw new Error('You did not specify an amount!');
 		if (!args.to) throw new Error('You did not specify a to address');
 
@@ -1264,6 +1286,18 @@ export class Algonaut {
 	}
 
 	/**
+	 * DEPRECATED. Use `atomicSendAlgo`. This name will be removed in future versions.
+	 * @deprecated
+	 * @param args `AlgonautPaymentArgs` object containing `to`, `amount`, and optional `note`
+	 * @param callbacks optional AlgonautTxnCallbacks
+	 * @returns Promise resolving to atomic trasnaction
+	 */
+	async atomicPayment(args: AlgonautPaymentArguments): Promise<AlgonautAtomicTransaction> {
+		console.warn('atomicPayment is deprecated and will be removed in future versions.')
+		return await this.atomicSendAlgo(args);
+	}
+
+	/**
 	 * Sends ALGO from own account to `args.to`
 	 *
 	 * @param args `AlgonautPaymentArgs` object containing `to`, `amount`, and optional `note`
@@ -1272,7 +1306,7 @@ export class Algonaut {
 	 */
 	async sendAlgo(args: AlgonautPaymentArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
 		if (!this.account) throw new Error('there was no account!');
-		const { transaction } = await this.atomicPayment(args);
+		const { transaction } = await this.atomicSendAlgo(args);
 		return await this.sendTransaction(transaction, callbacks);
 	}
 
@@ -1605,7 +1639,6 @@ export class Algonaut {
 				if (callbacks?.onSend) callbacks.onSend(signedTxn);
 
 				const txId = tx.txId || tx.id || tx.txId().toString();
-				console.log('Transaction ID: ' + txId);
 
 				const txStatus = await this.waitForConfirmation(txId);
 				if (callbacks?.onConfirm) callbacks.onConfirm(signedTxn);
@@ -1635,7 +1668,6 @@ export class Algonaut {
 		if (options?.showFrame) this.inkeyWallet.frameBus.showFrame();
 
 		const payload = await this.inkeyWallet.frameBus.emitAsync<any>(data);
-		console.log('inkey payload', payload);
 		return payload;
 	}
 
@@ -1645,8 +1677,6 @@ export class Algonaut {
 	 * @returns {Promise<InkeySignTxnResponse>} Promise resolving to response object containing signedTxns if successful. Otherwise, provides `error` or `reject` properties. { success, reject, error, signedTxns }
 	 */
 	async inkeySignTxns(txns: string[]): Promise<InkeySignTxnResponse> {
-		console.log('inkeySignTxns');
-
 		const data = {
 			type: 'sign-txns', // determines payload type
 			payload: {
@@ -1728,7 +1758,6 @@ export class Algonaut {
 		};
 
 		const account = await this.inkeyMessageAsync(data, { showFrame: true });
-		console.log(account);
 		this.setInkeyAccount(account.address);
 		if (this.config) this.config.SIGNING_MODE = 'inkey';
 		return account;
@@ -1744,7 +1773,6 @@ export class Algonaut {
 		};
 
 		const res = await this.inkeyMessageAsync(data, { showFrame: false });
-		console.log(res);
 
 		if (res.success) {
 			// remove algonaut account
@@ -1796,7 +1824,6 @@ export class Algonaut {
 			const tx = await this.algodClient.sendRawTransaction(signed).do();
 
 			if (callbacks?.onSend) callbacks.onSend(tx);
-			//console.log('Transaction : ' + tx.txId);
 
 			// Wait for transaction to be confirmed
 			const txStatus = await this.waitForConfirmation(tx.txId);
@@ -1858,7 +1885,6 @@ export class Algonaut {
 			// this is critical, if the group doesn't have an id
 			// the transactions are processed as one-offs
 			if (walletTxns.length > 1) {
-				//console.log('assigning group ID to transactions...');
 				txns = algosdk.assignGroupID(txns);
 			}
 
@@ -2472,7 +2498,7 @@ export const utils = {
 			}
 		} catch (error: any) {
 			// should we throw an error here instead of returning false?
-			console.log(error);
+			console.error(error);
 			throw new Error('Could not recover account from mnemonic.');
 		}
 	},
