@@ -376,9 +376,9 @@ export class Algonaut {
 				pendingInfo['confirmed-round'] > 0
 			) {
 
-				console.log(
-					'Transaction confirmed in round ' + pendingInfo['confirmed-round']
-				);
+				if (log) {
+					console.log('Transaction confirmed in round ' + pendingInfo['confirmed-round']);
+				}
 
 				returnValue.txId = txId;
 				returnValue.status = 'success';
