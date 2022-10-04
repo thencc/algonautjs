@@ -2,8 +2,11 @@ import {describe, expect, test, beforeAll, beforeEach, afterEach, jest } from '@
 import Algonaut from '../src/index';
 import { utils } from '../src/index';
 import { accountAppID, bricksID, txnCallApp, txnCloseOutApp, txnCreateAsset, txnDeleteApp, txnOptInApp, txnOptInAsset, txnPayment, txnSendAsset } from './mocks/txns';
-import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus } from '../src/AlgonautTypes';
+import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAppState } from '../src/AlgonautTypes';
 import accounttContractValid from './mocks/account-contract-valid';
+import accountv2 from './mocks/accountv2';
+import accountClear from './mocks/account-clear';
+import getAppLocalStateResponse from './mocks/getAppLocalStateResponse';
 import dotenv from 'dotenv'
 import algosdk from 'algosdk';
 dotenv.config()
@@ -34,7 +37,6 @@ validConfigInkey.SIGNING_MODE = 'inkey';
 // created at the beginning of each test run but used throughout
 var freshWallet: AlgonautWallet; 
 
-// constructor
 describe('instantiate Algonaut without inkey', () => {
     let algonaut: Algonaut;
 
@@ -96,7 +98,6 @@ describe('isValidConfig tests', () => {
     })
 });
 
-// getConfig
 describe('getConfig()', () => {
     test('getConfig returns config object', () => {
         const algonaut = new Algonaut(validConfig);
@@ -108,7 +109,6 @@ describe('getConfig()', () => {
     });
 });
 
-// setConfig
 describe('setConfig()', () => {
     test('setConfig tests are covered by constructor tests', () => {
         expect(true).toBeTruthy();
@@ -127,7 +127,6 @@ describe('Algonaut core: offline sync methods', () => {
         expect(algonaut.account).toBeUndefined();
     })
 
-    // createWallet
     test('createWallet sets account with a valid wallet with addr and sk params', () => {
         algonaut.createWallet();
         expect(algonaut.account).toBeDefined();
@@ -142,7 +141,6 @@ describe('Algonaut core: offline sync methods', () => {
         expect(typeof freshWallet.mnemonic).toBe('string');
     });
 
-    // recoverAccount
     test('recoverAccount works with a newly created wallet', () => {
         let account = algonaut.createWallet();
         let recoveredAccount: any = algonaut.recoverAccount(account.mnemonic);
@@ -157,10 +155,6 @@ describe('Algonaut core: offline sync methods', () => {
         expect(recoveredAccount.sk).toBeDefined();
     })
 
-    // decodeBase64UnsignedTransaction
-    // decodeStateArray
-    // encodeArguments
-    // fromBase64
     test('fromBase64 decodes base64-encoded text', () => {
         expect(algonaut.fromBase64('SGVsbG8gV29ybGQ=')).toBe('Hello World');
     })
@@ -168,10 +162,13 @@ describe('Algonaut core: offline sync methods', () => {
     test('utils.fromBase64 decodes base64-encoded text', () => {
         expect(utils.fromBase64('SGVsbG8gV29ybGQ=')).toBe('Hello World');
     })
-    // signBase64Transactions
-    // signTransactionGroup
-    // stateArrayToObject
-    // setAccount
+
+    test('stateArrayToObject correctly transforms state array', () => {
+        const obj = algonaut.stateArrayToObject(getAppLocalStateResponse.locals)
+        expect(obj.name).toBe('Name');
+        expect(obj.bio).toBe('Description of me')
+    })
+
     test('set account changes algonaut account', () => {
         const account1 = algonaut.sdk.generateAccount();
         algonaut.createWallet();
@@ -180,7 +177,6 @@ describe('Algonaut core: offline sync methods', () => {
         expect(algonaut.account?.addr).toBe(account1.addr);
     })
 
-    // to8Arr
     test('to8Arr returns Uint8Array', () => {
         expect(algonaut.to8Arr('test note')).toBeInstanceOf(Uint8Array);
     })
@@ -189,7 +185,6 @@ describe('Algonaut core: offline sync methods', () => {
         expect(utils.to8Arr('test note')).toBeInstanceOf(Uint8Array);
     })
 
-    // txnSummary
     describe('txnSummary', () => {
         test('txnSummary takes in a txn and returns a string', () => {
             const summary = utils.txnSummary(txnPayment);
@@ -242,13 +237,10 @@ describe('Algonaut core: offline sync methods', () => {
         // })
     })
 
-    // getAppEscrowAccount
     test('getAppEscrowAccount returns app address', () => {
         const appAddress = algonaut.sdk.getApplicationAddress(accountAppID);
         expect(algonaut.getAppEscrowAccount(accountAppID)).toEqual(appAddress);
     })
-
-    // valueAsAddr
 })
 
 describe('Algonaut online methods', () => {
@@ -263,7 +255,6 @@ describe('Algonaut online methods', () => {
         algonaut.recoverAccount(testAccountMnemonic);
     })
 
-    // compileProgram
     describe('compileProgram', () => {
         test('compileProgram successfully compiles a valid program', async () => {
             const compiled = await algonaut.compileProgram(accounttContractValid)
@@ -272,7 +263,6 @@ describe('Algonaut online methods', () => {
         })
     })
 
-    // checkStatus
     describe('checkStatus', () => {
         test('check status returns network status', async () => {
             const status = await algonaut.checkStatus();
@@ -363,8 +353,23 @@ describe('Algonaut online methods', () => {
 
         test('getAssetInfo returns asset info', async () => {
             const info = await algonaut.getAssetInfo(asset.createdIndex);
-            console.log(info);
+            console.log('getAssetInfo response', info);
             expect(info).toBeDefined();
+            // check all properties! in case the API changes, we will know immediately :)
+            expect(info).toHaveProperty('index');
+            expect(info).toHaveProperty('params');
+            expect(info).toHaveProperty('params.name-b64');
+            expect(info).toHaveProperty('params.unit-name-b64');
+            expect(info).toHaveProperty('params.default-frozen');
+            expect(info.params.clawback).toBe(algonaut.account?.addr)
+            expect(info.params.freeze).toBe(algonaut.account?.addr)
+            expect(info.params.manager).toBe(algonaut.account?.addr)
+            expect(info.params.reserve).toBe(algonaut.account?.addr)
+            expect(info.params.creator).toBe(algonaut.account?.addr)
+            expect(info.params.decimals).toBe(assetArgs.decimals)
+            expect(info.params.total).toBe(assetArgs.amount)
+            expect(info.params['unit-name']).toBe(assetArgs.symbol)
+            expect(info.params['name']).toBe(assetArgs.assetName)
         })
 
         test('getTokenBalance returns 5 (amount specified during createAsset)', async () => {
@@ -435,25 +440,229 @@ describe('Algonaut online methods', () => {
         })
     })
 
-    
-    // atomicCallApp
-    // callApp
-    // atomicCloseOutApp
-    // closeOutApp
-    // atomicCreateApp
-    // createApp
-    // atomicDeleteApplication
-    // deleteApplication
-    // atomicOptInApp
-    // atomicUpdateApp
-    // getAccounts
-    // getAppGlobalState
-    // getAppInfo
-    // getAppLocalState
-    // getAssetInfo
-    // optInApp
-    // updateApp
+    describe('App tests', () => {
+        const ACCOUNT_APP = 51066775; // the account app from arts-council
+        const createAppArgs = {
+            tealApprovalCode: accounttContractValid,
+            tealClearCode: accountClear,
+            appArgs: [],
+            schema: {
+                localInts: 4,
+                localBytes: 12,
+                globalInts: 1,
+                globalBytes: 1
+            }
+        };
 
+        const updateAppArgs = {
+            appIndex: 123456789,
+            tealApprovalCode: accountv2,
+            tealClearCode: accountClear,
+            appArgs: []
+        };
+
+        var createdApp: any;
+
+        test('atomicOptInApp returns a transaction', async () => {
+            const txn = await algonaut.atomicOptInApp({ appIndex: ACCOUNT_APP, appArgs: [] });
+            expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
+        })
+
+        test('optInApp successfully opts in', async () => {
+            let res = await algonaut.optInApp({
+				appIndex: ACCOUNT_APP,
+				appArgs: [
+					'set_all',
+					'Name',
+					'Description of me',
+					'',
+					'https://example.com',
+					'',
+					'example@example.com'
+				]
+			});
+			expect(res.status).toBe('success');
+        })
+
+        test('getAppLocalState returns local state using algonaut.account by default', async () => {
+            let state: AlgonautAppState = await algonaut.getAppLocalState(ACCOUNT_APP) as AlgonautAppState;
+            console.log('getAppLocalState response: opted in', state);
+            expect(state).toBeDefined();
+            expect(state.hasState).toBe(true);
+            expect(state.globals).toHaveLength(0);
+            expect(state.locals.length).toBeDefined();
+            expect(state.index).toBe(ACCOUNT_APP)
+
+            const obj = algonaut.stateArrayToObject(state.locals);
+
+            expect(obj.name).toBe('Name');
+            expect(obj.bio).toBe('Description of me');
+            expect(obj.contact).toBe('example@example.com');
+            expect(obj.link).toBe('https://example.com');
+        })
+
+        test('getAppLocalState also works with foreign address', async () => {
+            let state: AlgonautAppState = await algonaut.getAppLocalState(ACCOUNT_APP, freshWallet.address) as AlgonautAppState;
+            console.log('getAppLocalState response: not opted in', state);
+            expect(state).toBeDefined();
+            expect(state.hasState).toBe(false);
+            expect(state.globals).toHaveLength(0);
+            expect(state.locals).toHaveLength(0);
+            expect(state.index).toBe(ACCOUNT_APP)
+        })
+
+        test('atomicCallApp returns a transaction', async () => {
+            const txn = await algonaut.atomicCallApp({ appIndex: ACCOUNT_APP, appArgs: ['version_test'] });
+            expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
+        })
+
+        test('callApp successfully updates local state', async () => {
+			let res = await algonaut.callApp({
+				appIndex: ACCOUNT_APP,
+				appArgs: [
+					'set_all',
+					'New Name',
+					'Updated bio',
+					'New avatar',
+					'New link',
+					'',
+					'newemail@email.com'
+				]
+			});
+			expect(res.status).toBe('success');
+			let state = await algonaut.getAppLocalState(ACCOUNT_APP);
+            expect(state).toBeDefined(); // TODO: check for updated new name
+        })
+
+        test('atomicCloseOutApp returns a transaction', async () => {
+            const txn = await algonaut.atomicCloseOutApp({
+				appIndex: ACCOUNT_APP,
+				appArgs: [
+					'set_all',
+					'',
+					'',
+					'',
+					'',
+					'',
+					''
+				]
+			});
+            expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
+        })
+
+        test('closeOutApp removes local state', async () => {
+			let res = await algonaut.closeOutApp({
+				appIndex: ACCOUNT_APP,
+				appArgs: [
+					'set_all',
+					'',
+					'',
+					'',
+					'',
+					'',
+					''
+				]
+			});
+			expect(res.status).toBe('success');
+        })
+
+        test('atomicCreateApp returns a transaction', async () => {
+            const txn = await algonaut.atomicCreateApp(createAppArgs);
+            expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
+        })
+        
+        test('createApp successfully deploys an application and returns createdIndex', async () => {
+            const res = await algonaut.createApp(createAppArgs);
+            expect(res.status).toBe('success');
+            expect(res.createdIndex).toBeDefined();
+            expect(res.createdIndex).toBeGreaterThan(0);
+            createdApp = res.createdIndex;
+            updateAppArgs.appIndex = res.createdIndex as number;
+        })
+
+        test('getAppGlobalState returns global state for app', async () => {
+            let state = await algonaut.getAppGlobalState(createdApp);
+            console.log(state);
+            expect(state).toBeDefined();
+            expect(state.admin).toBeDefined();
+        })
+
+        test('valueAsAddr successfully decodes address', async () => {
+            let state = await algonaut.getAppGlobalState(ACCOUNT_APP);
+            let addr = utils.valueAsAddr(state.admin);
+            expect(addr).toBeDefined();
+        })
+
+        test('getAppInfo returns all app info', async () => {
+            let info = await algonaut.getAppInfo(createdApp);
+            console.log(info);
+            expect(info).toBeDefined();
+        })
+
+        test('atomicUpdateApp returns a transaction', async () => {
+            const txn = await algonaut.atomicUpdateApp(updateAppArgs);
+            expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
+        })
+
+        test('updateApp should update the application code', async () => {
+            // first we need to opt in to the app we've created
+            let optIn = await algonaut.optInApp({ 
+                appIndex: createdApp,
+                appArgs: [
+                    'set_all',
+                    'Name',
+                    'Description of me',
+                    '',
+                    'https://example.com',
+                    '',
+                    'example@example.com'
+                ]
+            });
+
+            // this call SHOULD fail, because version_test doesn't exist on v1
+            try {
+                let res = await algonaut.callApp({
+					appIndex: createdApp,
+					appArgs: ['version_test']
+				});
+                expect(res.status).toBe('fail');
+            } catch (e) {
+                expect(e).toBeDefined();
+            }
+
+            // now we update the application and test the call again
+            const updateResult = await algonaut.updateApp({
+                appIndex: createdApp,
+                tealApprovalCode: accountv2,
+                tealClearCode: accountClear,
+                appArgs: []
+            });
+            expect(updateResult.status).toBe('success');
+
+            // and the call should pass now
+            let res = await algonaut.callApp({
+                appIndex: createdApp,
+                appArgs: ['version_test']
+            });
+            expect(res.status).toBe('success');
+        })
+
+        test('atomicDeleteApp returns a transaction', async () => {
+            const txn = await algonaut.atomicDeleteApplication(createdApp);
+            expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
+        })
+
+        test('deleteApplication successfully deletes the application', async () => {
+            let res = await algonaut.deleteApplication(createdApp);
+            expect(res.status).toBe('success');
+
+            // get info of deleted app
+            await expect(algonaut.getAppInfo(createdApp)).rejects.toThrow();
+        })
+    })
+
+    
+    // getAccounts
     // waitForConfirmation
     // sendAtomicTransaction
     // sendTransaction
