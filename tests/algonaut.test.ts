@@ -1,24 +1,19 @@
 import {describe, expect, test, beforeAll, beforeEach, afterEach, jest } from '@jest/globals';
-
 import Algonaut from '../src/index';
 import { utils } from '../src/index';
-
 import { accountAppID, bricksID, txnCallApp, txnCloseOutApp, txnCreateAsset, txnDeleteApp, txnOptInApp, txnOptInAsset, txnPayment, txnSendAsset } from './mocks/txns';
-
-import { AlgonautConfig, AlgonautWallet } from '../src/AlgonautTypes';
-
+import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus } from '../src/AlgonautTypes';
 import accounttContractValid from './mocks/account-contract-valid';
-
 import dotenv from 'dotenv'
 import algosdk from 'algosdk';
 dotenv.config()
 
+// if there is not a valid test mnemonic, we cannot proceed!
 const testAccountMnemonic: string = process.env.ALGONAUT_TEST_MNEMONIC as string;
-
 if (!testAccountMnemonic) console.error('You must set ALGONAUT_TEST_MNEMONIC in your environment. This account needs a little bit of ALGO to run the tests.')
-
 try {
-    utils.recoverAccount(testAccountMnemonic);
+    let account = utils.recoverAccount(testAccountMnemonic);
+    console.log(`Account set for tests: ${account.addr}`)
 } catch (e) {
     console.error('ALGONAUT_TEST_MNEMONIC is not a valid Algorand account')
 }
@@ -31,17 +26,16 @@ const validConfig: AlgonautConfig = {
     API_TOKEN: { [(process.env.NCC_API_TOKEN_HEADER as any)]: process.env.NCC_API_TOKEN }
 }
 
-const validConfigInkey: AlgonautConfig = {
-    BASE_SERVER: process.env.NCC_BASE_SERVER as any,
-    INDEX_SERVER: process.env.NCC_INDEX_SERVER,
-    LEDGER: process.env.NCC_LEDGER as string,
-    PORT: process.env.NCC_PORT as string,
-    API_TOKEN: { [(process.env.NCC_API_TOKEN_HEADER as any)]: process.env.NCC_API_TOKEN },
-    SIGNING_MODE: 'inkey'
-}
+// copy node config, add inkey signing mode (for Inkey tests)
+const validConfigInkey: AlgonautConfig = JSON.parse(JSON.stringify(validConfig));
+validConfigInkey.SIGNING_MODE = 'inkey';
+
+// this is a new wallet we use to test various things,
+// created at the beginning of each test run but used throughout
+var freshWallet: AlgonautWallet; 
 
 // constructor
-describe('instantiate Algonau w/o inkey', () => {
+describe('instantiate Algonaut without inkey', () => {
     let algonaut: Algonaut;
 
     beforeEach(() => {
@@ -59,7 +53,7 @@ describe('instantiate Algonau w/o inkey', () => {
         expect(algonaut.usingInkeyWallet()).toBeFalsy();
     })
 
-    test('frame bus should not exist by default', () => {
+    test('frameBus should not exist by default', () => {
         expect(algonaut.inkeyWallet.frameBus).toBeUndefined();
     });
 
@@ -69,14 +63,14 @@ describe('instantiate Algonau w/o inkey', () => {
     })
 });
 
-describe('instantiate Algonaut w/ inkey', () => {
+describe('instantiate Algonaut with inkey', () => {
     let algonaut: Algonaut;
 
     beforeEach(() => {
         algonaut = new Algonaut(validConfigInkey);
     });
 
-    test('frame bus should exist when inkey is used', () => {
+    test('frameBus should exist when inkey is used', () => {
         expect(algonaut.inkeyWallet.frameBus).toBeDefined();
     })
 
@@ -95,6 +89,10 @@ describe('isValidConfig tests', () => {
     }
     test('require BASE_SERVER', () => {
         expect(new Algonaut(validConfig).isValidConfig(invalidConfig)).toBeFalsy();
+    })
+
+    test('isValidConfig returns true for a valid config', () => {
+        expect(new Algonaut(validConfig).isValidConfig(validConfig)).toBe(true);
     })
 });
 
@@ -138,10 +136,10 @@ describe('Algonaut core: offline sync methods', () => {
     })
 
     test('utils.createAccount also works', () => {
-        var wallet = utils.createWallet();
-        expect(wallet).toBeDefined();
-        expect(typeof wallet.address).toBe('string');
-        expect(typeof wallet.mnemonic).toBe('string');
+        freshWallet = utils.createWallet();
+        expect(freshWallet).toBeDefined();
+        expect(typeof freshWallet.address).toBe('string');
+        expect(typeof freshWallet.mnemonic).toBe('string');
     });
 
     // recoverAccount
@@ -200,42 +198,42 @@ describe('Algonaut core: offline sync methods', () => {
 
         test('identifies payment txn', () => {
             const summary = utils.txnSummary(txnPayment);
-            expect(summary.includes('Send')).toBeTruthy();
+            expect(summary.includes('Send')).toBe(true);
         })
 
         test('identifies opt in asset txn', () => {
             const summary = utils.txnSummary(txnOptInAsset);
-            expect (summary.includes(`Opt-in to asset ID ${bricksID}`)).toBeTruthy();
+            expect (summary.includes(`Opt-in to asset ID ${bricksID}`)).toBe(true);
         })
 
         test('identifies asset xfer', () => {
             const summary = utils.txnSummary(txnSendAsset);
-            expect(summary.includes(`Transfer 1 of asset ID ${bricksID}`)).toBeTruthy();
+            expect(summary.includes(`Transfer 1 of asset ID ${bricksID}`)).toBe(true);
         })
 
         test('identifies create asset', () => {
             const summary = utils.txnSummary(txnCreateAsset);
-            expect(summary.includes(`Create asset Test Asset, symbol TEST`)).toBeTruthy();
+            expect(summary.includes(`Create asset Test Asset, symbol TEST`)).toBe(true);
         })
 
         test('identifies call app', () => {
             const summary = utils.txnSummary(txnCallApp);
-            expect(summary.includes(`Call to application ID ${accountAppID}`)).toBeTruthy();
+            expect(summary.includes(`Call to application ID ${accountAppID}`)).toBe(true);
         })
 
         test('identifies opt in app', () => {
             const summary = utils.txnSummary(txnOptInApp);
-            expect(summary.includes(`Opt-in to application ID ${accountAppID}`)).toBeTruthy();
+            expect(summary.includes(`Opt-in to application ID ${accountAppID}`)).toBe(true);
         })
 
         test('identifies close out app', () => {
             const summary = utils.txnSummary(txnCloseOutApp);
-            expect(summary.includes(`Close out application ID ${accountAppID}`)).toBeTruthy();
+            expect(summary.includes(`Close out application ID ${accountAppID}`)).toBe(true);
         })
 
         test('identifies delete app', () => {
             const summary = utils.txnSummary(txnDeleteApp);
-            expect(summary.includes(`Delete application ID ${accountAppID}`)).toBeTruthy();
+            expect(summary.includes(`Delete application ID ${accountAppID}`)).toBe(true);
         })
 
         // test('identifies update app', () => {
@@ -256,7 +254,7 @@ describe('Algonaut core: offline sync methods', () => {
 describe('Algonaut online methods', () => {
     // increase timeout here so we can wait for transactions to confirm
     jest.setTimeout(120000); 
-    
+
     let algonaut: Algonaut; 
     let account;
 
@@ -327,57 +325,145 @@ describe('Algonaut online methods', () => {
         test('atomicPayment creates a transaction', async () => {
             const to = utils.createWallet();
             const txn = await algonaut.atomicPayment({ to: to.address, amount: 10 });
-            expect(txn.transaction).toBeDefined();
+            expect(txn.transaction instanceof algosdk.Transaction).toBeTruthy()
         })
 
         test('sendAlgo sends ALGO successfully', async () => {
-            const to = utils.createWallet();
-            await algonaut.sendAlgo({ to: to.address, amount: 100000 });
-            const bal = await algonaut.getAlgoBalance(to.address);
-            expect(bal).toBe(100000);
+            // this test doubles as a way to fund the new wallet for opt-in tests later
+            // so if it fails, it causes a bit of a domino effect
+            await algonaut.sendAlgo({ to: freshWallet.address, amount: 500000 });
+            const bal = await algonaut.getAlgoBalance(freshWallet.address);
+            expect(bal).toBe(500000);
         }); 
     })
 
-    // accountHasTokens
-    // atomicAssetTransferWithLSig
+    describe('Asset method tests', () => {
+        let asset: any;
+
+        // might as well spam test net with some ads :)
+        const assetArgs = {
+            assetName: 'Algonaut.JS',
+            symbol: 'NCCALGO',
+            metaBlock: 'Algonaut.js is a library for developing Algorand dApps',
+            decimals: 3,
+            amount: 5,
+            url: 'https://github.com/thencc/algonautjs'
+        };
+
+        test('atomicCreateAsset returns a transaction', async () => {
+            const txn = await algonaut.atomicCreateAsset(assetArgs);
+            expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
+        })
+
+        test('createAsset returns createdIndex property', async () => {
+            asset = await algonaut.createAsset(assetArgs);
+            expect(asset.status).toBe('success');
+            expect(asset.createdIndex).toBeDefined();
+        })
+
+        test('getAssetInfo returns asset info', async () => {
+            const info = await algonaut.getAssetInfo(asset.createdIndex);
+            console.log(info);
+            expect(info).toBeDefined();
+        })
+
+        test('getTokenBalance returns 5 (amount specified during createAsset)', async () => {
+            const bal = await algonaut.getTokenBalance((algonaut.account as any).addr, asset.createdIndex);
+            expect(bal).toBe(5);
+        })
+
+        test('atomicOptInAsset returns a transaction', async () => {
+            const txn = await algonaut.atomicOptInAsset(asset.createdIndex);
+            expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
+        })
+
+        test('isOptedIntoAsset returns false with a new account', async () => {
+            algonaut.recoverAccount(freshWallet.mnemonic)
+            const optedIn = await algonaut.isOptedIntoAsset({
+                account: (algonaut.account as any).addr,
+                assetId: asset.createdIndex
+            })
+            expect(optedIn).toBe(false);
+        })
+
+        test('optInAsset successfully opts in to newly created asset', async () => {
+            algonaut.recoverAccount(freshWallet.mnemonic)
+            let res = await algonaut.optInAsset(asset.createdIndex);
+            expect(res.status).toBe('success');
+
+            const optedIn = await algonaut.isOptedIntoAsset({
+                account: (algonaut.account as any).addr,
+                assetId: asset.createdIndex
+            })
+            expect(optedIn).toBe(true);
+        })
+
+        test('atomicSendAsset returns a transaction', async () => {
+            const txn = await algonaut.atomicSendAsset({ to: freshWallet.address, amount: 1, assetIndex: asset.createdIndex });
+            expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
+        })
+
+        test('sendAsset successfully sends asset', async () => {
+            algonaut.recoverAccount(testAccountMnemonic);
+            const res = await algonaut.sendAsset({ to: freshWallet.address, amount: 1, assetIndex: asset.createdIndex });
+            expect(res).toHaveProperty('txId');
+            expect(res.status).toBe('success');
+            expect(res.error).toBeUndefined();
+            // check balance
+            const bal = await algonaut.getTokenBalance(freshWallet.address, asset.createdIndex);
+            expect(bal).toBe(1);
+        })
+
+        test('atomicDeleteAsset returns a transaction', async () => {
+            const txn = await algonaut.atomicDeleteAsset(asset.createdIndex);
+            expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
+        })
+
+        test('deleteAsset successfully deletes asset', async () => {
+            const asset2Args = {
+				assetName: 'Presto Deleto',
+				symbol: 'DEL',
+				metaBlock: 'Everything is temporary!',
+				decimals: 3,
+				amount: 1
+			};
+			let asset2 = await algonaut.createAsset(asset2Args);
+            if (!asset2.createdIndex) return console.error('Error creating temporary asset');
+			let res = await algonaut.deleteAsset(asset2.createdIndex);
+            expect(res.status).toBe('success');
+            expect(res.error).toBeUndefined();
+        })
+    })
+
+    
     // atomicCallApp
     // callApp
-    // atomicCallAppWithLSig
     // atomicCloseOutApp
     // closeOutApp
     // atomicCreateApp
     // createApp
-    // atomicCreateAsset
-    // createAsset
     // atomicDeleteApplication
     // deleteApplication
-    // atomicDeleteAsset
-    // deleteAsset
     // atomicOptInApp
-    // atomicOptInAsset
-    // atomicPayment
-    // atomicPaymentWithLSig
-    // atomicSendAsset
     // atomicUpdateApp
-    // deployTealWithLSig
-    // generateLogicSig
-    // getAccountInfo
     // getAccounts
-    // getAlgoBalance
     // getAppGlobalState
     // getAppInfo
     // getAppLocalState
     // getAssetInfo
-    // getTokenBalance
-    // isOptedIntoAsset
     // optInApp
-    // optInAsset
     // updateApp
+
     // waitForConfirmation
-    // sendAlgo
-    // sendAsset
     // sendAtomicTransaction
     // sendTransaction
+
+    // ======= Logic Sig tests ======
+    // atomicAssetTransferWithLSig
+    // atomicPaymentWithLSig
+    // atomicCallAppWithLSig
+    // deployTealWithLSig
+    // generateLogicSig
 })
 
 // ========= inkey tests =========
