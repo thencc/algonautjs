@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/indent */
+
 // [parent-window]<->[iframe] communications class
 export class FrameBus {
 	ready = false;
@@ -160,6 +162,12 @@ export class FrameBus {
 		}
 	}
 
+	setHeight(height: number, unit = 'px') {
+		if (this.walEl) {
+			this.walEl.style.height = `${height}${unit}`;
+		}
+	}
+
 	destroy() {
 		// console.log('destroy FrameBus');
 		this.destroying = true;
@@ -246,6 +254,14 @@ export class FrameBus {
 				this.onDisconnect();
 			}
 
+			if (event.data.type === 'set-height') {
+				console.log('got mess: set-height');
+				const h = event.data.height as number;
+				if (h) {
+					this.setHeight(h);
+				}
+			}
+
 			// async message handling back to callee resolver
 			if (event.data['async'] && event.data.async == true && event.data.uuid) {
 				// console.log('requests', this.requests);
@@ -283,10 +299,11 @@ export class FrameBus {
 			uuid,
 		};
 
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		this.walWin?.postMessage(data, this.walEl!.src);
 	}
 
-	// TODO shoudl we also support emitCb(data: any, cb()?: CallbackFn) -- combined w normal? can they all be 1 definition?
+	// TODO should we also support emitCb(data: any, cb()?: CallbackFn) -- combined w normal? can they all be 1 definition?
 	// TODO in algonaut make asyncEmit private so we can abstract asyncEmit method to asyncSendTxn(wrapping asyncEmit...) and all args are type safe
 
 	// async emit
@@ -317,6 +334,7 @@ export class FrameBus {
 		});
 	}
 
+	// TODO store this css IN the inkey repo/project and make an async mess to get the recommended styles (the below)
 	getStyles(): string {
 		return `#inkey-frame-container {
 			position: fixed;
@@ -333,12 +351,13 @@ export class FrameBus {
 			top: 0;
 			left: 4px;
 			width: calc(100vw - 8px);
+			min-height: 80px;
 			height: 400px;
 			border-radius: 0 0 4px 4px;
 			box-shadow: 0 -2px 20px rgba(0,0,0,0.4);
 			opacity: 0;
 			will-change: opacity, transform;
-			transition: 0.2s transform ease-out, 0.1s opacity linear, visibility 0.2s linear;
+			transition:0.2s transform ease-out, 0.1s opacity linear, visibility 0.2s linear, 0.2s height ease-out;
 			transform-origin: center top;
 			transform: translate3d(0px, 0px, -350px) rotateX(70deg);
 			visibility: hidden;
