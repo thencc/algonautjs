@@ -153,12 +153,34 @@ export class FrameBus {
 	showFrame() {
 		if (this.walEl) {
 			this.walEl.classList.add('visible');
+
+			const data: any = {
+				// needed
+				source: 'ncc-inkey-client',
+				// specific
+				type: 'set-visibility',
+				payload: {
+					visible: true
+				}
+			};
+			this.emit(data);
 		}
 	}
 
 	hideFrame() {
 		if (this.walEl) {
 			this.walEl.classList.remove('visible');
+
+			const data: any = {
+				// needed
+				source: 'ncc-inkey-client',
+				// specific
+				type: 'set-visibility',
+				payload: {
+					visible: false
+				}
+			};
+			this.emit(data);
 		}
 	}
 
@@ -255,8 +277,8 @@ export class FrameBus {
 			}
 
 			if (event.data.type === 'set-height') {
-				console.log('got mess: set-height');
-				const h = event.data.height as number;
+				// console.log('got mess: set-height');
+				const h = event.data.payload.height as number;
 				if (h) {
 					this.setHeight(h);
 				}
@@ -284,7 +306,7 @@ export class FrameBus {
 	// TODO only have 1 emit method, just check for data.async == true, then add to requests queue
 	// simple sync emit (dont to add to async response queue)
 	emit(data: Record<string, any>) {
-		console.log('emit to wallet iframe');
+		// console.log('emit to wallet iframe');
 
 		if (!this.ready) {
 			// console.error('FrameBus not ready, please init first');
@@ -299,8 +321,11 @@ export class FrameBus {
 			uuid,
 		};
 
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		this.walWin?.postMessage(data, this.walEl!.src);
+		if (this.walEl && this.walWin) {
+			this.walWin.postMessage(data, this.walEl.src);
+		} else {
+			throw new Error('no wallEl or walWin');
+		}
 	}
 
 	// TODO should we also support emitCb(data: any, cb()?: CallbackFn) -- combined w normal? can they all be 1 definition?
@@ -351,8 +376,11 @@ export class FrameBus {
 			top: 0;
 			left: 4px;
 			width: calc(100vw - 8px);
+			/* set height as computed of AuthHome (usually the first page on load) */
+			height: 257px;
 			min-height: 80px;
-			height: 400px;
+			max-height: calc(100vh - 80px);
+			overflow-y: auto;
 			border-radius: 0 0 4px 4px;
 			box-shadow: 0 -2px 20px rgba(0,0,0,0.4);
 			opacity: 0;
