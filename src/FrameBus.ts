@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/indent */
+
 // [parent-window]<->[iframe] communications class
 export class FrameBus {
 	ready = false;
@@ -151,12 +153,40 @@ export class FrameBus {
 	showFrame() {
 		if (this.walEl) {
 			this.walEl.classList.add('visible');
+
+			const data: any = {
+				// needed
+				source: 'ncc-inkey-client',
+				// specific
+				type: 'set-visibility',
+				payload: {
+					visible: true
+				}
+			};
+			this.emit(data);
 		}
 	}
 
 	hideFrame() {
 		if (this.walEl) {
 			this.walEl.classList.remove('visible');
+
+			const data: any = {
+				// needed
+				source: 'ncc-inkey-client',
+				// specific
+				type: 'set-visibility',
+				payload: {
+					visible: false
+				}
+			};
+			this.emit(data);
+		}
+	}
+
+	setHeight(height: number, unit = 'px') {
+		if (this.walEl) {
+			this.walEl.style.height = `${height}${unit}`;
 		}
 	}
 
@@ -246,6 +276,14 @@ export class FrameBus {
 				this.onDisconnect();
 			}
 
+			if (event.data.type === 'set-height') {
+				// console.log('got mess: set-height');
+				const h = event.data.payload.height as number;
+				if (h) {
+					this.setHeight(h);
+				}
+			}
+
 			// async message handling back to callee resolver
 			if (event.data['async'] && event.data.async == true && event.data.uuid) {
 				// console.log('requests', this.requests);
@@ -268,7 +306,7 @@ export class FrameBus {
 	// TODO only have 1 emit method, just check for data.async == true, then add to requests queue
 	// simple sync emit (dont to add to async response queue)
 	emit(data: Record<string, any>) {
-		console.log('emit to wallet iframe');
+		// console.log('emit to wallet iframe');
 
 		if (!this.ready) {
 			// console.error('FrameBus not ready, please init first');
@@ -283,10 +321,14 @@ export class FrameBus {
 			uuid,
 		};
 
-		this.walWin?.postMessage(data, this.walEl!.src);
+		if (this.walEl && this.walWin) {
+			this.walWin.postMessage(data, this.walEl.src);
+		} else {
+			throw new Error('no wallEl or walWin');
+		}
 	}
 
-	// TODO shoudl we also support emitCb(data: any, cb()?: CallbackFn) -- combined w normal? can they all be 1 definition?
+	// TODO should we also support emitCb(data: any, cb()?: CallbackFn) -- combined w normal? can they all be 1 definition?
 	// TODO in algonaut make asyncEmit private so we can abstract asyncEmit method to asyncSendTxn(wrapping asyncEmit...) and all args are type safe
 
 	// async emit
@@ -317,6 +359,7 @@ export class FrameBus {
 		});
 	}
 
+	// TODO store this css IN the inkey repo/project and make an async mess to get the recommended styles (the below)
 	getStyles(): string {
 		return `#inkey-frame-container {
 			position: fixed;
@@ -333,12 +376,16 @@ export class FrameBus {
 			top: 0;
 			left: 4px;
 			width: calc(100vw - 8px);
-			height: 400px;
+			/* set height as computed of AuthHome (usually the first page on load) */
+			height: 257px;
+			min-height: 80px;
+			max-height: calc(100vh - 80px);
+			overflow-y: auto;
 			border-radius: 0 0 4px 4px;
 			box-shadow: 0 -2px 20px rgba(0,0,0,0.4);
 			opacity: 0;
 			will-change: opacity, transform;
-			transition: 0.2s transform ease-out, 0.1s opacity linear, visibility 0.2s linear;
+			transition:0.2s transform ease-out, 0.1s opacity linear, visibility 0.2s linear, 0.16s height ease-out;
 			transform-origin: center top;
 			transform: translate3d(0px, 0px, -350px) rotateX(70deg);
 			visibility: hidden;
