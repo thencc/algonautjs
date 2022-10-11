@@ -1,6 +1,6 @@
 /// <reference types="node" />
 import algosdk from 'algosdk';
-import type { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautAppState, AlgonautStateData, AlgonautError, WalletConnectListener, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments, AlgonautAppStateEncoded } from './AlgonautTypes';
+import type { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautAppState, AlgonautStateData, AlgonautError, WalletConnectListener, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments, AlgonautAppStateEncoded, InkeySignTxnResponse } from './AlgonautTypes';
 import { FrameBus } from './FrameBus';
 import { IInternalEvent } from '@walletconnect/types';
 declare global {
@@ -208,9 +208,24 @@ export declare class Algonaut {
      * @param appIndex - ID of application
      * @returns Promise resolving to atomic transaction that deletes application
      */
+    atomicDeleteApp(appIndex: number): Promise<AlgonautAtomicTransaction>;
+    /**
+     * DEPRECATED! Use `atomicDeleteApp` instead. Returns atomic transaction that deletes application
+     * @deprecated
+     * @param appIndex - ID of application
+     * @returns Promise resolving to atomic transaction that deletes application
+     */
     atomicDeleteApplication(appIndex: number): Promise<AlgonautAtomicTransaction>;
     /**
      * Deletes an application from the blockchain
+     * @param appIndex - ID of application
+     * @param callbacks optional AlgonautTxnCallbacks
+     * @returns Promise resolving to confirmed transaction or error
+     */
+    deleteApp(appIndex: number, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
+    /**
+     * DEPRECATED! Use `deleteApp` instead. This will be removed in future versions.
+     * @deprecated
      * @param appIndex - ID of application
      * @param callbacks optional AlgonautTxnCallbacks
      * @returns Promise resolving to confirmed transaction or error
@@ -297,6 +312,14 @@ export declare class Algonaut {
      * @returns Promise resolving to Buffer of compiled bytes
      */
     compileProgram(programSource: string): Promise<Uint8Array>;
+    atomicSendAlgo(args: AlgonautPaymentArguments): Promise<AlgonautAtomicTransaction>;
+    /**
+     * DEPRECATED. Use `atomicSendAlgo`. This name will be removed in future versions.
+     * @deprecated
+     * @param args `AlgonautPaymentArgs` object containing `to`, `amount`, and optional `note`
+     * @param callbacks optional AlgonautTxnCallbacks
+     * @returns Promise resolving to atomic trasnaction
+     */
     atomicPayment(args: AlgonautPaymentArguments): Promise<AlgonautAtomicTransaction>;
     /**
      * Sends ALGO from own account to `args.to`
@@ -365,9 +388,9 @@ export declare class Algonaut {
     /**
      * Sends unsigned transactions to Inkey, awaits signing, returns signed txns
      * @param txns Array of base64 encoded transactions
-     * @returns {Uint8Array} Signed transactions
+     * @returns {Promise<InkeySignTxnResponse>} Promise resolving to response object containing signedTxns if successful. Otherwise, provides `error` or `reject` properties. { success, reject, error, signedTxns }
      */
-    inkeySignTxns(txns: string[]): Promise<any>;
+    inkeySignTxns(txns: string[]): Promise<InkeySignTxnResponse>;
     /**
      * Shows the Inkey wallet frame
      */
@@ -386,10 +409,12 @@ export declare class Algonaut {
     /**
      * Opens Inkey to allow users to create an account or login with a previously
      * created account. Must be called before transactions can be signed.
-     * @param message Message to show to users
+     * @param payload Optional payload object, can contain `siteName` parameter to display the name of the application.
      * @returns Promise resolving to an account object of type `{ account: string }`
      */
-    inkeyConnect(message?: string): Promise<any>;
+    inkeyConnect(payload?: {
+        siteName?: '';
+    }): Promise<any>;
     /**
      * Tells Inkey to close your session & clear local storage.
      * @returns Success or fail message
@@ -584,7 +609,7 @@ export declare class Algonaut {
      * Describes an Algorand transaction, for display in Inkey
      * @param txn Transaction to describe
      */
-    txnSummary(txn: algosdk.Transaction): (txn: algosdk.Transaction) => string;
+    txnSummary(txn: algosdk.Transaction): string;
 }
 export default Algonaut;
 /**

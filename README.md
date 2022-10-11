@@ -93,11 +93,12 @@ console.log(txnStatus);
 
 ## Testing
 
-Rudimentary tests done in `test/` dir.
+Unit tests are in `tests/algonaut.test.ts` and implemented with Jest.
 
-1. Create an .env file with `PURESTAKE_API_TOKEN` and `ALGONAUT_TEST_MNEMONIC` set.
+1. Copy the .env.sample file and replace the values with your node configuration, and a test account mnemonic that is funded with ALGO.
 2. Run `npm run test`
-3. If you make changes to algonaut while testing, run `npm run build` before running tests.
+
+Integration tests are also available. See [./tests/README.md](./tests/README.md) for more details.
 
 ## Contributing
 
@@ -120,6 +121,8 @@ note:
 - to update either the `latest` or `beta` releases, the version in `package.json` must be higher than the previous release.
 
 ### Testing
+
+Please make sure all tests pass before submitting a pull request!
 
 (see [./tests/README.md](./tests/README.md))
 

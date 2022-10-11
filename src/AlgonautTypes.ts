@@ -143,7 +143,7 @@ export type AlgonautError = {
 }
 
 export type AlgonautTransactionStatus = {
-	status: 'success' | 'fail';
+	status: 'success' | 'fail' | 'rejected';
 	message: string;
 	index?: number;
 	txId: string;
@@ -174,4 +174,11 @@ export type AlgonautAtomicTransaction = {
 	transaction: algosdk.Transaction;
 	transactionSigner: algosdk.Account | algosdk.LogicSigAccount;
 	isLogigSig: boolean;
+}
+
+export type InkeySignTxnResponse = {
+	success: boolean;
+	reject?: boolean;
+	error?: any;
+	signedTxns?: Uint8Array[]|Uint8Array;
 }

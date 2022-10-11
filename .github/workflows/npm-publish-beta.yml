@@ -68,7 +68,7 @@ jobs:
           version: 7.9.3
           # auto install on use
           run_install: |
-              args: [--frozen-lockfile, --strict-peer-dependencies]
+              args: [--no-frozen-lockfile, --strict-peer-dependencies]
 
       - name: "build"
         run: pnpm run build
