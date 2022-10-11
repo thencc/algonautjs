@@ -385,7 +385,7 @@ export class FrameBus {
 			box-shadow: 0 -2px 20px rgba(0,0,0,0.4);
 			opacity: 0;
 			will-change: opacity, transform;
-			transition:0.2s transform ease-out, 0.1s opacity linear, visibility 0.2s linear, 0.2s height ease-out;
+			transition:0.2s transform ease-out, 0.1s opacity linear, visibility 0.2s linear, 0.16s height ease-out;
 			transform-origin: center top;
 			transform: translate3d(0px, 0px, -350px) rotateX(70deg);
 			visibility: hidden;
