@@ -1,6 +1,6 @@
 {
 	"name": "@thencc/algonautjs",
-	"version": "0.1.72",
+	"version": "0.1.73",
 	"description": "AlgonautJS is a simplified Algorand transaction library built specifically for Browsers and Front End Development",
 	"type": "commonjs",
 	"types": "dist/index.d.ts",
@@ -80,7 +80,7 @@
 		"prettier": "^2.5.1",
 		"ts-jest": "^29.0.2",
 		"ts-node": "^10.7.0",
-		"typedoc": "^0.22.12",
+		"typedoc": "^0.23.16",
 		"typescript": "^4.6.2",
 		"vite": "^3.0.9"
 	},

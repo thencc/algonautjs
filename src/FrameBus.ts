@@ -143,9 +143,9 @@ export class FrameBus {
 			// console.log('iframe loaded');
 
 			// 100ms delay needed for no glitch on first load
-			setTimeout(() => {
-				this.walEl.style.visibility = 'initial';
-			}, 100);
+			// setTimeout(() => {
+			// 	this.walEl.style.visibility = 'initial';
+			// }, 100);
 
 			// success
 			this.ready = true;
@@ -388,6 +388,8 @@ export class FrameBus {
 			setTimeout(() => {
 				this.walEl.style.visibility = 'initial';
 			}, 100);
+		} else {
+			console.warn('no walEl for style.visibility reset');
 		}
 
 	}
