@@ -152,6 +152,13 @@ export class FrameBus {
 			this.initing = false;
 			this.onMsgHandler = this.onMessage.bind(this);
 			window.addEventListener('message', this.onMsgHandler, false);
+
+			// get css styles
+			const data: any = {
+				source: 'ncc-inkey-client', // needed
+				type: 'get-style-recs', // specific
+			};
+			this.emit(data);
 		});
 	}
 

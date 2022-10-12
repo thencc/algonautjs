@@ -1,6 +1,6 @@
 {
 	"name": "@thencc/algonautjs",
-	"version": "0.1.73",
+	"version": "0.1.74",
 	"description": "AlgonautJS is a simplified Algorand transaction library built specifically for Browsers and Front End Development",
 	"type": "commonjs",
 	"types": "dist/index.d.ts",
@@ -24,6 +24,7 @@
 	],
 	"scripts": {
 		"link": "npm link",
+		"link-pnpm": "pnpm link --global",
 		"build": "rm -rf dist && run-s build:*",
 		"build:cjs": "node ./esbuild.cjs.js",
 		"build:esm": "node ./esbuild.esm.js",
