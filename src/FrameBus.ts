@@ -45,17 +45,6 @@ export class FrameBus {
 			}
 		}
 
-		// insert styles (if not there)
-		const existingStyles = document.querySelector('style#inkey-frame-styles');
-		if (!existingStyles) {
-			const stylesheet = document.createElement('style');
-			stylesheet.setAttribute('id', 'inkey-frame-styles');
-			stylesheet.innerText = this.getStyles();
-			document.head.appendChild(stylesheet);
-		} else {
-			console.warn('NOT mounting inkey-frame-styles to DOM head again');
-		}
-
 		// catch case where user/script deletes el from DOM, close/reset properly
 		document.body.addEventListener('DOMNodeRemoved', (evt) => {
 			if (!this.destroying) {
@@ -123,6 +112,13 @@ export class FrameBus {
 		walEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-modals allow-popups allow-downloads');
 		walEl.setAttribute('allow', 'publickey-credentials-get; clipboard-write');
 		// walEl.setAttribute('allow', 'publickey-credentials-create'); // gah, wish this existed...
+
+		// make invisible, real css added later
+		walEl.style.visibility = 'hidden';
+		// setTimeout(() => {
+		// 	walEl.style.visibility = 'initial';
+		// }, 1000);
+
 		this.walEl = walEl;
 		this.walElContainer = walElContainer;
 		// mount el
@@ -139,6 +135,7 @@ export class FrameBus {
 
 		walEl.addEventListener('load', () => {
 			// console.log('iframe loaded');
+			// walEl.style.visibility = 'initial';
 
 			// success
 			this.ready = true;
@@ -185,11 +182,7 @@ export class FrameBus {
 			this.onMsgHandler = null;
 		}
 
-		// remove injected style tag
-		const styleEl = document.querySelector('style#inkey-frame-styles');
-		if (styleEl) {
-			document.head.removeChild(styleEl);
-		}
+		this.removeStyles();
 
 		// ? emit some disconnect event over bus before close?
 
@@ -244,6 +237,19 @@ export class FrameBus {
 
 			if (event.data.type === 'disconnect') {
 				this.onDisconnect();
+			}
+
+			// if (event.data.type === 'set-height') {
+			// 	// console.log('got mess: set-height');
+			// 	const h = event.data.payload.height as number;
+			// 	if (h) {
+			// 		this.setHeight(h);
+			// 	}
+			// }
+
+			if (event.data.type == 'styles-recommonded') {
+				const css = event.data.payload.css as string;
+				this.insertStyles(css);
 			}
 
 			// async message handling back to callee resolver
@@ -317,45 +323,38 @@ export class FrameBus {
 		});
 	}
 
-	getStyles(): string {
-		return `#inkey-frame-container {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100vw;
-			perspective: 800px;
-			perspective-origin: center top;
-			z-index: 10001;
+	insertStyles(css: string) {
+		// console.log('insertStyles', css);
+
+		// TODO verifiy check + sterilize this incoming arg
+
+		// insert styles (if not there)
+		const existingStyles: HTMLStyleElement | null = document.querySelector('style#inkey-frame-styles');
+		if (!existingStyles) {
+			const stylesheet = document.createElement('style');
+			stylesheet.setAttribute('id', 'inkey-frame-styles');
+			stylesheet.innerText = css;
+			document.head.appendChild(stylesheet);
+		} else {
+			// replace styles into existing style tag
+			existingStyles.innerText = css;
 		}
 
-		.inkey-frame {
-			position: absolute;
-			top: 0;
-			left: 4px;
-			width: calc(100vw - 8px);
-			height: 400px;
-			border-radius: 0 0 4px 4px;
-			box-shadow: 0 -2px 20px rgba(0,0,0,0.4);
-			opacity: 0;
-			will-change: opacity, transform;
-			transition: 0.2s transform ease-out, 0.1s opacity linear, visibility 0.2s linear;
-			transform-origin: center top;
-			transform: translate3d(0px, 0px, -350px) rotateX(70deg);
-			visibility: hidden;
+		if (this.walEl) {
+			// 100ms delay needed for no glitch on first load
+			setTimeout(() => {
+				this.walEl.style.visibility = 'initial';
+			}, 100);
 		}
 
-		.inkey-frame.visible {
-			opacity: 1;
-			transform: translate3d(0px, 0px, 0px) rotateX(0deg);
-			visibility: visible;
-		}
+	}
 
-		@media screen and (min-width: 500px) {
-			.inkey-frame {
-				max-width: 400px;
-				left: calc(50% - 200px);
-			}
-		}`;
+	removeStyles() {
+		// remove injected style tag
+		const styleEl = document.querySelector('style#inkey-frame-styles');
+		if (styleEl) {
+			document.head.removeChild(styleEl);
+		}
 	}
 
 	// wallet needs to handle asyncMessages like...

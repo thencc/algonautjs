@@ -26,5 +26,6 @@ export declare class FrameBus {
     onMessage(event: any): void;
     emit(data: Record<string, any>): void;
     emitAsync<T>(data: Record<string, any>): Promise<T>;
-    getStyles(): string;
+    insertStyles(css: string): void;
+    removeStyles(): void;
 }

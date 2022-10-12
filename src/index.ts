@@ -754,8 +754,8 @@ export class Algonaut {
 	 * @param appIndex - ID of application
 	 * @returns Promise resolving to atomic transaction that deletes application
 	 */
-	 async atomicDeleteApplication(appIndex: number): Promise<AlgonautAtomicTransaction> {
-		console.warn('atomicDeleteApplication is deprecated and will be removed in future versions.')
+	async atomicDeleteApplication(appIndex: number): Promise<AlgonautAtomicTransaction> {
+		console.warn('atomicDeleteApplication is deprecated and will be removed in future versions.');
 		return await this.atomicDeleteApp(appIndex);
 	}
 
@@ -800,7 +800,7 @@ export class Algonaut {
 	 * @returns Promise resolving to confirmed transaction or error
 	 */
 	async deleteApplication(appIndex: number, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
-		console.warn('deleteApplication is deprecated and will be removed in future versions.')
+		console.warn('deleteApplication is deprecated and will be removed in future versions.');
 		return await this.deleteApp(appIndex, callbacks);
 	}
 
@@ -1293,7 +1293,7 @@ export class Algonaut {
 	 * @returns Promise resolving to atomic trasnaction
 	 */
 	async atomicPayment(args: AlgonautPaymentArguments): Promise<AlgonautAtomicTransaction> {
-		console.warn('atomicPayment is deprecated and will be removed in future versions.')
+		console.warn('atomicPayment is deprecated and will be removed in future versions.');
 		return await this.atomicSendAlgo(args);
 	}
 
@@ -1562,13 +1562,13 @@ export class Algonaut {
 						status: 'rejected',
 						message: 'User rejected the message.',
 						txId: ''
-					}
+					};
 				} else {
 					// this should never happen
 					throw new Error('Unknown error sending Inkey txn');
 				}
 
-			// HANDLE SINGLE ATOMIC TRANSACTION
+				// HANDLE SINGLE ATOMIC TRANSACTION
 			} else {
 
 				let txn: algosdk.Transaction;
@@ -1593,7 +1593,7 @@ export class Algonaut {
 						status: 'rejected',
 						message: 'User rejected the message.',
 						txId: ''
-					}
+					};
 				} else {
 					// this should never happen
 					throw new Error('Unknown error sending Inkey txn');
@@ -1693,21 +1693,21 @@ export class Algonaut {
 				success: false,
 				reject: false,
 				error: res.error
-			}
+			};
 		}
 
 		if (res.reject) {
 			return {
 				success: false,
 				reject: true
-			}
+			};
 		}
 
 		return {
 			success: true,
 			reject: false,
 			signedTxns: res.signedTxns as Uint8Array[]
-		}
+		};
 	}
 
 	/**
@@ -1751,7 +1751,7 @@ export class Algonaut {
 	 * @returns Promise resolving to an account object of type `{ account: string }`
 	 */
 	async inkeyConnect(payload?: { siteName?: '' }): Promise<any> {
-		if (!payload) payload = {}
+		if (!payload) payload = {};
 		const data = {
 			type: 'connect',
 			payload
