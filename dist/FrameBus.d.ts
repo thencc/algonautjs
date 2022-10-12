@@ -19,6 +19,7 @@ export declare class FrameBus {
     initSrc(src?: string): Promise<void>;
     showFrame(): void;
     hideFrame(): void;
+    setHeight(height: number, unit?: string): void;
     destroy(): void;
     isReady(): Promise<boolean>;
     setOnDisconnect(f: any): void;

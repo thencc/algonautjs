@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/indent */
+
 // [parent-window]<->[iframe] communications class
 export class FrameBus {
 	ready = false;
@@ -148,12 +150,40 @@ export class FrameBus {
 	showFrame() {
 		if (this.walEl) {
 			this.walEl.classList.add('visible');
+
+			const data: any = {
+				// needed
+				source: 'ncc-inkey-client',
+				// specific
+				type: 'set-visibility',
+				payload: {
+					visible: true
+				}
+			};
+			this.emit(data);
 		}
 	}
 
 	hideFrame() {
 		if (this.walEl) {
 			this.walEl.classList.remove('visible');
+
+			const data: any = {
+				// needed
+				source: 'ncc-inkey-client',
+				// specific
+				type: 'set-visibility',
+				payload: {
+					visible: false
+				}
+			};
+			this.emit(data);
+		}
+	}
+
+	setHeight(height: number, unit = 'px') {
+		if (this.walEl) {
+			this.walEl.style.height = `${height}${unit}`;
 		}
 	}
 
@@ -239,18 +269,19 @@ export class FrameBus {
 				this.onDisconnect();
 			}
 
-			// if (event.data.type === 'set-height') {
-			// 	// console.log('got mess: set-height');
-			// 	const h = event.data.payload.height as number;
-			// 	if (h) {
-			// 		this.setHeight(h);
-			// 	}
-			// }
+			if (event.data.type === 'set-height') {
+				// console.log('got mess: set-height');
+				const h = event.data.payload.height as number;
+				if (h) {
+					this.setHeight(h);
+				}
+			}
 
 			if (event.data.type == 'styles-recommonded') {
 				const css = event.data.payload.css as string;
 				this.insertStyles(css);
 			}
+
 
 			// async message handling back to callee resolver
 			if (event.data['async'] && event.data.async == true && event.data.uuid) {
@@ -274,7 +305,7 @@ export class FrameBus {
 	// TODO only have 1 emit method, just check for data.async == true, then add to requests queue
 	// simple sync emit (dont to add to async response queue)
 	emit(data: Record<string, any>) {
-		console.log('emit to wallet iframe');
+		// console.log('emit to wallet iframe');
 
 		if (!this.ready) {
 			// console.error('FrameBus not ready, please init first');
@@ -289,10 +320,14 @@ export class FrameBus {
 			uuid,
 		};
 
-		this.walWin?.postMessage(data, this.walEl!.src);
+		if (this.walEl && this.walWin) {
+			this.walWin.postMessage(data, this.walEl.src);
+		} else {
+			throw new Error('no wallEl or walWin');
+		}
 	}
 
-	// TODO shoudl we also support emitCb(data: any, cb()?: CallbackFn) -- combined w normal? can they all be 1 definition?
+	// TODO should we also support emitCb(data: any, cb()?: CallbackFn) -- combined w normal? can they all be 1 definition?
 	// TODO in algonaut make asyncEmit private so we can abstract asyncEmit method to asyncSendTxn(wrapping asyncEmit...) and all args are type safe
 
 	// async emit
