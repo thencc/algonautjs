@@ -1,3 +1,4 @@
+import type { AlgonautConfig } from './AlgonautTypes';
 export declare class FrameBus {
     ready: boolean;
     initing: boolean;
@@ -14,9 +15,10 @@ export declare class FrameBus {
     {
         id?: string;
         src?: string;
+        align?: AlgonautConfig['INKEY_ALIGN'];
     });
     initId(walElId: string): void;
-    initSrc(src?: string): Promise<void>;
+    initSrc(src?: string, align?: AlgonautConfig['INKEY_ALIGN']): Promise<void>;
     showFrame(): void;
     hideFrame(): void;
     setHeight(height: number, unit?: string): void;

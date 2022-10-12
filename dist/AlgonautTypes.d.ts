@@ -8,6 +8,7 @@ export declare type AlgonautConfig = {
     API_TOKEN: any;
     SIGNING_MODE?: 'local' | 'walletconnect' | 'algosigner' | 'inkey';
     INKEY_SRC?: string;
+    INKEY_ALIGN?: 'center' | 'left' | 'right';
 };
 export interface AlgonautStateData {
     key: string;

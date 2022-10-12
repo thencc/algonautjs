@@ -214,8 +214,13 @@ export class Algonaut {
 				config.INKEY_SRC = 'https://inkey.app';
 			}
 
+			if (!config.INKEY_ALIGN) {
+				config.INKEY_ALIGN = 'center';
+			}
+
 			this.initInkey({
-				src: config.INKEY_SRC
+				src: config.INKEY_SRC,
+				align: config.INKEY_ALIGN
 			});
 		}
 	}
@@ -246,7 +251,8 @@ export class Algonaut {
 	* @param mountConfig object containing the `src` of the iframe
 	*/
 	initInkey(mountConfig: {
-		src?: string
+		src?: string,
+		align: AlgonautConfig['INKEY_ALIGN']
 	}) {
 		// console.log('initInkey');
 
@@ -263,7 +269,8 @@ export class Algonaut {
 
 		if (mountConfig.src) {
 			this.inkeyWallet.frameBus = new FrameBus({
-				src: mountConfig.src
+				src: mountConfig.src,
+				align: mountConfig.align
 			});
 		} else {
 			console.warn('Cannot init Inkey');

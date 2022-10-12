@@ -75,6 +75,7 @@ export declare class Algonaut {
     checkStatus(): Promise<any | AlgonautError>;
     initInkey(mountConfig: {
         src?: string;
+        align: AlgonautConfig['INKEY_ALIGN'];
     }): void;
     /**
      * if you already have an account, set it here

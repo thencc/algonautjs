@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/indent */
 
+import type { AlgonautConfig } from './AlgonautTypes';
+
 // [parent-window]<->[iframe] communications class
 export class FrameBus {
 	ready = false;
@@ -27,6 +29,7 @@ export class FrameBus {
 		{
 			id?: string, // existing wallElId
 			src?: string; //
+			align?: AlgonautConfig['INKEY_ALIGN']
 		}
 	) {
 		if (!config) {
@@ -38,7 +41,7 @@ export class FrameBus {
 				if (config.id) {
 					this.initId(config.id);
 				} else if (config.src) {
-					this.initSrc(config.src);
+					this.initSrc(config.src, config.align);
 				} else {
 					console.error('err constructing FrameBus');
 				}
@@ -61,6 +64,7 @@ export class FrameBus {
 
 	initId(walElId: string) {
 		console.log('initId');
+		console.warn('WARNING: initId is less tested + supported than initSrc...');
 
 		this.destroy(); // reset
 
@@ -88,7 +92,7 @@ export class FrameBus {
 	}
 
 	// aka INSERT into DOM
-	async initSrc(src = 'http://default-src.com') {
+	async initSrc(src = 'http://default-src.com', align?: AlgonautConfig['INKEY_ALIGN']) {
 		console.log('initSrc', src);
 
 		const exEl = document.querySelector('iframe#inkey-frame');
@@ -101,9 +105,13 @@ export class FrameBus {
 
 		this.initing = true;
 
-		// make element
+		// make container el (positioning + 3d transform wrapper)
 		const walElContainer = document.createElement('div');
 		walElContainer.setAttribute('id', 'inkey-frame-container');
+		if (align == 'left') walElContainer.classList.add('align-left');
+		if (align == 'right') walElContainer.classList.add('align-right');
+
+		// make iframe el
 		const walEl = document.createElement('iframe');
 		walEl.src = src;
 		walEl.classList.add('inkey-frame');
@@ -114,13 +122,9 @@ export class FrameBus {
 		walEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-modals allow-popups allow-downloads');
 		walEl.setAttribute('allow', 'publickey-credentials-get; clipboard-write');
 		// walEl.setAttribute('allow', 'publickey-credentials-create'); // gah, wish this existed...
+		walEl.style.visibility = 'hidden'; // mount as invisible, real css added later
 
-		// make invisible, real css added later
-		walEl.style.visibility = 'hidden';
-		// setTimeout(() => {
-		// 	walEl.style.visibility = 'initial';
-		// }, 1000);
-
+		// settings locals for easy access for later (should this happen on event listener load? might be safer in case init get caught in strange halfway mounted state)
 		this.walEl = walEl;
 		this.walElContainer = walElContainer;
 		// mount el
@@ -137,7 +141,11 @@ export class FrameBus {
 
 		walEl.addEventListener('load', () => {
 			// console.log('iframe loaded');
-			// walEl.style.visibility = 'initial';
+
+			// 100ms delay needed for no glitch on first load
+			setTimeout(() => {
+				this.walEl.style.visibility = 'initial';
+			}, 100);
 
 			// success
 			this.ready = true;
