@@ -1750,7 +1750,7 @@ export class Algonaut {
 	 * @param payload Optional payload object, can contain `siteName` parameter to display the name of the application.
 	 * @returns Promise resolving to an account object of type `{ account: string }`
 	 */
-	async inkeyConnect(payload?: { siteName?: '' }): Promise<any> {
+	async inkeyConnect(payload?: { siteName?: string }): Promise<any> {
 		if (!payload) payload = {}
 		const data = {
 			type: 'connect',
