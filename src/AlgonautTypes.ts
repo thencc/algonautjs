@@ -10,6 +10,7 @@ export type AlgonautConfig = {
 	API_TOKEN: any;
 	SIGNING_MODE?: 'local' | 'walletconnect' | 'algosigner' | 'inkey';
 	INKEY_SRC?: string;
+	INKEY_ALIGN?: 'center' | 'left' | 'right';
 }
 
 export interface AlgonautStateData {
@@ -180,5 +181,5 @@ export type InkeySignTxnResponse = {
 	success: boolean;
 	reject?: boolean;
 	error?: any;
-	signedTxns?: Uint8Array[]|Uint8Array;
+	signedTxns?: Uint8Array[] | Uint8Array;
 }

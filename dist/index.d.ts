@@ -75,6 +75,7 @@ export declare class Algonaut {
     checkStatus(): Promise<any | AlgonautError>;
     initInkey(mountConfig: {
         src?: string;
+        align: AlgonautConfig['INKEY_ALIGN'];
     }): void;
     /**
      * if you already have an account, set it here
@@ -413,7 +414,7 @@ export declare class Algonaut {
      * @returns Promise resolving to an account object of type `{ account: string }`
      */
     inkeyConnect(payload?: {
-        siteName?: '';
+        siteName?: string;
     }): Promise<any>;
     /**
      * Tells Inkey to close your session & clear local storage.

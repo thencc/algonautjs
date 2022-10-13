@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/indent */
+
+import type { AlgonautConfig } from './AlgonautTypes';
+
 // [parent-window]<->[iframe] communications class
 export class FrameBus {
 	ready = false;
@@ -25,6 +29,7 @@ export class FrameBus {
 		{
 			id?: string, // existing wallElId
 			src?: string; //
+			align?: AlgonautConfig['INKEY_ALIGN']
 		}
 	) {
 		if (!config) {
@@ -36,24 +41,13 @@ export class FrameBus {
 				if (config.id) {
 					this.initId(config.id);
 				} else if (config.src) {
-					this.initSrc(config.src);
+					this.initSrc(config.src, config.align);
 				} else {
 					console.error('err constructing FrameBus');
 				}
 			} else {
 				console.error('err constructing FrameBus');
 			}
-		}
-
-		// insert styles (if not there)
-		const existingStyles = document.querySelector('style#inkey-frame-styles');
-		if (!existingStyles) {
-			const stylesheet = document.createElement('style');
-			stylesheet.setAttribute('id', 'inkey-frame-styles');
-			stylesheet.innerText = this.getStyles();
-			document.head.appendChild(stylesheet);
-		} else {
-			console.warn('NOT mounting inkey-frame-styles to DOM head again');
 		}
 
 		// catch case where user/script deletes el from DOM, close/reset properly
@@ -70,6 +64,7 @@ export class FrameBus {
 
 	initId(walElId: string) {
 		console.log('initId');
+		console.warn('WARNING: initId is less tested + supported than initSrc...');
 
 		this.destroy(); // reset
 
@@ -97,7 +92,7 @@ export class FrameBus {
 	}
 
 	// aka INSERT into DOM
-	async initSrc(src = 'http://default-src.com') {
+	async initSrc(src = 'http://default-src.com', align?: AlgonautConfig['INKEY_ALIGN']) {
 		console.log('initSrc', src);
 
 		const exEl = document.querySelector('iframe#inkey-frame');
@@ -110,9 +105,13 @@ export class FrameBus {
 
 		this.initing = true;
 
-		// make element
+		// make container el (positioning + 3d transform wrapper)
 		const walElContainer = document.createElement('div');
 		walElContainer.setAttribute('id', 'inkey-frame-container');
+		if (align == 'left') walElContainer.classList.add('align-left');
+		if (align == 'right') walElContainer.classList.add('align-right');
+
+		// make iframe el
 		const walEl = document.createElement('iframe');
 		walEl.src = src;
 		walEl.classList.add('inkey-frame');
@@ -123,6 +122,9 @@ export class FrameBus {
 		walEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-modals allow-popups allow-downloads');
 		walEl.setAttribute('allow', 'publickey-credentials-get; clipboard-write');
 		// walEl.setAttribute('allow', 'publickey-credentials-create'); // gah, wish this existed...
+		walEl.style.visibility = 'hidden'; // mount as invisible, real css added later
+
+		// settings locals for easy access for later (should this happen on event listener load? might be safer in case init get caught in strange halfway mounted state)
 		this.walEl = walEl;
 		this.walElContainer = walElContainer;
 		// mount el
@@ -140,23 +142,63 @@ export class FrameBus {
 		walEl.addEventListener('load', () => {
 			// console.log('iframe loaded');
 
+			// 100ms delay needed for no glitch on first load
+			// setTimeout(() => {
+			// 	this.walEl.style.visibility = 'initial';
+			// }, 100);
+
 			// success
 			this.ready = true;
 			this.initing = false;
 			this.onMsgHandler = this.onMessage.bind(this);
 			window.addEventListener('message', this.onMsgHandler, false);
+
+			// get css styles
+			const data: any = {
+				source: 'ncc-inkey-client', // needed
+				type: 'get-style-recs', // specific
+			};
+			this.emit(data);
 		});
 	}
 
 	showFrame() {
 		if (this.walEl) {
 			this.walEl.classList.add('visible');
+
+			const data: any = {
+				// needed
+				source: 'ncc-inkey-client',
+				// specific
+				type: 'set-visibility',
+				payload: {
+					visible: true
+				}
+			};
+			this.emit(data);
 		}
 	}
 
 	hideFrame() {
 		if (this.walEl) {
 			this.walEl.classList.remove('visible');
+
+			const data: any = {
+				// needed
+				source: 'ncc-inkey-client',
+				// specific
+				type: 'set-visibility',
+				payload: {
+					visible: false
+				}
+			};
+			this.emit(data);
+		}
+	}
+
+	setHeight(height: number, unit = 'px') {
+		if (this.walEl) {
+			this.walEl.style.height = `${height}${unit}`;
 		}
 	}
 
@@ -185,11 +227,7 @@ export class FrameBus {
 			this.onMsgHandler = null;
 		}
 
-		// remove injected style tag
-		const styleEl = document.querySelector('style#inkey-frame-styles');
-		if (styleEl) {
-			document.head.removeChild(styleEl);
-		}
+		this.removeStyles();
 
 		// ? emit some disconnect event over bus before close?
 
@@ -246,6 +284,20 @@ export class FrameBus {
 				this.onDisconnect();
 			}
 
+			if (event.data.type === 'set-height') {
+				// console.log('got mess: set-height');
+				const h = event.data.payload.height as number;
+				if (h) {
+					this.setHeight(h);
+				}
+			}
+
+			if (event.data.type == 'styles-recommonded') {
+				const css = event.data.payload.css as string;
+				this.insertStyles(css);
+			}
+
+
 			// async message handling back to callee resolver
 			if (event.data['async'] && event.data.async == true && event.data.uuid) {
 				// console.log('requests', this.requests);
@@ -268,7 +320,7 @@ export class FrameBus {
 	// TODO only have 1 emit method, just check for data.async == true, then add to requests queue
 	// simple sync emit (dont to add to async response queue)
 	emit(data: Record<string, any>) {
-		console.log('emit to wallet iframe');
+		// console.log('emit to wallet iframe');
 
 		if (!this.ready) {
 			// console.error('FrameBus not ready, please init first');
@@ -283,10 +335,14 @@ export class FrameBus {
 			uuid,
 		};
 
-		this.walWin?.postMessage(data, this.walEl!.src);
+		if (this.walEl && this.walWin) {
+			this.walWin.postMessage(data, this.walEl.src);
+		} else {
+			throw new Error('no wallEl or walWin');
+		}
 	}
 
-	// TODO shoudl we also support emitCb(data: any, cb()?: CallbackFn) -- combined w normal? can they all be 1 definition?
+	// TODO should we also support emitCb(data: any, cb()?: CallbackFn) -- combined w normal? can they all be 1 definition?
 	// TODO in algonaut make asyncEmit private so we can abstract asyncEmit method to asyncSendTxn(wrapping asyncEmit...) and all args are type safe
 
 	// async emit
@@ -317,45 +373,40 @@ export class FrameBus {
 		});
 	}
 
-	getStyles(): string {
-		return `#inkey-frame-container {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100vw;
-			perspective: 800px;
-			perspective-origin: center top;
-			z-index: 10001;
+	insertStyles(css: string) {
+		// console.log('insertStyles', css);
+
+		// TODO verifiy check + sterilize this incoming arg
+
+		// insert styles (if not there)
+		const existingStyles: HTMLStyleElement | null = document.querySelector('style#inkey-frame-styles');
+		if (!existingStyles) {
+			const stylesheet = document.createElement('style');
+			stylesheet.setAttribute('id', 'inkey-frame-styles');
+			stylesheet.innerText = css;
+			document.head.appendChild(stylesheet);
+		} else {
+			// replace styles into existing style tag
+			existingStyles.innerText = css;
 		}
 
-		.inkey-frame {
-			position: absolute;
-			top: 0;
-			left: 4px;
-			width: calc(100vw - 8px);
-			height: 400px;
-			border-radius: 0 0 4px 4px;
-			box-shadow: 0 -2px 20px rgba(0,0,0,0.4);
-			opacity: 0;
-			will-change: opacity, transform;
-			transition: 0.2s transform ease-out, 0.1s opacity linear, visibility 0.2s linear;
-			transform-origin: center top;
-			transform: translate3d(0px, 0px, -350px) rotateX(70deg);
-			visibility: hidden;
+		if (this.walEl) {
+			// 100ms delay needed for no glitch on first load
+			setTimeout(() => {
+				this.walEl.style.visibility = 'initial';
+			}, 100);
+		} else {
+			console.warn('no walEl for style.visibility reset');
 		}
 
-		.inkey-frame.visible {
-			opacity: 1;
-			transform: translate3d(0px, 0px, 0px) rotateX(0deg);
-			visibility: visible;
-		}
+	}
 
-		@media screen and (min-width: 500px) {
-			.inkey-frame {
-				max-width: 400px;
-				left: calc(50% - 200px);
-			}
-		}`;
+	removeStyles() {
+		// remove injected style tag
+		const styleEl = document.querySelector('style#inkey-frame-styles');
+		if (styleEl) {
+			document.head.removeChild(styleEl);
+		}
 	}
 
 	// wallet needs to handle asyncMessages like...
