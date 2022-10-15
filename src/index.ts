@@ -1720,9 +1720,9 @@ export class Algonaut {
 	/**
 	 * Shows the Inkey wallet frame
 	 */
-	inkeyShow() {
+	inkeyShow(routepath?: string) {
 		if (this.inkeyWallet.frameBus) {
-			this.inkeyWallet.frameBus.showFrame();
+			this.inkeyWallet.frameBus.showFrame(routepath);
 		}
 	}
 

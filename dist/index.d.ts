@@ -395,7 +395,7 @@ export declare class Algonaut {
     /**
      * Shows the Inkey wallet frame
      */
-    inkeyShow(): void;
+    inkeyShow(routepath?: string): void;
     /**
      * Hides the Inkey wallet frame
      */

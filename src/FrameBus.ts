@@ -162,7 +162,7 @@ export class FrameBus {
 		});
 	}
 
-	showFrame() {
+	showFrame(routepath?: string) {
 		if (this.walEl) {
 			this.walEl.classList.add('visible');
 
@@ -172,7 +172,8 @@ export class FrameBus {
 				// specific
 				type: 'set-visibility',
 				payload: {
-					visible: true
+					visible: true,
+					route: routepath
 				}
 			};
 			this.emit(data);
