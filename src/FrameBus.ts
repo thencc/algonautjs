@@ -166,6 +166,12 @@ export class FrameBus {
 		if (this.walEl) {
 			this.walEl.classList.add('visible');
 
+			// position toggle fix for old ios mobiles
+			this.walEl.style.position = 'sticky';
+			setTimeout(() => {
+				this.walEl.style.position = 'absolute';
+			}, 100);
+
 			const data: any = {
 				// needed
 				source: 'ncc-inkey-client',
