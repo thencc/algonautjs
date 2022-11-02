@@ -1,7 +1,6 @@
 import type algosdk from 'algosdk';
 import type { ApplicationStateSchema } from 'algosdk/dist/types/src/client/v2/algod/models/types';
 
-
 export type AlgonautConfig = {
 	BASE_SERVER: string;
 	INDEX_SERVER?: string; // optional, but helpful
@@ -43,6 +42,10 @@ export interface AlgonautUpdateAppArguments {
 	optionalFields?: AlgonautTransactionFields;
 	//lease: Uint8Array;
 	//rekeyTo: string;
+}
+
+export interface AlgonautDeleteAppArguments {
+	optionalFields?: AlgonautTransactionFields;
 }
 
 export interface AlgonautLsigDeployArguments extends AlgonautDeployArguments {
@@ -104,12 +107,19 @@ export interface AlgonautCreateAssetArguments {
 	reserve?: string;
 	freeze?: string;
 	rekeyTo?: string;
+	optionalFields?: AlgonautTransactionFields;
+}
+
+export interface AlgonautDestroyAssetArguments {
+	rekeyTo?: string;
+	optionalFields?: AlgonautTransactionFields;
 }
 
 export interface AlgonautSendAssetArguments {
 	to: string;
 	assetIndex: number;
 	amount: number | bigint;
+	optionalFields?: AlgonautTransactionFields;
 }
 
 export interface AlgonautLsigSendAssetArguments extends AlgonautSendAssetArguments {
@@ -120,6 +130,7 @@ export interface AlgonautPaymentArguments {
 	to: string;
 	amount: number | bigint;
 	note?: string;
+	optionalFields?: AlgonautTransactionFields;
 }
 
 export interface AlgonautLsigPaymentArguments extends AlgonautPaymentArguments {
@@ -168,7 +179,8 @@ export type AlgonautTransactionFields = {
 	manager?: string,
 	freeze?: string,
 	clawback?: string,
-	reserve?: string
+	reserve?: string;
+	suggestedParams?: algosdk.SuggestedParams;
 }
 
 export type AlgonautAtomicTransaction = {
