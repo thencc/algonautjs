@@ -24,9 +24,7 @@ import type {
 	AlgonautUpdateAppArguments,
 	AlgonautGetApplicationResponse,
 	AlgonautAppStateEncoded,
-	InkeySignTxnResponse,
-	AlgonautDestroyAssetArguments,
-	AlgonautDeleteAppArguments
+	InkeySignTxnResponse
 } from './AlgonautTypes';
 
 import { FrameBus } from './FrameBus';
@@ -414,11 +412,11 @@ export class Algonaut {
 		return utils.generateLogicSig(base64ProgramString);
 	}
 
-	async atomicOptInAsset(assetIndex: number, args?: AlgonautSendAssetArguments): Promise<AlgonautAtomicTransaction> {
+	async atomicOptInAsset(assetIndex: number, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction> {
 		if (!this.account) throw new Error('No account set in Algonaut.');
 		if (!assetIndex) throw new Error('No asset index provided.');
 
-		const suggestedParams = args?.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
+		const suggestedParams = optionalTxnArgs?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
 		const optInTransaction = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
 			from: this.account.addr,
@@ -442,10 +440,10 @@ export class Algonaut {
 	 * @param callbacks `AlgonautTxnCallbacks`, passed to {@link sendTransaction}
 	 * @returns Promise resolving to confirmed transaction or error
 	 */
-	async optInAsset(assetIndex: number, callbacks?: AlgonautTxnCallbacks, args?: AlgonautSendAssetArguments): Promise<AlgonautTransactionStatus> {
+	async optInAsset(assetIndex: number, callbacks?: AlgonautTxnCallbacks, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus> {
 		if (!this.account) throw new Error('There was no account!');
 		if (!assetIndex) throw new Error('No asset index provided.');
-		const { transaction } = await this.atomicOptInAsset(assetIndex, args);
+		const { transaction } = await this.atomicOptInAsset(assetIndex, optionalTxnArgs);
 		return await this.sendTransaction(transaction, callbacks);
 	}
 
@@ -604,12 +602,12 @@ export class Algonaut {
 		}
 	}
 
-	async atomicDeleteAsset(assetId: number, args?: AlgonautDestroyAssetArguments): Promise<AlgonautAtomicTransaction> {
+	async atomicDeleteAsset(assetId: number, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction> {
 		if (!this.account) throw new Error('there was no account!');
 		if (!assetId) throw new Error('No assetId provided!');
 
 		const enc = new TextEncoder();
-		const suggestedParams = args?.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
+		const suggestedParams = optionalTxnArgs?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
 		const transaction = algosdk.makeAssetDestroyTxnWithSuggestedParams(
 			this.account.addr,
@@ -631,9 +629,9 @@ export class Algonaut {
 	 * @param callbacks optional AlgonautTxnCallbacks
 	 * @returns Promise resolving to confirmed transaction or error
 	 */
-	async deleteAsset(assetId: number, callbacks?: AlgonautTxnCallbacks, args?: AlgonautDestroyAssetArguments): Promise<AlgonautTransactionStatus> {
+	async deleteAsset(assetId: number, callbacks?: AlgonautTxnCallbacks, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus> {
 		if (!assetId) throw new Error('No asset ID provided!');
-		const { transaction } = await this.atomicDeleteAsset(assetId, args);
+		const { transaction } = await this.atomicDeleteAsset(assetId, optionalTxnArgs);
 		return await this.sendTransaction(transaction, callbacks);
 	}
 
@@ -743,12 +741,12 @@ export class Algonaut {
 	 * @param appIndex - ID of application
 	 * @returns Promise resolving to atomic transaction that deletes application
 	 */
-	async atomicDeleteApp(appIndex: number, args?: AlgonautDeleteAppArguments): Promise<AlgonautAtomicTransaction> {
+	async atomicDeleteApp(appIndex: number, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction> {
 		if (!this.account) throw new Error('No account set.');
 		if (!appIndex) throw new Error('No app ID provided');
 
 		const sender = this.account.addr;
-		const suggestedParams = args?.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
+		const suggestedParams = optionalTxnArgs?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 		const txn = algosdk.makeApplicationDeleteTxn(sender, suggestedParams, appIndex);
 
 		return {
@@ -764,9 +762,9 @@ export class Algonaut {
 	 * @param appIndex - ID of application
 	 * @returns Promise resolving to atomic transaction that deletes application
 	 */
-	async atomicDeleteApplication(appIndex: number, args?: AlgonautDeleteAppArguments): Promise<AlgonautAtomicTransaction> {
+	async atomicDeleteApplication(appIndex: number, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction> {
 		console.warn('atomicDeleteApplication is deprecated and will be removed in future versions.');
-		return await this.atomicDeleteApp(appIndex, args);
+		return await this.atomicDeleteApp(appIndex, optionalTxnArgs);
 	}
 
 	/**
@@ -775,11 +773,11 @@ export class Algonaut {
 	 * @param callbacks optional AlgonautTxnCallbacks
 	 * @returns Promise resolving to confirmed transaction or error
 	 */
-	async deleteApp(appIndex: number, callbacks?: AlgonautTxnCallbacks, args?: AlgonautDeleteAppArguments): Promise<AlgonautTransactionStatus> {
+	async deleteApp(appIndex: number, callbacks?: AlgonautTxnCallbacks, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus> {
 		if (!this.account) throw new Error('There was no account');
 
 		try {
-			const { transaction } = await this.atomicDeleteApp(appIndex, args);
+			const { transaction } = await this.atomicDeleteApp(appIndex, optionalTxnArgs);
 			const txId = transaction.txID().toString();
 
 			const status = await this.sendTransaction(transaction, callbacks);
@@ -809,9 +807,9 @@ export class Algonaut {
 	 * @param callbacks optional AlgonautTxnCallbacks
 	 * @returns Promise resolving to confirmed transaction or error
 	 */
-	async deleteApplication(appIndex: number, callbacks?: AlgonautTxnCallbacks, args?: AlgonautDeleteAppArguments): Promise<AlgonautTransactionStatus> {
+	async deleteApplication(appIndex: number, callbacks?: AlgonautTxnCallbacks, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus> {
 		console.warn('deleteApplication is deprecated and will be removed in future versions.');
-		return await this.deleteApp(appIndex, callbacks, args);
+		return await this.deleteApp(appIndex, callbacks, optionalTxnArgs);
 	}
 
 	async atomicCallApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {

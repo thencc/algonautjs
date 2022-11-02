@@ -35,6 +35,9 @@ export interface AlgonautUpdateAppArguments {
     appArgs: any[];
     optionalFields?: AlgonautTransactionFields;
 }
+export interface AlgonautDeleteAppArguments {
+    optionalFields?: AlgonautTransactionFields;
+}
 export interface AlgonautLsigDeployArguments extends AlgonautDeployArguments {
     lsig: algosdk.LogicSigAccount;
     noteText?: string;
@@ -88,11 +91,17 @@ export interface AlgonautCreateAssetArguments {
     reserve?: string;
     freeze?: string;
     rekeyTo?: string;
+    optionalFields?: AlgonautTransactionFields;
+}
+export interface AlgonautDestroyAssetArguments {
+    rekeyTo?: string;
+    optionalFields?: AlgonautTransactionFields;
 }
 export interface AlgonautSendAssetArguments {
     to: string;
     assetIndex: number;
     amount: number | bigint;
+    optionalFields?: AlgonautTransactionFields;
 }
 export interface AlgonautLsigSendAssetArguments extends AlgonautSendAssetArguments {
     lsig: algosdk.LogicSigAccount;
@@ -101,6 +110,7 @@ export interface AlgonautPaymentArguments {
     to: string;
     amount: number | bigint;
     note?: string;
+    optionalFields?: AlgonautTransactionFields;
 }
 export interface AlgonautLsigPaymentArguments extends AlgonautPaymentArguments {
     lsig: algosdk.LogicSigAccount;
@@ -143,6 +153,7 @@ export declare type AlgonautTransactionFields = {
     freeze?: string;
     clawback?: string;
     reserve?: string;
+    suggestedParams?: algosdk.SuggestedParams;
 };
 export declare type AlgonautAtomicTransaction = {
     transaction: algosdk.Transaction;
