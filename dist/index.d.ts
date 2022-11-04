@@ -1,6 +1,6 @@
 /// <reference types="node" />
 import algosdk from 'algosdk';
-import type { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautAppState, AlgonautStateData, AlgonautError, WalletConnectListener, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments, AlgonautAppStateEncoded, InkeySignTxnResponse } from './AlgonautTypes';
+import type { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields, AlgonautAppState, AlgonautStateData, AlgonautError, WalletConnectListener, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments, AlgonautAppStateEncoded, InkeySignTxnResponse } from './AlgonautTypes';
 import { FrameBus } from './FrameBus';
 import { IInternalEvent } from '@walletconnect/types';
 declare global {
@@ -117,14 +117,14 @@ export declare class Algonaut {
      * @returns an algosdk LogicSigAccount
      */
     generateLogicSig(base64ProgramString: string): algosdk.LogicSigAccount;
-    atomicOptInAsset(assetIndex: number): Promise<AlgonautAtomicTransaction>;
+    atomicOptInAsset(assetIndex: number, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
     /**
      * Opt-in the current account for the a token or NFT Asset.
      * @param assetIndex number of asset to opt-in to
      * @param callbacks `AlgonautTxnCallbacks`, passed to {@link sendTransaction}
      * @returns Promise resolving to confirmed transaction or error
      */
-    optInAsset(assetIndex: number, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
+    optInAsset(assetIndex: number, callbacks?: AlgonautTxnCallbacks, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus>;
     /**
      * You can be opted into an asset but still have a zero balance. Use this call
      * for cases where you just need to know the address's opt-in state
@@ -156,14 +156,14 @@ export declare class Algonaut {
      * @returns asset index
     */
     createAsset(args: AlgonautCreateAssetArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
-    atomicDeleteAsset(assetId: number): Promise<AlgonautAtomicTransaction>;
+    atomicDeleteAsset(assetId: number, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
     /**
      * Deletes asset
      * @param assetId Index of the ASA to delete
      * @param callbacks optional AlgonautTxnCallbacks
      * @returns Promise resolving to confirmed transaction or error
      */
-    deleteAsset(assetId: number, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
+    deleteAsset(assetId: number, callbacks?: AlgonautTxnCallbacks, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus>;
     /**
      * Creates send asset transaction.
      *
@@ -209,21 +209,21 @@ export declare class Algonaut {
      * @param appIndex - ID of application
      * @returns Promise resolving to atomic transaction that deletes application
      */
-    atomicDeleteApp(appIndex: number): Promise<AlgonautAtomicTransaction>;
+    atomicDeleteApp(appIndex: number, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
     /**
      * DEPRECATED! Use `atomicDeleteApp` instead. Returns atomic transaction that deletes application
      * @deprecated
      * @param appIndex - ID of application
      * @returns Promise resolving to atomic transaction that deletes application
      */
-    atomicDeleteApplication(appIndex: number): Promise<AlgonautAtomicTransaction>;
+    atomicDeleteApplication(appIndex: number, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
     /**
      * Deletes an application from the blockchain
      * @param appIndex - ID of application
      * @param callbacks optional AlgonautTxnCallbacks
      * @returns Promise resolving to confirmed transaction or error
      */
-    deleteApp(appIndex: number, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
+    deleteApp(appIndex: number, callbacks?: AlgonautTxnCallbacks, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus>;
     /**
      * DEPRECATED! Use `deleteApp` instead. This will be removed in future versions.
      * @deprecated
@@ -231,7 +231,7 @@ export declare class Algonaut {
      * @param callbacks optional AlgonautTxnCallbacks
      * @returns Promise resolving to confirmed transaction or error
      */
-    deleteApplication(appIndex: number, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
+    deleteApplication(appIndex: number, callbacks?: AlgonautTxnCallbacks, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus>;
     atomicCallApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction>;
     /**
      * Call a "method" on a stateful contract.  In TEAL, you're really giving
@@ -395,7 +395,7 @@ export declare class Algonaut {
     /**
      * Shows the Inkey wallet frame
      */
-    inkeyShow(): void;
+    inkeyShow(routepath?: string): void;
     /**
      * Hides the Inkey wallet frame
      */

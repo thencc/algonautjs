@@ -19,7 +19,7 @@ export declare class FrameBus {
     });
     initId(walElId: string): void;
     initSrc(src?: string, align?: AlgonautConfig['INKEY_ALIGN']): Promise<void>;
-    showFrame(): void;
+    showFrame(routepath?: string): void;
     hideFrame(): void;
     setHeight(height: number, unit?: string): void;
     destroy(): void;

@@ -162,9 +162,15 @@ export class FrameBus {
 		});
 	}
 
-	showFrame() {
+	showFrame(routepath?: string) {
 		if (this.walEl) {
 			this.walEl.classList.add('visible');
+
+			// position toggle fix for old ios mobiles
+			this.walEl.style.position = 'sticky';
+			setTimeout(() => {
+				this.walEl.style.position = 'absolute';
+			}, 100);
 
 			const data: any = {
 				// needed
@@ -172,7 +178,8 @@ export class FrameBus {
 				// specific
 				type: 'set-visibility',
 				payload: {
-					visible: true
+					visible: true,
+					route: routepath
 				}
 			};
 			this.emit(data);
