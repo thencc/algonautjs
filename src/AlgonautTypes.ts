@@ -7,7 +7,7 @@ export type AlgonautConfig = {
 	LEDGER: string;
 	PORT: string;
 	API_TOKEN: any;
-	SIGNING_MODE?: 'local' | 'walletconnect' | 'algosigner' | 'inkey';
+	SIGNING_MODE?: 'local' | 'inkey';
 	INKEY_SRC?: string;
 	INKEY_ALIGN?: 'center' | 'left' | 'right';
 }
@@ -135,12 +135,6 @@ export interface AlgonautPaymentArguments {
 
 export interface AlgonautLsigPaymentArguments extends AlgonautPaymentArguments {
 	lsig: algosdk.LogicSigAccount;
-}
-
-export interface WalletConnectListener {
-	onSessionUpdate(payload: any): void;
-	onConnect(payload: any): void;
-	onDisconnect(payload: any): void;
 }
 
 export interface AlgonautTxnCallbacks {
