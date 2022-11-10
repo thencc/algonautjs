@@ -1,5 +1,39 @@
 import { Buffer } from 'buffer';
-import algosdk, { appendSignMultisigTransaction } from 'algosdk';
+
+import { 
+	secretKeyToMnemonic,
+	generateAccount,
+	Account as AlgosdkAccount,
+	Algodv2,
+	Indexer,
+	LogicSigAccount,
+	makeAssetTransferTxnWithSuggestedParamsFromObject,
+	makeApplicationOptInTxnFromObject,
+	makeAssetCreateTxnWithSuggestedParams,
+	makeAssetDestroyTxnWithSuggestedParams,
+	makeApplicationDeleteTxn,
+	makeApplicationNoOpTxnFromObject,
+	makeApplicationCloseOutTxnFromObject,
+	makeApplicationCreateTxnFromObject,
+	OnApplicationComplete,
+	makeApplicationCreateTxn,
+	signLogicSigTransactionObject,
+	makeApplicationUpdateTxn,
+	encodeAddress,
+	makePaymentTxnWithSuggestedParamsFromObject,
+	Transaction,
+	encodeUnsignedTransaction,
+	assignGroupID,
+	signLogicSigTransaction,
+	signTransaction,
+	mnemonicToSecretKey,
+	isValidAddress,
+	encodeUint64,
+	getApplicationAddress,
+	microalgosToAlgos,
+	decodeUnsignedTransaction
+} from 'algosdk';
+
 import type {
 	AlgonautConfig,
 	AlgonautWallet,
@@ -68,27 +102,19 @@ TBD:
 
 */
 
-
 // import { mainNetConfig as config } from './algoconfig';
+
 
 // good resource: https://developer.algorand.org/solutions/integrate-algosigner-to-js-app-on-algorand/
 
-declare global {
-	interface Window {
-		AlgoSigner: any;
-	}
-}
-
 export class Algonaut {
 	// TODO: add algo wallet for mobile
-	algodClient!: algosdk.Algodv2; // it will be set or it throws an Error
-	indexerClient = undefined as undefined | algosdk.Indexer;
-	// expose entire algosdk in case the dapp needs more
-	sdk = algosdk;
+	algodClient!: Algodv2; // it will be set or it throws an Error
+	indexerClient = undefined as undefined | Indexer;
 	config = undefined as undefined | AlgonautConfig; // current config
 
 	// FYI undefined if using wallet-connect, etc. perhaps rename to .accountLocal ?
-	account = undefined as undefined | algosdk.Account; // ONLY defined if using local signing, not wallet-connet or inkey
+	account = undefined as undefined | AlgosdkAccount; // ONLY defined if using local signing, not wallet-connet or inkey
 	address = undefined as undefined | string;
 	mnemonic = undefined as undefined | string;
 
@@ -165,10 +191,10 @@ export class Algonaut {
 		}
 
 		this.config = config;
-		this.algodClient = new algosdk.Algodv2(config.API_TOKEN, config.BASE_SERVER, config.PORT);
+		this.algodClient = new Algodv2(config.API_TOKEN, config.BASE_SERVER, config.PORT);
 
 		if (config.INDEX_SERVER) {
-			this.indexerClient = new algosdk.Indexer(config.API_TOKEN, config.INDEX_SERVER, config.PORT);
+			this.indexerClient = new Indexer(config.API_TOKEN, config.INDEX_SERVER, config.PORT);
 		} else {
 			console.warn('No indexer configured because INDEX_SERVER was not provided.');
 		}
@@ -247,7 +273,7 @@ export class Algonaut {
 	 * if you already have an account, set it here
 	 * @param account an algosdk account already created
 	 */
-	setAccount(account: algosdk.Account): void | AlgonautError {
+	setAccount(account: AlgosdkAccount): void | AlgonautError {
 		if (!account) {
 			throw new Error('No account provided.');
 		}
@@ -255,7 +281,7 @@ export class Algonaut {
 		this.account = account;
 		this.address = account.addr;
 		// if (this.config) this.config.SIGNING_MODE = 'local';
-		this.mnemonic = algosdk.secretKeyToMnemonic(account.sk);
+		this.mnemonic = secretKeyToMnemonic(account.sk);
 	}
 
 	/**
@@ -278,11 +304,11 @@ export class Algonaut {
 	 * @returns AlgonautWallet Object containing `address` and `mnemonic`
 	 */
 	createWallet(): AlgonautWallet {
-		this.account = algosdk.generateAccount();
+		this.account = generateAccount();
 
 		if (this.account) {
 			this.address = this.account.addr;
-			this.mnemonic = algosdk.secretKeyToMnemonic(this.account.sk);
+			this.mnemonic = secretKeyToMnemonic(this.account.sk);
 			return {
 				address: this.account.addr,
 				mnemonic: this.mnemonic || ''
@@ -298,7 +324,7 @@ export class Algonaut {
 	 * @param mnemonic Mnemonic associated with Algonaut account
 	 * @returns If mnemonic is valid, returns account. Otherwise, throws an error.
 	 */
-	recoverAccount(mnemonic: string): algosdk.Account {
+	recoverAccount(mnemonic: string): AlgosdkAccount {
 		if (!mnemonic) throw new Error('algonaut.recoverAccount: No mnemonic provided.');
 		this.account = utils.recoverAccount(mnemonic);
 		return this.account;
@@ -363,7 +389,7 @@ export class Algonaut {
 	 * @param base64ProgramString
 	 * @returns an algosdk LogicSigAccount
 	 */
-	generateLogicSig(base64ProgramString: string): algosdk.LogicSigAccount {
+	generateLogicSig(base64ProgramString: string): LogicSigAccount {
 		if (!base64ProgramString) throw new Error('No program string provided.');
 		return utils.generateLogicSig(base64ProgramString);
 	}
@@ -374,7 +400,7 @@ export class Algonaut {
 
 		const suggestedParams = optionalTxnArgs?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
-		const optInTransaction = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
+		const optInTransaction = makeAssetTransferTxnWithSuggestedParamsFromObject({
 			from: this.account.addr,
 			to: this.account.addr,
 			assetIndex: assetIndex,
@@ -502,7 +528,7 @@ export class Algonaut {
 		const suggestedParams = args.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
 		// signing and sending "txn" allows "addr" to create an asset
-		const txn = algosdk.makeAssetCreateTxnWithSuggestedParams(
+		const txn = makeAssetCreateTxnWithSuggestedParams(
 			addr,
 			note,
 			totalIssuance,
@@ -565,7 +591,7 @@ export class Algonaut {
 		const enc = new TextEncoder();
 		const suggestedParams = optionalTxnArgs?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
-		const transaction = algosdk.makeAssetDestroyTxnWithSuggestedParams(
+		const transaction = makeAssetDestroyTxnWithSuggestedParams(
 			this.account.addr,
 			enc.encode('doh!'), // what is this? TODO support note...
 			assetId,
@@ -609,7 +635,7 @@ export class Algonaut {
 		const suggestedParams = args.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
 		const transaction =
-			algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
+			makeAssetTransferTxnWithSuggestedParamsFromObject({
 				from: this.account.addr,
 				to: args.to,
 				amount: args.amount,
@@ -664,7 +690,7 @@ export class Algonaut {
 		const sender = this.account.addr;
 		const suggestedParams = args.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
-		const optInTransaction = algosdk.makeApplicationOptInTxnFromObject({
+		const optInTransaction = makeApplicationOptInTxnFromObject({
 			from: sender,
 			appIndex: args.appIndex,
 			suggestedParams,
@@ -703,7 +729,7 @@ export class Algonaut {
 
 		const sender = this.account.addr;
 		const suggestedParams = optionalTxnArgs?.suggestedParams || (await this.algodClient.getTransactionParams().do());
-		const txn = algosdk.makeApplicationDeleteTxn(sender, suggestedParams, appIndex);
+		const txn = makeApplicationDeleteTxn(sender, suggestedParams, appIndex);
 
 		return {
 			transaction: txn,
@@ -775,7 +801,7 @@ export class Algonaut {
 
 		const processedArgs = this.encodeArguments(args.appArgs);
 		const suggestedParams = args.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
-		const callAppTransaction = algosdk.makeApplicationNoOpTxnFromObject({
+		const callAppTransaction = makeApplicationNoOpTxnFromObject({
 			from: this.account.addr,
 			suggestedParams,
 			appIndex: args.appIndex,
@@ -810,7 +836,7 @@ export class Algonaut {
 
 		const processedArgs = this.encodeArguments(args.appArgs);
 		const suggestedParams = args.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
-		const callAppTransaction = algosdk.makeApplicationNoOpTxnFromObject({
+		const callAppTransaction = makeApplicationNoOpTxnFromObject({
 			from: args.lsig.address(),
 			suggestedParams,
 			appIndex: args.appIndex,
@@ -840,7 +866,7 @@ export class Algonaut {
 		try {
 			const suggestedParams = args.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 			const processedArgs = this.encodeArguments(args.appArgs);
-			const closeOutTxn = algosdk.makeApplicationCloseOutTxnFromObject({
+			const closeOutTxn = makeApplicationCloseOutTxnFromObject({
 				from: this.account.addr,
 				suggestedParams,
 				appIndex: args.appIndex,
@@ -961,10 +987,10 @@ export class Algonaut {
 			// create unsigned transaction
 			if (approvalProgram && clearProgram) {
 
-				const txn = algosdk.makeApplicationCreateTxnFromObject({
+				const txn = makeApplicationCreateTxnFromObject({
 					from: sender,
 					suggestedParams,
-					onComplete: algosdk.OnApplicationComplete.NoOpOC,
+					onComplete: OnApplicationComplete.NoOpOC,
 					approvalProgram,
 					clearProgram,
 					numLocalInts: args.schema.localInts,
@@ -1018,7 +1044,7 @@ export class Algonaut {
 		} else if (this.account) {
 			try {
 				const sender = this.account.addr;
-				const onComplete = algosdk.OnApplicationComplete.NoOpOC;
+				const onComplete = OnApplicationComplete.NoOpOC;
 				const suggestedParams = args.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
 				let approvalProgram = new Uint8Array();
@@ -1032,7 +1058,7 @@ export class Algonaut {
 					throw new Error('Error: you must provide an approval program and a clear state program.');
 				}
 
-				const applicationCreateTransaction = algosdk.makeApplicationCreateTxn(
+				const applicationCreateTransaction = makeApplicationCreateTxn(
 					sender,
 					suggestedParams,
 					onComplete,
@@ -1088,7 +1114,7 @@ export class Algonaut {
 		}
 
 		const sender = args.lsig.address();
-		const onComplete = algosdk.OnApplicationComplete.NoOpOC;
+		const onComplete = OnApplicationComplete.NoOpOC;
 		const suggestedParams = args.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
 		let approvalProgram = new Uint8Array();
@@ -1100,7 +1126,7 @@ export class Algonaut {
 
 			// create unsigned transaction
 			if (approvalProgram && clearProgram) {
-				const txn = algosdk.makeApplicationCreateTxn(
+				const txn = makeApplicationCreateTxn(
 					sender,
 					suggestedParams,
 					onComplete,
@@ -1115,7 +1141,7 @@ export class Algonaut {
 				);
 
 				const txId = txn.txID().toString();
-				const signedTxn = algosdk.signLogicSigTransactionObject(txn, args.lsig);
+				const signedTxn = signLogicSigTransactionObject(txn, args.lsig);
 
 				await this.algodClient.sendRawTransaction(signedTxn.blob).do();
 				const txStatus = await this.waitForConfirmation(txId);
@@ -1143,7 +1169,7 @@ export class Algonaut {
 	}
 
 	/**
-	 * Updates an application with `algosdk.makeApplicationUpdateTxn`
+	 * Updates an application with `makeApplicationUpdateTxn`
 	 * @param args AlgonautUpdateAppArguments
 	 * @returns atomic transaction that updates the app
 	 */
@@ -1157,7 +1183,7 @@ export class Algonaut {
 
 		try {
 			const sender = this.account.addr;
-			const onComplete = algosdk.OnApplicationComplete.NoOpOC;
+			const onComplete = OnApplicationComplete.NoOpOC;
 			const suggestedParams = args.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
 			let approvalProgram = new Uint8Array();
@@ -1171,7 +1197,7 @@ export class Algonaut {
 				throw new Error('Error: you must provide an approval program and a clear state program.');
 			}
 
-			const applicationCreateTransaction = algosdk.makeApplicationUpdateTxn(
+			const applicationCreateTransaction = makeApplicationUpdateTxn(
 				sender,
 				suggestedParams,
 				args.appIndex,
@@ -1207,7 +1233,7 @@ export class Algonaut {
 	}
 
 	/**
-	 * Compiles TEAL source via [algodClient.compile](https://py-algorand-sdk.readthedocs.io/en/latest/algosdk/v2client/algod.html#algosdk.v2client.algod.AlgodClient.compile)
+	 * Compiles TEAL source via [algodClient.compile](https://py-algorand-sdk.readthedocs.io/en/latest/algosdk/v2client/algod.html#v2client.algod.AlgodClient.compile)
 	 * @param programSource source to compile
 	 * @returns Promise resolving to Buffer of compiled bytes
 	 */
@@ -1230,7 +1256,7 @@ export class Algonaut {
 			const suggestedParams = args.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
 			const transaction =
-				algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+				makePaymentTxnWithSuggestedParamsFromObject({
 					from: this.account.addr,
 					to: args.to,
 					amount: args.amount,
@@ -1399,7 +1425,7 @@ export class Algonaut {
 
 						if (type == 1) {
 							value = Buffer.from(stateItem.value.bytes, 'base64').toString();
-							valueAsAddr = algosdk.encodeAddress(Buffer.from(stateItem.value.bytes, 'base64'));
+							valueAsAddr = encodeAddress(Buffer.from(stateItem.value.bytes, 'base64'));
 
 						} else if (stateItem.value.type == 2) {
 							value = stateItem.value.uint;
@@ -1428,7 +1454,7 @@ export class Algonaut {
 			const suggestedParams = args.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
 			const transaction =
-				algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
+				makeAssetTransferTxnWithSuggestedParamsFromObject({
 					from: args.lsig.address(),
 					to: args.to,
 					amount: args.amount,
@@ -1450,7 +1476,7 @@ export class Algonaut {
 		if (args.lsig) {
 			const suggestedParams = args.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 			const transaction =
-				algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+				makePaymentTxnWithSuggestedParamsFromObject({
 					from: args.lsig.address(),
 					to: args.to,
 					amount: args.amount,
@@ -1474,7 +1500,7 @@ export class Algonaut {
 	 * @param callbacks Optional object with callbacks - `onSign`, `onSend`, and `onConfirm`
 	 * @returns Promise resolving to AlgonautTransactionStatus
 	 */
-	async sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | algosdk.Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
+	async sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
 		if (!this.account) throw new Error('There is no account');
 		if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === 'inkey') {
 			// let's do the inkey thing
@@ -1492,7 +1518,7 @@ export class Algonaut {
 
 				// encode txns
 				const txnsToSign = unwrappedTxns.map((txn: any) => {
-					const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString('base64');
+					const encodedTxn = Buffer.from(encodeUnsignedTransaction(txn)).toString('base64');
 					return encodedTxn;
 				});
 
@@ -1518,15 +1544,15 @@ export class Algonaut {
 				// HANDLE SINGLE ATOMIC TRANSACTION
 			} else {
 
-				let txn: algosdk.Transaction;
+				let txn: Transaction;
 				if (txnOrTxns && (txnOrTxns as any).transaction) {
 					txn = (txnOrTxns as AlgonautAtomicTransaction).transaction;
 				} else {
-					txn = (txnOrTxns as algosdk.Transaction);
+					txn = (txnOrTxns as Transaction);
 				}
 
 				// send base64 to inkey
-				const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString('base64');
+				const encodedTxn = Buffer.from(encodeUnsignedTransaction(txn)).toString('base64');
 				const inkeyResponse = await this.inkeySignTxns([encodedTxn]);
 				if (inkeyResponse.success && inkeyResponse.signedTxns) {
 					// user approved transaction
@@ -1569,17 +1595,17 @@ export class Algonaut {
 			if (Array.isArray(txnOrTxns)) {
 				return await this.sendAtomicTransaction(txnOrTxns, callbacks);
 			} else {
-				let txn: algosdk.Transaction;
+				let txn: Transaction;
 				if (txnOrTxns && (txnOrTxns as any).transaction) {
 					// sent an atomic Transaction
 					txn = (txnOrTxns as AlgonautAtomicTransaction).transaction;
 				} else {
 					// assume a transaction
-					txn = txnOrTxns as algosdk.Transaction;
+					txn = txnOrTxns as Transaction;
 				}
 
 				if (!this.account || !this.account.sk) throw new Error('');
-				const signedTxn = (txn as algosdk.Transaction).signTxn(this.account.sk);
+				const signedTxn = (txn as Transaction).signTxn(this.account.sk);
 				if (callbacks?.onSign) callbacks.onSign(signedTxn);
 
 				const tx = await this.algodClient.sendRawTransaction(signedTxn).do();
@@ -1742,7 +1768,7 @@ export class Algonaut {
 
 		try {
 
-			const txns = [] as algosdk.Transaction[];
+			const txns = [] as Transaction[];
 			const signed = [] as Uint8Array[];
 			transactions.forEach((txn: AlgonautAtomicTransaction) => {
 				txns.push(txn.transaction);
@@ -1750,7 +1776,7 @@ export class Algonaut {
 
 			// this is critical, if the group doesn't have an id
 			// the transactions are processed as one-offs!
-			const txnGroup = algosdk.assignGroupID(txns);
+			const txnGroup = assignGroupID(txns);
 
 			// sign all transactions in the group:
 			transactions.forEach((txn: AlgonautAtomicTransaction, i) => {
@@ -1759,9 +1785,9 @@ export class Algonaut {
 					blob: Uint8Array;
 				};
 				if (txn.isLogigSig) {
-					signedTx = algosdk.signLogicSigTransaction(txnGroup[i], txn.transactionSigner as algosdk.LogicSigAccount);
+					signedTx = signLogicSigTransaction(txnGroup[i], txn.transactionSigner as LogicSigAccount);
 				} else {
-					signedTx = algosdk.signTransaction(txnGroup[i], (txn.transactionSigner as algosdk.Account).sk);
+					signedTx = signTransaction(txnGroup[i], (txn.transactionSigner as AlgosdkAccount).sk);
 				}
 				signed.push(signedTx.blob);
 			});
@@ -1791,10 +1817,10 @@ export class Algonaut {
 
 	/**
 	 * Signs an array of Transactions (used in Inkey) with the currently authenticated account
-	 * @param txns Array of algosdk.Transaction
+	 * @param txns Array of Transaction
 	 * @returns Uint8Array[] of signed transactions
 	 */
-	signTransactionGroup(txns: algosdk.Transaction[]) {
+	signTransactionGroup(txns: Transaction[]) {
 		if (!this.account) throw new Error('There is no account!');
 		return utils.signTransactionGroup(txns, this.account);
 	}
@@ -1876,7 +1902,7 @@ export class Algonaut {
 	 * @param txn base64-encoded unsigned transaction
 	 * @returns transaction object
 	 */
-	decodeBase64UnsignedTransaction(txn: string): algosdk.Transaction {
+	decodeBase64UnsignedTransaction(txn: string): Transaction {
 		return utils.decodeBase64UnsignedTransaction(txn);
 	}
 
@@ -1884,7 +1910,7 @@ export class Algonaut {
 	 * Describes an Algorand transaction, for display in Inkey
 	 * @param txn Transaction to describe
 	 */
-	txnSummary(txn: algosdk.Transaction) {
+	txnSummary(txn: Transaction) {
 		return utils.txnSummary(txn);
 	}
 
@@ -1904,10 +1930,10 @@ export const utils = {
 	 * @returns AlgonautWallet Object containing `address` and `mnemonic`
 	 */
 	createWallet(): AlgonautWallet {
-		const account = algosdk.generateAccount();
+		const account = generateAccount();
 
 		if (account) {
-			const mnemonic = algosdk.secretKeyToMnemonic(account.sk);
+			const mnemonic = secretKeyToMnemonic(account.sk);
 			return {
 				address: account.addr,
 				mnemonic: mnemonic || ''
@@ -1923,12 +1949,12 @@ export const utils = {
 	 * @param mnemonic Mnemonic associated with Algonaut account
 	 * @returns If mnemonic is valid, returns account. Otherwise, throws an error.
 	 */
-	recoverAccount(mnemonic: string): algosdk.Account {
+	recoverAccount(mnemonic: string): AlgosdkAccount {
 		if (!mnemonic) throw new Error('utils.recoverAccount: No mnemonic provided.');
 
 		try {
-			const account = algosdk.mnemonicToSecretKey(mnemonic);
-			if (algosdk.isValidAddress(account?.addr)) {
+			const account = mnemonicToSecretKey(mnemonic);
+			if (isValidAddress(account?.addr)) {
 				//if (this.config) this.config.SIGNING_MODE = 'local';
 				return account;
 			} else {
@@ -1947,14 +1973,14 @@ export const utils = {
 	 * @param base64ProgramString
 	 * @returns an algosdk LogicSigAccount
 	 */
-	generateLogicSig(base64ProgramString: string): algosdk.LogicSigAccount {
+	generateLogicSig(base64ProgramString: string): LogicSigAccount {
 		if (!base64ProgramString) throw new Error('No program string provided.');
 
 		const program = new Uint8Array(
 			Buffer.from(base64ProgramString, 'base64')
 		);
 
-		return new algosdk.LogicSigAccount(program);
+		return new LogicSigAccount(program);
 	},
 
 	/**
@@ -1970,9 +1996,9 @@ export const utils = {
 		// loop through args and encode them based on type
 		args.forEach((arg: any) => {
 			if (typeof arg == 'number') {
-				encodedArgs.push(algosdk.encodeUint64(arg));
+				encodedArgs.push(encodeUint64(arg));
 			} else if (typeof arg == 'bigint') {
-				encodedArgs.push(algosdk.encodeUint64(arg));
+				encodedArgs.push(encodeUint64(arg));
 			} else if (typeof arg == 'string') {
 				encodedArgs.push(new Uint8Array(Buffer.from(arg)));
 			}
@@ -1988,7 +2014,7 @@ export const utils = {
 	 */
 	getAppEscrowAccount(appId: number | bigint): string {
 		if (!appId) throw new Error('No appId provided');
-		return algosdk.getApplicationAddress(appId);
+		return getApplicationAddress(appId);
 	},
 
 	/**
@@ -2020,7 +2046,7 @@ export const utils = {
 	},
 
 	valueAsAddr(encoded: string): string {
-		return algosdk.encodeAddress(Buffer.from(encoded, 'base64'));
+		return encodeAddress(Buffer.from(encoded, 'base64'));
 	},
 
 	decodeStateArray(stateArray: AlgonautAppStateEncoded[]) {
@@ -2058,29 +2084,29 @@ export const utils = {
 
 	/**
 	 * Signs an array of Transactions (used in Inkey)
-	 * @param txns Array of algosdk.Transaction
-	 * @param account algosdk.Account object with `sk`, that signs the transactions
+	 * @param txns Array of Transaction
+	 * @param account AlgosdkAccount object with `sk`, that signs the transactions
 	 * @returns Uint8Array[] of signed transactions
 	 */
-	signTransactionGroup(txns: algosdk.Transaction[], account: algosdk.Account): Uint8Array[] | Uint8Array {
+	signTransactionGroup(txns: Transaction[], account: AlgosdkAccount): Uint8Array[] | Uint8Array {
 
 		// this is critical, if the group doesn't have an id
 		// the transactions are processed as one-offs!
 
 		if (txns.length > 1) {
-			const txnGroup = algosdk.assignGroupID(txns);
+			const txnGroup = assignGroupID(txns);
 
 			const signed = [] as Uint8Array[];
 
 			// sign all transactions in the group
-			txns.forEach((txn: algosdk.Transaction, i) => {
-				const signedTx = algosdk.signTransaction(txnGroup[i], account.sk);
+			txns.forEach((txn: Transaction, i) => {
+				const signedTx = signTransaction(txnGroup[i], account.sk);
 				signed.push(signedTx.blob);
 			});
 
 			return signed;
 		} else {
-			const signedTx = algosdk.signTransaction(txns[0], account.sk);
+			const signedTx = signTransaction(txns[0], account.sk);
 			return signedTx.blob;
 		}
 	},
@@ -2088,11 +2114,11 @@ export const utils = {
 	/**
 	 * Used by Inkey to sign base64-encoded transactions sent to the iframe
 	 * @param txns Array of Base64-encoded unsigned transactions
-	 * @param account algosdk.Account object with `sk`, that signs the transactions
+	 * @param account AlgosdkAccount object with `sk`, that signs the transactions
 	 * @returns Uint8Array signed transactions
 	 */
-	signBase64Transactions(txns: string[], account: algosdk.Account): Uint8Array[] | Uint8Array {
-		const decodedTxns: algosdk.Transaction[] = [];
+	signBase64Transactions(txns: string[], account: AlgosdkAccount): Uint8Array[] | Uint8Array {
+		const decodedTxns: Transaction[] = [];
 		txns.forEach(txn => {
 			const decodedTxn = this.decodeBase64UnsignedTransaction(txn);
 			decodedTxns.push(decodedTxn);
@@ -2105,24 +2131,24 @@ export const utils = {
 	 * @param txn base64-encoded unsigned transaction
 	 * @returns transaction object
 	 */
-	decodeBase64UnsignedTransaction(txn: string): algosdk.Transaction {
-		return algosdk.decodeUnsignedTransaction(Buffer.from(txn, 'base64'));
+	decodeBase64UnsignedTransaction(txn: string): Transaction {
+		return decodeUnsignedTransaction(Buffer.from(txn, 'base64'));
 	},
 
 	/**
 	 * Describes an Algorand transaction, for display in Inkey
 	 * @param txn Transaction to describe
 	 */
-	txnSummary(txn: algosdk.Transaction): string {
+	txnSummary(txn: Transaction): string {
 		// for reference: https://developer.algorand.org/docs/get-details/transactions/transactions/
 
 		if (txn.type) {
-			const to = txn.to ? algosdk.encodeAddress(txn.to.publicKey) : '';
-			const from = txn.from ? algosdk.encodeAddress(txn.from.publicKey) : '';
+			const to = txn.to ? encodeAddress(txn.to.publicKey) : '';
+			const from = txn.from ? encodeAddress(txn.from.publicKey) : '';
 
 			// sending algo
 			if (txn.type === 'pay') {
-				return `Send ${algosdk.microalgosToAlgos(txn.amount as number)} ALGO to ${to}`;
+				return `Send ${microalgosToAlgos(txn.amount as number)} ALGO to ${to}`;
 
 				// sending assets
 			} else if (txn.type === 'axfer') {

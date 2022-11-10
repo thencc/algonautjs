@@ -1,4 +1,12 @@
-import type algosdk from 'algosdk';
+//import type algosdk from 'algosdk';
+
+import { 
+	LogicSigAccount,
+	Transaction,
+	Account,
+	SuggestedParams,
+} from 'algosdk';
+
 import type { ApplicationStateSchema } from 'algosdk/dist/types/src/client/v2/algod/models/types';
 
 export type AlgonautConfig = {
@@ -49,7 +57,7 @@ export interface AlgonautDeleteAppArguments {
 }
 
 export interface AlgonautLsigDeployArguments extends AlgonautDeployArguments {
-	lsig: algosdk.LogicSigAccount;
+	lsig: LogicSigAccount;
 	noteText?: string;
 }
 
@@ -90,7 +98,7 @@ export interface AlgonautCallAppArguments {
 }
 
 export interface AlgonautLsigCallAppArguments extends AlgonautCallAppArguments {
-	lsig: algosdk.LogicSigAccount;
+	lsig: LogicSigAccount;
 }
 
 export interface AlgonautCreateAssetArguments {
@@ -123,7 +131,7 @@ export interface AlgonautSendAssetArguments {
 }
 
 export interface AlgonautLsigSendAssetArguments extends AlgonautSendAssetArguments {
-	lsig: algosdk.LogicSigAccount;
+	lsig: LogicSigAccount;
 }
 
 export interface AlgonautPaymentArguments {
@@ -134,7 +142,7 @@ export interface AlgonautPaymentArguments {
 }
 
 export interface AlgonautLsigPaymentArguments extends AlgonautPaymentArguments {
-	lsig: algosdk.LogicSigAccount;
+	lsig: LogicSigAccount;
 }
 
 export interface AlgonautTxnCallbacks {
@@ -174,12 +182,12 @@ export type AlgonautTransactionFields = {
 	freeze?: string,
 	clawback?: string,
 	reserve?: string;
-	suggestedParams?: algosdk.SuggestedParams;
+	suggestedParams?: SuggestedParams;
 }
 
 export type AlgonautAtomicTransaction = {
-	transaction: algosdk.Transaction;
-	transactionSigner: algosdk.Account | algosdk.LogicSigAccount;
+	transaction: Transaction;
+	transactionSigner: Account | LogicSigAccount;
 	isLogigSig: boolean;
 }
 

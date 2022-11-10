@@ -1,4 +1,4 @@
-import type algosdk from 'algosdk';
+import { LogicSigAccount, Transaction, Account, SuggestedParams } from 'algosdk';
 import type { ApplicationStateSchema } from 'algosdk/dist/types/src/client/v2/algod/models/types';
 export declare type AlgonautConfig = {
     BASE_SERVER: string;
@@ -6,7 +6,7 @@ export declare type AlgonautConfig = {
     LEDGER: string;
     PORT: string;
     API_TOKEN: any;
-    SIGNING_MODE?: 'local' | 'walletconnect' | 'algosigner' | 'inkey';
+    SIGNING_MODE?: 'local' | 'inkey';
     INKEY_SRC?: string;
     INKEY_ALIGN?: 'center' | 'left' | 'right';
 };
@@ -39,7 +39,7 @@ export interface AlgonautDeleteAppArguments {
     optionalFields?: AlgonautTransactionFields;
 }
 export interface AlgonautLsigDeployArguments extends AlgonautDeployArguments {
-    lsig: algosdk.LogicSigAccount;
+    lsig: LogicSigAccount;
     noteText?: string;
 }
 export interface AlgonautAppStateEncoded {
@@ -75,7 +75,7 @@ export interface AlgonautCallAppArguments {
     optionalFields?: AlgonautTransactionFields;
 }
 export interface AlgonautLsigCallAppArguments extends AlgonautCallAppArguments {
-    lsig: algosdk.LogicSigAccount;
+    lsig: LogicSigAccount;
 }
 export interface AlgonautCreateAssetArguments {
     assetName: string;
@@ -104,7 +104,7 @@ export interface AlgonautSendAssetArguments {
     optionalFields?: AlgonautTransactionFields;
 }
 export interface AlgonautLsigSendAssetArguments extends AlgonautSendAssetArguments {
-    lsig: algosdk.LogicSigAccount;
+    lsig: LogicSigAccount;
 }
 export interface AlgonautPaymentArguments {
     to: string;
@@ -113,12 +113,7 @@ export interface AlgonautPaymentArguments {
     optionalFields?: AlgonautTransactionFields;
 }
 export interface AlgonautLsigPaymentArguments extends AlgonautPaymentArguments {
-    lsig: algosdk.LogicSigAccount;
-}
-export interface WalletConnectListener {
-    onSessionUpdate(payload: any): void;
-    onConnect(payload: any): void;
-    onDisconnect(payload: any): void;
+    lsig: LogicSigAccount;
 }
 export interface AlgonautTxnCallbacks {
     onSign(payload: any): void;
@@ -153,11 +148,11 @@ export declare type AlgonautTransactionFields = {
     freeze?: string;
     clawback?: string;
     reserve?: string;
-    suggestedParams?: algosdk.SuggestedParams;
+    suggestedParams?: SuggestedParams;
 };
 export declare type AlgonautAtomicTransaction = {
-    transaction: algosdk.Transaction;
-    transactionSigner: algosdk.Account | algosdk.LogicSigAccount;
+    transaction: Transaction;
+    transactionSigner: Account | LogicSigAccount;
     isLogigSig: boolean;
 };
 export declare type InkeySignTxnResponse = {
