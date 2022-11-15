@@ -1836,7 +1836,8 @@ export class Algonaut {
 	}
 
 	/**
-	 * Interally used to determine how to sign transactions on more generic functions (e.g. {@link deployFromTeal})
+	 * Interally used to determine how to sign transactions on more generic functions
+	 * TODO: currently we're not using this, could deprecate?
 	 * @returns true if we are signing transactions with inkey, false otherwise
 	 */
 	usingInkeyWallet(): boolean {
@@ -2030,7 +2031,7 @@ export const utils = {
 	/**
 	 * Helper function to turn `globals` and `locals` array into more useful objects
 	 *
-	 * @param stateArray State array returned from functions like {@link getAppInfo}
+	 * @param stateArray State array returned from functions like {@link Algonaut.getAppInfo}
 	 * @returns A more useful object: `{ array[0].key: array[0].value, array[1].key: array[1].value, ... }`
 	 */
 	stateArrayToObject(stateArray: object[]): any {
