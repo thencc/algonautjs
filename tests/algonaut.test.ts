@@ -58,11 +58,6 @@ describe('instantiate Algonaut without inkey', () => {
     test('frameBus should not exist by default', () => {
         expect(algonaut.inkeyWallet.frameBus).toBeUndefined();
     });
-
-    test('algonaut.sdk should contain algosdk', () => {
-        expect(algonaut.sdk).toBeDefined();
-        expect(algonaut.sdk.generateAccount()).toHaveProperty('addr');
-    })
 });
 
 describe('instantiate Algonaut with inkey', () => {
@@ -170,7 +165,7 @@ describe('Algonaut core: offline sync methods', () => {
     })
 
     test('set account changes algonaut account', () => {
-        const account1 = algonaut.sdk.generateAccount();
+        const account1 = algosdk.generateAccount();
         algonaut.createWallet();
         expect(algonaut.account?.addr).not.toBe(account1.addr);
         algonaut.setAccount(account1);
@@ -238,7 +233,7 @@ describe('Algonaut core: offline sync methods', () => {
     })
 
     test('getAppEscrowAccount returns app address', () => {
-        const appAddress = algonaut.sdk.getApplicationAddress(accountAppID);
+        const appAddress = algosdk.getApplicationAddress(accountAppID);
         expect(algonaut.getAppEscrowAccount(accountAppID)).toEqual(appAddress);
     })
 })

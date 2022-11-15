@@ -1,6 +1,6 @@
 {
 	"name": "@thencc/algonautjs",
-	"version": "0.1.78",
+	"version": "0.2.0",
 	"description": "AlgonautJS is a simplified Algorand transaction library built specifically for Browsers and Front End Development",
 	"type": "commonjs",
 	"types": "dist/index.d.ts",
@@ -49,10 +49,6 @@
 	},
 	"dependencies": {
 		"@json-rpc-tools/utils": "^1.7.6",
-		"@walletconnect/client": "^1.7.7",
-		"@walletconnect/types": "^1.8.0",
-		"@walletconnect/utils": "^1.8.0",
-		"algorand-walletconnect-qrcode-modal": "^1.7.4",
 		"algosdk": "^1.21.0",
 		"base32-encode": "^2.0.0",
 		"buffer": "^6.0.3",
@@ -79,6 +75,7 @@
 		"node-testing-server": "^1.5.2",
 		"npm-run-all": "^4.1.5",
 		"prettier": "^2.5.1",
+		"sass": "^1.55.0",
 		"ts-jest": "^29.0.2",
 		"ts-node": "^10.7.0",
 		"typedoc": "^0.23.16",

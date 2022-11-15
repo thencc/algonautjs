@@ -1,19 +1,12 @@
 /// <reference types="node" />
-import algosdk from 'algosdk';
-import type { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields, AlgonautAppState, AlgonautStateData, AlgonautError, WalletConnectListener, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments, AlgonautAppStateEncoded, InkeySignTxnResponse } from './AlgonautTypes';
+import { Account as AlgosdkAccount, Algodv2, Indexer, LogicSigAccount, Transaction } from 'algosdk';
+import type { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields, AlgonautAppState, AlgonautStateData, AlgonautError, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments, AlgonautAppStateEncoded, InkeySignTxnResponse } from './AlgonautTypes';
 import { FrameBus } from './FrameBus';
-import { IInternalEvent } from '@walletconnect/types';
-declare global {
-    interface Window {
-        AlgoSigner: any;
-    }
-}
 export declare class Algonaut {
-    algodClient: algosdk.Algodv2;
-    indexerClient: algosdk.Indexer | undefined;
-    sdk: typeof algosdk;
+    algodClient: Algodv2;
+    indexerClient: Indexer | undefined;
     config: AlgonautConfig | undefined;
-    account: algosdk.Account | undefined;
+    account: AlgosdkAccount | undefined;
     address: string | undefined;
     mnemonic: string | undefined;
     uiLoading: boolean;
@@ -21,14 +14,6 @@ export declare class Algonaut {
         defaultSrc: string;
         otherConfig: {};
         frameBus: FrameBus | undefined;
-    };
-    walletConnect: {
-        connected: boolean;
-        connector: any;
-        accounts: any[];
-        address: string;
-        assets: any[];
-        chain: any;
     };
     /**
      * Instantiates Algonaut.js.
@@ -81,14 +66,9 @@ export declare class Algonaut {
      * if you already have an account, set it here
      * @param account an algosdk account already created
      */
-    setAccount(account: algosdk.Account): void | AlgonautError;
+    setAccount(account: AlgosdkAccount): void | AlgonautError;
     /**
-     * Sets account connected via WalletConnect
-     * @param address account address
-     */
-    setWalletConnectAccount(address: string): void;
-    /**
-     * This is the same as setting the WC account
+     * Sets account connected via Inkey
      * @param address account address
      */
     setInkeyAccount(address: string): void;
@@ -102,7 +82,7 @@ export declare class Algonaut {
      * @param mnemonic Mnemonic associated with Algonaut account
      * @returns If mnemonic is valid, returns account. Otherwise, throws an error.
      */
-    recoverAccount(mnemonic: string): algosdk.Account;
+    recoverAccount(mnemonic: string): AlgosdkAccount;
     /**
      * General purpose method to await transaction confirmation
      * @param txId a string id of the transacion you want to watch
@@ -116,7 +96,7 @@ export declare class Algonaut {
      * @param base64ProgramString
      * @returns an algosdk LogicSigAccount
      */
-    generateLogicSig(base64ProgramString: string): algosdk.LogicSigAccount;
+    generateLogicSig(base64ProgramString: string): LogicSigAccount;
     atomicOptInAsset(assetIndex: number, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
     /**
      * Opt-in the current account for the a token or NFT Asset.
@@ -295,7 +275,7 @@ export declare class Algonaut {
      */
     deployTealWithLSig(args: AlgonautLsigDeployArguments): Promise<AlgonautTransactionStatus>;
     /**
-     * Updates an application with `algosdk.makeApplicationUpdateTxn`
+     * Updates an application with `makeApplicationUpdateTxn`
      * @param args AlgonautUpdateAppArguments
      * @returns atomic transaction that updates the app
      */
@@ -308,7 +288,7 @@ export declare class Algonaut {
      */
     updateApp(args: AlgonautUpdateAppArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
     /**
-     * Compiles TEAL source via [algodClient.compile](https://py-algorand-sdk.readthedocs.io/en/latest/algosdk/v2client/algod.html#algosdk.v2client.algod.AlgodClient.compile)
+     * Compiles TEAL source via [algodClient.compile](https://py-algorand-sdk.readthedocs.io/en/latest/algosdk/v2client/algod.html#v2client.algod.AlgodClient.compile)
      * @param programSource source to compile
      * @returns Promise resolving to Buffer of compiled bytes
      */
@@ -377,7 +357,7 @@ export declare class Algonaut {
      * @param callbacks Optional object with callbacks - `onSign`, `onSend`, and `onConfirm`
      * @returns Promise resolving to AlgonautTransactionStatus
      */
-    sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | algosdk.Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
+    sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
     /**
      * Sends messages to Inkey via FrameBus
      * @param data Message to send
@@ -433,10 +413,10 @@ export declare class Algonaut {
     sendAtomicTransaction(transactions: AlgonautAtomicTransaction[], callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
     /**
      * Signs an array of Transactions (used in Inkey) with the currently authenticated account
-     * @param txns Array of algosdk.Transaction
+     * @param txns Array of Transaction
      * @returns Uint8Array[] of signed transactions
      */
-    signTransactionGroup(txns: algosdk.Transaction[]): Uint8Array | Uint8Array[];
+    signTransactionGroup(txns: Transaction[]): Uint8Array | Uint8Array[];
     /**
      * Signs base64-encoded transactions with the currently authenticated account
      * @param txns Array of Base64-encoded unsigned transactions
@@ -444,129 +424,11 @@ export declare class Algonaut {
      */
     signBase64Transactions(txns: string[]): Uint8Array[] | Uint8Array;
     /**
-     * Sends one or multiple transactions via WalletConnect, prompting the user to approve transaction on their phone.
-     *
-     * @remarks
-     * Returns the results of `algodClient.pendingTransactionInformation` in `AlgonautTransactionStatus.meta`.
-     * This is used to get the `application-index` from a `atomicDeployFromTeal` function, among other things.
-     *
-     * @param walletTxns Array of transactions to send
-     * @param callbacks Transaction callbacks `{ onSign, onSend, onConfirm }`
-     * @returns Promise resolving to transaction status
-     */
-    sendWalletConnectTxns(walletTxns: AlgonautAtomicTransaction[], callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
-    /**
-     * Interally used to determine how to sign transactions on more generic functions (e.g. {@link deployFromTeal})
-     * @returns true if we are signing transactions with WalletConnect, false otherwise
-     */
-    usingWalletConnect(): boolean;
-    /**
-     * Interally used to determine how to sign transactions on more generic functions (e.g. {@link deployFromTeal})
+     * Interally used to determine how to sign transactions on more generic functions
+     * TODO: currently we're not using this, could deprecate?
      * @returns true if we are signing transactions with inkey, false otherwise
      */
     usingInkeyWallet(): boolean;
-    /**
-     * Prepare one or more transactions for wallet connect signature
-     *
-     * @param transactions one or more atomic transaction objects
-     * @returns an array of Transactions
-     */
-    createWalletConnectTransactions(transactions: AlgonautAtomicTransaction[]): Promise<algosdk.Transaction[]>;
-    /**********************************************/
-    /***** Below are the Algo Signer APIs *********/
-    /**********************************************/
-    /**
-     * Sends a transaction via AlgoSigner.
-     * @param params Transaction parameters to send
-     * @returns Promise resolving to confirmed transaction or error
-     */
-    sendTxWithAlgoSigner(params: {
-        assetIndex?: string;
-        from: string;
-        to: string;
-        amount: number;
-        note?: string;
-        type: string;
-        LEDGER: 'TestNet' | 'MainNet';
-    }): Promise<any>;
-    /**
-     * Waits for confirmation of a transaction
-     * @param tx Transaction to monitor
-     * @returns Promise resolving to error or confirmed transaction
-     */
-    waitForAlgoSignerConfirmation(tx: any): Promise<any>;
-    disconnectAlgoWallet(): Promise<void>;
-    /**
-     * Connects to algo wallet via WalletConnect, calling {@link subscribeToEvents}.
-     * Implementation borrowed from [Algorand Docs](https://developer.algorand.org/docs/get-details/walletconnect/)
-     *
-     * @remarks
-     *
-     * There are three listeners you can use, defined by {@link WalletConnectListener}:
-     *  - `onConnect(payload: IInternalEvent)` (`payload.params[0]` contains an array of account addresses)
-     *  - `onDisconnect()`
-     *  - `onSessionUpdate(accounts: string[])`
-     *
-     * @example
-     * Usage:
-     *
-     * ```ts
-     * await algonaut.connectAlgoWallet({
-     *   onConnect: (payload) => console.log('Accounts: ' + payload.params[0]),
-     *   onDisconnect: () => console.log('Do something on disconnect'),
-     *   onSessionUpdate: (accounts) => console.log('Accounts: ' + accounts)
-     * })
-     * ```
-     *
-     * We can use the `onConnect` listener to store an address in application state, for example,
-     * which allows us to conditionally display components depending on authentication status.
-     *
-     * @param clientListener object of listener functions (see {@link WalletConnectListener})
-     */
-    connectAlgoWallet(clientListener?: WalletConnectListener): Promise<void>;
-    /**
-     * Sets up listeners for WalletConnect events
-     * @param clientListener optional object of listener functions, to be used in an application
-     */
-    subscribeToEvents(clientListener?: WalletConnectListener): void;
-    /**
-     * Kills WalletConnect session and calls {@link resetApp}
-     */
-    killSession(): Promise<void>;
-    chainUpdate(newChain: any): Promise<void>;
-    resetApp(): Promise<void>;
-    startReqAF(): void;
-    stopReqAF(playSound?: boolean): void;
-    pauseWaitSound(): void;
-    /**
-     * Function called upon connection to WalletConnect. Sets account in AlgonautJS via {@link setWalletConnectAccount}.
-     * @param payload Event payload, containing an array of account addresses
-     */
-    onConnect(payload: IInternalEvent): Promise<void>;
-    /**
-     * Called upon disconnection from WalletConnect.
-     */
-    onDisconnect(): void;
-    /**
-     * Called when WalletConnect session updates
-     * @param accounts Array of account address strings
-     */
-    onSessionUpdate(accounts: string[]): Promise<void>;
-    /**
-     * Function to determine if the AlgoSigner extension is installed.
-     * @returns true if `window.AlgoSigner` is defined
-     */
-    isAlgoSignerInstalled(): boolean;
-    /**
-     * Connects to AlgoSigner extension
-     */
-    connectToAlgoSigner(): Promise<any>;
-    /**
-     * Async function that returns list of accounts in the wallet.
-     * @param ledger must be 'TestNet' or 'MainNet'.
-     * @returns Array of Objects with address fields: [{ address: <String> }, ...]
-     */
-    getAccounts(ledger: string): Promise<any>;
     /** INCLUDE ALL THE UTILITIES IN ALGONAUT EXPORT FOR CONVENIENCE **/
     /**
      *
@@ -605,12 +467,12 @@ export declare class Algonaut {
      * @param txn base64-encoded unsigned transaction
      * @returns transaction object
      */
-    decodeBase64UnsignedTransaction(txn: string): algosdk.Transaction;
+    decodeBase64UnsignedTransaction(txn: string): Transaction;
     /**
      * Describes an Algorand transaction, for display in Inkey
      * @param txn Transaction to describe
      */
-    txnSummary(txn: algosdk.Transaction): string;
+    txnSummary(txn: Transaction): string;
 }
 export default Algonaut;
 /**
@@ -631,14 +493,14 @@ export declare const utils: {
      * @param mnemonic Mnemonic associated with Algonaut account
      * @returns If mnemonic is valid, returns account. Otherwise, throws an error.
      */
-    recoverAccount(mnemonic: string): algosdk.Account;
+    recoverAccount(mnemonic: string): AlgosdkAccount;
     /**
      * Creates a LogicSig from a base64 program string.  Note that this method does not COMPILE
      * the program, just builds an LSig from an already compiled base64 result!
      * @param base64ProgramString
      * @returns an algosdk LogicSigAccount
      */
-    generateLogicSig(base64ProgramString: string): algosdk.LogicSigAccount;
+    generateLogicSig(base64ProgramString: string): LogicSigAccount;
     /**
      * Sync function that returns a correctly-encoded argument array for
      * an algo transaction
@@ -663,7 +525,7 @@ export declare const utils: {
     /**
      * Helper function to turn `globals` and `locals` array into more useful objects
      *
-     * @param stateArray State array returned from functions like {@link getAppInfo}
+     * @param stateArray State array returned from functions like {@link Algonaut.getAppInfo}
      * @returns A more useful object: `{ array[0].key: array[0].value, array[1].key: array[1].value, ... }`
      */
     stateArrayToObject(stateArray: object[]): any;
@@ -672,28 +534,28 @@ export declare const utils: {
     decodeStateArray(stateArray: AlgonautAppStateEncoded[]): AlgonautStateData[];
     /**
      * Signs an array of Transactions (used in Inkey)
-     * @param txns Array of algosdk.Transaction
-     * @param account algosdk.Account object with `sk`, that signs the transactions
+     * @param txns Array of Transaction
+     * @param account AlgosdkAccount object with `sk`, that signs the transactions
      * @returns Uint8Array[] of signed transactions
      */
-    signTransactionGroup(txns: algosdk.Transaction[], account: algosdk.Account): Uint8Array[] | Uint8Array;
+    signTransactionGroup(txns: Transaction[], account: AlgosdkAccount): Uint8Array[] | Uint8Array;
     /**
      * Used by Inkey to sign base64-encoded transactions sent to the iframe
      * @param txns Array of Base64-encoded unsigned transactions
-     * @param account algosdk.Account object with `sk`, that signs the transactions
+     * @param account AlgosdkAccount object with `sk`, that signs the transactions
      * @returns Uint8Array signed transactions
      */
-    signBase64Transactions(txns: string[], account: algosdk.Account): Uint8Array[] | Uint8Array;
+    signBase64Transactions(txns: string[], account: AlgosdkAccount): Uint8Array[] | Uint8Array;
     /**
      * Does what it says on the tin.
      * @param txn base64-encoded unsigned transaction
      * @returns transaction object
      */
-    decodeBase64UnsignedTransaction(txn: string): algosdk.Transaction;
+    decodeBase64UnsignedTransaction(txn: string): Transaction;
     /**
      * Describes an Algorand transaction, for display in Inkey
      * @param txn Transaction to describe
      */
-    txnSummary(txn: algosdk.Transaction): string;
+    txnSummary(txn: Transaction): string;
 };
 export declare const buffer: BufferConstructor;
