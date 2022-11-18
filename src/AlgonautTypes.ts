@@ -1,12 +1,12 @@
-//import type algosdk from 'algosdk';
-
-import { 
+import type {
 	LogicSigAccount,
 	Transaction,
 	Account,
 	SuggestedParams,
+	MultisigMetadata,
 } from 'algosdk';
 
+// FYI the line below breaks in some deno envs
 import type { ApplicationStateSchema } from 'algosdk/dist/types/src/client/v2/algod/models/types';
 
 export type AlgonautConfig = {
@@ -196,4 +196,12 @@ export type InkeySignTxnResponse = {
 	reject?: boolean;
 	error?: any;
 	signedTxns?: Uint8Array[] | Uint8Array;
+}
+
+export type TxnForSigning = {
+	txn: string; // base64 encoded transaction
+	txnDecoded?: Transaction;
+	isLogicSig?: boolean;
+	isMultisig?: boolean;
+	multisigMeta?: MultisigMetadata;
 }

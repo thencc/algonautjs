@@ -1,6 +1,6 @@
 import { Buffer } from 'buffer';
 
-import { 
+import algosdk, {
 	secretKeyToMnemonic,
 	generateAccount,
 	Account as AlgosdkAccount,
@@ -31,7 +31,8 @@ import {
 	encodeUint64,
 	getApplicationAddress,
 	microalgosToAlgos,
-	decodeUnsignedTransaction
+	decodeUnsignedTransaction,
+	signMultisigTransaction
 } from 'algosdk';
 
 import type {
@@ -57,8 +58,10 @@ import type {
 	AlgonautUpdateAppArguments,
 	AlgonautGetApplicationResponse,
 	AlgonautAppStateEncoded,
-	InkeySignTxnResponse
+	InkeySignTxnResponse,
+	TxnForSigning
 } from './AlgonautTypes';
+export * from './AlgonautTypes';
 
 import { FrameBus } from './FrameBus';
 // import * as sha512 from 'js-sha512';
@@ -112,6 +115,9 @@ export class Algonaut {
 	algodClient!: Algodv2; // it will be set or it throws an Error
 	indexerClient = undefined as undefined | Indexer;
 	config = undefined as undefined | AlgonautConfig; // current config
+
+	// expose entire algosdk in case the dapp needs more
+	sdk = algosdk;
 
 	// FYI undefined if using wallet-connect, etc. perhaps rename to .accountLocal ?
 	account = undefined as undefined | AlgosdkAccount; // ONLY defined if using local signing, not wallet-connet or inkey
@@ -1644,18 +1650,32 @@ export class Algonaut {
 		return payload;
 	}
 
+
 	/**
 	 * Sends unsigned transactions to Inkey, awaits signing, returns signed txns
-	 * @param txns Array of base64 encoded transactions
+	 * @param txns Array of base64 encoded transactions OR more complex obj array w txn signing type needed
 	 * @returns {Promise<InkeySignTxnResponse>} Promise resolving to response object containing signedTxns if successful. Otherwise, provides `error` or `reject` properties. { success, reject, error, signedTxns }
 	 */
-	async inkeySignTxns(txns: string[]): Promise<InkeySignTxnResponse> {
-		const data = {
-			type: 'sign-txns', // determines payload type
-			payload: {
-				txns
-			},
-		};
+	async inkeySignTxns(txns: string[] | TxnForSigning[]): Promise<InkeySignTxnResponse> {
+		let data;
+		if (typeof txns[0] == 'string') {
+			// keep backwards compatibility
+			data = {
+				type: 'sign-txns', // determines payload type
+				payload: {
+					txns
+				},
+			};
+		} else if (typeof txns[0] == 'object') {
+			data = {
+				type: 'sign-txns', // determines payload type
+				payload: {
+					txns
+				},
+			};
+		} else {
+			throw new Error('bad txns array input...');
+		}
 
 		const res = await this.inkeyMessageAsync(data, { showFrame: true });
 
@@ -1833,6 +1853,16 @@ export class Algonaut {
 	signBase64Transactions(txns: string[]): Uint8Array[] | Uint8Array {
 		if (!this.account) throw new Error('There is no account!');
 		return utils.signBase64Transactions(txns, this.account);
+	}
+
+	/**
+	 * Signs base64-encoded transactions in the object format with the currently authenticated account
+	 * @param txnsForSigning Array of objects containing Base64-encoded unsigned transactions + info about how they need to be signed
+	 * @returns Uint8Array signed transactions
+	 */
+	signBase64TxnObjects(txnsForSigning: TxnForSigning[]): Uint8Array[] | Uint8Array {
+		if (!this.account) throw new Error('There is no account!');
+		return utils.signBase64TxnObjects(txnsForSigning, this.account);
 	}
 
 	/**
@@ -2113,6 +2143,76 @@ export const utils = {
 	},
 
 	/**
+	 * Signs an array of Transactions Objects (used in Inkey)
+	 * @param txnsForSigning Array of unsigned Transaction Objects (txn + signing method needed)
+	 * @param account AlgosdkAccount object with `sk`, that signs the transactions
+	 * @returns Uint8Array[] of signed transactions
+	 */
+	signTxnObjectGroup(txnsForSigning: TxnForSigning[], account: AlgosdkAccount): Uint8Array[] | Uint8Array {
+		// console.log('signTxnObjectGroup', txnsForSigning);
+
+		// this is critical, if the group doesn't have an id
+		// the transactions are processed as one-offs!
+
+		if (txnsForSigning.length > 1) {
+			// decode txn str -> Transaction type
+			txnsForSigning.forEach(txnFS => {
+				const decodedTxn = this.decodeBase64UnsignedTransaction(txnFS.txn);
+				txnFS.txnDecoded = decodedTxn;
+			});
+
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			const txns = txnsForSigning.map(tfs => tfs.txnDecoded!);
+			const txnGroup = assignGroupID(txns);
+
+			const signed = [] as Uint8Array[];
+
+			// sign all transactions in the group
+			txnsForSigning.forEach((txnFS, i) => {
+				let signedTx: ReturnType<typeof signTransaction>;
+
+				if (txnFS.isMultisig) {
+					if (!txnFS.multisigMeta) {
+						throw new Error('multisig signing required multisigMeta');
+					}
+					signedTx = signMultisigTransaction(txnGroup[i], txnFS.multisigMeta, account.sk);
+				} else if (txnFS.isLogicSig) {
+					// TODO
+					// signedTx = signTransaction(txnGroup[i], account.sk); // reference
+					throw new Error('logic sign signing not yet supported...');
+				} else {
+					// normal signing
+					signedTx = signTransaction(txnGroup[i], account.sk);
+				}
+
+				signed.push(signedTx.blob);
+			});
+
+			return signed;
+		} else {
+			const txnFS = txnsForSigning[0];
+			const txnUnsignedDecoded = this.decodeBase64UnsignedTransaction(txnFS.txn);
+			let signedTx: ReturnType<typeof signTransaction>;
+
+			if (txnFS.isMultisig) {
+				if (!txnFS.multisigMeta) {
+					throw new Error('multisig signing required multisigMeta');
+				}
+				signedTx = signMultisigTransaction(txnUnsignedDecoded, txnFS.multisigMeta, account.sk);
+			} else if (txnFS.isLogicSig) {
+				// TODO
+				// signedTx = signTransaction(txnDecoded, account.sk);
+				throw new Error('logic sign signing not yet supported...');
+			} else {
+				// normal signing
+				signedTx = signTransaction(txnUnsignedDecoded, account.sk);
+			}
+
+			return signedTx.blob;
+		}
+	},
+
+	/**
 	 * Used by Inkey to sign base64-encoded transactions sent to the iframe
 	 * @param txns Array of Base64-encoded unsigned transactions
 	 * @param account AlgosdkAccount object with `sk`, that signs the transactions
@@ -2126,6 +2226,18 @@ export const utils = {
 		});
 		return this.signTransactionGroup(decodedTxns, account);
 	},
+
+	/**
+	 * Used by Inkey to sign base64-encoded transactions (objects) sent to the iframe
+	 * @param txnsForSigning Array of objects containing a Base64-encoded unsigned transaction + info re how they need to be signed (multisig, logicsig, normal...)
+	 * @param account AlgosdkAccount object with `sk`, that signs the transactions
+	 * @returns Uint8Array signed transactions
+	 */
+	signBase64TxnObjects(txnsForSigning: TxnForSigning[], account: AlgosdkAccount): Uint8Array[] | Uint8Array {
+		return this.signTxnObjectGroup(txnsForSigning, account);
+	},
+
+
 
 	/**
 	 * Does what it says on the tin.
@@ -2149,7 +2261,11 @@ export const utils = {
 
 			// sending algo
 			if (txn.type === 'pay') {
-				return `Send ${microalgosToAlgos(txn.amount as number)} ALGO to ${to}`;
+				if (txn.amount) {
+					return `Send ${microalgosToAlgos(txn.amount as number)} ALGO to ${to}`;
+				} else {
+					return `Send 0 ALGO to ${to}`;
+				}
 
 				// sending assets
 			} else if (txn.type === 'axfer') {

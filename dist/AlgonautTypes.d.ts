@@ -1,4 +1,4 @@
-import { LogicSigAccount, Transaction, Account, SuggestedParams } from 'algosdk';
+import type { LogicSigAccount, Transaction, Account, SuggestedParams, MultisigMetadata } from 'algosdk';
 import type { ApplicationStateSchema } from 'algosdk/dist/types/src/client/v2/algod/models/types';
 export declare type AlgonautConfig = {
     BASE_SERVER: string;
@@ -160,4 +160,11 @@ export declare type InkeySignTxnResponse = {
     reject?: boolean;
     error?: any;
     signedTxns?: Uint8Array[] | Uint8Array;
+};
+export declare type TxnForSigning = {
+    txn: string;
+    txnDecoded?: Transaction;
+    isLogicSig?: boolean;
+    isMultisig?: boolean;
+    multisigMeta?: MultisigMetadata;
 };

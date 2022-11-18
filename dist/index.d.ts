@@ -1,12 +1,14 @@
 /// <reference types="node" />
-import { Account as AlgosdkAccount, Algodv2, Indexer, LogicSigAccount, Transaction } from 'algosdk';
-import type { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields, AlgonautAppState, AlgonautStateData, AlgonautError, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments, AlgonautAppStateEncoded, InkeySignTxnResponse } from './AlgonautTypes';
+import algosdk, { Account as AlgosdkAccount, Algodv2, LogicSigAccount, Transaction } from 'algosdk';
+import type { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields, AlgonautAppState, AlgonautStateData, AlgonautError, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments, AlgonautAppStateEncoded, InkeySignTxnResponse, TxnForSigning } from './AlgonautTypes';
+export * from './AlgonautTypes';
 import { FrameBus } from './FrameBus';
 export declare class Algonaut {
     algodClient: Algodv2;
-    indexerClient: Indexer | undefined;
+    indexerClient: algosdk.Indexer | undefined;
     config: AlgonautConfig | undefined;
-    account: AlgosdkAccount | undefined;
+    sdk: typeof algosdk;
+    account: algosdk.Account | undefined;
     address: string | undefined;
     mnemonic: string | undefined;
     uiLoading: boolean;
@@ -368,10 +370,10 @@ export declare class Algonaut {
     }): Promise<any>;
     /**
      * Sends unsigned transactions to Inkey, awaits signing, returns signed txns
-     * @param txns Array of base64 encoded transactions
+     * @param txns Array of base64 encoded transactions OR more complex obj array w txn signing type needed
      * @returns {Promise<InkeySignTxnResponse>} Promise resolving to response object containing signedTxns if successful. Otherwise, provides `error` or `reject` properties. { success, reject, error, signedTxns }
      */
-    inkeySignTxns(txns: string[]): Promise<InkeySignTxnResponse>;
+    inkeySignTxns(txns: string[] | TxnForSigning[]): Promise<InkeySignTxnResponse>;
     /**
      * Shows the Inkey wallet frame
      */
@@ -423,6 +425,12 @@ export declare class Algonaut {
      * @returns Uint8Array signed transactions
      */
     signBase64Transactions(txns: string[]): Uint8Array[] | Uint8Array;
+    /**
+     * Signs base64-encoded transactions in the object format with the currently authenticated account
+     * @param txnsForSigning Array of objects containing Base64-encoded unsigned transactions + info about how they need to be signed
+     * @returns Uint8Array signed transactions
+     */
+    signBase64TxnObjects(txnsForSigning: TxnForSigning[]): Uint8Array[] | Uint8Array;
     /**
      * Interally used to determine how to sign transactions on more generic functions
      * TODO: currently we're not using this, could deprecate?
@@ -540,12 +548,26 @@ export declare const utils: {
      */
     signTransactionGroup(txns: Transaction[], account: AlgosdkAccount): Uint8Array[] | Uint8Array;
     /**
+     * Signs an array of Transactions Objects (used in Inkey)
+     * @param txnsForSigning Array of unsigned Transaction Objects (txn + signing method needed)
+     * @param account AlgosdkAccount object with `sk`, that signs the transactions
+     * @returns Uint8Array[] of signed transactions
+     */
+    signTxnObjectGroup(txnsForSigning: TxnForSigning[], account: AlgosdkAccount): Uint8Array[] | Uint8Array;
+    /**
      * Used by Inkey to sign base64-encoded transactions sent to the iframe
      * @param txns Array of Base64-encoded unsigned transactions
      * @param account AlgosdkAccount object with `sk`, that signs the transactions
      * @returns Uint8Array signed transactions
      */
     signBase64Transactions(txns: string[], account: AlgosdkAccount): Uint8Array[] | Uint8Array;
+    /**
+     * Used by Inkey to sign base64-encoded transactions (objects) sent to the iframe
+     * @param txnsForSigning Array of objects containing a Base64-encoded unsigned transaction + info re how they need to be signed (multisig, logicsig, normal...)
+     * @param account AlgosdkAccount object with `sk`, that signs the transactions
+     * @returns Uint8Array signed transactions
+     */
+    signBase64TxnObjects(txnsForSigning: TxnForSigning[], account: AlgosdkAccount): Uint8Array[] | Uint8Array;
     /**
      * Does what it says on the tin.
      * @param txn base64-encoded unsigned transaction

@@ -1,6 +1,6 @@
 {
 	"name": "@thencc/algonautjs",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"description": "AlgonautJS is a simplified Algorand transaction library built specifically for Browsers and Front End Development",
 	"type": "commonjs",
 	"types": "dist/index.d.ts",
@@ -31,9 +31,7 @@
 		"build:types": "tsc --emitDeclarationOnly --outDir dist",
 		"build:docs": "npx typedoc",
 		"test": "jest",
-		"tests": "task prepare-tests && task tests",
-		"xbuild-test": "vite build test",
-		"xdev": "vite serve test --port 8891"
+		"tests": "cd tests && task prepare-tests && task tests"
 	},
 	"keywords": [
 		"algo",
