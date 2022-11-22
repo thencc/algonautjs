@@ -1761,9 +1761,15 @@ export class Algonaut {
 	 * @returns Success or fail message
 	 */
 	async inkeyDisconnect(): Promise<any> {
+		// console.log('inkeyDisconnect');
 		const data = {
 			type: 'disconnect'
 		};
+
+		if (!this.account || !this.account.addr || !this.address) {
+			console.warn('no acct to disconnect');
+			return;
+		}
 
 		const res = await this.inkeyMessageAsync(data, { showFrame: false });
 
