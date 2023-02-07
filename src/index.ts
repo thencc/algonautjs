@@ -493,7 +493,7 @@ export class Algonaut {
 
 	/**
 	 * Create asset transaction
-	 * @param args {AlgonautCreateAssetArguments}  Must pass `assetName`, `symbol`, `decimals`, `amount`.
+	 * @param args { AlgonautCreateAssetArguments }  Must pass `assetName`, `symbol`, `decimals`, `amount`.
 	 * @returns atomic txn to create asset
 	*/
 	async atomicCreateAsset(args: AlgonautCreateAssetArguments): Promise<AlgonautAtomicTransaction> {
@@ -636,13 +636,16 @@ export class Algonaut {
 		if (!args.to) throw new Error('No to address provided');
 		if (!args.assetIndex) throw new Error('No asset index provided');
 		if (!args.amount) throw new Error('No amount provided');
-		if (!this.account) throw new Error('there is no account!');
+		// if (!this.account) throw new Error('there is no account!');
+
+		const fromAddr = args.from || this.account?.addr;
+		if (!fromAddr) throw new Error('there is no fromAddr');
 
 		const suggestedParams = args.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
 		const transaction =
 			makeAssetTransferTxnWithSuggestedParamsFromObject({
-				from: this.account.addr,
+				from: fromAddr,
 				to: args.to,
 				amount: args.amount,
 				assetIndex: args.assetIndex,
@@ -1257,13 +1260,15 @@ export class Algonaut {
 		if (!args.amount) throw new Error('You did not specify an amount!');
 		if (!args.to) throw new Error('You did not specify a to address');
 
-		if (this.account) {
-			const encodedNote = args.note ? this.to8Arr(args.note) : new Uint8Array();
+		const fromAddr = args.from || this.account?.addr;
+
+		if (fromAddr) {
+			const encodedNote = args.optionalFields?.note ? this.to8Arr(args.optionalFields.note) : new Uint8Array();
 			const suggestedParams = args.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
 			const transaction =
 				makePaymentTxnWithSuggestedParamsFromObject({
-					from: this.account.addr,
+					from: fromAddr,
 					to: args.to,
 					amount: args.amount,
 					note: encodedNote,
@@ -1276,7 +1281,7 @@ export class Algonaut {
 				isLogigSig: false
 			};
 		} else {
-			throw new Error('there is no account!');
+			throw new Error('there is no fromAddr');
 		}
 	}
 
@@ -1654,7 +1659,7 @@ export class Algonaut {
 	/**
 	 * Sends unsigned transactions to Inkey, awaits signing, returns signed txns
 	 * @param txns Array of base64 encoded transactions OR more complex obj array w txn signing type needed
-	 * @returns {Promise<InkeySignTxnResponse>} Promise resolving to response object containing signedTxns if successful. Otherwise, provides `error` or `reject` properties. { success, reject, error, signedTxns }
+	 * @returns { Promise<InkeySignTxnResponse> } Promise resolving to response object containing signedTxns if successful. Otherwise, provides `error` or `reject` properties. { success, reject, error, signedTxns }
 	 */
 	async inkeySignTxns(txns: string[] | TxnForSigning[]): Promise<InkeySignTxnResponse> {
 		let data;
@@ -2252,6 +2257,15 @@ export const utils = {
 	 */
 	decodeBase64UnsignedTransaction(txn: string): Transaction {
 		return decodeUnsignedTransaction(Buffer.from(txn, 'base64'));
+	},
+
+	/**
+	 * Does what it says on the tin.
+	 * @param txn algorand txn object
+	 * @returns string (like for inkey / base64 transmit use)
+	 */
+	txnToStr(txn: algosdk.Transaction): string {
+		return Buffer.from(txn.toByte()).toString('base64');
 	},
 
 	/**

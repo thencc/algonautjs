@@ -127,7 +127,7 @@ export declare class Algonaut {
     encodeArguments(args: any[]): Uint8Array[];
     /**
      * Create asset transaction
-     * @param args {AlgonautCreateAssetArguments}  Must pass `assetName`, `symbol`, `decimals`, `amount`.
+     * @param args { AlgonautCreateAssetArguments }  Must pass `assetName`, `symbol`, `decimals`, `amount`.
      * @returns atomic txn to create asset
     */
     atomicCreateAsset(args: AlgonautCreateAssetArguments): Promise<AlgonautAtomicTransaction>;
@@ -371,7 +371,7 @@ export declare class Algonaut {
     /**
      * Sends unsigned transactions to Inkey, awaits signing, returns signed txns
      * @param txns Array of base64 encoded transactions OR more complex obj array w txn signing type needed
-     * @returns {Promise<InkeySignTxnResponse>} Promise resolving to response object containing signedTxns if successful. Otherwise, provides `error` or `reject` properties. { success, reject, error, signedTxns }
+     * @returns { Promise<InkeySignTxnResponse> } Promise resolving to response object containing signedTxns if successful. Otherwise, provides `error` or `reject` properties. { success, reject, error, signedTxns }
      */
     inkeySignTxns(txns: string[] | TxnForSigning[]): Promise<InkeySignTxnResponse>;
     /**
@@ -574,6 +574,12 @@ export declare const utils: {
      * @returns transaction object
      */
     decodeBase64UnsignedTransaction(txn: string): Transaction;
+    /**
+     * Does what it says on the tin.
+     * @param txn algorand txn object
+     * @returns string (like for inkey / base64 transmit use)
+     */
+    txnToStr(txn: algosdk.Transaction): string;
     /**
      * Describes an Algorand transaction, for display in Inkey
      * @param txn Transaction to describe

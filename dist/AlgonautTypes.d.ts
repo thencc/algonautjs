@@ -99,6 +99,7 @@ export interface AlgonautDestroyAssetArguments {
 }
 export interface AlgonautSendAssetArguments {
     to: string;
+    from?: string;
     assetIndex: number;
     amount: number | bigint;
     optionalFields?: AlgonautTransactionFields;
@@ -107,9 +108,9 @@ export interface AlgonautLsigSendAssetArguments extends AlgonautSendAssetArgumen
     lsig: LogicSigAccount;
 }
 export interface AlgonautPaymentArguments {
-    to: string;
     amount: number | bigint;
-    note?: string;
+    to: string;
+    from?: string;
     optionalFields?: AlgonautTransactionFields;
 }
 export interface AlgonautLsigPaymentArguments extends AlgonautPaymentArguments {
@@ -152,7 +153,7 @@ export declare type AlgonautTransactionFields = {
 };
 export declare type AlgonautAtomicTransaction = {
     transaction: Transaction;
-    transactionSigner: Account | LogicSigAccount;
+    transactionSigner: undefined | Account | LogicSigAccount;
     isLogigSig: boolean;
 };
 export declare type InkeySignTxnResponse = {

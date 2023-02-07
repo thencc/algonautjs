@@ -125,6 +125,7 @@ export interface AlgonautDestroyAssetArguments {
 
 export interface AlgonautSendAssetArguments {
 	to: string;
+	from?: string;
 	assetIndex: number;
 	amount: number | bigint;
 	optionalFields?: AlgonautTransactionFields;
@@ -135,9 +136,9 @@ export interface AlgonautLsigSendAssetArguments extends AlgonautSendAssetArgumen
 }
 
 export interface AlgonautPaymentArguments {
-	to: string;
 	amount: number | bigint;
-	note?: string;
+	to: string;
+	from?: string;
 	optionalFields?: AlgonautTransactionFields;
 }
 
@@ -187,7 +188,7 @@ export type AlgonautTransactionFields = {
 
 export type AlgonautAtomicTransaction = {
 	transaction: Transaction;
-	transactionSigner: Account | LogicSigAccount;
+	transactionSigner: undefined | Account | LogicSigAccount; // undefined means theres not enough info to tell, like when a .from field is in params
 	isLogigSig: boolean;
 }
 
