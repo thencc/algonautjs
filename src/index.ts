@@ -63,6 +63,14 @@ import type {
 } from './AlgonautTypes';
 export * from './AlgonautTypes';
 
+import * as w3h from '@thencc/web3-wallet-handler';
+export { w3h };
+
+// console.log('w3h', w3h);
+// export * as w3h from '@thencc/web3-wallet-handler'; // this also works
+// export * from '@thencc/web3-wallet-handler';
+// export const web3yo = () => w3h;
+
 import { FrameBus } from './FrameBus';
 // import * as sha512 from 'js-sha512';
 // import * as CryptoJS from 'crypto-js';

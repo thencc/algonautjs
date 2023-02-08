@@ -7,7 +7,8 @@ import type {
 } from 'algosdk';
 
 // FYI the line below breaks in some deno envs
-import type { ApplicationStateSchema } from 'algosdk/dist/types/src/client/v2/algod/models/types';
+import type { ApplicationStateSchema } from 'algosdk/dist/types/client/v2/algod/models/types';
+// import type { ApplicationStateSchema } from 'algosdk/dist/types/src/client/v2/algod/models/types';
 
 export type AlgonautConfig = {
 	BASE_SERVER: string;

@@ -1,6 +1,6 @@
 import type { LogicSigAccount, Transaction, Account, SuggestedParams, MultisigMetadata } from 'algosdk';
-import type { ApplicationStateSchema } from 'algosdk/dist/types/src/client/v2/algod/models/types';
-export declare type AlgonautConfig = {
+import type { ApplicationStateSchema } from 'algosdk/dist/types/client/v2/algod/models/types';
+export type AlgonautConfig = {
     BASE_SERVER: string;
     INDEX_SERVER?: string;
     LEDGER: string;
@@ -121,11 +121,11 @@ export interface AlgonautTxnCallbacks {
     onSend(payload: any): void;
     onConfirm(payload: any): void;
 }
-export declare type AlgonautError = {
+export type AlgonautError = {
     message: string;
     rawError?: any;
 };
-export declare type AlgonautTransactionStatus = {
+export type AlgonautTransactionStatus = {
     status: 'success' | 'fail' | 'rejected';
     message: string;
     index?: number;
@@ -134,11 +134,11 @@ export declare type AlgonautTransactionStatus = {
     meta?: any;
     createdIndex?: number;
 };
-export declare type AlgonautWallet = {
+export type AlgonautWallet = {
     address: string;
     mnemonic: string;
 };
-export declare type AlgonautTransactionFields = {
+export type AlgonautTransactionFields = {
     accounts?: string[];
     applications?: number[];
     assets?: number[];
@@ -151,18 +151,18 @@ export declare type AlgonautTransactionFields = {
     reserve?: string;
     suggestedParams?: SuggestedParams;
 };
-export declare type AlgonautAtomicTransaction = {
+export type AlgonautAtomicTransaction = {
     transaction: Transaction;
     transactionSigner: undefined | Account | LogicSigAccount;
     isLogigSig: boolean;
 };
-export declare type InkeySignTxnResponse = {
+export type InkeySignTxnResponse = {
     success: boolean;
     reject?: boolean;
     error?: any;
     signedTxns?: Uint8Array[] | Uint8Array;
 };
-export declare type TxnForSigning = {
+export type TxnForSigning = {
     txn: string;
     txnDecoded?: Transaction;
     isLogicSig?: boolean;
