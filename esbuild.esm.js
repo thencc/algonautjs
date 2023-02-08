@@ -28,6 +28,13 @@ build({
 	splitting: true, // only for esm
 	outExtension: { '.js': '.mjs' }, // .js -> .mjs (change package.json main + modules entry IF doing this)
 
+	// for w3h
+	external: [
+		'@perawallet/connect',
+		'@randlabs/myalgo-connect',
+		'@thencc/inkey-client-js',
+	],
+
 	// shims for node things in browser js
 	inject: [require.resolve('node-stdlib-browser/helpers/esbuild/shim')],
 	define: {

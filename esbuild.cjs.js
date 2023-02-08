@@ -29,6 +29,13 @@ build({
 	// NODE build
 	platform: 'node',
 	format: 'cjs', // commonJs is for node
-	outExtension: { '.js': '.cjs' }
+	outExtension: { '.js': '.cjs' },
+
+	// for w3h
+	external: [
+		'@perawallet/connect',
+		'@randlabs/myalgo-connect',
+		'@thencc/inkey-client-js',
+	],
 })
 	.catch(() => process.exit(1));
