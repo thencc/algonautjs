@@ -63,8 +63,9 @@ import type {
 } from './AlgonautTypes';
 export * from './AlgonautTypes';
 
-import * as w3h from '@thencc/web3-wallet-handler';
-export { w3h };
+// import * as w3h from '@thencc/web3-wallet-handler';
+// export { w3h };
+export * from '@thencc/web3-wallet-handler';
 
 // console.log('w3h', w3h);
 // export * as w3h from '@thencc/web3-wallet-handler'; // this also works

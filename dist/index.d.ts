@@ -2,8 +2,7 @@
 import algosdk, { Account as AlgosdkAccount, Algodv2, LogicSigAccount, Transaction } from 'algosdk';
 import type { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields, AlgonautAppState, AlgonautStateData, AlgonautError, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments, AlgonautAppStateEncoded, InkeySignTxnResponse, TxnForSigning } from './AlgonautTypes';
 export * from './AlgonautTypes';
-import * as w3h from '@thencc/web3-wallet-handler';
-export { w3h };
+export * from '@thencc/web3-wallet-handler';
 import { FrameBus } from './FrameBus';
 export declare class Algonaut {
     algodClient: Algodv2;
