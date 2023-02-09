@@ -1,6 +1,8 @@
 // import { build } from 'esbuild'; // for type:"module" pkgs
 const { build } = require('esbuild');
-// const { w3hOptionalDeps } = require('@thencc/web3-wallet-handler');
+
+const { clientPkgs } = require('@thencc/web3-wallet-handler');
+const allClientPkgNames = Object.values(clientPkgs);
 
 build({
 	entryPoints: ['src/index.ts'],
@@ -34,10 +36,7 @@ build({
 
 	// for w3h
 	external: [
-		// ...w3hOptionalDeps
-		'@perawallet/connect',
-		'@randlabs/myalgo-connect',
-		'@thencc/inkey-client-js',
+		...allClientPkgNames
 	],
 })
 	.catch(() => process.exit(1));

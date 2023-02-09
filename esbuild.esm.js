@@ -4,40 +4,10 @@ const { build } = require('esbuild');
 const plugin = require('node-stdlib-browser/helpers/esbuild/plugin');
 const stdLibBrowser = require('node-stdlib-browser');
 
-// const { w3hOptionalDeps } = await (import('@thencc/web3-wallet-handler'));
-
-// const w3hPkg = require('@thencc/web3-wallet-handler/package.json');
-// const w3hOptionalDeps = w3hPkg.optionalDependencies;
-// console.log('w3hOptionalDeps', w3hOptionalDeps);
-// const w3hOptionalDepsKeys = Object.keys(w3hOptionalDeps);
-// console.log('w3hOptionalDepsKeys', w3hOptionalDepsKeys);
-
-// import * as xx from '@thencc/web3-wallet-handler/buildSettings';
-// const xx = require('@thencc/web3-wallet-handler/buildSettings');
-// console.log('xx', xx);
-// clientPkgs
-
-const {clientPkgs, disableClients } = require('@thencc/web3-wallet-handler/buildSettings');
-// const { clientPkgs, disableClients } = require('@thencc/web3-wallet-handler');
+// w3h pkg excluder
+const { clientPkgs, excludeClients } = require('@thencc/web3-wallet-handler');
 console.log('clientPkgs', clientPkgs);
-
-// TODO should default to disabling all
-let k = disableClients([
-	'myalgo',
-	'pera',
-	'inkey'
-]);
-console.log(k);
-
-// const { w3hOptionalDeps } = require('@thencc/web3-wallet-handler');
-// const { w3hOptionalDeps } = require('@thencc/web3-wallet-handler/dist/index.esm.js');
-
-// const w3h = require('@thencc/web3-wallet-handler/dist/index.esm.mjs');
-// console.log('w3h', w3h);
-
-// ts-disable
-// import { w3hOptionalDeps } from '@thencc/web3-wallet-handler';
-
+const allClientPkgNames = Object.values(clientPkgs);
 
 // build tips (iife, esm, cjs)
 // https://medium.com/geekculture/build-a-library-with-esbuild-23235712f3c
@@ -65,10 +35,7 @@ build({
 
 	// for w3h
 	external: [
-		// ...w3hOptionalDeps
-		// ...w3hOptionalDepsKeys,
-
-		...k
+		...allClientPkgNames,
 		// '@perawallet/connect',
 		// '@randlabs/myalgo-connect',
 		// '@thencc/inkey-client-js',
