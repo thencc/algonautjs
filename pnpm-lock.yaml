@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@json-rpc-tools/utils': ^1.7.6
-  '@thencc/web3-wallet-handler': ^0.0.8
+  '@thencc/web3-wallet-handler': ^0.0.15
   '@types/crypto-js': ^4.1.1
   '@types/node': ^18.13.0
   '@types/superagent': ^4.1.15
@@ -37,7 +37,7 @@ specifiers:
 
 dependencies:
   '@json-rpc-tools/utils': 1.7.6
-  '@thencc/web3-wallet-handler': 0.0.8_algosdk@1.24.1
+  '@thencc/web3-wallet-handler': 0.0.15_algosdk@1.24.1
   algosdk: 1.24.1
   base32-encode: 2.0.0
   buffer: 6.0.3
@@ -1037,8 +1037,8 @@ packages:
     dev: false
     optional: true
 
-  /@thencc/web3-wallet-handler/0.0.8_algosdk@1.24.1:
-    resolution: {integrity: sha512-f2MC+Y4QEGjz32e+BzB8/JV+jRBM68wN2SBmjZlYK44oLEKyeNdsa48aGP9ioJ9/xQGMIPN79pbEt42ee5wbpQ==}
+  /@thencc/web3-wallet-handler/0.0.15_algosdk@1.24.1:
+    resolution: {integrity: sha512-4//Ain5iOXaSFrwij4jtHUsZe7irQu2fujmD+HNjbeCveTuSTKRIJoONhyYS7Gz5igEhTuY3RDqoPWpUihfq5Q==}
     requiresBuild: true
     dependencies:
       '@vue-reactivity/watch': 0.2.0_5dvaz4jnhp6coqtmaqcntkvxmm
