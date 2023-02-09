@@ -18,6 +18,7 @@ const stdLibBrowser = require('node-stdlib-browser');
 // clientPkgs
 
 const {clientPkgs, disableClients } = require('@thencc/web3-wallet-handler/buildSettings');
+// const { clientPkgs, disableClients } = require('@thencc/web3-wallet-handler');
 console.log('clientPkgs', clientPkgs);
 
 // TODO should default to disabling all
