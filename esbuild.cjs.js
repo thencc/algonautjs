@@ -1,8 +1,6 @@
 // import { build } from 'esbuild'; // for type:"module" pkgs
 const { build } = require('esbuild');
-
-const { clientPkgs } = require('@thencc/web3-wallet-handler');
-const allClientPkgNames = Object.values(clientPkgs);
+const { CLIENT_PKGS } = require('@thencc/web3-wallet-handler');
 
 build({
 	entryPoints: ['src/index.ts'],
@@ -36,7 +34,7 @@ build({
 
 	// for w3h
 	external: [
-		...allClientPkgNames
+		...CLIENT_PKGS
 	],
 })
 	.catch(() => process.exit(1));

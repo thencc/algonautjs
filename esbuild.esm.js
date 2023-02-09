@@ -1,13 +1,10 @@
 // import { build } from 'esbuild'; // for type:"module" pkgs
 const { build } = require('esbuild');
+const { CLIENT_PKGS } = require('@thencc/web3-wallet-handler');
 
+// shims
 const plugin = require('node-stdlib-browser/helpers/esbuild/plugin');
 const stdLibBrowser = require('node-stdlib-browser');
-
-// w3h pkg excluder
-const { clientPkgs, excludeClients } = require('@thencc/web3-wallet-handler');
-console.log('clientPkgs', clientPkgs);
-const allClientPkgNames = Object.values(clientPkgs);
 
 // build tips (iife, esm, cjs)
 // https://medium.com/geekculture/build-a-library-with-esbuild-23235712f3c
@@ -35,10 +32,7 @@ build({
 
 	// for w3h
 	external: [
-		...allClientPkgNames,
-		// '@perawallet/connect',
-		// '@randlabs/myalgo-connect',
-		// '@thencc/inkey-client-js',
+		...CLIENT_PKGS,
 	],
 
 	// shims for node things in browser js
