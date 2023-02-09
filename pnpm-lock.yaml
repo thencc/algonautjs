@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@json-rpc-tools/utils': ^1.7.6
-  '@thencc/web3-wallet-handler': ^0.0.6
+  '@thencc/web3-wallet-handler': ^0.0.7
   '@types/crypto-js': ^4.1.1
   '@types/node': ^18.13.0
   '@types/superagent': ^4.1.15
@@ -37,7 +37,7 @@ specifiers:
 
 dependencies:
   '@json-rpc-tools/utils': 1.7.6
-  '@thencc/web3-wallet-handler': 0.0.6_algosdk@1.24.1
+  '@thencc/web3-wallet-handler': 0.0.7_algosdk@1.24.1
   algosdk: 1.24.1
   base32-encode: 2.0.0
   buffer: 6.0.3
@@ -1037,8 +1037,8 @@ packages:
     dev: false
     optional: true
 
-  /@thencc/web3-wallet-handler/0.0.6_algosdk@1.24.1:
-    resolution: {integrity: sha512-eXTBESiDVLTcJxesh/O+x0SP/V+LCEGwVhvQvv+fDZ7E1zaJNMqX40VLptYQRvz/L5OFx0Awd2x4cPJMeAc5TQ==}
+  /@thencc/web3-wallet-handler/0.0.7_algosdk@1.24.1:
+    resolution: {integrity: sha512-MKYvUv2pmL6eAvhsL+U+n+nep51OzYBfj8yYAJuzo7PW17nN1zNf8dM9viV+9IskkaQhYK22A2ZgQSLMvcHqDg==}
     dependencies:
       '@vue-reactivity/watch': 0.2.0_5dvaz4jnhp6coqtmaqcntkvxmm
       '@vue/reactivity': 3.2.47
@@ -1870,7 +1870,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001451
-      electron-to-chromium: 1.4.289
+      electron-to-chromium: 1.4.290
       node-releases: 2.0.10
       update-browserslist-db: 1.0.10_browserslist@4.21.5
     dev: true
@@ -2295,8 +2295,8 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /electron-to-chromium/1.4.289:
-    resolution: {integrity: sha512-relLdMfPBxqGCxy7Gyfm1HcbRPcFUJdlgnCPVgQ23sr1TvUrRJz0/QPoGP0+x41wOVSTN/Wi3w6YDgHiHJGOzg==}
+  /electron-to-chromium/1.4.290:
+    resolution: {integrity: sha512-3uIkNYprKqAixFqANvs7K3zacGz6iVIMcGG1M/7hMn6Gvzxe52Xg//wRUds7GPv2uouF7EZ4Sh51fLDw+aBkHw==}
     dev: true
 
   /elliptic/6.5.4:
