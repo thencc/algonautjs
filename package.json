@@ -49,7 +49,7 @@
 	},
 	"dependencies": {
 		"@json-rpc-tools/utils": "^1.7.6",
-		"@thencc/web3-wallet-handler": "^0.0.27",
+		"@thencc/web3-wallet-handler": "^0.0.28",
 		"algosdk": "^1.21.0",
 		"base32-encode": "^2.0.0",
 		"buffer": "^6.0.3",
