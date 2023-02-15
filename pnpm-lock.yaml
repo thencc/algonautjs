@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@json-rpc-tools/utils': ^1.7.6
-  '@thencc/web3-wallet-handler': ^0.0.26
+  '@thencc/web3-wallet-handler': ^0.0.27
   '@types/crypto-js': ^4.1.1
   '@types/node': ^18.13.0
   '@types/superagent': ^4.1.15
@@ -37,7 +37,7 @@ specifiers:
 
 dependencies:
   '@json-rpc-tools/utils': 1.7.6
-  '@thencc/web3-wallet-handler': 0.0.26_algosdk@1.24.1
+  '@thencc/web3-wallet-handler': 0.0.27_algosdk@1.24.1
   algosdk: 1.24.1
   base32-encode: 2.0.0
   buffer: 6.0.3
@@ -822,7 +822,7 @@ packages:
       slash: 3.0.0
       string-length: 4.0.2
       strip-ansi: 6.0.1
-      v8-to-istanbul: 9.0.1
+      v8-to-istanbul: 9.1.0
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -831,7 +831,7 @@ packages:
     resolution: {integrity: sha512-ZrGzGfh31NtdVH8tn0mgJw4khQuNHiKqdzJAFbCaERbyCP9tHlxWuL/mnMu8P7e/+k4puWjI1NOzi/sFsjce/g==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@sinclair/typebox': 0.25.21
+      '@sinclair/typebox': 0.25.22
     dev: true
 
   /@jest/source-map/29.4.2:
@@ -1021,8 +1021,8 @@ packages:
     dev: false
     optional: true
 
-  /@sinclair/typebox/0.25.21:
-    resolution: {integrity: sha512-gFukHN4t8K4+wVC+ECqeqwzBDeFeTzBXroBTqE6vcWrQGbEUpHO7LYdG0f4xnvYq4VOEwITSlHlp0JBAIFMS/g==}
+  /@sinclair/typebox/0.25.22:
+    resolution: {integrity: sha512-6U6r2L7rnM7EG8G1tWzIjdB3QlsHF4slgcqXNN/SF0xJOAr0nDmT2GedlkyO3mrv8mDTJ24UuOMWR3diBrCvQQ==}
     dev: true
 
   /@sinonjs/commons/2.0.0:
@@ -1043,8 +1043,8 @@ packages:
     dev: false
     optional: true
 
-  /@thencc/web3-wallet-handler/0.0.26_algosdk@1.24.1:
-    resolution: {integrity: sha512-XVIwtY1cgr9eBvovbzULpyyMd85vO5i6+BsCPxuwQ9QcM6spAzM6st44fkjs8cWmQedgu8lOafhhhxM/9g+Stg==}
+  /@thencc/web3-wallet-handler/0.0.27_algosdk@1.24.1:
+    resolution: {integrity: sha512-F6/62X29eVo5cA/5JhxrMcBOsLpBesJ/yKIMOCYZv+U7I7a2gPOQIwN2cBZb8o91QgvaRkJzSZLnwX8M7ZWiSg==}
     requiresBuild: true
     dependencies:
       '@randlabs/msgpack-bigint': 1.0.3
@@ -1882,7 +1882,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001452
-      electron-to-chromium: 1.4.295
+      electron-to-chromium: 1.4.296
       node-releases: 2.0.10
       update-browserslist-db: 1.0.10_browserslist@4.21.5
     dev: true
@@ -2307,8 +2307,8 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /electron-to-chromium/1.4.295:
-    resolution: {integrity: sha512-lEO94zqf1bDA3aepxwnWoHUjA8sZ+2owgcSZjYQy0+uOSEclJX0VieZC+r+wLpSxUHRd6gG32znTWmr+5iGzFw==}
+  /electron-to-chromium/1.4.296:
+    resolution: {integrity: sha512-i/6Q+Y9bluDa2a0NbMvdtG5TuS/1Fr3TKK8L+7UUL9QjRS5iFJzCC3r70xjyOnLiYG8qGV4/mMpe6HuAbdJW4w==}
     dev: true
 
   /elliptic/6.5.4:
@@ -5512,8 +5512,8 @@ packages:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
     dev: true
 
-  /v8-to-istanbul/9.0.1:
-    resolution: {integrity: sha512-74Y4LqY74kLE6IFyIjPtkSTWzUZmj8tdHT9Ii/26dvQ6K9Dl2NbEfj0XgU2sHCtKgt5VupqhlO/5aWuqS+IY1w==}
+  /v8-to-istanbul/9.1.0:
+    resolution: {integrity: sha512-6z3GW9x8G1gd+JIIgQQQxXuiJtCXeAjp6RaPEPLv62mH3iPHPxV6W3robxtCzNErRo6ZwTmzWhsbNvjyEBKzKA==}
     engines: {node: '>=10.12.0'}
     dependencies:
       '@jridgewell/trace-mapping': 0.3.17
