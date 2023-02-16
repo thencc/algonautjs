@@ -35,6 +35,7 @@ build({
 		...CLIENT_PKGS,
 	],
 
+	// TODO remove these since algosdk@2.1.0 solves for this! right?
 	// shims for node things in browser js
 	inject: [require.resolve('node-stdlib-browser/helpers/esbuild/shim')],
 	define: {
