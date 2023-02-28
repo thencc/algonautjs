@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@json-rpc-tools/utils': ^1.7.6
-  '@thencc/web3-wallet-handler': ^0.0.96
+  '@thencc/web3-wallet-handler': ^0.0.97
   '@types/crypto-js': ^4.1.1
   '@types/node': ^18.13.0
   '@types/superagent': ^4.1.15
@@ -37,7 +37,7 @@ specifiers:
 
 dependencies:
   '@json-rpc-tools/utils': 1.7.6
-  '@thencc/web3-wallet-handler': 0.0.96_algosdk@2.1.0
+  '@thencc/web3-wallet-handler': 0.0.97_algosdk@2.1.0
   algosdk: 2.1.0
   base32-encode: 2.0.0
   buffer: 6.0.3
@@ -1057,8 +1057,8 @@ packages:
     dev: false
     optional: true
 
-  /@thencc/web3-wallet-handler/0.0.96_algosdk@2.1.0:
-    resolution: {integrity: sha512-NqzvxUbNjDkCYbb99a+p77JiwMuPP4juBxDv2+0rIDy2b+5tQJYi0dLYkJ1Z8h+FU1cRloGkrJ2Z5GT0bOEpLA==}
+  /@thencc/web3-wallet-handler/0.0.97_algosdk@2.1.0:
+    resolution: {integrity: sha512-zutDAAWDktMQ7rzfRE3Uj2Jprb9FIGi8RUjPBnGs8CGVnan3qVSI8n0EMdE8K80vkvvdzkRVYei6KYxFlq1sQA==}
     requiresBuild: true
     peerDependencies:
       algosdk: ^1.23.2 || ^2.1.0
