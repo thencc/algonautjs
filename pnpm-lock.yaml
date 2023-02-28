@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@json-rpc-tools/utils': ^1.7.6
-  '@thencc/web3-wallet-handler': ^0.0.89
+  '@thencc/web3-wallet-handler': ^0.0.90
   '@types/crypto-js': ^4.1.1
   '@types/node': ^18.13.0
   '@types/superagent': ^4.1.15
@@ -37,7 +37,7 @@ specifiers:
 
 dependencies:
   '@json-rpc-tools/utils': 1.7.6
-  '@thencc/web3-wallet-handler': 0.0.89_algosdk@2.1.0
+  '@thencc/web3-wallet-handler': 0.0.90_algosdk@2.1.0
   algosdk: 2.1.0
   base32-encode: 2.0.0
   buffer: 6.0.3
@@ -414,6 +414,25 @@ packages:
   /@bcoe/v8-coverage/0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
+
+  /@blockshake/defly-connect/1.1.1_algosdk@2.1.0:
+    resolution: {integrity: sha512-Ft3/zqnUeV5dmTXIyTB5amyUdwG899NQ9PSVdGf9oNsnq+Q+IJMVo+GjntTC8sC7/z9cDRYJ2xnj3YjCtTfQcg==}
+    requiresBuild: true
+    peerDependencies:
+      algosdk: ^1.23.2
+    dependencies:
+      '@walletconnect/client': 1.8.0
+      '@walletconnect/types': 1.8.0
+      algosdk: 2.1.0
+      bowser: 2.11.0
+      buffer: 6.0.3
+      lottie-web: 5.10.2
+      qr-code-styling: 1.6.0-rc.1
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+    dev: false
+    optional: true
 
   /@cspotcode/source-map-support/0.8.1:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -1044,8 +1063,8 @@ packages:
     dev: false
     optional: true
 
-  /@thencc/web3-wallet-handler/0.0.89_algosdk@2.1.0:
-    resolution: {integrity: sha512-qZnTnVUa39QVHeyy3K6cgt3YCjkgfA3iIjTDbAbxRq+VvOQ6JSJfPJAEmwgUF0uNLVIHcsYLHLUjTlDX2C0yeA==}
+  /@thencc/web3-wallet-handler/0.0.90_algosdk@2.1.0:
+    resolution: {integrity: sha512-9dCN3moaHrZstaLsIFceVXnObreXX5Gow6irvpr5/59ae57O/6SUeNS04YsWozCNAy9sS9CYu2AkBwUM0dsnDw==}
     requiresBuild: true
     dependencies:
       '@randlabs/msgpack-bigint': 1.0.3
@@ -1053,6 +1072,7 @@ packages:
       '@vue/reactivity': 3.2.47
       '@vue/shared': 3.2.47
     optionalDependencies:
+      '@blockshake/defly-connect': 1.1.1_algosdk@2.1.0
       '@perawallet/connect': 1.1.1_algosdk@2.1.0
       '@randlabs/myalgo-connect': 1.4.2
       '@thencc/inkey-client-js': 0.0.2
@@ -4181,6 +4201,11 @@ packages:
   /lodash.merge/4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
     dev: true
+
+  /lottie-web/5.10.2:
+    resolution: {integrity: sha512-d0PFIGiwuMsJYaF4uPo+qG8dEorlI+xFI2zrrFtE1bGO4WoLIz+NjremxEq1swpR7juR10aeOtmNh3d6G3ub0A==}
+    dev: false
+    optional: true
 
   /lru-cache/5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
