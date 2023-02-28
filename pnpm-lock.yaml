@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@json-rpc-tools/utils': ^1.7.6
-  '@thencc/web3-wallet-handler': ^0.0.95
+  '@thencc/web3-wallet-handler': ^0.0.96
   '@types/crypto-js': ^4.1.1
   '@types/node': ^18.13.0
   '@types/superagent': ^4.1.15
@@ -37,7 +37,7 @@ specifiers:
 
 dependencies:
   '@json-rpc-tools/utils': 1.7.6
-  '@thencc/web3-wallet-handler': 0.0.95_algosdk@2.1.0
+  '@thencc/web3-wallet-handler': 0.0.96_algosdk@2.1.0
   algosdk: 2.1.0
   base32-encode: 2.0.0
   buffer: 6.0.3
@@ -1027,12 +1027,6 @@ packages:
     dev: false
     optional: true
 
-  /@randlabs/msgpack-bigint/1.0.3:
-    resolution: {integrity: sha512-Y+xMbz7rs812Von6xdVwKwL6GaEWqTPs+hKrpiZLnFA/oVZd8WxaDtbPLKKhy0Fzmb+1xZQOP0TaYABFelnNqQ==}
-    dependencies:
-      ieee754: 1.2.1
-    dev: false
-
   /@randlabs/myalgo-connect/1.4.2:
     resolution: {integrity: sha512-K9hEyUi7G8tqOp7kWIALJLVbGCByhilcy6123WfcorxWwiE1sbQupPyIU5f3YdQK6wMjBsyTWiLW52ZBMp7sXA==}
     requiresBuild: true
@@ -1063,13 +1057,12 @@ packages:
     dev: false
     optional: true
 
-  /@thencc/web3-wallet-handler/0.0.95_algosdk@2.1.0:
-    resolution: {integrity: sha512-ff67wgNpAHWCzOOoeIKa9jHEIYqoFMU8rIPdEqcNG5+Cxr3vkuel77cUsIag3cFG4r4gRIqUszfHY0oeJLATGg==}
+  /@thencc/web3-wallet-handler/0.0.96_algosdk@2.1.0:
+    resolution: {integrity: sha512-NqzvxUbNjDkCYbb99a+p77JiwMuPP4juBxDv2+0rIDy2b+5tQJYi0dLYkJ1Z8h+FU1cRloGkrJ2Z5GT0bOEpLA==}
     requiresBuild: true
     peerDependencies:
       algosdk: ^1.23.2 || ^2.1.0
     dependencies:
-      '@randlabs/msgpack-bigint': 1.0.3
       '@vue-reactivity/watch': 0.2.0_5dvaz4jnhp6coqtmaqcntkvxmm
       '@vue/reactivity': 3.2.47
       '@vue/shared': 3.2.47
