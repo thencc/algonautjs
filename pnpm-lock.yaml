@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@json-rpc-tools/utils': ^1.7.6
-  '@thencc/web3-wallet-handler': ^0.0.94
+  '@thencc/web3-wallet-handler': ^0.0.95
   '@types/crypto-js': ^4.1.1
   '@types/node': ^18.13.0
   '@types/superagent': ^4.1.15
@@ -37,7 +37,7 @@ specifiers:
 
 dependencies:
   '@json-rpc-tools/utils': 1.7.6
-  '@thencc/web3-wallet-handler': 0.0.94_algosdk@2.1.0
+  '@thencc/web3-wallet-handler': 0.0.95_algosdk@2.1.0
   algosdk: 2.1.0
   base32-encode: 2.0.0
   buffer: 6.0.3
@@ -1063,21 +1063,23 @@ packages:
     dev: false
     optional: true
 
-  /@thencc/web3-wallet-handler/0.0.94_algosdk@2.1.0:
-    resolution: {integrity: sha512-KAjHQB7H3IBFktq54Z0JM6YshR1I7RX8kjPk1+ed6k4k9wY3sv3OEO8fH2qrkUU0FjW3mbve8qg86wpeTFyBBA==}
+  /@thencc/web3-wallet-handler/0.0.95_algosdk@2.1.0:
+    resolution: {integrity: sha512-ff67wgNpAHWCzOOoeIKa9jHEIYqoFMU8rIPdEqcNG5+Cxr3vkuel77cUsIag3cFG4r4gRIqUszfHY0oeJLATGg==}
     requiresBuild: true
+    peerDependencies:
+      algosdk: ^1.23.2 || ^2.1.0
     dependencies:
       '@randlabs/msgpack-bigint': 1.0.3
       '@vue-reactivity/watch': 0.2.0_5dvaz4jnhp6coqtmaqcntkvxmm
       '@vue/reactivity': 3.2.47
       '@vue/shared': 3.2.47
+      algosdk: 2.1.0
     optionalDependencies:
       '@blockshake/defly-connect': 1.1.1_algosdk@2.1.0
       '@perawallet/connect': 1.1.1_algosdk@2.1.0
       '@randlabs/myalgo-connect': 1.4.2
       '@thencc/inkey-client-js': 0.0.2
     transitivePeerDependencies:
-      - algosdk
       - bufferutil
       - utf-8-validate
     dev: false
