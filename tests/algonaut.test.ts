@@ -35,7 +35,7 @@ validConfigInkey.SIGNING_MODE = 'inkey';
 
 // this is a new wallet we use to test various things,
 // created at the beginning of each test run but used throughout
-var freshWallet: AlgonautWallet; 
+var freshWallet: AlgonautWallet;
 
 describe('instantiate Algonaut without inkey', () => {
     let algonaut: Algonaut;
@@ -240,9 +240,9 @@ describe('Algonaut core: offline sync methods', () => {
 
 describe('Algonaut online methods', () => {
     // increase timeout here so we can wait for transactions to confirm
-    jest.setTimeout(120000); 
+    jest.setTimeout(120000);
 
-    let algonaut: Algonaut; 
+    let algonaut: Algonaut;
     let account;
 
     beforeEach(() => {
@@ -282,7 +282,7 @@ describe('Algonaut online methods', () => {
         test('getAlgoBalance returns a number greater than zero', async () => {
             let balance = await algonaut.getAlgoBalance((algonaut.account as algosdk.Account).addr);
             expect(balance).toBeGreaterThan(0);
-        }) 
+        })
     })
 
     describe('getAccountInfo', () => {
@@ -303,7 +303,7 @@ describe('Algonaut online methods', () => {
             expect(info['total-assets-opted-in']).toBeDefined();
             expect(info['total-created-apps']).toBeDefined();
             expect(info['total-created-assets']).toBeDefined();
-        }) 
+        })
     })
 
     describe('sendAlgo / atomicPayment', () => {
@@ -325,7 +325,7 @@ describe('Algonaut online methods', () => {
             await algonaut.sendAlgo({ to: freshWallet.address, amount: 500000 });
             const bal = await algonaut.getAlgoBalance(freshWallet.address);
             expect(bal).toBe(500000);
-        }); 
+        });
     })
 
     describe('Asset method tests', () => {
@@ -571,7 +571,7 @@ describe('Algonaut online methods', () => {
             const txn = await algonaut.atomicCreateApp(createAppArgs);
             expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
         })
-        
+
         test('createApp successfully deploys an application and returns createdIndex', async () => {
             const res = await algonaut.createApp(createAppArgs);
             expect(res.status).toBe('success');
@@ -607,7 +607,7 @@ describe('Algonaut online methods', () => {
 
         test('updateApp should update the application code', async () => {
             // first we need to opt in to the app we've created
-            let optIn = await algonaut.optInApp({ 
+            let optIn = await algonaut.optInApp({
                 appIndex: createdApp,
                 appArgs: [
                     'set_all',
@@ -678,7 +678,7 @@ describe('Algonaut online methods', () => {
         })
     })
 
-    
+
     // getAccounts
     // waitForConfirmation
     // sendAtomicTransaction
