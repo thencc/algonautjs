@@ -48,7 +48,7 @@ describe('instantiate Algonaut without inkey', () => {
     test('valid config instantiates algonaut', () => {
         expect(algonaut.config).toBeDefined();
         expect(algonaut.algodClient).toBeDefined();
-        expect(algonaut.isValidConfig(validConfig)).toBeTruthy();
+        expect(algonaut.isValidNodeConfig(validConfig)).toBeTruthy();
     })
 
     test('inkey should not be used by default', () => {
@@ -76,8 +76,8 @@ describe('instantiate Algonaut with inkey', () => {
     })
 })
 
-// isValidConfig
-describe('isValidConfig tests', () => {
+// isValidNodeConfig
+describe('isValidNodeConfig tests', () => {
     const invalidConfig = {
         BASE_SERVER: '',
         LEDGER: '',
@@ -85,27 +85,27 @@ describe('isValidConfig tests', () => {
         API_TOKEN: ''
     }
     test('require BASE_SERVER', () => {
-        expect(new Algonaut(validConfig).isValidConfig(invalidConfig)).toBeFalsy();
+        expect(new Algonaut(validConfig).isValidNodeConfig(invalidConfig)).toBeFalsy();
     })
 
-    test('isValidConfig returns true for a valid config', () => {
-        expect(new Algonaut(validConfig).isValidConfig(validConfig)).toBe(true);
+    test('isValidNodeConfig returns true for a valid config', () => {
+        expect(new Algonaut(validConfig).isValidNodeConfig(validConfig)).toBe(true);
     })
 });
 
-describe('getConfig()', () => {
-    test('getConfig returns config object', () => {
+describe('getNodeConfig()', () => {
+    test('getNodeConfig returns config object', () => {
         const algonaut = new Algonaut(validConfig);
-        expect(algonaut.getConfig()).toEqual(validConfig);
+        expect(algonaut.getNodeConfig()).toEqual(validConfig);
     });
 
-    test('getConfig returns false if Algonaut is not configured', () => {
-        expect(Algonaut.prototype.getConfig()).toBeFalsy();
+    test('getNodeConfig returns false if Algonaut is not configured', () => {
+        expect(Algonaut.prototype.getNodeConfig()).toBeFalsy();
     });
 });
 
-describe('setConfig()', () => {
-    test('setConfig tests are covered by constructor tests', () => {
+describe('setNodeConfig()', () => {
+    test('setNodeConfig tests are covered by constructor tests', () => {
         expect(true).toBeTruthy();
     });
 });

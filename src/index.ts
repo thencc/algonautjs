@@ -63,15 +63,8 @@ import type {
 } from './AlgonautTypes';
 export * from './AlgonautTypes';
 
-// import * as w3h from '@thencc/web3-wallet-handler';
-// export { w3h };
+import { AnyWalletState, enableWallets, signTransactions } from '@thencc/web3-wallet-handler';
 export * from '@thencc/web3-wallet-handler';
-// export * as bsss from '@thencc/web3-wallet-handler/buildSettings';
-
-// console.log('w3h', w3h);
-// export * as w3h from '@thencc/web3-wallet-handler'; // this also works
-// export * from '@thencc/web3-wallet-handler';
-// export const web3yo = () => w3h;
 
 import { FrameBus } from './FrameBus';
 
@@ -105,24 +98,18 @@ await runAtomicTransaction([
 	await atomicCallApp()
 ])
 
-
-TBD:
-
-
-
 */
 
+// TODO use a default node config
 // import { mainNetConfig as config } from './algoconfig';
 
 
-// good resource: https://developer.algorand.org/solutions/integrate-algosigner-to-js-app-on-algorand/
-
 export class Algonaut {
-	// TODO: add algo wallet for mobile
 	algodClient!: Algodv2; // it will be set or it throws an Error
 	indexerClient = undefined as undefined | Indexer;
 	config = undefined as undefined | AlgonautConfig; // current config
 
+	// TODO remove this entire sdk?
 	// expose entire algosdk in case the dapp needs more
 	sdk = algosdk;
 
@@ -143,6 +130,9 @@ export class Algonaut {
 		otherConfig: {},
 		frameBus: undefined as undefined | FrameBus
 	};
+
+	// handles all algo wallets (inkey, pera, etc)
+	AnyWalletState = AnyWalletState;
 
 	/**
 	 * Instantiates Algonaut.js.
@@ -166,7 +156,14 @@ export class Algonaut {
 	 * @param config config object
 	 */
 	constructor(config: AlgonautConfig) {
-		this.setConfig(config);
+		this.setNodeConfig(config);
+		this.initAnyWallet(config);
+	}
+
+	initAnyWallet(config?: AlgonautConfig) {
+		console.log('initAnyWallet', config);
+		const wip = config?.anyWalletConfig?.walletInitParams;
+		enableWallets(wip); // defaults to all except mnemonic client
 	}
 
 	/**
@@ -174,8 +171,8 @@ export class Algonaut {
 	 * @param config algonaut config for network + signing mode
 	 * @returns boolean. true is good.
 	 */
-	isValidConfig(config: AlgonautConfig): boolean {
-		// console.log('isValidConfig?', config);
+	isValidNodeConfig(config: AlgonautConfig): boolean {
+		// console.log('isValidNodeConfig?', config);
 		let isValid = true;
 
 		// do all checks
@@ -197,9 +194,9 @@ export class Algonaut {
 	 * @param config algonaut config for network + signing mode
 	 * 		- will throw Error if config is lousy
 	 */
-	setConfig(config: AlgonautConfig) {
-		// console.log('setConfig', config);
-		if (!this.isValidConfig(config)) {
+	setNodeConfig(config: AlgonautConfig) {
+		// console.log('setNodeConfig', config);
+		if (!this.isValidNodeConfig(config)) {
 			throw new Error('bad config!');
 		}
 
@@ -233,7 +230,7 @@ export class Algonaut {
 	/**
 	 * @returns config object or `false` if no config is set
 	 */
-	getConfig(): AlgonautConfig | boolean {
+	getNodeConfig(): AlgonautConfig | boolean {
 		if (this.config) return this.config;
 		return false;
 	}
@@ -243,7 +240,7 @@ export class Algonaut {
 	 * @returns Promise resolving to status of Algorand network
 	 */
 	async checkStatus(): Promise<any | AlgonautError> {
-		if (!this.getConfig()) {
+		if (!this.getNodeConfig()) {
 			throw new Error('No node configuration set.');
 		}
 
@@ -1511,6 +1508,37 @@ export class Algonaut {
 		}
 	}
 
+	normalizeTxns(txnOrTxns: Transaction | AlgonautAtomicTransaction | AlgonautAtomicTransaction[]) {
+		console.log('normalizeTxns', txnOrTxns);
+
+		// eslint-disable-next-line prefer-const
+		let txnArr: (AlgonautAtomicTransaction | Transaction)[] = [];
+
+		if (!Array.isArray(txnOrTxns)) {
+			txnArr = [txnOrTxns];
+		} else {
+			txnArr = txnOrTxns;
+		}
+		// console.log('txnArr', txnArr);
+
+
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		let algoTxnArr: Transaction[] = [];
+		algoTxnArr = txnArr.map((t) => {
+			let nativeT = (t as AlgonautAtomicTransaction).transaction as Transaction | undefined;
+			if (nativeT == undefined) {
+				nativeT = t as Transaction;
+			}
+			return nativeT;
+		});
+		// console.log('algoTxnArr', algoTxnArr);
+
+		const txnBuffArr = algoTxnArr.map(t => t.toByte());
+		// console.log('txnBuffArr', txnBuffArr);
+
+		return txnBuffArr;
+	}
+
 	/**
 	 * Sends a transaction or multiple through the correct channels, depending on signing mode.
 	 * If no signing mode is set, we assume local signing.
@@ -1519,6 +1547,51 @@ export class Algonaut {
 	 * @returns Promise resolving to AlgonautTransactionStatus
 	 */
 	async sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
+		if (!AnyWalletState.activeAddress) throw new Error('No AnyWallet acct connected');
+
+		/**
+		 * 1. normalize incoming txn(s) to array of Uint8Arrs
+		 * 2. sign w aw
+		 * 3. send Raw
+		 * 4. return result + txid
+		 */
+
+		const awTxnToSign = this.normalizeTxns(txnOrTxns);
+		console.log('awTxnToSign', awTxnToSign);
+
+		let awSignedTxns: Uint8Array[];
+		try {
+			awSignedTxns = await signTransactions(awTxnToSign);
+			console.log('awSignedTxns', awSignedTxns);
+		} catch(e) {
+			console.warn('err signing txns...');
+			console.log(e);
+			return {
+				status: 'rejected',
+				message: 'User rejected the message.',
+				txId: ''
+			};
+		}
+
+		if (callbacks?.onSign) callbacks.onSign(awSignedTxns);
+
+		const tx = await this.algodClient.sendRawTransaction(awSignedTxns).do();
+
+		if (callbacks?.onSend) callbacks.onSend(tx);
+
+		// Wait for transaction to be confirmed
+		const txStatus = await this.waitForConfirmation(tx.txId);
+
+		const transactionResponse = await this.algodClient
+			.pendingTransactionInformation(tx.txId)
+			.do();
+		txStatus.meta = transactionResponse;
+
+		if (callbacks?.onConfirm) callbacks.onConfirm(txStatus);
+		return txStatus;
+
+
+		/*
 		if (!this.account) throw new Error('There is no account');
 		if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === 'inkey') {
 			// let's do the inkey thing
@@ -1535,7 +1608,7 @@ export class Algonaut {
 				// don't assign group ID here! inkey will assign it :)
 
 				// encode txns
-				const txnsToSign = unwrappedTxns.map((txn: any) => {
+				const txnsToSign = unwrappedTxns.map((txn) => {
 					const encodedTxn = Buffer.from(encodeUnsignedTransaction(txn)).toString('base64');
 					return encodedTxn;
 				});
@@ -1637,6 +1710,7 @@ export class Algonaut {
 				return txStatus;
 			}
 		}
+		*/
 	}
 
 	/**

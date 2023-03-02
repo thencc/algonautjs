@@ -18,6 +18,588 @@ export declare class Algonaut {
         otherConfig: {};
         frameBus: FrameBus | undefined;
     };
+    AnyWalletState: {
+        allWallets: {
+            pera?: {
+                id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                metadata: {
+                    id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    connect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet | null>;
+                    signTransactions: (connectedAccounts: string[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                isReady: () => Promise<true>;
+                connect: () => Promise<void>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                readonly accounts: readonly {
+                    readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                }[];
+                readonly isActive: boolean;
+                readonly isConnected: boolean;
+            } | undefined;
+            inkey?: {
+                id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                metadata: {
+                    id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    connect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet | null>;
+                    signTransactions: (connectedAccounts: string[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                isReady: () => Promise<true>;
+                connect: () => Promise<void>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                readonly accounts: readonly {
+                    readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                }[];
+                readonly isActive: boolean;
+                readonly isConnected: boolean;
+            } | undefined;
+            myalgo?: {
+                id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                metadata: {
+                    id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    connect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet | null>;
+                    signTransactions: (connectedAccounts: string[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                isReady: () => Promise<true>;
+                connect: () => Promise<void>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                readonly accounts: readonly {
+                    readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                }[];
+                readonly isActive: boolean;
+                readonly isConnected: boolean;
+            } | undefined;
+            algosigner?: {
+                id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                metadata: {
+                    id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    connect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet | null>;
+                    signTransactions: (connectedAccounts: string[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                isReady: () => Promise<true>;
+                connect: () => Promise<void>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                readonly accounts: readonly {
+                    readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                }[];
+                readonly isActive: boolean;
+                readonly isConnected: boolean;
+            } | undefined;
+            exodus?: {
+                id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                metadata: {
+                    id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    connect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet | null>;
+                    signTransactions: (connectedAccounts: string[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                isReady: () => Promise<true>;
+                connect: () => Promise<void>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                readonly accounts: readonly {
+                    readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                }[];
+                readonly isActive: boolean;
+                readonly isConnected: boolean;
+            } | undefined;
+            defly?: {
+                id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                metadata: {
+                    id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    connect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet | null>;
+                    signTransactions: (connectedAccounts: string[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                isReady: () => Promise<true>;
+                connect: () => Promise<void>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                readonly accounts: readonly {
+                    readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                }[];
+                readonly isActive: boolean;
+                readonly isConnected: boolean;
+            } | undefined;
+            mnemonic?: {
+                id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                metadata: {
+                    id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    connect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet | null>;
+                    signTransactions: (connectedAccounts: string[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                isReady: () => Promise<true>;
+                connect: () => Promise<void>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                readonly accounts: readonly {
+                    readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                }[];
+                readonly isActive: boolean;
+                readonly isConnected: boolean;
+            } | undefined;
+        };
+        enabledWallets: {
+            pera?: {
+                id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                metadata: {
+                    id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    connect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet | null>;
+                    signTransactions: (connectedAccounts: string[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                isReady: () => Promise<true>;
+                connect: () => Promise<void>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                readonly accounts: readonly {
+                    readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                }[];
+                readonly isActive: boolean;
+                readonly isConnected: boolean;
+            } | undefined;
+            inkey?: {
+                id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                metadata: {
+                    id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    connect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet | null>;
+                    signTransactions: (connectedAccounts: string[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                isReady: () => Promise<true>;
+                connect: () => Promise<void>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                readonly accounts: readonly {
+                    readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                }[];
+                readonly isActive: boolean;
+                readonly isConnected: boolean;
+            } | undefined;
+            myalgo?: {
+                id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                metadata: {
+                    id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    connect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet | null>;
+                    signTransactions: (connectedAccounts: string[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                isReady: () => Promise<true>;
+                connect: () => Promise<void>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                readonly accounts: readonly {
+                    readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                }[];
+                readonly isActive: boolean;
+                readonly isConnected: boolean;
+            } | undefined;
+            algosigner?: {
+                id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                metadata: {
+                    id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    connect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet | null>;
+                    signTransactions: (connectedAccounts: string[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                isReady: () => Promise<true>;
+                connect: () => Promise<void>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                readonly accounts: readonly {
+                    readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                }[];
+                readonly isActive: boolean;
+                readonly isConnected: boolean;
+            } | undefined;
+            exodus?: {
+                id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                metadata: {
+                    id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    connect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet | null>;
+                    signTransactions: (connectedAccounts: string[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                isReady: () => Promise<true>;
+                connect: () => Promise<void>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                readonly accounts: readonly {
+                    readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                }[];
+                readonly isActive: boolean;
+                readonly isConnected: boolean;
+            } | undefined;
+            defly?: {
+                id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                metadata: {
+                    id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    connect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet | null>;
+                    signTransactions: (connectedAccounts: string[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                isReady: () => Promise<true>;
+                connect: () => Promise<void>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                readonly accounts: readonly {
+                    readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                }[];
+                readonly isActive: boolean;
+                readonly isConnected: boolean;
+            } | undefined;
+            mnemonic?: {
+                id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                metadata: {
+                    id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    connect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet | null>;
+                    signTransactions: (connectedAccounts: string[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                /**
+                 * Fetch full account info for an account
+                 * @param address the accress to read info for
+                 * @returns Promise of type AccountInfo
+                 */
+                isReady: () => Promise<true>;
+                connect: () => Promise<void>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                readonly accounts: readonly {
+                    readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                }[];
+                readonly isActive: boolean;
+                readonly isConnected: boolean;
+            } | undefined;
+        } | null;
+        stored: {
+            version: number;
+            connectedAccounts: {
+                walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
+                name: string;
+                address: string;
+            }[];
+            activeAccount: {
+                walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
+                name: string;
+                address: string;
+            } | null;
+        };
+        activeAddress: string;
+        activeWalletId: import("@thencc/web3-wallet-handler").WALLET_ID | null;
+        activeWallet: {
+            id: import("@thencc/web3-wallet-handler").WALLET_ID;
+            metadata: {
+                id: import("@thencc/web3-wallet-handler").WALLET_ID;
+                name: string;
+                icon: string;
+                chain: string;
+                pkg: string;
+            };
+            client: {
+                connect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet>;
+                disconnect: () => Promise<void>;
+                reconnect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet | null>;
+                signTransactions: (connectedAccounts: string[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+            } | null;
+            initParams: boolean | {
+                config?: any;
+                sdk?: any;
+            };
+            inited: boolean;
+            initing: boolean;
+            signing: boolean;
+            connecting: boolean;
+            isReady: () => Promise<true>;
+            connect: () => Promise<void>;
+            disconnect: () => Promise<void>;
+            reconnect: () => Promise<void>;
+            setAsActiveWallet: () => void;
+            removeAccounts: () => void;
+            readonly accounts: readonly {
+                readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
+                readonly name: string;
+                readonly address: string;
+            }[];
+            readonly isActive: boolean;
+            readonly isConnected: boolean;
+        } | undefined;
+        isSigning: boolean;
+    };
     /**
      * Instantiates Algonaut.js.
      *
@@ -40,22 +622,23 @@ export declare class Algonaut {
      * @param config config object
      */
     constructor(config: AlgonautConfig);
+    initAnyWallet(config?: AlgonautConfig): void;
     /**
      * checks if config obj is valid for use
      * @param config algonaut config for network + signing mode
      * @returns boolean. true is good.
      */
-    isValidConfig(config: AlgonautConfig): boolean;
+    isValidNodeConfig(config: AlgonautConfig): boolean;
     /**
      * sets config for use (new algod, indexerClient, etc)
      * @param config algonaut config for network + signing mode
      * 		- will throw Error if config is lousy
      */
-    setConfig(config: AlgonautConfig): void;
+    setNodeConfig(config: AlgonautConfig): void;
     /**
      * @returns config object or `false` if no config is set
      */
-    getConfig(): AlgonautConfig | boolean;
+    getNodeConfig(): AlgonautConfig | boolean;
     /**
      * Checks status of Algorand network
      * @returns Promise resolving to status of Algorand network
@@ -353,6 +936,7 @@ export declare class Algonaut {
     getAppLocalState(applicationIndex: number, address?: string): Promise<AlgonautAppState | void>;
     atomicAssetTransferWithLSig(args: AlgonautLsigSendAssetArguments): Promise<AlgonautAtomicTransaction>;
     atomicPaymentWithLSig(args: AlgonautLsigPaymentArguments): Promise<AlgonautAtomicTransaction>;
+    normalizeTxns(txnOrTxns: Transaction | AlgonautAtomicTransaction | AlgonautAtomicTransaction[]): Uint8Array[];
     /**
      * Sends a transaction or multiple through the correct channels, depending on signing mode.
      * If no signing mode is set, we assume local signing.

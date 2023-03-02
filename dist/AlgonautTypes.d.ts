@@ -1,5 +1,6 @@
 import type { LogicSigAccount, Transaction, Account, SuggestedParams, MultisigMetadata } from 'algosdk';
 import type { ApplicationStateSchema } from 'algosdk/dist/types/client/v2/algod/models/types';
+import type { WalletInitParamsObj } from '@thencc/web3-wallet-handler';
 export type AlgonautConfig = {
     BASE_SERVER: string;
     INDEX_SERVER?: string;
@@ -9,6 +10,9 @@ export type AlgonautConfig = {
     SIGNING_MODE?: 'local' | 'inkey';
     INKEY_SRC?: string;
     INKEY_ALIGN?: 'center' | 'left' | 'right';
+    anyWalletConfig?: {
+        walletInitParams?: WalletInitParamsObj;
+    };
 };
 export interface AlgonautStateData {
     key: string;

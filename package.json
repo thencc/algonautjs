@@ -1,6 +1,6 @@
 {
 	"name": "@thencc/algonautjs",
-	"version": "0.2.98",
+	"version": "0.2.99",
 	"description": "AlgonautJS is a simplified Algorand transaction library built specifically for Browsers and Front End Development",
 	"type": "commonjs",
 	"types": "dist/index.d.ts",
@@ -38,12 +38,16 @@
 		"url": "git://github.com/thencc/algonautjs"
 	},
 	"dependencies": {
-		"@thencc/web3-wallet-handler": "^0.0.138",
+		"@thencc/web3-wallet-handler": "^0.0.139",
 		"algosdk": "^2.1.0",
 		"buffer": "^6.0.3",
 		"tslib": "^2.3.1"
 	},
 	"devDependencies": {
+		"@blockshake/defly-connect": "^1.1.1",
+		"@perawallet/connect": "^1.1.1",
+		"@randlabs/myalgo-connect": "^1.4.2",
+		"@thencc/inkey-client-js": "^0.0.2",
 		"@jest/globals": "^29.4.3",
 		"@types/node": "^18.13.0",
 		"@types/superagent": "^4.1.15",

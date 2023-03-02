@@ -35,8 +35,8 @@ var errors = [];
 (async () => {
 	console.log('Running Algonaut tests.');
 
-	console.log('getConfig(): ');
-	console.log(JSON.stringify(algonaut.getConfig(), null, 2));
+	console.log('getNodeConfig(): ');
+	console.log(JSON.stringify(algonaut.getNodeConfig(), null, 2));
 
 	console.log('checkStatus():');
 	await algonaut.checkStatus();
@@ -324,9 +324,9 @@ var errors = [];
 			}
 
 			// updateApp
-			console.log('the following call should fail:')
+			console.log('the following call should fail:');
 			try {
-				let optIn = await algonaut.optInApp({ 
+				let optIn = await algonaut.optInApp({
 					appIndex: appId,
 					appArgs: [
 						'set_all',
@@ -346,7 +346,7 @@ var errors = [];
 			} catch (e) {
 				console.log(e);
 			}
-			
+
 			try {
 				console.log('updating the app now...');
 				const updateResult = await algonaut.updateApp({
