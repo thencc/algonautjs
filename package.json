@@ -1,22 +1,12 @@
 {
 	"name": "@thencc/algonautjs",
-	"version": "0.2.97",
+	"version": "0.2.98",
 	"description": "AlgonautJS is a simplified Algorand transaction library built specifically for Browsers and Front End Development",
 	"type": "commonjs",
 	"types": "dist/index.d.ts",
 	"main": "dist/index.cjs",
 	"module": "dist/index.mjs",
-	"browser": {
-		".": "dist/index.mjs",
-		"crypto": "crypto-js"
-	},
-	"imports": {
-		".": {
-			"browser": {
-				"crypto": "crypto-js"
-			}
-		}
-	},
+	"browser": "dist/index.mjs",
 	"files": [
 		"dist/*",
 		"LICENSE",
@@ -48,18 +38,12 @@
 		"url": "git://github.com/thencc/algonautjs"
 	},
 	"dependencies": {
-		"@json-rpc-tools/utils": "^1.7.6",
-		"@thencc/web3-wallet-handler": "^0.0.134",
+		"@thencc/web3-wallet-handler": "^0.0.138",
 		"algosdk": "^2.1.0",
-		"base32-encode": "^2.0.0",
 		"buffer": "^6.0.3",
-		"crypto-js": "^4.1.1",
-		"hi-base32": "^0.5.1",
-		"js-sha512": "^0.8.0",
 		"tslib": "^2.3.1"
 	},
 	"devDependencies": {
-		"@types/crypto-js": "^4.1.1",
 		"@types/node": "^18.13.0",
 		"@types/superagent": "^4.1.15",
 		"@typescript-eslint/eslint-plugin": "^5.13.0",

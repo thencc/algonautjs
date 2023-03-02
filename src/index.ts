@@ -74,9 +74,6 @@ export * from '@thencc/web3-wallet-handler';
 // export const web3yo = () => w3h;
 
 import { FrameBus } from './FrameBus';
-// import * as sha512 from 'js-sha512';
-// import * as CryptoJS from 'crypto-js';
-// import { decode, encode } from 'hi-base32';
 
 /*
 
