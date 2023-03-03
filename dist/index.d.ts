@@ -1,9 +1,8 @@
 /// <reference types="node" />
 import algosdk, { Account as AlgosdkAccount, Algodv2, LogicSigAccount, Transaction } from 'algosdk';
-import type { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields, AlgonautAppState, AlgonautStateData, AlgonautError, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments, AlgonautAppStateEncoded, InkeySignTxnResponse, TxnForSigning } from './AlgonautTypes';
+import type { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields, AlgonautAppState, AlgonautStateData, AlgonautError, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments, AlgonautAppStateEncoded, TxnForSigning } from './AlgonautTypes';
 export * from './AlgonautTypes';
 export * from '@thencc/web3-wallet-handler';
-import { FrameBus } from './FrameBus';
 export declare class Algonaut {
     algodClient: Algodv2;
     indexerClient: algosdk.Indexer | undefined;
@@ -13,11 +12,6 @@ export declare class Algonaut {
     address: string | undefined;
     mnemonic: string | undefined;
     uiLoading: boolean;
-    inkeyWallet: {
-        defaultSrc: string;
-        otherConfig: {};
-        frameBus: FrameBus | undefined;
-    };
     AnyWalletState: {
         allWallets: {
             pera?: {
@@ -610,8 +604,6 @@ export declare class Algonaut {
      *	 PORT: '',
      *	 API_TOKEN: { 'X-API-Key': 'YOUR_API_TOKEN' }
      * });
-     *
-     * If using Inkey, add `SIGNING_MODE: 'inkey'`.
      * ```
      *
      * @param config config object
@@ -639,20 +631,11 @@ export declare class Algonaut {
      * @returns Promise resolving to status of Algorand network
      */
     checkStatus(): Promise<any | AlgonautError>;
-    initInkey(mountConfig: {
-        src?: string;
-        align: AlgonautConfig['INKEY_ALIGN'];
-    }): void;
     /**
      * if you already have an account, set it here
      * @param account an algosdk account already created
      */
     setAccount(account: AlgosdkAccount): void | AlgonautError;
-    /**
-     * Sets account connected via Inkey
-     * @param address account address
-     */
-    setInkeyAccount(address: string): void;
     /**
      * Creates a wallet address + mnemonic from account's secret key and sets the wallet as the currently authenticated account
      * @returns AlgonautWallet Object containing `address` and `mnemonic`
@@ -941,49 +924,6 @@ export declare class Algonaut {
      */
     sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
     /**
-     * Sends messages to Inkey via FrameBus
-     * @param data Message to send
-     * @returns Whatever Inkey gives us
-     */
-    inkeyMessageAsync(data: any, options?: {
-        showFrame: boolean;
-    }): Promise<any>;
-    /**
-     * Sends unsigned transactions to Inkey, awaits signing, returns signed txns
-     * @param txns Array of base64 encoded transactions OR more complex obj array w txn signing type needed
-     * @returns { Promise<InkeySignTxnResponse> } Promise resolving to response object containing signedTxns if successful. Otherwise, provides `error` or `reject` properties. { success, reject, error, signedTxns }
-     */
-    inkeySignTxns(txns: string[] | TxnForSigning[]): Promise<InkeySignTxnResponse>;
-    /**
-     * Shows the Inkey wallet frame
-     */
-    inkeyShow(routepath?: string): void;
-    /**
-     * Hides the Inkey wallet frame
-     */
-    inkeyHide(): void;
-    /**
-     * Sets the app / userbase to use for Inkey accounts. This must be set
-     * before Inkey can be used to login or sign transactions.
-     * @param appCode String determining the namespace for user accounts
-     * @returns Promise resolving to response from Inkey
-     */
-    inkeySetApp(appCode: string): Promise<any>;
-    /**
-     * Opens Inkey to allow users to create an account or login with a previously
-     * created account. Must be called before transactions can be signed.
-     * @param payload Optional payload object, can contain `siteName` parameter to display the name of the application.
-     * @returns Promise resolving to an account object of type `{ account: string }`
-     */
-    inkeyConnect(payload?: {
-        siteName?: string;
-    }): Promise<any>;
-    /**
-     * Tells Inkey to close your session & clear local storage.
-     * @returns Success or fail message
-     */
-    inkeyDisconnect(): Promise<any>;
-    /**
      * run atomic takes an array of transactions to run in order, each
      * of the atomic transaction methods needs to return an object containing
      * the transaction and the signed transaction
@@ -994,7 +934,7 @@ export declare class Algonaut {
      */
     sendAtomicTransaction(transactions: AlgonautAtomicTransaction[], callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
     /**
-     * Signs an array of Transactions (used in Inkey) with the currently authenticated account
+     * Signs an array of Transactions with the currently authenticated account (used in inkey-wallet)
      * @param txns Array of Transaction
      * @returns Uint8Array[] of signed transactions
      */
@@ -1011,12 +951,6 @@ export declare class Algonaut {
      * @returns Uint8Array signed transactions
      */
     signBase64TxnObjects(txnsForSigning: TxnForSigning[]): Uint8Array[] | Uint8Array;
-    /**
-     * Interally used to determine how to sign transactions on more generic functions
-     * TODO: currently we're not using this, could deprecate?
-     * @returns true if we are signing transactions with inkey, false otherwise
-     */
-    usingInkeyWallet(): boolean;
     /** INCLUDE ALL THE UTILITIES IN ALGONAUT EXPORT FOR CONVENIENCE **/
     /**
      *

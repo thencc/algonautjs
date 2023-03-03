@@ -10,6 +10,10 @@ export type AlgonautConfig = {
     SIGNING_MODE?: 'local' | 'inkey';
     INKEY_SRC?: string;
     INKEY_ALIGN?: 'center' | 'left' | 'right';
+    libConfig?: {
+        disableLogs?: boolean;
+    };
+    nodeConfig?: {};
     anyWalletConfig?: {
         walletInitParams?: WalletInitParamsObj;
     };

@@ -18,9 +18,21 @@ export type AlgonautConfig = {
 	LEDGER: string;
 	PORT: string;
 	API_TOKEN: any;
+
+	// TOOD remove these:
 	SIGNING_MODE?: 'local' | 'inkey';
 	INKEY_SRC?: string;
 	INKEY_ALIGN?: 'center' | 'left' | 'right';
+
+
+
+	libConfig?: {
+		disableLogs?: boolean; // should default to true
+	},
+
+	nodeConfig?: {
+		//
+	},
 
 	anyWalletConfig?: {
 		walletInitParams?: WalletInitParamsObj;

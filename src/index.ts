@@ -58,15 +58,12 @@ import type {
 	AlgonautUpdateAppArguments,
 	AlgonautGetApplicationResponse,
 	AlgonautAppStateEncoded,
-	InkeySignTxnResponse,
 	TxnForSigning
 } from './AlgonautTypes';
 export * from './AlgonautTypes';
 
 import { AnyWalletState, enableWallets, signTransactions, WalletInitParamsObj } from '@thencc/web3-wallet-handler';
 export * from '@thencc/web3-wallet-handler';
-
-import { FrameBus } from './FrameBus';
 
 /*
 
@@ -114,24 +111,14 @@ export class Algonaut {
 	sdk = algosdk;
 
 	// FYI undefined if using wallet-connect, etc. perhaps rename to .accountLocal ?
+	// TODO remove this.account. CAN use defaultAcct = AW.activeAddress
 	account = undefined as undefined | AlgosdkAccount; // ONLY defined if using local signing, not wallet-connet or inkey
 	address = undefined as undefined | string;
 	mnemonic = undefined as undefined | string;
 
 	uiLoading = false;
 
-	// microwallet aka Inkey
-	inkeyWallet = {
-		// private inkeyWallet = { // for extra security we should do this
-
-		// frameId: '',
-		// ready: false,
-		defaultSrc: '123',
-		otherConfig: {},
-		frameBus: undefined as undefined | FrameBus
-	};
-
-	// handles all algo wallets (inkey, pera, etc)
+	// handles all algo wallets (inkey, pera, etc) + remembers last used in localstorage
 	AnyWalletState = AnyWalletState;
 
 	/**
@@ -149,8 +136,6 @@ export class Algonaut {
 	 *	 PORT: '',
 	 *	 API_TOKEN: { 'X-API-Key': 'YOUR_API_TOKEN' }
 	 * });
-	 *
-	 * If using Inkey, add `SIGNING_MODE: 'inkey'`.
 	 * ```
 	 *
 	 * @param config config object
@@ -211,23 +196,6 @@ export class Algonaut {
 		} else {
 			console.warn('No indexer configured because INDEX_SERVER was not provided.');
 		}
-
-		// inkey init
-		if (config.SIGNING_MODE && config.SIGNING_MODE == 'inkey') {
-			if (!config.INKEY_SRC) {
-				// default inkey
-				config.INKEY_SRC = 'https://inkey.app';
-			}
-
-			if (!config.INKEY_ALIGN) {
-				config.INKEY_ALIGN = 'center';
-			}
-
-			this.initInkey({
-				src: config.INKEY_SRC,
-				align: config.INKEY_ALIGN
-			});
-		}
 	}
 
 	/**
@@ -252,36 +220,7 @@ export class Algonaut {
 		return status;
 	}
 
-	/*
-	* @param mountConfig object containing the `src` of the iframe
-	*/
-	initInkey(mountConfig: {
-		src?: string,
-		align: AlgonautConfig['INKEY_ALIGN']
-	}) {
-		// console.log('initInkey');
-
-		if (!mountConfig.src) {
-			console.warn('You must provide INKEY_SRC in Algonaut.js config');
-			return;
-		}
-
-		// reset
-		if (this.inkeyWallet.frameBus) {
-			this.inkeyWallet.frameBus.destroy();
-			this.inkeyWallet.frameBus = undefined;
-		}
-
-		if (mountConfig.src) {
-			this.inkeyWallet.frameBus = new FrameBus({
-				src: mountConfig.src,
-				align: mountConfig.align
-			});
-		} else {
-			console.warn('Cannot init Inkey');
-		}
-	}
-
+	// TODO remove this.account and setAccount, use AW
 	/**
 	 * if you already have an account, set it here
 	 * @param account an algosdk account already created
@@ -295,21 +234,6 @@ export class Algonaut {
 		this.address = account.addr;
 		// if (this.config) this.config.SIGNING_MODE = 'local';
 		this.mnemonic = secretKeyToMnemonic(account.sk);
-	}
-
-	/**
-	 * Sets account connected via Inkey
-	 * @param address account address
-	 */
-	setInkeyAccount(address: string): void {
-		if (!address) {
-			throw new Error('No address provided.');
-		}
-
-		this.account = {
-			addr: address,
-			sk: new Uint8Array([])
-		};
 	}
 
 	/**
@@ -1558,6 +1482,7 @@ export class Algonaut {
 		 */
 
 		const awTxnsToSign = this.normalizeTxns(txnOrTxns);
+		console.log('awTxnsToSign', awTxnsToSign);
 		let awTxnsSigned: Uint8Array[];
 		try {
 			awTxnsSigned = await signTransactions(awTxnsToSign);
@@ -1588,160 +1513,6 @@ export class Algonaut {
 
 		if (callbacks?.onConfirm) callbacks.onConfirm(txStatus);
 		return txStatus;
-	}
-
-	/**
-	 * Sends messages to Inkey via FrameBus
-	 * @param data Message to send
-	 * @returns Whatever Inkey gives us
-	 */
-	async inkeyMessageAsync(data: any, options?: { showFrame: boolean }): Promise<any> {
-		if (!this.inkeyWallet.frameBus) {
-			throw new Error('No inkey frameBus');
-		}
-
-		if (!this.inkeyWallet.frameBus.ready) {
-			await this.inkeyWallet.frameBus.isReady();
-		}
-
-		data.source = 'ncc-inkey-client';
-		data.async = true;
-
-		if (options?.showFrame) this.inkeyWallet.frameBus.showFrame();
-
-		const payload = await this.inkeyWallet.frameBus.emitAsync<any>(data);
-		return payload;
-	}
-
-
-	/**
-	 * Sends unsigned transactions to Inkey, awaits signing, returns signed txns
-	 * @param txns Array of base64 encoded transactions OR more complex obj array w txn signing type needed
-	 * @returns { Promise<InkeySignTxnResponse> } Promise resolving to response object containing signedTxns if successful. Otherwise, provides `error` or `reject` properties. { success, reject, error, signedTxns }
-	 */
-	async inkeySignTxns(txns: string[] | TxnForSigning[]): Promise<InkeySignTxnResponse> {
-		let data;
-		if (typeof txns[0] == 'string') {
-			// keep backwards compatibility
-			data = {
-				type: 'sign-txns', // determines payload type
-				payload: {
-					txns
-				},
-			};
-		} else if (typeof txns[0] == 'object') {
-			data = {
-				type: 'sign-txns', // determines payload type
-				payload: {
-					txns
-				},
-			};
-		} else {
-			throw new Error('bad txns array input...');
-		}
-
-		const res = await this.inkeyMessageAsync(data, { showFrame: true });
-
-		this.inkeyWallet.frameBus?.hideFrame();
-
-		if (res.error) {
-			return {
-				success: false,
-				reject: false,
-				error: res.error
-			};
-		}
-
-		if (res.reject) {
-			return {
-				success: false,
-				reject: true
-			};
-		}
-
-		return {
-			success: true,
-			reject: false,
-			signedTxns: res.signedTxns as Uint8Array[]
-		};
-	}
-
-	/**
-	 * Shows the Inkey wallet frame
-	 */
-	inkeyShow(routepath?: string) {
-		if (this.inkeyWallet.frameBus) {
-			this.inkeyWallet.frameBus.showFrame(routepath);
-		}
-	}
-
-	/**
-	 * Hides the Inkey wallet frame
-	 */
-	inkeyHide() {
-		if (this.inkeyWallet.frameBus) {
-			this.inkeyWallet.frameBus.hideFrame();
-			this.inkeyMessageAsync({ type: 'reject' });
-		}
-	}
-
-	/**
-	 * Sets the app / userbase to use for Inkey accounts. This must be set
-	 * before Inkey can be used to login or sign transactions.
-	 * @param appCode String determining the namespace for user accounts
-	 * @returns Promise resolving to response from Inkey
-	 */
-	async inkeySetApp(appCode: string) {
-		const data = {
-			type: 'set-app',
-			payload: { appCode }
-		};
-
-		return await this.inkeyMessageAsync(data);
-	}
-
-	/**
-	 * Opens Inkey to allow users to create an account or login with a previously
-	 * created account. Must be called before transactions can be signed.
-	 * @param payload Optional payload object, can contain `siteName` parameter to display the name of the application.
-	 * @returns Promise resolving to an account object of type `{ account: string }`
-	 */
-	async inkeyConnect(payload?: { siteName?: string }): Promise<any> {
-		if (!payload) payload = {};
-		const data = {
-			type: 'connect',
-			payload
-		};
-
-		const account = await this.inkeyMessageAsync(data, { showFrame: true });
-		this.setInkeyAccount(account.address);
-		if (this.config) this.config.SIGNING_MODE = 'inkey';
-		return account;
-	}
-
-	/**
-	 * Tells Inkey to close your session & clear local storage.
-	 * @returns Success or fail message
-	 */
-	async inkeyDisconnect(): Promise<any> {
-		// console.log('inkeyDisconnect');
-		const data = {
-			type: 'disconnect'
-		};
-
-		if (!this.account || !this.account.addr || !this.address) {
-			console.warn('no acct to disconnect');
-			return;
-		}
-
-		const res = await this.inkeyMessageAsync(data, { showFrame: false });
-
-		if (res.success) {
-			// remove algonaut account
-			this.account = undefined;
-		}
-
-		return res;
 	}
 
 	/**
@@ -1805,7 +1576,7 @@ export class Algonaut {
 	}
 
 	/**
-	 * Signs an array of Transactions (used in Inkey) with the currently authenticated account
+	 * Signs an array of Transactions with the currently authenticated account (used in inkey-wallet)
 	 * @param txns Array of Transaction
 	 * @returns Uint8Array[] of signed transactions
 	 */
@@ -1832,20 +1603,6 @@ export class Algonaut {
 	signBase64TxnObjects(txnsForSigning: TxnForSigning[]): Uint8Array[] | Uint8Array {
 		if (!this.account) throw new Error('There is no account!');
 		return utils.signBase64TxnObjects(txnsForSigning, this.account);
-	}
-
-	/**
-	 * Interally used to determine how to sign transactions on more generic functions
-	 * TODO: currently we're not using this, could deprecate?
-	 * @returns true if we are signing transactions with inkey, false otherwise
-	 */
-	usingInkeyWallet(): boolean {
-		if (this.config &&
-			this.config.SIGNING_MODE &&
-			this.config.SIGNING_MODE === 'inkey') {
-			return true;
-		}
-		return false;
 	}
 
 	/** INCLUDE ALL THE UTILITIES IN ALGONAUT EXPORT FOR CONVENIENCE **/

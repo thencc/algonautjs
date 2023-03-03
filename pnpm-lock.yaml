@@ -5,8 +5,8 @@ specifiers:
   '@jest/globals': ^29.4.3
   '@perawallet/connect': ^1.1.1
   '@randlabs/myalgo-connect': ^1.4.2
-  '@thencc/inkey-client-js': ^0.0.9
-  '@thencc/web3-wallet-handler': ^0.0.148
+  '@thencc/inkey-client-js': ^0.0.10
+  '@thencc/web3-wallet-handler': ^0.0.151
   '@types/node': ^18.13.0
   '@types/superagent': ^4.1.15
   '@typescript-eslint/eslint-plugin': ^5.13.0
@@ -35,7 +35,7 @@ specifiers:
   vite: ^4.1.1
 
 dependencies:
-  '@thencc/web3-wallet-handler': 0.0.148_algosdk@2.1.0
+  '@thencc/web3-wallet-handler': 0.0.151_algosdk@2.1.0
   algosdk: 2.1.0
   buffer: 6.0.3
   tslib: 2.5.0
@@ -44,7 +44,7 @@ optionalDependencies:
   '@blockshake/defly-connect': 1.1.1_algosdk@2.1.0
   '@perawallet/connect': 1.1.1_algosdk@2.1.0
   '@randlabs/myalgo-connect': 1.4.2
-  '@thencc/inkey-client-js': 0.0.9
+  '@thencc/inkey-client-js': 0.0.10
 
 devDependencies:
   '@jest/globals': 29.4.3
@@ -1032,21 +1032,14 @@ packages:
       '@sinonjs/commons': 2.0.0
     dev: true
 
-  /@thencc/inkey-client-js/0.0.8:
-    resolution: {integrity: sha512-cEJ1khvoa+7kt3kXY0AKh1wpjpBvDPITdh379KicZZuiUCmZPyNhfpIVB05d3iAhtas+pufu72w8/cZ7xm4Oig==}
+  /@thencc/inkey-client-js/0.0.10:
+    resolution: {integrity: sha512-f+F01zroi4ugVGvlkjx9XzBayDnmyG5Ha4lYyb9+Zl0A6yr9QSHI+yk0xbyfrDv024Ka6+PP8OuYEX1U1uOynQ==}
     requiresBuild: true
     dev: false
     optional: true
 
-  /@thencc/inkey-client-js/0.0.9:
-    resolution: {integrity: sha512-niA842mScjcf1ZSHV08eO4pY+C0SlOoLLOHRy16Cy3KfThULFjwjk7EkeSixjnsrLGMiXmBQAtuLehwucxu20w==}
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@thencc/web3-wallet-handler/0.0.148_algosdk@2.1.0:
-    resolution: {integrity: sha512-G0YETaUw1YXKjeap6CmOD0uiyL5fNWFxMC6SjUYgl7NCa4gklMnmaa9VM1gpqAm2tL2U8aYlskEMV/70ln2PEw==}
-    requiresBuild: true
+  /@thencc/web3-wallet-handler/0.0.151_algosdk@2.1.0:
+    resolution: {integrity: sha512-H2WFc0vbheBZTdGKVMB9Z7PIaBAS9hnMoQLONAZ6wvYwK5iu3ARTe0QCRhbLTun5ACCN7Z9KTAMi90f5aRMvbA==}
     peerDependencies:
       algosdk: ^1.23.2 || ^2.1.0
     dependencies:
@@ -1058,7 +1051,7 @@ packages:
       '@blockshake/defly-connect': 1.1.1_algosdk@2.1.0
       '@perawallet/connect': 1.1.1_algosdk@2.1.0
       '@randlabs/myalgo-connect': 1.4.2
-      '@thencc/inkey-client-js': 0.0.8
+      '@thencc/inkey-client-js': 0.0.10
       buffer: 6.0.3
     transitivePeerDependencies:
       - bufferutil
