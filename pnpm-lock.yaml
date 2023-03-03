@@ -6,7 +6,7 @@ specifiers:
   '@perawallet/connect': ^1.1.1
   '@randlabs/myalgo-connect': ^1.4.2
   '@thencc/inkey-client-js': ^0.0.10
-  '@thencc/web3-wallet-handler': ^0.0.151
+  '@thencc/web3-wallet-handler': ^0.0.154
   '@types/node': ^18.13.0
   '@types/superagent': ^4.1.15
   '@typescript-eslint/eslint-plugin': ^5.13.0
@@ -35,7 +35,7 @@ specifiers:
   vite: ^4.1.1
 
 dependencies:
-  '@thencc/web3-wallet-handler': 0.0.151_algosdk@2.1.0
+  '@thencc/web3-wallet-handler': 0.0.154_algosdk@2.1.0
   algosdk: 2.1.0
   buffer: 6.0.3
   tslib: 2.5.0
@@ -1038,8 +1038,8 @@ packages:
     dev: false
     optional: true
 
-  /@thencc/web3-wallet-handler/0.0.151_algosdk@2.1.0:
-    resolution: {integrity: sha512-H2WFc0vbheBZTdGKVMB9Z7PIaBAS9hnMoQLONAZ6wvYwK5iu3ARTe0QCRhbLTun5ACCN7Z9KTAMi90f5aRMvbA==}
+  /@thencc/web3-wallet-handler/0.0.154_algosdk@2.1.0:
+    resolution: {integrity: sha512-QXAkoC78sgiDPD8ktSAogfenObdLDvl5mkiacTcJw0JIpeAICbf2zBoGjTKWnJ72jTkscWvFM2XyJnEr9H7leQ==}
     peerDependencies:
       algosdk: ^1.23.2 || ^2.1.0
     dependencies:
