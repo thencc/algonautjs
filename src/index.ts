@@ -1514,7 +1514,6 @@ export class Algonaut {
 	normalizeTxns(txnOrTxns: Transaction | AlgonautAtomicTransaction | AlgonautAtomicTransaction[]) {
 		console.log('normalizeTxns', txnOrTxns);
 
-		// eslint-disable-next-line prefer-const
 		let txnArr: (AlgonautAtomicTransaction | Transaction)[] = [];
 
 		if (!Array.isArray(txnOrTxns)) {
@@ -1524,8 +1523,6 @@ export class Algonaut {
 		}
 		// console.log('txnArr', txnArr);
 
-
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		let algoTxnArr: Transaction[] = [];
 		algoTxnArr = txnArr.map((t) => {
 			let nativeT = (t as AlgonautAtomicTransaction).transaction as Transaction | undefined;
@@ -1535,7 +1532,6 @@ export class Algonaut {
 			return nativeT;
 		});
 		// console.log('algoTxnArr', algoTxnArr);
-
 		const txnBuffArr = algoTxnArr.map(t => t.toByte());
 		// console.log('txnBuffArr', txnBuffArr);
 
@@ -1552,6 +1548,8 @@ export class Algonaut {
 	async sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
 		// if (!AnyWalletState.activeAddress) throw new Error('No AnyWallet acct connected');
 
+		// TODO use "AnyWalletState.activeAddress" as default .from addr
+
 		/**
 		 * 1. normalize incoming txn(s) to array of Uint8Arrs
 		 * 2. sign w aw
@@ -1559,13 +1557,11 @@ export class Algonaut {
 		 * 4. return result + txid
 		 */
 
-		const awTxnToSign = this.normalizeTxns(txnOrTxns);
-		console.log('awTxnToSign', awTxnToSign);
-
-		let awSignedTxns: Uint8Array[];
+		const awTxnsToSign = this.normalizeTxns(txnOrTxns);
+		let awTxnsSigned: Uint8Array[];
 		try {
-			awSignedTxns = await signTransactions(awTxnToSign);
-			console.log('awSignedTxns', awSignedTxns);
+			awTxnsSigned = await signTransactions(awTxnsToSign);
+			console.log('awTxnsSigned', awTxnsSigned);
 		} catch(e) {
 			console.warn('err signing txns...');
 			console.log(e);
@@ -1576,9 +1572,9 @@ export class Algonaut {
 			};
 		}
 
-		if (callbacks?.onSign) callbacks.onSign(awSignedTxns);
+		if (callbacks?.onSign) callbacks.onSign(awTxnsSigned);
 
-		const tx = await this.algodClient.sendRawTransaction(awSignedTxns).do();
+		const tx = await this.algodClient.sendRawTransaction(awTxnsSigned).do();
 
 		if (callbacks?.onSend) callbacks.onSend(tx);
 
@@ -1592,131 +1588,6 @@ export class Algonaut {
 
 		if (callbacks?.onConfirm) callbacks.onConfirm(txStatus);
 		return txStatus;
-
-
-
-
-
-		/*
-		if (!this.account) throw new Error('There is no account');
-		if (this.config && this.config.SIGNING_MODE && this.config.SIGNING_MODE === 'inkey') {
-			// let's do the inkey thing
-
-			// 1. depending on how txns are sent into `sendTransaction`, we need to deal with them
-			let signedTxns;
-
-
-			// HANDLE ARRAY OF TRANSACTIONS
-			if (Array.isArray(txnOrTxns) && txnOrTxns[0] && txnOrTxns[0].transaction) {
-				// array of AlgonautAtomicTransaction, map these to get .transaction out
-				const unwrappedTxns = txnOrTxns.map(txn => txn.transaction);
-
-				// don't assign group ID here! inkey will assign it :)
-
-				// encode txns
-				const txnsToSign = unwrappedTxns.map((txn) => {
-					const encodedTxn = Buffer.from(encodeUnsignedTransaction(txn)).toString('base64');
-					return encodedTxn;
-				});
-
-				const inkeyResponse = await this.inkeySignTxns(txnsToSign);
-				if (inkeyResponse.success && inkeyResponse.signedTxns) {
-					// user approved transaction
-					signedTxns = inkeyResponse.signedTxns;
-				} else if (inkeyResponse.error) {
-					// there was an error with the transaction
-					throw new Error(inkeyResponse.error);
-				} else if (inkeyResponse.reject) {
-					// user rejected the transaction
-					return {
-						status: 'rejected',
-						message: 'User rejected the message.',
-						txId: ''
-					};
-				} else {
-					// this should never happen
-					throw new Error('Unknown error sending Inkey txn');
-				}
-
-				// HANDLE SINGLE ATOMIC TRANSACTION
-			} else {
-
-				let txn: Transaction;
-				if (txnOrTxns && (txnOrTxns as any).transaction) {
-					txn = (txnOrTxns as AlgonautAtomicTransaction).transaction;
-				} else {
-					txn = (txnOrTxns as Transaction);
-				}
-
-				// send base64 to inkey
-				const encodedTxn = Buffer.from(encodeUnsignedTransaction(txn)).toString('base64');
-				const inkeyResponse = await this.inkeySignTxns([encodedTxn]);
-				if (inkeyResponse.success && inkeyResponse.signedTxns) {
-					// user approved transaction
-					signedTxns = inkeyResponse.signedTxns;
-				} else if (inkeyResponse.error) {
-					// there was an error with the transaction
-					throw new Error(inkeyResponse.error);
-				} else if (inkeyResponse.reject) {
-					// user rejected the transaction
-					return {
-						status: 'rejected',
-						message: 'User rejected the message.',
-						txId: ''
-					};
-				} else {
-					// this should never happen
-					throw new Error('Unknown error sending Inkey txn');
-				}
-			}
-
-			if (callbacks?.onSign) callbacks.onSign(signedTxns);
-
-			const tx = await this.algodClient.sendRawTransaction(signedTxns).do();
-
-			if (callbacks?.onSend) callbacks.onSend(tx);
-
-			// Wait for transaction to be confirmed
-			const txStatus = await this.waitForConfirmation(tx.txId);
-
-			const transactionResponse = await this.algodClient
-				.pendingTransactionInformation(tx.txId)
-				.do();
-			txStatus.meta = transactionResponse;
-
-			if (callbacks?.onConfirm) callbacks.onConfirm(txStatus);
-
-			return txStatus;
-		} else {
-			// assume local signing
-			if (Array.isArray(txnOrTxns)) {
-				return await this.sendAtomicTransaction(txnOrTxns, callbacks);
-			} else {
-				let txn: Transaction;
-				if (txnOrTxns && (txnOrTxns as any).transaction) {
-					// sent an atomic Transaction
-					txn = (txnOrTxns as AlgonautAtomicTransaction).transaction;
-				} else {
-					// assume a transaction
-					txn = txnOrTxns as Transaction;
-				}
-
-				if (!this.account || !this.account.sk) throw new Error('');
-				const signedTxn = (txn as Transaction).signTxn(this.account.sk);
-				if (callbacks?.onSign) callbacks.onSign(signedTxn);
-
-				const tx = await this.algodClient.sendRawTransaction(signedTxn).do();
-				if (callbacks?.onSend) callbacks.onSend(signedTxn);
-
-				const txId = tx.txId || tx.id || tx.txId().toString();
-
-				const txStatus = await this.waitForConfirmation(txId);
-				if (callbacks?.onConfirm) callbacks.onConfirm(signedTxn);
-
-				return txStatus;
-			}
-		}
-		*/
 	}
 
 	/**
