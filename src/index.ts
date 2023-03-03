@@ -63,7 +63,7 @@ import type {
 } from './AlgonautTypes';
 export * from './AlgonautTypes';
 
-import { AnyWalletState, enableWallets, signTransactions } from '@thencc/web3-wallet-handler';
+import { AnyWalletState, enableWallets, signTransactions, WalletInitParamsObj } from '@thencc/web3-wallet-handler';
 export * from '@thencc/web3-wallet-handler';
 
 import { FrameBus } from './FrameBus';
@@ -162,7 +162,10 @@ export class Algonaut {
 
 	initAnyWallet(config?: AlgonautConfig) {
 		console.log('initAnyWallet', config);
-		const wip = config?.anyWalletConfig?.walletInitParams;
+		const defaultWip: WalletInitParamsObj = {
+			inkey: true
+		};
+		const wip = config?.anyWalletConfig?.walletInitParams || defaultWip;
 		enableWallets(wip); // defaults to all except mnemonic client
 	}
 
@@ -1547,7 +1550,7 @@ export class Algonaut {
 	 * @returns Promise resolving to AlgonautTransactionStatus
 	 */
 	async sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
-		if (!AnyWalletState.activeAddress) throw new Error('No AnyWallet acct connected');
+		// if (!AnyWalletState.activeAddress) throw new Error('No AnyWallet acct connected');
 
 		/**
 		 * 1. normalize incoming txn(s) to array of Uint8Arrs
@@ -1589,6 +1592,9 @@ export class Algonaut {
 
 		if (callbacks?.onConfirm) callbacks.onConfirm(txStatus);
 		return txStatus;
+
+
+
 
 
 		/*

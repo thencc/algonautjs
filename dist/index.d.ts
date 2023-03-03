@@ -44,7 +44,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 isReady: () => Promise<true>;
-                connect: () => Promise<void>;
+                connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
@@ -81,7 +81,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 isReady: () => Promise<true>;
-                connect: () => Promise<void>;
+                connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
@@ -118,7 +118,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 isReady: () => Promise<true>;
-                connect: () => Promise<void>;
+                connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
@@ -155,7 +155,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 isReady: () => Promise<true>;
-                connect: () => Promise<void>;
+                connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
@@ -192,7 +192,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 isReady: () => Promise<true>;
-                connect: () => Promise<void>;
+                connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
@@ -229,7 +229,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 isReady: () => Promise<true>;
-                connect: () => Promise<void>;
+                connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
@@ -266,7 +266,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 isReady: () => Promise<true>;
-                connect: () => Promise<void>;
+                connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
@@ -305,7 +305,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 isReady: () => Promise<true>;
-                connect: () => Promise<void>;
+                connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
@@ -342,7 +342,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 isReady: () => Promise<true>;
-                connect: () => Promise<void>;
+                connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
@@ -379,7 +379,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 isReady: () => Promise<true>;
-                connect: () => Promise<void>;
+                connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
@@ -416,7 +416,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 isReady: () => Promise<true>;
-                connect: () => Promise<void>;
+                connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
@@ -453,7 +453,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 isReady: () => Promise<true>;
-                connect: () => Promise<void>;
+                connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
@@ -490,7 +490,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 isReady: () => Promise<true>;
-                connect: () => Promise<void>;
+                connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
@@ -526,13 +526,8 @@ export declare class Algonaut {
                 initing: boolean;
                 signing: boolean;
                 connecting: boolean;
-                /**
-                 * Fetch full account info for an account
-                 * @param address the accress to read info for
-                 * @returns Promise of type AccountInfo
-                 */
                 isReady: () => Promise<true>;
-                connect: () => Promise<void>;
+                connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
@@ -585,7 +580,7 @@ export declare class Algonaut {
             signing: boolean;
             connecting: boolean;
             isReady: () => Promise<true>;
-            connect: () => Promise<void>;
+            connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
             disconnect: () => Promise<void>;
             reconnect: () => Promise<void>;
             setAsActiveWallet: () => void;
