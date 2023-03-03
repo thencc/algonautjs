@@ -5,7 +5,7 @@ specifiers:
   '@jest/globals': ^29.4.3
   '@perawallet/connect': ^1.1.1
   '@randlabs/myalgo-connect': ^1.4.2
-  '@thencc/inkey-client-js': ^0.0.8
+  '@thencc/inkey-client-js': ^0.0.9
   '@thencc/web3-wallet-handler': ^0.0.148
   '@types/node': ^18.13.0
   '@types/superagent': ^4.1.15
@@ -44,7 +44,7 @@ optionalDependencies:
   '@blockshake/defly-connect': 1.1.1_algosdk@2.1.0
   '@perawallet/connect': 1.1.1_algosdk@2.1.0
   '@randlabs/myalgo-connect': 1.4.2
-  '@thencc/inkey-client-js': 0.0.8
+  '@thencc/inkey-client-js': 0.0.9
 
 devDependencies:
   '@jest/globals': 29.4.3
@@ -1034,6 +1034,12 @@ packages:
 
   /@thencc/inkey-client-js/0.0.8:
     resolution: {integrity: sha512-cEJ1khvoa+7kt3kXY0AKh1wpjpBvDPITdh379KicZZuiUCmZPyNhfpIVB05d3iAhtas+pufu72w8/cZ7xm4Oig==}
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@thencc/inkey-client-js/0.0.9:
+    resolution: {integrity: sha512-niA842mScjcf1ZSHV08eO4pY+C0SlOoLLOHRy16Cy3KfThULFjwjk7EkeSixjnsrLGMiXmBQAtuLehwucxu20w==}
     requiresBuild: true
     dev: false
     optional: true

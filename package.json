@@ -1,6 +1,6 @@
 {
 	"name": "@thencc/algonautjs",
-	"version": "0.2.101",
+	"version": "0.2.102",
 	"description": "AlgonautJS is a simplified Algorand transaction library built specifically for Browsers and Front End Development",
 	"type": "commonjs",
 	"types": "dist/index.d.ts",
@@ -47,13 +47,13 @@
 		"@blockshake/defly-connect": "^1.1.1",
 		"@perawallet/connect": "^1.1.1",
 		"@randlabs/myalgo-connect": "^1.4.2",
-		"@thencc/inkey-client-js": "^0.0.8"
+		"@thencc/inkey-client-js": "^0.0.9"
 	},
 	"devDependencies": {
 		"@blockshake/defly-connect": "^1.1.1",
 		"@perawallet/connect": "^1.1.1",
 		"@randlabs/myalgo-connect": "^1.4.2",
-		"@thencc/inkey-client-js": "^0.0.8",
+		"@thencc/inkey-client-js": "^0.0.9",
 		"@jest/globals": "^29.4.3",
 		"@types/node": "^18.13.0",
 		"@types/superagent": "^4.1.15",
