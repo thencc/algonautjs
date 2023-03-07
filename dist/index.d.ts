@@ -43,6 +43,7 @@ export declare class Algonaut {
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
                 removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 readonly accounts: readonly {
                     readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
                     readonly name: string;
@@ -80,12 +81,18 @@ export declare class Algonaut {
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
                 removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 readonly accounts: readonly {
                     readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
                     readonly name: string;
                     readonly address: string;
                 }[];
                 readonly isActive: boolean;
+                /**
+                 * Get an application's escrow account
+                 * @param appId - ID of application
+                 * @returns Escrow account address as string
+                 */
                 readonly isConnected: boolean;
             } | undefined;
             myalgo?: {
@@ -117,6 +124,7 @@ export declare class Algonaut {
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
                 removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 readonly accounts: readonly {
                     readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
                     readonly name: string;
@@ -154,6 +162,7 @@ export declare class Algonaut {
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
                 removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 readonly accounts: readonly {
                     readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
                     readonly name: string;
@@ -191,6 +200,7 @@ export declare class Algonaut {
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
                 removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 readonly accounts: readonly {
                     readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
                     readonly name: string;
@@ -228,6 +238,7 @@ export declare class Algonaut {
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
                 removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 readonly accounts: readonly {
                     readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
                     readonly name: string;
@@ -265,6 +276,7 @@ export declare class Algonaut {
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
                 removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 readonly accounts: readonly {
                     readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
                     readonly name: string;
@@ -304,11 +316,16 @@ export declare class Algonaut {
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
                 removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 readonly accounts: readonly {
                     readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
                     readonly name: string;
                     readonly address: string;
-                }[];
+                }[]; /**
+                 * Updates an application with `makeApplicationUpdateTxn`
+                 * @param args AlgonautUpdateAppArguments
+                 * @returns atomic transaction that updates the app
+                 */
                 readonly isActive: boolean;
                 readonly isConnected: boolean;
             } | undefined;
@@ -341,6 +358,7 @@ export declare class Algonaut {
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
                 removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 readonly accounts: readonly {
                     readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
                     readonly name: string;
@@ -378,6 +396,7 @@ export declare class Algonaut {
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
                 removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 readonly accounts: readonly {
                     readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
                     readonly name: string;
@@ -411,10 +430,17 @@ export declare class Algonaut {
                 connecting: boolean;
                 isReady: () => Promise<true>;
                 connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
-                disconnect: () => Promise<void>;
+                disconnect: () => Promise<void>; /**
+                 * DEPRECATED. Use `atomicSendAlgo`. This name will be removed in future versions.
+                 * @deprecated
+                 * @param args `AlgonautPaymentArgs` object containing `to`, `amount`, and optional `note`
+                 * @param callbacks optional AlgonautTxnCallbacks
+                 * @returns Promise resolving to atomic trasnaction
+                 */
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
                 removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 readonly accounts: readonly {
                     readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
                     readonly name: string;
@@ -452,6 +478,7 @@ export declare class Algonaut {
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
                 removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 readonly accounts: readonly {
                     readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
                     readonly name: string;
@@ -489,6 +516,7 @@ export declare class Algonaut {
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
                 removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 readonly accounts: readonly {
                     readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
                     readonly name: string;
@@ -526,6 +554,7 @@ export declare class Algonaut {
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
                 removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 readonly accounts: readonly {
                     readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
                     readonly name: string;
@@ -579,6 +608,7 @@ export declare class Algonaut {
             reconnect: () => Promise<void>;
             setAsActiveWallet: () => void;
             removeAccounts: () => void;
+            signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
             readonly accounts: readonly {
                 readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
                 readonly name: string;
