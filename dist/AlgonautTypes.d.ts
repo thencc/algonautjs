@@ -2,18 +2,16 @@ import type { LogicSigAccount, Transaction, Account, SuggestedParams, MultisigMe
 import type { ApplicationStateSchema } from 'algosdk/dist/types/client/v2/algod/models/types';
 import type { WalletInitParamsObj } from '@thencc/web3-wallet-handler';
 export type AlgonautConfig = {
-    BASE_SERVER: string;
-    INDEX_SERVER?: string;
-    LEDGER: string;
-    PORT: string;
-    API_TOKEN: any;
-    SIGNING_MODE?: 'local' | 'inkey';
-    INKEY_SRC?: string;
-    INKEY_ALIGN?: 'center' | 'left' | 'right';
     libConfig?: {
         disableLogs?: boolean;
     };
-    nodeConfig?: {};
+    nodeConfig?: {
+        BASE_SERVER: string;
+        INDEX_SERVER?: string;
+        LEDGER: string;
+        PORT: string;
+        API_TOKEN: any;
+    };
     anyWalletConfig?: {
         walletInitParams?: WalletInitParamsObj;
     };

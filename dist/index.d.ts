@@ -6,12 +6,17 @@ export * from '@thencc/web3-wallet-handler';
 export declare class Algonaut {
     algodClient: Algodv2;
     indexerClient: algosdk.Indexer | undefined;
-    config: AlgonautConfig | undefined;
+    nodeConfig: {
+        BASE_SERVER: string;
+        INDEX_SERVER?: string | undefined;
+        LEDGER: string;
+        PORT: string;
+        API_TOKEN: any;
+    };
     sdk: typeof algosdk;
     account: algosdk.Account | undefined;
     address: string | undefined;
     mnemonic: string | undefined;
-    uiLoading: boolean;
     AnyWalletState: {
         allWallets: {
             pera?: {
@@ -88,11 +93,6 @@ export declare class Algonaut {
                     readonly address: string;
                 }[];
                 readonly isActive: boolean;
-                /**
-                 * Get an application's escrow account
-                 * @param appId - ID of application
-                 * @returns Escrow account address as string
-                 */
                 readonly isConnected: boolean;
             } | undefined;
             myalgo?: {
@@ -321,11 +321,7 @@ export declare class Algonaut {
                     readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
                     readonly name: string;
                     readonly address: string;
-                }[]; /**
-                 * Updates an application with `makeApplicationUpdateTxn`
-                 * @param args AlgonautUpdateAppArguments
-                 * @returns atomic transaction that updates the app
-                 */
+                }[];
                 readonly isActive: boolean;
                 readonly isConnected: boolean;
             } | undefined;
@@ -430,13 +426,7 @@ export declare class Algonaut {
                 connecting: boolean;
                 isReady: () => Promise<true>;
                 connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
-                disconnect: () => Promise<void>; /**
-                 * DEPRECATED. Use `atomicSendAlgo`. This name will be removed in future versions.
-                 * @deprecated
-                 * @param args `AlgonautPaymentArgs` object containing `to`, `amount`, and optional `note`
-                 * @param callbacks optional AlgonautTxnCallbacks
-                 * @returns Promise resolving to atomic trasnaction
-                 */
+                disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
                 removeAccounts: () => void;
@@ -448,7 +438,13 @@ export declare class Algonaut {
                 }[];
                 readonly isActive: boolean;
                 readonly isConnected: boolean;
-            } | undefined;
+            } | undefined; /**
+             * Sends ALGO from own account to `args.to`
+             *
+             * @param args `AlgonautPaymentArgs` object containing `to`, `amount`, and optional `note`
+             * @param callbacks optional AlgonautTxnCallbacks
+             * @returns Promise resolving to transaction status
+             */
             exodus?: {
                 id: import("@thencc/web3-wallet-handler").WALLET_ID;
                 metadata: {
@@ -475,6 +471,11 @@ export declare class Algonaut {
                 isReady: () => Promise<true>;
                 connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
                 disconnect: () => Promise<void>;
+                /**
+                 * Checks Algo balance of account
+                 * @param address - Wallet of balance to check
+                 * @returns Promise resolving to Algo balance
+                 */
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
                 removeAccounts: () => void;
@@ -639,23 +640,23 @@ export declare class Algonaut {
      * @param config config object
      */
     constructor(config: AlgonautConfig);
-    initAnyWallet(config?: AlgonautConfig): void;
+    initAnyWallet(awConfig?: AlgonautConfig['anyWalletConfig']): void;
     /**
      * checks if config obj is valid for use
      * @param config algonaut config for network + signing mode
      * @returns boolean. true is good.
      */
-    isValidNodeConfig(config: AlgonautConfig): boolean;
+    isValidNodeConfig(nodeConfig?: AlgonautConfig['nodeConfig']): boolean;
     /**
      * sets config for use (new algod, indexerClient, etc)
      * @param config algonaut config for network + signing mode
      * 		- will throw Error if config is lousy
      */
-    setNodeConfig(config: AlgonautConfig): void;
+    setNodeConfig(nodeConfig?: AlgonautConfig['nodeConfig']): void;
     /**
-     * @returns config object or `false` if no config is set
+     * @returns nodeConfig object or `false` if no nodeConfig is set
      */
-    getNodeConfig(): AlgonautConfig | boolean;
+    getNodeConfig(): AlgonautConfig['nodeConfig'] | boolean;
     /**
      * Checks status of Algorand network
      * @returns Promise resolving to status of Algorand network

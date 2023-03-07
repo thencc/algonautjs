@@ -13,16 +13,16 @@ import type { ApplicationStateSchema } from 'algosdk/dist/types/client/v2/algod/
 import type { WalletInitParamsObj } from '@thencc/web3-wallet-handler';
 
 export type AlgonautConfig = {
-	BASE_SERVER: string;
-	INDEX_SERVER?: string; // optional, but helpful
-	LEDGER: string;
-	PORT: string;
-	API_TOKEN: any;
+	// BASE_SERVER: string;
+	// INDEX_SERVER?: string; // optional, but helpful
+	// LEDGER: string;
+	// PORT: string;
+	// API_TOKEN: any;
 
 	// TOOD remove these:
-	SIGNING_MODE?: 'local' | 'inkey';
-	INKEY_SRC?: string;
-	INKEY_ALIGN?: 'center' | 'left' | 'right';
+	// SIGNING_MODE?: 'local' | 'inkey';
+	// INKEY_SRC?: string;
+	// INKEY_ALIGN?: 'center' | 'left' | 'right';
 
 
 
@@ -31,7 +31,11 @@ export type AlgonautConfig = {
 	},
 
 	nodeConfig?: {
-		//
+		BASE_SERVER: string;
+		INDEX_SERVER?: string; // optional, but helpful
+		LEDGER: string;
+		PORT: string;
+		API_TOKEN: any;
 	},
 
 	anyWalletConfig?: {

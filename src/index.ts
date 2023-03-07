@@ -65,15 +65,9 @@ export * from './AlgonautTypes';
 import { AnyWalletState, enableWallets, signTransactions, WalletInitParamsObj } from '@thencc/web3-wallet-handler';
 export * from '@thencc/web3-wallet-handler';
 
+import { defaultNodeConfig } from './algo-config';
+
 /*
-
-AlgonautJS should have some "signing modes" which you set at invocation time
-
-probably in
-AlgonautConfig
-
-
-
 
 for stateful contracts i think we want to read it in and hold all the
 NV pairs as fields
@@ -97,14 +91,10 @@ await runAtomicTransaction([
 
 */
 
-// TODO use a default node config
-// import { mainNetConfig as config } from './algoconfig';
-
-
 export class Algonaut {
 	algodClient!: Algodv2; // it will be set or it throws an Error
 	indexerClient = undefined as undefined | Indexer;
-	config = undefined as undefined | AlgonautConfig; // current config
+	nodeConfig = defaultNodeConfig; // | AlgonautConfig['nodeConfig'];
 
 	// TODO remove this entire sdk?
 	// expose entire algosdk in case the dapp needs more
@@ -115,8 +105,6 @@ export class Algonaut {
 	account = undefined as undefined | AlgosdkAccount; // ONLY defined if using local signing, not wallet-connet or inkey
 	address = undefined as undefined | string;
 	mnemonic = undefined as undefined | string;
-
-	uiLoading = false;
 
 	// handles all algo wallets (inkey, pera, etc) + remembers last used in localstorage
 	AnyWalletState = AnyWalletState;
@@ -141,16 +129,16 @@ export class Algonaut {
 	 * @param config config object
 	 */
 	constructor(config: AlgonautConfig) {
-		this.setNodeConfig(config);
-		this.initAnyWallet(config);
+		this.setNodeConfig(config.nodeConfig); // makes algod client too
+		this.initAnyWallet(config.anyWalletConfig);
 	}
 
-	initAnyWallet(config?: AlgonautConfig) {
-		console.log('initAnyWallet', config);
+	initAnyWallet(awConfig?: AlgonautConfig['anyWalletConfig']) {
+		console.log('initAnyWallet', awConfig);
 		const defaultWip: WalletInitParamsObj = {
 			inkey: true
 		};
-		const wip = config?.anyWalletConfig?.walletInitParams || defaultWip;
+		const wip = awConfig?.walletInitParams || defaultWip;
 		enableWallets(wip); // defaults to all except mnemonic client
 	}
 
@@ -159,20 +147,17 @@ export class Algonaut {
 	 * @param config algonaut config for network + signing mode
 	 * @returns boolean. true is good.
 	 */
-	isValidNodeConfig(config: AlgonautConfig): boolean {
+	isValidNodeConfig(nodeConfig?: AlgonautConfig['nodeConfig']): boolean {
 		// console.log('isValidNodeConfig?', config);
 		let isValid = true;
 
 		// do all checks
-		if (!config.BASE_SERVER || !config.API_TOKEN) {
+		if (nodeConfig == undefined || !nodeConfig.BASE_SERVER) {
 			isValid = false;
 		}
+		// FYI some configs dont need an api token
 
 		// TODO add more checks...
-
-
-		// check: if its not a valid signing mode...
-		// if (config.SIGNING_MODE !== 'algosigner')
 
 		return isValid;
 	}
@@ -182,27 +167,31 @@ export class Algonaut {
 	 * @param config algonaut config for network + signing mode
 	 * 		- will throw Error if config is lousy
 	 */
-	setNodeConfig(config: AlgonautConfig) {
+	setNodeConfig(nodeConfig?: AlgonautConfig['nodeConfig']) {
 		// console.log('setNodeConfig', config);
-		if (!this.isValidNodeConfig(config)) {
-			throw new Error('bad config!');
+		if (nodeConfig == undefined) {
+			nodeConfig = defaultNodeConfig;
 		}
 
-		this.config = config;
-		this.algodClient = new Algodv2(config.API_TOKEN, config.BASE_SERVER, config.PORT);
+		if (!this.isValidNodeConfig(nodeConfig)) {
+			throw new Error('bad node config!');
+		}
 
-		if (config.INDEX_SERVER) {
-			this.indexerClient = new Indexer(config.API_TOKEN, config.INDEX_SERVER, config.PORT);
+		this.nodeConfig = nodeConfig;
+		this.algodClient = new Algodv2(nodeConfig.API_TOKEN, nodeConfig.BASE_SERVER, nodeConfig.PORT);
+
+		if (nodeConfig.INDEX_SERVER) {
+			this.indexerClient = new Indexer(nodeConfig.API_TOKEN, nodeConfig.INDEX_SERVER, nodeConfig.PORT);
 		} else {
 			console.warn('No indexer configured because INDEX_SERVER was not provided.');
 		}
 	}
 
 	/**
-	 * @returns config object or `false` if no config is set
+	 * @returns nodeConfig object or `false` if no nodeConfig is set
 	 */
-	getNodeConfig(): AlgonautConfig | boolean {
-		if (this.config) return this.config;
+	getNodeConfig(): AlgonautConfig['nodeConfig'] | boolean {
+		if (this.nodeConfig) return this.nodeConfig;
 		return false;
 	}
 
@@ -232,7 +221,6 @@ export class Algonaut {
 
 		this.account = account;
 		this.address = account.addr;
-		// if (this.config) this.config.SIGNING_MODE = 'local';
 		this.mnemonic = secretKeyToMnemonic(account.sk);
 	}
 
@@ -1712,7 +1700,6 @@ export const utils = {
 		try {
 			const account = mnemonicToSecretKey(mnemonic);
 			if (isValidAddress(account?.addr)) {
-				//if (this.config) this.config.SIGNING_MODE = 'local';
 				return account;
 			} else {
 				throw new Error('Not a valid mnemonic.');
