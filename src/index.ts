@@ -22,7 +22,6 @@ import algosdk, {
 	encodeAddress,
 	makePaymentTxnWithSuggestedParamsFromObject,
 	Transaction,
-	encodeUnsignedTransaction,
 	assignGroupID,
 	signLogicSigTransaction,
 	signTransaction,
@@ -1707,6 +1706,7 @@ export const utils = {
 
 	/**
 	 * Recovers account from mnemonic
+	 * // TODO move this to AnyWallet w mnemonic config param
 	 * @param mnemonic Mnemonic associated with Algonaut account
 	 * @returns If mnemonic is valid, returns account. Otherwise, throws an error.
 	 */
