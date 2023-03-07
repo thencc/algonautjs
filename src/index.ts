@@ -66,6 +66,8 @@ import { AnyWalletState, enableWallets, signTransactions, WalletInitParamsObj } 
 export * from '@thencc/web3-wallet-handler';
 
 import { defaultNodeConfig } from './algo-config';
+import { defaultLibConfig } from './constants';
+import { logger } from './utils';
 
 /*
 
@@ -94,7 +96,8 @@ await runAtomicTransaction([
 export class Algonaut {
 	algodClient!: Algodv2; // it will be set or it throws an Error
 	indexerClient = undefined as undefined | Indexer;
-	nodeConfig = defaultNodeConfig; // | AlgonautConfig['nodeConfig'];
+	nodeConfig = defaultNodeConfig;
+	libConfig = defaultLibConfig;
 
 	// TODO remove this entire sdk?
 	// expose entire algosdk in case the dapp needs more
@@ -131,15 +134,28 @@ export class Algonaut {
 	constructor(config: AlgonautConfig) {
 		this.setNodeConfig(config.nodeConfig); // makes algod client too
 		this.initAnyWallet(config.anyWalletConfig);
+		this.setLibConfig(config.libConfig);
 	}
 
 	initAnyWallet(awConfig?: AlgonautConfig['anyWalletConfig']) {
-		console.log('initAnyWallet', awConfig);
+		logger.log('initAnyWallet', awConfig);
 		const defaultWip: WalletInitParamsObj = {
 			inkey: true
 		};
 		const wip = awConfig?.walletInitParams || defaultWip;
 		enableWallets(wip); // defaults to all except mnemonic client
+	}
+
+	setLibConfig(libConfig?: AlgonautConfig['libConfig']) {
+		// logger.log('setLibConfig', libConfig);
+		if (libConfig == undefined)  {
+			libConfig = defaultLibConfig;
+		}
+		if (libConfig !== undefined) {
+			if ('disableLogs' in libConfig && typeof libConfig.disableLogs == 'boolean') {
+				logger.enabled = !libConfig.disableLogs;
+			}
+		}
 	}
 
 	/**
@@ -148,7 +164,7 @@ export class Algonaut {
 	 * @returns boolean. true is good.
 	 */
 	isValidNodeConfig(nodeConfig?: AlgonautConfig['nodeConfig']): boolean {
-		// console.log('isValidNodeConfig?', config);
+		// logger.log('isValidNodeConfig?', config);
 		let isValid = true;
 
 		// do all checks
@@ -168,7 +184,7 @@ export class Algonaut {
 	 * 		- will throw Error if config is lousy
 	 */
 	setNodeConfig(nodeConfig?: AlgonautConfig['nodeConfig']) {
-		// console.log('setNodeConfig', config);
+		// logger.log('setNodeConfig', config);
 		if (nodeConfig == undefined) {
 			nodeConfig = defaultNodeConfig;
 		}
@@ -205,7 +221,7 @@ export class Algonaut {
 		}
 
 		const status = await this.algodClient.status().do();
-		console.log('Algorand network status: %o', status);
+		logger.log('Algorand network status: %o', status);
 		return status;
 	}
 
@@ -279,7 +295,7 @@ export class Algonaut {
 					.pendingTransactionInformation(txId)
 					.do();
 				if (log) {
-					console.log('waiting for confirmation');
+					logger.log('waiting for confirmation');
 				}
 			} catch (er: any) {
 				console.error(er.response?.text);
@@ -291,7 +307,7 @@ export class Algonaut {
 			) {
 
 				if (log) {
-					console.log('Transaction confirmed in round ' + pendingInfo['confirmed-round']);
+					logger.log('Transaction confirmed in round ' + pendingInfo['confirmed-round']);
 				}
 
 				returnValue.txId = txId;
@@ -503,8 +519,8 @@ export class Algonaut {
 			return txStatus;
 
 		} catch (er) {
-			console.log('transaction error');
-			console.log(er);
+			logger.log('transaction error');
+			logger.log(er);
 			throw new Error(er as any);
 		}
 	}
@@ -705,7 +721,7 @@ export class Algonaut {
 			};
 
 		} catch (e: any) {
-			console.log(e);
+			logger.log(e);
 			throw new Error(e.response?.text);
 		}
 	}
@@ -896,7 +912,7 @@ export class Algonaut {
 		if (!args.tealClearCode) throw new Error('No clear program provided');
 		if (!args.schema) throw new Error('No schema provided');
 
-		//console.log('CREATING APP')
+		//logger.log('CREATING APP')
 
 		try {
 
@@ -909,8 +925,8 @@ export class Algonaut {
 			approvalProgram = await this.compileProgram(args.tealApprovalCode);
 			clearProgram = await this.compileProgram(args.tealClearCode);
 
-			// console.log('approval', approvalProgram);
-			// console.log('clear', clearProgram);
+			// logger.log('approval', approvalProgram);
+			// logger.log('clear', clearProgram);
 
 			// create unsigned transaction
 			if (approvalProgram && clearProgram) {
@@ -1250,7 +1266,7 @@ export class Algonaut {
 	 */
 	async getAlgoBalance(address: string): Promise<any> {
 		if (!address) throw new Error('No address provided');
-		//console.log('checking algo balance');
+		//logger.log('checking algo balance');
 		const accountInfo = await this.algodClient.accountInformation(address).do();
 		return accountInfo.amount;
 	}
@@ -1266,10 +1282,10 @@ export class Algonaut {
 		if (!assetIndex) throw new Error('No asset index provided');
 
 		const accountInfo = await this.algodClient.accountInformation(address).do();
-		//console.log(accountInfo);
+		//logger.log(accountInfo);
 
 		let stkBalance = 0;
-		//console.log(accountInfo.assets);
+		//logger.log(accountInfo.assets);
 		accountInfo.assets.forEach((asset: any) => {
 			if (asset['asset-id'] == assetIndex) {
 				stkBalance = asset.amount;
@@ -1337,11 +1353,11 @@ export class Algonaut {
 				.accountInformation(address)
 				.do();
 
-			//console.log(accountInfoResponse);
+			//logger.log(accountInfoResponse);
 
 			for (let i = 0; i < accountInfoResponse['apps-local-state'].length; i++) {
 				if (accountInfoResponse['apps-local-state'][i].id == applicationIndex) {
-					//console.log('Found Application');
+					//logger.log('Found Application');
 
 					state.hasState = true;
 
@@ -1424,7 +1440,7 @@ export class Algonaut {
 	}
 
 	normalizeTxns(txnOrTxns: Transaction | AlgonautAtomicTransaction | AlgonautAtomicTransaction[]) {
-		console.log('normalizeTxns', txnOrTxns);
+		logger.log('normalizeTxns', txnOrTxns);
 
 		let txnArr: (AlgonautAtomicTransaction | Transaction)[] = [];
 
@@ -1433,7 +1449,7 @@ export class Algonaut {
 		} else {
 			txnArr = txnOrTxns;
 		}
-		// console.log('txnArr', txnArr);
+		// logger.log('txnArr', txnArr);
 
 		let algoTxnArr: Transaction[] = [];
 		algoTxnArr = txnArr.map((t) => {
@@ -1443,9 +1459,9 @@ export class Algonaut {
 			}
 			return nativeT;
 		});
-		// console.log('algoTxnArr', algoTxnArr);
+		// logger.log('algoTxnArr', algoTxnArr);
 		const txnBuffArr = algoTxnArr.map(t => t.toByte());
-		// console.log('txnBuffArr', txnBuffArr);
+		// logger.log('txnBuffArr', txnBuffArr);
 
 		return txnBuffArr;
 	}
@@ -1470,14 +1486,14 @@ export class Algonaut {
 		 */
 
 		const awTxnsToSign = this.normalizeTxns(txnOrTxns);
-		console.log('awTxnsToSign', awTxnsToSign);
+		logger.log('awTxnsToSign', awTxnsToSign);
 		let awTxnsSigned: Uint8Array[];
 		try {
 			awTxnsSigned = await signTransactions(awTxnsToSign);
-			console.log('awTxnsSigned', awTxnsSigned);
+			logger.log('awTxnsSigned', awTxnsSigned);
 		} catch(e) {
 			console.warn('err signing txns...');
-			console.log(e);
+			logger.log(e);
 			return {
 				status: 'rejected',
 				message: 'User rejected the message.',
@@ -1862,7 +1878,7 @@ export const utils = {
 	 * @returns Uint8Array[] of signed transactions
 	 */
 	signTxnObjectGroup(txnsForSigning: TxnForSigning[], account: AlgosdkAccount): Uint8Array[] | Uint8Array {
-		// console.log('signTxnObjectGroup', txnsForSigning);
+		// logger.log('signTxnObjectGroup', txnsForSigning);
 
 		// this is critical, if the group doesn't have an id
 		// the transactions are processed as one-offs!

@@ -13,6 +13,9 @@ export declare class Algonaut {
         PORT: string;
         API_TOKEN: any;
     };
+    libConfig: {
+        disableLogs?: boolean | undefined;
+    } | undefined;
     sdk: typeof algosdk;
     account: algosdk.Account | undefined;
     address: string | undefined;
@@ -438,13 +441,7 @@ export declare class Algonaut {
                 }[];
                 readonly isActive: boolean;
                 readonly isConnected: boolean;
-            } | undefined; /**
-             * Sends ALGO from own account to `args.to`
-             *
-             * @param args `AlgonautPaymentArgs` object containing `to`, `amount`, and optional `note`
-             * @param callbacks optional AlgonautTxnCallbacks
-             * @returns Promise resolving to transaction status
-             */
+            } | undefined;
             exodus?: {
                 id: import("@thencc/web3-wallet-handler").WALLET_ID;
                 metadata: {
@@ -471,11 +468,6 @@ export declare class Algonaut {
                 isReady: () => Promise<true>;
                 connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
                 disconnect: () => Promise<void>;
-                /**
-                 * Checks Algo balance of account
-                 * @param address - Wallet of balance to check
-                 * @returns Promise resolving to Algo balance
-                 */
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
                 removeAccounts: () => void;
@@ -641,6 +633,7 @@ export declare class Algonaut {
      */
     constructor(config: AlgonautConfig);
     initAnyWallet(awConfig?: AlgonautConfig['anyWalletConfig']): void;
+    setLibConfig(libConfig?: AlgonautConfig['libConfig']): void;
     /**
      * checks if config obj is valid for use
      * @param config algonaut config for network + signing mode
