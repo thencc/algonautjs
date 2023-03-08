@@ -8,7 +8,6 @@ import type {
 
 // FYI the line below breaks in some deno envs
 import type { ApplicationStateSchema } from 'algosdk/dist/types/client/v2/algod/models/types';
-// import type { ApplicationStateSchema } from 'algosdk/dist/types/src/client/v2/algod/models/types';
 
 import type { WalletInitParamsObj } from '@thencc/web3-wallet-handler';
 
@@ -29,25 +28,6 @@ export type AlgonautConfig = {
 		walletInitParams?: WalletInitParamsObj;
 	};
 }
-
-// export type AlgonautConfig = {
-// 	nodeConfig?: {
-// 		BASE_SERVER: string;
-// 		INDEX_SERVER?: string; // optional, but helpful
-// 		LEDGER: string;
-// 		PORT: string;
-// 		API_TOKEN: any;
-// 	};
-
-// 	anyWalletConfig?: {
-// 		walletsInitParams?: any;
-// 	};
-
-// 	// TODO delete these:
-// 	SIGNING_MODE?: 'local' | 'inkey';
-// 	INKEY_SRC?: string;
-// 	INKEY_ALIGN?: 'center' | 'left' | 'right';
-// }
 
 export interface AlgonautStateData {
 	key: string;
