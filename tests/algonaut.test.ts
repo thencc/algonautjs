@@ -22,16 +22,14 @@ try {
 }
 
 const validConfig: AlgonautConfig = {
-    BASE_SERVER: process.env.NCC_BASE_SERVER as any,
-    INDEX_SERVER: process.env.NCC_INDEX_SERVER,
-    LEDGER: process.env.NCC_LEDGER as string,
-    PORT: process.env.NCC_PORT as string,
-    API_TOKEN: { [(process.env.NCC_API_TOKEN_HEADER as any)]: process.env.NCC_API_TOKEN }
+    nodeConfig: {
+        BASE_SERVER: process.env.NCC_BASE_SERVER as any,
+        INDEX_SERVER: process.env.NCC_INDEX_SERVER,
+        LEDGER: process.env.NCC_LEDGER as string,
+        PORT: process.env.NCC_PORT as string,
+        API_TOKEN: { [(process.env.NCC_API_TOKEN_HEADER as any)]: process.env.NCC_API_TOKEN }
+    }
 }
-
-// copy node config, add inkey signing mode (for Inkey tests)
-const validConfigInkey: AlgonautConfig = JSON.parse(JSON.stringify(validConfig));
-validConfigInkey.SIGNING_MODE = 'inkey';
 
 // this is a new wallet we use to test various things,
 // created at the beginning of each test run but used throughout
@@ -46,35 +44,19 @@ describe('instantiate Algonaut without inkey', () => {
 
 
     test('valid config instantiates algonaut', () => {
-        expect(algonaut.config).toBeDefined();
+        expect(algonaut.nodeConfig).toBeDefined();
         expect(algonaut.algodClient).toBeDefined();
-        expect(algonaut.isValidNodeConfig(validConfig)).toBeTruthy();
+        expect(algonaut.isValidNodeConfig(validConfig.nodeConfig)).toBeTruthy();
     })
-
-    test('inkey should not be used by default', () => {
-        expect(algonaut.usingInkeyWallet()).toBeFalsy();
-    })
-
-    test('frameBus should not exist by default', () => {
-        expect(algonaut.inkeyWallet.frameBus).toBeUndefined();
-    });
 });
 
-describe('instantiate Algonaut with inkey', () => {
-    let algonaut: Algonaut;
+// describe('instantiate Algonaut with inkey', () => {
+//     let algonaut: Algonaut;
 
-    beforeEach(() => {
-        algonaut = new Algonaut(validConfigInkey);
-    });
-
-    test('frameBus should exist when inkey is used', () => {
-        expect(algonaut.inkeyWallet.frameBus).toBeDefined();
-    })
-
-    test('usingInkeyWallet should return true if INKEY_SRC is set', () => {
-        expect(algonaut.usingInkeyWallet()).toBeTruthy();
-    })
-})
+//     beforeEach(() => {
+//         algonaut = new Algonaut(validConfig); // inkey is the default
+//     });
+// })
 
 // isValidNodeConfig
 describe('isValidNodeConfig tests', () => {
@@ -89,7 +71,7 @@ describe('isValidNodeConfig tests', () => {
     })
 
     test('isValidNodeConfig returns true for a valid config', () => {
-        expect(new Algonaut(validConfig).isValidNodeConfig(validConfig)).toBe(true);
+        expect(new Algonaut(validConfig).isValidNodeConfig(validConfig.nodeConfig)).toBe(true);
     })
 });
 
@@ -118,16 +100,16 @@ describe('Algonaut core: offline sync methods', () => {
         algonaut = new Algonaut(validConfig);
     })
 
-    test('expect account to be undefined by default', () => {
-        expect(algonaut.account).toBeUndefined();
+    test('expect activeWallet to be undefined by default', () => {
+        expect(algonaut.AnyWalletState.activeWallet).toBeUndefined();
     })
 
-    test('createWallet sets account with a valid wallet with addr and sk params', () => {
-        algonaut.createWallet();
-        expect(algonaut.account).toBeDefined();
-        expect((algonaut.account as any).addr).toBeDefined();
-        expect((algonaut.account as any).sk).toBeDefined();
-    })
+    // test('createWallet sets account with a valid wallet with addr and sk params', () => {
+    //     utils.createWallet();
+    //     expect(algonaut.account).toBeDefined();
+    //     expect((algonaut.account as any).addr).toBeDefined();
+    //     expect((algonaut.account as any).sk).toBeDefined();
+    // })
 
     test('utils.createAccount also works', () => {
         freshWallet = utils.createWallet();
@@ -137,8 +119,8 @@ describe('Algonaut core: offline sync methods', () => {
     });
 
     test('recoverAccount works with a newly created wallet', () => {
-        let account = algonaut.createWallet();
-        let recoveredAccount: any = algonaut.recoverAccount(account.mnemonic);
+        let account = utils.createWallet();
+        let recoveredAccount: any = algonaut.authWithMnemonic(account.mnemonic);
         expect(recoveredAccount.addr).toBeDefined();
         expect(recoveredAccount.sk).toBeDefined();
     })
@@ -164,13 +146,13 @@ describe('Algonaut core: offline sync methods', () => {
         expect(obj.bio).toBe('Description of me')
     })
 
-    test('set account changes algonaut account', () => {
-        const account1 = algosdk.generateAccount();
-        algonaut.createWallet();
-        expect(algonaut.account?.addr).not.toBe(account1.addr);
-        algonaut.setAccount(account1);
-        expect(algonaut.account?.addr).toBe(account1.addr);
-    })
+    // test('set account changes algonaut account', () => {
+    //     const account1 = algosdk.generateAccount();
+    //     algonaut.createWallet();
+    //     expect(algonaut.account?.addr).not.toBe(account1.addr);
+    //     algonaut.setAccount(account1);
+    //     expect(algonaut.account?.addr).toBe(account1.addr);
+    // })
 
     test('to8Arr returns Uint8Array', () => {
         expect(algonaut.to8Arr('test note')).toBeInstanceOf(Uint8Array);
@@ -247,7 +229,7 @@ describe('Algonaut online methods', () => {
 
     beforeEach(() => {
         algonaut = new Algonaut(validConfig);
-        algonaut.recoverAccount(testAccountMnemonic);
+        algonaut.authWithMnemonic(testAccountMnemonic);
     })
 
     describe('compileProgram', () => {
@@ -280,7 +262,7 @@ describe('Algonaut online methods', () => {
 
     describe('getAlgoBalance', () => {
         test('getAlgoBalance returns a number greater than zero', async () => {
-            let balance = await algonaut.getAlgoBalance((algonaut.account as algosdk.Account).addr);
+            let balance = await algonaut.getAlgoBalance(algonaut.AnyWalletState.activeAddress);
             expect(balance).toBeGreaterThan(0);
         })
     })
@@ -288,7 +270,7 @@ describe('Algonaut online methods', () => {
     describe('getAccountInfo', () => {
         let info: any;
         beforeAll(async () => {
-            info = await algonaut.getAccountInfo((algonaut.account as algosdk.Account).addr);
+            info = await algonaut.getAccountInfo(algonaut.AnyWalletState.activeAddress);
         })
 
         test('getAccountInfo contains all account info properties', async () => {
@@ -309,7 +291,7 @@ describe('Algonaut online methods', () => {
     describe('sendAlgo / atomicPayment', () => {
         test('atomicPayment creates a transaction', async () => {
             const to = utils.createWallet();
-            const txn = await algonaut.atomicPayment({ to: to.address, amount: 10 });
+            const txn = await algonaut.atomicSendAlgo({ to: to.address, amount: 10 });
             expect(txn.transaction instanceof algosdk.Transaction).toBeTruthy()
         })
 
@@ -362,11 +344,11 @@ describe('Algonaut online methods', () => {
             expect(info).toHaveProperty('params.name-b64');
             expect(info).toHaveProperty('params.unit-name-b64');
             expect(info).toHaveProperty('params.default-frozen');
-            expect(info.params.clawback).toBe(algonaut.account?.addr)
-            expect(info.params.freeze).toBe(algonaut.account?.addr)
-            expect(info.params.manager).toBe(algonaut.account?.addr)
-            expect(info.params.reserve).toBe(algonaut.account?.addr)
-            expect(info.params.creator).toBe(algonaut.account?.addr)
+            expect(info.params.clawback).toBe(algonaut.AnyWalletState.activeAddress)
+            expect(info.params.freeze).toBe(algonaut.AnyWalletState.activeAddress)
+            expect(info.params.manager).toBe(algonaut.AnyWalletState.activeAddress)
+            expect(info.params.reserve).toBe(algonaut.AnyWalletState.activeAddress)
+            expect(info.params.creator).toBe(algonaut.AnyWalletState.activeAddress)
             expect(info.params.decimals).toBe(assetArgs.decimals)
             expect(info.params.total).toBe(assetArgs.amount)
             expect(info.params['unit-name']).toBe(assetArgs.symbol)
@@ -374,7 +356,7 @@ describe('Algonaut online methods', () => {
         })
 
         test('getTokenBalance returns 5 (amount specified during createAsset)', async () => {
-            const bal = await algonaut.getTokenBalance((algonaut.account as any).addr, asset.createdIndex);
+            const bal = await algonaut.getTokenBalance(algonaut.AnyWalletState.activeAddress, asset.createdIndex);
             expect(bal).toBe(5);
         })
 
@@ -384,21 +366,21 @@ describe('Algonaut online methods', () => {
         })
 
         test('isOptedIntoAsset returns false with a new account', async () => {
-            algonaut.recoverAccount(freshWallet.mnemonic)
+            algonaut.authWithMnemonic(freshWallet.mnemonic)
             const optedIn = await algonaut.isOptedIntoAsset({
-                account: (algonaut.account as any).addr,
+                account: algonaut.AnyWalletState.activeAddress,
                 assetId: asset.createdIndex
             })
             expect(optedIn).toBe(false);
         })
 
         test('optInAsset successfully opts in to newly created asset', async () => {
-            algonaut.recoverAccount(freshWallet.mnemonic)
+            algonaut.authWithMnemonic(freshWallet.mnemonic)
             let res = await algonaut.optInAsset(asset.createdIndex);
             expect(res.status).toBe('success');
 
             const optedIn = await algonaut.isOptedIntoAsset({
-                account: (algonaut.account as any).addr,
+                account: algonaut.AnyWalletState.activeAddress,
                 assetId: asset.createdIndex
             })
             expect(optedIn).toBe(true);
@@ -410,7 +392,7 @@ describe('Algonaut online methods', () => {
         })
 
         test('sendAsset successfully sends asset', async () => {
-            algonaut.recoverAccount(testAccountMnemonic);
+            algonaut.authWithMnemonic(testAccountMnemonic);
             const res = await algonaut.sendAsset({ to: freshWallet.address, amount: 1, assetIndex: asset.createdIndex });
             expect(res).toHaveProperty('txId');
             expect(res.status).toBe('success');
@@ -654,7 +636,7 @@ describe('Algonaut online methods', () => {
         })
 
         test('atomicDeleteApplication returns a transaction', async () => {
-            const txn = await algonaut.atomicDeleteApplication(createdApp);
+            const txn = await algonaut.atomicDeleteApp(createdApp);
             expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
         })
 

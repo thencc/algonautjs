@@ -8,9 +8,9 @@
 	"main": "dist/index.cjs",
 	"browser": "dist/index.mjs",
 	"exports": {
-		"import": "./dist/index.mjs",
+		"node": "./dist/index.cjs",
 		"require": "./dist/index.cjs",
-		"default": "./dist/index.mjs",
+		"import": "./dist/index.mjs",
 		"types": "./dist/index.d.ts"
 	},
 	"files": [
@@ -19,7 +19,6 @@
 		"README.md"
 	],
 	"scripts": {
-		"init": "pnpm i --no-optional",
 		"link": "npm link",
 		"link-pnpm": "pnpm link --global",
 		"link-w3h": "pnpm link @thencc/web3-wallet-handler --global",

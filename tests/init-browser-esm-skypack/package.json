@@ -11,7 +11,7 @@
 		"test-reports": "npx playwright show-report"
 	},
 	"devDependencies": {
-		"@playwright/test": "^1.25.0",
-		"vite": "^3.0.7"
+		"@playwright/test": "^1.31.2",
+		"vite": "^4.1.4"
 	}
 }
