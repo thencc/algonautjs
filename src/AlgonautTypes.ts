@@ -121,6 +121,7 @@ export interface AlgonautAppState {
 }
 
 export interface AlgonautCallAppArguments {
+	from?: string;
 	appIndex: number;
 	appArgs: any[];
 	optionalFields?: AlgonautTransactionFields;
@@ -131,6 +132,7 @@ export interface AlgonautLsigCallAppArguments extends AlgonautCallAppArguments {
 }
 
 export interface AlgonautCreateAssetArguments {
+	from?: string;
 	assetName: string;
 	symbol: string;
 	metaBlock: string;
@@ -217,6 +219,7 @@ export type AlgonautTransactionFields = {
 
 export type AlgonautAtomicTransaction = {
 	transaction: Transaction;
+	// TODO remove this, yeah?
 	transactionSigner: undefined | Account | LogicSigAccount; // undefined means theres not enough info to tell, like when a .from field is in params
 	isLogigSig: boolean;
 }

@@ -15,7 +15,7 @@
 <li><a href="../modules.html">@thencc/algonautjs</a></li>
 <li><a href="utils.html">utils</a></li></ul>
 <h1>Variable utils<code class="tsd-tag ts-flagConst">Const</code> </h1></div>
-<div class="tsd-signature">utils<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span><br/><span>    </span>createWallet<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../types/AlgonautWallet.html" class="tsd-signature-type" data-tsd-kind="Type alias">AlgonautWallet</a><span class="tsd-signature-symbol">; </span><br/><span>    </span>decodeBase64UnsignedTransaction<span class="tsd-signature-symbol">(</span>txn<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Transaction</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>decodeStateArray<span class="tsd-signature-symbol">(</span>stateArray<span class="tsd-signature-symbol">: </span><a href="../interfaces/AlgonautAppStateEncoded.html" class="tsd-signature-type" data-tsd-kind="Interface">AlgonautAppStateEncoded</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/AlgonautStateData.html" class="tsd-signature-type" data-tsd-kind="Interface">AlgonautStateData</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>encodeArguments<span class="tsd-signature-symbol">(</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>fromBase64<span class="tsd-signature-symbol">(</span>encoded<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>generateLogicSig<span class="tsd-signature-symbol">(</span>base64ProgramString<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">LogicSigAccount</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>getAppEscrowAccount<span class="tsd-signature-symbol">(</span>appId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>recoverAccount<span class="tsd-signature-symbol">(</span>mnemonic<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>signBase64Transactions<span class="tsd-signature-symbol">(</span>txns<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, account<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>signBase64TxnObjects<span class="tsd-signature-symbol">(</span>txnsForSigning<span class="tsd-signature-symbol">: </span><a href="../types/TxnForSigning.html" class="tsd-signature-type" data-tsd-kind="Type alias">TxnForSigning</a><span class="tsd-signature-symbol">[]</span>, account<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>signTransactionGroup<span class="tsd-signature-symbol">(</span>txns<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Transaction</span><span class="tsd-signature-symbol">[]</span>, account<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>signTxnObjectGroup<span class="tsd-signature-symbol">(</span>txnsForSigning<span class="tsd-signature-symbol">: </span><a href="../types/TxnForSigning.html" class="tsd-signature-type" data-tsd-kind="Type alias">TxnForSigning</a><span class="tsd-signature-symbol">[]</span>, account<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>stateArrayToObject<span class="tsd-signature-symbol">(</span>stateArray<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>to8Arr<span class="tsd-signature-symbol">(</span>str<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, enc<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">BufferEncoding</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>txnSummary<span class="tsd-signature-symbol">(</span>txn<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Transaction</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>txnToStr<span class="tsd-signature-symbol">(</span>txn<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Transaction</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>valueAsAddr<span class="tsd-signature-symbol">(</span>encoded<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol"> = ...</span></div>
+<div class="tsd-signature">utils<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span><br/><span>    </span>createWallet<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../types/AlgonautWallet.html" class="tsd-signature-type" data-tsd-kind="Type alias">AlgonautWallet</a><span class="tsd-signature-symbol">; </span><br/><span>    </span>decodeBase64UnsignedTransaction<span class="tsd-signature-symbol">(</span>txn<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Transaction</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>decodeStateArray<span class="tsd-signature-symbol">(</span>stateArray<span class="tsd-signature-symbol">: </span><a href="../interfaces/AlgonautAppStateEncoded.html" class="tsd-signature-type" data-tsd-kind="Interface">AlgonautAppStateEncoded</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/AlgonautStateData.html" class="tsd-signature-type" data-tsd-kind="Interface">AlgonautStateData</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>encodeArguments<span class="tsd-signature-symbol">(</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>fromBase64<span class="tsd-signature-symbol">(</span>encoded<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>generateLogicSig<span class="tsd-signature-symbol">(</span>base64ProgramString<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">LogicSigAccount</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>getAppEscrowAccount<span class="tsd-signature-symbol">(</span>appId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>recoverAccount<span class="tsd-signature-symbol">(</span>mnemonic<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>stateArrayToObject<span class="tsd-signature-symbol">(</span>stateArray<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>to8Arr<span class="tsd-signature-symbol">(</span>str<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, enc<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">BufferEncoding</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>txnSummary<span class="tsd-signature-symbol">(</span>txn<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Transaction</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>txnToStr<span class="tsd-signature-symbol">(</span>txn<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Transaction</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>valueAsAddr<span class="tsd-signature-symbol">(</span>encoded<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol"> = ...</span></div>
 <div class="tsd-comment tsd-typography"><p>This export contains all the offline Algonaut functionality.
 Since instantiation of the Algonaut class requires that you
 configure a node, if you wish to use certain conveniences of
@@ -36,7 +36,7 @@ Algonaut without the need for a network, simply use
 </div>
 <h4 class="tsd-returns-title">Returns <a href="../types/AlgonautWallet.html" class="tsd-signature-type" data-tsd-kind="Type alias">AlgonautWallet</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/97482f7/src/index.ts#L1693">src/index.ts:1693</a></li></ul></aside></li></ul></li>
+<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/1fc9739/src/index.ts#L1524">src/index.ts:1524</a></li></ul></aside></li></ul></li>
 <li class="tsd-parameter">
 <h5>decode<wbr/>Base64<wbr/>Unsigned<wbr/>Transaction<span class="tsd-signature-symbol">:</span>function</h5>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-type-literal">
@@ -55,7 +55,7 @@ Algonaut without the need for a network, simply use
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Transaction</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/97482f7/src/index.ts#L1976">src/index.ts:1976</a></li></ul></aside></li></ul></li>
+<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/1fc9739/src/index.ts#L1682">src/index.ts:1682</a></li></ul></aside></li></ul></li>
 <li class="tsd-parameter">
 <h5>decode<wbr/>State<wbr/>Array<span class="tsd-signature-symbol">:</span>function</h5>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-type-literal">
@@ -68,7 +68,7 @@ Algonaut without the need for a network, simply use
 <h5>stateArray: <a href="../interfaces/AlgonautAppStateEncoded.html" class="tsd-signature-type" data-tsd-kind="Interface">AlgonautAppStateEncoded</a><span class="tsd-signature-symbol">[]</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="../interfaces/AlgonautStateData.html" class="tsd-signature-type" data-tsd-kind="Interface">AlgonautStateData</a><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/97482f7/src/index.ts#L1812">src/index.ts:1812</a></li></ul></aside></li></ul></li>
+<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/1fc9739/src/index.ts#L1644">src/index.ts:1644</a></li></ul></aside></li></ul></li>
 <li class="tsd-parameter">
 <h5>encode<wbr/>Arguments<span class="tsd-signature-symbol">:</span>function</h5>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-type-literal">
@@ -89,7 +89,7 @@ a mix of strings and numbers. Valid types are: string, number, and bigint</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/97482f7/src/index.ts#L1753">src/index.ts:1753</a></li></ul></aside></li></ul></li>
+<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/1fc9739/src/index.ts#L1585">src/index.ts:1585</a></li></ul></aside></li></ul></li>
 <li class="tsd-parameter">
 <h5>from<wbr/>Base64<span class="tsd-signature-symbol">:</span>function</h5>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-type-literal">
@@ -102,7 +102,7 @@ a mix of strings and numbers. Valid types are: string, number, and bigint</p>
 <h5>encoded: <span class="tsd-signature-type">string</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/97482f7/src/index.ts#L1804">src/index.ts:1804</a></li></ul></aside></li></ul></li>
+<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/1fc9739/src/index.ts#L1636">src/index.ts:1636</a></li></ul></aside></li></ul></li>
 <li class="tsd-parameter">
 <h5>generate<wbr/>Logic<wbr/>Sig<span class="tsd-signature-symbol">:</span>function</h5>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-type-literal">
@@ -120,7 +120,7 @@ the program, just builds an LSig from an already compiled base64 result!</p>
 <h5>base64ProgramString: <span class="tsd-signature-type">string</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">LogicSigAccount</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/97482f7/src/index.ts#L1736">src/index.ts:1736</a></li></ul></aside></li></ul></li>
+<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/1fc9739/src/index.ts#L1568">src/index.ts:1568</a></li></ul></aside></li></ul></li>
 <li class="tsd-parameter">
 <h5>get<wbr/>App<wbr/>Escrow<wbr/>Account<span class="tsd-signature-symbol">:</span>function</h5>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-type-literal">
@@ -139,13 +139,14 @@ the program, just builds an LSig from an already compiled base64 result!</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/97482f7/src/index.ts#L1775">src/index.ts:1775</a></li></ul></aside></li></ul></li>
+<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/1fc9739/src/index.ts#L1607">src/index.ts:1607</a></li></ul></aside></li></ul></li>
 <li class="tsd-parameter">
 <h5>recover<wbr/>Account<span class="tsd-signature-symbol">:</span>function</h5>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-type-literal">
 <li class="tsd-signature tsd-anchor-link" id="__type.recoverAccount.recoverAccount-1">recover<wbr/>Account<span class="tsd-signature-symbol">(</span>mnemonic<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span><a href="#__type.recoverAccount.recoverAccount-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Recovers account from mnemonic</p>
+<div class="tsd-comment tsd-typography"><p>Recovers account from mnemonic
+// TODO move this to AnyWallet w mnemonic config param</p>
 
 <h3>Returns</h3><p>If mnemonic is valid, returns account. Otherwise, throws an error.</p>
 </div>
@@ -158,99 +159,7 @@ the program, just builds an LSig from an already compiled base64 result!</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">default</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/97482f7/src/index.ts#L1713">src/index.ts:1713</a></li></ul></aside></li></ul></li>
-<li class="tsd-parameter">
-<h5>sign<wbr/>Base64<wbr/>Transactions<span class="tsd-signature-symbol">:</span>function</h5>
-<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-type-literal">
-<li class="tsd-signature tsd-anchor-link" id="__type.signBase64Transactions.signBase64Transactions-1">sign<wbr/>Base64<wbr/>Transactions<span class="tsd-signature-symbol">(</span>txns<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, account<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">[]</span><a href="#__type.signBase64Transactions.signBase64Transactions-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
-<li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Used by Inkey to sign base64-encoded transactions sent to the iframe</p>
-
-<h3>Returns</h3><p>Uint8Array signed transactions</p>
-</div>
-<div class="tsd-parameters">
-<h4 class="tsd-parameters-title">Parameters</h4>
-<ul class="tsd-parameter-list">
-<li>
-<h5>txns: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
-<div class="tsd-comment tsd-typography"><p>Array of Base64-encoded unsigned transactions</p>
-</div></li>
-<li>
-<h5>account: <span class="tsd-signature-type">default</span></h5>
-<div class="tsd-comment tsd-typography"><p>AlgosdkAccount object with <code>sk</code>, that signs the transactions</p>
-</div></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/97482f7/src/index.ts#L1950">src/index.ts:1950</a></li></ul></aside></li></ul></li>
-<li class="tsd-parameter">
-<h5>sign<wbr/>Base64<wbr/>Txn<wbr/>Objects<span class="tsd-signature-symbol">:</span>function</h5>
-<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-type-literal">
-<li class="tsd-signature tsd-anchor-link" id="__type.signBase64TxnObjects.signBase64TxnObjects-1">sign<wbr/>Base64<wbr/>Txn<wbr/>Objects<span class="tsd-signature-symbol">(</span>txnsForSigning<span class="tsd-signature-symbol">: </span><a href="../types/TxnForSigning.html" class="tsd-signature-type" data-tsd-kind="Type alias">TxnForSigning</a><span class="tsd-signature-symbol">[]</span>, account<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">[]</span><a href="#__type.signBase64TxnObjects.signBase64TxnObjects-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
-<li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Used by Inkey to sign base64-encoded transactions (objects) sent to the iframe</p>
-
-<h3>Returns</h3><p>Uint8Array signed transactions</p>
-</div>
-<div class="tsd-parameters">
-<h4 class="tsd-parameters-title">Parameters</h4>
-<ul class="tsd-parameter-list">
-<li>
-<h5>txnsForSigning: <a href="../types/TxnForSigning.html" class="tsd-signature-type" data-tsd-kind="Type alias">TxnForSigning</a><span class="tsd-signature-symbol">[]</span></h5>
-<div class="tsd-comment tsd-typography"><p>Array of objects containing a Base64-encoded unsigned transaction + info re how they need to be signed (multisig, logicsig, normal...)</p>
-</div></li>
-<li>
-<h5>account: <span class="tsd-signature-type">default</span></h5>
-<div class="tsd-comment tsd-typography"><p>AlgosdkAccount object with <code>sk</code>, that signs the transactions</p>
-</div></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/97482f7/src/index.ts#L1965">src/index.ts:1965</a></li></ul></aside></li></ul></li>
-<li class="tsd-parameter">
-<h5>sign<wbr/>Transaction<wbr/>Group<span class="tsd-signature-symbol">:</span>function</h5>
-<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-type-literal">
-<li class="tsd-signature tsd-anchor-link" id="__type.signTransactionGroup.signTransactionGroup-1">sign<wbr/>Transaction<wbr/>Group<span class="tsd-signature-symbol">(</span>txns<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Transaction</span><span class="tsd-signature-symbol">[]</span>, account<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">[]</span><a href="#__type.signTransactionGroup.signTransactionGroup-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
-<li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Signs an array of Transactions (used in Inkey)</p>
-
-<h3>Returns</h3><p>Uint8Array[] of signed transactions</p>
-</div>
-<div class="tsd-parameters">
-<h4 class="tsd-parameters-title">Parameters</h4>
-<ul class="tsd-parameter-list">
-<li>
-<h5>txns: <span class="tsd-signature-type">Transaction</span><span class="tsd-signature-symbol">[]</span></h5>
-<div class="tsd-comment tsd-typography"><p>Array of Transaction</p>
-</div></li>
-<li>
-<h5>account: <span class="tsd-signature-type">default</span></h5>
-<div class="tsd-comment tsd-typography"><p>AlgosdkAccount object with <code>sk</code>, that signs the transactions</p>
-</div></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/97482f7/src/index.ts#L1851">src/index.ts:1851</a></li></ul></aside></li></ul></li>
-<li class="tsd-parameter">
-<h5>sign<wbr/>Txn<wbr/>Object<wbr/>Group<span class="tsd-signature-symbol">:</span>function</h5>
-<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-type-literal">
-<li class="tsd-signature tsd-anchor-link" id="__type.signTxnObjectGroup.signTxnObjectGroup-1">sign<wbr/>Txn<wbr/>Object<wbr/>Group<span class="tsd-signature-symbol">(</span>txnsForSigning<span class="tsd-signature-symbol">: </span><a href="../types/TxnForSigning.html" class="tsd-signature-type" data-tsd-kind="Type alias">TxnForSigning</a><span class="tsd-signature-symbol">[]</span>, account<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">[]</span><a href="#__type.signTxnObjectGroup.signTxnObjectGroup-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
-<li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Signs an array of Transactions Objects (used in Inkey)</p>
-
-<h3>Returns</h3><p>Uint8Array[] of signed transactions</p>
-</div>
-<div class="tsd-parameters">
-<h4 class="tsd-parameters-title">Parameters</h4>
-<ul class="tsd-parameter-list">
-<li>
-<h5>txnsForSigning: <a href="../types/TxnForSigning.html" class="tsd-signature-type" data-tsd-kind="Type alias">TxnForSigning</a><span class="tsd-signature-symbol">[]</span></h5>
-<div class="tsd-comment tsd-typography"><p>Array of unsigned Transaction Objects (txn + signing method needed)</p>
-</div></li>
-<li>
-<h5>account: <span class="tsd-signature-type">default</span></h5>
-<div class="tsd-comment tsd-typography"><p>AlgosdkAccount object with <code>sk</code>, that signs the transactions</p>
-</div></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/97482f7/src/index.ts#L1880">src/index.ts:1880</a></li></ul></aside></li></ul></li>
+<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/1fc9739/src/index.ts#L1545">src/index.ts:1545</a></li></ul></aside></li></ul></li>
 <li class="tsd-parameter">
 <h5>state<wbr/>Array<wbr/>To<wbr/>Object<span class="tsd-signature-symbol">:</span>function</h5>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-type-literal">
@@ -269,7 +178,7 @@ the program, just builds an LSig from an already compiled base64 result!</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/97482f7/src/index.ts#L1796">src/index.ts:1796</a></li></ul></aside></li></ul></li>
+<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/1fc9739/src/index.ts#L1628">src/index.ts:1628</a></li></ul></aside></li></ul></li>
 <li class="tsd-parameter">
 <h5>to8<wbr/>Arr<span class="tsd-signature-symbol">:</span>function</h5>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-type-literal">
@@ -291,7 +200,7 @@ the program, just builds an LSig from an already compiled base64 result!</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Uint8Array</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/97482f7/src/index.ts#L1786">src/index.ts:1786</a></li></ul></aside></li></ul></li>
+<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/1fc9739/src/index.ts#L1618">src/index.ts:1618</a></li></ul></aside></li></ul></li>
 <li class="tsd-parameter">
 <h5>txn<wbr/>Summary<span class="tsd-signature-symbol">:</span>function</h5>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-type-literal">
@@ -308,7 +217,7 @@ the program, just builds an LSig from an already compiled base64 result!</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/97482f7/src/index.ts#L1993">src/index.ts:1993</a></li></ul></aside></li></ul></li>
+<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/1fc9739/src/index.ts#L1699">src/index.ts:1699</a></li></ul></aside></li></ul></li>
 <li class="tsd-parameter">
 <h5>txn<wbr/>To<wbr/>Str<span class="tsd-signature-symbol">:</span>function</h5>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-type-literal">
@@ -327,7 +236,7 @@ the program, just builds an LSig from an already compiled base64 result!</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/97482f7/src/index.ts#L1985">src/index.ts:1985</a></li></ul></aside></li></ul></li>
+<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/1fc9739/src/index.ts#L1691">src/index.ts:1691</a></li></ul></aside></li></ul></li>
 <li class="tsd-parameter">
 <h5>value<wbr/>As<wbr/>Addr<span class="tsd-signature-symbol">:</span>function</h5>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-type-literal">
@@ -340,9 +249,9 @@ the program, just builds an LSig from an already compiled base64 result!</p>
 <h5>encoded: <span class="tsd-signature-type">string</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/97482f7/src/index.ts#L1808">src/index.ts:1808</a></li></ul></aside></li></ul></li></ul></div><aside class="tsd-sources">
+<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/1fc9739/src/index.ts#L1640">src/index.ts:1640</a></li></ul></aside></li></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/97482f7/src/index.ts#L1688">src/index.ts:1688</a></li></ul></aside></div>
+<li>Defined in <a href="https://github.com/thencc/algonautjs/blob/1fc9739/src/index.ts#L1519">src/index.ts:1519</a></li></ul></aside></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
@@ -422,6 +331,7 @@ the program, just builds an LSig from an already compiled base64 result!</p>
 <li class="tsd-kind-variable tsd-is-external"><a href="DEFAULT_NODE_TOKEN.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-32-path"></use><use href="#icon-32-text"></use></svg>DEFAULT_<wbr/>NODE_<wbr/>TOKEN</a></li>
 <li class="tsd-kind-variable tsd-is-external"><a href="DEFAULT_WALLETS_TO_ENABLE.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-32-path"></use><use href="#icon-32-text"></use></svg>DEFAULT_<wbr/>WALLETS_<wbr/>TO_<wbr/>ENABLE</a></li>
 <li class="tsd-kind-variable"><a href="buffer.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-32-path"></use><use href="#icon-32-text"></use></svg>buffer</a></li>
+<li class="tsd-kind-variable tsd-is-external"><a href="lsKey.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-32-path"></use><use href="#icon-32-text"></use></svg>ls<wbr/>Key</a></li>
 <li class="current tsd-kind-variable"><a href="utils.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-32-path"></use><use href="#icon-32-text"></use></svg>utils</a></li>
 <li class="tsd-kind-function tsd-is-external"><a href="../functions/addConnectedAccounts.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-function)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-64-path"></rect><path d="M9.39 16V7.24H14.55V8.224H10.446V11.128H14.238V12.112H10.47V16H9.39Z" fill="var(--color-text)" id="icon-64-text"></path></svg>add<wbr/>Connected<wbr/>Accounts</a></li>
 <li class="tsd-kind-function tsd-is-external"><a href="../functions/createWallet.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>create<wbr/>Wallet</a></li>
@@ -429,10 +339,12 @@ the program, just builds an LSig from an already compiled base64 result!</p>
 <li class="tsd-kind-function tsd-is-external"><a href="../functions/excludeClients.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>exclude<wbr/>Clients</a></li>
 <li class="tsd-kind-function tsd-is-external"><a href="../functions/getAccountsByWalletId.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>get<wbr/>Accounts<wbr/>By<wbr/>Wallet<wbr/>Id</a></li>
 <li class="tsd-kind-function tsd-is-external"><a href="../functions/isBrowser.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>is<wbr/>Browser</a></li>
-<li class="tsd-kind-function tsd-is-external"><a href="../functions/onChange.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>on<wbr/>Change</a></li>
 <li class="tsd-kind-function tsd-is-external"><a href="../functions/removeAccountsByWalletId.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>remove<wbr/>Accounts<wbr/>By<wbr/>Wallet<wbr/>Id</a></li>
 <li class="tsd-kind-function tsd-is-external"><a href="../functions/setAsActiveAccount.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>set<wbr/>As<wbr/>Active<wbr/>Account</a></li>
+<li class="tsd-kind-function tsd-is-external"><a href="../functions/setChangedAccountHandler.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>set<wbr/>Changed<wbr/>Account<wbr/>Handler</a></li>
+<li class="tsd-kind-function tsd-is-external"><a href="../functions/setChangedStateHandler.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>set<wbr/>Changed<wbr/>State<wbr/>Handler</a></li>
 <li class="tsd-kind-function tsd-is-external"><a href="../functions/signTransactions.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>sign<wbr/>Transactions</a></li>
+<li class="tsd-kind-function tsd-is-external"><a href="../functions/startWatchers.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>start<wbr/>Watchers</a></li>
 <li class="tsd-kind-function tsd-is-external"><a href="../functions/watch.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>watch</a></li></ul></nav></div></div>
 <div class="container tsd-generator">
 <p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>

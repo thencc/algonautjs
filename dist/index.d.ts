@@ -1,6 +1,6 @@
 /// <reference types="node" />
 import algosdk, { Account as AlgosdkAccount, Algodv2, LogicSigAccount, Transaction } from 'algosdk';
-import type { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields, AlgonautAppState, AlgonautStateData, AlgonautError, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments, AlgonautAppStateEncoded, TxnForSigning } from './AlgonautTypes';
+import type { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields, AlgonautAppState, AlgonautStateData, AlgonautError, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments, AlgonautAppStateEncoded } from './AlgonautTypes';
 export * from './AlgonautTypes';
 export * from '@thencc/web3-wallet-handler';
 export declare class Algonaut {
@@ -17,9 +17,6 @@ export declare class Algonaut {
         disableLogs?: boolean | undefined;
     } | undefined;
     sdk: typeof algosdk;
-    account: algosdk.Account | undefined;
-    address: string | undefined;
-    mnemonic: string | undefined;
     AnyWalletState: {
         allWallets: {
             pera?: {
@@ -350,7 +347,11 @@ export declare class Algonaut {
                 inited: boolean;
                 initing: boolean;
                 signing: boolean;
-                connecting: boolean;
+                connecting: boolean; /**
+                 * Compiles TEAL source via [algodClient.compile](https://py-algorand-sdk.readthedocs.io/en/latest/algosdk/v2client/algod.html#v2client.algod.AlgodClient.compile)
+                 * @param programSource source to compile
+                 * @returns Promise resolving to Buffer of compiled bytes
+                 */
                 isReady: () => Promise<true>;
                 connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
                 disconnect: () => Promise<void>;
@@ -425,7 +426,12 @@ export declare class Algonaut {
                 };
                 inited: boolean;
                 initing: boolean;
-                signing: boolean;
+                signing: boolean; /**
+                 * Checks token balance of account
+                 * @param address - Wallet of balance to check
+                 * @param assetIndex - the ASA index
+                 * @returns Promise resolving to token balance
+                 */
                 connecting: boolean;
                 isReady: () => Promise<true>;
                 connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
@@ -656,21 +662,12 @@ export declare class Algonaut {
      */
     checkStatus(): Promise<any | AlgonautError>;
     /**
-     * if you already have an account, set it here
-     * @param account an algosdk account already created
-     */
-    setAccount(account: AlgosdkAccount): void | AlgonautError;
-    /**
-     * Creates a wallet address + mnemonic from account's secret key and sets the wallet as the currently authenticated account
-     * @returns AlgonautWallet Object containing `address` and `mnemonic`
-     */
-    createWallet(): AlgonautWallet;
-    /**
      * Recovers account from mnemonic
+     *  (helpful for rapid development but overall very insecure unless on server-side)
      * @param mnemonic Mnemonic associated with Algonaut account
      * @returns If mnemonic is valid, returns account. Otherwise, throws an error.
      */
-    recoverAccount(mnemonic: string): AlgosdkAccount;
+    authWithMnemonic(mnemonic: string): AlgosdkAccount;
     /**
      * General purpose method to await transaction confirmation
      * @param txId a string id of the transacion you want to watch
@@ -713,7 +710,7 @@ export declare class Algonaut {
     encodeArguments(args: any[]): Uint8Array[];
     /**
      * Create asset transaction
-     * @param args { AlgonautCreateAssetArguments }  Must pass `assetName`, `symbol`, `decimals`, `amount`.
+     * @param args : AlgonautCreateAssetArguments obj must contain: `assetName`, `symbol`, `decimals`, `amount`.
      * @returns atomic txn to create asset
     */
     atomicCreateAsset(args: AlgonautCreateAssetArguments): Promise<AlgonautAtomicTransaction>;
@@ -778,13 +775,6 @@ export declare class Algonaut {
      * @returns Promise resolving to atomic transaction that deletes application
      */
     atomicDeleteApp(appIndex: number, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
-    /**
-     * DEPRECATED! Use `atomicDeleteApp` instead. Returns atomic transaction that deletes application
-     * @deprecated
-     * @param appIndex - ID of application
-     * @returns Promise resolving to atomic transaction that deletes application
-     */
-    atomicDeleteApplication(appIndex: number, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
     /**
      * Deletes an application from the blockchain
      * @param appIndex - ID of application
@@ -883,14 +873,6 @@ export declare class Algonaut {
     compileProgram(programSource: string): Promise<Uint8Array>;
     atomicSendAlgo(args: AlgonautPaymentArguments): Promise<AlgonautAtomicTransaction>;
     /**
-     * DEPRECATED. Use `atomicSendAlgo`. This name will be removed in future versions.
-     * @deprecated
-     * @param args `AlgonautPaymentArgs` object containing `to`, `amount`, and optional `note`
-     * @param callbacks optional AlgonautTxnCallbacks
-     * @returns Promise resolving to atomic trasnaction
-     */
-    atomicPayment(args: AlgonautPaymentArguments): Promise<AlgonautAtomicTransaction>;
-    /**
      * Sends ALGO from own account to `args.to`
      *
      * @param args `AlgonautPaymentArgs` object containing `to`, `amount`, and optional `note`
@@ -931,7 +913,7 @@ export declare class Algonaut {
      */
     getAppGlobalState(applicationIndex: number): Promise<any>;
     /**
-     * Gets account local state for an app. Defaults to `this.account` unless
+     * Gets account local state for an app. Defaults to AnyWallets.activeAddress unless
      * an address is provided.
      * @param applicationIndex the applications index
      */
@@ -940,42 +922,12 @@ export declare class Algonaut {
     atomicPaymentWithLSig(args: AlgonautLsigPaymentArguments): Promise<AlgonautAtomicTransaction>;
     normalizeTxns(txnOrTxns: Transaction | AlgonautAtomicTransaction | AlgonautAtomicTransaction[]): Uint8Array[];
     /**
-     * Sends a transaction or multiple through the correct channels, depending on signing mode.
-     * If no signing mode is set, we assume local signing.
+     * Sends a transaction or multiple through the correct wallet according to AW
      * @param txnOrTxns Either an array of atomic transactions or a single transaction to sign
      * @param callbacks Optional object with callbacks - `onSign`, `onSend`, and `onConfirm`
      * @returns Promise resolving to AlgonautTransactionStatus
      */
     sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
-    /**
-     * run atomic takes an array of transactions to run in order, each
-     * of the atomic transaction methods needs to return an object containing
-     * the transaction and the signed transaction
-     * 	[ atomicSendASA(),
-            atomicSendAlgo(),
-            atomicCallApp()]
-     * @param transactions a Uint8Array of ALREADY SIGNED transactions
-     */
-    sendAtomicTransaction(transactions: AlgonautAtomicTransaction[], callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
-    /**
-     * Signs an array of Transactions with the currently authenticated account (used in inkey-wallet)
-     * @param txns Array of Transaction
-     * @returns Uint8Array[] of signed transactions
-     */
-    signTransactionGroup(txns: Transaction[]): Uint8Array | Uint8Array[];
-    /**
-     * Signs base64-encoded transactions with the currently authenticated account
-     * @param txns Array of Base64-encoded unsigned transactions
-     * @returns Uint8Array signed transactions
-     */
-    signBase64Transactions(txns: string[]): Uint8Array[] | Uint8Array;
-    /**
-     * Signs base64-encoded transactions in the object format with the currently authenticated account
-     * @param txnsForSigning Array of objects containing Base64-encoded unsigned transactions + info about how they need to be signed
-     * @returns Uint8Array signed transactions
-     */
-    signBase64TxnObjects(txnsForSigning: TxnForSigning[]): Uint8Array[] | Uint8Array;
-    /** INCLUDE ALL THE UTILITIES IN ALGONAUT EXPORT FOR CONVENIENCE **/
     /**
      *
      * @param str string
@@ -1036,6 +988,7 @@ export declare const utils: {
     createWallet(): AlgonautWallet;
     /**
      * Recovers account from mnemonic
+     * // TODO move this to AnyWallet w mnemonic config param
      * @param mnemonic Mnemonic associated with Algonaut account
      * @returns If mnemonic is valid, returns account. Otherwise, throws an error.
      */
@@ -1078,34 +1031,6 @@ export declare const utils: {
     fromBase64(encoded: string): string;
     valueAsAddr(encoded: string): string;
     decodeStateArray(stateArray: AlgonautAppStateEncoded[]): AlgonautStateData[];
-    /**
-     * Signs an array of Transactions (used in Inkey)
-     * @param txns Array of Transaction
-     * @param account AlgosdkAccount object with `sk`, that signs the transactions
-     * @returns Uint8Array[] of signed transactions
-     */
-    signTransactionGroup(txns: Transaction[], account: AlgosdkAccount): Uint8Array[] | Uint8Array;
-    /**
-     * Signs an array of Transactions Objects (used in Inkey)
-     * @param txnsForSigning Array of unsigned Transaction Objects (txn + signing method needed)
-     * @param account AlgosdkAccount object with `sk`, that signs the transactions
-     * @returns Uint8Array[] of signed transactions
-     */
-    signTxnObjectGroup(txnsForSigning: TxnForSigning[], account: AlgosdkAccount): Uint8Array[] | Uint8Array;
-    /**
-     * Used by Inkey to sign base64-encoded transactions sent to the iframe
-     * @param txns Array of Base64-encoded unsigned transactions
-     * @param account AlgosdkAccount object with `sk`, that signs the transactions
-     * @returns Uint8Array signed transactions
-     */
-    signBase64Transactions(txns: string[], account: AlgosdkAccount): Uint8Array[] | Uint8Array;
-    /**
-     * Used by Inkey to sign base64-encoded transactions (objects) sent to the iframe
-     * @param txnsForSigning Array of objects containing a Base64-encoded unsigned transaction + info re how they need to be signed (multisig, logicsig, normal...)
-     * @param account AlgosdkAccount object with `sk`, that signs the transactions
-     * @returns Uint8Array signed transactions
-     */
-    signBase64TxnObjects(txnsForSigning: TxnForSigning[], account: AlgosdkAccount): Uint8Array[] | Uint8Array;
     /**
      * Does what it says on the tin.
      * @param txn base64-encoded unsigned transaction

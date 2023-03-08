@@ -76,6 +76,7 @@ export interface AlgonautAppState {
     locals: AlgonautStateData[];
 }
 export interface AlgonautCallAppArguments {
+    from?: string;
     appIndex: number;
     appArgs: any[];
     optionalFields?: AlgonautTransactionFields;
@@ -84,6 +85,7 @@ export interface AlgonautLsigCallAppArguments extends AlgonautCallAppArguments {
     lsig: LogicSigAccount;
 }
 export interface AlgonautCreateAssetArguments {
+    from?: string;
     assetName: string;
     symbol: string;
     metaBlock: string;
