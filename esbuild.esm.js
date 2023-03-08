@@ -1,10 +1,11 @@
-// import { build } from 'esbuild'; // for type:"module" pkgs
-const { build } = require('esbuild');
-const { CLIENT_PKGS } = require('@thencc/web3-wallet-handler');
+import { build } from 'esbuild';
+import { CLIENT_PKGS } from '@thencc/web3-wallet-handler';
 
 // shims
-const plugin = require('node-stdlib-browser/helpers/esbuild/plugin');
-const stdLibBrowser = require('node-stdlib-browser');
+import { default as plugin } from 'node-stdlib-browser/helpers/esbuild/plugin';
+import { default as stdLibBrowser } from 'node-stdlib-browser';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
 
 // build tips (iife, esm, cjs)
 // https://medium.com/geekculture/build-a-library-with-esbuild-23235712f3c
@@ -21,14 +22,14 @@ build({
 	treeShaking: true,
 	target: ['esnext'],
 	//external: ['src/lowtone.ts', 'src/finished.ts'],
-	assetNames: 'assets/[name]',
-	loader: { '.mp3': 'file' },
+	// assetNames: 'assets/[name]',
+	// loader: { '.mp3': 'file' },
 
 	// BROWSER build
 	platform: 'browser',
 	format: 'esm', // esm works in node+browser, but cjs is better for node
 	splitting: true, // only for esm
-	outExtension: { '.js': '.mjs' }, // .js -> .mjs (change package.json main + modules entry IF doing this)
+	outExtension: { '.js': '.esm.js' }, // .js -> .mjs (change package.json main + modules entry IF doing this)
 
 	// for w3h
 	external: [

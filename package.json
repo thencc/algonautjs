@@ -1,12 +1,12 @@
 {
 	"name": "@thencc/algonautjs",
-	"version": "0.2.112",
+	"version": "0.2.113",
 	"description": "AlgonautJS is a simplified Algorand transaction library built specifically for Browsers and Front End Development",
-	"type": "commonjs",
+	"type": "module",
 	"types": "dist/index.d.ts",
-	"main": "dist/index.cjs",
-	"module": "dist/index.mjs",
-	"browser": "dist/index.mjs",
+	"module": "dist/index.esm.js",
+	"main": "dist/index.cjs.js",
+	"browser": "dist/index.esm.js",
 	"files": [
 		"dist/*",
 		"LICENSE",
@@ -97,7 +97,8 @@
 			"prettier"
 		],
 		"parserOptions": {
-			"ecmaVersion": 2020
+			"ecmaVersion": 2020,
+			"sourceType": "module"
 		},
 		"globals": {
 			"Stream": true

@@ -1,6 +1,5 @@
-// import { build } from 'esbuild'; // for type:"module" pkgs
-const { build } = require('esbuild');
-const { CLIENT_PKGS } = require('@thencc/web3-wallet-handler');
+import { build } from 'esbuild';
+import { CLIENT_PKGS } from '@thencc/web3-wallet-handler';
 
 build({
 	entryPoints: ['src/index.ts'],
@@ -30,7 +29,7 @@ build({
 	// NODE build
 	platform: 'node',
 	format: 'cjs', // commonJs is for node
-	outExtension: { '.js': '.cjs' },
+	outExtension: { '.js': '.cjs.js' },
 
 	// for w3h
 	external: [
