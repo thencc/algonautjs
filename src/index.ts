@@ -128,7 +128,6 @@ export class Algonaut {
 	}
 
 	initAnyWallet(awConfig?: AlgonautConfig['anyWalletConfig']) {
-		logger.log('initAnyWallet', awConfig);
 		const defaultWip: WalletInitParamsObj = {
 			inkey: true
 		};
@@ -1409,11 +1408,11 @@ export class Algonaut {
 		 */
 
 		const awTxnsToSign = this.normalizeTxns(txnOrTxns);
-		// logger.log('awTxnsToSign', awTxnsToSign);
+		logger.log('awTxnsToSign', awTxnsToSign);
 		let awTxnsSigned: Uint8Array[];
 		try {
 			awTxnsSigned = await signTransactions(awTxnsToSign);
-			// logger.log('awTxnsSigned', awTxnsSigned);
+			logger.log('awTxnsSigned', awTxnsSigned);
 		} catch(e) {
 			console.warn('err signing txns...');
 			logger.log(e);

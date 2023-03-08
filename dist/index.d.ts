@@ -161,7 +161,13 @@ export declare class Algonaut {
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
-                removeAccounts: () => void;
+                removeAccounts: () => void; /**
+                 * Create an atomic transaction to deploy a
+                 * new Smart Contract from TEAL code
+                 *
+                 * @param args AlgonautDeployArguments
+                 * @returns AlgonautAtomicTransaction
+                 */
                 signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 readonly accounts: readonly {
                     readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
@@ -347,11 +353,7 @@ export declare class Algonaut {
                 inited: boolean;
                 initing: boolean;
                 signing: boolean;
-                connecting: boolean; /**
-                 * Compiles TEAL source via [algodClient.compile](https://py-algorand-sdk.readthedocs.io/en/latest/algosdk/v2client/algod.html#v2client.algod.AlgodClient.compile)
-                 * @param programSource source to compile
-                 * @returns Promise resolving to Buffer of compiled bytes
-                 */
+                connecting: boolean;
                 isReady: () => Promise<true>;
                 connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
                 disconnect: () => Promise<void>;
@@ -392,6 +394,13 @@ export declare class Algonaut {
                 connecting: boolean;
                 isReady: () => Promise<true>;
                 connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
+                /**
+                 * Sends ALGO from own account to `args.to`
+                 *
+                 * @param args `AlgonautPaymentArgs` object containing `to`, `amount`, and optional `note`
+                 * @param callbacks optional AlgonautTxnCallbacks
+                 * @returns Promise resolving to transaction status
+                 */
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
@@ -426,12 +435,7 @@ export declare class Algonaut {
                 };
                 inited: boolean;
                 initing: boolean;
-                signing: boolean; /**
-                 * Checks token balance of account
-                 * @param address - Wallet of balance to check
-                 * @param assetIndex - the ASA index
-                 * @returns Promise resolving to token balance
-                 */
+                signing: boolean;
                 connecting: boolean;
                 isReady: () => Promise<true>;
                 connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
