@@ -56,7 +56,6 @@ tasks:
       - test:init-node-ts-esm
       - test:init-node-js-cjs
       - test:init-node-js-esm
-      - test:init-node-js-esm
       - test:init-browser-esm-relative
       - test:init-browser-esm-skypack
       - test:init-browser-esm-vue

@@ -27,4 +27,4 @@
  * @copyright Chen, Yi-Cyuan 2014-2018
  * @license MIT
  */
-//# sourceMappingURL=index.cjs.js.map
+//# sourceMappingURL=index.cjs.map

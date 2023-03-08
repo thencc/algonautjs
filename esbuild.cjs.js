@@ -29,7 +29,7 @@ build({
 	// NODE build
 	platform: 'node',
 	format: 'cjs', // commonJs is for node
-	outExtension: { '.js': '.cjs.js' },
+	outExtension: { '.js': '.cjs' },
 
 	// for w3h
 	external: [
