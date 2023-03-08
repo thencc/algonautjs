@@ -229,6 +229,9 @@ export class Algonaut {
 				}
 			}
 		});
+		if (this.AnyWalletState.enabledWallets && this.AnyWalletState.enabledWallets['mnemonic']) {
+			this.AnyWalletState.enabledWallets['mnemonic'].setAsActiveWallet();
+		}
 		return account;
 	}
 
@@ -668,18 +671,6 @@ export class Algonaut {
 			logger.log(e);
 			throw new Error(e.response?.text);
 		}
-	}
-
-	/**
-	 * DEPRECATED! Use `deleteApp` instead. This will be removed in future versions.
-	 * @deprecated
-	 * @param appIndex - ID of application
-	 * @param callbacks optional AlgonautTxnCallbacks
-	 * @returns Promise resolving to confirmed transaction or error
-	 */
-	async deleteApplication(appIndex: number, callbacks?: AlgonautTxnCallbacks, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus> {
-		console.warn('deleteApplication is deprecated and will be removed in future versions.');
-		return await this.deleteApp(appIndex, callbacks, optionalTxnArgs);
 	}
 
 	async atomicCallApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {

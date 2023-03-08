@@ -52,11 +52,6 @@ export declare class Algonaut {
                 signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 readonly accounts: readonly {
                     readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
-                    /**
-                     * Get an application's escrow account
-                     * @param appId - ID of application
-                     * @returns Escrow account address as string
-                     */
                     readonly name: string;
                     readonly address: string;
                 }[];
@@ -402,7 +397,11 @@ export declare class Algonaut {
                 readonly accounts: readonly {
                     readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
                     readonly name: string;
-                    readonly address: string;
+                    readonly address: string; /**
+                     * Checks Algo balance of account
+                     * @param address - Wallet of balance to check
+                     * @returns Promise resolving to Algo balance
+                     */
                 }[];
                 readonly isActive: boolean;
                 readonly isConnected: boolean;
@@ -455,11 +454,6 @@ export declare class Algonaut {
                     pkg: string;
                 };
                 client: {
-                    /**
-                     * Gets global state for an application.
-                     * @param applicationIndex - the applications index
-                     * @returns {object} object representing global state
-                     */
                     connect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet>;
                     disconnect: () => Promise<void>;
                     reconnect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet | null>;
@@ -784,14 +778,6 @@ export declare class Algonaut {
      * @returns Promise resolving to confirmed transaction or error
      */
     deleteApp(appIndex: number, callbacks?: AlgonautTxnCallbacks, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus>;
-    /**
-     * DEPRECATED! Use `deleteApp` instead. This will be removed in future versions.
-     * @deprecated
-     * @param appIndex - ID of application
-     * @param callbacks optional AlgonautTxnCallbacks
-     * @returns Promise resolving to confirmed transaction or error
-     */
-    deleteApplication(appIndex: number, callbacks?: AlgonautTxnCallbacks, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus>;
     atomicCallApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction>;
     /**
      * Call a "method" on a stateful contract.  In TEAL, you're really giving

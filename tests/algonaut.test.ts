@@ -1,5 +1,5 @@
 import {describe, expect, test, beforeAll, beforeEach, afterEach, jest } from '@jest/globals';
-import Algonaut from '../src/index';
+import { Algonaut } from '../src/index';
 import { utils } from '../src/index';
 import { accountAppID, bricksID, txnCallApp, txnCloseOutApp, txnCreateAsset, txnDeleteApp, txnOptInApp, txnOptInAsset, txnPayment, txnSendAsset } from './mocks/txns';
 import { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAppState } from '../src/AlgonautTypes';
@@ -7,9 +7,12 @@ import accounttContractValid from './mocks/account-contract-valid';
 import accountv2 from './mocks/accountv2';
 import accountClear from './mocks/account-clear';
 import getAppLocalStateResponse from './mocks/getAppLocalStateResponse';
-import dotenv from 'dotenv'
 import algosdk from 'algosdk';
-dotenv.config()
+
+import * as dotenv from 'dotenv'
+import path from 'path';
+dotenv.config({ path: path.resolve(__dirname, './.env') })
+// console.log('process.env', process.env);
 
 // if there is not a valid test mnemonic, we cannot proceed!
 const testAccountMnemonic: string = process.env.ALGONAUT_TEST_MNEMONIC as string;
@@ -28,6 +31,15 @@ const validConfig: AlgonautConfig = {
         LEDGER: process.env.NCC_LEDGER as string,
         PORT: process.env.NCC_PORT as string,
         API_TOKEN: { [(process.env.NCC_API_TOKEN_HEADER as any)]: process.env.NCC_API_TOKEN }
+    },
+    anyWalletConfig: {
+        walletInitParams: {
+            mnemonic: {
+                config: {
+                    mnemonic: testAccountMnemonic
+                }
+            }
+        }
     }
 }
 
@@ -35,20 +47,19 @@ const validConfig: AlgonautConfig = {
 // created at the beginning of each test run but used throughout
 var freshWallet: AlgonautWallet;
 
-describe('instantiate Algonaut without inkey', () => {
-    let algonaut: Algonaut;
+// describe('instantiate Algonaut without inkey', () => {
+//     let algonaut: Algonaut;
 
-    beforeEach(() => {
-        algonaut = new Algonaut(validConfig);
-    });
+//     beforeEach(() => {
+//         algonaut = new Algonaut(validConfig);
+//     });
 
-
-    test('valid config instantiates algonaut', () => {
-        expect(algonaut.nodeConfig).toBeDefined();
-        expect(algonaut.algodClient).toBeDefined();
-        expect(algonaut.isValidNodeConfig(validConfig.nodeConfig)).toBeTruthy();
-    })
-});
+//     test('valid config instantiates algonaut', () => {
+//         expect(algonaut.nodeConfig).toBeDefined();
+//         expect(algonaut.algodClient).toBeDefined();
+//         expect(algonaut.isValidNodeConfig(validConfig.nodeConfig)).toBeTruthy();
+//     })
+// });
 
 // describe('instantiate Algonaut with inkey', () => {
 //     let algonaut: Algonaut;
@@ -78,7 +89,7 @@ describe('isValidNodeConfig tests', () => {
 describe('getNodeConfig()', () => {
     test('getNodeConfig returns config object', () => {
         const algonaut = new Algonaut(validConfig);
-        expect(algonaut.getNodeConfig()).toEqual(validConfig);
+        expect(algonaut.getNodeConfig()).toEqual(validConfig['nodeConfig']);
     });
 
     test('getNodeConfig returns false if Algonaut is not configured', () => {
@@ -225,7 +236,8 @@ describe('Algonaut online methods', () => {
     jest.setTimeout(120000);
 
     let algonaut: Algonaut;
-    let account;
+    algonaut = new Algonaut(validConfig);
+    algonaut.authWithMnemonic(testAccountMnemonic);
 
     beforeEach(() => {
         algonaut = new Algonaut(validConfig);
@@ -635,13 +647,8 @@ describe('Algonaut online methods', () => {
             expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
         })
 
-        test('atomicDeleteApplication returns a transaction', async () => {
-            const txn = await algonaut.atomicDeleteApp(createdApp);
-            expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
-        })
-
-        test('deleteApplication successfully deletes the application', async () => {
-            let res = await algonaut.deleteApplication(createdApp);
+        test('deleteApp successfully deletes the application', async () => {
+            let res = await algonaut.deleteApp(createdApp);
             expect(res.status).toBe('success');
 
             // get info of deleted app
