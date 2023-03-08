@@ -1,4 +1,5 @@
 /// <reference types="node" />
+import { Buffer } from 'buffer';
 import algosdk, { Account as AlgosdkAccount, Algodv2, LogicSigAccount, Transaction } from 'algosdk';
 import type { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields, AlgonautAppState, AlgonautStateData, AlgonautError, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments, AlgonautAppStateEncoded } from './AlgonautTypes';
 export * from './AlgonautTypes';
@@ -51,6 +52,11 @@ export declare class Algonaut {
                 signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 readonly accounts: readonly {
                     readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
+                    /**
+                     * Get an application's escrow account
+                     * @param appId - ID of application
+                     * @returns Escrow account address as string
+                     */
                     readonly name: string;
                     readonly address: string;
                 }[];
@@ -161,13 +167,7 @@ export declare class Algonaut {
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
-                removeAccounts: () => void; /**
-                 * Create an atomic transaction to deploy a
-                 * new Smart Contract from TEAL code
-                 *
-                 * @param args AlgonautDeployArguments
-                 * @returns AlgonautAtomicTransaction
-                 */
+                removeAccounts: () => void;
                 signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 readonly accounts: readonly {
                     readonly walletId: import("@thencc/web3-wallet-handler").WALLET_ID;
@@ -394,13 +394,6 @@ export declare class Algonaut {
                 connecting: boolean;
                 isReady: () => Promise<true>;
                 connect: () => Promise<import("@thencc/web3-wallet-handler").Account[]>;
-                /**
-                 * Sends ALGO from own account to `args.to`
-                 *
-                 * @param args `AlgonautPaymentArgs` object containing `to`, `amount`, and optional `note`
-                 * @param callbacks optional AlgonautTxnCallbacks
-                 * @returns Promise resolving to transaction status
-                 */
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
@@ -462,6 +455,11 @@ export declare class Algonaut {
                     pkg: string;
                 };
                 client: {
+                    /**
+                     * Gets global state for an application.
+                     * @param applicationIndex - the applications index
+                     * @returns {object} object representing global state
+                     */
                     connect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet>;
                     disconnect: () => Promise<void>;
                     reconnect: (onDisconnect: () => void) => Promise<import("@thencc/web3-wallet-handler").Wallet | null>;
@@ -1041,6 +1039,12 @@ export declare const utils: {
      * @returns transaction object
      */
     decodeBase64UnsignedTransaction(txn: string): Transaction;
+    /**
+     * txn(b64) -> txnBuff (buffer)
+     * @param txn base64-encoded unsigned transaction
+     * @returns trransaction as buffer object
+     */
+    txnB64ToTxnBuff(txn: string): Buffer;
     /**
      * Does what it says on the tin.
      * @param txn algorand txn object

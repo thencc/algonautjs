@@ -22,9 +22,6 @@ import algosdk, {
 	encodeAddress,
 	makePaymentTxnWithSuggestedParamsFromObject,
 	Transaction,
-	assignGroupID,
-	signLogicSigTransaction,
-	signTransaction,
 	mnemonicToSecretKey,
 	isValidAddress,
 	encodeUint64,
@@ -1680,6 +1677,15 @@ export const utils = {
 	 */
 	decodeBase64UnsignedTransaction(txn: string): Transaction {
 		return decodeUnsignedTransaction(Buffer.from(txn, 'base64'));
+	},
+
+	/**
+	 * txn(b64) -> txnBuff (buffer)
+	 * @param txn base64-encoded unsigned transaction
+	 * @returns trransaction as buffer object
+	 */
+	txnB64ToTxnBuff(txn: string): Buffer {
+		return Buffer.from(txn, 'base64');
 	},
 
 	/**
