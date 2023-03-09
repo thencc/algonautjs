@@ -5,8 +5,8 @@ specifiers:
   '@jest/globals': ^29.4.3
   '@perawallet/connect': ^1.1.1
   '@randlabs/myalgo-connect': ^1.4.2
-  '@thencc/inkey-client-js': ^0.0.11
-  '@thencc/web3-wallet-handler': ^0.0.163
+  '@thencc/any-wallet': ^0.1.0
+  '@thencc/inkey-client-js': ^0.0.12
   '@types/node': ^18.13.0
   '@types/superagent': ^4.1.15
   '@typescript-eslint/eslint-plugin': ^5.13.0
@@ -35,7 +35,7 @@ specifiers:
   vite: ^4.1.1
 
 dependencies:
-  '@thencc/web3-wallet-handler': 0.0.163_algosdk@2.1.0
+  '@thencc/any-wallet': 0.1.0_algosdk@2.1.0
   algosdk: 2.1.0
   buffer: 6.0.3
   tslib: 2.5.0
@@ -44,7 +44,7 @@ optionalDependencies:
   '@blockshake/defly-connect': 1.1.1_algosdk@2.1.0
   '@perawallet/connect': 1.1.1_algosdk@2.1.0
   '@randlabs/myalgo-connect': 1.4.2
-  '@thencc/inkey-client-js': 0.0.11
+  '@thencc/inkey-client-js': 0.0.12
 
 devDependencies:
   '@jest/globals': 29.5.0
@@ -1037,14 +1037,8 @@ packages:
       '@sinonjs/commons': 2.0.0
     dev: true
 
-  /@thencc/inkey-client-js/0.0.11:
-    resolution: {integrity: sha512-4La0OZhC6/S9Ojiy5kWWSc6g5A5JKomr5DW/WBXuz5j2J8/SOYPfGqxKm/jtLNQR4BTyXyZ8I8G6uXX5Dp4M8g==}
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@thencc/web3-wallet-handler/0.0.163_algosdk@2.1.0:
-    resolution: {integrity: sha512-wMo8SrY8DwpVb+DvAJEmr33HZMRvjg2KcqJUAiTApy5uNCfPZTBqTRvzTNS0tg/dWlqgws88pzS8ibHZuGv5Mg==}
+  /@thencc/any-wallet/0.1.0_algosdk@2.1.0:
+    resolution: {integrity: sha512-J3dwFbDzcW3gS5t6Tm0gRoGzm0j6+5kyNNlicby0HdsgJtwbyY9RfSTwesHaRXLMXXNUwisjm2pp4ETJZEC3WQ==}
     peerDependencies:
       algosdk: ^1.23.2 || ^2.1.0
     dependencies:
@@ -1056,12 +1050,18 @@ packages:
       '@blockshake/defly-connect': 1.1.1_algosdk@2.1.0
       '@perawallet/connect': 1.1.1_algosdk@2.1.0
       '@randlabs/myalgo-connect': 1.4.2
-      '@thencc/inkey-client-js': 0.0.11
+      '@thencc/inkey-client-js': 0.0.12
       buffer: 6.0.3
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
     dev: false
+
+  /@thencc/inkey-client-js/0.0.12:
+    resolution: {integrity: sha512-Vb1JrrKt+1FwNiVJN/XLW4S3lm1s+IMbeNUxJDtmtE00x9erkZBfDLLrTIzSO0Rwouuhuc2pBbvj0teKJJK83Q==}
+    requiresBuild: true
+    dev: false
+    optional: true
 
   /@tootallnate/once/2.0.0:
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
@@ -1872,8 +1872,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001462
-      electron-to-chromium: 1.4.322
+      caniuse-lite: 1.0.30001464
+      electron-to-chromium: 1.4.325
       node-releases: 2.0.10
       update-browserslist-db: 1.0.10_browserslist@4.21.5
     dev: true
@@ -1939,8 +1939,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /caniuse-lite/1.0.30001462:
-    resolution: {integrity: sha512-PDd20WuOBPiasZ7KbFnmQRyuLE7cFXW2PVd7dmALzbkUXEP46upAuCDm9eY9vho8fgNMGmbAX92QBZHzcnWIqw==}
+  /caniuse-lite/1.0.30001464:
+    resolution: {integrity: sha512-oww27MtUmusatpRpCGSOneQk2/l5czXANDSFvsc7VuOQ86s3ANhZetpwXNf1zY/zdfP63Xvjz325DAdAoES13g==}
     dev: true
 
   /chalk/2.4.2:
@@ -2294,8 +2294,8 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /electron-to-chromium/1.4.322:
-    resolution: {integrity: sha512-KovjizNC9XB7dno/2GjxX8VS0SlfPpCjtyoKft+bCO+UfD8bFy16hY4Sh9s0h9BDxbRH2U0zX5VBjpM1LTcNlg==}
+  /electron-to-chromium/1.4.325:
+    resolution: {integrity: sha512-K1C03NT4I7BuzsRdCU5RWkgZxtswnKDYM6/eMhkEXqKu4e5T+ck610x3FPzu1y7HVFSiQKZqP16gnJzPpji1TQ==}
     dev: true
 
   /elliptic/6.5.4:

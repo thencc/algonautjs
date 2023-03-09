@@ -1,6 +1,6 @@
 {
 	"name": "@thencc/algonautjs",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"description": "AlgonautJS is a simplified Algorand transaction library built specifically for Browsers and Front End Development",
 	"type": "module",
 	"types": "dist/index.d.ts",
@@ -21,7 +21,7 @@
 	"scripts": {
 		"link": "npm link",
 		"link-pnpm": "pnpm link --global",
-		"link-w3h": "pnpm link @thencc/web3-wallet-handler --global",
+		"link-aw": "pnpm link @thencc/any-wallet --global",
 		"build": "rm -rf dist && run-s build:*",
 		"build:cjs": "node ./esbuild.cjs.js",
 		"build:esm": "node ./esbuild.esm.js",
@@ -43,7 +43,7 @@
 		"url": "git://github.com/thencc/algonautjs"
 	},
 	"dependencies": {
-		"@thencc/web3-wallet-handler": "^0.0.163",
+		"@thencc/any-wallet": "^0.1.0",
 		"algosdk": "^2.1.0",
 		"buffer": "^6.0.3",
 		"tslib": "^2.3.1"
@@ -52,13 +52,13 @@
 		"@blockshake/defly-connect": "^1.1.1",
 		"@perawallet/connect": "^1.1.1",
 		"@randlabs/myalgo-connect": "^1.4.2",
-		"@thencc/inkey-client-js": "^0.0.11"
+		"@thencc/inkey-client-js": "^0.0.12"
 	},
 	"devDependencies": {
 		"@blockshake/defly-connect": "^1.1.1",
 		"@perawallet/connect": "^1.1.1",
 		"@randlabs/myalgo-connect": "^1.4.2",
-		"@thencc/inkey-client-js": "^0.0.11",
+		"@thencc/inkey-client-js": "^0.0.12",
 		"@jest/globals": "^29.4.3",
 		"@types/node": "^18.13.0",
 		"@types/superagent": "^4.1.15",

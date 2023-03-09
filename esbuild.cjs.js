@@ -1,5 +1,5 @@
 import { build } from 'esbuild';
-import { CLIENT_PKGS } from '@thencc/web3-wallet-handler';
+import { CLIENT_PKGS } from '@thencc/any-wallet';
 
 build({
 	entryPoints: ['src/index.ts'],

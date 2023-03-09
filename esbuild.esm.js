@@ -1,5 +1,5 @@
 import { build } from 'esbuild';
-import { CLIENT_PKGS } from '@thencc/web3-wallet-handler';
+import { CLIENT_PKGS } from '@thencc/any-wallet';
 
 // shims
 import { default as plugin } from 'node-stdlib-browser/helpers/esbuild/plugin';

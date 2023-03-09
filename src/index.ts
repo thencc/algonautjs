@@ -58,8 +58,8 @@ import type {
 } from './AlgonautTypes';
 export * from './AlgonautTypes';
 
-import { AnyWalletState, enableWallets, signTransactions, WalletInitParamsObj } from '@thencc/web3-wallet-handler';
-export * from '@thencc/web3-wallet-handler';
+import { AnyWalletState, enableWallets, signTransactions, WalletInitParamsObj } from '@thencc/any-wallet';
+export * from '@thencc/any-wallet';
 
 import { defaultNodeConfig } from './algo-config';
 import { defaultLibConfig } from './constants';

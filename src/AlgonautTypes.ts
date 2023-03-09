@@ -9,7 +9,7 @@ import type {
 // FYI the line below breaks in some deno envs
 import type { ApplicationStateSchema } from 'algosdk/dist/types/client/v2/algod/models/types';
 
-import type { WalletInitParamsObj } from '@thencc/web3-wallet-handler';
+import type { WalletInitParamsObj } from '@thencc/any-wallet';
 
 export type AlgonautConfig = {
 	libConfig?: {
