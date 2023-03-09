@@ -41,6 +41,7 @@ dependencies:
   tslib: 2.5.0
 
 optionalDependencies:
+  '@blockshake/defly-connect': 1.1.1_algosdk@2.1.0
   '@perawallet/connect': 1.1.1_algosdk@2.1.0
   '@randlabs/myalgo-connect': 1.4.2
   '@thencc/inkey-client-js': 0.0.14

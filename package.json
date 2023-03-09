@@ -49,7 +49,7 @@
 		"tslib": "^2.3.1"
 	},
 	"optionalDependencies": {
-		"@blockshake/defly-connect": "^1.1.3",
+		"@blockshake/defly-connect": "^1.1.1",
 		"@perawallet/connect": "^1.1.1",
 		"@randlabs/myalgo-connect": "^1.4.2",
 		"@thencc/inkey-client-js": "^0.0.14"
