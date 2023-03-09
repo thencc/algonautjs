@@ -42,11 +42,7 @@ export declare class Algonaut {
                 inited: boolean;
                 initing: boolean;
                 signing: boolean;
-                connecting: boolean; /**
-                 * Get an application's escrow account
-                 * @param appId - ID of application
-                 * @returns Escrow account address as string
-                 */
+                connecting: boolean;
                 isReady: () => Promise<true>;
                 connect: () => Promise<import("@thencc/any-wallet").Account[]>;
                 disconnect: () => Promise<void>;
@@ -215,7 +211,15 @@ export declare class Algonaut {
                 readonly isConnected: boolean;
             } | undefined;
             defly?: {
-                id: import("@thencc/any-wallet").WALLET_ID;
+                id: import("@thencc/any-wallet").WALLET_ID; /**
+                 * deploys a contract from an lsig account
+                 * keep in mind that the local and global byte and int values have caps,
+                 * 16 for local and 32 for global and that the cost of deploying the
+                 * app goes up based on how many of these slots you want to allocate
+                 *
+                 * @param args AlgonautLsigDeployArguments
+                 * @returns
+                 */
                 metadata: {
                     id: import("@thencc/any-wallet").WALLET_ID;
                     name: string;
@@ -326,7 +330,12 @@ export declare class Algonaut {
                     readonly walletId: import("@thencc/any-wallet").WALLET_ID;
                     readonly name: string;
                     readonly address: string;
-                }[];
+                }[]; /**
+                 * Sends an update app transaction
+                 * @param args AlgonautUpdateAppArguments
+                 * @param callbacks optional callbacks: `onSign`, `onSend`, `onConfirm`
+                 * @returns transaction status
+                 */
                 readonly isActive: boolean;
                 readonly isConnected: boolean;
             } | undefined;
@@ -430,13 +439,14 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 isReady: () => Promise<true>;
-                connect: () => Promise<import("@thencc/any-wallet").Account[]>; /**
+                connect: () => Promise<import("@thencc/any-wallet").Account[]>;
+                disconnect: () => Promise<void>;
+                /**
                  * Checks if account has at least one token (before playback)
                  * Keeping this here in case this is a faster/less expensive operation than checking actual balance
                  * @param address - Address to check
                  * @param assetIndex - the index of the ASA
                  */
-                disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
                 removeAccounts: () => void;
@@ -626,19 +636,21 @@ export declare class Algonaut {
      * Usage:
      *
      * ```js
-     * import Algonaut from '@thencc/algonautjs';
+     * import { Algonaut } from '@thencc/algonautjs';
      * const algonaut = new Algonaut({
-     *	 BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
-     *	 INDEX_SERVER: 'https://testnet-algorand.api.purestake.io/idx2'
-     *	 LEDGER: 'TestNet',
-     *	 PORT: '',
-     *	 API_TOKEN: { 'X-API-Key': 'YOUR_API_TOKEN' }
+     * 		nodeConfig: {
+     *	 		BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
+     *	 		INDEX_SERVER: 'https://testnet-algorand.api.purestake.io/idx2'
+     *	 		LEDGER: 'TestNet',
+     *	 		PORT: '',
+     *	 		API_TOKEN: { 'X-API-Key': 'YOUR_API_TOKEN' }
+     * 		}
      * });
      * ```
      *
      * @param config config object
      */
-    constructor(config: AlgonautConfig);
+    constructor(config?: AlgonautConfig);
     initAnyWallet(awConfig?: AlgonautConfig['anyWalletConfig']): void;
     setLibConfig(libConfig?: AlgonautConfig['libConfig']): void;
     /**

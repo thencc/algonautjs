@@ -106,22 +106,24 @@ export class Algonaut {
 	 * Usage:
 	 *
 	 * ```js
-	 * import Algonaut from '@thencc/algonautjs';
+	 * import { Algonaut } from '@thencc/algonautjs';
 	 * const algonaut = new Algonaut({
-	 *	 BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
-	 *	 INDEX_SERVER: 'https://testnet-algorand.api.purestake.io/idx2'
-	 *	 LEDGER: 'TestNet',
-	 *	 PORT: '',
-	 *	 API_TOKEN: { 'X-API-Key': 'YOUR_API_TOKEN' }
+	 * 		nodeConfig: {
+	 *	 		BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
+	 *	 		INDEX_SERVER: 'https://testnet-algorand.api.purestake.io/idx2'
+	 *	 		LEDGER: 'TestNet',
+	 *	 		PORT: '',
+	 *	 		API_TOKEN: { 'X-API-Key': 'YOUR_API_TOKEN' }
+	 * 		}
 	 * });
 	 * ```
 	 *
 	 * @param config config object
 	 */
-	constructor(config: AlgonautConfig) {
-		this.setNodeConfig(config.nodeConfig); // makes algod client too
-		this.initAnyWallet(config.anyWalletConfig);
-		this.setLibConfig(config.libConfig);
+	constructor(config?: AlgonautConfig) {
+		this.setNodeConfig(config?.nodeConfig); // makes algod client too
+		this.initAnyWallet(config?.anyWalletConfig);
+		this.setLibConfig(config?.libConfig);
 	}
 
 	initAnyWallet(awConfig?: AlgonautConfig['anyWalletConfig']) {
