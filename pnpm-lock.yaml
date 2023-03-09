@@ -5,7 +5,7 @@ specifiers:
   '@jest/globals': ^29.4.3
   '@perawallet/connect': ^1.1.1
   '@randlabs/myalgo-connect': ^1.4.2
-  '@thencc/any-wallet': ^0.1.0
+  '@thencc/any-wallet': ^0.1.1
   '@thencc/inkey-client-js': ^0.0.12
   '@types/node': ^18.13.0
   '@types/superagent': ^4.1.15
@@ -35,7 +35,7 @@ specifiers:
   vite: ^4.1.1
 
 dependencies:
-  '@thencc/any-wallet': 0.1.0_algosdk@2.1.0
+  '@thencc/any-wallet': 0.1.1_algosdk@2.1.0
   algosdk: 2.1.0
   buffer: 6.0.3
   tslib: 2.5.0
@@ -1037,8 +1037,8 @@ packages:
       '@sinonjs/commons': 2.0.0
     dev: true
 
-  /@thencc/any-wallet/0.1.0_algosdk@2.1.0:
-    resolution: {integrity: sha512-J3dwFbDzcW3gS5t6Tm0gRoGzm0j6+5kyNNlicby0HdsgJtwbyY9RfSTwesHaRXLMXXNUwisjm2pp4ETJZEC3WQ==}
+  /@thencc/any-wallet/0.1.1_algosdk@2.1.0:
+    resolution: {integrity: sha512-iXrqD49BtYr3B500Pq0uygFQ1Ijn45i/hYSnC1NpggQhVMlIYPOfalc954rURTPw8Yu45gHw66HvP3Cn8HDnlg==}
     peerDependencies:
       algosdk: ^1.23.2 || ^2.1.0
     dependencies:
