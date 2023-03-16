@@ -211,15 +211,7 @@ export declare class Algonaut {
                 readonly isConnected: boolean;
             } | undefined;
             defly?: {
-                id: import("@thencc/any-wallet").WALLET_ID; /**
-                 * deploys a contract from an lsig account
-                 * keep in mind that the local and global byte and int values have caps,
-                 * 16 for local and 32 for global and that the cost of deploying the
-                 * app goes up based on how many of these slots you want to allocate
-                 *
-                 * @param args AlgonautLsigDeployArguments
-                 * @returns
-                 */
+                id: import("@thencc/any-wallet").WALLET_ID;
                 metadata: {
                     id: import("@thencc/any-wallet").WALLET_ID;
                     name: string;
@@ -278,7 +270,11 @@ export declare class Algonaut {
                 inited: boolean;
                 initing: boolean;
                 signing: boolean;
-                connecting: boolean;
+                connecting: boolean; /**
+                 * Updates an application with `makeApplicationUpdateTxn`
+                 * @param args AlgonautUpdateAppArguments
+                 * @returns atomic transaction that updates the app
+                 */
                 isReady: () => Promise<true>;
                 connect: () => Promise<import("@thencc/any-wallet").Account[]>;
                 disconnect: () => Promise<void>;
@@ -330,12 +326,7 @@ export declare class Algonaut {
                     readonly walletId: import("@thencc/any-wallet").WALLET_ID;
                     readonly name: string;
                     readonly address: string;
-                }[]; /**
-                 * Sends an update app transaction
-                 * @param args AlgonautUpdateAppArguments
-                 * @param callbacks optional callbacks: `onSign`, `onSend`, `onConfirm`
-                 * @returns transaction status
-                 */
+                }[];
                 readonly isActive: boolean;
                 readonly isConnected: boolean;
             } | undefined;
@@ -441,12 +432,6 @@ export declare class Algonaut {
                 isReady: () => Promise<true>;
                 connect: () => Promise<import("@thencc/any-wallet").Account[]>;
                 disconnect: () => Promise<void>;
-                /**
-                 * Checks if account has at least one token (before playback)
-                 * Keeping this here in case this is a faster/less expensive operation than checking actual balance
-                 * @param address - Address to check
-                 * @param assetIndex - the index of the ASA
-                 */
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
                 removeAccounts: () => void;

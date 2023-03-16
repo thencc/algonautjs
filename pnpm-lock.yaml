@@ -5,8 +5,8 @@ specifiers:
   '@jest/globals': ^29.4.3
   '@perawallet/connect': ^1.1.1
   '@randlabs/myalgo-connect': ^1.4.2
-  '@thencc/any-wallet': ^0.1.1
-  '@thencc/inkey-client-js': ^0.0.14
+  '@thencc/any-wallet': ^0.1.7
+  '@thencc/inkey-client-js': ^0.0.15
   '@types/node': ^18.13.0
   '@types/superagent': ^4.1.15
   '@typescript-eslint/eslint-plugin': ^5.13.0
@@ -35,7 +35,7 @@ specifiers:
   vite: ^4.1.1
 
 dependencies:
-  '@thencc/any-wallet': 0.1.1_algosdk@2.1.0
+  '@thencc/any-wallet': 0.1.7_algosdk@2.1.0
   algosdk: 2.1.0
   buffer: 6.0.3
   tslib: 2.5.0
@@ -44,7 +44,7 @@ optionalDependencies:
   '@blockshake/defly-connect': 1.1.1_algosdk@2.1.0
   '@perawallet/connect': 1.1.1_algosdk@2.1.0
   '@randlabs/myalgo-connect': 1.4.2
-  '@thencc/inkey-client-js': 0.0.14
+  '@thencc/inkey-client-js': 0.0.15
 
 devDependencies:
   '@jest/globals': 29.5.0
@@ -1037,8 +1037,8 @@ packages:
       '@sinonjs/commons': 2.0.0
     dev: true
 
-  /@thencc/any-wallet/0.1.1_algosdk@2.1.0:
-    resolution: {integrity: sha512-iXrqD49BtYr3B500Pq0uygFQ1Ijn45i/hYSnC1NpggQhVMlIYPOfalc954rURTPw8Yu45gHw66HvP3Cn8HDnlg==}
+  /@thencc/any-wallet/0.1.7_algosdk@2.1.0:
+    resolution: {integrity: sha512-Ko37kvwlPUwVU+/IWfEfSsoy8Svit+LGGD8FvOT3YF8LFSDwwJ1LwmFg180H08MR8zpewtVKacS4PvaWxtzR2g==}
     peerDependencies:
       algosdk: ^1.23.2 || ^2.1.0
     dependencies:
@@ -1050,21 +1050,15 @@ packages:
       '@blockshake/defly-connect': 1.1.1_algosdk@2.1.0
       '@perawallet/connect': 1.1.1_algosdk@2.1.0
       '@randlabs/myalgo-connect': 1.4.2
-      '@thencc/inkey-client-js': 0.0.12
+      '@thencc/inkey-client-js': 0.0.15
       buffer: 6.0.3
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
     dev: false
 
-  /@thencc/inkey-client-js/0.0.12:
-    resolution: {integrity: sha512-Vb1JrrKt+1FwNiVJN/XLW4S3lm1s+IMbeNUxJDtmtE00x9erkZBfDLLrTIzSO0Rwouuhuc2pBbvj0teKJJK83Q==}
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@thencc/inkey-client-js/0.0.14:
-    resolution: {integrity: sha512-nJjZYSLEsTM20wA7a8dsVJkd3IQUStpb2VEelUHnW+Ga0QiNi4WQvhJjcedngNTel6sOar9nIJdCD6Lk91uVMQ==}
+  /@thencc/inkey-client-js/0.0.15:
+    resolution: {integrity: sha512-M4+ryC4w6tqiSSoAYhFrg1X4o0C4sQf89eqLWzmd0fuaVJMQMxxGM/5/ta0Qmd+fCuc7gcuMuMcQs+rM28DNmg==}
     requiresBuild: true
     dev: false
     optional: true
