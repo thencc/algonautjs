@@ -270,13 +270,13 @@ export declare class Algonaut {
                 inited: boolean;
                 initing: boolean;
                 signing: boolean;
-                connecting: boolean; /**
+                connecting: boolean;
+                isReady: () => Promise<true>;
+                connect: () => Promise<import("@thencc/any-wallet").Account[]>; /**
                  * Updates an application with `makeApplicationUpdateTxn`
                  * @param args AlgonautUpdateAppArguments
                  * @returns atomic transaction that updates the app
                  */
-                isReady: () => Promise<true>;
-                connect: () => Promise<import("@thencc/any-wallet").Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
@@ -405,7 +405,11 @@ export declare class Algonaut {
                 }[];
                 readonly isActive: boolean;
                 readonly isConnected: boolean;
-            } | undefined;
+            } | undefined; /**
+             * Checks Algo balance of account
+             * @param address - Wallet of balance to check
+             * @returns Promise resolving to Algo balance
+             */
             algosigner?: {
                 id: import("@thencc/any-wallet").WALLET_ID;
                 metadata: {
@@ -614,6 +618,7 @@ export declare class Algonaut {
         } | undefined;
         isSigning: boolean;
     };
+    address: string;
     /**
      * Instantiates Algonaut.js.
      *

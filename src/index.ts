@@ -98,6 +98,7 @@ export class Algonaut {
 	sdk = algosdk;
 	// handles all algo wallets (inkey, pera, etc) + remembers last used in localstorage
 	AnyWalletState = AnyWalletState;
+	address = AnyWalletState.activeAddress; // helpful to have .address as top level field
 
 	/**
 	 * Instantiates Algonaut.js.
