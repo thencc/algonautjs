@@ -239,6 +239,108 @@ export class Algonaut {
 	}
 
 	/**
+	 * @deprecated use .connect or loop through enabled wallets' methods
+	 */
+	async inkeyConnect() {
+		console.warn('.inkeyConnect is deprecated. please use .connect');
+		if (AnyWalletState.enabledWallets) {
+			if ('inkey' in AnyWalletState.enabledWallets) {
+				const w = AnyWalletState.enabledWallets.inkey;
+				if (w) {
+					if (!w.isConnected) {
+						return await w.connect();
+					} else {
+						throw new Error('Inkey wallet already connected.');
+					}
+				} else {
+					throw new Error('Inkey wallet wasnt initialized correctly.');
+				}
+			} else {
+				throw new Error('INKEY is not an enabled wallet.');
+			}
+		} else {
+			throw new Error('No enabled wallets');
+		}
+	}
+
+	/**
+	 * @deprecated use .disconnect or loop through enabled wallets' methods
+	 */
+	async inkeyDisconnect() {
+		console.warn('.inkeyDisconnect is deprecated. please use .connect');
+		if (AnyWalletState.enabledWallets) {
+			if ('inkey' in AnyWalletState.enabledWallets) {
+				const w = AnyWalletState.enabledWallets.inkey;
+				if (w) {
+					if (w.isConnected) {
+						return await w.disconnect();
+					} else {
+						throw new Error('Inkey wallet already not connected.');
+					}
+				} else {
+					throw new Error('Inkey wallet wasnt initialized correctly.');
+				}
+			} else {
+				throw new Error('INKEY is not an enabled wallet.');
+			}
+		} else {
+			throw new Error('No enabled wallets');
+		}
+	}
+
+	/**
+	 * Connects the enabled wallet IF 1 wallet is enabled (as is the default. just inkey)
+	 * 	throws when multiple wallets are enabled because it doesnt know which wallet to connect for you.
+	 */
+	async connect() {
+		if (AnyWalletState.enabledWallets) {
+			const enabledWs = Object.entries(AnyWalletState.enabledWallets);
+			if (enabledWs.length == 1) {
+				const w = enabledWs[0][1]; // grab the only enabled wallet
+				if (w) {
+					if (!w.isConnected) {
+						return await w.connect();
+					} else {
+						throw new Error('Wallet already connected.');
+					}
+				} else {
+					throw new Error('Wallet wasnt initialized correctly.');
+				}
+			} else {
+				throw new Error('Too many wallets enabled to know which to connect.');
+			}
+		} else {
+			throw new Error('No enabled wallets');
+		}
+	}
+
+	/**
+	 * disconnects the active wallet in AnyWalletState
+	 * ? should this disconnect ALL connected wallet?
+	 */
+	async disconnect() {
+		if (AnyWalletState.enabledWallets) {
+			const enabledWs = Object.entries(AnyWalletState.enabledWallets);
+			if (enabledWs.length == 1) {
+				const w = enabledWs[0][1]; // grab the only enabled wallet
+				if (w) {
+					if (w.isConnected) {
+						return await w.disconnect();
+					} else {
+						throw new Error('Wallet already not connected.');
+					}
+				} else {
+					throw new Error('Wallet wasnt initialized correctly.');
+				}
+			} else {
+				throw new Error('Too many wallets enabled to know which to connect.');
+			}
+		} else {
+			throw new Error('No enabled wallets');
+		}
+	}
+
+	/**
 	 * General purpose method to await transaction confirmation
 	 * @param txId a string id of the transacion you want to watch
 	 * @param limitDelta how many rounds to wait, defaults to 50

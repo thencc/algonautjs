@@ -272,11 +272,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 isReady: () => Promise<true>;
-                connect: () => Promise<import("@thencc/any-wallet").Account[]>; /**
-                 * Updates an application with `makeApplicationUpdateTxn`
-                 * @param args AlgonautUpdateAppArguments
-                 * @returns atomic transaction that updates the app
-                 */
+                connect: () => Promise<import("@thencc/any-wallet").Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
@@ -405,11 +401,7 @@ export declare class Algonaut {
                 }[];
                 readonly isActive: boolean;
                 readonly isConnected: boolean;
-            } | undefined; /**
-             * Checks Algo balance of account
-             * @param address - Wallet of balance to check
-             * @returns Promise resolving to Algo balance
-             */
+            } | undefined;
             algosigner?: {
                 id: import("@thencc/any-wallet").WALLET_ID;
                 metadata: {
@@ -671,6 +663,24 @@ export declare class Algonaut {
      * @returns If mnemonic is valid, returns account. Otherwise, throws an error.
      */
     authWithMnemonic(mnemonic: string): AlgosdkAccount;
+    /**
+     * @deprecated use .connect or loop through enabled wallets' methods
+     */
+    inkeyConnect(): Promise<import("@thencc/any-wallet").Account[]>;
+    /**
+     * @deprecated use .disconnect or loop through enabled wallets' methods
+     */
+    inkeyDisconnect(): Promise<void>;
+    /**
+     * Connects the enabled wallet IF 1 wallet is enabled (as is the default. just inkey)
+     * 	throws when multiple wallets are enabled because it doesnt know which wallet to connect for you.
+     */
+    connect(): Promise<import("@thencc/any-wallet").Account[]>;
+    /**
+     * disconnects the active wallet in AnyWalletState
+     * ? should this disconnect ALL connected wallet?
+     */
+    disconnect(): Promise<void>;
     /**
      * General purpose method to await transaction confirmation
      * @param txId a string id of the transacion you want to watch
