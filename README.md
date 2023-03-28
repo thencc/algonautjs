@@ -65,7 +65,7 @@ algonaut uses [`any-wallet`](https://github.com/thencc/any-wallet) under the hoo
 
 ### enable
 
-enable all supported wallets (see `any-wallet` repo for full example):
+enable all supported wallets (see `any-wallet` repo for [full example](https://github.com/thencc/any-wallet/tree/main/example-dapp)):
 ```ts
 import { WALLET_ID } from '@thencc/algonautjs';
 
