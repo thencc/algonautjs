@@ -1785,12 +1785,22 @@ export const utils = {
 	},
 
 	/**
+	 * Converts between buff -> b64 (txns)
+	 * @param buff likely a algorand txn as a Uint8Array buffer
+	 * @returns string (like for inkey / base64 transmit use)
+	 */
+	txnBuffToB64(buff: Uint8Array): string {
+		return Buffer.from(buff).toString('base64');
+	},
+
+	/**
 	 * Does what it says on the tin.
 	 * @param txn algorand txn object
 	 * @returns string (like for inkey / base64 transmit use)
 	 */
 	txnToStr(txn: algosdk.Transaction): string {
-		return Buffer.from(txn.toByte()).toString('base64');
+		const buff = txn.toByte();
+		return this.txnBuffToB64(buff);
 	},
 
 	/**
@@ -1878,7 +1888,7 @@ export const utils = {
 			// no better option
 			return txn.toString();
 		}
-	}
+	},
 };
 
 export const buffer = Buffer; // sometimes this is helpful on the frontend

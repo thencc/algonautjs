@@ -71,7 +71,12 @@ export declare class Algonaut {
                     connect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet>;
                     disconnect: () => Promise<void>;
                     reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet | null>;
-                    signTransactions: (connectedAccounts: string[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                    signTransactions: (connectedAccounts: string[], transactions: Uint8Array[]) => Promise<Uint8Array[]>; /**
+                     * Returns an atomic transaction that closes out the user's local state in an application.
+                     * The opposite of {@link atomicOptInApp}.
+                     * @param args Object containing `appIndex`, `appArgs`, and `optionalFields` properties
+                     * @returns Promise resolving to atomic transaction
+                     */
                 } | null;
                 initParams: boolean | {
                     config?: any;
@@ -108,6 +113,13 @@ export declare class Algonaut {
                 client: {
                     connect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet>;
                     disconnect: () => Promise<void>;
+                    /**
+                     * Closes out the user's local state in an application.
+                     * The opposite of {@link optInApp}.
+                     * @param args Object containing `appIndex`, `appArgs`, and `optionalFields` properties
+                     * @param callbacks optional AlgonautTxnCallbacks
+                     * @returns Promise resolving to atomic transaction
+                     */
                     reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet | null>;
                     signTransactions: (connectedAccounts: string[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 } | null;
@@ -1048,6 +1060,12 @@ export declare const utils: {
      * @returns trransaction as buffer object
      */
     txnB64ToTxnBuff(txn: string): Buffer;
+    /**
+     * Converts between buff -> b64 (txns)
+     * @param buff likely a algorand txn as a Uint8Array buffer
+     * @returns string (like for inkey / base64 transmit use)
+     */
+    txnBuffToB64(buff: Uint8Array): string;
     /**
      * Does what it says on the tin.
      * @param txn algorand txn object

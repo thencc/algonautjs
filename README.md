@@ -91,7 +91,8 @@ const algonaut = new Algonaut({
 ```
 
 
-enable only the mnemonic wallet for authentication (**note**: not super secure but can be useful for local development):
+enable only the mnemonic wallet for authentication
+> **note**: not super secure but can be useful for local development:
 ```ts
 const algonaut = new Algonaut({
   anyWalletConfig: {
@@ -126,7 +127,7 @@ const connectWallet = async (walletId: string) => {
       algonaut.AnyWalletState.enabledWallets &&
       walletId in algonaut.AnyWalletState.enabledWallets
     ) {
-        let accts = await algonaut.AnyWalletState.enabledWallets[walletId]connect();
+        let accts = await algonaut.AnyWalletState.enabledWallets[walletId].connect();
     } else {
       throw new Error('wallet not enabled:', walletId);
     }
@@ -136,7 +137,7 @@ const connectWallet = async (walletId: string) => {
 };
 ```
 
-once the algonaut instance is authenticated it uses this chosen wallet + account's address as the default .from address in txn constructions (unless a .from field is passed in).
+once the algonaut instance is authenticated it uses this chosen wallet as the default wallet for signing, and this account's address as the default `.from` address in txn constructions (unless a `.from` field is passed into the txn args).
 
 
 the algonaut instance is authenticated if the `algonaut.address` field is populated.
@@ -166,9 +167,7 @@ unsubscribe();
 
 ## Submitting Transactions
 
-Submitting/sending transactions is common practice on a dapp and algonautjs make it simple! One of the most powerful aspects of the Algorand chain is the ability to group transactions together and run them as one.
-
-`algonaut.sendTransaction()` signs and submits the incomming txn or array of txns.
+Submitting/sending transactions is common practice on a dapp and algonautjs makes it simple! `algonaut.sendTransaction()` signs and submits the incoming single txn or array of txns (atomic txn). A powerful feature of the Algorand chain is the ability to group transactions together and run them as one [atomic transactions](https://developer.algorand.org/docs/get-details/atomic_transfers/).
 
 single txn send:
 ```js
@@ -186,10 +185,10 @@ console.log('txnRes', txnRes);
 
 atomic txn example:
 ```js
-// this transaction must pay and and then make a request to an Algorand Smart Contract
-// in one transaction. It must also include the asset index in the "assets" arg and an
-// app index in the applications arg
-const status = await algonaut.sendTransaction([
+// the logic in the 2nd txn's smart contract requires that the first txn in this atomic transaction is a payment txn to a specific address in order for the second txn to succeed.
+// - to interact w app/smart contracts you must include the app id in the optionalFields.applications array.
+// - similarly, to interact w any asset, the asset id must by included in the optionalFields.assets array.
+const txnStatus = await algonaut.sendTransaction([
   await algonaut.atomicSendAlgo({ to: appAddress, amount: 250000 }),
   await algonaut.atomicCallApp({
     appIndex: appIndex,
@@ -197,15 +196,15 @@ const status = await algonaut.sendTransaction([
     optionalFields: { applications: [ bananaPriceTicker ] , assets: [ bananaAsaIndex ]
   })
 ]);
-// await returns when txn is confirmed
+// .sendTransaction will return the await once the txn is confirmed (successfully committed to algo chain state)
 
-// CALLBACKS: you can also get more specific callback using a 2nd arg of callback handlers, like:
+// CALLBACKS: you can also get more specific callbacks by passing a 2nd arg to .sendTxn() like so:
 algonaut.sendTransaction( txnArr , {
   onSign: (e) => {
     //
   },
   onSend: (e) => {
-
+    //
   },
   onConfirm: (e) => {
     //
@@ -230,6 +229,11 @@ const signedTxns = await signTransactions([
   txn1.toByte(),
   txn2.toByte(),
 ]);
+// NOTE: signedTxns is an array of Uint8Array's (raw algo txn bytes)
+
+// you can then submit these raw txns like so:
+const txnGroup = await algonaut.algodClient.sendRawTransaction(signedTxns).do();
+console.log('tx id: ', txnGroup.txId);
 ```
 
 
@@ -258,7 +262,7 @@ algonaut.setNodeConfig({
 
 ## Deploying Smart Contracts
 
-In case you want to, Algonaut can deploy a smart contract to the network using TEAL approval + clear code.
+In case you want to, Algonaut can deploy a smart contract to the current network using TEAL approval + clear code.
 Use the `createApp` method to do this like so:
 
 ```js
