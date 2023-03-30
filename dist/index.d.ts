@@ -5,6 +5,7 @@ import type { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, Algonau
 export * from './AlgonautTypes';
 export * from '@thencc/any-wallet';
 export declare class Algonaut {
+    #private;
     algodClient: Algodv2;
     indexerClient: algosdk.Indexer | undefined;
     nodeConfig: {
@@ -71,12 +72,7 @@ export declare class Algonaut {
                     connect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet>;
                     disconnect: () => Promise<void>;
                     reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet | null>;
-                    signTransactions: (connectedAccounts: string[], transactions: Uint8Array[]) => Promise<Uint8Array[]>; /**
-                     * Returns an atomic transaction that closes out the user's local state in an application.
-                     * The opposite of {@link atomicOptInApp}.
-                     * @param args Object containing `appIndex`, `appArgs`, and `optionalFields` properties
-                     * @returns Promise resolving to atomic transaction
-                     */
+                    signTransactions: (connectedAccounts: string[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 } | null;
                 initParams: boolean | {
                     config?: any;
@@ -113,13 +109,6 @@ export declare class Algonaut {
                 client: {
                     connect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet>;
                     disconnect: () => Promise<void>;
-                    /**
-                     * Closes out the user's local state in an application.
-                     * The opposite of {@link optInApp}.
-                     * @param args Object containing `appIndex`, `appArgs`, and `optionalFields` properties
-                     * @param callbacks optional AlgonautTxnCallbacks
-                     * @returns Promise resolving to atomic transaction
-                     */
                     reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet | null>;
                     signTransactions: (connectedAccounts: string[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 } | null;
@@ -441,6 +430,12 @@ export declare class Algonaut {
                 connect: () => Promise<import("@thencc/any-wallet").Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
+                /**
+                 * Sends an update app transaction
+                 * @param args AlgonautUpdateAppArguments
+                 * @param callbacks optional callbacks: `onSign`, `onSend`, `onConfirm`
+                 * @returns transaction status
+                 */
                 setAsActiveWallet: () => void;
                 removeAccounts: () => void;
                 signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
@@ -622,7 +617,7 @@ export declare class Algonaut {
         } | undefined;
         isSigning: boolean;
     };
-    address: string;
+    get address(): string;
     /**
      * Instantiates Algonaut.js.
      *
@@ -668,6 +663,7 @@ export declare class Algonaut {
      * @returns Promise resolving to status of Algorand network
      */
     checkStatus(): Promise<any | AlgonautError>;
+    initAddrSync(): void;
     /**
      * Recovers account from mnemonic
      *  (helpful for rapid development but overall very insecure unless on server-side)
@@ -693,6 +689,11 @@ export declare class Algonaut {
      * ? should this disconnect ALL connected wallet?
      */
     disconnect(): Promise<void>;
+    /**
+     * reconnect the active wallet in AnyWalletState
+     * for a secure authd ctx in THIS session (aka dont trust the localstorage addr)
+     */
+    reconnect(): Promise<import("@thencc/any-wallet").Account[]>;
     /**
      * General purpose method to await transaction confirmation
      * @param txId a string id of the transacion you want to watch

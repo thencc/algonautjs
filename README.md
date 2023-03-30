@@ -150,17 +150,17 @@ You can also subscribe to auth changes like so:
 import { subscribeToAccountChanges } from '@thencc/algonautjs';
 
 const unsubscribe = subscribeToAccountChanges(
-	(acct) => {
+  (acct) => {
     if (acct) {
       // authenticated
       console.log(acct.address);
     } else {
       // un-authenticated
     }
-	}
+  }
 );
 
-// or unsubscribe
+// and can unsubscribe
 unsubscribe();
 ```
 
@@ -171,6 +171,7 @@ Submitting/sending transactions is common practice on a dapp and algonautjs make
 
 single txn send:
 ```js
+// construct txn
 const txn = await algonaut.atomicSendAlgo({
   amount: 1000, // micro-algos
   to: receiverAddr,
@@ -178,6 +179,7 @@ const txn = await algonaut.atomicSendAlgo({
 });
 console.log('txn', txn);
 
+// sign + submit txn
 let txnRes = await algonaut.sendTransaction(txn);
 console.log('txnRes', txnRes);
 ```
@@ -292,13 +294,13 @@ Even the concept of Stateless contracts will be a curve climb for a lot of front
 
 Here again we are trying to account for the 90% use case, not every possible case.  The goal is simplicity and ease of use, understanding that there will always be those complex cases where you have to go down to the metal.
 
+FYI: the first app arg is often the method name, or required to be the method selector when interfacing w an ABI compliant smart contract.
+
 ```js
-const response = await algonaut.callApp(
-  {
-    appIndex: 123456789,
-    appArgs: ['set_name', 'New Name']
-  }
-);
+const response = await algonaut.callApp({
+  appIndex: 123456789,
+  appArgs: ['set_name', 'New Name']
+});
  ```
 
 

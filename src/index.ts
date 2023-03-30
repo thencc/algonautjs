@@ -58,7 +58,7 @@ import type {
 } from './AlgonautTypes';
 export * from './AlgonautTypes';
 
-import { AnyWalletState, enableWallets, signTransactions, WalletInitParamsObj } from '@thencc/any-wallet';
+import { AnyWalletState, enableWallets, signTransactions, subscribeToAccountChanges, WalletInitParamsObj } from '@thencc/any-wallet';
 export * from '@thencc/any-wallet';
 
 import { defaultNodeConfig } from './algo-config';
@@ -98,7 +98,13 @@ export class Algonaut {
 	sdk = algosdk;
 	// handles all algo wallets (inkey, pera, etc) + remembers last used in localstorage
 	AnyWalletState = AnyWalletState;
-	address = AnyWalletState.activeAddress; // helpful to have .address as top level field
+	// address = ''; // helpful to have .address as top level field
+
+	// helpful to have .address as top level field
+	#address = '';
+	get address() {
+		return this.#address;
+	}
 
 	/**
 	 * Instantiates Algonaut.js.
@@ -125,6 +131,7 @@ export class Algonaut {
 		this.setNodeConfig(config?.nodeConfig); // makes algod client too
 		this.initAnyWallet(config?.anyWalletConfig);
 		this.setLibConfig(config?.libConfig);
+		this.initAddrSync();
 	}
 
 	initAnyWallet(awConfig?: AlgonautConfig['anyWalletConfig']) {
@@ -212,6 +219,15 @@ export class Algonaut {
 		const status = await this.algodClient.status().do();
 		logger.log('Algorand network status: %o', status);
 		return status;
+	}
+
+	initAddrSync() {
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		const uns = subscribeToAccountChanges(
+			(acct) => {
+				this.#address = acct?.address || '';
+			}
+		);
 	}
 
 	/**
@@ -334,6 +350,33 @@ export class Algonaut {
 				}
 			} else {
 				throw new Error('Too many wallets enabled to know which to connect.');
+			}
+		} else {
+			throw new Error('No enabled wallets');
+		}
+	}
+
+	/**
+	 * reconnect the active wallet in AnyWalletState
+	 * for a secure authd ctx in THIS session (aka dont trust the localstorage addr)
+	 */
+	async reconnect() {
+		if (AnyWalletState.enabledWallets) {
+			if (AnyWalletState.activeWalletId) {
+				if (AnyWalletState.activeWalletId in AnyWalletState.enabledWallets) {
+					const w = AnyWalletState.enabledWallets[AnyWalletState.activeWalletId];
+					if (w) {
+						// success
+						return await w.connect();
+					} else {
+						throw new Error('Wallet wasnt initialized correctly.');
+					}
+				} else {
+					// dapp must have changed config
+					throw new Error('The active wallet isnt enabled.');
+				}
+			} else {
+				throw new Error('No active wallet');
 			}
 		} else {
 			throw new Error('No enabled wallets');
