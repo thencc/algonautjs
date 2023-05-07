@@ -57,9 +57,10 @@ import type {
 	TxnForSigning
 } from './AlgonautTypes';
 export * from './AlgonautTypes';
+export type AlgoTxn = Transaction;
 
 import { AnyWalletState, enableWallets, signTransactions, subscribeToAccountChanges, WalletInitParamsObj } from '@thencc/any-wallet';
-export * from '@thencc/any-wallet';
+// export * from '@thencc/any-wallet'; // removing aw re-exports (have algjs do everything)
 
 import { defaultNodeConfig, mainnetConfig, testnetConfig } from './algo-config';
 import { defaultLibConfig } from './constants';
@@ -253,7 +254,7 @@ export class Algonaut {
 	 */
 	authWithMnemonic(mnemonic: string): AlgosdkAccount {
 		if (!mnemonic) throw new Error('algonaut.authWithMnemonic: No mnemonic provided.');
-		const account = utils.recoverAccount(mnemonic);
+		const account = this.recoverAccount(mnemonic);
 		this.initAnyWallet({
 			walletInitParams: {
 				mnemonic: {
@@ -376,6 +377,7 @@ export class Algonaut {
 	}
 
 	/**
+	 * @deprecated does anyone use this..? this shouldnt exist.
 	 * reconnect the active wallet in AnyWalletState
 	 * for a secure authd ctx in THIS session (aka dont trust the localstorage addr)
 	 */
@@ -463,7 +465,12 @@ export class Algonaut {
 	 */
 	generateLogicSig(base64ProgramString: string): LogicSigAccount {
 		if (!base64ProgramString) throw new Error('No program string provided.');
-		return utils.generateLogicSig(base64ProgramString);
+
+		const program = new Uint8Array(
+			Buffer.from(base64ProgramString, 'base64')
+		);
+
+		return new LogicSigAccount(program);
 	}
 
 	async atomicOptInAsset(assetIndex: number, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction> {
@@ -553,7 +560,20 @@ export class Algonaut {
 	 * @returns a Uint8Array of encoded arguments
 	 */
 	encodeArguments(args: any[]): Uint8Array[] {
-		return utils.encodeArguments(args);
+		const encodedArgs = [] as Uint8Array[];
+
+		// loop through args and encode them based on type
+		args.forEach((arg: any) => {
+			if (typeof arg == 'number') {
+				encodedArgs.push(encodeUint64(arg));
+			} else if (typeof arg == 'bigint') {
+				encodedArgs.push(encodeUint64(arg));
+			} else if (typeof arg == 'string') {
+				encodedArgs.push(new Uint8Array(Buffer.from(arg)));
+			}
+		});
+
+		return encodedArgs;
 	}
 
 	/**
@@ -856,7 +876,7 @@ export class Algonaut {
 			accounts: args.optionalFields?.accounts || undefined,
 			foreignApps: args.optionalFields?.applications || undefined,
 			foreignAssets: args.optionalFields?.assets || undefined,
-			note: args.optionalFields?.note ? this.to8Arr(args.optionalFields.note) : undefined
+			note: args.optionalFields?.note ? this.toUint8Array(args.optionalFields.note) : undefined
 		});
 
 		return {
@@ -952,7 +972,7 @@ export class Algonaut {
 	 */
 	getAppEscrowAccount(appId: number | bigint): string {
 		if (!appId) throw new Error('No appId provided');
-		return utils.getAppEscrowAccount(appId);
+		return getApplicationAddress(appId);
 	}
 
 	/**
@@ -1045,7 +1065,7 @@ export class Algonaut {
 					accounts: args.optionalFields?.accounts ? args.optionalFields.accounts : undefined,
 					foreignApps: args.optionalFields?.applications ? args.optionalFields.applications : undefined,
 					foreignAssets: args.optionalFields?.assets ? args.optionalFields.assets : undefined,
-					note: args.optionalFields?.note ? this.to8Arr(args.optionalFields.note) : undefined
+					note: args.optionalFields?.note ? this.toUint8Array(args.optionalFields.note) : undefined
 				});
 				const txId = txn.txID().toString();
 
@@ -1116,7 +1136,7 @@ export class Algonaut {
 					args.optionalFields?.accounts ? args.optionalFields.accounts : undefined,
 					args.optionalFields?.applications ? args.optionalFields.applications : undefined,
 					args.optionalFields?.assets ? args.optionalFields.assets : undefined,
-					args.optionalFields?.note ? this.to8Arr(args.optionalFields.note) : undefined
+					args.optionalFields?.note ? this.toUint8Array(args.optionalFields.note) : undefined
 				);
 
 				return {
@@ -1249,7 +1269,7 @@ export class Algonaut {
 				args.optionalFields?.accounts ? args.optionalFields.accounts : undefined,
 				args.optionalFields?.applications ? args.optionalFields.applications : undefined,
 				args.optionalFields?.assets ? args.optionalFields.assets : undefined,
-				args.optionalFields?.note ? this.to8Arr(args.optionalFields.note) : undefined
+				args.optionalFields?.note ? this.toUint8Array(args.optionalFields.note) : undefined
 			);
 
 			return {
@@ -1296,7 +1316,7 @@ export class Algonaut {
 		if (!fromAddr) throw new Error('there is no fromAddr');
 
 		if (fromAddr) {
-			const encodedNote = args.optionalFields?.note ? this.to8Arr(args.optionalFields.note) : new Uint8Array();
+			const encodedNote = args.optionalFields?.note ? this.toUint8Array(args.optionalFields.note) : new Uint8Array();
 			const suggestedParams = args.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
 			const transaction =
@@ -1549,7 +1569,28 @@ export class Algonaut {
 	}
 
 	/**
-	 * Sends a transaction or multiple through the correct wallet according to AW
+	 * Signs a transaction or multiple w the correct wallet according to AW (does not send / submit txn(s) to network)
+	 * @param txnOrTxns Either an array of atomic transactions or a single transaction to sign
+	 * @param signedTxns array of 
+	 * @returns Promise resolving to AlgonautTransactionStatus
+	 */
+	async signTransaction(txnOrTxns: AlgonautAtomicTransaction[] | Transaction | AlgonautAtomicTransaction): Promise<Uint8Array[]> {
+		const awTxnsToSign = this.normalizeTxns(txnOrTxns);
+		logger.log('awTxnsToSign', awTxnsToSign);
+		let awTxnsSigned: Uint8Array[];
+		try {
+			awTxnsSigned = await signTransactions(awTxnsToSign);
+			logger.log('awTxnsSigned', awTxnsSigned);
+		} catch(e) {
+			console.warn('err signing txns...');
+			logger.log(e);
+			throw new Error('Error signing transactions');
+		}
+		return awTxnsSigned;
+	}
+
+	/**
+	 * Sends a transaction or multiple w the correct wallet according to AW
 	 * @param txnOrTxns Either an array of atomic transactions or a single transaction to sign
 	 * @param callbacks Optional object with callbacks - `onSign`, `onSend`, and `onConfirm`
 	 * @returns Promise resolving to AlgonautTransactionStatus
@@ -1562,21 +1603,7 @@ export class Algonaut {
 		 * 4. return result + txid
 		 */
 
-		const awTxnsToSign = this.normalizeTxns(txnOrTxns);
-		logger.log('awTxnsToSign', awTxnsToSign);
-		let awTxnsSigned: Uint8Array[];
-		try {
-			awTxnsSigned = await signTransactions(awTxnsToSign);
-			logger.log('awTxnsSigned', awTxnsSigned);
-		} catch(e) {
-			console.warn('err signing txns...');
-			logger.log(e);
-			return {
-				status: 'rejected',
-				message: 'User rejected the message.',
-				txId: ''
-			};
-		}
+		const awTxnsSigned = await this.signTransaction(txnOrTxns);
 
 		if (callbacks?.onSign) callbacks.onSign(awTxnsSigned);
 
@@ -1597,13 +1624,13 @@ export class Algonaut {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param str string
 	 * @param enc the encoding type of the string (defaults to utf8)
 	 * @returns string encoded as Uint8Array
 	 */
-	to8Arr(str: string, enc: BufferEncoding = 'utf8'): Uint8Array {
-		return utils.to8Arr(str, enc);
+	toUint8Array(str: string, enc: BufferEncoding = 'utf8'): Uint8Array {
+		return new Uint8Array(Buffer.from(str, enc));
 	}
 
 	/**
@@ -1611,18 +1638,24 @@ export class Algonaut {
 	 *
 	 * @param stateArray State array returned from functions like {@link getAppInfo}
 	 * @returns A more useful object: `{ array[0].key: array[0].value, array[1].key: array[1].value, ... }`
+	 * TODO add correct typing for this method
 	 */
 	stateArrayToObject(stateArray: object[]): any {
-		return utils.stateArrayToObject(stateArray);
+		const stateObj = {} as any;
+		stateArray.forEach((value: any) => {
+			if (value.key) stateObj[value.key] = value.value || null;
+		});
+		return stateObj;
 	}
 
 	/**
 	 * Used for decoding state
 	 * @param encoded Base64 string
 	 * @returns Human-readable string
+	 * TODO rename to b64toStr
 	 */
 	fromBase64(encoded: string): string {
-		return utils.fromBase64(encoded);
+		return Buffer.from(encoded, 'base64').toString();
 	}
 
 	/**
@@ -1631,7 +1664,7 @@ export class Algonaut {
 	 * @returns Decoded address
 	 */
 	valueAsAddr(encoded: string): string {
-		return utils.valueAsAddr(encoded);
+		return encodeAddress(Buffer.from(encoded, 'base64'));
 	}
 
 	/**
@@ -1639,162 +1672,6 @@ export class Algonaut {
 	 * @param stateArray Encoded app state
 	 * @returns Array of objects with key, value, and address properties
 	 */
-	decodeStateArray(stateArray: AlgonautAppStateEncoded[]) {
-		return utils.decodeStateArray(stateArray);
-	}
-
-	/**
-	 * Does what it says on the tin.
-	 * @param txn base64-encoded unsigned transaction
-	 * @returns transaction object
-	 */
-	decodeBase64UnsignedTransaction(txn: string): Transaction {
-		return utils.decodeBase64UnsignedTransaction(txn);
-	}
-
-	/**
-	 * Describes an Algorand transaction, for display in Inkey
-	 * @param txn Transaction to describe
-	 */
-	txnSummary(txn: Transaction) {
-		return utils.txnSummary(txn);
-	}
-
-}
-export default Algonaut;
-
-/**
- * This export contains all the offline Algonaut functionality.
- * Since instantiation of the Algonaut class requires that you
- * configure a node, if you wish to use certain conveniences of
- * Algonaut without the need for a network, simply use
- * `import { utils } from '@thencc/algonautjs'`
- */
-export const utils = {
-	/**
-	 * Creates a wallet address + mnemonic from account's secret key
-	 * @returns AlgonautWallet Object containing `address` and `mnemonic`
-	 */
-	createWallet(): AlgonautWallet {
-		const account = generateAccount();
-
-		if (account) {
-			const mnemonic = secretKeyToMnemonic(account.sk);
-			return {
-				address: account.addr,
-				mnemonic: mnemonic,
-			};
-		} else {
-			throw new Error('There was no account: could not create algonaut wallet!');
-		}
-
-	},
-
-	/**
-	 * Recovers account from mnemonic
-	 * // TODO move this to AnyWallet w mnemonic config param
-	 * @param mnemonic Mnemonic associated with Algonaut account
-	 * @returns If mnemonic is valid, returns account. Otherwise, throws an error.
-	 */
-	recoverAccount(mnemonic: string): AlgosdkAccount {
-		if (!mnemonic) throw new Error('utils.recoverAccount: No mnemonic provided.');
-
-		try {
-			const account = mnemonicToSecretKey(mnemonic);
-			if (isValidAddress(account?.addr)) {
-				return account;
-			} else {
-				throw new Error('Not a valid mnemonic.');
-			}
-		} catch (error: any) {
-			// should we throw an error here instead of returning false?
-			console.error(error);
-			throw new Error('Could not recover account from mnemonic.');
-		}
-	},
-
-	/**
-	 * Creates a LogicSig from a base64 program string.  Note that this method does not COMPILE
-	 * the program, just builds an LSig from an already compiled base64 result!
-	 * @param base64ProgramString
-	 * @returns an algosdk LogicSigAccount
-	 */
-	generateLogicSig(base64ProgramString: string): LogicSigAccount {
-		if (!base64ProgramString) throw new Error('No program string provided.');
-
-		const program = new Uint8Array(
-			Buffer.from(base64ProgramString, 'base64')
-		);
-
-		return new LogicSigAccount(program);
-	},
-
-	/**
-	 * Sync function that returns a correctly-encoded argument array for
-	 * an algo transaction
-	 * @param args must be an any[] array, as it will often need to be
-	 * a mix of strings and numbers. Valid types are: string, number, and bigint
-	 * @returns a Uint8Array of encoded arguments
-	 */
-	encodeArguments(args: any[]): Uint8Array[] {
-		const encodedArgs = [] as Uint8Array[];
-
-		// loop through args and encode them based on type
-		args.forEach((arg: any) => {
-			if (typeof arg == 'number') {
-				encodedArgs.push(encodeUint64(arg));
-			} else if (typeof arg == 'bigint') {
-				encodedArgs.push(encodeUint64(arg));
-			} else if (typeof arg == 'string') {
-				encodedArgs.push(new Uint8Array(Buffer.from(arg)));
-			}
-		});
-
-		return encodedArgs;
-	},
-
-	/**
-	 * Get an application's escrow account
-	 * @param appId - ID of application
-	 * @returns Escrow account address as string
-	 */
-	getAppEscrowAccount(appId: number | bigint): string {
-		if (!appId) throw new Error('No appId provided');
-		return getApplicationAddress(appId);
-	},
-
-	/**
-	 *
-	 * @param str string
-	 * @param enc the encoding type of the string (defaults to utf8)
-	 * @returns string encoded as Uint8Array
-	 */
-	to8Arr(str: string, enc: BufferEncoding = 'utf8'): Uint8Array {
-		return new Uint8Array(Buffer.from(str, enc));
-	},
-
-	/**
-	 * Helper function to turn `globals` and `locals` array into more useful objects
-	 *
-	 * @param stateArray State array returned from functions like {@link Algonaut.getAppInfo}
-	 * @returns A more useful object: `{ array[0].key: array[0].value, array[1].key: array[1].value, ... }`
-	 */
-	stateArrayToObject(stateArray: object[]): any {
-		const stateObj = {} as any;
-		stateArray.forEach((value: any) => {
-			if (value.key) stateObj[value.key] = value.value || null;
-		});
-		return stateObj;
-	},
-
-	fromBase64(encoded: string) {
-		return Buffer.from(encoded, 'base64').toString();
-	},
-
-	valueAsAddr(encoded: string): string {
-		return encodeAddress(Buffer.from(encoded, 'base64'));
-	},
-
 	decodeStateArray(stateArray: AlgonautAppStateEncoded[]) {
 		const result: AlgonautStateData[] = [];
 
@@ -1826,7 +1703,7 @@ export const utils = {
 		}
 
 		return result;
-	},
+	}
 
 	/**
 	 * Does what it says on the tin.
@@ -1835,41 +1712,13 @@ export const utils = {
 	 */
 	decodeBase64UnsignedTransaction(txn: string): Transaction {
 		return decodeUnsignedTransaction(Buffer.from(txn, 'base64'));
-	},
-
-	/**
-	 * txn(b64) -> txnBuff (buffer)
-	 * @param txn base64-encoded unsigned transaction
-	 * @returns trransaction as buffer object
-	 */
-	txnB64ToTxnBuff(txn: string): Buffer {
-		return Buffer.from(txn, 'base64');
-	},
-
-	/**
-	 * Converts between buff -> b64 (txns)
-	 * @param buff likely a algorand txn as a Uint8Array buffer
-	 * @returns string (like for inkey / base64 transmit use)
-	 */
-	txnBuffToB64(buff: Uint8Array): string {
-		return Buffer.from(buff).toString('base64');
-	},
-
-	/**
-	 * Does what it says on the tin.
-	 * @param txn algorand txn object
-	 * @returns string (like for inkey / base64 transmit use)
-	 */
-	txnToStr(txn: algosdk.Transaction): string {
-		const buff = txn.toByte();
-		return this.txnBuffToB64(buff);
-	},
+	}
 
 	/**
 	 * Describes an Algorand transaction, for display in Inkey
 	 * @param txn Transaction to describe
 	 */
-	txnSummary(txn: Transaction): string {
+	txnSummary(txn: Transaction) {
 		// for reference: https://developer.algorand.org/docs/get-details/transactions/transactions/
 
 		if (txn.type) {
@@ -1950,7 +1799,78 @@ export const utils = {
 			// no better option
 			return txn.toString();
 		}
-	},
-};
+	}
+
+	/**
+	 * Creates a wallet address + mnemonic from account's secret key
+	 * @returns AlgonautWallet Object containing `address` and `mnemonic`
+	 */
+	createWallet(): AlgonautWallet {
+		const account = generateAccount();
+
+		if (account) {
+			const mnemonic = secretKeyToMnemonic(account.sk);
+			return {
+				address: account.addr,
+				mnemonic: mnemonic,
+			};
+		} else {
+			throw new Error('There was no account: could not create algonaut wallet!');
+		}
+	}
+
+	/**
+	 * Recovers account from mnemonic
+	 * // TODO move this to AnyWallet w mnemonic config param
+	 * @param mnemonic Mnemonic associated with Algonaut account
+	 * @returns If mnemonic is valid, returns account. Otherwise, throws an error.
+	 */
+	recoverAccount(mnemonic: string): AlgosdkAccount {
+		if (!mnemonic) throw new Error('utils.recoverAccount: No mnemonic provided.');
+
+		try {
+			const account = mnemonicToSecretKey(mnemonic);
+			if (isValidAddress(account?.addr)) {
+				return account;
+			} else {
+				throw new Error('Not a valid mnemonic.');
+			}
+		} catch (error: any) {
+			// should we throw an error here instead of returning false?
+			console.error(error);
+			throw new Error('Could not recover account from mnemonic.');
+		}
+	}
+
+	/**
+	 * txn(b64) -> txnBuff (buffer)
+	 * @param txn base64-encoded unsigned transaction
+	 * @returns trransaction as buffer object
+	 */
+	txnB64ToTxnBuff(txn: string): Buffer {
+		return Buffer.from(txn, 'base64');
+	}
+
+	/**
+	 * Converts between buff -> b64 (txns)
+	 * @param buff likely a algorand txn as a Uint8Array buffer
+	 * @returns string (like for inkey / base64 transmit use)
+	 */
+	txnBuffToB64(buff: Uint8Array): string {
+		return Buffer.from(buff).toString('base64');
+	}
+
+	/**
+	 * Does what it says on the tin.
+	 * @param txn algorand txn object
+	 * @returns string (like for inkey / base64 transmit use)
+	 */
+	txnToStr(txn: algosdk.Transaction): string {
+		const buff = txn.toByte();
+		return this.txnBuffToB64(buff);
+	}
+
+}
+export default Algonaut;
 
 export const buffer = Buffer; // sometimes this is helpful on the frontend
