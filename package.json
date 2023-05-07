@@ -43,7 +43,7 @@
 		"url": "git://github.com/thencc/algonautjs"
 	},
 	"dependencies": {
-		"@thencc/any-wallet": "^0.1.9",
+		"@thencc/any-wallet": "^0.1.22",
 		"algosdk": "^2.1.0",
 		"buffer": "^6.0.3",
 		"tslib": "^2.3.1"

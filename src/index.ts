@@ -61,7 +61,7 @@ export * from './AlgonautTypes';
 import { AnyWalletState, enableWallets, signTransactions, subscribeToAccountChanges, WalletInitParamsObj } from '@thencc/any-wallet';
 export * from '@thencc/any-wallet';
 
-import { defaultNodeConfig } from './algo-config';
+import { defaultNodeConfig, mainnetConfig, testnetConfig } from './algo-config';
 import { defaultLibConfig } from './constants';
 import { logger } from './utils';
 
@@ -89,6 +89,8 @@ await runAtomicTransaction([
 
 */
 
+let unsAcctSync = null as null | (() => void);
+
 export class Algonaut {
 	algodClient!: Algodv2; // it will be set or it throws an Error
 	indexerClient = undefined as undefined | Indexer;
@@ -97,13 +99,11 @@ export class Algonaut {
 	// expose entire algosdk in case the dapp needs more. TODO remove this for lib size?
 	sdk = algosdk;
 	// handles all algo wallets (inkey, pera, etc) + remembers last used in localstorage
-	AnyWalletState = AnyWalletState;
-	// address = ''; // helpful to have .address as top level field
+	walletState = AnyWalletState;
 
-	// helpful to have .address as top level field
-	#address = '';
-	get address() {
-		return this.#address;
+	#account = null as null | typeof AnyWalletState.stored.activeAccount;
+	get account() {
+		return this.#account;
 	}
 
 	/**
@@ -131,7 +131,7 @@ export class Algonaut {
 		this.setNodeConfig(config?.nodeConfig); // makes algod client too
 		this.initAnyWallet(config?.anyWalletConfig);
 		this.setLibConfig(config?.libConfig);
-		this.initAddrSync();
+		this.initAcctSync();
 	}
 
 	initAnyWallet(awConfig?: AlgonautConfig['anyWalletConfig']) {
@@ -179,14 +179,27 @@ export class Algonaut {
 	 * @param config algonaut config for network + signing mode
 	 * 		- will throw Error if config is lousy
 	 */
-	setNodeConfig(nodeConfig?: AlgonautConfig['nodeConfig']) {
+	setNodeConfig(nodeConfig?: AlgonautConfig['nodeConfig'] | 'mainnet' | 'testnet') {
 		// logger.log('setNodeConfig', config);
 		if (nodeConfig == undefined) {
 			nodeConfig = defaultNodeConfig;
 		}
 
+		if (typeof nodeConfig == 'string') {
+			if (nodeConfig == 'mainnet') {
+				nodeConfig = mainnetConfig;
+			} else if (nodeConfig == 'testnet') {
+				nodeConfig = testnetConfig;
+			} else {
+				throw new Error('bad node config string.');
+			}
+		}
+
 		if (!this.isValidNodeConfig(nodeConfig)) {
 			throw new Error('bad node config!');
+		}
+		if (typeof nodeConfig == 'undefined') {
+			throw new Error('node config undefined'); // shouldnt ever happen... but needed to TS to be happy
 		}
 
 		this.nodeConfig = nodeConfig;
@@ -221,13 +234,15 @@ export class Algonaut {
 		return status;
 	}
 
-	initAddrSync() {
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		const uns = subscribeToAccountChanges(
+	initAcctSync() {
+		unsAcctSync = subscribeToAccountChanges(
 			(acct) => {
-				this.#address = acct?.address || '';
+				this.#account = acct;
 			}
 		);
+	}
+	stopAcctSync() {
+		if (unsAcctSync) unsAcctSync();
 	}
 
 	/**
@@ -248,8 +263,8 @@ export class Algonaut {
 				}
 			}
 		});
-		if (this.AnyWalletState.enabledWallets && this.AnyWalletState.enabledWallets['mnemonic']) {
-			this.AnyWalletState.enabledWallets['mnemonic'].setAsActiveWallet();
+		if (this.walletState.enabledWallets && this.walletState.enabledWallets['mnemonic']) {
+			this.walletState.enabledWallets['mnemonic'].setAsActiveWallet();
 		}
 		return account;
 	}
@@ -308,7 +323,11 @@ export class Algonaut {
 	 * Connects the enabled wallet IF 1 wallet is enabled (as is the default. just inkey)
 	 * 	throws when multiple wallets are enabled because it doesnt know which wallet to connect for you.
 	 */
-	async connect() {
+	// TODO support this arg
+	async connect(wio: WalletInitParamsObj) {
+		console.log(wio);
+		// only allow for 1 of the key-values here
+
 		if (AnyWalletState.enabledWallets) {
 			const enabledWs = Object.entries(AnyWalletState.enabledWallets);
 			if (enabledWs.length == 1) {
@@ -448,14 +467,14 @@ export class Algonaut {
 	}
 
 	async atomicOptInAsset(assetIndex: number, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction> {
-		if (!this.AnyWalletState.activeAddress) throw new Error('No account set in Algonaut.');
+		if (!this.walletState.activeAddress) throw new Error('No account set in Algonaut.');
 		if (!assetIndex) throw new Error('No asset index provided.');
 
 		const suggestedParams = optionalTxnArgs?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
 		const optInTransaction = makeAssetTransferTxnWithSuggestedParamsFromObject({
-			from: this.AnyWalletState.activeAddress,
-			to: this.AnyWalletState.activeAddress,
+			from: this.walletState.activeAddress,
+			to: this.walletState.activeAddress,
 			assetIndex: assetIndex,
 			amount: 0,
 			suggestedParams,
@@ -475,7 +494,7 @@ export class Algonaut {
 	 * @returns Promise resolving to confirmed transaction or error
 	 */
 	async optInAsset(assetIndex: number, callbacks?: AlgonautTxnCallbacks, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus> {
-		if (!this.AnyWalletState.activeAddress) throw new Error('There was no account!');
+		if (!this.walletState.activeAddress) throw new Error('There was no account!');
 		if (!assetIndex) throw new Error('No asset index provided.');
 		const { transaction } = await this.atomicOptInAsset(assetIndex, optionalTxnArgs);
 		return await this.sendTransaction(transaction, callbacks);
@@ -547,7 +566,7 @@ export class Algonaut {
 		if (!args.symbol) throw new Error('args.symbol not provided');
 		if (typeof args.decimals == 'undefined') throw new Error('args.decimals not provided.');
 		if (!args.amount) throw new Error('args.amount not provided.');
-		const fromAddr = args.from || this.AnyWalletState.activeAddress;
+		const fromAddr = args.from || this.walletState.activeAddress;
 		if (!fromAddr) throw new Error('there is no fromAddr');
 
 		if (!args.metaBlock) {
@@ -636,14 +655,14 @@ export class Algonaut {
 	}
 
 	async atomicDeleteAsset(assetId: number, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction> {
-		if (!this.AnyWalletState.activeAddress) throw new Error('there was no account!');
+		if (!this.walletState.activeAddress) throw new Error('there was no account!');
 		if (!assetId) throw new Error('No assetId provided!');
 
 		const enc = new TextEncoder();
 		const suggestedParams = optionalTxnArgs?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
 		const transaction = makeAssetDestroyTxnWithSuggestedParams(
-			this.AnyWalletState.activeAddress,
+			this.walletState.activeAddress,
 			enc.encode('doh!'), // what is this? TODO support note...
 			assetId,
 			suggestedParams,
@@ -681,7 +700,7 @@ export class Algonaut {
 		if (!args.to) throw new Error('No to address provided');
 		if (!args.assetIndex) throw new Error('No asset index provided');
 		if (!args.amount) throw new Error('No amount provided');
-		const fromAddr = args.from || this.AnyWalletState.activeAddress;
+		const fromAddr = args.from || this.walletState.activeAddress;
 		if (!fromAddr) throw new Error('there is no fromAddr');
 
 		const suggestedParams = args.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
@@ -713,7 +732,7 @@ export class Algonaut {
 	 * @returns Promise resolving to confirmed transaction or error
 	 */
 	async sendAsset(args: AlgonautSendAssetArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
-		const fromAddr = args.from || this.AnyWalletState.activeAddress;
+		const fromAddr = args.from || this.walletState.activeAddress;
 		if (!fromAddr) throw new Error('there is no fromAddr');
 		const { transaction } = await this.atomicSendAsset(args);
 		return await this.sendTransaction(transaction, callbacks);
@@ -738,7 +757,7 @@ export class Algonaut {
 	 */
 	async atomicOptInApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
 		if (!args.appIndex) throw new Error('No app ID provided');
-		const fromAddr = this.AnyWalletState.activeAddress;
+		const fromAddr = this.walletState.activeAddress;
 		if (!fromAddr) throw new Error('there is no fromAddr');
 		const suggestedParams = args.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
@@ -777,7 +796,7 @@ export class Algonaut {
 	 */
 	async atomicDeleteApp(appIndex: number, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction> {
 		if (!appIndex) throw new Error('No app ID provided');
-		const fromAddr = this.AnyWalletState.activeAddress;
+		const fromAddr = this.walletState.activeAddress;
 		if (!fromAddr) throw new Error('there is no fromAddr');
 
 		const suggestedParams = optionalTxnArgs?.suggestedParams || (await this.algodClient.getTransactionParams().do());
@@ -822,7 +841,7 @@ export class Algonaut {
 	}
 
 	async atomicCallApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
-		const fromAddr = args?.from || this.AnyWalletState.activeAddress;
+		const fromAddr = args?.from || this.walletState.activeAddress;
 		if (!fromAddr) throw new Error('there is no fromAddr');
 		if (!args.appIndex) throw new Error('Must provide appIndex');
 		if (!args.appArgs.length) throw new Error('Must provide at least one appArgs');
@@ -887,7 +906,7 @@ export class Algonaut {
 	 * @returns Promise resolving to atomic transaction
 	 */
 	async atomicCloseOutApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
-		const fromAddr = args?.from || this.AnyWalletState.activeAddress;
+		const fromAddr = args?.from || this.walletState.activeAddress;
 		if (!fromAddr) throw new Error('there is no fromAddr');
 		if (!args.appIndex) throw new Error('Must provide appIndex');
 
@@ -949,7 +968,7 @@ export class Algonaut {
 			this.algodClient.getApplicationByID(appId).do(),
 		] as any;
 
-		const addr = this.AnyWalletState.activeAddress;
+		const addr = this.walletState.activeAddress;
 		// get locals if we have an account
 		if (addr) {
 			proms.push(this.getAppLocalState(appId)); // TODO get rid of this call / only return locals (not incorrect duplicate state obj)
@@ -992,7 +1011,7 @@ export class Algonaut {
 			console.warn('drat! your note is too long!');
 			throw new Error('Your note is too long');
 		}
-		const fromAddr = this.AnyWalletState.activeAddress;
+		const fromAddr = this.walletState.activeAddress;
 		if (!fromAddr) throw new Error('there is no fromAddr');
 		if (!args.tealApprovalCode) throw new Error('No approval program provided');
 		if (!args.tealClearCode) throw new Error('No clear program provided');
@@ -1059,7 +1078,7 @@ export class Algonaut {
 	 * @returns AlgonautAtomicTransaction
 	 */
 	async atomicCreateApp(args: AlgonautDeployArguments): Promise<AlgonautAtomicTransaction> {
-		const fromAddr = this.AnyWalletState.activeAddress;
+		const fromAddr = this.walletState.activeAddress;
 		if (!fromAddr) throw new Error('there is no fromAddr');
 		if (!args.tealApprovalCode) throw new Error('No approval program provided');
 		if (!args.tealClearCode) throw new Error('No clear program provided');
@@ -1197,7 +1216,7 @@ export class Algonaut {
 	 * @returns atomic transaction that updates the app
 	 */
 	async atomicUpdateApp(args: AlgonautUpdateAppArguments): Promise<AlgonautAtomicTransaction> {
-		const fromAddr = this.AnyWalletState.activeAddress;
+		const fromAddr = this.walletState.activeAddress;
 		if (!fromAddr) throw new Error('there is no fromAddr');
 		if (!args.tealApprovalCode) throw new Error('No approval program provided');
 		if (!args.tealClearCode) throw new Error('No clear program provided');
@@ -1273,7 +1292,7 @@ export class Algonaut {
 	async atomicSendAlgo(args: AlgonautPaymentArguments): Promise<AlgonautAtomicTransaction> {
 		if (!args.amount) throw new Error('You did not specify an amount!');
 		if (!args.to) throw new Error('You did not specify a to address');
-		const fromAddr = args.from || this.AnyWalletState.activeAddress;
+		const fromAddr = args.from || this.walletState.activeAddress;
 		if (!fromAddr) throw new Error('there is no fromAddr');
 
 		if (fromAddr) {
@@ -1407,8 +1426,8 @@ export class Algonaut {
 		// can we detect addresses values and auto-convert them?
 		// maybe a 32-byte field gets an address field added?
 
-		if (this.AnyWalletState.activeAddress && !address) {
-			address = this.AnyWalletState.activeAddress;
+		if (this.walletState.activeAddress && !address) {
+			address = this.walletState.activeAddress;
 		}
 
 		if (address) {
