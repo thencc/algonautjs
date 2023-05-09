@@ -454,34 +454,6 @@ export class Algonaut {
 	}
 
 	/**
-	 * @deprecated does anyone use this..? this shouldnt exist.
-	 * reconnect the active wallet in AnyWalletState
-	 * for a secure authd ctx in THIS session (aka dont trust the localstorage addr)
-	 */
-	async reconnect() {
-		if (AnyWalletState.enabledWallets) {
-			if (AnyWalletState.activeWalletId) {
-				if (AnyWalletState.activeWalletId in AnyWalletState.enabledWallets) {
-					const w = AnyWalletState.enabledWallets[AnyWalletState.activeWalletId];
-					if (w) {
-						// success
-						return await w.connect();
-					} else {
-						throw new Error('Wallet wasnt initialized correctly.');
-					}
-				} else {
-					// dapp must have changed config
-					throw new Error('The active wallet isnt enabled.');
-				}
-			} else {
-				throw new Error('No active wallet');
-			}
-		} else {
-			throw new Error('No enabled wallets');
-		}
-	}
-
-	/**
 	 * General purpose method to await transaction confirmation
 	 * @param txId a string id of the transacion you want to watch
 	 * @param limitDelta how many rounds to wait, defaults to 50
