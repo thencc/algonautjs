@@ -178,12 +178,7 @@ export declare class Algonaut {
                 }[];
                 readonly isActive: boolean;
                 readonly isConnected: boolean;
-            } | undefined; /**
-             * Returns an atomic transaction that closes out the user's local state in an application.
-             * The opposite of {@link atomicOptInApp}.
-             * @param args Object containing `appIndex`, `appArgs`, and `optionalFields` properties
-             * @returns Promise resolving to atomic transaction
-             */
+            } | undefined;
             exodus?: {
                 id: WALLET_ID;
                 metadata: {
@@ -524,11 +519,7 @@ export declare class Algonaut {
                 loadClient: () => Promise<true>;
                 connect: (p?: any) => Promise<Account[]>;
                 disconnect: () => Promise<void>;
-                reconnect: () => Promise<void>; /**
-                 * Compiles TEAL source via [algodClient.compile](https://py-algorand-sdk.readthedocs.io/en/latest/algosdk/v2client/algod.html#v2client.algod.AlgodClient.compile)
-                 * @param programSource source to compile
-                 * @returns Promise resolving to Buffer of compiled bytes
-                 */
+                reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
                 removeAccounts: () => void;
                 signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
@@ -738,12 +729,6 @@ export declare class Algonaut {
      * 	- or, specific wallets if an array of wallet ids is passed in. (ex: ["inkey", "algosigner", "mnemonic"] )
      */
     disconnect(wIds?: WALLET_ID[] | true): Promise<void>;
-    /**
-     * @deprecated does anyone use this..? this shouldnt exist.
-     * reconnect the active wallet in AnyWalletState
-     * for a secure authd ctx in THIS session (aka dont trust the localstorage addr)
-     */
-    reconnect(): Promise<Account[]>;
     /**
      * General purpose method to await transaction confirmation
      * @param txId a string id of the transacion you want to watch
@@ -973,7 +958,7 @@ export declare class Algonaut {
      * @param address - Address to check
      * @param assetIndex - the index of the ASA
      */
-    accountHasTokens(address: string, assetIndex: number): Promise<any>;
+    accountHasTokens(address: string, assetIndex: number): Promise<boolean>;
     /**
      * Gets global state for an application.
      * @param applicationIndex - the applications index
