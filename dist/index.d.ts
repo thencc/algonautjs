@@ -6,6 +6,7 @@ export * from './AlgonautTypes';
 export type AlgoTxn = Transaction;
 import { WALLET_ID } from '@thencc/any-wallet';
 import type { Account, WalletInitParamsObj } from '@thencc/any-wallet';
+export * from '@thencc/any-wallet';
 export declare class Algonaut {
     #private;
     algodClient: Algodv2;
@@ -616,7 +617,11 @@ export declare class Algonaut {
             connect: (p?: any) => Promise<Account[]>;
             disconnect: () => Promise<void>;
             reconnect: () => Promise<void>;
-            setAsActiveWallet: () => void;
+            setAsActiveWallet: () => void; /**
+             * Gets global state for an application.
+             * @param applicationIndex - the applications index
+             * @returns {object} object representing global state
+             */
             removeAccounts: () => void;
             signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
             readonly accounts: readonly {

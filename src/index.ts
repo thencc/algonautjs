@@ -71,7 +71,7 @@ import type {
 	ClientInitParams,
 	WalletInitParamsObj
 } from '@thencc/any-wallet';
-// export * from '@thencc/any-wallet'; // removing aw re-exports (have algjs do everything)
+export * from '@thencc/any-wallet';
 
 import { defaultNodeConfig, mainnetConfig, testnetConfig } from './algo-config';
 import { defaultLibConfig } from './constants';
