@@ -2,8 +2,8 @@ lockfileVersion: '6.0'
 
 dependencies:
   '@thencc/any-wallet':
-    specifier: ^0.1.23
-    version: 0.1.23(algosdk@2.2.0)
+    specifier: ^0.1.26
+    version: 0.1.26(algosdk@2.2.0)
   algosdk:
     specifier: ^2.2.0
     version: 2.2.0
@@ -1077,8 +1077,8 @@ packages:
       '@sinonjs/commons': 2.0.0
     dev: true
 
-  /@thencc/any-wallet@0.1.23(algosdk@2.2.0):
-    resolution: {integrity: sha512-eoHrWH1xUL2oP3DkYA1wJ4SUL1QV8eUm+xeMKnQxKLnWXHVhx+L+oktBjMZp8z5YBYnoDiAkDpeDShO5jHTBjw==}
+  /@thencc/any-wallet@0.1.26(algosdk@2.2.0):
+    resolution: {integrity: sha512-ds8bm6o4Y6ztFKmiyb3gWzuVh5hAk0dbA2hWqXu2LdeEVAcy5DihhY6RdkD9QaU2UqYyjmOW24rb5oym+xUXCQ==}
     peerDependencies:
       algosdk: ^2.1.0
     dependencies:

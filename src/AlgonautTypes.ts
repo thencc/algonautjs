@@ -24,9 +24,11 @@ export type AlgonautConfig = {
 		API_TOKEN: any;
 	};
 
-	anyWalletConfig?: {
-		walletInitParams?: WalletInitParamsObj;
-	};
+	// if we wanted to support multiple init params of any-wallet, but too verbose... 
+	// anyWalletConfig?: {
+	// 	walletInitParams?: WalletInitParamsObj;
+	// };
+	initWallets?: WalletInitParamsObj;
 }
 
 export interface AlgonautStateData {
