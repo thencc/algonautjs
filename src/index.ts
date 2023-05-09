@@ -767,8 +767,11 @@ export class Algonaut {
 	 */
 	async atomicSendAsset(args: AlgonautSendAssetArguments): Promise<AlgonautAtomicTransaction> {
 		if (!args.to) throw new Error('No to address provided');
+		if (!isValidAddress(args.to)) throw new Error('Invalid to address');
 		if (!args.assetIndex) throw new Error('No asset index provided');
-		if (!args.amount) throw new Error('No amount provided');
+		if (!(typeof args.amount == 'bigint' || typeof args.amount == 'number')) {
+			throw new Error('Amount has to be a number.');
+		}
 		const fromAddr = args.from || this.walletState.activeAddress;
 		if (!fromAddr) throw new Error('there is no fromAddr');
 
@@ -1359,8 +1362,11 @@ export class Algonaut {
 	}
 
 	async atomicSendAlgo(args: AlgonautPaymentArguments): Promise<AlgonautAtomicTransaction> {
-		if (!args.amount) throw new Error('You did not specify an amount!');
+		if (!(typeof args.amount == 'bigint' || typeof args.amount == 'number')) {
+			throw new Error('Amount has to be a number.');
+		}
 		if (!args.to) throw new Error('You did not specify a to address');
+		if (!isValidAddress(args.to)) throw new Error('Invalid to address');
 		const fromAddr = args.from || this.walletState.activeAddress;
 		if (!fromAddr) throw new Error('there is no fromAddr');
 
@@ -1544,7 +1550,6 @@ export class Algonaut {
 	}
 
 	async atomicAssetTransferWithLSig(args: AlgonautLsigSendAssetArguments): Promise<AlgonautAtomicTransaction> {
-
 		if (args.lsig) {
 			const suggestedParams = args.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
