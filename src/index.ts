@@ -1458,8 +1458,13 @@ export class Algonaut {
 	 * @param address - Address to check
 	 * @param assetIndex - the index of the ASA
 	 */
-	async accountHasTokens(address: string, assetIndex: number): Promise<any> {
-		return 'this is not done yet';
+	async accountHasTokens(address: string, assetIndex: number): Promise<boolean> {
+		let bal = await this.getTokenBalance(address, assetIndex);
+		if (bal > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
