@@ -57,11 +57,23 @@ import type {
 	TxnForSigning
 } from './AlgonautTypes';
 export * from './AlgonautTypes';
+export type AlgoTxn = Transaction;
 
-import { AnyWalletState, enableWallets, signTransactions, subscribeToAccountChanges, WalletInitParamsObj } from '@thencc/any-wallet';
-export * from '@thencc/any-wallet';
+import { 
+	AnyWalletState, 
+	enableWallets, 
+	signTransactions, 
+	subscribeToAccountChanges,
+	WALLET_ID
+} from '@thencc/any-wallet';
+import type {
+	Account,
+	ClientInitParams,
+	WalletInitParamsObj
+} from '@thencc/any-wallet';
+// export * from '@thencc/any-wallet'; // removing aw re-exports (have algjs do everything)
 
-import { defaultNodeConfig } from './algo-config';
+import { defaultNodeConfig, mainnetConfig, testnetConfig } from './algo-config';
 import { defaultLibConfig } from './constants';
 import { logger } from './utils';
 
@@ -89,21 +101,26 @@ await runAtomicTransaction([
 
 */
 
+let unsAcctSync = null as null | (() => void);
+
 export class Algonaut {
 	algodClient!: Algodv2; // it will be set or it throws an Error
 	indexerClient = undefined as undefined | Indexer;
 	nodeConfig = defaultNodeConfig;
 	libConfig = defaultLibConfig;
-	// expose entire algosdk in case the dapp needs more. TODO remove this for lib size?
+	
+	// expose entire algosdk in case the dapp needs more
 	sdk = algosdk;
+	
 	// handles all algo wallets (inkey, pera, etc) + remembers last used in localstorage
-	AnyWalletState = AnyWalletState;
-	// address = ''; // helpful to have .address as top level field
+	walletState = AnyWalletState;
 
-	// helpful to have .address as top level field
-	#address = '';
-	get address() {
-		return this.#address;
+	#account = null as null | typeof AnyWalletState.stored.activeAccount;
+	get account() {
+		return this.#account;
+	}
+	get connectedAccounts() {
+		return AnyWalletState.stored.connectedAccounts;
 	}
 
 	/**
@@ -129,17 +146,9 @@ export class Algonaut {
 	 */
 	constructor(config?: AlgonautConfig) {
 		this.setNodeConfig(config?.nodeConfig); // makes algod client too
-		this.initAnyWallet(config?.anyWalletConfig);
+		this.enableWallets(config?.initWallets);
 		this.setLibConfig(config?.libConfig);
-		this.initAddrSync();
-	}
-
-	initAnyWallet(awConfig?: AlgonautConfig['anyWalletConfig']) {
-		const defaultWip: WalletInitParamsObj = {
-			inkey: true
-		};
-		const wip = awConfig?.walletInitParams || defaultWip;
-		enableWallets(wip); // defaults to all except mnemonic client
+		this.initAcctSync();
 	}
 
 	setLibConfig(libConfig?: AlgonautConfig['libConfig']) {
@@ -179,14 +188,27 @@ export class Algonaut {
 	 * @param config algonaut config for network + signing mode
 	 * 		- will throw Error if config is lousy
 	 */
-	setNodeConfig(nodeConfig?: AlgonautConfig['nodeConfig']) {
+	setNodeConfig(nodeConfig?: AlgonautConfig['nodeConfig'] | 'mainnet' | 'testnet') {
 		// logger.log('setNodeConfig', config);
 		if (nodeConfig == undefined) {
 			nodeConfig = defaultNodeConfig;
 		}
 
+		if (typeof nodeConfig == 'string') {
+			if (nodeConfig == 'mainnet') {
+				nodeConfig = mainnetConfig;
+			} else if (nodeConfig == 'testnet') {
+				nodeConfig = testnetConfig;
+			} else {
+				throw new Error('bad node config string.');
+			}
+		}
+
 		if (!this.isValidNodeConfig(nodeConfig)) {
 			throw new Error('bad node config!');
+		}
+		if (typeof nodeConfig == 'undefined') {
+			throw new Error('node config undefined'); // shouldnt ever happen... but needed to TS to be happy
 		}
 
 		this.nodeConfig = nodeConfig;
@@ -221,165 +243,213 @@ export class Algonaut {
 		return status;
 	}
 
-	initAddrSync() {
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		const uns = subscribeToAccountChanges(
+	initAcctSync() {
+		unsAcctSync = subscribeToAccountChanges(
 			(acct) => {
-				this.#address = acct?.address || '';
+				this.#account = acct;
 			}
 		);
 	}
+	stopAcctSync() {
+		if (unsAcctSync) unsAcctSync();
+	}
+
+	enableWallets(walletInitParams?: AlgonautConfig['initWallets']) {
+		const defaultWip: WalletInitParamsObj = {
+			inkey: true
+		};
+		const wip = walletInitParams || defaultWip;
+		enableWallets(wip); // defaults to all except mnemonic client
+	}
 
 	/**
+	 * @deprecated use .connect() with mnemonic arg
 	 * Recovers account from mnemonic
 	 *  (helpful for rapid development but overall very insecure unless on server-side)
 	 * @param mnemonic Mnemonic associated with Algonaut account
-	 * @returns If mnemonic is valid, returns account. Otherwise, throws an error.
+	 * @returns If mnemonic is valid, it returns the account (address, chain). Otherwise, throws an error.
 	 */
-	authWithMnemonic(mnemonic: string): AlgosdkAccount {
+	async mnemonicConnect(mnemonic: string): Promise<Account[]> {
 		if (!mnemonic) throw new Error('algonaut.authWithMnemonic: No mnemonic provided.');
-		const account = utils.recoverAccount(mnemonic);
-		this.initAnyWallet({
-			walletInitParams: {
-				mnemonic: {
-					config: {
-						mnemonic: mnemonic
-					}
-				}
-			}
+		return await this.connect({
+			mnemonic
 		});
-		if (this.AnyWalletState.enabledWallets && this.AnyWalletState.enabledWallets['mnemonic']) {
-			this.AnyWalletState.enabledWallets['mnemonic'].setAsActiveWallet();
-		}
-		return account;
 	}
 
 	/**
 	 * @deprecated use .connect or loop through enabled wallets' methods
 	 */
-	async inkeyConnect() {
+	async inkeyConnect(): Promise<Account[]> {
 		console.warn('.inkeyConnect is deprecated. please use .connect');
-		if (AnyWalletState.enabledWallets) {
-			if ('inkey' in AnyWalletState.enabledWallets) {
-				const w = AnyWalletState.enabledWallets.inkey;
-				if (w) {
-					if (!w.isConnected) {
-						return await w.connect();
-					} else {
-						throw new Error('Inkey wallet already connected.');
-					}
-				} else {
-					throw new Error('Inkey wallet wasnt initialized correctly.');
-				}
-			} else {
-				throw new Error('INKEY is not an enabled wallet.');
-			}
-		} else {
-			throw new Error('No enabled wallets');
-		}
+		return await this.connect({
+			inkey: true // "true" means use the defaults
+		});
 	}
 
 	/**
 	 * @deprecated use .disconnect or loop through enabled wallets' methods
 	 */
 	async inkeyDisconnect() {
-		console.warn('.inkeyDisconnect is deprecated. please use .connect');
-		if (AnyWalletState.enabledWallets) {
-			if ('inkey' in AnyWalletState.enabledWallets) {
-				const w = AnyWalletState.enabledWallets.inkey;
-				if (w) {
-					if (w.isConnected) {
-						return await w.disconnect();
-					} else {
-						throw new Error('Inkey wallet already not connected.');
-					}
-				} else {
-					throw new Error('Inkey wallet wasnt initialized correctly.');
-				}
-			} else {
-				throw new Error('INKEY is not an enabled wallet.');
-			}
-		} else {
-			throw new Error('No enabled wallets');
-		}
+		console.warn('.inkeyDisconnect is deprecated. please use .disconnect');
+		return await this.disconnect([WALLET_ID.INKEY]);
 	}
 
 	/**
-	 * Connects the enabled wallet IF 1 wallet is enabled (as is the default. just inkey)
-	 * 	throws when multiple wallets are enabled because it doesnt know which wallet to connect for you.
+	 * Shows the inkey-wallet modal 
+	 * @returns 
 	 */
-	async connect() {
-		if (AnyWalletState.enabledWallets) {
-			const enabledWs = Object.entries(AnyWalletState.enabledWallets);
-			if (enabledWs.length == 1) {
-				const w = enabledWs[0][1]; // grab the only enabled wallet
-				if (w) {
+	async inkeyShow() {
+		let inkeyW = AnyWalletState.enabledWallets?.inkey;
+		if (!inkeyW) {
+			console.warn('inkey wallet not enabled');
+			return;
+		}
+		await inkeyW.loadClient();
+		(inkeyW.client as any).sdk.show();
+	}
+
+	/**
+	 * Hides the inkey-wallet modal
+	 * @returns 
+	 */
+	async inkeyHide() {
+		let inkeyW = AnyWalletState.enabledWallets?.inkey;
+		if (!inkeyW) {
+			console.warn('inkey wallet not enabled');
+			return;
+		}
+		await inkeyW.loadClient();
+		(inkeyW.client as any).sdk.hide();
+	}
+
+	/**
+	 * Connects a wallet to be used as algonaut.account. uses:
+	 * 	- the SINGLE passed in init params for the specified wallet
+	 *  - or, the SINGLE enabled wallet IF 1 wallet is enabled (as is the default. just inkey)
+	 * FAILs and throws when multiple init params are passed in or multiple wallets are enabled when nothing is passed in (since it doesnt know which to connect up)
+	 */
+	async connect(initWallets?: WalletInitParamsObj) {
+		logger.log('connect initWallets', initWallets);
+		if (initWallets !== undefined) {
+			const initWs = Object.entries(initWallets);
+			if (initWs.length == 1) {
+				const wId = initWs[0][0] as WALLET_ID;
+				const wInitParams = initWs[0][1] as ClientInitParams; // grab the only enabled wallet
+				const w = AnyWalletState.allWallets[wId];
+				if (w !== undefined) {
+					// possibly enable this wallet 
+					if (AnyWalletState.enabledWallets == null || 
+						!(AnyWalletState.enabledWallets[wId])
+					) {
+						// AnyWalletState.enabledWallets[wId] = w; // same same as below
+						enableWallets(initWallets);
+					}
+
+					// the good stuff
 					if (!w.isConnected) {
+						w.initParams = wInitParams; // using "as" here to make mnemonic init simple w direct mnemonic str instead of nested in .config
 						return await w.connect();
 					} else {
 						throw new Error('Wallet already connected.');
 					}
 				} else {
-					throw new Error('Wallet wasnt initialized correctly.');
+					throw new Error('Could not find wallet to enable');
 				}
 			} else {
-				throw new Error('Too many wallets enabled to know which to connect.');
+				throw new Error('Cannot init multiple wallets at once using .connect(). To enable multiple wallets at once define initWallets params in Algonaut class instantiation.');
 			}
 		} else {
-			throw new Error('No enabled wallets');
-		}
-	}
-
-	/**
-	 * disconnects the active wallet in AnyWalletState
-	 * ? should this disconnect ALL connected wallet?
-	 */
-	async disconnect() {
-		if (AnyWalletState.enabledWallets) {
-			const enabledWs = Object.entries(AnyWalletState.enabledWallets);
-			if (enabledWs.length == 1) {
-				const w = enabledWs[0][1]; // grab the only enabled wallet
-				if (w) {
-					if (w.isConnected) {
-						return await w.disconnect();
-					} else {
-						throw new Error('Wallet already not connected.');
-					}
-				} else {
-					throw new Error('Wallet wasnt initialized correctly.');
-				}
-			} else {
-				throw new Error('Too many wallets enabled to know which to connect.');
-			}
-		} else {
-			throw new Error('No enabled wallets');
-		}
-	}
-
-	/**
-	 * reconnect the active wallet in AnyWalletState
-	 * for a secure authd ctx in THIS session (aka dont trust the localstorage addr)
-	 */
-	async reconnect() {
-		if (AnyWalletState.enabledWallets) {
-			if (AnyWalletState.activeWalletId) {
-				if (AnyWalletState.activeWalletId in AnyWalletState.enabledWallets) {
-					const w = AnyWalletState.enabledWallets[AnyWalletState.activeWalletId];
+			// then assume to use the only enabled wallet (must be only 1)
+			if (AnyWalletState.enabledWallets) {
+				const enabledWs = Object.entries(AnyWalletState.enabledWallets);
+				if (enabledWs.length == 1) {
+					const w = enabledWs[0][1]; // grab the only enabled wallet
 					if (w) {
-						// success
-						return await w.connect();
+						if (!w.isConnected) {
+							return await w.connect();
+						} else {
+							throw new Error('Wallet already connected.');
+						}
 					} else {
 						throw new Error('Wallet wasnt initialized correctly.');
 					}
 				} else {
-					// dapp must have changed config
-					throw new Error('The active wallet isnt enabled.');
+					throw new Error('Too many wallets enabled to know which to connect.');
 				}
 			} else {
-				throw new Error('No active wallet');
+				throw new Error('No enabled wallets to connect.');
+			}
+		}
+	}
+
+	/**
+	 * disconnects
+	 * 	- the active wallet IF no arg passed in
+	 * 	- all the wallets IF "true" is passed in as an arg
+	 * 	- or, specific wallets if an array of wallet ids is passed in. (ex: ["inkey", "algosigner", "mnemonic"] )
+	 */
+	async disconnect(wIds?: WALLET_ID[] | true) {
+		if (typeof wIds == undefined) {
+			// (try) disconnect active wallet only
+			if (AnyWalletState.enabledWallets) {
+				const enabledWs = Object.entries(AnyWalletState.enabledWallets);
+				if (enabledWs.length == 1) {
+					const w = enabledWs[0][1]; // grab the only enabled wallet
+					if (w) {
+						if (w.isConnected) {
+							logger.log('disconnecting active wallet:', w.id);
+							return await w.disconnect();
+						} else {
+							throw new Error('Wallet already disconnected.');
+						}
+					} else {
+						throw new Error('Wallet wasnt initialized correctly.');
+					}
+				} else {
+					throw new Error('Too many wallets enabled to know which to connect.');
+				}
+			} else {
+				throw new Error('No enabled wallets to disconnect.');
+			}
+		} else if (typeof wIds == 'boolean') {
+			if (wIds == true) {
+				// disconnect ALL wallets
+				logger.log('disconnecting all wallets from dapp');
+				for (let wId of Object.keys(AnyWalletState.allWallets)) {
+					const w = AnyWalletState.allWallets[wId as WALLET_ID];
+					if (w) {
+						if (w.isConnected) {
+							logger.log('disconnecting wallet:', wId);
+							return await w.disconnect();
+						} else {
+							throw new Error('Wallet already disconnected.');
+						}
+					} else {
+						throw new Error('Could not find wallet by id to disconnect... (shouldnt happen)');
+					}
+				}
+			} else {
+				// nothing
+				// for wIds == false
+			}
+		} else if (Array.isArray(wIds)) {
+			// disconnect this/these wallets by wallet id
+			logger.log('disconnecting these wallets:', wIds);
+			for (let wId of wIds) {
+				const w = AnyWalletState.allWallets[wId];
+				if (w) {
+					if (w.isConnected) {
+						logger.log('disconnecting wallet:', wId);
+						return await w.disconnect();
+					} else {
+						throw new Error('Wallet already disconnected.');
+					}
+				} else {
+					throw new Error('Could not find wallet by id to disconnect... (shouldnt happen)');
+				}
 			}
 		} else {
-			throw new Error('No enabled wallets');
+			logger.debug('this shouldnt happen... passed in a bad arg to .disconnect() ');
 		}
 	}
 
@@ -444,18 +514,23 @@ export class Algonaut {
 	 */
 	generateLogicSig(base64ProgramString: string): LogicSigAccount {
 		if (!base64ProgramString) throw new Error('No program string provided.');
-		return utils.generateLogicSig(base64ProgramString);
+
+		const program = new Uint8Array(
+			Buffer.from(base64ProgramString, 'base64')
+		);
+
+		return new LogicSigAccount(program);
 	}
 
 	async atomicOptInAsset(assetIndex: number, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction> {
-		if (!this.AnyWalletState.activeAddress) throw new Error('No account set in Algonaut.');
+		if (!this.walletState.activeAddress) throw new Error('No account set in Algonaut.');
 		if (!assetIndex) throw new Error('No asset index provided.');
 
 		const suggestedParams = optionalTxnArgs?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
 		const optInTransaction = makeAssetTransferTxnWithSuggestedParamsFromObject({
-			from: this.AnyWalletState.activeAddress,
-			to: this.AnyWalletState.activeAddress,
+			from: this.walletState.activeAddress,
+			to: this.walletState.activeAddress,
 			assetIndex: assetIndex,
 			amount: 0,
 			suggestedParams,
@@ -475,7 +550,7 @@ export class Algonaut {
 	 * @returns Promise resolving to confirmed transaction or error
 	 */
 	async optInAsset(assetIndex: number, callbacks?: AlgonautTxnCallbacks, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus> {
-		if (!this.AnyWalletState.activeAddress) throw new Error('There was no account!');
+		if (!this.walletState.activeAddress) throw new Error('There was no account!');
 		if (!assetIndex) throw new Error('No asset index provided.');
 		const { transaction } = await this.atomicOptInAsset(assetIndex, optionalTxnArgs);
 		return await this.sendTransaction(transaction, callbacks);
@@ -534,7 +609,20 @@ export class Algonaut {
 	 * @returns a Uint8Array of encoded arguments
 	 */
 	encodeArguments(args: any[]): Uint8Array[] {
-		return utils.encodeArguments(args);
+		const encodedArgs = [] as Uint8Array[];
+
+		// loop through args and encode them based on type
+		args.forEach((arg: any) => {
+			if (typeof arg == 'number') {
+				encodedArgs.push(encodeUint64(arg));
+			} else if (typeof arg == 'bigint') {
+				encodedArgs.push(encodeUint64(arg));
+			} else if (typeof arg == 'string') {
+				encodedArgs.push(new Uint8Array(Buffer.from(arg)));
+			}
+		});
+
+		return encodedArgs;
 	}
 
 	/**
@@ -547,7 +635,7 @@ export class Algonaut {
 		if (!args.symbol) throw new Error('args.symbol not provided');
 		if (typeof args.decimals == 'undefined') throw new Error('args.decimals not provided.');
 		if (!args.amount) throw new Error('args.amount not provided.');
-		const fromAddr = args.from || this.AnyWalletState.activeAddress;
+		const fromAddr = args.from || this.walletState.activeAddress;
 		if (!fromAddr) throw new Error('there is no fromAddr');
 
 		if (!args.metaBlock) {
@@ -636,15 +724,15 @@ export class Algonaut {
 	}
 
 	async atomicDeleteAsset(assetId: number, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction> {
-		if (!this.AnyWalletState.activeAddress) throw new Error('there was no account!');
+		if (!this.walletState.activeAddress) throw new Error('there was no account!');
 		if (!assetId) throw new Error('No assetId provided!');
 
 		const enc = new TextEncoder();
 		const suggestedParams = optionalTxnArgs?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
 		const transaction = makeAssetDestroyTxnWithSuggestedParams(
-			this.AnyWalletState.activeAddress,
-			enc.encode('doh!'), // what is this? TODO support note...
+			this.walletState.activeAddress,
+			enc.encode('doh!'), // what is this?
 			assetId,
 			suggestedParams,
 		);
@@ -679,9 +767,12 @@ export class Algonaut {
 	 */
 	async atomicSendAsset(args: AlgonautSendAssetArguments): Promise<AlgonautAtomicTransaction> {
 		if (!args.to) throw new Error('No to address provided');
+		if (!isValidAddress(args.to)) throw new Error('Invalid to address');
 		if (!args.assetIndex) throw new Error('No asset index provided');
-		if (!args.amount) throw new Error('No amount provided');
-		const fromAddr = args.from || this.AnyWalletState.activeAddress;
+		if (!(typeof args.amount == 'bigint' || typeof args.amount == 'number')) {
+			throw new Error('Amount has to be a number.');
+		}
+		const fromAddr = args.from || this.walletState.activeAddress;
 		if (!fromAddr) throw new Error('there is no fromAddr');
 
 		const suggestedParams = args.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
@@ -713,7 +804,7 @@ export class Algonaut {
 	 * @returns Promise resolving to confirmed transaction or error
 	 */
 	async sendAsset(args: AlgonautSendAssetArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus> {
-		const fromAddr = args.from || this.AnyWalletState.activeAddress;
+		const fromAddr = args.from || this.walletState.activeAddress;
 		if (!fromAddr) throw new Error('there is no fromAddr');
 		const { transaction } = await this.atomicSendAsset(args);
 		return await this.sendTransaction(transaction, callbacks);
@@ -738,7 +829,7 @@ export class Algonaut {
 	 */
 	async atomicOptInApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
 		if (!args.appIndex) throw new Error('No app ID provided');
-		const fromAddr = this.AnyWalletState.activeAddress;
+		const fromAddr = this.walletState.activeAddress;
 		if (!fromAddr) throw new Error('there is no fromAddr');
 		const suggestedParams = args.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
@@ -777,7 +868,7 @@ export class Algonaut {
 	 */
 	async atomicDeleteApp(appIndex: number, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction> {
 		if (!appIndex) throw new Error('No app ID provided');
-		const fromAddr = this.AnyWalletState.activeAddress;
+		const fromAddr = this.walletState.activeAddress;
 		if (!fromAddr) throw new Error('there is no fromAddr');
 
 		const suggestedParams = optionalTxnArgs?.suggestedParams || (await this.algodClient.getTransactionParams().do());
@@ -822,7 +913,7 @@ export class Algonaut {
 	}
 
 	async atomicCallApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
-		const fromAddr = args?.from || this.AnyWalletState.activeAddress;
+		const fromAddr = args?.from || this.walletState.activeAddress;
 		if (!fromAddr) throw new Error('there is no fromAddr');
 		if (!args.appIndex) throw new Error('Must provide appIndex');
 		if (!args.appArgs.length) throw new Error('Must provide at least one appArgs');
@@ -837,7 +928,7 @@ export class Algonaut {
 			accounts: args.optionalFields?.accounts || undefined,
 			foreignApps: args.optionalFields?.applications || undefined,
 			foreignAssets: args.optionalFields?.assets || undefined,
-			note: args.optionalFields?.note ? this.to8Arr(args.optionalFields.note) : undefined
+			note: args.optionalFields?.note ? this.toUint8Array(args.optionalFields.note) : undefined
 		});
 
 		return {
@@ -887,7 +978,7 @@ export class Algonaut {
 	 * @returns Promise resolving to atomic transaction
 	 */
 	async atomicCloseOutApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction> {
-		const fromAddr = args?.from || this.AnyWalletState.activeAddress;
+		const fromAddr = args?.from || this.walletState.activeAddress;
 		if (!fromAddr) throw new Error('there is no fromAddr');
 		if (!args.appIndex) throw new Error('Must provide appIndex');
 
@@ -933,7 +1024,7 @@ export class Algonaut {
 	 */
 	getAppEscrowAccount(appId: number | bigint): string {
 		if (!appId) throw new Error('No appId provided');
-		return utils.getAppEscrowAccount(appId);
+		return getApplicationAddress(appId);
 	}
 
 	/**
@@ -947,9 +1038,9 @@ export class Algonaut {
 
 		const proms = [
 			this.algodClient.getApplicationByID(appId).do(),
-		] as any;
+		] as Promise<any>[];
 
-		const addr = this.AnyWalletState.activeAddress;
+		const addr = this.walletState.activeAddress;
 		// get locals if we have an account
 		if (addr) {
 			proms.push(this.getAppLocalState(appId)); // TODO get rid of this call / only return locals (not incorrect duplicate state obj)
@@ -992,7 +1083,7 @@ export class Algonaut {
 			console.warn('drat! your note is too long!');
 			throw new Error('Your note is too long');
 		}
-		const fromAddr = this.AnyWalletState.activeAddress;
+		const fromAddr = this.walletState.activeAddress;
 		if (!fromAddr) throw new Error('there is no fromAddr');
 		if (!args.tealApprovalCode) throw new Error('No approval program provided');
 		if (!args.tealClearCode) throw new Error('No clear program provided');
@@ -1026,7 +1117,7 @@ export class Algonaut {
 					accounts: args.optionalFields?.accounts ? args.optionalFields.accounts : undefined,
 					foreignApps: args.optionalFields?.applications ? args.optionalFields.applications : undefined,
 					foreignAssets: args.optionalFields?.assets ? args.optionalFields.assets : undefined,
-					note: args.optionalFields?.note ? this.to8Arr(args.optionalFields.note) : undefined
+					note: args.optionalFields?.note ? this.toUint8Array(args.optionalFields.note) : undefined
 				});
 				const txId = txn.txID().toString();
 
@@ -1059,7 +1150,7 @@ export class Algonaut {
 	 * @returns AlgonautAtomicTransaction
 	 */
 	async atomicCreateApp(args: AlgonautDeployArguments): Promise<AlgonautAtomicTransaction> {
-		const fromAddr = this.AnyWalletState.activeAddress;
+		const fromAddr = this.walletState.activeAddress;
 		if (!fromAddr) throw new Error('there is no fromAddr');
 		if (!args.tealApprovalCode) throw new Error('No approval program provided');
 		if (!args.tealClearCode) throw new Error('No clear program provided');
@@ -1097,7 +1188,7 @@ export class Algonaut {
 					args.optionalFields?.accounts ? args.optionalFields.accounts : undefined,
 					args.optionalFields?.applications ? args.optionalFields.applications : undefined,
 					args.optionalFields?.assets ? args.optionalFields.assets : undefined,
-					args.optionalFields?.note ? this.to8Arr(args.optionalFields.note) : undefined
+					args.optionalFields?.note ? this.toUint8Array(args.optionalFields.note) : undefined
 				);
 
 				return {
@@ -1197,7 +1288,7 @@ export class Algonaut {
 	 * @returns atomic transaction that updates the app
 	 */
 	async atomicUpdateApp(args: AlgonautUpdateAppArguments): Promise<AlgonautAtomicTransaction> {
-		const fromAddr = this.AnyWalletState.activeAddress;
+		const fromAddr = this.walletState.activeAddress;
 		if (!fromAddr) throw new Error('there is no fromAddr');
 		if (!args.tealApprovalCode) throw new Error('No approval program provided');
 		if (!args.tealClearCode) throw new Error('No clear program provided');
@@ -1230,7 +1321,7 @@ export class Algonaut {
 				args.optionalFields?.accounts ? args.optionalFields.accounts : undefined,
 				args.optionalFields?.applications ? args.optionalFields.applications : undefined,
 				args.optionalFields?.assets ? args.optionalFields.assets : undefined,
-				args.optionalFields?.note ? this.to8Arr(args.optionalFields.note) : undefined
+				args.optionalFields?.note ? this.toUint8Array(args.optionalFields.note) : undefined
 			);
 
 			return {
@@ -1271,13 +1362,16 @@ export class Algonaut {
 	}
 
 	async atomicSendAlgo(args: AlgonautPaymentArguments): Promise<AlgonautAtomicTransaction> {
-		if (!args.amount) throw new Error('You did not specify an amount!');
+		if (!(typeof args.amount == 'bigint' || typeof args.amount == 'number')) {
+			throw new Error('Amount has to be a number.');
+		}
 		if (!args.to) throw new Error('You did not specify a to address');
-		const fromAddr = args.from || this.AnyWalletState.activeAddress;
+		if (!isValidAddress(args.to)) throw new Error('Invalid to address');
+		const fromAddr = args.from || this.walletState.activeAddress;
 		if (!fromAddr) throw new Error('there is no fromAddr');
 
 		if (fromAddr) {
-			const encodedNote = args.optionalFields?.note ? this.to8Arr(args.optionalFields.note) : new Uint8Array();
+			const encodedNote = args.optionalFields?.note ? this.toUint8Array(args.optionalFields.note) : new Uint8Array();
 			const suggestedParams = args.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
 			const transaction =
@@ -1318,8 +1412,6 @@ export class Algonaut {
 	 */
 	async getAccountInfo(address: string): Promise<any> {
 		if (!address) throw new Error('No address provided');
-
-		//console.log//('checking algo balance');
 		const accountInfo = await this.algodClient.accountInformation(address).do();
 		return accountInfo;
 	}
@@ -1366,8 +1458,13 @@ export class Algonaut {
 	 * @param address - Address to check
 	 * @param assetIndex - the index of the ASA
 	 */
-	async accountHasTokens(address: string, assetIndex: number): Promise<any> {
-		return 'this is not done yet';
+	async accountHasTokens(address: string, assetIndex: number): Promise<boolean> {
+		let bal = await this.getTokenBalance(address, assetIndex);
+		if (bal > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -1407,8 +1504,8 @@ export class Algonaut {
 		// can we detect addresses values and auto-convert them?
 		// maybe a 32-byte field gets an address field added?
 
-		if (this.AnyWalletState.activeAddress && !address) {
-			address = this.AnyWalletState.activeAddress;
+		if (this.walletState.activeAddress && !address) {
+			address = this.walletState.activeAddress;
 		}
 
 		if (address) {
@@ -1458,7 +1555,6 @@ export class Algonaut {
 	}
 
 	async atomicAssetTransferWithLSig(args: AlgonautLsigSendAssetArguments): Promise<AlgonautAtomicTransaction> {
-
 		if (args.lsig) {
 			const suggestedParams = args.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
@@ -1530,7 +1626,28 @@ export class Algonaut {
 	}
 
 	/**
-	 * Sends a transaction or multiple through the correct wallet according to AW
+	 * Signs a transaction or multiple w the correct wallet according to AW (does not send / submit txn(s) to network)
+	 * @param txnOrTxns Either an array of atomic transactions or a single transaction to sign
+	 * @param signedTxns array of 
+	 * @returns Promise resolving to AlgonautTransactionStatus
+	 */
+	async signTransaction(txnOrTxns: AlgonautAtomicTransaction[] | Transaction | AlgonautAtomicTransaction): Promise<Uint8Array[]> {
+		const awTxnsToSign = this.normalizeTxns(txnOrTxns);
+		logger.log('awTxnsToSign', awTxnsToSign);
+		let awTxnsSigned: Uint8Array[];
+		try {
+			awTxnsSigned = await signTransactions(awTxnsToSign);
+			logger.log('awTxnsSigned', awTxnsSigned);
+		} catch(e) {
+			console.warn('err signing txns...');
+			logger.log(e);
+			throw new Error('Error signing transactions');
+		}
+		return awTxnsSigned;
+	}
+
+	/**
+	 * Sends a transaction or multiple w the correct wallet according to AW
 	 * @param txnOrTxns Either an array of atomic transactions or a single transaction to sign
 	 * @param callbacks Optional object with callbacks - `onSign`, `onSend`, and `onConfirm`
 	 * @returns Promise resolving to AlgonautTransactionStatus
@@ -1543,21 +1660,7 @@ export class Algonaut {
 		 * 4. return result + txid
 		 */
 
-		const awTxnsToSign = this.normalizeTxns(txnOrTxns);
-		logger.log('awTxnsToSign', awTxnsToSign);
-		let awTxnsSigned: Uint8Array[];
-		try {
-			awTxnsSigned = await signTransactions(awTxnsToSign);
-			logger.log('awTxnsSigned', awTxnsSigned);
-		} catch(e) {
-			console.warn('err signing txns...');
-			logger.log(e);
-			return {
-				status: 'rejected',
-				message: 'User rejected the message.',
-				txId: ''
-			};
-		}
+		const awTxnsSigned = await this.signTransaction(txnOrTxns);
 
 		if (callbacks?.onSign) callbacks.onSign(awTxnsSigned);
 
@@ -1578,13 +1681,13 @@ export class Algonaut {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param str string
 	 * @param enc the encoding type of the string (defaults to utf8)
 	 * @returns string encoded as Uint8Array
 	 */
-	to8Arr(str: string, enc: BufferEncoding = 'utf8'): Uint8Array {
-		return utils.to8Arr(str, enc);
+	toUint8Array(str: string, enc: BufferEncoding = 'utf8'): Uint8Array {
+		return new Uint8Array(Buffer.from(str, enc));
 	}
 
 	/**
@@ -1592,9 +1695,14 @@ export class Algonaut {
 	 *
 	 * @param stateArray State array returned from functions like {@link getAppInfo}
 	 * @returns A more useful object: `{ array[0].key: array[0].value, array[1].key: array[1].value, ... }`
+	 * TODO add correct typing for this method
 	 */
 	stateArrayToObject(stateArray: object[]): any {
-		return utils.stateArrayToObject(stateArray);
+		const stateObj = {} as any;
+		stateArray.forEach((value: any) => {
+			if (value.key) stateObj[value.key] = value.value || null;
+		});
+		return stateObj;
 	}
 
 	/**
@@ -1602,8 +1710,8 @@ export class Algonaut {
 	 * @param encoded Base64 string
 	 * @returns Human-readable string
 	 */
-	fromBase64(encoded: string): string {
-		return utils.fromBase64(encoded);
+	b64StrToHumanStr(encoded: string): string {
+		return Buffer.from(encoded, 'base64').toString();
 	}
 
 	/**
@@ -1612,7 +1720,7 @@ export class Algonaut {
 	 * @returns Decoded address
 	 */
 	valueAsAddr(encoded: string): string {
-		return utils.valueAsAddr(encoded);
+		return encodeAddress(Buffer.from(encoded, 'base64'));
 	}
 
 	/**
@@ -1620,162 +1728,6 @@ export class Algonaut {
 	 * @param stateArray Encoded app state
 	 * @returns Array of objects with key, value, and address properties
 	 */
-	decodeStateArray(stateArray: AlgonautAppStateEncoded[]) {
-		return utils.decodeStateArray(stateArray);
-	}
-
-	/**
-	 * Does what it says on the tin.
-	 * @param txn base64-encoded unsigned transaction
-	 * @returns transaction object
-	 */
-	decodeBase64UnsignedTransaction(txn: string): Transaction {
-		return utils.decodeBase64UnsignedTransaction(txn);
-	}
-
-	/**
-	 * Describes an Algorand transaction, for display in Inkey
-	 * @param txn Transaction to describe
-	 */
-	txnSummary(txn: Transaction) {
-		return utils.txnSummary(txn);
-	}
-
-}
-export default Algonaut;
-
-/**
- * This export contains all the offline Algonaut functionality.
- * Since instantiation of the Algonaut class requires that you
- * configure a node, if you wish to use certain conveniences of
- * Algonaut without the need for a network, simply use
- * `import { utils } from '@thencc/algonautjs'`
- */
-export const utils = {
-	/**
-	 * Creates a wallet address + mnemonic from account's secret key
-	 * @returns AlgonautWallet Object containing `address` and `mnemonic`
-	 */
-	createWallet(): AlgonautWallet {
-		const account = generateAccount();
-
-		if (account) {
-			const mnemonic = secretKeyToMnemonic(account.sk);
-			return {
-				address: account.addr,
-				mnemonic: mnemonic,
-			};
-		} else {
-			throw new Error('There was no account: could not create algonaut wallet!');
-		}
-
-	},
-
-	/**
-	 * Recovers account from mnemonic
-	 * // TODO move this to AnyWallet w mnemonic config param
-	 * @param mnemonic Mnemonic associated with Algonaut account
-	 * @returns If mnemonic is valid, returns account. Otherwise, throws an error.
-	 */
-	recoverAccount(mnemonic: string): AlgosdkAccount {
-		if (!mnemonic) throw new Error('utils.recoverAccount: No mnemonic provided.');
-
-		try {
-			const account = mnemonicToSecretKey(mnemonic);
-			if (isValidAddress(account?.addr)) {
-				return account;
-			} else {
-				throw new Error('Not a valid mnemonic.');
-			}
-		} catch (error: any) {
-			// should we throw an error here instead of returning false?
-			console.error(error);
-			throw new Error('Could not recover account from mnemonic.');
-		}
-	},
-
-	/**
-	 * Creates a LogicSig from a base64 program string.  Note that this method does not COMPILE
-	 * the program, just builds an LSig from an already compiled base64 result!
-	 * @param base64ProgramString
-	 * @returns an algosdk LogicSigAccount
-	 */
-	generateLogicSig(base64ProgramString: string): LogicSigAccount {
-		if (!base64ProgramString) throw new Error('No program string provided.');
-
-		const program = new Uint8Array(
-			Buffer.from(base64ProgramString, 'base64')
-		);
-
-		return new LogicSigAccount(program);
-	},
-
-	/**
-	 * Sync function that returns a correctly-encoded argument array for
-	 * an algo transaction
-	 * @param args must be an any[] array, as it will often need to be
-	 * a mix of strings and numbers. Valid types are: string, number, and bigint
-	 * @returns a Uint8Array of encoded arguments
-	 */
-	encodeArguments(args: any[]): Uint8Array[] {
-		const encodedArgs = [] as Uint8Array[];
-
-		// loop through args and encode them based on type
-		args.forEach((arg: any) => {
-			if (typeof arg == 'number') {
-				encodedArgs.push(encodeUint64(arg));
-			} else if (typeof arg == 'bigint') {
-				encodedArgs.push(encodeUint64(arg));
-			} else if (typeof arg == 'string') {
-				encodedArgs.push(new Uint8Array(Buffer.from(arg)));
-			}
-		});
-
-		return encodedArgs;
-	},
-
-	/**
-	 * Get an application's escrow account
-	 * @param appId - ID of application
-	 * @returns Escrow account address as string
-	 */
-	getAppEscrowAccount(appId: number | bigint): string {
-		if (!appId) throw new Error('No appId provided');
-		return getApplicationAddress(appId);
-	},
-
-	/**
-	 *
-	 * @param str string
-	 * @param enc the encoding type of the string (defaults to utf8)
-	 * @returns string encoded as Uint8Array
-	 */
-	to8Arr(str: string, enc: BufferEncoding = 'utf8'): Uint8Array {
-		return new Uint8Array(Buffer.from(str, enc));
-	},
-
-	/**
-	 * Helper function to turn `globals` and `locals` array into more useful objects
-	 *
-	 * @param stateArray State array returned from functions like {@link Algonaut.getAppInfo}
-	 * @returns A more useful object: `{ array[0].key: array[0].value, array[1].key: array[1].value, ... }`
-	 */
-	stateArrayToObject(stateArray: object[]): any {
-		const stateObj = {} as any;
-		stateArray.forEach((value: any) => {
-			if (value.key) stateObj[value.key] = value.value || null;
-		});
-		return stateObj;
-	},
-
-	fromBase64(encoded: string) {
-		return Buffer.from(encoded, 'base64').toString();
-	},
-
-	valueAsAddr(encoded: string): string {
-		return encodeAddress(Buffer.from(encoded, 'base64'));
-	},
-
 	decodeStateArray(stateArray: AlgonautAppStateEncoded[]) {
 		const result: AlgonautStateData[] = [];
 
@@ -1785,13 +1737,13 @@ export const utils = {
 
 			const stateItem = stateArray[n];
 
-			const key = this.fromBase64(stateItem.key);
+			const key = this.b64StrToHumanStr(stateItem.key);
 			const type = stateItem.value.type;
 			let value = undefined as undefined | string | number;
 			let valueAsAddr = '';
 
 			if (type == 1) {
-				value = this.fromBase64(stateItem.value.bytes);
+				value = this.b64StrToHumanStr(stateItem.value.bytes);
 				valueAsAddr = this.valueAsAddr(stateItem.value.bytes);
 
 			} else if (stateItem.value.type == 2) {
@@ -1807,7 +1759,7 @@ export const utils = {
 		}
 
 		return result;
-	},
+	}
 
 	/**
 	 * Does what it says on the tin.
@@ -1816,41 +1768,13 @@ export const utils = {
 	 */
 	decodeBase64UnsignedTransaction(txn: string): Transaction {
 		return decodeUnsignedTransaction(Buffer.from(txn, 'base64'));
-	},
-
-	/**
-	 * txn(b64) -> txnBuff (buffer)
-	 * @param txn base64-encoded unsigned transaction
-	 * @returns trransaction as buffer object
-	 */
-	txnB64ToTxnBuff(txn: string): Buffer {
-		return Buffer.from(txn, 'base64');
-	},
-
-	/**
-	 * Converts between buff -> b64 (txns)
-	 * @param buff likely a algorand txn as a Uint8Array buffer
-	 * @returns string (like for inkey / base64 transmit use)
-	 */
-	txnBuffToB64(buff: Uint8Array): string {
-		return Buffer.from(buff).toString('base64');
-	},
-
-	/**
-	 * Does what it says on the tin.
-	 * @param txn algorand txn object
-	 * @returns string (like for inkey / base64 transmit use)
-	 */
-	txnToStr(txn: algosdk.Transaction): string {
-		const buff = txn.toByte();
-		return this.txnBuffToB64(buff);
-	},
+	}
 
 	/**
 	 * Describes an Algorand transaction, for display in Inkey
 	 * @param txn Transaction to describe
 	 */
-	txnSummary(txn: Transaction): string {
+	txnSummary(txn: Transaction) {
 		// for reference: https://developer.algorand.org/docs/get-details/transactions/transactions/
 
 		if (txn.type) {
@@ -1931,7 +1855,77 @@ export const utils = {
 			// no better option
 			return txn.toString();
 		}
-	},
-};
+	}
+
+	/**
+	 * Creates a wallet address + mnemonic from account's secret key
+	 * @returns AlgonautWallet Object containing `address` and `mnemonic`
+	 */
+	createWallet(): AlgonautWallet {
+		const account = generateAccount();
+
+		if (account) {
+			const mnemonic = secretKeyToMnemonic(account.sk);
+			return {
+				address: account.addr,
+				mnemonic: mnemonic,
+			};
+		} else {
+			throw new Error('There was no account: could not create algonaut wallet!');
+		}
+	}
+
+	/**
+	 * Recovers account from mnemonic
+	 * @param mnemonic Mnemonic associated with Algonaut account
+	 * @returns If mnemonic is valid, returns algosdk account (.addr, .sk). Otherwise, throws an error.
+	 */
+	recoverAccount(mnemonic: string): AlgosdkAccount {
+		if (!mnemonic) throw new Error('No mnemonic provided.');
+
+		try {
+			const account = mnemonicToSecretKey(mnemonic);
+			if (isValidAddress(account?.addr)) {
+				return account;
+			} else {
+				throw new Error('Not a valid mnemonic.');
+			}
+		} catch (error: any) {
+			// should we throw an error here instead of returning false?
+			console.error(error);
+			throw new Error('Could not recover account from mnemonic.');
+		}
+	}
+
+	/**
+	 * txn(b64) -> txnBuff (buffer)
+	 * @param txn base64-encoded unsigned transaction
+	 * @returns trransaction as buffer object
+	 */
+	txnB64ToTxnBuff(txn: string): Buffer {
+		return Buffer.from(txn, 'base64');
+	}
+
+	/**
+	 * Converts between buff -> b64 (txns)
+	 * @param buff likely a algorand txn as a Uint8Array buffer
+	 * @returns string (like for inkey / base64 transmit use)
+	 */
+	txnBuffToB64(buff: Uint8Array): string {
+		return Buffer.from(buff).toString('base64');
+	}
+
+	/**
+	 * Does what it says on the tin.
+	 * @param txn algorand txn object
+	 * @returns string (like for inkey / base64 transmit use)
+	 */
+	txnToStr(txn: algosdk.Transaction): string {
+		const buff = txn.toByte();
+		return this.txnBuffToB64(buff);
+	}
+
+}
+export default Algonaut;
 
 export const buffer = Buffer; // sometimes this is helpful on the frontend

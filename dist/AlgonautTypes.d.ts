@@ -12,9 +12,7 @@ export type AlgonautConfig = {
         PORT: string;
         API_TOKEN: any;
     };
-    anyWalletConfig?: {
-        walletInitParams?: WalletInitParamsObj;
-    };
+    initWallets?: WalletInitParamsObj;
 };
 export interface AlgonautStateData {
     key: string;
