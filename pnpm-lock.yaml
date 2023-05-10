@@ -2,8 +2,8 @@ lockfileVersion: '6.0'
 
 dependencies:
   '@thencc/any-wallet':
-    specifier: ^0.1.26
-    version: 0.1.26(algosdk@2.2.0)
+    specifier: ^0.1.27
+    version: 0.1.27(algosdk@2.2.0)
   algosdk:
     specifier: ^2.2.0
     version: 2.2.0
@@ -22,8 +22,8 @@ optionalDependencies:
     specifier: ^1.4.2
     version: 1.4.2
   '@thencc/inkey-client-js':
-    specifier: ^0.0.16
-    version: 0.0.16
+    specifier: ^0.0.17
+    version: 0.0.17
 
 devDependencies:
   '@jest/globals':
@@ -1077,8 +1077,8 @@ packages:
       '@sinonjs/commons': 2.0.0
     dev: true
 
-  /@thencc/any-wallet@0.1.26(algosdk@2.2.0):
-    resolution: {integrity: sha512-ds8bm6o4Y6ztFKmiyb3gWzuVh5hAk0dbA2hWqXu2LdeEVAcy5DihhY6RdkD9QaU2UqYyjmOW24rb5oym+xUXCQ==}
+  /@thencc/any-wallet@0.1.27(algosdk@2.2.0):
+    resolution: {integrity: sha512-FkzuzCIHeJwpGKnERsRitiHQTqwgEvLQtbqvpsTZ8za1BD15xab4etsarhVW1rQftUF0x6Pl//noOaOg5+mioA==}
     peerDependencies:
       algosdk: ^2.1.0
     dependencies:
@@ -1090,15 +1090,15 @@ packages:
       '@blockshake/defly-connect': 1.1.2(algosdk@2.2.0)
       '@perawallet/connect': 1.2.3(algosdk@2.2.0)
       '@randlabs/myalgo-connect': 1.4.2
-      '@thencc/inkey-client-js': 0.0.16
+      '@thencc/inkey-client-js': 0.0.17
       buffer: 6.0.3
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
     dev: false
 
-  /@thencc/inkey-client-js@0.0.16:
-    resolution: {integrity: sha512-jJU91WPEZ+4l1Y7BquZ7K83o6yya/ip/Q6muqIW2TYiRJoQHKHcCISX1LRLAZMkKI2AwotrW9OPyDv6ysGvFUA==}
+  /@thencc/inkey-client-js@0.0.17:
+    resolution: {integrity: sha512-dO/UT7Zw6RFzoqVTbTmiXkcK0QfdWhuO30bUheUglSaqhtVd/6R+zPPzHMStC7UfJvgnGnZkDcOpnwg8LVvJ3Q==}
     requiresBuild: true
     dev: false
     optional: true
@@ -1191,8 +1191,8 @@ packages:
     resolution: {integrity: sha512-KufADq8uQqo1pYKVIYzfKbJfBAc0sOeXqGbFaSpv8MRmC/zXgowNZmFcbngndGk922QDmOASEXUZCaY48gs4cg==}
     dev: true
 
-  /@types/semver@7.3.13:
-    resolution: {integrity: sha512-21cFJr9z3g5dW8B0CVI9g2O9beqaThGQ6ZFBqHfwhzLDKUxaqTIy3vnfah/UPkfOiF2pLq+tGz+W8RyCskuslw==}
+  /@types/semver@7.5.0:
+    resolution: {integrity: sha512-G8hZ6XJiHnuhQKR7ZmysCeJWE08o8T0AXtk5darsCaTVsYZhhgUrq53jizaR2FvsoeCwJhlmwTjkXBY5Pn/ZHw==}
     dev: true
 
   /@types/stack-utils@2.0.1:
@@ -1319,7 +1319,7 @@ packages:
     dependencies:
       '@eslint-community/eslint-utils': 4.4.0(eslint@8.40.0)
       '@types/json-schema': 7.0.11
-      '@types/semver': 7.3.13
+      '@types/semver': 7.5.0
       '@typescript-eslint/scope-manager': 5.59.2
       '@typescript-eslint/types': 5.59.2
       '@typescript-eslint/typescript-estree': 5.59.2(typescript@4.9.5)
@@ -1908,8 +1908,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001485
-      electron-to-chromium: 1.4.385
+      caniuse-lite: 1.0.30001486
+      electron-to-chromium: 1.4.388
       node-releases: 2.0.10
       update-browserslist-db: 1.0.11(browserslist@4.21.5)
     dev: true
@@ -1975,8 +1975,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /caniuse-lite@1.0.30001485:
-    resolution: {integrity: sha512-8aUpZ7sjhlOyiNsg+pgcrTTPUXKh+rg544QYHSvQErljVEKJzvkYkCR/hUFeeVoEfTToUtY9cUKNRC7+c45YkA==}
+  /caniuse-lite@1.0.30001486:
+    resolution: {integrity: sha512-uv7/gXuHi10Whlj0pp5q/tsK/32J2QSqVRKQhs2j8VsDCjgyruAh/eEXHF822VqO9yT6iZKw3nRwZRSPBE9OQg==}
     dev: true
 
   /chalk@2.4.2:
@@ -2330,8 +2330,8 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /electron-to-chromium@1.4.385:
-    resolution: {integrity: sha512-L9zlje9bIw0h+CwPQumiuVlfMcV4boxRjFIWDcLfFqTZNbkwOExBzfmswytHawObQX4OUhtNv8gIiB21kOurIg==}
+  /electron-to-chromium@1.4.388:
+    resolution: {integrity: sha512-xZ0y4zjWZgp65okzwwt00f2rYibkFPHUv9qBz+Vzn8cB9UXIo9Zc6Dw81LJYhhNt0G/vR1OJEfStZ49NKl0YxQ==}
     dev: true
 
   /elliptic@6.5.4:
@@ -4921,8 +4921,8 @@ packages:
       inherits: 2.0.4
     dev: true
 
-  /rollup@3.21.5:
-    resolution: {integrity: sha512-a4NTKS4u9PusbUJcfF4IMxuqjFzjm6ifj76P54a7cKnvVzJaG12BLVR+hgU2YDGHzyMMQNxLAZWuALsn8q2oQg==}
+  /rollup@3.21.6:
+    resolution: {integrity: sha512-SXIICxvxQxR3D4dp/3LDHZIJPC8a4anKMHd4E3Jiz2/JnY+2bEjqrOokAauc5ShGVNFHlEFjBXAXlaxkJqIqSg==}
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
     hasBin: true
     optionalDependencies:
@@ -5571,7 +5571,7 @@ packages:
       '@types/node': 18.16.5
       esbuild: 0.17.18
       postcss: 8.4.23
-      rollup: 3.21.5
+      rollup: 3.21.6
       sass: 1.62.1
     optionalDependencies:
       fsevents: 2.3.2

@@ -53,6 +53,11 @@ export declare class Algonaut {
                 reconnect: () => Promise<void>;
                 setAsActiveWallet: () => void;
                 removeAccounts: () => void;
+                /**
+                 * Returns atomic transaction that deletes application
+                 * @param appIndex - ID of application
+                 * @returns Promise resolving to atomic transaction that deletes application
+                 */
                 signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 readonly accounts: readonly {
                     readonly walletId: WALLET_ID;
@@ -318,6 +323,13 @@ export declare class Algonaut {
                     config?: any;
                     sdk?: any;
                 };
+                /**
+                 * Create an atomic transaction to deploy a
+                 * new Smart Contract from TEAL code
+                 *
+                 * @param args AlgonautDeployArguments
+                 * @returns AlgonautAtomicTransaction
+                 */
                 inited: boolean;
                 initing: boolean;
                 signing: boolean;
@@ -437,7 +449,11 @@ export declare class Algonaut {
                 };
                 inited: boolean;
                 initing: boolean;
-                signing: boolean;
+                signing: boolean; /**
+                 * Updates an application with `makeApplicationUpdateTxn`
+                 * @param args AlgonautUpdateAppArguments
+                 * @returns atomic transaction that updates the app
+                 */
                 connecting: boolean;
                 loadClient: () => Promise<true>;
                 connect: (p?: any) => Promise<Account[]>;
@@ -504,6 +520,11 @@ export declare class Algonaut {
                     pkg: string;
                 };
                 client: {
+                    /**
+                     * Compiles TEAL source via [algodClient.compile](https://py-algorand-sdk.readthedocs.io/en/latest/algosdk/v2client/algod.html#v2client.algod.AlgodClient.compile)
+                     * @param programSource source to compile
+                     * @returns Promise resolving to Buffer of compiled bytes
+                     */
                     connect: (x: any) => Promise<import("@thencc/any-wallet").Wallet>;
                     disconnect: () => Promise<void>;
                     reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet | null>;
@@ -617,11 +638,7 @@ export declare class Algonaut {
             connect: (p?: any) => Promise<Account[]>;
             disconnect: () => Promise<void>;
             reconnect: () => Promise<void>;
-            setAsActiveWallet: () => void; /**
-             * Gets global state for an application.
-             * @param applicationIndex - the applications index
-             * @returns {object} object representing global state
-             */
+            setAsActiveWallet: () => void;
             removeAccounts: () => void;
             signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
             readonly accounts: readonly {
