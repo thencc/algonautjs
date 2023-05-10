@@ -353,13 +353,11 @@ export class Algonaut {
 						enableWallets(initWallets);
 					}
 
-					// the good stuff
-					if (!w.isConnected) {
-						w.initParams = wInitParams; // using "as" here to make mnemonic init simple w direct mnemonic str instead of nested in .config
-						return await w.connect();
-					} else {
-						throw new Error('Wallet already connected.');
-					}
+					// FYI ignore the .isConnected check (as in below init using singular enabledWallet) 
+					// to allow for authing into multiple accounts of 1 wallet type
+					
+					w.initParams = wInitParams;
+					return await w.connect();
 				} else {
 					throw new Error('Could not find wallet to enable');
 				}
