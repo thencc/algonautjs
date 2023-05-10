@@ -305,7 +305,11 @@ export class Algonaut {
 			return;
 		}
 		await inkeyW.loadClient();
-		(inkeyW.client as any).sdk.show();
+		if ((inkeyW.client as any).sdk.frameBus.ready) {
+			(inkeyW.client as any).sdk.show();
+		} else {
+			logger.log('inkey comms not yet ready.')
+		}
 	}
 
 	/**
@@ -319,7 +323,11 @@ export class Algonaut {
 			return;
 		}
 		await inkeyW.loadClient();
-		(inkeyW.client as any).sdk.hide();
+		if ((inkeyW.client as any).sdk.frameBus.ready) {
+			(inkeyW.client as any).sdk.hide();
+		} else {
+			logger.log('inkey comms not yet ready.')
+		}
 	}
 
 	/**
