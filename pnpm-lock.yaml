@@ -2,8 +2,8 @@ lockfileVersion: '6.0'
 
 dependencies:
   '@thencc/any-wallet':
-    specifier: ^0.1.27
-    version: 0.1.27(algosdk@2.2.0)
+    specifier: ^0.1.28
+    version: 0.1.28(algosdk@2.2.0)
   algosdk:
     specifier: ^2.2.0
     version: 2.2.0
@@ -22,8 +22,8 @@ optionalDependencies:
     specifier: ^1.4.2
     version: 1.4.2
   '@thencc/inkey-client-js':
-    specifier: ^0.0.17
-    version: 0.0.17
+    specifier: ^0.0.18
+    version: 0.0.18
 
 devDependencies:
   '@jest/globals':
@@ -1077,8 +1077,8 @@ packages:
       '@sinonjs/commons': 2.0.0
     dev: true
 
-  /@thencc/any-wallet@0.1.27(algosdk@2.2.0):
-    resolution: {integrity: sha512-FkzuzCIHeJwpGKnERsRitiHQTqwgEvLQtbqvpsTZ8za1BD15xab4etsarhVW1rQftUF0x6Pl//noOaOg5+mioA==}
+  /@thencc/any-wallet@0.1.28(algosdk@2.2.0):
+    resolution: {integrity: sha512-+aUlJLPMDtueBt2QeubvSjNEkHuHg882hAjkBuA+vHyzTLihDEVud10o47wl/xBF7/x9Jsl2tetLu6cVIqYAKg==}
     peerDependencies:
       algosdk: ^2.1.0
     dependencies:
@@ -1090,15 +1090,15 @@ packages:
       '@blockshake/defly-connect': 1.1.2(algosdk@2.2.0)
       '@perawallet/connect': 1.2.3(algosdk@2.2.0)
       '@randlabs/myalgo-connect': 1.4.2
-      '@thencc/inkey-client-js': 0.0.17
+      '@thencc/inkey-client-js': 0.0.18
       buffer: 6.0.3
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
     dev: false
 
-  /@thencc/inkey-client-js@0.0.17:
-    resolution: {integrity: sha512-dO/UT7Zw6RFzoqVTbTmiXkcK0QfdWhuO30bUheUglSaqhtVd/6R+zPPzHMStC7UfJvgnGnZkDcOpnwg8LVvJ3Q==}
+  /@thencc/inkey-client-js@0.0.18:
+    resolution: {integrity: sha512-/45QunyZoI1nLqOTSX7t19iEmOCmddXzfumr0MS2/aIMfLAMYUx0/YpXdppNur0Hx4U1W5K2pwp3gI4tS73hcw==}
     requiresBuild: true
     dev: false
     optional: true
