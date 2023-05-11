@@ -107,11 +107,11 @@ describe('Algonaut core: offline sync methods', () => {
         expect(algonaut.walletState.activeWallet).toBeUndefined();
     })
 
-    test('createWallet sets account with a valid wallet with addr and sk params', () => {
-        algonaut.createWallet();
-        expect(algonaut.account).toBeDefined();
-        expect((algonaut.account as any).addr).toBeDefined();
-        expect((algonaut.account as any).sk).toBeDefined();
+    test('createWallet creates an account object', () => {
+        const wallet = algonaut.createWallet();
+        expect(wallet).toBeDefined();
+        expect((wallet as any).address).toBeDefined();
+        expect((wallet as any).sk).toBeDefined();
     })
 
     test('recoverAccount works with a newly created wallet', () => {
@@ -207,11 +207,11 @@ describe('Algonaut online methods', () => {
 
     let algonaut: Algonaut;
     algonaut = new Algonaut(validConfig);
-    algonaut.recoverAccount(testAccountMnemonic);
+    algonaut.connect({ mnemonic: testAccountMnemonic });
 
     beforeEach(() => {
         algonaut = new Algonaut(validConfig);
-        algonaut.recoverAccount(testAccountMnemonic);
+        algonaut.connect({ mnemonic: testAccountMnemonic });
     })
 
     describe('compileProgram', () => {

@@ -1883,7 +1883,8 @@ export class Algonaut {
 	}
 
 	/**
-	 * Creates a wallet address + mnemonic from account's secret key
+	 * Creates a wallet address + mnemonic from account's secret key.
+	 * Changed in 0.3: this does NOT set algonaut.account.
 	 * @returns AlgonautWallet Object containing `address` and `mnemonic`
 	 */
 	createWallet(): AlgonautWallet {
@@ -1902,6 +1903,7 @@ export class Algonaut {
 
 	/**
 	 * Recovers account from mnemonic
+	 * Changed in 0.3: this does NOT set algonaut.account.
 	 * @param mnemonic Mnemonic associated with Algonaut account
 	 * @returns If mnemonic is valid, returns algosdk account (.addr, .sk). Otherwise, throws an error.
 	 */
