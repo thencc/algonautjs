@@ -45,6 +45,12 @@ export declare class Algonaut {
                 };
                 inited: boolean;
                 initing: boolean;
+                /**
+                 * Opt-in the current account for an app.
+                 * @param args Object containing `appIndex`, `appArgs`, and `optionalFields`
+                 * @param callbacks optional AlgonautTxnCallbacks
+                 * @returns Promise resolving to confirmed transaction or error
+                 */
                 signing: boolean;
                 connecting: boolean;
                 loadClient: () => Promise<true>;
@@ -199,13 +205,6 @@ export declare class Algonaut {
                     config?: any;
                     sdk?: any;
                 };
-                /**
-                 * Closes out the user's local state in an application.
-                 * The opposite of {@link optInApp}.
-                 * @param args Object containing `appIndex`, `appArgs`, and `optionalFields` properties
-                 * @param callbacks optional AlgonautTxnCallbacks
-                 * @returns Promise resolving to atomic transaction
-                 */
                 inited: boolean;
                 initing: boolean;
                 signing: boolean;
@@ -391,6 +390,15 @@ export declare class Algonaut {
                     name: string;
                     icon: string;
                     chain: string;
+                    /**
+                     * deploys a contract from an lsig account
+                     * keep in mind that the local and global byte and int values have caps,
+                     * 16 for local and 32 for global and that the cost of deploying the
+                     * app goes up based on how many of these slots you want to allocate
+                     *
+                     * @param args AlgonautLsigDeployArguments
+                     * @returns
+                     */
                     pkg: string;
                 };
                 client: {
@@ -557,6 +565,13 @@ export declare class Algonaut {
                 } | null;
                 initParams: boolean | {
                     config?: any;
+                    /**
+                     * Sends ALGO from own account to `args.to`
+                     *
+                     * @param args `AlgonautPaymentArgs` object containing `to`, `amount`, and optional `note`
+                     * @param callbacks optional AlgonautTxnCallbacks
+                     * @returns Promise resolving to transaction status
+                     */
                     sdk?: any;
                 };
                 inited: boolean;
@@ -579,11 +594,7 @@ export declare class Algonaut {
                 readonly isActive: boolean;
                 readonly isConnected: boolean;
             } | undefined;
-        } | null; /**
-         * Checks Algo balance of account
-         * @param address - Wallet of balance to check
-         * @returns Promise resolving to Algo balance
-         */
+        } | null;
         stored: {
             version: number;
             connectedAccounts: {
