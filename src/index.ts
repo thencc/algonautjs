@@ -270,7 +270,7 @@ export class Algonaut {
 	 * @returns If mnemonic is valid, it returns the account (address, chain). Otherwise, throws an error.
 	 */
 	async mnemonicConnect(mnemonic: string): Promise<Account[]> {
-		if (!mnemonic) throw new Error('algonaut.authWithMnemonic: No mnemonic provided.');
+		if (!mnemonic) throw new Error('algonaut.mnemonicConnect: No mnemonic provided.');
 		return await this.connect({
 			mnemonic
 		});
@@ -337,7 +337,7 @@ export class Algonaut {
 	 * FAILs and throws when multiple init params are passed in or multiple wallets are enabled when nothing is passed in (since it doesnt know which to connect up)
 	 */
 	async connect(initWallets?: WalletInitParamsObj) {
-		logger.log('connect initWallets', initWallets);
+		//logger.log('connect initWallets', initWallets);
 		if (initWallets !== undefined) {
 			const initWs = Object.entries(initWallets);
 			if (initWs.length == 1) {
@@ -1697,6 +1697,16 @@ export class Algonaut {
 	}
 
 	/**
+	 * @deprecated use toUint8Array instead.
+	 * @param str string
+	 * @param enc the encoding type of the string (defaults to utf8)
+	 * @returns string encoded as Uint8Array
+	 */
+	to8Arr(str: string, enc: BufferEncoding = 'utf8'): Uint8Array {
+		return this.toUint8Array(str, enc);
+	}
+
+	/**
 	 * Helper function to turn `globals` and `locals` array into more useful objects
 	 *
 	 * @param stateArray State array returned from functions like {@link getAppInfo}
@@ -1718,6 +1728,15 @@ export class Algonaut {
 	 */
 	b64StrToHumanStr(encoded: string): string {
 		return Buffer.from(encoded, 'base64').toString();
+	}
+
+	/**
+	 * @deprecated Use b64StrToHumanStr instead
+	 * @param encoded Base64 string
+	 * @returns Human-readable string
+	 */
+	fromBase64(encoded: string): string {
+		return this.b64StrToHumanStr(encoded);
 	}
 
 	/**
