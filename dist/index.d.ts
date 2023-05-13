@@ -45,12 +45,6 @@ export declare class Algonaut {
                 };
                 inited: boolean;
                 initing: boolean;
-                /**
-                 * Opt-in the current account for an app.
-                 * @param args Object containing `appIndex`, `appArgs`, and `optionalFields`
-                 * @param callbacks optional AlgonautTxnCallbacks
-                 * @returns Promise resolving to confirmed transaction or error
-                 */
                 signing: boolean;
                 connecting: boolean;
                 loadClient: () => Promise<true>;
@@ -66,8 +60,14 @@ export declare class Algonaut {
                     readonly address: string;
                     readonly chain: string;
                 }[];
-                readonly isActive: boolean;
                 readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                } | undefined;
             } | undefined;
             inkey?: {
                 id: WALLET_ID;
@@ -105,8 +105,14 @@ export declare class Algonaut {
                     readonly address: string;
                     readonly chain: string;
                 }[];
-                readonly isActive: boolean;
                 readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                } | undefined;
             } | undefined;
             myalgo?: {
                 id: WALLET_ID;
@@ -144,8 +150,14 @@ export declare class Algonaut {
                     readonly address: string;
                     readonly chain: string;
                 }[];
-                readonly isActive: boolean;
                 readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                } | undefined;
             } | undefined;
             algosigner?: {
                 id: WALLET_ID;
@@ -183,8 +195,14 @@ export declare class Algonaut {
                     readonly address: string;
                     readonly chain: string;
                 }[];
-                readonly isActive: boolean;
                 readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                } | undefined;
             } | undefined;
             exodus?: {
                 id: WALLET_ID;
@@ -222,8 +240,14 @@ export declare class Algonaut {
                     readonly address: string;
                     readonly chain: string;
                 }[];
-                readonly isActive: boolean;
                 readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                } | undefined;
             } | undefined;
             defly?: {
                 id: WALLET_ID;
@@ -261,8 +285,14 @@ export declare class Algonaut {
                     readonly address: string;
                     readonly chain: string;
                 }[];
-                readonly isActive: boolean;
                 readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                } | undefined;
             } | undefined;
             mnemonic?: {
                 id: WALLET_ID;
@@ -300,8 +330,14 @@ export declare class Algonaut {
                     readonly address: string;
                     readonly chain: string;
                 }[];
-                readonly isActive: boolean;
                 readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                } | undefined;
             } | undefined;
         };
         enabledWallets: {
@@ -341,8 +377,14 @@ export declare class Algonaut {
                     readonly address: string;
                     readonly chain: string;
                 }[];
-                readonly isActive: boolean;
                 readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                } | undefined;
             } | undefined;
             inkey?: {
                 id: WALLET_ID;
@@ -380,8 +422,14 @@ export declare class Algonaut {
                     readonly address: string;
                     readonly chain: string;
                 }[];
-                readonly isActive: boolean;
                 readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                } | undefined;
             } | undefined;
             myalgo?: {
                 id: WALLET_ID;
@@ -390,15 +438,6 @@ export declare class Algonaut {
                     name: string;
                     icon: string;
                     chain: string;
-                    /**
-                     * deploys a contract from an lsig account
-                     * keep in mind that the local and global byte and int values have caps,
-                     * 16 for local and 32 for global and that the cost of deploying the
-                     * app goes up based on how many of these slots you want to allocate
-                     *
-                     * @param args AlgonautLsigDeployArguments
-                     * @returns
-                     */
                     pkg: string;
                 };
                 client: {
@@ -428,8 +467,14 @@ export declare class Algonaut {
                     readonly address: string;
                     readonly chain: string;
                 }[];
-                readonly isActive: boolean;
                 readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                } | undefined;
             } | undefined;
             algosigner?: {
                 id: WALLET_ID;
@@ -467,8 +512,14 @@ export declare class Algonaut {
                     readonly address: string;
                     readonly chain: string;
                 }[];
-                readonly isActive: boolean;
                 readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                } | undefined;
             } | undefined;
             exodus?: {
                 id: WALLET_ID;
@@ -506,8 +557,14 @@ export declare class Algonaut {
                     readonly address: string;
                     readonly chain: string;
                 }[];
-                readonly isActive: boolean;
                 readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                } | undefined;
             } | undefined;
             defly?: {
                 id: WALLET_ID;
@@ -545,8 +602,14 @@ export declare class Algonaut {
                     readonly address: string;
                     readonly chain: string;
                 }[];
-                readonly isActive: boolean;
                 readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                } | undefined;
             } | undefined;
             mnemonic?: {
                 id: WALLET_ID;
@@ -565,13 +628,6 @@ export declare class Algonaut {
                 } | null;
                 initParams: boolean | {
                     config?: any;
-                    /**
-                     * Sends ALGO from own account to `args.to`
-                     *
-                     * @param args `AlgonautPaymentArgs` object containing `to`, `amount`, and optional `note`
-                     * @param callbacks optional AlgonautTxnCallbacks
-                     * @returns Promise resolving to transaction status
-                     */
                     sdk?: any;
                 };
                 inited: boolean;
@@ -591,8 +647,14 @@ export declare class Algonaut {
                     readonly address: string;
                     readonly chain: string;
                 }[];
-                readonly isActive: boolean;
                 readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                } | undefined;
             } | undefined;
         } | null;
         stored: {
@@ -611,6 +673,12 @@ export declare class Algonaut {
             } | null;
         };
         activeAddress: string;
+        activeAccount: {
+            readonly walletId: WALLET_ID;
+            readonly name: string;
+            readonly address: string;
+            readonly chain: string;
+        } | null;
         activeWalletId: WALLET_ID | null;
         activeWallet: {
             id: WALLET_ID;
@@ -648,8 +716,14 @@ export declare class Algonaut {
                 readonly address: string;
                 readonly chain: string;
             }[];
-            readonly isActive: boolean;
             readonly isConnected: boolean;
+            readonly isActive: boolean;
+            readonly activeAccount: {
+                readonly walletId: WALLET_ID;
+                readonly name: string;
+                readonly address: string;
+                readonly chain: string;
+            } | undefined;
         } | undefined;
         isSigning: boolean;
     };
@@ -1019,6 +1093,13 @@ export declare class Algonaut {
      */
     toUint8Array(str: string, enc?: BufferEncoding): Uint8Array;
     /**
+     * @deprecated use toUint8Array instead.
+     * @param str string
+     * @param enc the encoding type of the string (defaults to utf8)
+     * @returns string encoded as Uint8Array
+     */
+    to8Arr(str: string, enc?: BufferEncoding): Uint8Array;
+    /**
      * Helper function to turn `globals` and `locals` array into more useful objects
      *
      * @param stateArray State array returned from functions like {@link getAppInfo}
@@ -1032,6 +1113,12 @@ export declare class Algonaut {
      * @returns Human-readable string
      */
     b64StrToHumanStr(encoded: string): string;
+    /**
+     * @deprecated Use b64StrToHumanStr instead
+     * @param encoded Base64 string
+     * @returns Human-readable string
+     */
+    fromBase64(encoded: string): string;
     /**
      * Decodes a Base64-encoded Uint8 Algorand address and returns a string
      * @param encoded An encoded Algorand address
@@ -1056,12 +1143,14 @@ export declare class Algonaut {
      */
     txnSummary(txn: Transaction): string;
     /**
-     * Creates a wallet address + mnemonic from account's secret key
+     * Creates a wallet address + mnemonic from account's secret key.
+     * Changed in 0.3: this does NOT set algonaut.account.
      * @returns AlgonautWallet Object containing `address` and `mnemonic`
      */
     createWallet(): AlgonautWallet;
     /**
      * Recovers account from mnemonic
+     * Changed in 0.3: this does NOT set algonaut.account.
      * @param mnemonic Mnemonic associated with Algonaut account
      * @returns If mnemonic is valid, returns algosdk account (.addr, .sk). Otherwise, throws an error.
      */

@@ -255,6 +255,7 @@ export class Algonaut {
 	}
 
 	enableWallets(walletInitParams?: AlgonautConfig['initWallets']) {
+		console.log('a.enableWallets', walletInitParams);
 		const defaultWip: WalletInitParamsObj = {
 			inkey: true
 		};
@@ -299,6 +300,7 @@ export class Algonaut {
 	 * @returns 
 	 */
 	async inkeyShow() {
+		// TODO add to this method a check to see if inkey is connected, if not call that first.... + w username is prev authed
 		let inkeyW = AnyWalletState.enabledWallets?.inkey;
 		if (!inkeyW) {
 			console.warn('inkey wallet not enabled');
@@ -342,8 +344,11 @@ export class Algonaut {
 			const initWs = Object.entries(initWallets);
 			if (initWs.length == 1) {
 				const wId = initWs[0][0] as WALLET_ID;
+				console.log('wId', wId);
 				const wInitParams = initWs[0][1] as ClientInitParams; // grab the only enabled wallet
+				console.log('wInitParams', wInitParams);
 				const w = AnyWalletState.allWallets[wId];
+				console.log('w', w);
 				if (w !== undefined) {
 					// possibly enable this wallet 
 					if (AnyWalletState.enabledWallets == null || 
@@ -356,7 +361,20 @@ export class Algonaut {
 					// FYI ignore the .isConnected check (as in below init using singular enabledWallet) 
 					// to allow for authing into multiple accounts of 1 wallet type
 					
+					// console.log('w', w);
+					console.log('w', w);
 					w.initParams = wInitParams;
+					console.log('w.initParams', w.initParams);
+					console.log('w', w);
+
+					// let connectParams = undefined;
+					// if (w.id == 'inkey' && w.isActive && this.account?.name) {
+					// 	connectParams = {
+					// 		username: this.account.name,
+					// 	};
+					// }
+					// return await w.connect(connectParams);
+
 					return await w.connect();
 				} else {
 					throw new Error('Could not find wallet to enable');
@@ -372,6 +390,13 @@ export class Algonaut {
 					const w = enabledWs[0][1]; // grab the only enabled wallet
 					if (w) {
 						if (!w.isConnected) {
+							// let connectParams = undefined;
+							// if (w.id == 'inkey' && w.isActive && this.account?.name) {
+							// 	connectParams = {
+							// 		username: this.account.name,
+							// 	};
+							// }
+							// return await w.connect(connectParams);
 							return await w.connect();
 						} else {
 							throw new Error('Wallet already connected.');
