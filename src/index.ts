@@ -62,6 +62,7 @@ export type AlgoTxn = Transaction;
 import { 
 	AnyWalletState, 
 	enableWallets, 
+	removeAllAccounts, 
 	signTransactions, 
 	subscribeToAccountChanges,
 	WALLET_ID
@@ -115,13 +116,17 @@ export class Algonaut {
 	// handles all algo wallets (inkey, pera, etc) + remembers last used in localstorage
 	walletState = AnyWalletState;
 
-	#account = null as null | typeof AnyWalletState.stored.activeAccount;
-	get account() {
-		return this.#account;
-	}
+	account = null as null | typeof AnyWalletState.activeAccount;
 	get connectedAccounts() {
-		return AnyWalletState.stored.connectedAccounts;
+		return AnyWalletState.connectedAccounts;
 	}
+
+	// TODO come back to private class fields during the security pass. + figure out how to make account immutable
+	// "#account" set on aw acct listener (but private fields compile weird..? making a #private field in the type dec)
+	// #account = null as null | typeof AnyWalletState.activeAccount;
+	// get account() {
+	// 	return this.#account;
+	// }
 
 	/**
 	 * Instantiates Algonaut.js.
@@ -246,7 +251,7 @@ export class Algonaut {
 	initAcctSync() {
 		unsAcctSync = subscribeToAccountChanges(
 			(acct) => {
-				this.#account = acct;
+				this.account = acct;
 			}
 		);
 	}
@@ -300,12 +305,24 @@ export class Algonaut {
 	 * @returns 
 	 */
 	async inkeyShow() {
-		// TODO add to this method a check to see if inkey is connected, if not call that first.... + w username is prev authed
+		// TODO add to this method a check to see if inkey is connected, 
+		// if not call that first.... + w username is prev authed
 		let inkeyW = AnyWalletState.enabledWallets?.inkey;
 		if (!inkeyW) {
-			console.warn('inkey wallet not enabled');
+			console.warn('Inkey wallet is not enabled');
 			return;
 		}
+		if (AnyWalletState.activeWalletId == null) {
+			await this.inkeyConnect();
+		}
+
+		// TODO ? should we check for any connected account being of inkey type? or just the active one?
+		// if (AnyWalletState.stored.connectedAccounts.includes())
+		if (AnyWalletState.activeWalletId !== 'inkey') {
+			console.warn('Inkey is not the active wallet, cannot show it. ');
+			return;
+		}
+
 		await inkeyW.loadClient();
 		if ((inkeyW.client as any).sdk.frameBus.ready) {
 			(inkeyW.client as any).sdk.show();
@@ -324,6 +341,15 @@ export class Algonaut {
 			console.warn('inkey wallet not enabled');
 			return;
 		}
+		// TODO ? do we need this connect in the hide method?
+		// if (AnyWalletState.activeWalletId == null) {
+		// 	await this.inkeyConnect();
+		// }
+		// if (AnyWalletState.activeWalletId !== 'inkey') {
+		// 	console.warn('Inkey is not the active wallet, cannot hide it. ');
+		// 	return;
+		// }
+
 		await inkeyW.loadClient();
 		if ((inkeyW.client as any).sdk.frameBus.ready) {
 			(inkeyW.client as any).sdk.hide();
@@ -482,6 +508,10 @@ export class Algonaut {
 		} else {
 			logger.debug('this shouldnt happen... passed in a bad arg to .disconnect() ');
 		}
+	}
+
+	disconnectAll() {
+		removeAllAccounts();
 	}
 
 	/**
