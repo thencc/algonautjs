@@ -16,7 +16,8 @@
 		"lib": [
 			"es6",
 			"dom"
-		]
+		],
+		"baseUrl": "./"
 	},
 	"compileOnSave": true,
 	"include": [

@@ -1,11 +1,35 @@
 import { build } from 'esbuild';
 import { CLIENT_PKGS } from '@thencc/any-wallet';
 
+import { readFileSync } from 'fs';
+
+const excludeVendorFromSourceMapPlugin = ({ filter }) => ({
+	name: 'excludeVendorFromSourceMap',
+	setup(build) {
+	  build.onLoad({ filter }, (args) => {
+		if (args.path.endsWith('.js')) {
+		  return {
+			contents:
+			  readFileSync(args.path, 'utf8') +
+			  '\n//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIiJdLCJtYXBwaW5ncyI6IkEifQ==',
+			loader: 'default',
+		  };
+		}
+	  });
+	},
+});
+
 build({
 	entryPoints: ['src/index.ts'],
 	outdir: 'dist',
 	bundle: true,
+	tsconfig: "./tsconfig.json",
+	plugins: [
+		// excludeVendorFromSourceMapPlugin({filter: /.*/})
+		excludeVendorFromSourceMapPlugin({filter: /.node_modules/})
+	],
 	sourcemap: true,
+	// sourcemap: 'linked',
 	minify: true,
 	treeShaking: true,
 	//target: ['node14'], // change for browser/node?
@@ -33,7 +57,7 @@ build({
 
 	// for w3h
 	external: [
-		...CLIENT_PKGS
+		...CLIENT_PKGS,
 	],
 })
 	.catch(() => process.exit(1));
