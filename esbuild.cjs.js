@@ -31,7 +31,9 @@ build({
 	sourcemap: true,
 	// sourcemap: 'linked',
 	minify: true,
+	// minify: false,
 	treeShaking: true,
+	treeShaking: false,
 	//target: ['node14'], // change for browser/node?
 	// assetNames: 'assets/[name]',
 	// loader: { '.mp3': 'file' },

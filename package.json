@@ -1,6 +1,6 @@
 {
 	"name": "@thencc/algonautjs",
-	"version": "0.3.22",
+	"version": "0.3.27",
 	"description": "AlgonautJS is a simplified Algorand transaction library built specifically for Browsers and Front End Development",
 	"type": "module",
 	"types": "dist/index.d.ts",
@@ -50,7 +50,7 @@
 	},
 	"dependencies": {
 		"@thencc/any-wallet": "^0.1.62",
-		"algosdk": "^2.2.0",
+		"algosdk": "thencc/js-algorand-sdk-no-fetch-poly#develop",
 		"buffer": "^6.0.3"
 	},
 	"optionalDependencies": {

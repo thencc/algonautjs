@@ -41,6 +41,8 @@ build({
 	// sourcemap: 'linked',
 	minify: true,
 	treeShaking: true,
+	// minify: false,
+	// treeShaking: false,
 	target: ['esnext'],
 	//external: ['src/lowtone.ts', 'src/finished.ts'],
 	// assetNames: 'assets/[name]',
