@@ -63,6 +63,7 @@ import {
 	AnyWalletState, 
 	enableWallets, 
 	removeAllAccounts, 
+	setLogsEnabled as AWSetLogsEnabled, 
 	signTransactions, 
 	subscribeToAccountChanges,
 	WALLET_ID
@@ -164,6 +165,7 @@ export class Algonaut {
 		if (libConfig !== undefined) {
 			if ('disableLogs' in libConfig && typeof libConfig.disableLogs == 'boolean') {
 				logger.enabled = !libConfig.disableLogs;
+				AWSetLogsEnabled(!libConfig.disableLogs);
 			}
 		}
 	}
@@ -251,6 +253,7 @@ export class Algonaut {
 	initAcctSync() {
 		unsAcctSync = subscribeToAccountChanges(
 			(acct) => {
+				logger.log('acct changed', acct);
 				this.account = acct;
 			}
 		);
@@ -260,7 +263,9 @@ export class Algonaut {
 	}
 
 	enableWallets(walletInitParams?: AlgonautConfig['initWallets']) {
-		console.log('a.enableWallets', walletInitParams);
+		if (walletInitParams == undefined) {
+			logger.log('enabling inkey wallet by default');
+		}
 		const defaultWip: WalletInitParamsObj = {
 			inkey: true
 		};
@@ -327,7 +332,7 @@ export class Algonaut {
 		if ((inkeyW.client as any).sdk.frameBus.ready) {
 			(inkeyW.client as any).sdk.show();
 		} else {
-			logger.log('inkey comms not yet ready.')
+			console.warn('inkey comms not yet ready.')
 		}
 	}
 
@@ -354,7 +359,7 @@ export class Algonaut {
 		if ((inkeyW.client as any).sdk.frameBus.ready) {
 			(inkeyW.client as any).sdk.hide();
 		} else {
-			logger.log('inkey comms not yet ready.')
+			console.warn('inkey comms not yet ready.')
 		}
 	}
 
@@ -365,16 +370,15 @@ export class Algonaut {
 	 * FAILs and throws when multiple init params are passed in or multiple wallets are enabled when nothing is passed in (since it doesnt know which to connect up)
 	 */
 	async connect(initWallets?: WalletInitParamsObj) {
-		//logger.log('connect initWallets', initWallets);
+		// logger.log('connect initWallets', initWallets);
 		if (initWallets !== undefined) {
 			const initWs = Object.entries(initWallets);
 			if (initWs.length == 1) {
-				const wId = initWs[0][0] as WALLET_ID;
-				console.log('wId', wId);
+				const wId = initWs[0][0] as WALLET_ID;				
 				const wInitParams = initWs[0][1] as ClientInitParams; // grab the only enabled wallet
-				console.log('wInitParams', wInitParams);
 				const w = AnyWalletState.allWallets[wId];
-				console.log('w', w);
+				logger.debug('connect: ', wId, wInitParams)
+
 				if (w !== undefined) {
 					// possibly enable this wallet 
 					if (AnyWalletState.enabledWallets == null || 
@@ -386,12 +390,8 @@ export class Algonaut {
 
 					// FYI ignore the .isConnected check (as in below init using singular enabledWallet) 
 					// to allow for authing into multiple accounts of 1 wallet type
-					
-					// console.log('w', w);
-					console.log('w', w);
+
 					w.initParams = wInitParams;
-					console.log('w.initParams', w.initParams);
-					console.log('w', w);
 
 					// let connectParams = undefined;
 					// if (w.id == 'inkey' && w.isActive && this.account?.name) {
