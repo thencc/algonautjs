@@ -62,7 +62,7 @@ var freshWallet: AlgonautWallet;
 // })
 
 // isValidNodeConfig
-describe('isValidNodeConfig tests', () => {
+describe('isValidNodeConfig', () => {
     const invalidConfig = {
         BASE_SERVER: '',
         LEDGER: '',
@@ -78,7 +78,7 @@ describe('isValidNodeConfig tests', () => {
     })
 });
 
-describe('getNodeConfig()', () => {
+describe('getNodeConfig', () => {
     test('getNodeConfig returns config object', () => {
         const algonaut = new Algonaut(validConfig);
         expect(algonaut.getNodeConfig()).toEqual(validConfig['nodeConfig']);
@@ -89,14 +89,14 @@ describe('getNodeConfig()', () => {
     });
 });
 
-describe('setNodeConfig()', () => {
+describe('setNodeConfig', () => {
     test('setNodeConfig tests are covered by constructor tests', () => {
         expect(true).toBeTruthy();
     });
 });
 
 // ======= algonaut core ========
-describe('Algonaut core: offline sync methods', () => {
+describe('algonaut-offline', () => {
     var algonaut: Algonaut;
 
     beforeEach(() => {
@@ -107,11 +107,11 @@ describe('Algonaut core: offline sync methods', () => {
         expect(algonaut.walletState.activeWallet).toBeUndefined();
     })
 
-    test('createWallet creates an account object', () => {
+    test('createWallet creates an account object with address and mnemonic parameters', () => {
         const wallet = algonaut.createWallet();
         expect(wallet).toBeDefined();
         expect((wallet as any).address).toBeDefined();
-        expect((wallet as any).sk).toBeDefined();
+        expect((wallet as any).mnemonic).toBeDefined();
     })
 
     test('recoverAccount works with a newly created wallet', () => {
@@ -212,6 +212,7 @@ describe('Algonaut online methods', () => {
     beforeEach(() => {
         algonaut = new Algonaut(validConfig);
         algonaut.connect({ mnemonic: testAccountMnemonic });
+        freshWallet = algonaut.createWallet();
     })
 
     describe('compileProgram', () => {
