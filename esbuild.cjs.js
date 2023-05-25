@@ -3,6 +3,7 @@ import { CLIENT_PKGS } from '@thencc/any-wallet';
 
 import { readFileSync } from 'fs';
 
+// helpful plugin logic from: https://github.com/evanw/esbuild/issues/1685
 const excludeVendorFromSourceMapPlugin = ({ filter }) => ({
 	name: 'excludeVendorFromSourceMap',
 	setup(build) {

@@ -14,6 +14,7 @@ const require = createRequire(import.meta.url);
 // https://medium.com/swlh/npm-new-package-json-exports-field-1a7d1f489ccf
 
 
+// helpful plugin logic from: https://github.com/evanw/esbuild/issues/1685
 import { readFileSync } from 'fs';
 const excludeVendorFromSourceMapPlugin = ({ filter }) => ({
 	name: 'excludeVendorFromSourceMap',
