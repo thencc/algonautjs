@@ -50,7 +50,7 @@
 	},
 	"dependencies": {
 		"@thencc/any-wallet": "^0.1.73",
-		"algosdk": "thencc/js-algorand-sdk-no-fetch-poly#spencer-dev",
+		"algosdk": "thencc/js-algorand-sdk-no-fetch-poly#2bc85828a85d9b1fe0ad5c2b5e7c6c1f55175c65",
 		"buffer": "^6.0.3"
 	},
 	"optionalDependencies": {
