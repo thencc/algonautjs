@@ -1679,9 +1679,15 @@ export class Algonaut {
 			}
 			return nativeT;
 		});
-		// logger.log('algoTxnArr', algoTxnArr);
-		const txnBuffArr = algoTxnArr.map(t => t.toByte());
-		// logger.log('txnBuffArr', txnBuffArr);
+		logger.log('algoTxnArr', algoTxnArr);
+
+		// assign txn(s) a group id
+		const txnGroup = algosdk.assignGroupID(algoTxnArr);
+		logger.log('txnGroup', txnGroup);
+
+		const txnBuffArr = txnGroup.map(t => t.toByte());
+		// const txnBuffArr = algoTxnArr.map(t => t.toByte());
+		logger.log('txnBuffArr', txnBuffArr);
 
 		return txnBuffArr;
 	}
