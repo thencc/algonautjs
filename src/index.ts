@@ -1679,14 +1679,15 @@ export class Algonaut {
 			}
 			return nativeT;
 		});
-		logger.log('algoTxnArr', algoTxnArr);
+		logger.log('algoTxnArr', [...algoTxnArr]);
 
 		// assign txn(s) a group id
-		const txnGroup = algosdk.assignGroupID(algoTxnArr);
-		logger.log('txnGroup', txnGroup);
+		if (algoTxnArr.length > 1) {
+			algoTxnArr = algosdk.assignGroupID(algoTxnArr);
+			logger.log('algoTxnArr (grouped w id)', [...algoTxnArr]);
+		}
 
-		const txnBuffArr = txnGroup.map(t => t.toByte());
-		// const txnBuffArr = algoTxnArr.map(t => t.toByte());
+		const txnBuffArr = algoTxnArr.map(t => t.toByte());
 		logger.log('txnBuffArr', txnBuffArr);
 
 		return txnBuffArr;
