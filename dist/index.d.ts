@@ -22,6 +22,12 @@ export declare class Algonaut {
     } | undefined;
     sdk: typeof algosdk;
     walletState: {
+        /**
+         * Opt-in the current account for an app.
+         * @param args Object containing `appIndex`, `appArgs`, and `optionalFields`
+         * @param callbacks optional AlgonautTxnCallbacks
+         * @returns Promise resolving to confirmed transaction or error
+         */
         allWallets: {
             pera?: {
                 id: WALLET_ID;
@@ -417,7 +423,11 @@ export declare class Algonaut {
                     signTransactions: (connectedAccounts: string[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 } | null;
                 initParams: boolean | {
-                    config?: any;
+                    config?: any; /**
+                     * Updates an application with `makeApplicationUpdateTxn`
+                     * @param args AlgonautUpdateAppArguments
+                     * @returns atomic transaction that updates the app
+                     */
                     sdk?: any;
                 };
                 inited: boolean;
@@ -538,7 +548,11 @@ export declare class Algonaut {
                     readonly walletId: WALLET_ID;
                     readonly name: string;
                     readonly address: string;
-                    readonly chain: string;
+                    readonly chain: string; /**
+                     * Fetch full account info for an account
+                     * @param address the accress to read info for
+                     * @returns Promise of type AccountInfo
+                     */
                     readonly active: boolean;
                 } | undefined;
             } | undefined;
@@ -745,12 +759,6 @@ export declare class Algonaut {
             disconnect: () => Promise<void>;
             reconnect: () => Promise<void>;
             setAsActiveWallet: () => void;
-            /**
-             * Sends a transaction or multiple w the correct wallet according to AW
-             * @param txnOrTxns Either an array of atomic transactions or a single transaction to sign
-             * @param callbacks Optional object with callbacks - `onSign`, `onSend`, and `onConfirm`
-             * @returns Promise resolving to AlgonautTransactionStatus
-             */
             removeAccounts: () => void;
             signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
             readonly accounts: readonly {

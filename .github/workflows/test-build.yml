@@ -17,11 +17,11 @@ jobs:
       - name: "setup node env"
         uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: 16
 
       - uses: pnpm/action-setup@v2.2.2
         with:
-          version: 7.9.3
+          version: 8.5.0
           run_install: |
               args: [--no-frozen-lockfile, --strict-peer-dependencies]
 

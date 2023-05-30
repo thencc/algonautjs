@@ -13,13 +13,37 @@ const require = createRequire(import.meta.url);
 // about package json 'exports' block
 // https://medium.com/swlh/npm-new-package-json-exports-field-1a7d1f489ccf
 
+
+// helpful plugin logic from: https://github.com/evanw/esbuild/issues/1685
+import { readFileSync } from 'fs';
+const excludeVendorFromSourceMapPlugin = ({ filter }) => ({
+	name: 'excludeVendorFromSourceMap',
+	setup(build) {
+	  build.onLoad({ filter }, (args) => {
+		if (args.path.endsWith('.js')) {
+		  return {
+			contents:
+			  readFileSync(args.path, 'utf8') +
+			  '\n//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIiJdLCJtYXBwaW5ncyI6IkEifQ==',
+			loader: 'default',
+		  };
+		}
+	  });
+	},
+});
+
 build({
 	entryPoints: ['src/index.ts'],
 	outdir: 'dist',
 	bundle: true,
+	tsconfig: "./tsconfig.json",
 	sourcemap: true,
+	// sourcemap: 'inline',
+	// sourcemap: 'linked',
 	minify: true,
 	treeShaking: true,
+	// minify: false,
+	// treeShaking: false,
 	target: ['esnext'],
 	//external: ['src/lowtone.ts', 'src/finished.ts'],
 	// assetNames: 'assets/[name]',
@@ -45,6 +69,10 @@ build({
 		process: 'process',
 		Buffer: 'Buffer'
 	},
-	plugins: [plugin(stdLibBrowser)]
+	plugins: [
+		plugin(stdLibBrowser), 
+		// excludeVendorFromSourceMapPlugin({filter: /.*/})
+		excludeVendorFromSourceMapPlugin({filter: /node_modules/})
+	]
 })
 	.catch(() => process.exit(1));

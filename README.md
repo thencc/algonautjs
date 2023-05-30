@@ -91,7 +91,7 @@ const algonaut = new Algonaut({
 ```
 
 
-enable only the mnemonic wallet for authentication
+enable only the mnemonic wallet for authentication (FYI enabling the mnemonic wallet ALSO connects it which is different from all other wallets which require an enable and then a connect as separate method calls.)
 > **note**: not super secure but can be useful for local development:
 ```ts
 const algonaut = new Algonaut({
