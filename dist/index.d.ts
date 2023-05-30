@@ -22,12 +22,6 @@ export declare class Algonaut {
     } | undefined;
     sdk: typeof algosdk;
     walletState: {
-        /**
-         * Opt-in the current account for an app.
-         * @param args Object containing `appIndex`, `appArgs`, and `optionalFields`
-         * @param callbacks optional AlgonautTxnCallbacks
-         * @returns Promise resolving to confirmed transaction or error
-         */
         allWallets: {
             pera?: {
                 id: WALLET_ID;
@@ -50,6 +44,12 @@ export declare class Algonaut {
                 };
                 inited: boolean;
                 initing: boolean;
+                /**
+                 * Deletes an application from the blockchain
+                 * @param appIndex - ID of application
+                 * @param callbacks optional AlgonautTxnCallbacks
+                 * @returns Promise resolving to confirmed transaction or error
+                 */
                 signing: boolean;
                 connecting: boolean;
                 loadClient: () => Promise<true>;
@@ -191,7 +191,12 @@ export declare class Algonaut {
                 };
                 inited: boolean;
                 initing: boolean;
-                signing: boolean;
+                signing: boolean; /**
+                 * Get info about an application (globals, locals, creator address, index)
+                 *
+                 * @param appId - ID of application
+                 * @returns Promise resolving to application state
+                 */
                 connecting: boolean;
                 loadClient: () => Promise<true>;
                 connect: (p?: any) => Promise<Account[]>;
@@ -291,7 +296,13 @@ export declare class Algonaut {
                 connect: (p?: any) => Promise<Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
-                setAsActiveWallet: () => void;
+                setAsActiveWallet: () => void; /**
+                 * Create an atomic transaction to deploy a
+                 * new Smart Contract from TEAL code
+                 *
+                 * @param args AlgonautDeployArguments
+                 * @returns AlgonautAtomicTransaction
+                 */
                 removeAccounts: () => void;
                 signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 readonly accounts: readonly {
@@ -423,11 +434,7 @@ export declare class Algonaut {
                     signTransactions: (connectedAccounts: string[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 } | null;
                 initParams: boolean | {
-                    config?: any; /**
-                     * Updates an application with `makeApplicationUpdateTxn`
-                     * @param args AlgonautUpdateAppArguments
-                     * @returns atomic transaction that updates the app
-                     */
+                    config?: any;
                     sdk?: any;
                 };
                 inited: boolean;
@@ -548,11 +555,7 @@ export declare class Algonaut {
                     readonly walletId: WALLET_ID;
                     readonly name: string;
                     readonly address: string;
-                    readonly chain: string; /**
-                     * Fetch full account info for an account
-                     * @param address the accress to read info for
-                     * @returns Promise of type AccountInfo
-                     */
+                    readonly chain: string;
                     readonly active: boolean;
                 } | undefined;
             } | undefined;

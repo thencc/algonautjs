@@ -392,15 +392,6 @@ export class Algonaut {
 					// to allow for authing into multiple accounts of 1 wallet type
 
 					w.initParams = wInitParams;
-
-					// let connectParams = undefined;
-					// if (w.id == 'inkey' && w.isActive && this.account?.name) {
-					// 	connectParams = {
-					// 		username: this.account.name,
-					// 	};
-					// }
-					// return await w.connect(connectParams);
-
 					return await w.connect();
 				} else {
 					throw new Error('Could not find wallet to enable');
@@ -415,18 +406,8 @@ export class Algonaut {
 				if (enabledWs.length == 1) {
 					const w = enabledWs[0][1]; // grab the only enabled wallet
 					if (w) {
-						if (!w.isConnected) {
-							// let connectParams = undefined;
-							// if (w.id == 'inkey' && w.isActive && this.account?.name) {
-							// 	connectParams = {
-							// 		username: this.account.name,
-							// 	};
-							// }
-							// return await w.connect(connectParams);
-							return await w.connect();
-						} else {
-							throw new Error('Wallet already connected.');
-						}
+						// FYI DONT check isConnected or isActive to allow for inited multiple accts from the same wallet provider
+						return await w.connect();
 					} else {
 						throw new Error('Wallet wasnt initialized correctly.');
 					}
@@ -1684,7 +1665,11 @@ export class Algonaut {
 		// assign txn(s) a group id
 		if (algoTxnArr.length > 1) {
 			algoTxnArr = algosdk.assignGroupID(algoTxnArr);
-			logger.log('algoTxnArr (grouped w id)', [...algoTxnArr]);
+			logger.log('added group id to txn array');
+			if (algoTxnArr[0].group) {
+				let gId = this.txnBuffToB64(algoTxnArr[0].group);
+				logger.log('gId', gId);
+			}
 		}
 
 		const txnBuffArr = algoTxnArr.map(t => t.toByte());
