@@ -772,7 +772,12 @@ export declare class Algonaut {
             readonly isActive: boolean;
             readonly activeAccount: {
                 readonly walletId: WALLET_ID;
-                readonly name: string;
+                readonly name: string; /**
+                 * 1. normalize incoming txn(s) to array of Uint8Arrs
+                 * 2. sign w AW
+                 * 3. send Raw txn arr
+                 * 4. return result + txid
+                 */
                 readonly address: string;
                 readonly chain: string;
                 readonly active: boolean;
