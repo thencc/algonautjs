@@ -66,7 +66,8 @@ import {
 	setLogsEnabled as AWSetLogsEnabled, 
 	signTransactions, 
 	subscribeToAccountChanges,
-	WALLET_ID
+	WALLET_ID,
+	recallState
 } from '@thencc/any-wallet';
 import type {
 	Account,
@@ -196,7 +197,8 @@ export class Algonaut {
 	 * 		- will throw Error if config is lousy
 	 */
 	setNodeConfig(nodeConfig?: AlgonautConfig['nodeConfig'] | 'mainnet' | 'testnet') {
-		// logger.log('setNodeConfig', config);
+		logger.log('setNodeConfig', nodeConfig);
+		
 		if (nodeConfig == undefined) {
 			nodeConfig = defaultNodeConfig;
 		}
@@ -255,6 +257,7 @@ export class Algonaut {
 			(acct) => {
 				logger.log('acct changed', acct);
 				this.account = acct;
+				// this.#account = acct; // revisit this for security pass + consider field setting not just entire obj
 			}
 		);
 	}
@@ -266,8 +269,9 @@ export class Algonaut {
 		if (walletInitParams == undefined) {
 			logger.log('enabling inkey wallet by default');
 		}
+		// default to NONE
 		const defaultWip: WalletInitParamsObj = {
-			inkey: true
+			// inkey: true
 		};
 		const wip = walletInitParams || defaultWip;
 		enableWallets(wip); // defaults to all except mnemonic client
@@ -493,6 +497,10 @@ export class Algonaut {
 
 	disconnectAll() {
 		removeAllAccounts();
+	}
+
+	reconnect() {
+		recallState();
 	}
 
 	/**

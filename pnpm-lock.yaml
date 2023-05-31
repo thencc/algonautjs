@@ -2,8 +2,8 @@ lockfileVersion: '6.0'
 
 dependencies:
   '@thencc/any-wallet':
-    specifier: ^0.1.73
-    version: 0.1.73(algosdk@2.3.1)
+    specifier: ^0.1.76
+    version: 0.1.76(algosdk@2.3.1)
   algosdk:
     specifier: thencc/js-algorand-sdk-no-fetch-poly#2bc85828a85d9b1fe0ad5c2b5e7c6c1f55175c65
     version: github.com/thencc/js-algorand-sdk-no-fetch-poly/2bc85828a85d9b1fe0ad5c2b5e7c6c1f55175c65
@@ -22,8 +22,8 @@ optionalDependencies:
     specifier: ^1.4.2
     version: 1.4.2
   '@thencc/inkey-client-js':
-    specifier: ^0.0.19
-    version: 0.0.19
+    specifier: ^0.0.23
+    version: 0.0.23
 
 devDependencies:
   '@jest/globals':
@@ -1077,8 +1077,8 @@ packages:
       '@sinonjs/commons': 3.0.0
     dev: true
 
-  /@thencc/any-wallet@0.1.73(algosdk@2.3.1):
-    resolution: {integrity: sha512-lJPzz3Ug0DGQEYBAVe7DhLAoCdbB2kqjM7vrLxBYRAOs3eKOoPruABn27CoRb614B1ALfMJUYWu5D4pyMW+uDg==}
+  /@thencc/any-wallet@0.1.76(algosdk@2.3.1):
+    resolution: {integrity: sha512-yL2yiA03vLxJpeVf9GoDiYd+xB9GNjR/cUm05llkKLtqqGPRYKwUlD82mlpEuN6UtC6GyGZdB6+GxVA/zAA6Fg==}
     peerDependencies:
       algosdk: ^2.1.0
     dependencies:
@@ -1090,15 +1090,15 @@ packages:
       '@blockshake/defly-connect': 1.1.2(algosdk@2.3.1)
       '@perawallet/connect': 1.2.3(algosdk@2.3.1)
       '@randlabs/myalgo-connect': 1.4.2
-      '@thencc/inkey-client-js': 0.0.19
+      '@thencc/inkey-client-js': 0.0.23
       buffer: 6.0.3
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
     dev: false
 
-  /@thencc/inkey-client-js@0.0.19:
-    resolution: {integrity: sha512-g01IbGFo9HFVEFAvoFhvuDxRA8tOdYtKiYtCF3Kwn/71YWNoHNTZHi+uPa7sZw1pgIkiWhtTOuby4VP+4BzXZg==}
+  /@thencc/inkey-client-js@0.0.23:
+    resolution: {integrity: sha512-rMI4bmyPO4Z3tI2DGpQ+yMPHqTQB0Y7A4Mt4LwEqN6f91dcFTOgiikc6kQEwQQDxCq8dDs+OfLwEXJvlB0YVMg==}
     requiresBuild: true
     dev: false
     optional: true
@@ -1891,7 +1891,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001491
-      electron-to-chromium: 1.4.413
+      electron-to-chromium: 1.4.414
       node-releases: 2.0.12
       update-browserslist-db: 1.0.11(browserslist@4.21.7)
     dev: true
@@ -2312,8 +2312,8 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /electron-to-chromium@1.4.413:
-    resolution: {integrity: sha512-Gd+/OAhRca06dkVxIQo/W7dr6Nmk9cx6lQdZ19GvFp51k5B/lUAokm6SJfNkdV8kFLsC3Z4sLTyEHWCnB1Efbw==}
+  /electron-to-chromium@1.4.414:
+    resolution: {integrity: sha512-RRuCvP6ekngVh2SAJaOKT/hxqc9JAsK+Pe0hP5tGQIfonU2Zy9gMGdJ+mBdyl/vNucMG6gkXYtuM4H/1giws5w==}
     dev: true
 
   /elliptic@6.5.4:
