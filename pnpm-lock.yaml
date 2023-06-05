@@ -5,8 +5,8 @@ dependencies:
     specifier: ^0.1.77
     version: 0.1.77(algosdk@2.3.0)
   algosdk:
-    specifier: thencc/js-algorand-sdk-no-fetch-poly#b99e62c121a8fc7226ea577092ce8876c0d72d33
-    version: github.com/thencc/js-algorand-sdk-no-fetch-poly/b99e62c121a8fc7226ea577092ce8876c0d72d33
+    specifier: thencc/js-algorand-sdk-no-fetch-poly#1a963de38b4d29b9a4d06bf829c428fc0aa61ce7
+    version: github.com/thencc/js-algorand-sdk-no-fetch-poly/1a963de38b4d29b9a4d06bf829c428fc0aa61ce7
   buffer:
     specifier: ^6.0.3
     version: 6.0.3
@@ -447,7 +447,7 @@ packages:
     dependencies:
       '@walletconnect/client': 1.8.0
       '@walletconnect/types': 1.8.0
-      algosdk: github.com/thencc/js-algorand-sdk-no-fetch-poly/b99e62c121a8fc7226ea577092ce8876c0d72d33
+      algosdk: github.com/thencc/js-algorand-sdk-no-fetch-poly/1a963de38b4d29b9a4d06bf829c428fc0aa61ce7
       bowser: 2.11.0
       buffer: 6.0.3
       lottie-web: 5.12.0
@@ -1038,7 +1038,7 @@ packages:
       '@evanhahn/lottie-web-light': 5.8.1
       '@walletconnect/client': 1.8.0
       '@walletconnect/types': 1.8.0
-      algosdk: github.com/thencc/js-algorand-sdk-no-fetch-poly/b99e62c121a8fc7226ea577092ce8876c0d72d33
+      algosdk: github.com/thencc/js-algorand-sdk-no-fetch-poly/1a963de38b4d29b9a4d06bf829c428fc0aa61ce7
       bowser: 2.11.0
       buffer: 6.0.3
       qr-code-styling: 1.6.0-rc.1
@@ -1085,7 +1085,7 @@ packages:
       '@vue-reactivity/watch': 0.2.0(@vue/reactivity@3.3.4)(@vue/shared@3.3.4)
       '@vue/reactivity': 3.3.4
       '@vue/shared': 3.3.4
-      algosdk: github.com/thencc/js-algorand-sdk-no-fetch-poly/b99e62c121a8fc7226ea577092ce8876c0d72d33
+      algosdk: github.com/thencc/js-algorand-sdk-no-fetch-poly/1a963de38b4d29b9a4d06bf829c428fc0aa61ce7
     optionalDependencies:
       '@blockshake/defly-connect': 1.1.2(algosdk@2.3.0)
       '@perawallet/connect': 1.2.3(algosdk@2.3.0)
@@ -5770,8 +5770,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  github.com/thencc/js-algorand-sdk-no-fetch-poly/b99e62c121a8fc7226ea577092ce8876c0d72d33:
-    resolution: {tarball: https://codeload.github.com/thencc/js-algorand-sdk-no-fetch-poly/tar.gz/b99e62c121a8fc7226ea577092ce8876c0d72d33}
+  github.com/thencc/js-algorand-sdk-no-fetch-poly/1a963de38b4d29b9a4d06bf829c428fc0aa61ce7:
+    resolution: {tarball: https://codeload.github.com/thencc/js-algorand-sdk-no-fetch-poly/tar.gz/1a963de38b4d29b9a4d06bf829c428fc0aa61ce7}
     name: algosdk
     version: 2.3.0
     engines: {node: '>=16.0.0'}
