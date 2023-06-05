@@ -273,7 +273,7 @@ export class Algonaut {
 
 	enableWallets(walletInitParams?: AlgonautConfig['initWallets']) {
 		if (walletInitParams == undefined) {
-			console.warn('.enableWallets called without any init params.');
+			logger.debug('.enableWallets called without any init params.');
 		}
 		// default to NONE
 		const defaultWip: WalletInitParamsObj = {
