@@ -5,8 +5,8 @@ dependencies:
     specifier: ^0.1.77
     version: 0.1.77(algosdk@2.3.0)
   algosdk:
-    specifier: thencc/js-algorand-sdk-no-fetch-poly#323e2bd2c562cddc2b9d180e7c36de342a914e29
-    version: github.com/thencc/js-algorand-sdk-no-fetch-poly/323e2bd2c562cddc2b9d180e7c36de342a914e29
+    specifier: thencc/js-algorand-sdk-no-fetch-poly#b99e62c121a8fc7226ea577092ce8876c0d72d33
+    version: github.com/thencc/js-algorand-sdk-no-fetch-poly/b99e62c121a8fc7226ea577092ce8876c0d72d33
   buffer:
     specifier: ^6.0.3
     version: 6.0.3
@@ -447,7 +447,7 @@ packages:
     dependencies:
       '@walletconnect/client': 1.8.0
       '@walletconnect/types': 1.8.0
-      algosdk: github.com/thencc/js-algorand-sdk-no-fetch-poly/323e2bd2c562cddc2b9d180e7c36de342a914e29
+      algosdk: github.com/thencc/js-algorand-sdk-no-fetch-poly/b99e62c121a8fc7226ea577092ce8876c0d72d33
       bowser: 2.11.0
       buffer: 6.0.3
       lottie-web: 5.12.0
@@ -457,10 +457,6 @@ packages:
       - utf-8-validate
     dev: false
     optional: true
-
-  /@cloudflare/workers-types@4.20230518.0:
-    resolution: {integrity: sha512-A0w1V+5SUawGaaPRlhFhSC/SCDT9oQG8TMoWOKFLA4qbqagELqEAFD4KySBIkeVOvCBLT1DZSYBMCxbXddl0kw==}
-    dev: false
 
   /@cspotcode/source-map-support@0.8.1:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -1042,7 +1038,7 @@ packages:
       '@evanhahn/lottie-web-light': 5.8.1
       '@walletconnect/client': 1.8.0
       '@walletconnect/types': 1.8.0
-      algosdk: github.com/thencc/js-algorand-sdk-no-fetch-poly/323e2bd2c562cddc2b9d180e7c36de342a914e29
+      algosdk: github.com/thencc/js-algorand-sdk-no-fetch-poly/b99e62c121a8fc7226ea577092ce8876c0d72d33
       bowser: 2.11.0
       buffer: 6.0.3
       qr-code-styling: 1.6.0-rc.1
@@ -1089,7 +1085,7 @@ packages:
       '@vue-reactivity/watch': 0.2.0(@vue/reactivity@3.3.4)(@vue/shared@3.3.4)
       '@vue/reactivity': 3.3.4
       '@vue/shared': 3.3.4
-      algosdk: github.com/thencc/js-algorand-sdk-no-fetch-poly/323e2bd2c562cddc2b9d180e7c36de342a914e29
+      algosdk: github.com/thencc/js-algorand-sdk-no-fetch-poly/b99e62c121a8fc7226ea577092ce8876c0d72d33
     optionalDependencies:
       '@blockshake/defly-connect': 1.1.2(algosdk@2.3.0)
       '@perawallet/connect': 1.2.3(algosdk@2.3.0)
@@ -2115,6 +2111,14 @@ packages:
   /create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
     dev: true
+
+  /cross-fetch@4.0.0-alpha.5:
+    resolution: {integrity: sha512-JyOWYhayN5jX+vxmZC0w15BMUEVVmeHCodh5vfJQIFDF9jZZNfdQUFzZkviNtXMh+HwODYFxLnCOb7ZiztAdrw==}
+    dependencies:
+      node-fetch: 2.6.11
+    transitivePeerDependencies:
+      - encoding
+    dev: false
 
   /cross-spawn@6.0.5:
     resolution: {integrity: sha512-eTVLrBSt7fjbDygz805pMnstIs2VTBNkRm0qxZd+M7A5XDdxVRWO5MxGBXZhjY4cqLYLdtrGqRf8mBPmzwSpWQ==}
@@ -5766,23 +5770,22 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  github.com/thencc/js-algorand-sdk-no-fetch-poly/323e2bd2c562cddc2b9d180e7c36de342a914e29:
-    resolution: {tarball: https://codeload.github.com/thencc/js-algorand-sdk-no-fetch-poly/tar.gz/323e2bd2c562cddc2b9d180e7c36de342a914e29}
+  github.com/thencc/js-algorand-sdk-no-fetch-poly/b99e62c121a8fc7226ea577092ce8876c0d72d33:
+    resolution: {tarball: https://codeload.github.com/thencc/js-algorand-sdk-no-fetch-poly/tar.gz/b99e62c121a8fc7226ea577092ce8876c0d72d33}
     name: algosdk
     version: 2.3.0
     engines: {node: '>=16.0.0'}
     prepare: true
     requiresBuild: true
     dependencies:
-      '@cloudflare/workers-types': 4.20230518.0
       algo-msgpack-with-bigint: 2.1.1
       buffer: 6.0.3
+      cross-fetch: 4.0.0-alpha.5
       hi-base32: 0.5.1
       js-sha256: 0.9.0
       js-sha3: 0.8.0
       js-sha512: 0.8.0
       json-bigint: 1.0.0
-      node-fetch: 2.6.11
       tweetnacl: 1.0.3
       vlq: 2.0.4
     transitivePeerDependencies:
