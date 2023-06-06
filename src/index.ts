@@ -354,6 +354,7 @@ export class Algonaut {
 			await inkeyW.loadClient();
 			this.inkeyLoading = false;
 
+			// @ts-ignore
 			const inkeyClientSdk:InkeySdk = inkeyW.client!.sdk;
 
 			if (inkeyClientSdk.frameBus.ready == false) {

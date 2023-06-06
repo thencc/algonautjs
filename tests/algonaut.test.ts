@@ -7,6 +7,7 @@ import accountv2 from './mocks/accountv2';
 import accountClear from './mocks/account-clear';
 import getAppLocalStateResponse from './mocks/getAppLocalStateResponse';
 import algosdk from 'algosdk';
+import { mainnetConfig, testnetConfig } from '../src/algo-config';
 
 import * as dotenv from 'dotenv'
 import path from 'path';
@@ -90,9 +91,25 @@ describe('getNodeConfig', () => {
 });
 
 describe('setNodeConfig', () => {
-    test('setNodeConfig tests are covered by constructor tests', () => {
-        expect(true).toBeTruthy();
+    var a: Algonaut;
+    beforeEach(() => {
+        a = new Algonaut()
     });
+
+    test('mainnet config string works', () => {
+        a.setNodeConfig('mainnet');
+        expect(a.nodeConfig.BASE_SERVER).toEqual(mainnetConfig?.BASE_SERVER);
+    });
+
+    test('testnet config string works', () => {
+        a.setNodeConfig('testnet');
+        expect(a.nodeConfig.BASE_SERVER).toEqual(testnetConfig?.BASE_SERVER);
+    })
+
+    test('should throw error with any other string', () => {
+        // @ts-expect-error
+        expect(() => a.setNodeConfig('bababa')).toThrow();
+    })
 });
 
 // ======= algonaut core ========
