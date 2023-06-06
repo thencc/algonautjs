@@ -33,6 +33,7 @@ export declare class Algonaut {
                     pkg: string;
                 };
                 client: {
+                    sdk: any;
                     connect: (x: any) => Promise<import("@thencc/any-wallet").Wallet>;
                     disconnect: () => Promise<void>;
                     reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet | null>;
@@ -80,6 +81,7 @@ export declare class Algonaut {
                     pkg: string;
                 };
                 client: {
+                    sdk: any;
                     connect: (x: any) => Promise<import("@thencc/any-wallet").Wallet>;
                     disconnect: () => Promise<void>;
                     reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet | null>;
@@ -127,6 +129,7 @@ export declare class Algonaut {
                     pkg: string;
                 };
                 client: {
+                    sdk: any;
                     connect: (x: any) => Promise<import("@thencc/any-wallet").Wallet>;
                     disconnect: () => Promise<void>;
                     reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet | null>;
@@ -174,6 +177,7 @@ export declare class Algonaut {
                     pkg: string;
                 };
                 client: {
+                    sdk: any;
                     connect: (x: any) => Promise<import("@thencc/any-wallet").Wallet>;
                     disconnect: () => Promise<void>;
                     reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet | null>;
@@ -221,6 +225,7 @@ export declare class Algonaut {
                     pkg: string;
                 };
                 client: {
+                    sdk: any;
                     connect: (x: any) => Promise<import("@thencc/any-wallet").Wallet>;
                     disconnect: () => Promise<void>;
                     reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet | null>;
@@ -268,6 +273,7 @@ export declare class Algonaut {
                     pkg: string;
                 };
                 client: {
+                    sdk: any;
                     connect: (x: any) => Promise<import("@thencc/any-wallet").Wallet>;
                     disconnect: () => Promise<void>;
                     reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet | null>;
@@ -315,6 +321,7 @@ export declare class Algonaut {
                     pkg: string;
                 };
                 client: {
+                    sdk: any;
                     connect: (x: any) => Promise<import("@thencc/any-wallet").Wallet>;
                     disconnect: () => Promise<void>;
                     reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet | null>;
@@ -338,6 +345,15 @@ export declare class Algonaut {
                 readonly accounts: readonly {
                     readonly walletId: WALLET_ID;
                     readonly name: string;
+                    /**
+                     * deploys a contract from an lsig account
+                     * keep in mind that the local and global byte and int values have caps,
+                     * 16 for local and 32 for global and that the cost of deploying the
+                     * app goes up based on how many of these slots you want to allocate
+                     *
+                     * @param args AlgonautLsigDeployArguments
+                     * @returns
+                     */
                     readonly address: string;
                     readonly chain: string;
                     readonly active: boolean;
@@ -364,6 +380,7 @@ export declare class Algonaut {
                     pkg: string;
                 };
                 client: {
+                    sdk: any;
                     connect: (x: any) => Promise<import("@thencc/any-wallet").Wallet>;
                     disconnect: () => Promise<void>;
                     reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet | null>;
@@ -411,6 +428,7 @@ export declare class Algonaut {
                     pkg: string;
                 };
                 client: {
+                    sdk: any;
                     connect: (x: any) => Promise<import("@thencc/any-wallet").Wallet>;
                     disconnect: () => Promise<void>;
                     reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet | null>;
@@ -458,63 +476,7 @@ export declare class Algonaut {
                     pkg: string;
                 };
                 client: {
-                    connect: (x: any) => Promise<import("@thencc/any-wallet").Wallet>;
-                    disconnect: () => Promise<void>;
-                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet | null>;
-                    signTransactions: (connectedAccounts: Account[], transactions: Uint8Array[]) => Promise<Uint8Array[]>; /**
-                     * Sends an update app transaction
-                     * @param args AlgonautUpdateAppArguments
-                     * @param callbacks optional callbacks: `onSign`, `onSend`, `onConfirm`
-                     * @returns transaction status
-                     */
-                } | null;
-                initParams: boolean | {
-                    config?: any;
-                    sdk?: any;
-                };
-                inited: boolean;
-                initing: boolean;
-                signing: boolean;
-                connecting: boolean;
-                loadClient: () => Promise<true>;
-                connect: (p?: any) => Promise<Account[]>;
-                disconnect: () => Promise<void>;
-                reconnect: () => Promise<void>;
-                /**
-                 * Compiles TEAL source via [algodClient.compile](https://py-algorand-sdk.readthedocs.io/en/latest/algosdk/v2client/algod.html#v2client.algod.AlgodClient.compile)
-                 * @param programSource source to compile
-                 * @returns Promise resolving to Buffer of compiled bytes
-                 */
-                setAsActiveWallet: () => void;
-                removeAccounts: () => void;
-                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
-                readonly accounts: readonly {
-                    readonly walletId: WALLET_ID;
-                    readonly name: string;
-                    readonly address: string;
-                    readonly chain: string;
-                    readonly active: boolean;
-                }[];
-                readonly isConnected: boolean;
-                readonly isActive: boolean;
-                readonly activeAccount: {
-                    readonly walletId: WALLET_ID;
-                    readonly name: string;
-                    readonly address: string;
-                    readonly chain: string;
-                    readonly active: boolean;
-                } | undefined;
-            } | undefined;
-            algosigner?: {
-                id: WALLET_ID;
-                metadata: {
-                    id: WALLET_ID;
-                    name: string;
-                    icon: string;
-                    chain: string;
-                    pkg: string;
-                };
-                client: {
+                    sdk: any;
                     connect: (x: any) => Promise<import("@thencc/any-wallet").Wallet>;
                     disconnect: () => Promise<void>;
                     reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet | null>;
@@ -552,6 +514,59 @@ export declare class Algonaut {
                     readonly active: boolean;
                 } | undefined;
             } | undefined;
+            algosigner?: {
+                id: WALLET_ID;
+                metadata: {
+                    id: WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    sdk: any;
+                    connect: (x: any) => Promise<import("@thencc/any-wallet").Wallet>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet | null>;
+                    signTransactions: (connectedAccounts: Account[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                loadClient: () => Promise<true>;
+                connect: (p?: any) => Promise<Account[]>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                readonly accounts: readonly {
+                    /**
+                     * Checks Algo balance of account
+                     * @param address - Wallet of balance to check
+                     * @returns Promise resolving to Algo balance
+                     */
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                }[];
+                readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                } | undefined;
+            } | undefined;
             exodus?: {
                 id: WALLET_ID;
                 metadata: {
@@ -562,13 +577,9 @@ export declare class Algonaut {
                     pkg: string;
                 };
                 client: {
+                    sdk: any;
                     connect: (x: any) => Promise<import("@thencc/any-wallet").Wallet>;
-                    disconnect: () => Promise<void>; /**
-                     * Checks token balance of account
-                     * @param address - Wallet of balance to check
-                     * @param assetIndex - the ASA index
-                     * @returns Promise resolving to token balance
-                     */
+                    disconnect: () => Promise<void>;
                     reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet | null>;
                     signTransactions: (connectedAccounts: Account[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 } | null;
@@ -614,6 +625,7 @@ export declare class Algonaut {
                     pkg: string;
                 };
                 client: {
+                    sdk: any;
                     connect: (x: any) => Promise<import("@thencc/any-wallet").Wallet>;
                     disconnect: () => Promise<void>;
                     reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet | null>;
@@ -661,6 +673,7 @@ export declare class Algonaut {
                     pkg: string;
                 };
                 client: {
+                    sdk: any;
                     connect: (x: any) => Promise<import("@thencc/any-wallet").Wallet>;
                     disconnect: () => Promise<void>;
                     reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet | null>;
@@ -742,6 +755,7 @@ export declare class Algonaut {
                 pkg: string;
             };
             client: {
+                sdk: any;
                 connect: (x: any) => Promise<import("@thencc/any-wallet").Wallet>;
                 disconnect: () => Promise<void>;
                 reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").Wallet | null>;
@@ -781,6 +795,43 @@ export declare class Algonaut {
         } | undefined;
         isSigning: boolean;
     };
+    inkeyClientSdk: {
+        frameBus: {
+            ready: boolean;
+            initing: boolean;
+            destroying: boolean;
+            __v_skip: boolean;
+            walEl: HTMLIFrameElement | null;
+            walElContainer: any;
+            walWin: Window | null;
+            onMsgHandler: ((event: any) => void) | null;
+            requests: FrameBusRequestsMap;
+            initSrc(src?: string | undefined, align?: any): Promise<void>;
+            showFrame(routepath?: string | undefined): void;
+            hideFrame(): void;
+            setHeight(height: number, unit?: string | undefined): void;
+            destroy(): void;
+            isReady(): Promise<boolean>;
+            setOnDisconnect(f: any): void;
+            onDisconnect(): void;
+            onMessage(event: any): void;
+            emit<T = undefined>(data: T extends InkeyTxMsgBase<string, any> ? T : InkeyTxPostMsgDefault): T extends InkeyTxMsgBase<string, any> ? T : InkeyTxPostMsgDefault;
+            emitAsync<PromReturn, T_1 = undefined>(data: T_1 extends InkeyTxMsgBase<string, any> ? T_1 : InkeyTxPostMsgDefault): Promise<PromReturn>;
+            insertStyles(css: string): void;
+            removeStyles(): void;
+        };
+        connect(payload?: any): Promise<InkeyAccount[]>;
+        disconnect(): Promise<InkeyResponseBase>;
+        show(routepath?: string | undefined): void;
+        hide(): void;
+        ping<R = any, T_2 = undefined>(data: any, options?: {
+            showFrame?: boolean | undefined;
+        } | undefined): Promise<R>;
+        signTxnsUint8Array(txns: Uint8Array[], connectedAccounts?: InkeyAccount[] | undefined): Promise<InkeySignTxnResponse>;
+        signTxns(txns: string[] | TxnForSigning[], connectedAccounts?: InkeyAccount[] | undefined): Promise<InkeySignTxnResponse>;
+    } | null;
+    inkeyLoading: boolean;
+    inkeyLoaded: boolean;
     account: {
         readonly walletId: WALLET_ID;
         readonly name: string;
@@ -862,12 +913,51 @@ export declare class Algonaut {
      * Shows the inkey-wallet modal
      * @returns
      */
-    inkeyShow(): Promise<void>;
+    inkeyShow(route?: string): Promise<void>;
     /**
      * Hides the inkey-wallet modal
      * @returns
      */
     inkeyHide(): Promise<void>;
+    /**
+     * Loads and/or returns the inkey-wallet client sdk for whatever use. see inkey-client-js docs for more.
+     * @returns
+     */
+    getInkeyClientSdk(): Promise<{
+        frameBus: {
+            ready: boolean;
+            initing: boolean;
+            destroying: boolean;
+            __v_skip: boolean;
+            walEl: HTMLIFrameElement | null;
+            walElContainer: any;
+            walWin: Window | null;
+            onMsgHandler: ((event: any) => void) | null;
+            requests: FrameBusRequestsMap;
+            initSrc(src?: string | undefined, align?: any): Promise<void>;
+            showFrame(routepath?: string | undefined): void;
+            hideFrame(): void;
+            setHeight(height: number, unit?: string | undefined): void;
+            destroy(): void;
+            isReady(): Promise<boolean>;
+            setOnDisconnect(f: any): void;
+            onDisconnect(): void;
+            onMessage(event: any): void;
+            emit<T = undefined>(data: T extends InkeyTxMsgBase<string, any> ? T : InkeyTxPostMsgDefault): T extends InkeyTxMsgBase<string, any> ? T : InkeyTxPostMsgDefault;
+            emitAsync<PromReturn, T_1 = undefined>(data: T_1 extends InkeyTxMsgBase<string, any> ? T_1 : InkeyTxPostMsgDefault): Promise<PromReturn>;
+            insertStyles(css: string): void;
+            removeStyles(): void;
+        };
+        connect(payload?: any): Promise<InkeyAccount[]>;
+        disconnect(): Promise<InkeyResponseBase>;
+        show(routepath?: string | undefined): void;
+        hide(): void;
+        ping<R = any, T_2 = undefined>(data: any, options?: {
+            showFrame?: boolean | undefined;
+        } | undefined): Promise<R>;
+        signTxnsUint8Array(txns: Uint8Array[], connectedAccounts?: InkeyAccount[] | undefined): Promise<InkeySignTxnResponse>;
+        signTxns(txns: string[] | TxnForSigning[], connectedAccounts?: InkeyAccount[] | undefined): Promise<InkeySignTxnResponse>;
+    }>;
     /**
      * Connects a wallet to be used as algonaut.account. uses:
      * 	- the SINGLE passed in init params for the specified wallet

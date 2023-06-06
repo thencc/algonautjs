@@ -76,6 +76,9 @@ import type {
 } from '@thencc/any-wallet';
 export * from '@thencc/any-wallet';
 
+import type { createClient } from '@thencc/inkey-client-js';
+type InkeySdk = Awaited<ReturnType<typeof createClient>>;
+
 import { defaultNodeConfig, mainnetConfig, testnetConfig } from './algo-config';
 import { defaultLibConfig } from './constants';
 import { logger } from './utils';
@@ -117,6 +120,9 @@ export class Algonaut {
 	
 	// handles all algo wallets (inkey, pera, etc) + remembers last used in localstorage
 	walletState = AnyWalletState;
+	inkeyClientSdk = null as null | InkeySdk;
+	inkeyLoading = false;
+	inkeyLoaded = false;
 
 	account = null as null | typeof AnyWalletState.activeAccount;
 	get connectedAccounts() {
@@ -267,11 +273,11 @@ export class Algonaut {
 
 	enableWallets(walletInitParams?: AlgonautConfig['initWallets']) {
 		if (walletInitParams == undefined) {
-			logger.log('enabling inkey wallet by default');
+			logger.debug('.enableWallets called without any init params.');
 		}
 		// default to NONE
 		const defaultWip: WalletInitParamsObj = {
-			// inkey: true
+			// inkey: true, // not even inkey
 		};
 		const wip = walletInitParams || defaultWip;
 		enableWallets(wip); // defaults to all except mnemonic client
@@ -313,31 +319,9 @@ export class Algonaut {
 	 * Shows the inkey-wallet modal 
 	 * @returns 
 	 */
-	async inkeyShow() {
-		// TODO add to this method a check to see if inkey is connected, 
-		// if not call that first.... + w username is prev authed
-		let inkeyW = AnyWalletState.enabledWallets?.inkey;
-		if (!inkeyW) {
-			console.warn('Inkey wallet is not enabled');
-			return;
-		}
-		if (AnyWalletState.activeWalletId == null) {
-			await this.inkeyConnect();
-		}
-
-		// TODO ? should we check for any connected account being of inkey type? or just the active one?
-		// if (AnyWalletState.stored.connectedAccounts.includes())
-		if (AnyWalletState.activeWalletId !== 'inkey') {
-			console.warn('Inkey is not the active wallet, cannot show it. ');
-			return;
-		}
-
-		await inkeyW.loadClient();
-		if ((inkeyW.client as any).sdk.frameBus.ready) {
-			(inkeyW.client as any).sdk.show();
-		} else {
-			console.warn('inkey comms not yet ready.')
-		}
+	async inkeyShow(route?: string) {
+		const ic = await this.getInkeyClientSdk();
+		ic.show(route);
 	}
 
 	/**
@@ -345,25 +329,42 @@ export class Algonaut {
 	 * @returns 
 	 */
 	async inkeyHide() {
-		let inkeyW = AnyWalletState.enabledWallets?.inkey;
-		if (!inkeyW) {
-			console.warn('inkey wallet not enabled');
-			return;
-		}
-		// TODO ? do we need this connect in the hide method?
-		// if (AnyWalletState.activeWalletId == null) {
-		// 	await this.inkeyConnect();
-		// }
-		// if (AnyWalletState.activeWalletId !== 'inkey') {
-		// 	console.warn('Inkey is not the active wallet, cannot hide it. ');
-		// 	return;
-		// }
+		const ic = await this.getInkeyClientSdk();
+		ic.hide();
+	}
 
-		await inkeyW.loadClient();
-		if ((inkeyW.client as any).sdk.frameBus.ready) {
-			(inkeyW.client as any).sdk.hide();
+	/**
+	 * Loads and/or returns the inkey-wallet client sdk for whatever use. see inkey-client-js docs for more.
+	 * @returns 
+	 */
+	async getInkeyClientSdk() {
+		logger.log('getInkeyClientSdk');
+		if (this.inkeyClientSdk !== null) {
+			this.inkeyLoaded = true;
+			return this.inkeyClientSdk;
 		} else {
-			console.warn('inkey comms not yet ready.')
+			// load it
+			let inkeyW = this.walletState.enabledWallets?.inkey;
+			if (!inkeyW) {
+				console.warn('Inkey wallet not enabled by dev');
+				throw new Error('Inkey wallet not enabled by dev');
+			}
+
+			this.inkeyLoading = true;
+			await inkeyW.loadClient();
+			this.inkeyLoading = false;
+
+			const inkeyClientSdk:InkeySdk = inkeyW.client!.sdk;
+
+			if (inkeyClientSdk.frameBus.ready == false) {
+				logger.debug('inkeySdk FrameBus not yet ready...');
+				await inkeyClientSdk.frameBus.isReady();
+				logger.debug('inkeySdk FrameBus IS ready.');
+			}
+
+			this.inkeyLoaded = true;
+			this.inkeyClientSdk = inkeyClientSdk;
+			return this.inkeyClientSdk;
 		}
 	}
 
