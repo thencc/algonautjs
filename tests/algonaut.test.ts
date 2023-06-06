@@ -121,6 +121,10 @@ describe('algonaut-offline', () => {
         expect(recoveredAccount.sk).toBeDefined();
     })
 
+    test('recoverAccount should throw error with incorrect mnemonic', () => {
+        expect(() => algonaut.recoverAccount('INVALID')).toThrow();
+    })
+
     test('b64StrToHumanStr decodes base64-encoded text', () => {
         expect(algonaut.b64StrToHumanStr('SGVsbG8gV29ybGQ=')).toBe('Hello World');
     })
@@ -199,6 +203,10 @@ describe('algonaut-offline', () => {
         const appAddress = algosdk.getApplicationAddress(accountAppID);
         expect(algonaut.getAppEscrowAccount(accountAppID)).toEqual(appAddress);
     })
+
+    // TODO: txnB64ToTxnBuff
+    // TODO: txnBuffToB64
+    // TODO: txnToStr
 })
 
 describe('Algonaut online methods', () => {
@@ -663,25 +671,3 @@ describe('Algonaut online methods', () => {
 // inkeySignTxns
 // setInkeyAccount
 // usingInkeyWallet
-
-// ========= other signing methods ======
-// createWalletConnectTransactions
-// connectToAlgoSigner
-// disconnectAlgoWallet
-// chainUpdate
-// connectAlgoWallet
-// killSession
-// onConnect
-// onDisconnect
-// onSessionUpdate
-// isAlgoSignerInstalled
-// resetApp
-// setWalletConnectAccount
-// startReqAF
-// stopReqAF
-// waitForAlgoSignerConfirmation
-// usingWalletConnect
-// pauseWaitSound
-// subscribeToEvents
-// sendTxWithAlgoSigner
-// sendWalletConnectTxns
