@@ -1,0 +1,134 @@
+# unit testing tasks
+
+
+# run from cli:
+# 	task tests
+
+# list tasks:
+#   task --list
+
+# envs + taskfile:
+# https://taskfile.dev/usage/#env-files
+
+# vscode ext (doesnt work well if yaml has comments...):
+# allows for code completion + easy running of tasks from bottom left panel
+# https://marketplace.visualstudio.com/items?itemName=paulvarache.vscode-taskfile
+
+
+version: '3'
+silent: true
+output: prefixed
+
+# env (use `tast --taskfile Taskfile.prod.yaml test` to use diff env)
+dotenv: ['.env']
+
+tasks:
+
+  hello:
+    desc: 'a little hello world task'
+    cmds:
+      - echo "hello tasker"
+      - echo "env $NAME"
+
+  prepare-algonautjs:
+    desc: 'build + link local algonautjs lib'
+    dir: ..
+    cmds:
+      - npm i
+      - npm run build
+      - npm run link
+
+  clean-tests:
+    desc: 'cleans test directories of dist/, node_modules/, package-lock.json etc'
+    cmds:
+      - find . -maxdepth 2 -name package.json -execdir rm -rf dist/ node_modules/ package-lock.json test-results/ playwright-report/ playwright/.cache/ \;
+
+  prepare-tests:
+    desc: 'install + link all test dirs'
+    cmds:
+      - find . -maxdepth 2 -name package.json -execdir npm i \;
+
+  tests:
+    desc: 'run all unit tests'
+    # FYI deps run in parallel
+    deps:
+      - test:init-node-ts-cjs
+      - test:init-node-ts-esm
+      - test:init-node-js-cjs
+      - test:init-node-js-esm
+      - test:init-browser-esm-relative
+      - test:init-browser-esm-skypack
+      - test:init-browser-esm-vue
+    cmds:
+      - echo "all tests completed OK!"
+
+  test:init-node-ts-cjs:
+    dir: init-node-ts-cjs
+    cmds:
+      - npm run test
+      - npm run build
+      - npm run test-built
+
+  test:init-node-ts-esm:
+    dir: init-node-ts-esm
+    cmds:
+      # ts-node
+      - npm run test
+      # node
+      - npm run build
+      - npm run test-built
+
+  test:init-node-js-cjs:
+    dir: init-node-js-cjs
+    cmds:
+      - npm run test
+
+  test:init-node-js-esm:
+    dir: init-node-js-esm
+    cmds:
+      - npm run test
+
+  test:init-browser-esm-relative:
+    silent: false
+    dir: init-browser-esm-relative
+    cmds:
+      - |
+        npm run dev &
+        sleep 1 &
+        wait &
+        npm run test
+      - echo 'done'
+
+  test:init-browser-esm-skypack:
+    silent: false
+    dir: init-browser-esm-skypack
+    cmds:
+      - |
+        npm run dev &
+        sleep 1 &
+        wait &
+        npm run test
+      - echo 'done'
+
+  test:init-browser-esm-vue:
+    # silent: false
+    dir: init-browser-esm-vue
+    cmds:
+      - |
+        npm run dev &
+        sleep 1 &
+        wait &
+        npm run test
+      - echo 'done'
+
+
+
+# :::GRAVEYARD:::
+
+# 'test:ts-import':
+#     cmds:
+#       - echo "doing 'test:ts-import' "
+#       # how to multi-line
+#       - |
+#         cd ./ts-import
+#         npm run dev

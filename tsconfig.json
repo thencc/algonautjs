@@ -1,28 +1,29 @@
 {
-  "compilerOptions": {
-    "module": "esnext",
-    "moduleResolution": "Node",
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": false,
-    "outDir": "dist",
-    "sourceMap": true,
-    "declaration": true,
-    "strict": true,
-    "target": "es2017",
-    "allowJs": true,
-    "lib": [
-      "es6",
-      "dom"
-    ]
-  },
-  "compileOnSave": true,
-  "include": [
-    "src"
-  ],
-  "exclude": [
-     "src/contracts",
-     "src/algo.config.ts"
- ]
+	"compilerOptions": {
+		"module": "esnext",
+		"moduleResolution": "Node",
+		"esModuleInterop": true,
+		"resolveJsonModule": true,
+		"noImplicitReturns": true,
+		"noUnusedLocals": false,
+		"outDir": "dist",
+		"sourceMap": true,
+		"declaration": true,
+		"strict": true,
+		"target": "es2017",
+		"allowJs": true,
+		"skipLibCheck": true,
+		"lib": [
+			"es6",
+			"dom"
+		],
+		"baseUrl": "./"
+	},
+	"compileOnSave": true,
+	"include": [
+		"src"
+	],
+	"exclude": [
+		"src/contracts"
+	]
 }

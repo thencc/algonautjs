@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"declaration": false,
+		"target": "es5",
+		"lib": ["ES2022", "dom"],
+		"module": "ES2022",
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+		"strict": true,
+		"noImplicitAny": false,
+		"outDir": "dist",
+		"skipLibCheck": true
+	},
+	"include": [
+		"src"
+	]
+}

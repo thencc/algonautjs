@@ -1,13 +1,18 @@
-import type algosdk from 'algosdk';
-import type { ApplicationStateSchema } from 'algosdk/dist/types/src/client/v2/algod/models/types';
-export declare type AlgonautConfig = {
-    BASE_SERVER: string;
-    INDEX_SERVER?: string;
-    LEDGER: string;
-    PORT: string;
-    API_TOKEN: any;
-    SIGNING_MODE?: 'local' | 'walletconnect' | 'algosigner' | 'inkey';
-    INKEY_SRC?: string;
+import type { LogicSigAccount, Transaction, Account, SuggestedParams, MultisigMetadata } from 'algosdk';
+import type { ApplicationStateSchema } from 'algosdk/dist/types/client/v2/algod/models/types';
+import type { WalletInitParamsObj } from '@thencc/any-wallet';
+export type AlgonautConfig = {
+    libConfig?: {
+        disableLogs?: boolean;
+    };
+    nodeConfig?: {
+        BASE_SERVER: string;
+        INDEX_SERVER?: string;
+        LEDGER: string;
+        PORT: string;
+        API_TOKEN: any;
+    };
+    initWallets?: WalletInitParamsObj;
 };
 export interface AlgonautStateData {
     key: string;
@@ -34,8 +39,11 @@ export interface AlgonautUpdateAppArguments {
     appArgs: any[];
     optionalFields?: AlgonautTransactionFields;
 }
+export interface AlgonautDeleteAppArguments {
+    optionalFields?: AlgonautTransactionFields;
+}
 export interface AlgonautLsigDeployArguments extends AlgonautDeployArguments {
-    lsig: algosdk.LogicSigAccount;
+    lsig: LogicSigAccount;
     noteText?: string;
 }
 export interface AlgonautAppStateEncoded {
@@ -66,14 +74,16 @@ export interface AlgonautAppState {
     locals: AlgonautStateData[];
 }
 export interface AlgonautCallAppArguments {
+    from?: string;
     appIndex: number;
     appArgs: any[];
     optionalFields?: AlgonautTransactionFields;
 }
 export interface AlgonautLsigCallAppArguments extends AlgonautCallAppArguments {
-    lsig: algosdk.LogicSigAccount;
+    lsig: LogicSigAccount;
 }
 export interface AlgonautCreateAssetArguments {
+    from?: string;
     assetName: string;
     symbol: string;
     metaBlock: string;
@@ -87,39 +97,42 @@ export interface AlgonautCreateAssetArguments {
     reserve?: string;
     freeze?: string;
     rekeyTo?: string;
+    optionalFields?: AlgonautTransactionFields;
+}
+export interface AlgonautDestroyAssetArguments {
+    rekeyTo?: string;
+    optionalFields?: AlgonautTransactionFields;
 }
 export interface AlgonautSendAssetArguments {
     to: string;
+    from?: string;
     assetIndex: number;
     amount: number | bigint;
+    optionalFields?: AlgonautTransactionFields;
 }
 export interface AlgonautLsigSendAssetArguments extends AlgonautSendAssetArguments {
-    lsig: algosdk.LogicSigAccount;
+    lsig: LogicSigAccount;
 }
 export interface AlgonautPaymentArguments {
-    to: string;
     amount: number | bigint;
-    note?: string;
+    to: string;
+    from?: string;
+    optionalFields?: AlgonautTransactionFields;
 }
 export interface AlgonautLsigPaymentArguments extends AlgonautPaymentArguments {
-    lsig: algosdk.LogicSigAccount;
-}
-export interface WalletConnectListener {
-    onSessionUpdate(payload: any): void;
-    onConnect(payload: any): void;
-    onDisconnect(payload: any): void;
+    lsig: LogicSigAccount;
 }
 export interface AlgonautTxnCallbacks {
     onSign(payload: any): void;
     onSend(payload: any): void;
     onConfirm(payload: any): void;
 }
-export declare type AlgonautError = {
+export type AlgonautError = {
     message: string;
     rawError?: any;
 };
-export declare type AlgonautTransactionStatus = {
-    status: 'success' | 'fail';
+export type AlgonautTransactionStatus = {
+    status: 'success' | 'fail' | 'rejected';
     message: string;
     index?: number;
     txId: string;
@@ -127,11 +140,11 @@ export declare type AlgonautTransactionStatus = {
     meta?: any;
     createdIndex?: number;
 };
-export declare type AlgonautWallet = {
+export type AlgonautWallet = {
     address: string;
     mnemonic: string;
 };
-export declare type AlgonautTransactionFields = {
+export type AlgonautTransactionFields = {
     accounts?: string[];
     applications?: number[];
     assets?: number[];
@@ -142,9 +155,23 @@ export declare type AlgonautTransactionFields = {
     freeze?: string;
     clawback?: string;
     reserve?: string;
+    suggestedParams?: SuggestedParams;
 };
-export declare type AlgonautAtomicTransaction = {
-    transaction: algosdk.Transaction;
-    transactionSigner: algosdk.Account | algosdk.LogicSigAccount;
+export type AlgonautAtomicTransaction = {
+    transaction: Transaction;
+    transactionSigner: undefined | Account | LogicSigAccount;
     isLogigSig: boolean;
+};
+export type InkeySignTxnResponse = {
+    success: boolean;
+    reject?: boolean;
+    error?: any;
+    signedTxns?: Uint8Array[] | Uint8Array;
+};
+export type TxnForSigning = {
+    txn: string;
+    txnDecoded?: Transaction;
+    isLogicSig?: boolean;
+    isMultisig?: boolean;
+    multisigMeta?: MultisigMetadata;
 };

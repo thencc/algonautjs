@@ -1,15 +1,34 @@
-import type algosdk from 'algosdk';
-import type { ApplicationStateSchema } from 'algosdk/dist/types/src/client/v2/algod/models/types';
+import type {
+	LogicSigAccount,
+	Transaction,
+	Account,
+	SuggestedParams,
+	MultisigMetadata,
+} from 'algosdk';
 
+// FYI the line below breaks in some deno envs
+import type { ApplicationStateSchema } from 'algosdk/dist/types/client/v2/algod/models/types';
+
+import type { WalletInitParamsObj } from '@thencc/any-wallet';
 
 export type AlgonautConfig = {
-	BASE_SERVER: string;
-	INDEX_SERVER?: string; // optional, but helpful
-	LEDGER: string;
-	PORT: string;
-	API_TOKEN: any;
-	SIGNING_MODE?: 'local' | 'walletconnect' | 'algosigner' | 'inkey';
-	INKEY_SRC?: string;
+	libConfig?: {
+		disableLogs?: boolean; // should default to true
+	};
+
+	nodeConfig?: {
+		BASE_SERVER: string;
+		INDEX_SERVER?: string; // optional, but helpful
+		LEDGER: string;
+		PORT: string;
+		API_TOKEN: any;
+	};
+
+	// if we wanted to support multiple init params of any-wallet, but too verbose... 
+	// anyWalletConfig?: {
+	// 	walletInitParams?: WalletInitParamsObj;
+	// };
+	initWallets?: WalletInitParamsObj;
 }
 
 export interface AlgonautStateData {
@@ -44,8 +63,12 @@ export interface AlgonautUpdateAppArguments {
 	//rekeyTo: string;
 }
 
+export interface AlgonautDeleteAppArguments {
+	optionalFields?: AlgonautTransactionFields;
+}
+
 export interface AlgonautLsigDeployArguments extends AlgonautDeployArguments {
-	lsig: algosdk.LogicSigAccount;
+	lsig: LogicSigAccount;
 	noteText?: string;
 }
 
@@ -80,16 +103,18 @@ export interface AlgonautAppState {
 }
 
 export interface AlgonautCallAppArguments {
+	from?: string;
 	appIndex: number;
 	appArgs: any[];
 	optionalFields?: AlgonautTransactionFields;
 }
 
 export interface AlgonautLsigCallAppArguments extends AlgonautCallAppArguments {
-	lsig: algosdk.LogicSigAccount;
+	lsig: LogicSigAccount;
 }
 
 export interface AlgonautCreateAssetArguments {
+	from?: string;
 	assetName: string;
 	symbol: string;
 	metaBlock: string;
@@ -103,32 +128,35 @@ export interface AlgonautCreateAssetArguments {
 	reserve?: string;
 	freeze?: string;
 	rekeyTo?: string;
+	optionalFields?: AlgonautTransactionFields;
+}
+
+export interface AlgonautDestroyAssetArguments {
+	rekeyTo?: string;
+	optionalFields?: AlgonautTransactionFields;
 }
 
 export interface AlgonautSendAssetArguments {
 	to: string;
+	from?: string;
 	assetIndex: number;
 	amount: number | bigint;
+	optionalFields?: AlgonautTransactionFields;
 }
 
 export interface AlgonautLsigSendAssetArguments extends AlgonautSendAssetArguments {
-	lsig: algosdk.LogicSigAccount;
+	lsig: LogicSigAccount;
 }
 
 export interface AlgonautPaymentArguments {
-	to: string;
 	amount: number | bigint;
-	note?: string;
+	to: string;
+	from?: string;
+	optionalFields?: AlgonautTransactionFields;
 }
 
 export interface AlgonautLsigPaymentArguments extends AlgonautPaymentArguments {
-	lsig: algosdk.LogicSigAccount;
-}
-
-export interface WalletConnectListener {
-	onSessionUpdate(payload: any): void;
-	onConnect(payload: any): void;
-	onDisconnect(payload: any): void;
+	lsig: LogicSigAccount;
 }
 
 export interface AlgonautTxnCallbacks {
@@ -143,7 +171,7 @@ export type AlgonautError = {
 }
 
 export type AlgonautTransactionStatus = {
-	status: 'success' | 'fail';
+	status: 'success' | 'fail' | 'rejected';
 	message: string;
 	index?: number;
 	txId: string;
@@ -167,11 +195,28 @@ export type AlgonautTransactionFields = {
 	manager?: string,
 	freeze?: string,
 	clawback?: string,
-	reserve?: string
+	reserve?: string;
+	suggestedParams?: SuggestedParams;
 }
 
 export type AlgonautAtomicTransaction = {
-	transaction: algosdk.Transaction;
-	transactionSigner: algosdk.Account | algosdk.LogicSigAccount;
+	transaction: Transaction;
+	// TODO remove this, yeah?
+	transactionSigner: undefined | Account | LogicSigAccount; // undefined means theres not enough info to tell, like when a .from field is in params
 	isLogigSig: boolean;
+}
+
+export type InkeySignTxnResponse = {
+	success: boolean;
+	reject?: boolean;
+	error?: any;
+	signedTxns?: Uint8Array[] | Uint8Array;
+}
+
+export type TxnForSigning = {
+	txn: string; // base64 encoded transaction
+	txnDecoded?: Transaction;
+	isLogicSig?: boolean;
+	isMultisig?: boolean;
+	multisigMeta?: MultisigMetadata;
 }

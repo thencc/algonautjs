@@ -1,0 +1,22 @@
+{
+	"name": "init-node-ts",
+	"type": "module",
+	"version": "1.0.0",
+	"main": "dist/index.js",
+	"scripts": {
+		"postinstall": "npm run link",
+		"link": "npm link @thencc/algonautjs",
+		"unlink": "npm unlink @thencc/algonautjs",
+		"test": "ts-node --esm -r dotenv/config src/index.ts dotenv_config_path=../.env",
+		"build": "rm -rf dist && tsc",
+		"test-built": "node -r dotenv/config ./dist/index.js dotenv_config_path=../.env"
+	},
+	"devDependencies": {
+		"@types/node": "^18.14.6",
+		"ts-node": "^10.9.1",
+		"typescript": "^4.9.5"
+	},
+	"dependencies": {
+		"@thencc/algonautjs": "^0.3.46"
+	}
+}

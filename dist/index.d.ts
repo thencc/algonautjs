@@ -1,35 +1,854 @@
 /// <reference types="node" />
-import algosdk from 'algosdk';
-import type { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautAppState, AlgonautStateData, AlgonautError, WalletConnectListener, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments, AlgonautAppStateEncoded } from './AlgonautTypes';
-import { FrameBus } from './FrameBus';
-import { IInternalEvent } from '@walletconnect/types';
-declare global {
-    interface Window {
-        AlgoSigner: any;
-    }
-}
+import { Buffer } from 'buffer';
+import algosdk, { Account as AlgosdkAccount, Algodv2, LogicSigAccount, Transaction } from 'algosdk';
+import type { AlgonautConfig, AlgonautWallet, AlgonautTransactionStatus, AlgonautAtomicTransaction, AlgonautTransactionFields, AlgonautAppState, AlgonautStateData, AlgonautError, AlgonautTxnCallbacks, AlgonautCreateAssetArguments, AlgonautSendAssetArguments, AlgonautCallAppArguments, AlgonautDeployArguments, AlgonautLsigDeployArguments, AlgonautLsigCallAppArguments, AlgonautLsigSendAssetArguments, AlgonautPaymentArguments, AlgonautLsigPaymentArguments, AlgonautUpdateAppArguments, AlgonautAppStateEncoded } from './AlgonautTypes';
+export * from './AlgonautTypes';
+export type AlgoTxn = Transaction;
+import { WALLET_ID } from '@thencc/any-wallet';
+import type { Account, WalletInitParamsObj } from '@thencc/any-wallet';
+export * from '@thencc/any-wallet';
 export declare class Algonaut {
-    algodClient: algosdk.Algodv2;
+    algodClient: Algodv2;
     indexerClient: algosdk.Indexer | undefined;
+    nodeConfig: {
+        BASE_SERVER: string;
+        INDEX_SERVER?: string | undefined;
+        LEDGER: string;
+        PORT: string;
+        API_TOKEN: any;
+    };
+    libConfig: {
+        disableLogs?: boolean | undefined;
+    } | undefined;
     sdk: typeof algosdk;
-    config: AlgonautConfig | undefined;
-    account: algosdk.Account | undefined;
-    address: string | undefined;
-    mnemonic: string | undefined;
-    uiLoading: boolean;
-    inkeyWallet: {
-        defaultSrc: string;
-        otherConfig: {};
-        frameBus: FrameBus | undefined;
+    walletState: {
+        allWallets: {
+            pera?: {
+                id: WALLET_ID;
+                metadata: {
+                    id: WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    sdk: any;
+                    connect: (x: any) => Promise<import("@thencc/any-wallet").WalletAccounts>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").WalletAccounts | null>;
+                    signTransactions: (connectedAccounts: Account[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                loadClient: () => Promise<true>;
+                connect: (p?: any) => Promise<Account[]>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                readonly accounts: readonly {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                }[];
+                readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                } | undefined;
+            } | undefined;
+            inkey?: {
+                id: WALLET_ID;
+                metadata: {
+                    id: WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    sdk: any;
+                    connect: (x: any) => Promise<import("@thencc/any-wallet").WalletAccounts>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").WalletAccounts | null>;
+                    signTransactions: (connectedAccounts: Account[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    /**
+                     * Call a "method" on a stateful contract.  In TEAL, you're really giving
+                     * an argument which branches to a specific place and reads the other args
+                     * @param args Object containing `appIndex`, `appArgs`, and `optionalFields` properties
+                     */
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                loadClient: () => Promise<true>;
+                connect: (p?: any) => Promise<Account[]>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                readonly accounts: readonly {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                }[];
+                readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                } | undefined;
+            } | undefined;
+            myalgo?: {
+                id: WALLET_ID;
+                metadata: {
+                    id: WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string; /**
+                     * Returns an atomic transaction that closes out the user's local state in an application.
+                     * The opposite of {@link atomicOptInApp}.
+                     * @param args Object containing `appIndex`, `appArgs`, and `optionalFields` properties
+                     * @returns Promise resolving to atomic transaction
+                     */
+                    pkg: string;
+                };
+                client: {
+                    sdk: any;
+                    connect: (x: any) => Promise<import("@thencc/any-wallet").WalletAccounts>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").WalletAccounts | null>;
+                    signTransactions: (connectedAccounts: Account[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                loadClient: () => Promise<true>;
+                connect: (p?: any) => Promise<Account[]>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                readonly accounts: readonly {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                }[];
+                readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                } | undefined;
+            } | undefined;
+            algosigner?: {
+                id: WALLET_ID;
+                metadata: {
+                    id: WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    sdk: any;
+                    connect: (x: any) => Promise<import("@thencc/any-wallet").WalletAccounts>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").WalletAccounts | null>;
+                    signTransactions: (connectedAccounts: Account[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                loadClient: () => Promise<true>;
+                connect: (p?: any) => Promise<Account[]>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                readonly accounts: readonly {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                }[];
+                readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                } | undefined;
+            } | undefined;
+            exodus?: {
+                id: WALLET_ID;
+                metadata: {
+                    id: WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    sdk: any;
+                    connect: (x: any) => Promise<import("@thencc/any-wallet").WalletAccounts>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").WalletAccounts | null>;
+                    signTransactions: (connectedAccounts: Account[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                loadClient: () => Promise<true>;
+                connect: (p?: any) => Promise<Account[]>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                readonly accounts: readonly {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                }[];
+                readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                } | undefined;
+            } | undefined;
+            defly?: {
+                id: WALLET_ID;
+                metadata: {
+                    id: WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    sdk: any;
+                    connect: (x: any) => Promise<import("@thencc/any-wallet").WalletAccounts>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").WalletAccounts | null>;
+                    signTransactions: (connectedAccounts: Account[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                loadClient: () => Promise<true>;
+                connect: (p?: any) => Promise<Account[]>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                readonly accounts: readonly {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                }[];
+                readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                } | undefined;
+            } | undefined;
+            mnemonic?: {
+                id: WALLET_ID;
+                metadata: {
+                    id: WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    sdk: any;
+                    connect: (x: any) => Promise<import("@thencc/any-wallet").WalletAccounts>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").WalletAccounts | null>;
+                    signTransactions: (connectedAccounts: Account[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                loadClient: () => Promise<true>;
+                connect: (p?: any) => Promise<Account[]>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                readonly accounts: readonly {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                }[];
+                readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                } | undefined;
+            } | undefined;
+        };
+        enabledWallets: {
+            pera?: {
+                id: WALLET_ID;
+                metadata: {
+                    id: WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    sdk: any;
+                    connect: (x: any) => Promise<import("@thencc/any-wallet").WalletAccounts>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").WalletAccounts | null>;
+                    signTransactions: (connectedAccounts: Account[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                loadClient: () => Promise<true>;
+                connect: (p?: any) => Promise<Account[]>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                readonly accounts: readonly {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                }[];
+                readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                } | undefined;
+            } | undefined;
+            inkey?: {
+                id: WALLET_ID;
+                metadata: {
+                    id: WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    sdk: any;
+                    connect: (x: any) => Promise<import("@thencc/any-wallet").WalletAccounts>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").WalletAccounts | null>;
+                    signTransactions: (connectedAccounts: Account[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                loadClient: () => Promise<true>;
+                connect: (p?: any) => Promise<Account[]>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                readonly accounts: readonly {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                }[];
+                readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                } | undefined;
+            } | undefined;
+            myalgo?: {
+                id: WALLET_ID;
+                metadata: {
+                    id: WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    sdk: any;
+                    connect: (x: any) => Promise<import("@thencc/any-wallet").WalletAccounts>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").WalletAccounts | null>;
+                    signTransactions: (connectedAccounts: Account[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                loadClient: () => Promise<true>;
+                connect: (p?: any) => Promise<Account[]>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                readonly accounts: readonly {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                }[];
+                readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                } | undefined;
+            } | undefined;
+            algosigner?: {
+                id: WALLET_ID;
+                /**
+                 * Sends ALGO from own account to `args.to`
+                 *
+                 * @param args `AlgonautPaymentArgs` object containing `to`, `amount`, and optional `note`
+                 * @param callbacks optional AlgonautTxnCallbacks
+                 * @returns Promise resolving to transaction status
+                 */
+                metadata: {
+                    id: WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    sdk: any;
+                    connect: (x: any) => Promise<import("@thencc/any-wallet").WalletAccounts>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").WalletAccounts | null>;
+                    signTransactions: (connectedAccounts: Account[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                loadClient: () => Promise<true>;
+                connect: (p?: any) => Promise<Account[]>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                readonly accounts: readonly {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                }[];
+                readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                } | undefined;
+            } | undefined;
+            exodus?: {
+                id: WALLET_ID;
+                metadata: {
+                    id: WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    sdk: any;
+                    connect: (x: any) => Promise<import("@thencc/any-wallet").WalletAccounts>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").WalletAccounts | null>;
+                    signTransactions: (connectedAccounts: Account[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                loadClient: () => Promise<true>;
+                connect: (p?: any) => Promise<Account[]>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                readonly accounts: readonly {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                }[];
+                readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                } | undefined;
+            } | undefined;
+            defly?: {
+                id: WALLET_ID;
+                metadata: {
+                    id: WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    sdk: any;
+                    connect: (x: any) => Promise<import("@thencc/any-wallet").WalletAccounts>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").WalletAccounts | null>;
+                    signTransactions: (connectedAccounts: Account[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                loadClient: () => Promise<true>;
+                connect: (p?: any) => Promise<Account[]>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                readonly accounts: readonly {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                }[];
+                readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                } | undefined;
+            } | undefined;
+            mnemonic?: {
+                id: WALLET_ID;
+                metadata: {
+                    id: WALLET_ID;
+                    name: string;
+                    icon: string;
+                    chain: string;
+                    pkg: string;
+                };
+                client: {
+                    sdk: any;
+                    connect: (x: any) => Promise<import("@thencc/any-wallet").WalletAccounts>;
+                    disconnect: () => Promise<void>;
+                    reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").WalletAccounts | null>;
+                    signTransactions: (connectedAccounts: Account[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                } | null;
+                initParams: boolean | {
+                    config?: any;
+                    sdk?: any;
+                };
+                inited: boolean;
+                initing: boolean;
+                signing: boolean;
+                connecting: boolean;
+                loadClient: () => Promise<true>;
+                connect: (p?: any) => Promise<Account[]>;
+                disconnect: () => Promise<void>;
+                reconnect: () => Promise<void>;
+                setAsActiveWallet: () => void;
+                removeAccounts: () => void;
+                signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+                readonly accounts: readonly {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                }[];
+                readonly isConnected: boolean;
+                readonly isActive: boolean;
+                readonly activeAccount: {
+                    readonly walletId: WALLET_ID;
+                    readonly name: string;
+                    readonly address: string;
+                    readonly chain: string;
+                    readonly active: boolean;
+                } | undefined;
+            } | undefined;
+        } | null;
+        stored: {
+            version: number;
+            connectedAccounts: {
+                walletId: WALLET_ID;
+                name: string;
+                address: string;
+                chain: string;
+                active: boolean;
+            }[];
+            activeAccount: {
+                walletId: WALLET_ID;
+                name: string;
+                address: string;
+                chain: string;
+                active: boolean;
+            } | null;
+        };
+        activeAddress: string;
+        activeAccount: {
+            readonly walletId: WALLET_ID;
+            readonly name: string;
+            readonly address: string;
+            readonly chain: string;
+            readonly active: boolean;
+        } | null;
+        connectedAccounts: readonly {
+            readonly walletId: WALLET_ID;
+            readonly name: string;
+            readonly address: string;
+            readonly chain: string;
+            readonly active: boolean;
+        }[];
+        activeWalletId: WALLET_ID | null;
+        activeWallet: {
+            id: WALLET_ID;
+            metadata: {
+                id: WALLET_ID;
+                name: string;
+                icon: string;
+                chain: string;
+                pkg: string;
+            };
+            client: {
+                sdk: any;
+                connect: (x: any) => Promise<import("@thencc/any-wallet").WalletAccounts>;
+                disconnect: () => Promise<void>;
+                reconnect: (onDisconnect: () => void) => Promise<import("@thencc/any-wallet").WalletAccounts | null>;
+                signTransactions: (connectedAccounts: Account[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+            } | null;
+            initParams: boolean | {
+                config?: any;
+                sdk?: any;
+            };
+            inited: boolean;
+            initing: boolean;
+            signing: boolean;
+            connecting: boolean;
+            loadClient: () => Promise<true>;
+            connect: (p?: any) => Promise<Account[]>;
+            disconnect: () => Promise<void>;
+            reconnect: () => Promise<void>;
+            setAsActiveWallet: () => void;
+            removeAccounts: () => void;
+            signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
+            readonly accounts: readonly {
+                readonly walletId: WALLET_ID;
+                readonly name: string;
+                readonly address: string;
+                readonly chain: string;
+                readonly active: boolean;
+            }[];
+            readonly isConnected: boolean;
+            readonly isActive: boolean;
+            readonly activeAccount: {
+                readonly walletId: WALLET_ID;
+                readonly name: string;
+                readonly address: string;
+                readonly chain: string;
+                readonly active: boolean;
+            } | undefined;
+        } | undefined;
+        isSigning: boolean;
     };
-    walletConnect: {
-        connected: boolean;
-        connector: any;
-        accounts: any[];
-        address: string;
-        assets: any[];
-        chain: any;
-    };
+    inkeyClientSdk: {
+        frameBus: {
+            ready: boolean;
+            initing: boolean;
+            destroying: boolean;
+            __v_skip: boolean;
+            walEl: HTMLIFrameElement | null;
+            walElContainer: any;
+            walWin: Window | null;
+            onMsgHandler: ((event: any) => void) | null;
+            requests: FrameBusRequestsMap;
+            initSrc(src?: string | undefined, align?: any): Promise<void>;
+            showFrame(routepath?: string | undefined): void;
+            hideFrame(): void;
+            setHeight(height: number, unit?: string | undefined): void;
+            destroy(): void;
+            isReady(): Promise<boolean>;
+            setOnDisconnect(f: any): void;
+            onDisconnect(): void;
+            onMessage(event: any): void;
+            emit<T = undefined>(data: T extends InkeyTxMsgBase<string, any> ? T : InkeyTxPostMsgDefault): T extends InkeyTxMsgBase<string, any> ? T : InkeyTxPostMsgDefault;
+            emitAsync<PromReturn, T_1 = undefined>(data: T_1 extends InkeyTxMsgBase<string, any> ? T_1 : InkeyTxPostMsgDefault): Promise<PromReturn>;
+            insertStyles(css: string): void;
+            removeStyles(): void;
+        };
+        connect(payload?: any): Promise<InkeyAccount[]>;
+        disconnect(): Promise<InkeyResponseBase>;
+        show(routepath?: string | undefined): void;
+        hide(): void;
+        ping<R = any, T_2 = undefined>(data: any, options?: {
+            showFrame?: boolean | undefined;
+        } | undefined): Promise<R>;
+        signTxnsUint8Array(txns: Uint8Array[], connectedAccounts?: InkeyAccount[] | undefined): Promise<InkeySignTxnResponse>;
+        signTxns(txns: string[] | TxnForSigning[], connectedAccounts?: InkeyAccount[] | undefined): Promise<InkeySignTxnResponse>;
+    } | null;
+    inkeyLoading: boolean;
+    inkeyLoaded: boolean;
+    account: {
+        readonly walletId: WALLET_ID;
+        readonly name: string;
+        readonly address: string;
+        readonly chain: string;
+        readonly active: boolean;
+    } | null;
+    get connectedAccounts(): readonly {
+        readonly walletId: WALLET_ID;
+        readonly name: string;
+        readonly address: string;
+        readonly chain: string;
+        readonly active: boolean;
+    }[];
     /**
      * Instantiates Algonaut.js.
      *
@@ -37,71 +856,127 @@ export declare class Algonaut {
      * Usage:
      *
      * ```js
-     * import Algonaut from '@thencc/algonautjs';
+     * import { Algonaut } from '@thencc/algonautjs';
      * const algonaut = new Algonaut({
-     *	 BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
-     *	 INDEX_SERVER: 'https://testnet-algorand.api.purestake.io/idx2'
-     *	 LEDGER: 'TestNet',
-     *	 PORT: '',
-     *	 API_TOKEN: { 'X-API-Key': 'YOUR_API_TOKEN' }
+     * 		nodeConfig: {
+     *	 		BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
+     *	 		INDEX_SERVER: 'https://testnet-algorand.api.purestake.io/idx2'
+     *	 		LEDGER: 'TestNet',
+     *	 		PORT: '',
+     *	 		API_TOKEN: { 'X-API-Key': 'YOUR_API_TOKEN' }
+     * 		}
      * });
-     *
-     * If using Inkey, add `SIGNING_MODE: 'inkey'`.
      * ```
      *
      * @param config config object
      */
-    constructor(config: AlgonautConfig);
+    constructor(config?: AlgonautConfig);
+    setLibConfig(libConfig?: AlgonautConfig['libConfig']): void;
     /**
      * checks if config obj is valid for use
      * @param config algonaut config for network + signing mode
      * @returns boolean. true is good.
      */
-    isValidConfig(config: AlgonautConfig): boolean;
+    isValidNodeConfig(nodeConfig?: AlgonautConfig['nodeConfig']): boolean;
     /**
      * sets config for use (new algod, indexerClient, etc)
      * @param config algonaut config for network + signing mode
      * 		- will throw Error if config is lousy
      */
-    setConfig(config: AlgonautConfig): void;
+    setNodeConfig(nodeConfig?: AlgonautConfig['nodeConfig'] | 'mainnet' | 'testnet'): void;
     /**
-     * @returns config object or `false` if no config is set
+     * @returns nodeConfig object or `false` if no nodeConfig is set
      */
-    getConfig(): AlgonautConfig | boolean;
+    getNodeConfig(): AlgonautConfig['nodeConfig'] | boolean;
     /**
      * Checks status of Algorand network
      * @returns Promise resolving to status of Algorand network
      */
     checkStatus(): Promise<any | AlgonautError>;
-    initInkey(mountConfig: {
-        src?: string;
-    }): void;
+    initAcctSync(): void;
+    stopAcctSync(): void;
+    enableWallets(walletInitParams?: AlgonautConfig['initWallets']): void;
     /**
-     * if you already have an account, set it here
-     * @param account an algosdk account already created
-     */
-    setAccount(account: algosdk.Account): void | AlgonautError;
-    /**
-     * Sets account connected via WalletConnect
-     * @param address account address
-     */
-    setWalletConnectAccount(address: string): void;
-    /**
-     * This is the same as setting the WC account
-     * @param address account address
-     */
-    setInkeyAccount(address: string): void;
-    /**
-     * Creates a wallet address + mnemonic from account's secret key
-     * @returns AlgonautWallet Object containing `address` and `mnemonic`
-     */
-    createWallet(): AlgonautWallet;
-    /**
+     * @deprecated use .connect() with mnemonic arg
      * Recovers account from mnemonic
+     *  (helpful for rapid development but overall very insecure unless on server-side)
      * @param mnemonic Mnemonic associated with Algonaut account
-     * @returns If mnemonic is valid, returns account. Otherwise, returns false.
+     * @returns If mnemonic is valid, it returns the account (address, chain). Otherwise, throws an error.
      */
-    recoverAccount(mnemonic: string): algosdk.Account;
+    mnemonicConnect(mnemonic: string): Promise<Account[]>;
+    /**
+     * @deprecated use .connect or loop through enabled wallets' methods
+     */
+    inkeyConnect(): Promise<Account[]>;
+    /**
+     * @deprecated use .disconnect or loop through enabled wallets' methods
+     */
+    inkeyDisconnect(): Promise<void>;
+    /**
+     * Shows the inkey-wallet modal
+     * @returns
+     */
+    inkeyShow(route?: string): Promise<void>;
+    /**
+     * Hides the inkey-wallet modal
+     * @returns
+     */
+    inkeyHide(): Promise<void>;
+    /**
+     * Loads and/or returns the inkey-wallet client sdk for whatever use. see inkey-client-js docs for more.
+     * @returns
+     */
+    getInkeyClientSdk(): Promise<{
+        frameBus: {
+            ready: boolean;
+            initing: boolean;
+            destroying: boolean;
+            __v_skip: boolean;
+            walEl: HTMLIFrameElement | null;
+            walElContainer: any;
+            walWin: Window | null;
+            onMsgHandler: ((event: any) => void) | null;
+            requests: FrameBusRequestsMap;
+            initSrc(src?: string | undefined, align?: any): Promise<void>;
+            showFrame(routepath?: string | undefined): void;
+            hideFrame(): void;
+            setHeight(height: number, unit?: string | undefined): void;
+            destroy(): void;
+            isReady(): Promise<boolean>;
+            setOnDisconnect(f: any): void;
+            onDisconnect(): void;
+            onMessage(event: any): void;
+            emit<T = undefined>(data: T extends InkeyTxMsgBase<string, any> ? T : InkeyTxPostMsgDefault): T extends InkeyTxMsgBase<string, any> ? T : InkeyTxPostMsgDefault;
+            emitAsync<PromReturn, T_1 = undefined>(data: T_1 extends InkeyTxMsgBase<string, any> ? T_1 : InkeyTxPostMsgDefault): Promise<PromReturn>;
+            insertStyles(css: string): void;
+            removeStyles(): void;
+        };
+        connect(payload?: any): Promise<InkeyAccount[]>;
+        disconnect(): Promise<InkeyResponseBase>;
+        show(routepath?: string | undefined): void;
+        hide(): void;
+        ping<R = any, T_2 = undefined>(data: any, options?: {
+            showFrame?: boolean | undefined;
+        } | undefined): Promise<R>;
+        signTxnsUint8Array(txns: Uint8Array[], connectedAccounts?: InkeyAccount[] | undefined): Promise<InkeySignTxnResponse>;
+        signTxns(txns: string[] | TxnForSigning[], connectedAccounts?: InkeyAccount[] | undefined): Promise<InkeySignTxnResponse>;
+    }>;
+    /**
+     * Connects a wallet to be used as algonaut.account. uses:
+     * 	- the SINGLE passed in init params for the specified wallet
+     *  - or, the SINGLE enabled wallet IF 1 wallet is enabled (as is the default. just inkey)
+     * FAILs and throws when multiple init params are passed in or multiple wallets are enabled when nothing is passed in (since it doesnt know which to connect up)
+     */
+    connect(initWallets?: WalletInitParamsObj): Promise<Account[]>;
+    /**
+     * disconnects
+     * 	- the active wallet IF no arg passed in
+     * 	- all the wallets IF "true" is passed in as an arg
+     * 	- or, specific wallets if an array of wallet ids is passed in. (ex: ["inkey", "algosigner", "mnemonic"] )
+     */
+    disconnect(wIds?: WALLET_ID[] | true): Promise<void>;
+    disconnectAll(): void;
+    reconnect(): void;
     /**
      * General purpose method to await transaction confirmation
      * @param txId a string id of the transacion you want to watch
@@ -115,15 +990,15 @@ export declare class Algonaut {
      * @param base64ProgramString
      * @returns an algosdk LogicSigAccount
      */
-    generateLogicSig(base64ProgramString: string): algosdk.LogicSigAccount;
-    atomicOptInAsset(assetIndex: number): Promise<AlgonautAtomicTransaction>;
+    generateLogicSig(base64ProgramString: string): LogicSigAccount;
+    atomicOptInAsset(assetIndex: number, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
     /**
      * Opt-in the current account for the a token or NFT Asset.
      * @param assetIndex number of asset to opt-in to
      * @param callbacks `AlgonautTxnCallbacks`, passed to {@link sendTransaction}
      * @returns Promise resolving to confirmed transaction or error
      */
-    optInAsset(assetIndex: number, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
+    optInAsset(assetIndex: number, callbacks?: AlgonautTxnCallbacks, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus>;
     /**
      * You can be opted into an asset but still have a zero balance. Use this call
      * for cases where you just need to know the address's opt-in state
@@ -144,7 +1019,7 @@ export declare class Algonaut {
     encodeArguments(args: any[]): Uint8Array[];
     /**
      * Create asset transaction
-     * @param args {AlgonautCreateAssetArguments}  Must pass `assetName`, `symbol`, `decimals`, `amount`.
+     * @param args : AlgonautCreateAssetArguments obj must contain: `assetName`, `symbol`, `decimals`, `amount`.
      * @returns atomic txn to create asset
     */
     atomicCreateAsset(args: AlgonautCreateAssetArguments): Promise<AlgonautAtomicTransaction>;
@@ -155,14 +1030,14 @@ export declare class Algonaut {
      * @returns asset index
     */
     createAsset(args: AlgonautCreateAssetArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
-    atomicDeleteAsset(assetId: number): Promise<AlgonautAtomicTransaction>;
+    atomicDeleteAsset(assetId: number, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
     /**
      * Deletes asset
      * @param assetId Index of the ASA to delete
      * @param callbacks optional AlgonautTxnCallbacks
      * @returns Promise resolving to confirmed transaction or error
      */
-    deleteAsset(assetId: number, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
+    deleteAsset(assetId: number, callbacks?: AlgonautTxnCallbacks, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus>;
     /**
      * Creates send asset transaction.
      *
@@ -208,14 +1083,14 @@ export declare class Algonaut {
      * @param appIndex - ID of application
      * @returns Promise resolving to atomic transaction that deletes application
      */
-    atomicDeleteApplication(appIndex: number): Promise<AlgonautAtomicTransaction>;
+    atomicDeleteApp(appIndex: number, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautAtomicTransaction>;
     /**
      * Deletes an application from the blockchain
      * @param appIndex - ID of application
      * @param callbacks optional AlgonautTxnCallbacks
      * @returns Promise resolving to confirmed transaction or error
      */
-    deleteApplication(appIndex: number, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
+    deleteApp(appIndex: number, callbacks?: AlgonautTxnCallbacks, optionalTxnArgs?: AlgonautTransactionFields): Promise<AlgonautTransactionStatus>;
     atomicCallApp(args: AlgonautCallAppArguments): Promise<AlgonautAtomicTransaction>;
     /**
      * Call a "method" on a stateful contract.  In TEAL, you're really giving
@@ -279,7 +1154,7 @@ export declare class Algonaut {
      */
     deployTealWithLSig(args: AlgonautLsigDeployArguments): Promise<AlgonautTransactionStatus>;
     /**
-     * Updates an application with `algosdk.makeApplicationUpdateTxn`
+     * Updates an application with `makeApplicationUpdateTxn`
      * @param args AlgonautUpdateAppArguments
      * @returns atomic transaction that updates the app
      */
@@ -292,12 +1167,12 @@ export declare class Algonaut {
      */
     updateApp(args: AlgonautUpdateAppArguments, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
     /**
-     * Compiles TEAL source via [algodClient.compile](https://py-algorand-sdk.readthedocs.io/en/latest/algosdk/v2client/algod.html#algosdk.v2client.algod.AlgodClient.compile)
+     * Compiles TEAL source via [algodClient.compile](https://py-algorand-sdk.readthedocs.io/en/latest/algosdk/v2client/algod.html#v2client.algod.AlgodClient.compile)
      * @param programSource source to compile
      * @returns Promise resolving to Buffer of compiled bytes
      */
     compileProgram(programSource: string): Promise<Uint8Array>;
-    atomicPayment(args: AlgonautPaymentArguments): Promise<AlgonautAtomicTransaction>;
+    atomicSendAlgo(args: AlgonautPaymentArguments): Promise<AlgonautAtomicTransaction>;
     /**
      * Sends ALGO from own account to `args.to`
      *
@@ -331,7 +1206,7 @@ export declare class Algonaut {
      * @param address - Address to check
      * @param assetIndex - the index of the ASA
      */
-    accountHasTokens(address: string, assetIndex: number): Promise<any>;
+    accountHasTokens(address: string, assetIndex: number): Promise<boolean>;
     /**
      * Gets global state for an application.
      * @param applicationIndex - the applications index
@@ -339,236 +1214,116 @@ export declare class Algonaut {
      */
     getAppGlobalState(applicationIndex: number): Promise<any>;
     /**
-     * Gets account local state for an app. Defaults to `this.account` unless
+     * Gets account local state for an app. Defaults to AnyWallets.activeAddress unless
      * an address is provided.
      * @param applicationIndex the applications index
      */
     getAppLocalState(applicationIndex: number, address?: string): Promise<AlgonautAppState | void>;
     atomicAssetTransferWithLSig(args: AlgonautLsigSendAssetArguments): Promise<AlgonautAtomicTransaction>;
     atomicPaymentWithLSig(args: AlgonautLsigPaymentArguments): Promise<AlgonautAtomicTransaction>;
+    normalizeTxns(txnOrTxns: Transaction | AlgonautAtomicTransaction | AlgonautAtomicTransaction[]): Uint8Array[];
     /**
-     * Sends a transaction or multiple through the correct channels, depending on signing mode.
-     * If no signing mode is set, we assume local signing.
+     * Signs a transaction or multiple w the correct wallet according to AW (does not send / submit txn(s) to network)
+     * @param txnOrTxns Either an array of atomic transactions or a single transaction to sign
+     * @param signedTxns array of
+     * @returns Promise resolving to AlgonautTransactionStatus
+     */
+    signTransaction(txnOrTxns: AlgonautAtomicTransaction[] | Transaction | AlgonautAtomicTransaction): Promise<Uint8Array[]>;
+    /**
+     * Sends a transaction or multiple w the correct wallet according to AW
      * @param txnOrTxns Either an array of atomic transactions or a single transaction to sign
      * @param callbacks Optional object with callbacks - `onSign`, `onSend`, and `onConfirm`
      * @returns Promise resolving to AlgonautTransactionStatus
      */
-    sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | algosdk.Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
-    /**
-     * Sends messages to Inkey via FrameBus
-     * @param data Message to send
-     * @returns Whatever Inkey gives us
-     */
-    inkeyMessageAsync(data: any, options?: {
-        showFrame: boolean;
-    }): Promise<any>;
-    /**
-     * Sends unsigned transactions to Inkey, awaits signing, returns signed txns
-     * @param txns Array of base64 encoded transactions
-     * @returns {Uint8Array} Signed transactions
-     */
-    inkeySignTxns(txns: string[]): Promise<any>;
-    /**
-     * Shows the Inkey wallet frame
-     */
-    inkeyShow(): void;
-    /**
-     * Hides the Inkey wallet frame
-     */
-    inkeyHide(): void;
-    /**
-     * Sets the app / userbase to use for Inkey accounts. This must be set
-     * before Inkey can be used to login or sign transactions.
-     * @param appCode String determining the namespace for user accounts
-     * @returns Promise resolving to response from Inkey
-     */
-    inkeySetApp(appCode: string): Promise<any>;
-    /**
-     * Opens Inkey to allow users to create an account or login with a previously
-     * created account. Must be called before transactions can be signed.
-     * @param message Message to show to users
-     * @returns Promise resolving to an account object of type `{ account: string }`
-     */
-    inkeyConnect(message?: string): Promise<any>;
-    /**
-     * Tells Inkey to close your session & clear local storage.
-     * @returns Success or fail message
-     */
-    inkeyDisconnect(): Promise<any>;
-    /**
-     * run atomic takes an array of transactions to run in order, each
-     * of the atomic transaction methods needs to return an object containing
-     * the transaction and the signed transaction
-     * 	[ atomicSendASA(),
-            atomicSendAlgo(),
-            atomicCallApp()]
-     * @param transactions a Uint8Array of ALREADY SIGNED transactions
-     */
-    sendAtomicTransaction(transactions: AlgonautAtomicTransaction[], callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
-    /**
-     * Used by Inkey to sign base64-encoded transactions sent to the iframe
-     * @param txns Array of Base64-encoded unsigned transactions
-     * @returns Uint8Array signed transactions
-     */
-    signBase64Transactions(txns: string[]): Uint8Array[] | Uint8Array;
-    /**
-     * Does what it says on the tin.
-     * @param txn base64-encoded unsigned transaction
-     * @returns transaction object
-     */
-    decodeBase64UnsignedTransaction(txn: string): algosdk.Transaction;
-    /**
-     * Describes an Algorand transaction, for display in Inkey
-     * @param txn Transaction to describe
-     */
-    txnSummary(txn: algosdk.Transaction): string;
-    /**
-     * Signs an array of Transactions (used in Inkey)
-     * @param txns Array of algosdk.Transaction
-     * @returns Uint8Array[] of signed transactions
-     */
-    signTransactionGroup(txns: algosdk.Transaction[]): Uint8Array[] | Uint8Array;
-    /**
-     * Sends one or multiple transactions via WalletConnect, prompting the user to approve transaction on their phone.
-     *
-     * @remarks
-     * Returns the results of `algodClient.pendingTransactionInformation` in `AlgonautTransactionStatus.meta`.
-     * This is used to get the `application-index` from a `atomicDeployFromTeal` function, among other things.
-     *
-     * @param walletTxns Array of transactions to send
-     * @param callbacks Transaction callbacks `{ onSign, onSend, onConfirm }`
-     * @returns Promise resolving to transaction status
-     */
-    sendWalletConnectTxns(walletTxns: AlgonautAtomicTransaction[], callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
-    /**
-     * Interally used to determine how to sign transactions on more generic functions (e.g. {@link deployFromTeal})
-     * @returns true if we are signing transactions with WalletConnect, false otherwise
-     */
-    usingWalletConnect(): boolean;
-    /**
-     * Interally used to determine how to sign transactions on more generic functions (e.g. {@link deployFromTeal})
-     * @returns true if we are signing transactions with inkey, false otherwise
-     */
-    usingInkeyWallet(): boolean;
-    /**
-     * Prepare one or more transactions for wallet connect signature
-     *
-     * @param transactions one or more atomic transaction objects
-     * @returns an array of Transactions
-     */
-    createWalletConnectTransactions(transactions: AlgonautAtomicTransaction[]): Promise<algosdk.Transaction[]>;
-    /**********************************************/
-    /***** Below are the Algo Signer APIs *********/
-    /**********************************************/
-    /**
-     * Sends a transaction via AlgoSigner.
-     * @param params Transaction parameters to send
-     * @returns Promise resolving to confirmed transaction or error
-     */
-    sendTxWithAlgoSigner(params: {
-        assetIndex?: string;
-        from: string;
-        to: string;
-        amount: number;
-        note?: string;
-        type: string;
-        LEDGER: 'TestNet' | 'MainNet';
-    }): Promise<any>;
-    /**
-     * Waits for confirmation of a transaction
-     * @param tx Transaction to monitor
-     * @returns Promise resolving to error or confirmed transaction
-     */
-    waitForAlgoSignerConfirmation(tx: any): Promise<any>;
-    disconnectAlgoWallet(): Promise<void>;
-    /**
-     * Connects to algo wallet via WalletConnect, calling {@link subscribeToEvents}.
-     * Implementation borrowed from [Algorand Docs](https://developer.algorand.org/docs/get-details/walletconnect/)
-     *
-     * @remarks
-     *
-     * There are three listeners you can use, defined by {@link WalletConnectListener}:
-     *  - `onConnect(payload: IInternalEvent)` (`payload.params[0]` contains an array of account addresses)
-     *  - `onDisconnect()`
-     *  - `onSessionUpdate(accounts: string[])`
-     *
-     * @example
-     * Usage:
-     *
-     * ```ts
-     * await algonaut.connectAlgoWallet({
-     *   onConnect: (payload) => console.log('Accounts: ' + payload.params[0]),
-     *   onDisconnect: () => console.log('Do something on disconnect'),
-     *   onSessionUpdate: (accounts) => console.log('Accounts: ' + accounts)
-     * })
-     * ```
-     *
-     * We can use the `onConnect` listener to store an address in application state, for example,
-     * which allows us to conditionally display components depending on authentication status.
-     *
-     * @param clientListener object of listener functions (see {@link WalletConnectListener})
-     */
-    connectAlgoWallet(clientListener?: WalletConnectListener): Promise<void>;
-    /**
-     * Sets up listeners for WalletConnect events
-     * @param clientListener optional object of listener functions, to be used in an application
-     */
-    subscribeToEvents(clientListener?: WalletConnectListener): void;
-    /**
-     * Kills WalletConnect session and calls {@link resetApp}
-     */
-    killSession(): Promise<void>;
-    chainUpdate(newChain: any): Promise<void>;
-    resetApp(): Promise<void>;
-    startReqAF(): void;
-    stopReqAF(playSound?: boolean): void;
-    pauseWaitSound(): void;
-    /**
-     * Function called upon connection to WalletConnect. Sets account in AlgonautJS via {@link setWalletConnectAccount}.
-     * @param payload Event payload, containing an array of account addresses
-     */
-    onConnect(payload: IInternalEvent): Promise<void>;
-    /**
-     * Called upon disconnection from WalletConnect.
-     */
-    onDisconnect(): void;
-    /**
-     * Called when WalletConnect session updates
-     * @param accounts Array of account address strings
-     */
-    onSessionUpdate(accounts: string[]): Promise<void>;
-    /**
-     * Helper function to turn `globals` and `locals` array into more useful objects
-     *
-     * @param stateArray State array returned from functions like {@link getAppInfo}
-     * @returns A more useful object: `{ array[0].key: array[0].value, array[1].key: array[1].value, ... }`
-     */
-    stateArrayToObject(stateArray: object[]): any;
-    fromBase64(encoded: string): string;
-    valueAsAddr(encoded: string): string;
-    decodeStateArray(stateArray: AlgonautAppStateEncoded[]): AlgonautStateData[];
-    /**
-     * Function to determine if the AlgoSigner extension is installed.
-     * @returns true if `window.AlgoSigner` is defined
-     */
-    isAlgoSignerInstalled(): boolean;
-    /**
-     * Connects to AlgoSigner extension
-     */
-    connectToAlgoSigner(): Promise<any>;
-    /**
-     * Async function that returns list of accounts in the wallet.
-     * @param ledger must be 'TestNet' or 'MainNet'.
-     * @returns Array of Objects with address fields: [{ address: <String> }, ...]
-     */
-    getAccounts(ledger: string): Promise<any>;
+    sendTransaction(txnOrTxns: AlgonautAtomicTransaction[] | Transaction | AlgonautAtomicTransaction, callbacks?: AlgonautTxnCallbacks): Promise<AlgonautTransactionStatus>;
     /**
      *
      * @param str string
      * @param enc the encoding type of the string (defaults to utf8)
      * @returns string encoded as Uint8Array
      */
+    toUint8Array(str: string, enc?: BufferEncoding): Uint8Array;
+    /**
+     * @deprecated use toUint8Array instead.
+     * @param str string
+     * @param enc the encoding type of the string (defaults to utf8)
+     * @returns string encoded as Uint8Array
+     */
     to8Arr(str: string, enc?: BufferEncoding): Uint8Array;
+    /**
+     * Helper function to turn `globals` and `locals` array into more useful objects
+     *
+     * @param stateArray State array returned from functions like {@link getAppInfo}
+     * @returns A more useful object: `{ array[0].key: array[0].value, array[1].key: array[1].value, ... }`
+     * TODO add correct typing for this method
+     */
+    stateArrayToObject(stateArray: object[]): any;
+    /**
+     * Used for decoding state
+     * @param encoded Base64 string
+     * @returns Human-readable string
+     */
+    b64StrToHumanStr(encoded: string): string;
+    /**
+     * @deprecated Use b64StrToHumanStr instead
+     * @param encoded Base64 string
+     * @returns Human-readable string
+     */
+    fromBase64(encoded: string): string;
+    /**
+     * Decodes a Base64-encoded Uint8 Algorand address and returns a string
+     * @param encoded An encoded Algorand address
+     * @returns Decoded address
+     */
+    valueAsAddr(encoded: string): string;
+    /**
+     * Decodes app state into a human-readable format
+     * @param stateArray Encoded app state
+     * @returns Array of objects with key, value, and address properties
+     */
+    decodeStateArray(stateArray: AlgonautAppStateEncoded[]): AlgonautStateData[];
+    /**
+     * Does what it says on the tin.
+     * @param txn base64-encoded unsigned transaction
+     * @returns transaction object
+     */
+    decodeBase64UnsignedTransaction(txn: string): Transaction;
+    /**
+     * Describes an Algorand transaction, for display in Inkey
+     * @param txn Transaction to describe
+     */
+    txnSummary(txn: Transaction): string;
+    /**
+     * Creates a wallet address + mnemonic from account's secret key.
+     * Changed in 0.3: this does NOT set algonaut.account.
+     * @returns AlgonautWallet Object containing `address` and `mnemonic`
+     */
+    createWallet(): AlgonautWallet;
+    /**
+     * Recovers account from mnemonic
+     * Changed in 0.3: this does NOT set algonaut.account.
+     * @param mnemonic Mnemonic associated with Algonaut account
+     * @returns If mnemonic is valid, returns algosdk account (.addr, .sk). Otherwise, throws an error.
+     */
+    recoverAccount(mnemonic: string): AlgosdkAccount;
+    /**
+     * txn(b64) -> txnBuff (buffer)
+     * @param txn base64-encoded unsigned transaction
+     * @returns trransaction as buffer object
+     */
+    txnB64ToTxnBuff(txn: string): Buffer;
+    /**
+     * Converts between buff -> b64 (txns)
+     * @param buff likely a algorand txn as a Uint8Array buffer
+     * @returns string (like for inkey / base64 transmit use)
+     */
+    txnBuffToB64(buff: Uint8Array): string;
+    /**
+     * Does what it says on the tin.
+     * @param txn algorand txn object
+     * @returns string (like for inkey / base64 transmit use)
+     */
+    txnToStr(txn: algosdk.Transaction): string;
 }
 export default Algonaut;
 export declare const buffer: BufferConstructor;

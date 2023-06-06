@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"declaration": false,
+		"target": "es5",
+		"lib": [
+			"es5",
+			"dom"
+		],
+		"strict": true,
+		"noImplicitAny": false,
+		"esModuleInterop": false,
+		"moduleResolution": "node",
+		"outDir": "dist",
+		"skipLibCheck": true
+	},
+	"include": [
+		"src"
+	]
+}

@@ -58,15 +58,20 @@ jobs:
       - name: "setup node"
         uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: 16
           registry-url: 'https://registry.npmjs.org'
           # creates an .npmrc
 
-      - name: "install"
-        run: npm ci
+      - name: "setup pnpm"
+        uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 8.5.0
+          # auto install on use
+          run_install: |
+              args: [--no-frozen-lockfile, --strict-peer-dependencies]
 
       - name: "build"
-        run: npm run build
+        run: pnpm run build
 
       - name: "publish"
         run: |

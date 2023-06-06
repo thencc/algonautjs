@@ -1,0 +1,24 @@
+{
+  "name": "init-browser-esm-vue",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "postinstall": "npm run link && npx playwright install",
+    "link": "npm link @thencc/algonautjs",
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "test": "npx playwright test ./tests/browser.test.ts",
+    "test-reports": "npx playwright show-report"
+  },
+  "dependencies": {
+    "vue": "^3.2.37"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.31.2",
+    "@vitejs/plugin-vue": "^4.0.0",
+    "typescript": "^4.6.4",
+    "vite": "^4.1.4",
+    "vue-tsc": "^1.2.0"
+  }
+}
