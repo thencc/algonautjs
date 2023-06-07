@@ -162,7 +162,7 @@ let accts = await algonaut.connect({
 
 
 <details>
-<summary><h3>🐙 ex: complex inkey microwallet ↕</h3></summary>
+<summary><h3>🐙 ex: advance inkey ↕</h3></summary>
 
 algonaut is optimized for inkey! on the top level of algonaut there are useful methods such as: 
 - `algonaut.inkeyLoaded`
@@ -172,16 +172,6 @@ algonaut is optimized for inkey! on the top level of algonaut there are useful m
 - `algonaut.getInkeyClientSdk()`
   - which returns the `inkey-client-js` instance
 
-</details>
-
-
-<details>
-<summary><h3>🔋 ex: reconnect ↕</h3></summary>
-
-if your dapp wants to recall previously connected accounts from localstorage, it is recommended to call this on page load:
-```ts
-algonaut.reconnect();
-```
 </details>
 
 
@@ -209,12 +199,25 @@ unsubscribe();
 </details>
 
 
+<details open>
+<summary><h3>🔋 ex: reconnect ↕</h3></summary>
+
+if your dapp wants to recall previously connected accounts from localstorage, it is recommended to call this on page load:
+```ts
+algonaut.reconnect();
+```
+</details>
+
+
 
 ## Submitting Transactions
 
 Submitting/sending transactions is common practice on a dapp and algonautjs makes it simple! `algonaut.sendTransaction()` signs and submits the incoming single txn or array of txns (atomic txn). A powerful feature of the Algorand chain is the ability to group transactions together and run them as one [atomic transactions](https://developer.algorand.org/docs/get-details/atomic_transfers/).
 
-single txn send:
+
+<details open>
+<summary><h3>🚀 single txn send ↕</h3></summary>
+
 ```js
 // construct txn
 const txn = await algonaut.atomicSendAlgo({
@@ -228,9 +231,12 @@ console.log('txn', txn);
 let txnRes = await algonaut.sendTransaction(txn);
 console.log('txnRes', txnRes);
 ```
+</details>
 
 
-atomic txn example:
+<details open>
+<summary><h3>🛸 atomic txn example ↕</h3></summary>
+
 ```js
 // the logic in the 2nd txn's smart contract requires that the first txn in this atomic transaction is a payment txn to a specific address in order for the second txn to succeed.
 // - to interact w app/smart contracts you must include the app id in the optionalFields.applications array.
@@ -258,6 +264,8 @@ algonaut.sendTransaction( txnArr , {
   }
 })
 ```
+</details>
+
 
 ## Sign Transactions (without submitting)
 
