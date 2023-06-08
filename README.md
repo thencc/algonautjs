@@ -50,6 +50,8 @@ console.log(txnStatus);
 
 ## Authenticating / Connecting a Wallet
 
+### Wallets 
+
 algonaut supports most all Algorand wallets such as... 
 - ✅ Pera
 - ✅ Inkey
@@ -62,6 +64,37 @@ algonaut supports most all Algorand wallets such as...
 ...by using [`any-wallet`](https://github.com/thencc/any-wallet) under the hood. 
 
 `any-wallet` uses localstorage to remember which wallet(s) a user has connected to the dapp previously and the entire `any-wallet` reactive state is made available at `algonaut.walletState` for convenience. see the [`any-wallet` documentation](https://github.com/thencc/any-wallet) for more info.
+
+### Accounts
+
+algonaut thinks about accounts like this:
+- `algonaut.account`
+  - is the active account from which txns are signed + sent
+  - only 1 account is active at a time
+  - it can be from any wallet provider (Pera, Inkey, etc.)
+  - when txn signing is required the wallet ui corresponding to the account's `walletId` will show
+  - it serves as the default `.from` field in new txn contructions (unless otherwise specified)
+- `algonaut.connectedAccounts`
+  - are any number of accounts that a user has connected to this dapp
+  - 1 of these is the active account
+
+the structure of an account object looks like this:
+```ts
+{
+  address: 'DXS4S2WZMFAFA2WDSIRNCZGVSQQ72XEKVED63NA7KWVLKWBWZ6AABQYMTY',
+  name: 'silvio',
+  walletId: 'inkey',
+  chain: 'algorand',
+  active: true
+}
+```
+
+by default the most recently connected account becomes the active account. however, you can update the active account to one of the connected accounts like so:
+```ts
+algonaut.setActiveAccount(algonaut.connectedAccounts[2]);
+```
+
+
 
 <details>
 <summary><h3>🔌 ex: simple connect ↕</h3></summary>
@@ -78,7 +111,7 @@ let accts = await algonaut.connect({
   pera: true
 });
 
-// now algonaut uses the first returned acct as the active account on the class instance
+// now algonaut uses the first returned acct as the active account
 algonaut.account == accts[0];
 ```
 </details>
@@ -153,9 +186,15 @@ const algonaut = new Algonaut({
 
 // or, connect later on
 const algonaut = new Algonaut();
-...
 let accts = await algonaut.connect({
   mnemonic: '25 word phrase'
+});
+
+// FYI no wallet ui is shown for mnemonic wallet signing
+// so the below simply works without any user interaction:
+const res = algonaut.sendAlgo({
+  amount: 100, // micro algos
+  to: 'DXS4S2WZMFAFA2WDSIRNCZGVSQQ72XEKVED63NA7KWVLKWBWZ6AABQYMTY', // recipient
 });
 ```
 </details>
@@ -205,6 +244,9 @@ unsubscribe();
 if your dapp wants to recall previously connected accounts from localstorage, it is recommended to call this on page load:
 ```ts
 algonaut.reconnect();
+// IF connected during a previous session... the active account + connected accounts are now populated
+console.log(algonaut.connectedAccounts);
+console.log(algonaut.account);
 ```
 </details>
 
@@ -212,7 +254,11 @@ algonaut.reconnect();
 
 ## Submitting Transactions
 
-Submitting/sending transactions is common practice on a dapp and algonautjs makes it simple! `algonaut.sendTransaction()` signs and submits the incoming single txn or array of txns (atomic txn). A powerful feature of the Algorand chain is the ability to group transactions together and run them as one [atomic transactions](https://developer.algorand.org/docs/get-details/atomic_transfers/).
+Submitting/sending transactions is common practice on a dapp and algonautjs makes it simple! `algonaut.sendTransaction()` signs and submits the incoming single txn or array of txns (atomic txn). 
+
+*Important Algorand knowledge*:
+
+Before a txn is submitted, it first needs to be signed which algonaut handles gracefully. When algonaut has an active account and `.sendTransaction()` is called, it prompts the user to sign the transaction in whichever wallet UI the account was connected with. After the user approves/signs, the signed transaction is returned to the dapp and submitted to the network. While submitting is nearly instant, awaiting the send method yields the confirmed block/round number in which the txn now exists on-chain (this takes ~3.5 seconds). If a dapp needs more granularity re signing, sending and confirming a txn it can leverage callback hooks as a second arguement (see the atomic txn example below).
 
 
 <details open>
@@ -237,6 +283,7 @@ console.log('txnRes', txnRes);
 <details open>
 <summary><h3>🛸 atomic txn example ↕</h3></summary>
 
+> A powerful feature of the Algorand chain is the ability to group transactions together and run them as one [atomic transactions](https://developer.algorand.org/docs/get-details/atomic_transfers/).
 ```js
 // the logic in the 2nd txn's smart contract requires that the first txn in this atomic transaction is a payment txn to a specific address in order for the second txn to succeed.
 // - to interact w app/smart contracts you must include the app id in the optionalFields.applications array.

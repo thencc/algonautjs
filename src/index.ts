@@ -67,7 +67,8 @@ import {
 	signTransactions, 
 	subscribeToAccountChanges,
 	WALLET_ID,
-	recallState
+	recallState,
+	setAsActiveAccount
 } from '@thencc/any-wallet';
 import type {
 	Account,
@@ -270,6 +271,9 @@ export class Algonaut {
 	stopAcctSync() {
 		if (unsAcctSync) unsAcctSync();
 	}
+
+	// direct map from any-wallet for ease
+	setActiveAccount = setAsActiveAccount;
 
 	enableWallets(walletInitParams?: AlgonautConfig['initWallets']) {
 		if (walletInitParams == undefined) {

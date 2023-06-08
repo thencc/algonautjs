@@ -88,11 +88,6 @@ export declare class Algonaut {
                     signTransactions: (connectedAccounts: Account[], transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 } | null;
                 initParams: boolean | {
-                    /**
-                     * Call a "method" on a stateful contract.  In TEAL, you're really giving
-                     * an argument which branches to a specific place and reads the other args
-                     * @param args Object containing `appIndex`, `appArgs`, and `optionalFields` properties
-                     */
                     config?: any;
                     sdk?: any;
                 };
@@ -130,12 +125,7 @@ export declare class Algonaut {
                     id: WALLET_ID;
                     name: string;
                     icon: string;
-                    chain: string; /**
-                     * Returns an atomic transaction that closes out the user's local state in an application.
-                     * The opposite of {@link atomicOptInApp}.
-                     * @param args Object containing `appIndex`, `appArgs`, and `optionalFields` properties
-                     * @returns Promise resolving to atomic transaction
-                     */
+                    chain: string;
                     pkg: string;
                 };
                 client: {
@@ -168,7 +158,13 @@ export declare class Algonaut {
                     readonly active: boolean;
                 }[];
                 readonly isConnected: boolean;
-                readonly isActive: boolean;
+                readonly isActive: boolean; /**
+                 * Closes out the user's local state in an application.
+                 * The opposite of {@link optInApp}.
+                 * @param args Object containing `appIndex`, `appArgs`, and `optionalFields` properties
+                 * @param callbacks optional AlgonautTxnCallbacks
+                 * @returns Promise resolving to atomic transaction
+                 */
                 readonly activeAccount: {
                     readonly walletId: WALLET_ID;
                     readonly name: string;
@@ -517,13 +513,6 @@ export declare class Algonaut {
             } | undefined;
             algosigner?: {
                 id: WALLET_ID;
-                /**
-                 * Sends ALGO from own account to `args.to`
-                 *
-                 * @param args `AlgonautPaymentArgs` object containing `to`, `amount`, and optional `note`
-                 * @param callbacks optional AlgonautTxnCallbacks
-                 * @returns Promise resolving to transaction status
-                 */
                 metadata: {
                     id: WALLET_ID;
                     name: string;
@@ -895,6 +884,7 @@ export declare class Algonaut {
     checkStatus(): Promise<any | AlgonautError>;
     initAcctSync(): void;
     stopAcctSync(): void;
+    setActiveAccount: (acct: Account) => void;
     enableWallets(walletInitParams?: AlgonautConfig['initWallets']): void;
     /**
      * @deprecated use .connect() with mnemonic arg
