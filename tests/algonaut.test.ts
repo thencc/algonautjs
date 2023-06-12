@@ -27,6 +27,8 @@ const validConfig: AlgonautConfig = {
     }
 }
 
+const consoleWarnMock = jest.spyOn(console, 'warn');
+
 if (!testAccountMnemonic) console.error('You must set ALGONAUT_TEST_MNEMONIC in your environment. This account needs a little bit of ALGO to run the tests.')
 try {
 
@@ -35,6 +37,15 @@ try {
 } catch (e) {
     console.error('ALGONAUT_TEST_MNEMONIC is not a valid Algorand account')
 }
+
+beforeAll(async () => {
+    const algonaut = new Algonaut();
+    let info = await algonaut.getAccountInfo('PABEKX52YGCEEOHJQSSOQHZICPGIGPXTFFJVVXBCUYAMKTPAEQE4HRRGPY');
+    if (info.amount < 8000000) {
+        console.error('Not enough ALGO on the test account.');
+        process.exit(1);
+    }
+})
 
 // this is a new wallet we use to test various things,
 // created at the beginning of each test run but used throughout
@@ -120,7 +131,8 @@ describe('algonaut-offline', () => {
         algonaut = new Algonaut(validConfig);
     })
 
-    test('expect activeWallet to be undefined by default', () => {
+    test('expect activeWallet to be undefined after disconnect', () => {
+        algonaut.disconnectAll();
         expect(algonaut.walletState.activeWallet).toBeUndefined();
     })
 
@@ -221,9 +233,15 @@ describe('algonaut-offline', () => {
         expect(algonaut.getAppEscrowAccount(accountAppID)).toEqual(appAddress);
     })
 
-    // TODO: txnB64ToTxnBuff
-    // TODO: txnBuffToB64
-    // TODO: txnToStr
+    // test('decodeBase64UnsignedTransaction', async () => {
+    //     const txn = await algonaut.atomicSendAlgo({ to: algosdk.generateAccount().addr, amount: 10 });
+    //     console.log(txn.transaction.bytesToSign());
+    //     const txnB64 = algonaut.txnBuffToB64(txn.transaction.bytesToSign());
+    //     console.log(txnB64);
+    //     const decoded = algonaut.decodeBase64UnsignedTransaction(txnB64);
+    //     console.log(decoded);
+    //     expect(decoded).toBeInstanceOf(String);
+    // })
 })
 
 describe('Algonaut online methods', () => {
@@ -231,12 +249,11 @@ describe('Algonaut online methods', () => {
     jest.setTimeout(120000);
 
     let algonaut: Algonaut;
-    algonaut = new Algonaut(validConfig);
-    algonaut.connect({ mnemonic: testAccountMnemonic });
 
-    beforeEach(() => {
+    beforeEach(async () => {
         algonaut = new Algonaut(validConfig);
-        algonaut.connect({ mnemonic: testAccountMnemonic });
+        algonaut.disconnectAll();
+        await algonaut.connect({ mnemonic: testAccountMnemonic });
         freshWallet = algonaut.createWallet();
     })
 
@@ -267,6 +284,16 @@ describe('Algonaut online methods', () => {
             expect(status['time-since-last-round']).toBeDefined();
         })
     })
+    describe('connect', () => {
+        test('mnemonic connect should update active account', async () => {
+            const account = algonaut.createWallet();
+            algonaut.disconnectAll();
+            await algonaut.connect({ mnemonic: account.mnemonic });
+            expect(algonaut.account?.address).toBe(account.address);
+        })
+    })
+
+    
 
     describe('getAlgoBalance', () => {
         test('getAlgoBalance returns a number greater than zero', async () => {
@@ -320,6 +347,7 @@ describe('Algonaut online methods', () => {
 
     describe('Asset method tests', () => {
         let asset: any;
+        let receiverWallet: any;
 
         // might as well spam test net with some ads :)
         const assetArgs = {
@@ -374,7 +402,9 @@ describe('Algonaut online methods', () => {
         })
 
         test('isOptedIntoAsset returns false with a new account', async () => {
-            algonaut.mnemonicConnect(freshWallet.mnemonic)
+            algonaut.disconnectAll();
+            await algonaut.connect({ mnemonic: algonaut.createWallet().mnemonic });
+            console.log(algonaut.walletState);
             const optedIn = await algonaut.isOptedIntoAsset({
                 account: algonaut.walletState.activeAddress,
                 assetId: asset.createdIndex
@@ -383,12 +413,16 @@ describe('Algonaut online methods', () => {
         })
 
         test('optInAsset successfully opts in to newly created asset', async () => {
-            algonaut.mnemonicConnect(freshWallet.mnemonic)
+            receiverWallet = algonaut.createWallet();
+            algonaut.disconnectAll();
+            await algonaut.connect({ mnemonic: receiverWallet.mnemonic });
+            expect(algonaut.account?.address).toEqual(receiverWallet.address);
+
             let res = await algonaut.optInAsset(asset.createdIndex);
             expect(res.status).toBe('success');
 
             const optedIn = await algonaut.isOptedIntoAsset({
-                account: algonaut.walletState.activeAddress,
+                account: receiverWallet.address,
                 assetId: asset.createdIndex
             })
             expect(optedIn).toBe(true);
@@ -400,13 +434,14 @@ describe('Algonaut online methods', () => {
         })
 
         test('sendAsset successfully sends asset', async () => {
-            algonaut.mnemonicConnect(testAccountMnemonic);
-            const res = await algonaut.sendAsset({ to: freshWallet.address, amount: 1, assetIndex: asset.createdIndex });
+            algonaut.disconnectAll();
+            await algonaut.connect({ mnemonic: testAccountMnemonic });
+            const res = await algonaut.sendAsset({ to: receiverWallet.address, amount: 1, assetIndex: asset.createdIndex });
             expect(res).toHaveProperty('txId');
             expect(res.status).toBe('success');
             expect(res.error).toBeUndefined();
             // check balance
-            const bal = await algonaut.getTokenBalance(freshWallet.address, asset.createdIndex);
+            const bal = await algonaut.getTokenBalance(receiverWallet.address, asset.createdIndex);
             expect(bal).toBe(1);
         })
 
@@ -562,6 +597,22 @@ describe('Algonaut online methods', () => {
             expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
         })
 
+        test.todo('atomicCreateApp fails with a too long note')
+
+        test.todo('atomicCreateApp fails with a too long note')
+
+        test.todo('atomicCreateApp fails with a no active address')
+
+        test.todo('atomicCreateApp fails with no approval program')
+
+        test.todo('atomicCreateApp fails with a no clear program')
+
+        test.todo('atomicCreateApp fails with no schema')
+
+        test.todo('atomicCreateApp throws an error with uncompilable code')
+
+        test.todo('createApp fails with a too long note')
+
         test('createApp successfully deploys an application and returns createdIndex', async () => {
             const res = await algonaut.createApp(createAppArgs);
             expect(res.status).toBe('success');
@@ -569,6 +620,10 @@ describe('Algonaut online methods', () => {
             expect(res.createdIndex).toBeGreaterThan(0);
             createdApp = res.createdIndex;
             updateAppArgs.appIndex = res.createdIndex as number;
+        })
+
+        test('algonaut.connectedAccounts should return the same state as algonaut.walletState.connectedAccounts', () => {
+            expect(algonaut.connectedAccounts === algonaut.walletState.connectedAccounts);
         })
 
         test('getAppGlobalState returns global state for app', async () => {
@@ -663,6 +718,13 @@ describe('Algonaut online methods', () => {
         })
     })
 
+    describe('inkey tests', () => {
+        test('inkeyConnect displays deprecation warning', () => {
+            algonaut.inkeyConnect();
+            expect(console.warn).toHaveBeenCalled();
+        })
+    })
+
 
     // getAccounts
     // waitForConfirmation
@@ -678,6 +740,8 @@ describe('Algonaut online methods', () => {
 })
 
 // ========= inkey tests =========
+
+
 // initInkey
 // inkeyConnect
 // inkeyDisconnect
