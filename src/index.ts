@@ -448,7 +448,7 @@ export class Algonaut {
 							logger.log('disconnecting active wallet:', w.id);
 							return await w.disconnect();
 						} else {
-							throw new Error('Wallet already disconnected.');
+							logger.log('Wallet already disconnected', w.id);
 						}
 					} else {
 						throw new Error('Wallet wasnt initialized correctly.');
@@ -470,7 +470,7 @@ export class Algonaut {
 							logger.log('disconnecting wallet:', wId);
 							return await w.disconnect();
 						} else {
-							throw new Error('Wallet already disconnected.');
+							logger.log('Wallet already disconnected', w.id);
 						}
 					} else {
 						throw new Error('Could not find wallet by id to disconnect... (shouldnt happen)');
@@ -490,7 +490,7 @@ export class Algonaut {
 						logger.log('disconnecting wallet:', wId);
 						return await w.disconnect();
 					} else {
-						throw new Error('Wallet already disconnected.');
+						logger.log('Wallet already disconnected', w.id);
 					}
 				} else {
 					throw new Error('Could not find wallet by id to disconnect... (shouldnt happen)');
@@ -501,8 +501,8 @@ export class Algonaut {
 		}
 	}
 
-	disconnectAll() {
-		removeAllAccounts();
+	async disconnectAll() {
+		await this.disconnect(true);
 	}
 
 	reconnect() {
