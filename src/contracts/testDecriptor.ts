@@ -11,15 +11,15 @@
 
 import StatefulContract from './StatefulContract';
 
-class TestContract extends StatefulContract {
+export class TestContract extends StatefulContract {
 
 
-  // in this case, setSomeValue is arg0, all args are the REST of the args
-  // this hangs a lot on the convention of contract branching on arg0 but
-  // we have to have some kind of port in the storm, right?
-  setSomeValue(valueToSet: string) {
+	// in this case, setSomeValue is arg0, all args are the REST of the args
+	// this hangs a lot on the convention of contract branching on arg0 but
+	// we have to have some kind of port in the storm, right?
+	setSomeValue(_valueToSet: string) {
 
-  }
+	}
 
 
 

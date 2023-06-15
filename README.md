@@ -442,6 +442,13 @@ similarly, pushing commits or merging pull requests to the repo's `main` branch 
 > note: to update either the `latest` or `beta` releases, the version in `package.json` must be higher than the previous release.
 
 
+### VSCode DX Setup
+
+Use extensions:
+- Volar Vue 
+- ESLint
+
+
 ---
 
 TBD:
