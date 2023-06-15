@@ -1,7 +1,7 @@
 export default class StatelessContract {
 
-  statelessTest() {
-    console.log('stateless boop!');
-  }
+	statelessTest() {
+		console.log('stateless boop!');
+	}
 
 }

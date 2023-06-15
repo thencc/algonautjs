@@ -1,7 +1,6 @@
 import type {
 	LogicSigAccount,
 	Transaction,
-	Account,
 	SuggestedParams,
 	MultisigMetadata,
 } from 'algosdk';
@@ -24,7 +23,7 @@ export type AlgonautConfig = {
 		API_TOKEN: any;
 	};
 
-	// if we wanted to support multiple init params of any-wallet, but too verbose... 
+	// if we wanted to support multiple init params of any-wallet, but too verbose...
 	// anyWalletConfig?: {
 	// 	walletInitParams?: WalletInitParamsObj;
 	// };

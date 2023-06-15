@@ -27,8 +27,7 @@ import algosdk, {
 	encodeUint64,
 	getApplicationAddress,
 	microalgosToAlgos,
-	decodeUnsignedTransaction,
-	signMultisigTransaction
+	decodeUnsignedTransaction
 } from 'algosdk';
 
 import type {
@@ -41,7 +40,6 @@ import type {
 	AlgonautStateData,
 	AlgonautError,
 	AlgonautTxnCallbacks,
-	AlgonautContractSchema,
 	AlgonautCreateAssetArguments,
 	AlgonautSendAssetArguments,
 	AlgonautCallAppArguments,
@@ -53,18 +51,17 @@ import type {
 	AlgonautLsigPaymentArguments,
 	AlgonautUpdateAppArguments,
 	AlgonautGetApplicationResponse,
-	AlgonautAppStateEncoded,
-	TxnForSigning
+	AlgonautAppStateEncoded
 } from './AlgonautTypes';
 export * from './AlgonautTypes';
 export type AlgoTxn = Transaction;
 
-import { 
-	AnyWalletState, 
-	enableWallets, 
-	removeAllAccounts, 
-	setLogsEnabled as AWSetLogsEnabled, 
-	signTransactions, 
+import {
+	AnyWalletState,
+	enableWallets,
+	removeAllAccounts,
+	setLogsEnabled as AWSetLogsEnabled,
+	signTransactions,
 	subscribeToAccountChanges,
 	WALLET_ID,
 	recallState,
@@ -115,10 +112,10 @@ export class Algonaut {
 	indexerClient = undefined as undefined | Indexer;
 	nodeConfig = defaultNodeConfig;
 	libConfig = defaultLibConfig;
-	
+
 	// expose entire algosdk in case the dapp needs more
 	sdk = algosdk;
-	
+
 	// handles all algo wallets (inkey, pera, etc) + remembers last used in localstorage
 	walletState = AnyWalletState;
 	inkeyClientSdk = null as null | InkeySdk;
@@ -205,7 +202,7 @@ export class Algonaut {
 	 */
 	setNodeConfig(nodeConfig?: AlgonautConfig['nodeConfig'] | 'mainnet' | 'testnet') {
 		logger.log('setNodeConfig', nodeConfig);
-		
+
 		if (nodeConfig == undefined) {
 			nodeConfig = defaultNodeConfig;
 		}
@@ -320,8 +317,8 @@ export class Algonaut {
 	}
 
 	/**
-	 * Shows the inkey-wallet modal 
-	 * @returns 
+	 * Shows the inkey-wallet modal
+	 * @returns
 	 */
 	async inkeyShow(route?: string) {
 		const ic = await this.getInkeyClientSdk();
@@ -330,7 +327,7 @@ export class Algonaut {
 
 	/**
 	 * Hides the inkey-wallet modal
-	 * @returns 
+	 * @returns
 	 */
 	async inkeyHide() {
 		const ic = await this.getInkeyClientSdk();
@@ -339,7 +336,7 @@ export class Algonaut {
 
 	/**
 	 * Loads and/or returns the inkey-wallet client sdk for whatever use. see inkey-client-js docs for more.
-	 * @returns 
+	 * @returns
 	 */
 	async getInkeyClientSdk() {
 		logger.log('getInkeyClientSdk');
@@ -348,7 +345,7 @@ export class Algonaut {
 			return this.inkeyClientSdk;
 		} else {
 			// load it
-			let inkeyW = this.walletState.enabledWallets?.inkey;
+			const inkeyW = this.walletState.enabledWallets?.inkey;
 			if (!inkeyW) {
 				console.warn('Inkey wallet not enabled by dev');
 				throw new Error('Inkey wallet not enabled by dev');
@@ -358,8 +355,7 @@ export class Algonaut {
 			await inkeyW.loadClient();
 			this.inkeyLoading = false;
 
-			// @ts-ignore
-			const inkeyClientSdk:InkeySdk = inkeyW.client!.sdk;
+			const inkeyClientSdk: InkeySdk = inkeyW.client!.sdk;
 
 			if (inkeyClientSdk.frameBus.ready == false) {
 				logger.debug('inkeySdk FrameBus not yet ready...');
@@ -384,21 +380,21 @@ export class Algonaut {
 		if (initWallets !== undefined) {
 			const initWs = Object.entries(initWallets);
 			if (initWs.length == 1) {
-				const wId = initWs[0][0] as WALLET_ID;				
+				const wId = initWs[0][0] as WALLET_ID;
 				const wInitParams = initWs[0][1] as ClientInitParams; // grab the only enabled wallet
 				const w = AnyWalletState.allWallets[wId];
-				logger.debug('connect: ', wId, wInitParams)
+				logger.debug('connect: ', wId, wInitParams);
 
 				if (w !== undefined) {
-					// possibly enable this wallet 
-					if (AnyWalletState.enabledWallets == null || 
+					// possibly enable this wallet
+					if (AnyWalletState.enabledWallets == null ||
 						!(AnyWalletState.enabledWallets[wId])
 					) {
 						// AnyWalletState.enabledWallets[wId] = w; // same same as below
 						enableWallets(initWallets);
 					}
 
-					// FYI ignore the .isConnected check (as in below init using singular enabledWallet) 
+					// FYI ignore the .isConnected check (as in below init using singular enabledWallet)
 					// to allow for authing into multiple accounts of 1 wallet type
 
 					w.initParams = wInitParams;
@@ -463,7 +459,7 @@ export class Algonaut {
 			if (wIds == true) {
 				// disconnect ALL wallets
 				logger.log('disconnecting all wallets from dapp');
-				for (let wId of Object.keys(AnyWalletState.allWallets)) {
+				for (const wId of Object.keys(AnyWalletState.allWallets)) {
 					const w = AnyWalletState.allWallets[wId as WALLET_ID];
 					if (w) {
 						if (w.isConnected) {
@@ -483,7 +479,7 @@ export class Algonaut {
 		} else if (Array.isArray(wIds)) {
 			// disconnect this/these wallets by wallet id
 			logger.log('disconnecting these wallets:', wIds);
-			for (let wId of wIds) {
+			for (const wId of wIds) {
 				const w = AnyWalletState.allWallets[wId];
 				if (w) {
 					if (w.isConnected) {
@@ -760,7 +756,7 @@ export class Algonaut {
 		const txn = atomicTxn.transaction;
 
 		try {
-			const assetID = null;
+			// const assetID = null;
 			const txStatus = await this.sendTransaction(txn, callbacks);
 
 			const ptx = await this.algodClient
@@ -941,8 +937,6 @@ export class Algonaut {
 		try {
 			const { transaction } = await this.atomicDeleteApp(appIndex, optionalTxnArgs);
 			const txId = transaction.txID().toString();
-
-			const status = await this.sendTransaction(transaction, callbacks);
 
 			// display results
 			const transactionResponse = await this.algodClient
@@ -1305,9 +1299,9 @@ export class Algonaut {
 				const signedTxn = signLogicSigTransactionObject(txn, args.lsig);
 
 				await this.algodClient.sendRawTransaction(signedTxn.blob).do();
-				const txStatus = await this.waitForConfirmation(txId);
 
 				// TBD check txStatus
+				// const txStatus = await this.waitForConfirmation(txId);
 
 				// display results
 				const transactionResponse = await this.algodClient
@@ -1344,7 +1338,7 @@ export class Algonaut {
 		}
 
 		try {
-			const onComplete = OnApplicationComplete.NoOpOC;
+			// const onComplete = OnApplicationComplete.NoOpOC;
 			const suggestedParams = args.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
 			let approvalProgram = new Uint8Array();
@@ -1504,7 +1498,7 @@ export class Algonaut {
 	 * @param assetIndex - the index of the ASA
 	 */
 	async accountHasTokens(address: string, assetIndex: number): Promise<boolean> {
-		let bal = await this.getTokenBalance(address, assetIndex);
+		const bal = await this.getTokenBalance(address, assetIndex);
 		if (bal > 0) {
 			return true;
 		} else {
@@ -1670,7 +1664,7 @@ export class Algonaut {
 			algoTxnArr = algosdk.assignGroupID(algoTxnArr);
 			logger.log('added group id to txn array');
 			if (algoTxnArr[0].group) {
-				let gId = this.txnBuffToB64(algoTxnArr[0].group);
+				const gId = this.txnBuffToB64(algoTxnArr[0].group);
 				logger.log('gId', gId);
 			}
 		}
@@ -1684,7 +1678,7 @@ export class Algonaut {
 	/**
 	 * Signs a transaction or multiple w the correct wallet according to AW (does not send / submit txn(s) to network)
 	 * @param txnOrTxns Either an array of atomic transactions or a single transaction to sign
-	 * @param signedTxns array of 
+	 * @param signedTxns array of
 	 * @returns Promise resolving to AlgonautTransactionStatus
 	 */
 	async signTransaction(txnOrTxns: AlgonautAtomicTransaction[] | Transaction | AlgonautAtomicTransaction): Promise<Uint8Array[]> {
@@ -1737,7 +1731,7 @@ export class Algonaut {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param str string
 	 * @param enc the encoding type of the string (defaults to utf8)
 	 * @returns string encoded as Uint8Array
@@ -1894,32 +1888,32 @@ export class Algonaut {
 				// let's find out what kind of application call this is
 				// reference: https://developer.algorand.org/docs/get-details/dapps/avm/teal/specification/#oncomplete
 				switch (txn.appOnComplete) {
-					// NoOp
-					case 0:
-						return `Call to application ID ${txn.appIndex}`;
+				// NoOp
+				case 0:
+					return `Call to application ID ${txn.appIndex}`;
 
 					// OptIn
-					case 1:
-						return `Opt-in to application ID ${txn.appIndex}`;
+				case 1:
+					return `Opt-in to application ID ${txn.appIndex}`;
 
 					// CloseOut
-					case 2:
-						return `Close out application ID ${txn.appIndex}`;
+				case 2:
+					return `Close out application ID ${txn.appIndex}`;
 
 					// ClearState
-					case 3:
-						return `Execute clear state program of application ID ${txn.appIndex}`;
+				case 3:
+					return `Execute clear state program of application ID ${txn.appIndex}`;
 
 					// Update
-					case 4:
-						return `Update application ID ${txn.appIndex}`;
+				case 4:
+					return `Update application ID ${txn.appIndex}`;
 
 					// Delete
-					case 5:
-						return `Delete application ID ${txn.appIndex}`;
+				case 5:
+					return `Delete application ID ${txn.appIndex}`;
 
-					default:
-						return `Call to application ID ${txn.appIndex}`;
+				default:
+					return `Call to application ID ${txn.appIndex}`;
 				}
 
 				// default case

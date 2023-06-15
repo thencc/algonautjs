@@ -29,7 +29,8 @@
 		"build:types": "tsc --emitDeclarationOnly --outDir dist",
 		"build:docs": "npx typedoc",
 		"test": "jest",
-		"tests": "cd tests && task prepare-tests && task tests"
+		"tests": "cd tests && task prepare-tests && task tests",
+		"lint:eslint": "eslint 'src/**/*.ts'"
 	},
 	"keywords": [
 		"algo",
@@ -94,48 +95,5 @@
 		"tabWidth": 2,
 		"semi": true,
 		"trailingComma": "none"
-	},
-	"eslintConfig": {
-		"root": true,
-		"env": {
-			"node": true
-		},
-		"extends": [
-			"eslint:recommended",
-			"typescript",
-			"prettier"
-		],
-		"parserOptions": {
-			"ecmaVersion": 2020,
-			"sourceType": "module"
-		},
-		"globals": {
-			"Stream": true
-		},
-		"ignorePatterns": [
-			"tests"
-		],
-		"rules": {
-			"quotes": [
-				"warn",
-				"single",
-				{
-					"avoidEscape": true,
-					"allowTemplateLiterals": false
-				}
-			],
-			"indent": "off",
-			"@typescript-eslint/indent": [
-				"warn",
-				"tab"
-			],
-			"semi": [
-				"warn",
-				"always"
-			],
-			"no-any": 0,
-			"@typescript-eslint/no-explicit-any": 0,
-			"vue/no-v-model-argument": "off"
-		}
 	}
 }
