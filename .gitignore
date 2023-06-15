@@ -7,3 +7,4 @@ test/.env
 algo.config.ts
 src/contracts/priv
 tests-ts/dist
+dist_*/

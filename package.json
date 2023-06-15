@@ -28,6 +28,7 @@
 		"build:esm": "node ./esbuild.esm.js",
 		"build:types": "tsc --emitDeclarationOnly --outDir dist",
 		"build:docs": "npx typedoc",
+		"build-it:tsup": "tsup --config=tsup.config.ts",
 		"test": "jest",
 		"tests": "cd tests && task prepare-tests && task tests"
 	},
@@ -49,7 +50,7 @@
 		"url": "git://github.com/thencc/algonautjs"
 	},
 	"dependencies": {
-		"@thencc/any-wallet": "^0.1.78",
+		"@thencc/any-wallet": "^0.1.79",
 		"algosdk": "thencc/js-algorand-sdk-no-fetch-poly#1a963de38b4d29b9a4d06bf829c428fc0aa61ce7",
 		"buffer": "^6.0.3"
 	},
@@ -84,6 +85,7 @@
 		"sass": "^1.62.1",
 		"ts-jest": "^29.1.0",
 		"ts-node": "^10.9.1",
+		"tsup": "^6.7.0",
 		"typedoc": "^0.23.28",
 		"typescript": "^4.9.5",
 		"vite": "^4.3.5"

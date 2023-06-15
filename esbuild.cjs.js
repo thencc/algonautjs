@@ -31,9 +31,9 @@ build({
 	],
 	sourcemap: true,
 	// sourcemap: 'linked',
-	minify: true,
-	// minify: false,
-	treeShaking: true,
+	// minify: true,
+	minify: false,
+	// treeShaking: true,
 	treeShaking: false,
 	//target: ['node14'], // change for browser/node?
 	// assetNames: 'assets/[name]',
@@ -58,7 +58,7 @@ build({
 	format: 'cjs', // commonJs is for node
 	outExtension: { '.js': '.cjs' },
 
-	// for w3h
+	// for any-wallet
 	external: [
 		...CLIENT_PKGS,
 	],
