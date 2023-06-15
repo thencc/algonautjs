@@ -594,7 +594,6 @@ export class Algonaut {
 
 		return {
 			transaction: optInTransaction,
-			transactionSigner: undefined,
 			isLogigSig: false
 		};
 	}
@@ -742,7 +741,6 @@ export class Algonaut {
 
 		return {
 			transaction: txn,
-			transactionSigner: undefined,
 			isLogigSig: false
 		};
 	}
@@ -795,7 +793,6 @@ export class Algonaut {
 
 		return {
 			transaction: transaction,
-			transactionSigner: undefined,
 			isLogigSig: false
 		};
 	}
@@ -844,7 +841,6 @@ export class Algonaut {
 
 		return {
 			transaction: transaction,
-			transactionSigner: undefined,
 			isLogigSig: false
 		};
 	}
@@ -901,7 +897,6 @@ export class Algonaut {
 
 		return {
 			transaction: optInTransaction,
-			transactionSigner: undefined,
 			isLogigSig: false
 		};
 	}
@@ -932,7 +927,6 @@ export class Algonaut {
 
 		return {
 			transaction: txn,
-			transactionSigner: undefined,
 			isLogigSig: false
 		};
 	}
@@ -989,7 +983,6 @@ export class Algonaut {
 
 		return {
 			transaction: callAppTransaction,
-			transactionSigner: undefined,
 			isLogigSig: false
 		};
 	}
@@ -1022,8 +1015,8 @@ export class Algonaut {
 
 		return {
 			transaction: callAppTransaction,
-			transactionSigner: args.lsig,
-			isLogigSig: true
+			isLogigSig: true,
+			lSig: args.lsig,
 		};
 	}
 
@@ -1053,7 +1046,6 @@ export class Algonaut {
 
 			return {
 				transaction: closeOutTxn,
-				transactionSigner: undefined,
 				isLogigSig: false
 			};
 		} catch (e: any) {
@@ -1249,7 +1241,6 @@ export class Algonaut {
 
 				return {
 					transaction: applicationCreateTransaction,
-					transactionSigner: undefined,
 					isLogigSig: false
 				};
 
@@ -1382,7 +1373,6 @@ export class Algonaut {
 
 			return {
 				transaction: applicationCreateTransaction,
-				transactionSigner: undefined,
 				isLogigSig: false
 			};
 
@@ -1441,7 +1431,6 @@ export class Algonaut {
 
 			return {
 				transaction: transaction,
-				transactionSigner: undefined,
 				isLogigSig: false
 			};
 		} else {
@@ -1625,8 +1614,8 @@ export class Algonaut {
 
 			return {
 				transaction: transaction,
-				transactionSigner: args.lsig,
-				isLogigSig: true
+				isLogigSig: true,
+				lSig: args.lsig,
 			};
 		} else {
 			throw new Error('there is no logic sig object!');
@@ -1646,8 +1635,8 @@ export class Algonaut {
 
 			return {
 				transaction: transaction,
-				transactionSigner: args.lsig,
-				isLogigSig: true
+				isLogigSig: true,
+				lSig: args.lsig,
 			};
 		} else {
 			throw new Error('there is no account!');
