@@ -122,8 +122,8 @@ describe('Algonaut methods', () => {
         algonaut = new Algonaut(validConfig);
     })
 
-    // all tests re: connecting and disconnecting should just be moved to the any-wallet dependency
-    // test('mnemonic connect should update active account', async () => {
+    // this test passes when it's the only one running, due to jest running things in parallel?
+    // test.only('mnemonic connect should update active account', async () => {
     //     const account = algonaut.createWallet();
     //     await algonaut.disconnectAll();
     //     await algonaut.connect({ mnemonic: account.mnemonic });
