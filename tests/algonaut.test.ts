@@ -112,17 +112,24 @@ describe('setNodeConfig', () => {
     })
 });
 
-// ======= algonaut core ========
-describe('algonaut-offline', () => {
-    var algonaut: Algonaut;
+describe('Algonaut methods', () => {
+    // increase timeout here so we can wait for transactions to confirm
+    jest.setTimeout(120000);
 
-    beforeEach(() => {
+    let algonaut: Algonaut;
+
+    beforeEach(async () => {
         algonaut = new Algonaut(validConfig);
     })
 
-    test('expect activeWallet to be undefined by default', () => {
-        expect(algonaut.walletState.activeWallet).toBeUndefined();
-    })
+    // this test passes when it's the only one running, due to jest running things in parallel?
+    // test.only('mnemonic connect should update active account', async () => {
+    //     const account = algonaut.createWallet();
+    //     await algonaut.disconnectAll();
+    //     await algonaut.connect({ mnemonic: account.mnemonic });
+    //     expect(algonaut.account?.address).toBe(account.address);
+    //     await algonaut.disconnectAll();
+    // })
 
     test('createWallet creates an account object with address and mnemonic parameters', () => {
         const wallet = algonaut.createWallet();
@@ -131,15 +138,15 @@ describe('algonaut-offline', () => {
         expect((wallet as any).mnemonic).toBeDefined();
     })
 
+    test('recoverAccount should throw error with incorrect mnemonic', () => {
+        expect(() => algonaut.recoverAccount('INVALID')).toThrow();
+    })
+
     test('recoverAccount works with a newly created wallet', () => {
         let account = algonaut.createWallet();
         let recoveredAccount: any = algonaut.recoverAccount(account.mnemonic);
         expect(recoveredAccount.addr).toBeDefined();
         expect(recoveredAccount.sk).toBeDefined();
-    })
-
-    test('recoverAccount should throw error with incorrect mnemonic', () => {
-        expect(() => algonaut.recoverAccount('INVALID')).toThrow();
     })
 
     test('b64StrToHumanStr decodes base64-encoded text', () => {
@@ -221,25 +228,6 @@ describe('algonaut-offline', () => {
         expect(algonaut.getAppEscrowAccount(accountAppID)).toEqual(appAddress);
     })
 
-    // TODO: txnB64ToTxnBuff
-    // TODO: txnBuffToB64
-    // TODO: txnToStr
-})
-
-describe('Algonaut online methods', () => {
-    // increase timeout here so we can wait for transactions to confirm
-    jest.setTimeout(120000);
-
-    let algonaut: Algonaut;
-    algonaut = new Algonaut(validConfig);
-    algonaut.connect({ mnemonic: testAccountMnemonic });
-
-    beforeEach(() => {
-        algonaut = new Algonaut(validConfig);
-        algonaut.connect({ mnemonic: testAccountMnemonic });
-        freshWallet = algonaut.createWallet();
-    })
-
     describe('compileProgram', () => {
         test('compileProgram successfully compiles a valid program', async () => {
             const compiled = await algonaut.compileProgram(accounttContractValid)
@@ -268,400 +256,468 @@ describe('Algonaut online methods', () => {
         })
     })
 
-    describe('getAlgoBalance', () => {
-        test('getAlgoBalance returns a number greater than zero', async () => {
-            let balance = await algonaut.getAlgoBalance(algonaut.walletState.activeAddress);
-            expect(balance).toBeGreaterThan(0);
-        })
-    })
+    describe('with mnemonic account', () => {
+        beforeEach(async () => {
+            await algonaut.connect({ mnemonic: testAccountMnemonic });
+            freshWallet = algonaut.createWallet();
+        }); 
 
-    describe('getAccountInfo', () => {
-        let info: any;
-        beforeAll(async () => {
-            info = await algonaut.getAccountInfo(algonaut.walletState.activeAddress);
-        })
-
-        test('getAccountInfo contains all account info properties', async () => {
-            expect(info.address).toBeDefined();
-            expect(info.amount).toBeGreaterThan(0);
-            expect(info['apps-local-state']).toBeDefined();
-            expect(info['assets']).toBeDefined();
-            expect(info['pending-rewards']).toBeDefined();
-            expect(info['round']).toBeDefined();
-            expect(info['status']).toBeDefined();
-            expect(info['total-apps-opted-in']).toBeDefined();
-            expect(info['total-assets-opted-in']).toBeDefined();
-            expect(info['total-created-apps']).toBeDefined();
-            expect(info['total-created-assets']).toBeDefined();
-        })
-    })
-
-    describe('sendAlgo / atomicPayment', () => {
-        test('atomicPayment creates a transaction', async () => {
-            const to = algosdk.generateAccount();
-            const txn = await algonaut.atomicSendAlgo({ to: to.addr, amount: 10 });
-            expect(txn.transaction instanceof algosdk.Transaction).toBeTruthy()
-        })
-
-        test('atomicSendAlgo creates a transaction', async () => {
-            const to = algosdk.generateAccount();
-            const txn = await algonaut.atomicSendAlgo({ to: to.addr, amount: 10 });
-            expect(txn.transaction instanceof algosdk.Transaction).toBeTruthy()
-        })
-
-        test('sendAlgo sends ALGO successfully', async () => {
-            // this test doubles as a way to fund the new wallet for opt-in tests later
-            // so if it fails, it causes a bit of a domino effect
-            await algonaut.sendAlgo({ to: freshWallet.address, amount: 500000 });
-            const bal = await algonaut.getAlgoBalance(freshWallet.address);
-            expect(bal).toBe(500000);
-        });
-    })
-
-    describe('Asset method tests', () => {
-        let asset: any;
-
-        // might as well spam test net with some ads :)
-        const assetArgs = {
-            assetName: 'Algonaut.JS',
-            symbol: 'NCCALGO',
-            metaBlock: 'Algonaut.js is a library for developing Algorand dApps',
-            decimals: 3,
-            amount: 5,
-            url: 'https://github.com/thencc/algonautjs'
-        };
-
-        test('atomicCreateAsset returns a transaction', async () => {
-            const txn = await algonaut.atomicCreateAsset(assetArgs);
-            expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
-        })
-
-        test('createAsset returns createdIndex property', async () => {
-            asset = await algonaut.createAsset(assetArgs);
-            expect(asset.status).toBe('success');
-            expect(asset.createdIndex).toBeDefined();
-        })
-
-        test('getAssetInfo returns asset info', async () => {
-            const info = await algonaut.getAssetInfo(asset.createdIndex);
-            console.log('getAssetInfo response', info);
-            expect(info).toBeDefined();
-            // check all properties! in case the API changes, we will know immediately :)
-            expect(info).toHaveProperty('index');
-            expect(info).toHaveProperty('params');
-            expect(info).toHaveProperty('params.name-b64');
-            expect(info).toHaveProperty('params.unit-name-b64');
-            expect(info).toHaveProperty('params.default-frozen');
-            expect(info.params.clawback).toBe(algonaut.walletState.activeAddress)
-            expect(info.params.freeze).toBe(algonaut.walletState.activeAddress)
-            expect(info.params.manager).toBe(algonaut.walletState.activeAddress)
-            expect(info.params.reserve).toBe(algonaut.walletState.activeAddress)
-            expect(info.params.creator).toBe(algonaut.walletState.activeAddress)
-            expect(info.params.decimals).toBe(assetArgs.decimals)
-            expect(info.params.total).toBe(assetArgs.amount)
-            expect(info.params['unit-name']).toBe(assetArgs.symbol)
-            expect(info.params['name']).toBe(assetArgs.assetName)
-        })
-
-        test('getTokenBalance returns 5 (amount specified during createAsset)', async () => {
-            const bal = await algonaut.getTokenBalance(algonaut.walletState.activeAddress, asset.createdIndex);
-            expect(bal).toBe(5);
-        })
-
-        test('atomicOptInAsset returns a transaction', async () => {
-            const txn = await algonaut.atomicOptInAsset(asset.createdIndex);
-            expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
-        })
-
-        test('isOptedIntoAsset returns false with a new account', async () => {
-            algonaut.mnemonicConnect(freshWallet.mnemonic)
-            const optedIn = await algonaut.isOptedIntoAsset({
-                account: algonaut.walletState.activeAddress,
-                assetId: asset.createdIndex
+        describe('getAlgoBalance', () => {
+            test('getAlgoBalance returns a number greater than zero', async () => {
+                let balance = await algonaut.getAlgoBalance(algonaut.walletState.activeAddress);
+                expect(balance).toBeGreaterThan(0);
             })
-            expect(optedIn).toBe(false);
         })
 
-        test('optInAsset successfully opts in to newly created asset', async () => {
-            algonaut.mnemonicConnect(freshWallet.mnemonic)
-            let res = await algonaut.optInAsset(asset.createdIndex);
-            expect(res.status).toBe('success');
-
-            const optedIn = await algonaut.isOptedIntoAsset({
-                account: algonaut.walletState.activeAddress,
-                assetId: asset.createdIndex
+        describe('getAccountInfo', () => {
+            let info: any;
+            beforeAll(async () => {
+                info = await algonaut.getAccountInfo(algonaut.walletState.activeAddress);
             })
-            expect(optedIn).toBe(true);
+
+            test('getAccountInfo contains all account info properties', async () => {
+                expect(info.address).toBeDefined();
+                expect(info.amount).toBeGreaterThan(0);
+                expect(info['apps-local-state']).toBeDefined();
+                expect(info['assets']).toBeDefined();
+                expect(info['pending-rewards']).toBeDefined();
+                expect(info['round']).toBeDefined();
+                expect(info['status']).toBeDefined();
+                expect(info['total-apps-opted-in']).toBeDefined();
+                expect(info['total-assets-opted-in']).toBeDefined();
+                expect(info['total-created-apps']).toBeDefined();
+                expect(info['total-created-assets']).toBeDefined();
+            })
         })
 
-        test('atomicSendAsset returns a transaction', async () => {
-            const txn = await algonaut.atomicSendAsset({ to: freshWallet.address, amount: 1, assetIndex: asset.createdIndex });
-            expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
-        })
+        describe('sendAlgo / atomicPayment', () => {
+            test('atomicPayment creates a transaction', async () => {
+                const to = algosdk.generateAccount();
+                const txn = await algonaut.atomicSendAlgo({ to: to.addr, amount: 10 });
+                expect(txn.transaction instanceof algosdk.Transaction).toBeTruthy()
+            })
 
-        test('sendAsset successfully sends asset', async () => {
-            algonaut.mnemonicConnect(testAccountMnemonic);
-            const res = await algonaut.sendAsset({ to: freshWallet.address, amount: 1, assetIndex: asset.createdIndex });
-            expect(res).toHaveProperty('txId');
-            expect(res.status).toBe('success');
-            expect(res.error).toBeUndefined();
-            // check balance
-            const bal = await algonaut.getTokenBalance(freshWallet.address, asset.createdIndex);
-            expect(bal).toBe(1);
-        })
+            test('atomicSendAlgo creates a transaction', async () => {
+                const to = algosdk.generateAccount();
+                const txn = await algonaut.atomicSendAlgo({ to: to.addr, amount: 10 });
+                expect(txn.transaction instanceof algosdk.Transaction).toBeTruthy()
+            })
 
-        test('atomicDeleteAsset returns a transaction', async () => {
-            const txn = await algonaut.atomicDeleteAsset(asset.createdIndex);
-            expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
-        })
-
-        test('deleteAsset successfully deletes asset', async () => {
-            const asset2Args = {
-				assetName: 'Presto Deleto',
-				symbol: 'DEL',
-				metaBlock: 'Everything is temporary!',
-				decimals: 3,
-				amount: 1
-			};
-			let asset2 = await algonaut.createAsset(asset2Args);
-            if (!asset2.createdIndex) return console.error('Error creating temporary asset');
-			let res = await algonaut.deleteAsset(asset2.createdIndex);
-            expect(res.status).toBe('success');
-            expect(res.error).toBeUndefined();
-        })
-    })
-
-    describe('App tests', () => {
-        const ACCOUNT_APP = 51066775; // the account app from arts-council
-        const createAppArgs = {
-            tealApprovalCode: accounttContractValid,
-            tealClearCode: accountClear,
-            appArgs: [],
-            schema: {
-                localInts: 4,
-                localBytes: 12,
-                globalInts: 1,
-                globalBytes: 1
-            }
-        };
-
-        const updateAppArgs = {
-            appIndex: 123456789,
-            tealApprovalCode: accountv2,
-            tealClearCode: accountClear,
-            appArgs: []
-        };
-
-        var createdApp: any;
-
-        test('atomicOptInApp returns a transaction', async () => {
-            const txn = await algonaut.atomicOptInApp({ appIndex: ACCOUNT_APP, appArgs: [] });
-            expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
-        })
-
-        test('optInApp successfully opts in', async () => {
-            let res = await algonaut.optInApp({
-				appIndex: ACCOUNT_APP,
-				appArgs: [
-					'set_all',
-					'Name',
-					'Description of me',
-					'',
-					'https://example.com',
-					'',
-					'example@example.com'
-				]
-			});
-			expect(res.status).toBe('success');
-        })
-
-        test('getAppLocalState returns local state using algonaut.account by default', async () => {
-            let state: AlgonautAppState = await algonaut.getAppLocalState(ACCOUNT_APP) as AlgonautAppState;
-            console.log('getAppLocalState response: opted in', state);
-            expect(state).toBeDefined();
-            expect(state.hasState).toBe(true);
-            expect(state.globals).toHaveLength(0);
-            expect(state.locals.length).toBeDefined();
-            expect(state.index).toBe(ACCOUNT_APP)
-
-            const obj = algonaut.stateArrayToObject(state.locals);
-
-            expect(obj.name).toBe('Name');
-            expect(obj.bio).toBe('Description of me');
-            expect(obj.contact).toBe('example@example.com');
-            expect(obj.link).toBe('https://example.com');
-        })
-
-        test('getAppLocalState also works with foreign address', async () => {
-            let state: AlgonautAppState = await algonaut.getAppLocalState(ACCOUNT_APP, freshWallet.address) as AlgonautAppState;
-            console.log('getAppLocalState response: not opted in', state);
-            expect(state).toBeDefined();
-            expect(state.hasState).toBe(false);
-            expect(state.globals).toHaveLength(0);
-            expect(state.locals).toHaveLength(0);
-            expect(state.index).toBe(ACCOUNT_APP)
-        })
-
-        test('atomicCallApp returns a transaction', async () => {
-            const txn = await algonaut.atomicCallApp({ appIndex: ACCOUNT_APP, appArgs: ['version_test'] });
-            expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
-        })
-
-        test('callApp successfully updates local state', async () => {
-			let res = await algonaut.callApp({
-				appIndex: ACCOUNT_APP,
-				appArgs: [
-					'set_all',
-					'New Name',
-					'Updated bio',
-					'New avatar',
-					'New link',
-					'',
-					'newemail@email.com'
-				]
-			});
-			expect(res.status).toBe('success');
-			let state = await algonaut.getAppLocalState(ACCOUNT_APP);
-            expect(state).toBeDefined(); // TODO: check for updated new name
-        })
-
-        test('atomicCloseOutApp returns a transaction', async () => {
-            const txn = await algonaut.atomicCloseOutApp({
-				appIndex: ACCOUNT_APP,
-				appArgs: [
-					'set_all',
-					'',
-					'',
-					'',
-					'',
-					'',
-					''
-				]
-			});
-            expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
-        })
-
-        test('closeOutApp removes local state', async () => {
-			let res = await algonaut.closeOutApp({
-				appIndex: ACCOUNT_APP,
-				appArgs: [
-					'set_all',
-					'',
-					'',
-					'',
-					'',
-					'',
-					''
-				]
-			});
-			expect(res.status).toBe('success');
-        })
-
-        test('atomicCreateApp returns a transaction', async () => {
-            const txn = await algonaut.atomicCreateApp(createAppArgs);
-            expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
-        })
-
-        test('createApp successfully deploys an application and returns createdIndex', async () => {
-            const res = await algonaut.createApp(createAppArgs);
-            expect(res.status).toBe('success');
-            expect(res.createdIndex).toBeDefined();
-            expect(res.createdIndex).toBeGreaterThan(0);
-            createdApp = res.createdIndex;
-            updateAppArgs.appIndex = res.createdIndex as number;
-        })
-
-        test('getAppGlobalState returns global state for app', async () => {
-            let state = await algonaut.getAppGlobalState(createdApp);
-            console.log(state);
-            expect(state).toBeDefined();
-            expect(state.admin).toBeDefined();
-        })
-
-        test('valueAsAddr successfully decodes', async () => {
-            let state = await algonaut.getAppGlobalState(ACCOUNT_APP);
-            let addr = algonaut.valueAsAddr(state.admin);
-            expect(addr).toBeDefined();
-        })
-
-        test('getAppInfo returns all app info', async () => {
-            let info = await algonaut.getAppInfo(createdApp);
-            console.log(info);
-            expect(info).toBeDefined();
-        })
-
-        test('atomicUpdateApp returns a transaction', async () => {
-            const txn = await algonaut.atomicUpdateApp(updateAppArgs);
-            expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
-        })
-
-        test('updateApp should update the application code', async () => {
-            // first we need to opt in to the app we've created
-            let optIn = await algonaut.optInApp({
-                appIndex: createdApp,
-                appArgs: [
-                    'set_all',
-                    'Name',
-                    'Description of me',
-                    '',
-                    'https://example.com',
-                    '',
-                    'example@example.com'
-                ]
+            test('sendAlgo sends ALGO successfully', async () => {
+                // this test doubles as a way to fund the new wallet for opt-in tests later
+                // so if it fails, it causes a bit of a domino effect
+                await algonaut.sendAlgo({ to: freshWallet.address, amount: 500000 });
+                const bal = await algonaut.getAlgoBalance(freshWallet.address);
+                expect(bal).toBe(500000);
             });
+        })
 
-            // this call SHOULD fail, because version_test doesn't exist on v1
-            try {
-                let res = await algonaut.callApp({
-					appIndex: createdApp,
-					appArgs: ['version_test']
-				});
-                expect(res.status).toBe('fail');
-            } catch (e) {
-                expect(e).toBeDefined();
-            }
+        describe('Asset method tests', () => {
+            let asset: any;
 
-            // now we update the application and test the call again
-            const updateResult = await algonaut.updateApp({
-                appIndex: createdApp,
+            // might as well spam test net with some ads :)
+            const assetArgs = {
+                assetName: 'Algonaut.JS',
+                symbol: 'NCCALGO',
+                metaBlock: 'Algonaut.js is a library for developing Algorand dApps',
+                decimals: 3,
+                amount: 5,
+                url: 'https://github.com/thencc/algonautjs'
+            };
+
+            test('atomicCreateAsset returns a transaction', async () => {
+                const txn = await algonaut.atomicCreateAsset(assetArgs);
+                expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
+            })
+
+            test('createAsset returns createdIndex property', async () => {
+                asset = await algonaut.createAsset(assetArgs);
+                expect(asset.status).toBe('success');
+                expect(asset.createdIndex).toBeDefined();
+            })
+
+            test('getAssetInfo returns asset info', async () => {
+                const info = await algonaut.getAssetInfo(asset.createdIndex);
+                // console.log('getAssetInfo response', info);
+                expect(info).toBeDefined();
+                // check all properties! in case the API changes, we will know immediately :)
+                expect(info).toHaveProperty('index');
+                expect(info).toHaveProperty('params');
+                expect(info).toHaveProperty('params.name-b64');
+                expect(info).toHaveProperty('params.unit-name-b64');
+                expect(info).toHaveProperty('params.default-frozen');
+                expect(info.params.clawback).toBe(algonaut.walletState.activeAddress)
+                expect(info.params.freeze).toBe(algonaut.walletState.activeAddress)
+                expect(info.params.manager).toBe(algonaut.walletState.activeAddress)
+                expect(info.params.reserve).toBe(algonaut.walletState.activeAddress)
+                expect(info.params.creator).toBe(algonaut.walletState.activeAddress)
+                expect(info.params.decimals).toBe(assetArgs.decimals)
+                expect(info.params.total).toBe(assetArgs.amount)
+                expect(info.params['unit-name']).toBe(assetArgs.symbol)
+                expect(info.params['name']).toBe(assetArgs.assetName)
+            })
+
+            test('getTokenBalance returns 5 (amount specified during createAsset)', async () => {
+                const bal = await algonaut.getTokenBalance(algonaut.walletState.activeAddress, asset.createdIndex);
+                expect(bal).toBe(5);
+            })
+
+            test('atomicOptInAsset returns a transaction', async () => {
+                const txn = await algonaut.atomicOptInAsset(asset.createdIndex);
+                expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
+            })
+
+            test('isOptedIntoAsset returns false with a new account', async () => {
+                await algonaut.mnemonicConnect(freshWallet.mnemonic)
+                const optedIn = await algonaut.isOptedIntoAsset({
+                    account: algonaut.walletState.activeAddress,
+                    assetId: asset.createdIndex
+                })
+                // expect(optedIn).toBe(false);
+
+                // FYI the creator acct is automatically opted-in + holds the reserve supply
+                expect(optedIn).toBe(true);
+            })
+
+            test('optInAsset successfully opts in to newly created asset', async () => {
+                algonaut.mnemonicConnect(freshWallet.mnemonic)
+                let res = await algonaut.optInAsset(asset.createdIndex);
+                expect(res.status).toBe('success');
+
+                const optedIn = await algonaut.isOptedIntoAsset({
+                    account: algonaut.walletState.activeAddress,
+                    assetId: asset.createdIndex
+                })
+                expect(optedIn).toBe(true);
+            })
+
+            test('atomicSendAsset returns a transaction', async () => {
+                const txn = await algonaut.atomicSendAsset({ to: freshWallet.address, amount: 1, assetIndex: asset.createdIndex });
+                expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
+            })
+
+            test('sendAsset successfully sends asset', async () => {
+                // --- old ---
+                // await algonaut.mnemonicConnect(testAccountMnemonic);
+                // // to addr has to opt-in before being sent an asset (they might have 0 bal tho so send them a little algo first)
+                // const res = await algonaut.sendAsset({ to: freshWallet.address, amount: 1, assetIndex: asset.createdIndex });
+                // expect(res).toHaveProperty('txId');
+                // expect(res.status).toBe('success');
+                // expect(res.error).toBeUndefined();
+                // // check balance
+                // const bal = await algonaut.getTokenBalance(freshWallet.address, asset.createdIndex);
+                // expect(bal).toBe(1);
+
+                
+                // --- new ---
+                // FYI - to addr has to opt-in before being sent an asset (they might have 0 bal tho so send them a little algo first)
+
+                // 1. fund
+                await algonaut.mnemonicConnect(testAccountMnemonic);
+                const fundTxn = await algonaut.sendAlgo({
+                    // from: testAcct.addr,
+                    to: freshWallet.address,
+                    amount: 220000, // above min bal
+                });
+                console.log('fundTxn', fundTxn);
+                await algonaut.disconnectAll();
+
+                // 2. opt-in 
+                // use the fresh acct/wallet as the active acct because opt-in txn uses this as the .from + .to
+                await algonaut.connect({mnemonic: freshWallet.mnemonic});
+                const optInTxn = await algonaut.optInAsset(
+                    asset.createdIndex
+                );
+                console.log('optInTxn', optInTxn);
+                await algonaut.disconnectAll();
+
+                // 3. send asset
+                let testAcct = (new Algonaut()).recoverAccount(testAccountMnemonic);
+                console.log('testAcct', testAcct);
+                await algonaut.mnemonicConnect(testAccountMnemonic);
+                // FYI cannot fund, opt-in and send asset in 1 atomic...
+                const res = await algonaut.sendTransaction([
+                    // await algonaut.atomicSendAlgo({
+                    //     from: testAcct.addr,
+                    //     to: freshWallet.address,
+                    //     amount: 120000, // above min bal for holding 1 asset
+                    // }),
+
+                    // opt-in uses algonaut active account as to + from
+                    // await algonaut.atomicOptInAsset(
+                    //     asset.createdIndex
+                    // ),
+
+                    await algonaut.atomicSendAsset({ 
+                        from: testAcct.addr, // BJV...
+                        to: freshWallet.address, 
+                        assetIndex: asset.createdIndex,
+                        amount: 1, 
+                    })
+                ]);
+                console.log('res', res);
+
+                expect(res).toHaveProperty('txId');
+                expect(res.status).toBe('success');
+                expect(res.error).toBeUndefined();
+                // check balance
+                const bal = await algonaut.getTokenBalance(freshWallet.address, asset.createdIndex);
+                expect(bal).toBe(1);
+            })
+
+            test('atomicDeleteAsset returns a transaction', async () => {
+                const txn = await algonaut.atomicDeleteAsset(asset.createdIndex);
+                expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
+            })
+
+            test('deleteAsset successfully deletes asset', async () => {
+                const asset2Args = {
+                    assetName: 'Presto Deleto',
+                    symbol: 'DEL',
+                    metaBlock: 'Everything is temporary!',
+                    decimals: 3,
+                    amount: 1
+                };
+                let asset2 = await algonaut.createAsset(asset2Args);
+                if (!asset2.createdIndex) return console.error('Error creating temporary asset');
+                let res = await algonaut.deleteAsset(asset2.createdIndex);
+                expect(res.status).toBe('success');
+                expect(res.error).toBeUndefined();
+            })
+        })
+
+        describe('App tests', () => {
+            const ACCOUNT_APP = 51066775; // the account app from arts-council
+            const createAppArgs = {
+                tealApprovalCode: accounttContractValid,
+                tealClearCode: accountClear,
+                appArgs: [],
+                schema: {
+                    localInts: 4,
+                    localBytes: 12,
+                    globalInts: 1,
+                    globalBytes: 1
+                }
+            };
+
+            const updateAppArgs = {
+                appIndex: 123456789,
                 tealApprovalCode: accountv2,
                 tealClearCode: accountClear,
                 appArgs: []
-            });
-            expect(updateResult.status).toBe('success');
+            };
 
-            // and the call should pass now
-            let res = await algonaut.callApp({
-                appIndex: createdApp,
-                appArgs: ['version_test']
-            });
-            expect(res.status).toBe('success');
+            var createdApp: any;
+
+            test('atomicOptInApp returns a transaction', async () => {
+                const txn = await algonaut.atomicOptInApp({ appIndex: ACCOUNT_APP, appArgs: [] });
+                expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
+            })
+
+            test('optInApp successfully opts in', async () => {
+                let res = await algonaut.optInApp({
+                    appIndex: ACCOUNT_APP,
+                    appArgs: [
+                        'set_all',
+                        'Name',
+                        'Description of me',
+                        '',
+                        'https://example.com',
+                        '',
+                        'example@example.com'
+                    ]
+                });
+                expect(res.status).toBe('success');
+            })
+
+            test('getAppLocalState returns local state using algonaut.account by default', async () => {
+                let state: AlgonautAppState = await algonaut.getAppLocalState(ACCOUNT_APP) as AlgonautAppState;
+                // console.log('getAppLocalState response: opted in', state);
+                expect(state).toBeDefined();
+                expect(state.hasState).toBe(true);
+                expect(state.globals).toHaveLength(0);
+                expect(state.locals.length).toBeDefined();
+                expect(state.index).toBe(ACCOUNT_APP)
+
+                const obj = algonaut.stateArrayToObject(state.locals);
+
+                expect(obj.name).toBe('Name');
+                expect(obj.bio).toBe('Description of me');
+                expect(obj.contact).toBe('example@example.com');
+                expect(obj.link).toBe('https://example.com');
+            })
+
+            test('getAppLocalState also works with foreign address', async () => {
+                let state: AlgonautAppState = await algonaut.getAppLocalState(ACCOUNT_APP, freshWallet.address) as AlgonautAppState;
+                // console.log('getAppLocalState response: not opted in', state);
+                expect(state).toBeDefined();
+                expect(state.hasState).toBe(false);
+                expect(state.globals).toHaveLength(0);
+                expect(state.locals).toHaveLength(0);
+                expect(state.index).toBe(ACCOUNT_APP)
+            })
+
+            test('atomicCallApp returns a transaction', async () => {
+                const txn = await algonaut.atomicCallApp({ appIndex: ACCOUNT_APP, appArgs: ['version_test'] });
+                expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
+            })
+
+            test('callApp successfully updates local state', async () => {
+                let res = await algonaut.callApp({
+                    appIndex: ACCOUNT_APP,
+                    appArgs: [
+                        'set_all',
+                        'New Name',
+                        'Updated bio',
+                        'New avatar',
+                        'New link',
+                        '',
+                        'newemail@email.com'
+                    ]
+                });
+                expect(res.status).toBe('success');
+                let state = await algonaut.getAppLocalState(ACCOUNT_APP);
+                expect(state).toBeDefined(); // TODO: check for updated new name
+            })
+
+            test('atomicCloseOutApp returns a transaction', async () => {
+                const txn = await algonaut.atomicCloseOutApp({
+                    appIndex: ACCOUNT_APP,
+                    appArgs: [
+                        'set_all',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        ''
+                    ]
+                });
+                expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
+            })
+
+            test('closeOutApp removes local state', async () => {
+                let res = await algonaut.closeOutApp({
+                    appIndex: ACCOUNT_APP,
+                    appArgs: [
+                        'set_all',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        ''
+                    ]
+                });
+                expect(res.status).toBe('success');
+            })
+
+            test('atomicCreateApp returns a transaction', async () => {
+                const txn = await algonaut.atomicCreateApp(createAppArgs);
+                expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
+            })
+
+            test('createApp successfully deploys an application and returns createdIndex', async () => {
+                const res = await algonaut.createApp(createAppArgs);
+                expect(res.status).toBe('success');
+                expect(res.createdIndex).toBeDefined();
+                expect(res.createdIndex).toBeGreaterThan(0);
+                createdApp = res.createdIndex;
+                updateAppArgs.appIndex = res.createdIndex as number;
+            })
+
+            test('getAppGlobalState returns global state for app', async () => {
+                let state = await algonaut.getAppGlobalState(createdApp);
+                console.log(state);
+                expect(state).toBeDefined();
+                expect(state.admin).toBeDefined();
+            })
+
+            test('valueAsAddr successfully decodes', async () => {
+                let state = await algonaut.getAppGlobalState(ACCOUNT_APP);
+                let addr = algonaut.valueAsAddr(state.admin);
+                expect(addr).toBeDefined();
+            })
+
+            test('getAppInfo returns all app info', async () => {
+                let info = await algonaut.getAppInfo(createdApp);
+                console.log(info);
+                expect(info).toBeDefined();
+            })
+
+            test('atomicUpdateApp returns a transaction', async () => {
+                const txn = await algonaut.atomicUpdateApp(updateAppArgs);
+                expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
+            })
+
+            test('updateApp should update the application code', async () => {
+                // first we need to opt in to the app we've created
+                let optIn = await algonaut.optInApp({
+                    appIndex: createdApp,
+                    appArgs: [
+                        'set_all',
+                        'Name',
+                        'Description of me',
+                        '',
+                        'https://example.com',
+                        '',
+                        'example@example.com'
+                    ]
+                });
+
+                // this call SHOULD fail, because version_test doesn't exist on v1
+                try {
+                    let res = await algonaut.callApp({
+                        appIndex: createdApp,
+                        appArgs: ['version_test']
+                    });
+                    expect(res.status).toBe('fail');
+                } catch (e) {
+                    expect(e).toBeDefined();
+                }
+
+                // now we update the application and test the call again
+                const updateResult = await algonaut.updateApp({
+                    appIndex: createdApp,
+                    tealApprovalCode: accountv2,
+                    tealClearCode: accountClear,
+                    appArgs: []
+                });
+                expect(updateResult.status).toBe('success');
+
+                // and the call should pass now
+                let res = await algonaut.callApp({
+                    appIndex: createdApp,
+                    appArgs: ['version_test']
+                });
+                expect(res.status).toBe('success');
+            })
+
+            test('atomicDeleteApp returns a transaction', async () => {
+                const txn = await algonaut.atomicDeleteApp(createdApp);
+                expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
+            })
+
+            test('deleteApp successfully deletes the application', async () => {
+                let res = await algonaut.deleteApp(createdApp);
+                expect(res.status).toBe('success');
+
+                // get info of deleted app
+                await expect(algonaut.getAppInfo(createdApp)).rejects.toThrow();
+            })
+
+            test('deleteApp successfully deletes the application', async () => {
+                const newApp = await algonaut.createApp(createAppArgs);
+                expect(newApp.status).toBe('success');
+
+                let res = await algonaut.deleteApp(newApp.createdIndex as number);
+                expect(res.status).toBe('success');
+
+                // get info of deleted app
+                await expect(algonaut.getAppInfo(createdApp)).rejects.toThrow();
+            })
         })
-
-        test('atomicDeleteApp returns a transaction', async () => {
-            const txn = await algonaut.atomicDeleteApp(createdApp);
-            expect(txn.transaction instanceof algosdk.Transaction).toBe(true)
-        })
-
-        test('deleteApp successfully deletes the application', async () => {
-            let res = await algonaut.deleteApp(createdApp);
-            expect(res.status).toBe('success');
-
-            // get info of deleted app
-            await expect(algonaut.getAppInfo(createdApp)).rejects.toThrow();
-        })
-
-        test('deleteApp successfully deletes the application', async () => {
-            const newApp = await algonaut.createApp(createAppArgs);
-            expect(newApp.status).toBe('success');
-
-            let res = await algonaut.deleteApp(newApp.createdIndex as number);
-            expect(res.status).toBe('success');
-
-            // get info of deleted app
-            await expect(algonaut.getAppInfo(createdApp)).rejects.toThrow();
-        })
-    })
+    });
 
 
     // getAccounts
@@ -676,6 +732,7 @@ describe('Algonaut online methods', () => {
     // deployTealWithLSig
     // generateLogicSig
 })
+// */
 
 // ========= inkey tests =========
 // initInkey
