@@ -48,6 +48,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 loadClient: () => Promise<true>;
+                unloadClient: () => Promise<void>;
                 connect: (p?: any) => Promise<Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
@@ -96,6 +97,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 loadClient: () => Promise<true>;
+                unloadClient: () => Promise<void>;
                 connect: (p?: any) => Promise<Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
@@ -144,6 +146,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 loadClient: () => Promise<true>;
+                unloadClient: () => Promise<void>;
                 connect: (p?: any) => Promise<Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
@@ -158,13 +161,7 @@ export declare class Algonaut {
                     readonly active: boolean;
                 }[];
                 readonly isConnected: boolean;
-                readonly isActive: boolean; /**
-                 * Closes out the user's local state in an application.
-                 * The opposite of {@link optInApp}.
-                 * @param args Object containing `appIndex`, `appArgs`, and `optionalFields` properties
-                 * @param callbacks optional AlgonautTxnCallbacks
-                 * @returns Promise resolving to atomic transaction
-                 */
+                readonly isActive: boolean;
                 readonly activeAccount: {
                     readonly walletId: WALLET_ID;
                     readonly name: string;
@@ -198,6 +195,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 loadClient: () => Promise<true>;
+                unloadClient: () => Promise<void>;
                 connect: (p?: any) => Promise<Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
@@ -246,6 +244,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 loadClient: () => Promise<true>;
+                unloadClient: () => Promise<void>;
                 connect: (p?: any) => Promise<Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
@@ -294,6 +293,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 loadClient: () => Promise<true>;
+                unloadClient: () => Promise<void>;
                 connect: (p?: any) => Promise<Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
@@ -342,6 +342,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 loadClient: () => Promise<true>;
+                unloadClient: () => Promise<void>;
                 connect: (p?: any) => Promise<Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
@@ -392,6 +393,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 loadClient: () => Promise<true>;
+                unloadClient: () => Promise<void>;
                 connect: (p?: any) => Promise<Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
@@ -440,6 +442,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 loadClient: () => Promise<true>;
+                unloadClient: () => Promise<void>;
                 connect: (p?: any) => Promise<Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
@@ -488,6 +491,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 loadClient: () => Promise<true>;
+                unloadClient: () => Promise<void>;
                 connect: (p?: any) => Promise<Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
@@ -536,6 +540,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 loadClient: () => Promise<true>;
+                unloadClient: () => Promise<void>;
                 connect: (p?: any) => Promise<Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
@@ -584,6 +589,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 loadClient: () => Promise<true>;
+                unloadClient: () => Promise<void>;
                 connect: (p?: any) => Promise<Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
@@ -632,6 +638,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 loadClient: () => Promise<true>;
+                unloadClient: () => Promise<void>;
                 connect: (p?: any) => Promise<Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
@@ -680,6 +687,7 @@ export declare class Algonaut {
                 signing: boolean;
                 connecting: boolean;
                 loadClient: () => Promise<true>;
+                unloadClient: () => Promise<void>;
                 connect: (p?: any) => Promise<Account[]>;
                 disconnect: () => Promise<void>;
                 reconnect: () => Promise<void>;
@@ -719,7 +727,12 @@ export declare class Algonaut {
                 address: string;
                 chain: string;
                 active: boolean;
-            } | null;
+            } | null; /**
+             *
+             * @param str string
+             * @param enc the encoding type of the string (defaults to utf8)
+             * @returns string encoded as Uint8Array
+             */
         };
         activeAddress: string;
         activeAccount: {
@@ -762,6 +775,7 @@ export declare class Algonaut {
             signing: boolean;
             connecting: boolean;
             loadClient: () => Promise<true>;
+            unloadClient: () => Promise<void>;
             connect: (p?: any) => Promise<Account[]>;
             disconnect: () => Promise<void>;
             reconnect: () => Promise<void>;
@@ -965,7 +979,7 @@ export declare class Algonaut {
      * 	- or, specific wallets if an array of wallet ids is passed in. (ex: ["inkey", "algosigner", "mnemonic"] )
      */
     disconnect(wIds?: WALLET_ID[] | true): Promise<void>;
-    disconnectAll(): void;
+    disconnectAll(): Promise<void>;
     reconnect(): void;
     /**
      * General purpose method to await transaction confirmation

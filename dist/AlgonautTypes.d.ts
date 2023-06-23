@@ -1,4 +1,4 @@
-import type { LogicSigAccount, Transaction, Account, SuggestedParams, MultisigMetadata } from 'algosdk';
+import type { LogicSigAccount, Transaction, SuggestedParams, MultisigMetadata } from 'algosdk';
 import type { ApplicationStateSchema } from 'algosdk/dist/types/client/v2/algod/models/types';
 import type { WalletInitParamsObj } from '@thencc/any-wallet';
 export type AlgonautConfig = {
@@ -159,8 +159,8 @@ export type AlgonautTransactionFields = {
 };
 export type AlgonautAtomicTransaction = {
     transaction: Transaction;
-    transactionSigner: undefined | Account | LogicSigAccount;
     isLogigSig: boolean;
+    lSig?: LogicSigAccount;
 };
 export type InkeySignTxnResponse = {
     success: boolean;

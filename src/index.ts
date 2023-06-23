@@ -1913,7 +1913,12 @@ export class Algonaut {
 					return `Delete application ID ${txn.appIndex}`;
 
 				default:
-					return `Call to application ID ${txn.appIndex}`;
+					if (txn.appIndex == undefined) {
+						// Create
+						return 'Create an application';
+					} else {
+						return `Call to application ID ${txn.appIndex}`;
+					}
 				}
 
 				// default case
