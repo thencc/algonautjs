@@ -58,8 +58,9 @@ export type AlgoTxn = Transaction;
 
 import {
 	AnyWalletState,
-	enableWallets,
-	removeAllAccounts,
+	connectWallet,
+	disconnectWallet,
+	initWallets,
 	setLogsEnabled as AWSetLogsEnabled,
 	signTransactions,
 	subscribeToAccountChanges,
@@ -69,7 +70,7 @@ import {
 } from '@thencc/any-wallet';
 import type {
 	Account,
-	ClientInitParams,
+	W_ID,
 	WalletInitParamsObj
 } from '@thencc/any-wallet';
 export * from '@thencc/any-wallet';
@@ -157,7 +158,7 @@ export class Algonaut {
 	 */
 	constructor(config?: AlgonautConfig) {
 		this.setNodeConfig(config?.nodeConfig); // makes algod client too
-		this.enableWallets(config?.initWallets);
+		this.initWallets(config?.initWallets);
 		this.setLibConfig(config?.libConfig);
 		this.initAcctSync();
 	}
@@ -272,7 +273,7 @@ export class Algonaut {
 	// direct map from any-wallet for ease
 	setActiveAccount = setAsActiveAccount;
 
-	enableWallets(walletInitParams?: AlgonautConfig['initWallets']) {
+	initWallets(walletInitParams?: AlgonautConfig['initWallets']) {
 		if (walletInitParams == undefined) {
 			logger.debug('.enableWallets called without any init params.');
 		}
@@ -281,7 +282,7 @@ export class Algonaut {
 			// inkey: true, // not even inkey
 		};
 		const wip = walletInitParams || defaultWip;
-		enableWallets(wip); // defaults to all except mnemonic client
+		initWallets(wip); // defaults to all except mnemonic client
 	}
 
 	/**
@@ -293,9 +294,7 @@ export class Algonaut {
 	 */
 	async mnemonicConnect(mnemonic: string): Promise<Account[]> {
 		if (!mnemonic) throw new Error('algonaut.mnemonicConnect: No mnemonic provided.');
-		return await this.connect({
-			mnemonic
-		});
+		return await this.connect('mnemonic', mnemonic);
 	}
 
 	/**
@@ -303,9 +302,7 @@ export class Algonaut {
 	 */
 	async inkeyConnect(): Promise<Account[]> {
 		console.warn('.inkeyConnect is deprecated. please use .connect');
-		return await this.connect({
-			inkey: true // "true" means use the defaults
-		});
+		return await this.connect('inkey');
 	}
 
 	/**
@@ -313,7 +310,7 @@ export class Algonaut {
 	 */
 	async inkeyDisconnect() {
 		console.warn('.inkeyDisconnect is deprecated. please use .disconnect');
-		return await this.disconnect([WALLET_ID.INKEY]);
+		return await this.disconnect(WALLET_ID.INKEY);
 	}
 
 	/**
@@ -345,7 +342,7 @@ export class Algonaut {
 			return this.inkeyClientSdk;
 		} else {
 			// load it
-			const inkeyW = this.walletState.enabledWallets?.inkey;
+			const inkeyW = this.walletState.allWallets.inkey;
 			if (!inkeyW) {
 				console.warn('Inkey wallet not enabled by dev');
 				throw new Error('Inkey wallet not enabled by dev');
@@ -370,135 +367,18 @@ export class Algonaut {
 	}
 
 	/**
-	 * Connects a wallet to be used as algonaut.account. uses:
-	 * 	- the SINGLE passed in init params for the specified wallet
-	 *  - or, the SINGLE enabled wallet IF 1 wallet is enabled (as is the default. just inkey)
-	 * FAILs and throws when multiple init params are passed in or multiple wallets are enabled when nothing is passed in (since it doesnt know which to connect up)
+	 * connects the given wallet + optional init params
 	 */
-	async connect(initWallets?: WalletInitParamsObj) {
-		// logger.log('connect initWallets', initWallets);
-		if (initWallets !== undefined) {
-			const initWs = Object.entries(initWallets);
-			if (initWs.length == 1) {
-				const wId = initWs[0][0] as WALLET_ID;
-				const wInitParams = initWs[0][1] as ClientInitParams; // grab the only enabled wallet
-				const w = AnyWalletState.allWallets[wId];
-				logger.debug('connect: ', wId, wInitParams);
-
-				if (w !== undefined) {
-					// possibly enable this wallet
-					if (AnyWalletState.enabledWallets == null ||
-						!(AnyWalletState.enabledWallets[wId])
-					) {
-						// AnyWalletState.enabledWallets[wId] = w; // same same as below
-						enableWallets(initWallets);
-					}
-
-					// FYI ignore the .isConnected check (as in below init using singular enabledWallet)
-					// to allow for authing into multiple accounts of 1 wallet type
-
-					w.initParams = wInitParams;
-					return await w.connect();
-				} else {
-					throw new Error('Could not find wallet to enable');
-				}
-			} else {
-				throw new Error('Cannot init multiple wallets at once using .connect(). To enable multiple wallets at once define initWallets params in Algonaut class instantiation.');
-			}
-		} else {
-			// then assume to use the only enabled wallet (must be only 1)
-			if (AnyWalletState.enabledWallets) {
-				const enabledWs = Object.entries(AnyWalletState.enabledWallets);
-				if (enabledWs.length == 1) {
-					const w = enabledWs[0][1]; // grab the only enabled wallet
-					if (w) {
-						// FYI DONT check isConnected or isActive to allow for inited multiple accts from the same wallet provider
-						return await w.connect();
-					} else {
-						throw new Error('Wallet wasnt initialized correctly.');
-					}
-				} else {
-					throw new Error('Too many wallets enabled to know which to connect.');
-				}
-			} else {
-				throw new Error('No enabled wallets to connect.');
-			}
-		}
-	}
+	connect = connectWallet;
 
 	/**
-	 * disconnects
-	 * 	- the active wallet IF no arg passed in
-	 * 	- all the wallets IF "true" is passed in as an arg
-	 * 	- or, specific wallets if an array of wallet ids is passed in. (ex: ["inkey", "algosigner", "mnemonic"] )
+	 * disconnect the given wallet
 	 */
-	async disconnect(wIds?: WALLET_ID[] | true) {
-		if (typeof wIds == undefined) {
-			// (try) disconnect active wallet only
-			if (AnyWalletState.enabledWallets) {
-				const enabledWs = Object.entries(AnyWalletState.enabledWallets);
-				if (enabledWs.length == 1) {
-					const w = enabledWs[0][1]; // grab the only enabled wallet
-					if (w) {
-						if (w.isConnected) {
-							logger.log('disconnecting active wallet:', w.id);
-							return await w.disconnect();
-						} else {
-							logger.log('Wallet already disconnected', w.id);
-						}
-					} else {
-						throw new Error('Wallet wasnt initialized correctly.');
-					}
-				} else {
-					throw new Error('Too many wallets enabled to know which to connect.');
-				}
-			} else {
-				throw new Error('No enabled wallets to disconnect.');
-			}
-		} else if (typeof wIds == 'boolean') {
-			if (wIds == true) {
-				// disconnect ALL wallets
-				logger.log('disconnecting all wallets from dapp');
-				for (const wId of Object.keys(AnyWalletState.allWallets)) {
-					const w = AnyWalletState.allWallets[wId as WALLET_ID];
-					if (w) {
-						if (w.isConnected) {
-							logger.log('disconnecting wallet:', wId);
-							return await w.disconnect();
-						} else {
-							logger.log('Wallet already disconnected', w.id);
-						}
-					} else {
-						throw new Error('Could not find wallet by id to disconnect... (shouldnt happen)');
-					}
-				}
-			} else {
-				// nothing
-				// for wIds == false
-			}
-		} else if (Array.isArray(wIds)) {
-			// disconnect this/these wallets by wallet id
-			logger.log('disconnecting these wallets:', wIds);
-			for (const wId of wIds) {
-				const w = AnyWalletState.allWallets[wId];
-				if (w) {
-					if (w.isConnected) {
-						logger.log('disconnecting wallet:', wId);
-						return await w.disconnect();
-					} else {
-						logger.log('Wallet already disconnected', w.id);
-					}
-				} else {
-					throw new Error('Could not find wallet by id to disconnect... (shouldnt happen)');
-				}
-			}
-		} else {
-			logger.debug('this shouldnt happen... passed in a bad arg to .disconnect() ');
-		}
-	}
-
+	disconnect = disconnectWallet;
 	async disconnectAll() {
-		await this.disconnect(true);
+		for (const wId in WALLET_ID) {
+			await disconnectWallet(wId as W_ID);
+		}
 	}
 
 	reconnect() {

@@ -1,6 +1,6 @@
 {
 	"name": "@thencc/algonautjs",
-	"version": "0.3.61",
+	"version": "0.3.62",
 	"description": "AlgonautJS is a simplified Algorand transaction library built specifically for Browsers and Front End Development",
 	"type": "module",
 	"types": "dist/index.d.ts",
@@ -50,12 +50,12 @@
 		"url": "git://github.com/thencc/algonautjs"
 	},
 	"dependencies": {
-		"@thencc/any-wallet": "^0.1.82",
-		"algosdk": "thencc/js-algorand-sdk-no-fetch-poly#1a963de38b4d29b9a4d06bf829c428fc0aa61ce7",
+		"@thencc/any-wallet": "^0.1.85",
+		"algosdk": "github:thencc/js-algorand-sdk-no-fetch-poly#1a963de38b4d29b9a4d06bf829c428fc0aa61ce7",
 		"buffer": "^6.0.3"
 	},
 	"optionalDependencies": {
-		"@blockshake/defly-connect": "^1.1.2",
+		"@blockshake/defly-connect": "^1.1.5",
 		"@perawallet/connect": "^1.2.3",
 		"@randlabs/myalgo-connect": "^1.4.2",
 		"@thencc/inkey-client-js": "^0.0.24"
@@ -66,12 +66,12 @@
 		"@perawallet/connect": "^1.2.0",
 		"@randlabs/myalgo-connect": "^1.4.2",
 		"@thencc/inkey-client-js": "^0.0.24",
-		"@types/node": "^18.16.5",
-		"@typescript-eslint/eslint-plugin": "^5.59.2",
-		"@typescript-eslint/parser": "^5.59.2",
-		"dotenv": "^16.0.3",
+		"@types/node": "^18.16.18",
+		"@typescript-eslint/eslint-plugin": "^5.60.1",
+		"@typescript-eslint/parser": "^5.60.1",
+		"dotenv": "^16.3.1",
 		"esbuild": "^0.14.54",
-		"eslint": "^8.40.0",
+		"eslint": "^8.43.0",
 		"eslint-config-typescript": "^3.0.0",
 		"jest": "^29.5.0",
 		"jsdom": "^20.0.3",
@@ -79,11 +79,11 @@
 		"node-testing-server": "^1.5.2",
 		"npm-run-all": "^4.1.5",
 		"prettier": "^2.8.8",
-		"sass": "^1.62.1",
+		"sass": "^1.63.6",
 		"ts-jest": "^29.1.0",
 		"ts-node": "^10.9.1",
 		"typedoc": "^0.23.28",
 		"typescript": "^4.9.5",
-		"vite": "^4.3.5"
+		"vite": "^4.3.9"
 	}
 }
