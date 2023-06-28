@@ -34,9 +34,7 @@ import { Algonaut } from '@thencc/algonautjs';
 const algonaut = new Algonaut(); // uses algonaut testnet by default
 
 // 3. authenticate (ex: using inkey microwallet)
-const accounts = await algonaut.connect({
-  inkey: true
-});
+const accounts = await algonaut.connect('inkey');
 
 // 4. contruct a txn + submit it to the network (uses suggested network params)
 const txnStatus = await algonaut.sendAlgo({
@@ -85,7 +83,9 @@ the structure of an account object looks like this:
   name: 'silvio',
   walletId: 'inkey',
   chain: 'algorand',
-  active: true
+  active: true,
+  dateConnected: 1687889579236, // unix timestamp as number
+  dateLastActive: 1687889579236 || undefined //
 }
 ```
 
@@ -102,14 +102,10 @@ algonaut.setActiveAccount(algonaut.connectedAccounts[2]);
 At it's simplest, algonaut can connect a user's wallet by awaiting the `.connect()` method, which takes an object with exactly ONE entry where the `WALLET_ID` of the desired provider is the key and the value is `true`. this loads the wallet's sdk on demand and prompts the user to signin to it. for example:
 ```ts
 // inkey microwallet
-let accts = await algonaut.connect({
-  inkey: true
-});
+let accts = await algonaut.connect('inkey');
 
 // or, pera wallet
-let accts = await algonaut.connect({
-  pera: true
-});
+let accts = await algonaut.connect('pera');
 
 // now algonaut uses the first returned acct as the active account
 algonaut.account == accts[0];
@@ -121,10 +117,12 @@ algonaut.account == accts[0];
 <summary><h3>🧮 ex: complex connect ↕</h3></summary>
   
 ```ts
-import { WALLET_ID } from '@thencc/algonautjs';
+import { 
+  Algonaut,
+  WALLET_ID,
+} from '@thencc/algonautjs';
 
-/** --- 1. ENABLE some wallets [dev] --- */
-
+// set wallet init params for each wallet
 const algonaut = new Algonaut({
   initWallets: {
     [WALLET_ID.INKEY]: {
@@ -141,32 +139,15 @@ const algonaut = new Algonaut({
   }
 });
 
+// connect w init params set on initialization
+let accts = await algonaut.connect('inkey');
 
-
-/** --- 2. CONNECT a wallet [user] --- */
-
-// connect a specific wallet directly
-const accts = await algonaut.walletState.enabledWallets.pera.connect();
-
-// or, iterate through enabledWallets in the ui and connect the one the user selected
-const connectWallet = async (walletId: string) => {
-  try {
-    if (
-      algonaut.walletState.enabledWallets &&
-      walletId in algonaut.walletState.enabledWallets
-    ) {
-        let accts = await algonaut.walletState.enabledWallets[walletId].connect();
-        return accts;
-    } else {
-      throw new Error('wallet not enabled:', walletId);
-    }
-  } catch(e) {
-    console.warn(e);
+// or, connect w new init params as 2nd arg (FYI this is all typed)
+let accts = algonaut.connect('inkey', {
+  config: {
+    src: 'http://localhost:5200/'
   }
-};
-
-// for example, on a button click do:
-let accts = await connectWallet('pera');
+});
 ```
 </details>
 
@@ -177,18 +158,9 @@ let accts = await connectWallet('pera');
 > **note**: NOT SECURE for client-side use but can be useful for rapid local development.
 
 ```ts
-// enable + connect on instantiation 
-const algonaut = new Algonaut({
-  initWallets: {
-    mnemonic: '25 word phrase'
-  }
-});
-
-// or, connect later on
+// connect
 const algonaut = new Algonaut();
-let accts = await algonaut.connect({
-  mnemonic: '25 word phrase'
-});
+let accts = await algonaut.connect('mnemonic', '25 word phrase');
 
 // FYI no wallet ui is shown for mnemonic wallet signing
 // so the below simply works without any user interaction:
