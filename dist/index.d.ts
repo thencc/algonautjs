@@ -121,6 +121,11 @@ export declare class Algonaut {
                 };
                 client: {
                     sdk: any;
+                    /**
+                     * sets config for use (new algod, indexerClient, etc)
+                     * @param config algonaut config for network + signing mode
+                     * 		- will throw Error if config is lousy
+                     */
                     connect: (x: any) => Promise<Account[]>;
                     disconnect: () => Promise<void>;
                     reconnect: (onDisconnect: () => void) => Promise<Account[] | null>;
@@ -198,6 +203,9 @@ export declare class Algonaut {
                 readonly isConnected: boolean;
                 readonly isActive: boolean;
             };
+            /**
+             * @deprecated use .connect or loop through enabled wallets' methods
+             */
             exodus: {
                 id: W_ID;
                 metadata: {
@@ -219,7 +227,10 @@ export declare class Algonaut {
                     sdk?: any;
                 };
                 inited: boolean;
-                initing: boolean;
+                initing: boolean; /**
+                 * Loads and/or returns the inkey-wallet client sdk for whatever use. see inkey-client-js docs for more.
+                 * @returns
+                 */
                 signing: boolean;
                 connecting: boolean;
                 loadClient: () => Promise<true>;
@@ -319,12 +330,7 @@ export declare class Algonaut {
                 removeAccounts: () => void;
                 signTransactions: (transactions: Uint8Array[]) => Promise<Uint8Array[]>;
                 readonly accounts: readonly {
-                    readonly walletId: W_ID; /**
-                     * Opt-in the current account for the a token or NFT Asset.
-                     * @param assetIndex number of asset to opt-in to
-                     * @param callbacks `AlgonautTxnCallbacks`, passed to {@link sendTransaction}
-                     * @returns Promise resolving to confirmed transaction or error
-                     */
+                    readonly walletId: W_ID;
                     readonly name: string;
                     readonly address: string;
                     readonly chain: string;
@@ -434,10 +440,10 @@ export declare class Algonaut {
             walElContainer: any;
             walWin: Window | null;
             onMsgHandler: ((event: any) => void) | null;
-            requests: FrameBusRequestsMap;
+            requests: import("@thencc/inkey-types").FrameBusRequestsMap;
             blur: boolean;
             containerBg: string;
-            initSrc(src?: string | undefined, align?: any, styles?: any): Promise<void>;
+            initSrc(src?: string | undefined, align?: "center" | "left" | "right" | undefined, styles?: import("@thencc/inkey-types").InkeyStyleObj | undefined): Promise<void>;
             showFrame(routepath?: string | undefined): void;
             hideFrame(): void;
             blurSiblings(): void;
@@ -448,42 +454,24 @@ export declare class Algonaut {
             isReady(): Promise<boolean>;
             setOnDisconnect(f: any): void;
             onDisconnect(): void;
-            onMessage(event: any): void;
-            emit<T = undefined>(data: T extends InkeyTxMsgBase<string, any> ? T : InkeyTxPostMsgDefault): T extends InkeyTxMsgBase<string, any> ? T : InkeyTxPostMsgDefault;
-            emitAsync<PromReturn, T_1 = undefined>(data: T_1 extends InkeyTxMsgBase<string, any> ? T_1 : InkeyTxPostMsgDefault): Promise<PromReturn>;
+            onMessage(event: import("@thencc/inkey-types").RxEvents | import("@thencc/inkey-types").TxEvents): void;
+            emit<T = undefined>(data: T extends import("@thencc/inkey-types").InkeyTxMsgBase<string, any> ? T : import("@thencc/inkey-types").InkeyTxPostMsgDefault): T extends import("@thencc/inkey-types").InkeyTxMsgBase<string, any> ? T : import("@thencc/inkey-types").InkeyTxPostMsgDefault;
+            emitAsync<PromReturn, T_1 = undefined>(data: T_1 extends import("@thencc/inkey-types").InkeyTxMsgBase<string, any> ? T_1 : import("@thencc/inkey-types").InkeyTxPostMsgDefault): Promise<PromReturn>;
             insertStyles(css: string): void;
             removeStyles(): void;
         };
-        connect(payload?: any): Promise<InkeyAccount[]>;
-        disconnect(): Promise<InkeyResponseBase>;
+        connect(payload?: {
+            siteName?: string | undefined;
+            connectedAccounts?: import("@thencc/inkey-types").InkeyAccount[] | undefined;
+        } | undefined): Promise<import("@thencc/inkey-types").InkeyAccount[]>;
+        disconnect(): Promise<import("@thencc/inkey-types").InkeyResponseBase>;
         show(routepath?: string | undefined): void;
         hide(): void;
         ping<R = any, T_2 = undefined>(data: any, options?: {
             showFrame?: boolean | undefined;
         } | undefined): Promise<R>;
-        signTxnsUint8Array(txns: Uint8Array[], connectedAccounts?: InkeyAccount[] | undefined): Promise<InkeySignTxnResponse>;
-        /**
-         * Instantiates Algonaut.js.
-         *
-         * @example
-         * Usage:
-         *
-         * ```js
-         * import { Algonaut } from '@thencc/algonautjs';
-         * const algonaut = new Algonaut({
-         * 		nodeConfig: {
-         *	 		BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
-         *	 		INDEX_SERVER: 'https://testnet-algorand.api.purestake.io/idx2'
-         *	 		LEDGER: 'TestNet',
-         *	 		PORT: '',
-         *	 		API_TOKEN: { 'X-API-Key': 'YOUR_API_TOKEN' }
-         * 		}
-         * });
-         * ```
-         *
-         * @param config config object
-         */
-        signTxns(txns: string[] | TxnForSigning[], connectedAccounts?: InkeyAccount[] | undefined): Promise<InkeySignTxnResponse>;
+        signTxnsUint8Array(txns: Uint8Array[], connectedAccounts?: import("@thencc/inkey-types").InkeyAccount[] | undefined): Promise<import("@thencc/inkey-types").InkeySignTxnResponse>;
+        signTxns(txns: string[] | import("@thencc/inkey-types").TxnForSigning[], connectedAccounts?: import("@thencc/inkey-types").InkeyAccount[] | undefined): Promise<import("@thencc/inkey-types").InkeySignTxnResponse>;
     } | null;
     inkeyLoading: boolean;
     inkeyLoaded: boolean;
@@ -593,10 +581,10 @@ export declare class Algonaut {
             walElContainer: any;
             walWin: Window | null;
             onMsgHandler: ((event: any) => void) | null;
-            requests: FrameBusRequestsMap;
+            requests: import("@thencc/inkey-types").FrameBusRequestsMap;
             blur: boolean;
             containerBg: string;
-            initSrc(src?: string | undefined, align?: any, styles?: any): Promise<void>;
+            initSrc(src?: string | undefined, align?: "center" | "left" | "right" | undefined, styles?: import("@thencc/inkey-types").InkeyStyleObj | undefined): Promise<void>;
             showFrame(routepath?: string | undefined): void;
             hideFrame(): void;
             blurSiblings(): void;
@@ -607,53 +595,32 @@ export declare class Algonaut {
             isReady(): Promise<boolean>;
             setOnDisconnect(f: any): void;
             onDisconnect(): void;
-            onMessage(event: any): void;
-            emit<T = undefined>(data: T extends InkeyTxMsgBase<string, any> ? T : InkeyTxPostMsgDefault): T extends InkeyTxMsgBase<string, any> ? T : InkeyTxPostMsgDefault;
-            emitAsync<PromReturn, T_1 = undefined>(data: T_1 extends InkeyTxMsgBase<string, any> ? T_1 : InkeyTxPostMsgDefault): Promise<PromReturn>;
+            onMessage(event: import("@thencc/inkey-types").RxEvents | import("@thencc/inkey-types").TxEvents): void;
+            emit<T = undefined>(data: T extends import("@thencc/inkey-types").InkeyTxMsgBase<string, any> ? T : import("@thencc/inkey-types").InkeyTxPostMsgDefault): T extends import("@thencc/inkey-types").InkeyTxMsgBase<string, any> ? T : import("@thencc/inkey-types").InkeyTxPostMsgDefault;
+            emitAsync<PromReturn, T_1 = undefined>(data: T_1 extends import("@thencc/inkey-types").InkeyTxMsgBase<string, any> ? T_1 : import("@thencc/inkey-types").InkeyTxPostMsgDefault): Promise<PromReturn>;
             insertStyles(css: string): void;
             removeStyles(): void;
         };
-        connect(payload?: any): Promise<InkeyAccount[]>;
-        disconnect(): Promise<InkeyResponseBase>;
+        connect(payload?: {
+            siteName?: string | undefined;
+            connectedAccounts?: import("@thencc/inkey-types").InkeyAccount[] | undefined;
+        } | undefined): Promise<import("@thencc/inkey-types").InkeyAccount[]>;
+        disconnect(): Promise<import("@thencc/inkey-types").InkeyResponseBase>;
         show(routepath?: string | undefined): void;
         hide(): void;
         ping<R = any, T_2 = undefined>(data: any, options?: {
             showFrame?: boolean | undefined;
         } | undefined): Promise<R>;
-        signTxnsUint8Array(txns: Uint8Array[], connectedAccounts?: InkeyAccount[] | undefined): Promise<InkeySignTxnResponse>;
-        /**
-         * Instantiates Algonaut.js.
-         *
-         * @example
-         * Usage:
-         *
-         * ```js
-         * import { Algonaut } from '@thencc/algonautjs';
-         * const algonaut = new Algonaut({
-         * 		nodeConfig: {
-         *	 		BASE_SERVER: 'https://testnet-algorand.api.purestake.io/ps2',
-         *	 		INDEX_SERVER: 'https://testnet-algorand.api.purestake.io/idx2'
-         *	 		LEDGER: 'TestNet',
-         *	 		PORT: '',
-         *	 		API_TOKEN: { 'X-API-Key': 'YOUR_API_TOKEN' }
-         * 		}
-         * });
-         * ```
-         *
-         * @param config config object
-         */
-        signTxns(txns: string[] | TxnForSigning[], connectedAccounts?: InkeyAccount[] | undefined): Promise<InkeySignTxnResponse>;
+        signTxnsUint8Array(txns: Uint8Array[], connectedAccounts?: import("@thencc/inkey-types").InkeyAccount[] | undefined): Promise<import("@thencc/inkey-types").InkeySignTxnResponse>;
+        signTxns(txns: string[] | import("@thencc/inkey-types").TxnForSigning[], connectedAccounts?: import("@thencc/inkey-types").InkeyAccount[] | undefined): Promise<import("@thencc/inkey-types").InkeySignTxnResponse>;
     }>;
     /**
      * connects the given wallet + optional init params
      */
     connect: <W extends W_ID, P extends WalletInitParamsObj[W]>(wId: W, wInitParams?: P | undefined) => Promise<Account[]>;
-    /**
-     * disconnect the given wallet
-     */
     disconnect: <W extends W_ID>(wId: W) => Promise<void>;
-    disconnectAll(): Promise<void>;
-    reconnect(): void;
+    disconnectAll: () => Promise<void>;
+    reconnect: () => void;
     /**
      * General purpose method to await transaction confirmation
      * @param txId a string id of the transacion you want to watch

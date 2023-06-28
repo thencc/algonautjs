@@ -58,15 +58,16 @@ export type AlgoTxn = Transaction;
 
 import {
 	AnyWalletState,
+	initWallets,
 	connectWallet,
 	disconnectWallet,
-	initWallets,
+	disconnectAllWallets,
+	recallState,
+	setAsActiveAccount,
 	setLogsEnabled as AWSetLogsEnabled,
 	signTransactions,
 	subscribeToAccountChanges,
-	WALLET_ID,
-	recallState,
-	setAsActiveAccount
+	WALLET_ID
 } from '@thencc/any-wallet';
 import type {
 	Account,
@@ -165,7 +166,7 @@ export class Algonaut {
 
 	setLibConfig(libConfig?: AlgonautConfig['libConfig']) {
 		// logger.log('setLibConfig', libConfig);
-		if (libConfig == undefined)  {
+		if (libConfig == undefined) {
 			libConfig = defaultLibConfig;
 		}
 		if (libConfig !== undefined) {
@@ -370,20 +371,9 @@ export class Algonaut {
 	 * connects the given wallet + optional init params
 	 */
 	connect = connectWallet;
-
-	/**
-	 * disconnect the given wallet
-	 */
 	disconnect = disconnectWallet;
-	async disconnectAll() {
-		for (const wId in WALLET_ID) {
-			await disconnectWallet(wId as W_ID);
-		}
-	}
-
-	reconnect() {
-		recallState();
-	}
+	disconnectAll = disconnectAllWallets;
+	reconnect = recallState;
 
 	/**
 	 * General purpose method to await transaction confirmation
@@ -1568,7 +1558,7 @@ export class Algonaut {
 		try {
 			awTxnsSigned = await signTransactions(awTxnsToSign);
 			logger.log('awTxnsSigned', awTxnsSigned);
-		} catch(e) {
+		} catch (e) {
 			console.warn('err signing txns...');
 			logger.log(e);
 			throw new Error('Error signing transactions');
@@ -1768,37 +1758,37 @@ export class Algonaut {
 				// let's find out what kind of application call this is
 				// reference: https://developer.algorand.org/docs/get-details/dapps/avm/teal/specification/#oncomplete
 				switch (txn.appOnComplete) {
-				// NoOp
-				case 0:
-					return `Call to application ID ${txn.appIndex}`;
+					// NoOp
+					case 0:
+						return `Call to application ID ${txn.appIndex}`;
 
 					// OptIn
-				case 1:
-					return `Opt-in to application ID ${txn.appIndex}`;
+					case 1:
+						return `Opt-in to application ID ${txn.appIndex}`;
 
 					// CloseOut
-				case 2:
-					return `Close out application ID ${txn.appIndex}`;
+					case 2:
+						return `Close out application ID ${txn.appIndex}`;
 
 					// ClearState
-				case 3:
-					return `Execute clear state program of application ID ${txn.appIndex}`;
+					case 3:
+						return `Execute clear state program of application ID ${txn.appIndex}`;
 
 					// Update
-				case 4:
-					return `Update application ID ${txn.appIndex}`;
+					case 4:
+						return `Update application ID ${txn.appIndex}`;
 
 					// Delete
-				case 5:
-					return `Delete application ID ${txn.appIndex}`;
+					case 5:
+						return `Delete application ID ${txn.appIndex}`;
 
-				default:
-					if (txn.appIndex == undefined) {
-						// Create
-						return 'Create an application';
-					} else {
-						return `Call to application ID ${txn.appIndex}`;
-					}
+					default:
+						if (txn.appIndex == undefined) {
+							// Create
+							return 'Create an application';
+						} else {
+							return `Call to application ID ${txn.appIndex}`;
+						}
 				}
 
 				// default case
