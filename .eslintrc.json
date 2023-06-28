@@ -12,7 +12,8 @@
 		"sourceType": "module"
 	},
 	"env": {
-		"browser": true
+		"browser": true,
+		"process": true
 	},
 	"rules": {
 		"no-prototype-builtins": "off",
@@ -40,7 +41,10 @@
 			"warn",
 			"always"
 		],
-		"indent": ["warn", "tab"],
+		"indent": [
+			"warn",
+			"tab"
+		],
 		"no-any": 0,
 		"no-mixed-spaces-and-tabs": "warn",
 		"no-trailing-spaces": "error",

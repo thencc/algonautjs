@@ -19,16 +19,16 @@ import { readFileSync } from 'fs';
 const excludeVendorFromSourceMapPlugin = ({ filter }) => ({
 	name: 'excludeVendorFromSourceMap',
 	setup(build) {
-	  build.onLoad({ filter }, (args) => {
-		if (args.path.endsWith('.js')) {
-		  return {
-			contents:
-			  readFileSync(args.path, 'utf8') +
-			  '\n//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIiJdLCJtYXBwaW5ncyI6IkEifQ==',
-			loader: 'default',
-		  };
-		}
-	  });
+		build.onLoad({ filter }, (args) => {
+			if (args.path.endsWith('.js')) {
+				return {
+					contents:
+						readFileSync(args.path, 'utf8') +
+						'\n//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIiJdLCJtYXBwaW5ncyI6IkEifQ==',
+					loader: 'default',
+				};
+			}
+		});
 	},
 });
 
@@ -70,9 +70,9 @@ build({
 		Buffer: 'Buffer'
 	},
 	plugins: [
-		plugin(stdLibBrowser), 
+		plugin(stdLibBrowser),
 		// excludeVendorFromSourceMapPlugin({filter: /.*/})
-		excludeVendorFromSourceMapPlugin({filter: /node_modules/})
+		excludeVendorFromSourceMapPlugin({ filter: /node_modules/ })
 	]
 })
 	.catch(() => process.exit(1));
