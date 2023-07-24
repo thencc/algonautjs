@@ -1,0 +1,53 @@
+{
+	"root": true,
+	"extends": [
+		"eslint:recommended",
+		"typescript",
+		"plugin:@typescript-eslint/eslint-recommended",
+		"plugin:@typescript-eslint/recommended"
+	],
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"ecmaVersion": 2020,
+		"sourceType": "module"
+	},
+	"env": {
+		"browser": true,
+		"process": true
+	},
+	"rules": {
+		"no-prototype-builtins": "off",
+		"@typescript-eslint/ban-types": "off",
+		"@typescript-eslint/explicit-function-return-type": "off",
+		"@typescript-eslint/explicit-module-boundary-types": "off",
+		"@typescript-eslint/no-explicit-any": "warn",
+		"@typescript-eslint/no-empty-function": "off",
+		"@typescript-eslint/no-non-null-assertion": "off",
+		"@typescript-eslint/no-unused-vars": [
+			"warn",
+			{
+				"argsIgnorePattern": "^_"
+			}
+		],
+		"quotes": [
+			"warn",
+			"single",
+			{
+				"avoidEscape": true,
+				"allowTemplateLiterals": false
+			}
+		],
+		"semi": [
+			"warn",
+			"always"
+		],
+		"indent": [
+			"warn",
+			"tab"
+		],
+		"no-any": 0,
+		"no-mixed-spaces-and-tabs": "warn",
+		"no-trailing-spaces": "error",
+		"vue/no-v-model-argument": "off"
+	}
+}
