@@ -8,16 +8,16 @@ import { readFileSync } from 'fs';
 const excludeVendorFromSourceMapPlugin = ({ filter }) => ({
 	name: 'excludeVendorFromSourceMap',
 	setup(build) {
-	  build.onLoad({ filter }, (args) => {
-		if (args.path.endsWith('.js')) {
-		  return {
-			contents:
-			  readFileSync(args.path, 'utf8') +
-			  '\n//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIiJdLCJtYXBwaW5ncyI6IkEifQ==',
-			loader: 'default',
-		  };
-		}
-	  });
+		build.onLoad({ filter }, (args) => {
+			if (args.path.endsWith('.js')) {
+				return {
+					contents:
+						readFileSync(args.path, 'utf8') +
+						'\n//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIiJdLCJtYXBwaW5ncyI6IkEifQ==',
+					loader: 'default',
+				};
+			}
+		});
 	},
 });
 
@@ -29,7 +29,7 @@ export default defineConfig({
 	dts: true, // requires typescript peer dep
 	sourcemap: true,
 
-	format: ['esm', 'cjs' ],
+	format: ['esm', 'cjs'],
 	tsconfig: './tsconfig.json',
 	// legacyOutput: true,
 	outExtension({ format }) {
@@ -50,7 +50,7 @@ export default defineConfig({
 			return {
 				js: `.${format}.js`,
 			}
-		}	
+		}
 	},
 	// iife / global build
 	// if doing this, add tp pkg.json
@@ -61,9 +61,9 @@ export default defineConfig({
 
 	// DONT bundle wallet-specific libs
 	external: [
-        ...CLIENT_PKGS,
+		...CLIENT_PKGS,
 	],
-	
+
 	// aka DO BUNDLE these:
 	noExternal: [
 		'algosdk',
@@ -74,7 +74,7 @@ export default defineConfig({
 
 	esbuildPlugins: [
 		// needed to keep .map file down in size!
-		excludeVendorFromSourceMapPlugin({filter: /node_modules/})
+		excludeVendorFromSourceMapPlugin({ filter: /node_modules/ })
 	],
 
 	// entire esbuild config avail
@@ -86,8 +86,8 @@ export default defineConfig({
 
 
 	platform: 'browser', // makes sure "crypto" isnt needed 
-	// platform: 'neutral',
-	bundle: true,
+	// platform: 'neutral', // TODO should we do neutral? try but make sure all env tests pass + build size isnt crazy big...
+	bundle: true, // TODO we shouldnt bundle our lib. assume frontends/final users will do that. (for dux w/out bundlers use jsdelvr )
 	shims: true,
 
 	// optimized config:
@@ -95,8 +95,8 @@ export default defineConfig({
 	splitting: false,
 	minify: true,
 	treeshake: true,
-	
-	// dev config:
+
+	// dev/debug config:
 	// keepNames: true,
 	// splitting: true,
 	// minify: false,
