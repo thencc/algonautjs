@@ -60,8 +60,8 @@ import {
 	AnyWalletState,
 	initWallets,
 	connectWallet,
-	disconnectWallet,
-	disconnectAllWallets,
+	// disconnectWallet,
+	// disconnectAllWallets,
 	recallState,
 	setAsActiveAccount,
 	setLogsEnabled as AWSetLogsEnabled,
@@ -311,7 +311,7 @@ export class Algonaut {
 	 */
 	async inkeyDisconnect() {
 		console.warn('.inkeyDisconnect is deprecated. please use .disconnect');
-		return await this.disconnect(WALLET_ID.INKEY);
+		// return await this.disconnect(WALLET_ID.INKEY);
 	}
 
 	/**
@@ -371,8 +371,8 @@ export class Algonaut {
 	 * connects the given wallet + optional init params
 	 */
 	connect = connectWallet;
-	disconnect = disconnectWallet;
-	disconnectAll = disconnectAllWallets;
+	// disconnect = disconnectWallet;
+	// disconnectAll = disconnectAllWallets;
 	reconnect = recallState;
 
 	/**

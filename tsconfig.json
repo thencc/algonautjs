@@ -10,7 +10,7 @@
 		"sourceMap": true,
 		"declaration": true,
 		"strict": true,
-		"target": "es2017",
+		"target": "ESNext",
 		"allowJs": true,
 		"skipLibCheck": true,
 		"lib": [

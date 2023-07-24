@@ -35,7 +35,10 @@ build({
 	// minify: false,
 	treeShaking: true,
 	treeShaking: false,
-	//target: ['node14'], // change for browser/node?
+
+	target: ['esnext'],
+
+	// target: ['node14'], // change for browser/node?
 	// assetNames: 'assets/[name]',
 	// loader: { '.mp3': 'file' },
 	// target: [
