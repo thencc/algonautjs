@@ -27,8 +27,7 @@ import algosdk, {
 	encodeUint64,
 	getApplicationAddress,
 	microalgosToAlgos,
-	decodeUnsignedTransaction,
-	signMultisigTransaction
+	decodeUnsignedTransaction
 } from 'algosdk';
 
 import type {
@@ -41,7 +40,6 @@ import type {
 	AlgonautStateData,
 	AlgonautError,
 	AlgonautTxnCallbacks,
-	AlgonautContractSchema,
 	AlgonautCreateAssetArguments,
 	AlgonautSendAssetArguments,
 	AlgonautCallAppArguments,
@@ -53,25 +51,27 @@ import type {
 	AlgonautLsigPaymentArguments,
 	AlgonautUpdateAppArguments,
 	AlgonautGetApplicationResponse,
-	AlgonautAppStateEncoded,
-	TxnForSigning
+	AlgonautAppStateEncoded
 } from './AlgonautTypes';
 export * from './AlgonautTypes';
 export type AlgoTxn = Transaction;
 
-import { 
-	AnyWalletState, 
-	enableWallets, 
-	removeAllAccounts, 
-	setLogsEnabled as AWSetLogsEnabled, 
-	signTransactions, 
+import {
+	AnyWalletState,
+	initWallets,
+	connectWallet,
+	disconnectWallet,
+	disconnectAllWallets,
+	recallState,
+	setAsActiveAccount,
+	setLogsEnabled as AWSetLogsEnabled,
+	signTransactions,
 	subscribeToAccountChanges,
-	WALLET_ID,
-	recallState
+	WALLET_ID
 } from '@thencc/any-wallet';
 import type {
 	Account,
-	ClientInitParams,
+	W_ID,
 	WalletInitParamsObj
 } from '@thencc/any-wallet';
 export * from '@thencc/any-wallet';
@@ -114,10 +114,10 @@ export class Algonaut {
 	indexerClient = undefined as undefined | Indexer;
 	nodeConfig = defaultNodeConfig;
 	libConfig = defaultLibConfig;
-	
+
 	// expose entire algosdk in case the dapp needs more
 	sdk = algosdk;
-	
+
 	// handles all algo wallets (inkey, pera, etc) + remembers last used in localstorage
 	walletState = AnyWalletState;
 	inkeyClientSdk = null as null | InkeySdk;
@@ -159,14 +159,14 @@ export class Algonaut {
 	 */
 	constructor(config?: AlgonautConfig) {
 		this.setNodeConfig(config?.nodeConfig); // makes algod client too
-		this.enableWallets(config?.initWallets);
+		this.initWallets(config?.initWallets);
 		this.setLibConfig(config?.libConfig);
 		this.initAcctSync();
 	}
 
 	setLibConfig(libConfig?: AlgonautConfig['libConfig']) {
 		// logger.log('setLibConfig', libConfig);
-		if (libConfig == undefined)  {
+		if (libConfig == undefined) {
 			libConfig = defaultLibConfig;
 		}
 		if (libConfig !== undefined) {
@@ -204,7 +204,7 @@ export class Algonaut {
 	 */
 	setNodeConfig(nodeConfig?: AlgonautConfig['nodeConfig'] | 'mainnet' | 'testnet') {
 		logger.log('setNodeConfig', nodeConfig);
-		
+
 		if (nodeConfig == undefined) {
 			nodeConfig = defaultNodeConfig;
 		}
@@ -271,7 +271,10 @@ export class Algonaut {
 		if (unsAcctSync) unsAcctSync();
 	}
 
-	enableWallets(walletInitParams?: AlgonautConfig['initWallets']) {
+	// direct map from any-wallet for ease
+	setActiveAccount = setAsActiveAccount;
+
+	initWallets(walletInitParams?: AlgonautConfig['initWallets']) {
 		if (walletInitParams == undefined) {
 			logger.debug('.enableWallets called without any init params.');
 		}
@@ -280,7 +283,7 @@ export class Algonaut {
 			// inkey: true, // not even inkey
 		};
 		const wip = walletInitParams || defaultWip;
-		enableWallets(wip); // defaults to all except mnemonic client
+		initWallets(wip); // defaults to all except mnemonic client
 	}
 
 	/**
@@ -292,9 +295,7 @@ export class Algonaut {
 	 */
 	async mnemonicConnect(mnemonic: string): Promise<Account[]> {
 		if (!mnemonic) throw new Error('algonaut.mnemonicConnect: No mnemonic provided.');
-		return await this.connect({
-			mnemonic
-		});
+		return await this.connect('mnemonic', mnemonic);
 	}
 
 	/**
@@ -302,9 +303,7 @@ export class Algonaut {
 	 */
 	async inkeyConnect(): Promise<Account[]> {
 		console.warn('.inkeyConnect is deprecated. please use .connect');
-		return await this.connect({
-			inkey: true // "true" means use the defaults
-		});
+		return await this.connect('inkey');
 	}
 
 	/**
@@ -312,12 +311,12 @@ export class Algonaut {
 	 */
 	async inkeyDisconnect() {
 		console.warn('.inkeyDisconnect is deprecated. please use .disconnect');
-		return await this.disconnect([WALLET_ID.INKEY]);
+		return await this.disconnect(WALLET_ID.INKEY);
 	}
 
 	/**
-	 * Shows the inkey-wallet modal 
-	 * @returns 
+	 * Shows the inkey-wallet modal
+	 * @returns
 	 */
 	async inkeyShow(route?: string) {
 		const ic = await this.getInkeyClientSdk();
@@ -326,7 +325,7 @@ export class Algonaut {
 
 	/**
 	 * Hides the inkey-wallet modal
-	 * @returns 
+	 * @returns
 	 */
 	async inkeyHide() {
 		const ic = await this.getInkeyClientSdk();
@@ -335,7 +334,7 @@ export class Algonaut {
 
 	/**
 	 * Loads and/or returns the inkey-wallet client sdk for whatever use. see inkey-client-js docs for more.
-	 * @returns 
+	 * @returns
 	 */
 	async getInkeyClientSdk() {
 		logger.log('getInkeyClientSdk');
@@ -344,7 +343,7 @@ export class Algonaut {
 			return this.inkeyClientSdk;
 		} else {
 			// load it
-			let inkeyW = this.walletState.enabledWallets?.inkey;
+			const inkeyW = this.walletState.allWallets.inkey;
 			if (!inkeyW) {
 				console.warn('Inkey wallet not enabled by dev');
 				throw new Error('Inkey wallet not enabled by dev');
@@ -354,8 +353,7 @@ export class Algonaut {
 			await inkeyW.loadClient();
 			this.inkeyLoading = false;
 
-			// @ts-ignore
-			const inkeyClientSdk:InkeySdk = inkeyW.client!.sdk;
+			const inkeyClientSdk: InkeySdk = inkeyW.client!.sdk;
 
 			if (inkeyClientSdk.frameBus.ready == false) {
 				logger.debug('inkeySdk FrameBus not yet ready...');
@@ -370,140 +368,12 @@ export class Algonaut {
 	}
 
 	/**
-	 * Connects a wallet to be used as algonaut.account. uses:
-	 * 	- the SINGLE passed in init params for the specified wallet
-	 *  - or, the SINGLE enabled wallet IF 1 wallet is enabled (as is the default. just inkey)
-	 * FAILs and throws when multiple init params are passed in or multiple wallets are enabled when nothing is passed in (since it doesnt know which to connect up)
+	 * connects the given wallet + optional init params
 	 */
-	async connect(initWallets?: WalletInitParamsObj) {
-		// logger.log('connect initWallets', initWallets);
-		if (initWallets !== undefined) {
-			const initWs = Object.entries(initWallets);
-			if (initWs.length == 1) {
-				const wId = initWs[0][0] as WALLET_ID;				
-				const wInitParams = initWs[0][1] as ClientInitParams; // grab the only enabled wallet
-				const w = AnyWalletState.allWallets[wId];
-				logger.debug('connect: ', wId, wInitParams)
-
-				if (w !== undefined) {
-					// possibly enable this wallet 
-					if (AnyWalletState.enabledWallets == null || 
-						!(AnyWalletState.enabledWallets[wId])
-					) {
-						// AnyWalletState.enabledWallets[wId] = w; // same same as below
-						enableWallets(initWallets);
-					}
-
-					// FYI ignore the .isConnected check (as in below init using singular enabledWallet) 
-					// to allow for authing into multiple accounts of 1 wallet type
-
-					w.initParams = wInitParams;
-					return await w.connect();
-				} else {
-					throw new Error('Could not find wallet to enable');
-				}
-			} else {
-				throw new Error('Cannot init multiple wallets at once using .connect(). To enable multiple wallets at once define initWallets params in Algonaut class instantiation.');
-			}
-		} else {
-			// then assume to use the only enabled wallet (must be only 1)
-			if (AnyWalletState.enabledWallets) {
-				const enabledWs = Object.entries(AnyWalletState.enabledWallets);
-				if (enabledWs.length == 1) {
-					const w = enabledWs[0][1]; // grab the only enabled wallet
-					if (w) {
-						// FYI DONT check isConnected or isActive to allow for inited multiple accts from the same wallet provider
-						return await w.connect();
-					} else {
-						throw new Error('Wallet wasnt initialized correctly.');
-					}
-				} else {
-					throw new Error('Too many wallets enabled to know which to connect.');
-				}
-			} else {
-				throw new Error('No enabled wallets to connect.');
-			}
-		}
-	}
-
-	/**
-	 * disconnects
-	 * 	- the active wallet IF no arg passed in
-	 * 	- all the wallets IF "true" is passed in as an arg
-	 * 	- or, specific wallets if an array of wallet ids is passed in. (ex: ["inkey", "algosigner", "mnemonic"] )
-	 */
-	async disconnect(wIds?: WALLET_ID[] | true) {
-		if (typeof wIds == undefined) {
-			// (try) disconnect active wallet only
-			if (AnyWalletState.enabledWallets) {
-				const enabledWs = Object.entries(AnyWalletState.enabledWallets);
-				if (enabledWs.length == 1) {
-					const w = enabledWs[0][1]; // grab the only enabled wallet
-					if (w) {
-						if (w.isConnected) {
-							logger.log('disconnecting active wallet:', w.id);
-							return await w.disconnect();
-						} else {
-							throw new Error('Wallet already disconnected.');
-						}
-					} else {
-						throw new Error('Wallet wasnt initialized correctly.');
-					}
-				} else {
-					throw new Error('Too many wallets enabled to know which to connect.');
-				}
-			} else {
-				throw new Error('No enabled wallets to disconnect.');
-			}
-		} else if (typeof wIds == 'boolean') {
-			if (wIds == true) {
-				// disconnect ALL wallets
-				logger.log('disconnecting all wallets from dapp');
-				for (let wId of Object.keys(AnyWalletState.allWallets)) {
-					const w = AnyWalletState.allWallets[wId as WALLET_ID];
-					if (w) {
-						if (w.isConnected) {
-							logger.log('disconnecting wallet:', wId);
-							return await w.disconnect();
-						} else {
-							throw new Error('Wallet already disconnected.');
-						}
-					} else {
-						throw new Error('Could not find wallet by id to disconnect... (shouldnt happen)');
-					}
-				}
-			} else {
-				// nothing
-				// for wIds == false
-			}
-		} else if (Array.isArray(wIds)) {
-			// disconnect this/these wallets by wallet id
-			logger.log('disconnecting these wallets:', wIds);
-			for (let wId of wIds) {
-				const w = AnyWalletState.allWallets[wId];
-				if (w) {
-					if (w.isConnected) {
-						logger.log('disconnecting wallet:', wId);
-						return await w.disconnect();
-					} else {
-						throw new Error('Wallet already disconnected.');
-					}
-				} else {
-					throw new Error('Could not find wallet by id to disconnect... (shouldnt happen)');
-				}
-			}
-		} else {
-			logger.debug('this shouldnt happen... passed in a bad arg to .disconnect() ');
-		}
-	}
-
-	disconnectAll() {
-		removeAllAccounts();
-	}
-
-	reconnect() {
-		recallState();
-	}
+	connect = connectWallet;
+	disconnect = disconnectWallet;
+	disconnectAll = disconnectAllWallets;
+	reconnect = recallState;
 
 	/**
 	 * General purpose method to await transaction confirmation
@@ -590,7 +460,6 @@ export class Algonaut {
 
 		return {
 			transaction: optInTransaction,
-			transactionSigner: undefined,
 			isLogigSig: false
 		};
 	}
@@ -738,7 +607,6 @@ export class Algonaut {
 
 		return {
 			transaction: txn,
-			transactionSigner: undefined,
 			isLogigSig: false
 		};
 	}
@@ -758,7 +626,7 @@ export class Algonaut {
 		const txn = atomicTxn.transaction;
 
 		try {
-			const assetID = null;
+			// const assetID = null;
 			const txStatus = await this.sendTransaction(txn, callbacks);
 
 			const ptx = await this.algodClient
@@ -791,7 +659,6 @@ export class Algonaut {
 
 		return {
 			transaction: transaction,
-			transactionSigner: undefined,
 			isLogigSig: false
 		};
 	}
@@ -840,7 +707,6 @@ export class Algonaut {
 
 		return {
 			transaction: transaction,
-			transactionSigner: undefined,
 			isLogigSig: false
 		};
 	}
@@ -897,7 +763,6 @@ export class Algonaut {
 
 		return {
 			transaction: optInTransaction,
-			transactionSigner: undefined,
 			isLogigSig: false
 		};
 	}
@@ -928,7 +793,6 @@ export class Algonaut {
 
 		return {
 			transaction: txn,
-			transactionSigner: undefined,
 			isLogigSig: false
 		};
 	}
@@ -943,8 +807,6 @@ export class Algonaut {
 		try {
 			const { transaction } = await this.atomicDeleteApp(appIndex, optionalTxnArgs);
 			const txId = transaction.txID().toString();
-
-			const status = await this.sendTransaction(transaction, callbacks);
 
 			// display results
 			const transactionResponse = await this.algodClient
@@ -985,7 +847,6 @@ export class Algonaut {
 
 		return {
 			transaction: callAppTransaction,
-			transactionSigner: undefined,
 			isLogigSig: false
 		};
 	}
@@ -1018,8 +879,8 @@ export class Algonaut {
 
 		return {
 			transaction: callAppTransaction,
-			transactionSigner: args.lsig,
-			isLogigSig: true
+			isLogigSig: true,
+			lSig: args.lsig,
 		};
 	}
 
@@ -1049,7 +910,6 @@ export class Algonaut {
 
 			return {
 				transaction: closeOutTxn,
-				transactionSigner: undefined,
 				isLogigSig: false
 			};
 		} catch (e: any) {
@@ -1245,7 +1105,6 @@ export class Algonaut {
 
 				return {
 					transaction: applicationCreateTransaction,
-					transactionSigner: undefined,
 					isLogigSig: false
 				};
 
@@ -1310,9 +1169,9 @@ export class Algonaut {
 				const signedTxn = signLogicSigTransactionObject(txn, args.lsig);
 
 				await this.algodClient.sendRawTransaction(signedTxn.blob).do();
-				const txStatus = await this.waitForConfirmation(txId);
 
 				// TBD check txStatus
+				// const txStatus = await this.waitForConfirmation(txId);
 
 				// display results
 				const transactionResponse = await this.algodClient
@@ -1349,7 +1208,7 @@ export class Algonaut {
 		}
 
 		try {
-			const onComplete = OnApplicationComplete.NoOpOC;
+			// const onComplete = OnApplicationComplete.NoOpOC;
 			const suggestedParams = args.optionalFields?.suggestedParams || (await this.algodClient.getTransactionParams().do());
 
 			let approvalProgram = new Uint8Array();
@@ -1378,7 +1237,6 @@ export class Algonaut {
 
 			return {
 				transaction: applicationCreateTransaction,
-				transactionSigner: undefined,
 				isLogigSig: false
 			};
 
@@ -1437,7 +1295,6 @@ export class Algonaut {
 
 			return {
 				transaction: transaction,
-				transactionSigner: undefined,
 				isLogigSig: false
 			};
 		} else {
@@ -1511,7 +1368,7 @@ export class Algonaut {
 	 * @param assetIndex - the index of the ASA
 	 */
 	async accountHasTokens(address: string, assetIndex: number): Promise<boolean> {
-		let bal = await this.getTokenBalance(address, assetIndex);
+		const bal = await this.getTokenBalance(address, assetIndex);
 		if (bal > 0) {
 			return true;
 		} else {
@@ -1621,8 +1478,8 @@ export class Algonaut {
 
 			return {
 				transaction: transaction,
-				transactionSigner: args.lsig,
-				isLogigSig: true
+				isLogigSig: true,
+				lSig: args.lsig,
 			};
 		} else {
 			throw new Error('there is no logic sig object!');
@@ -1642,8 +1499,8 @@ export class Algonaut {
 
 			return {
 				transaction: transaction,
-				transactionSigner: args.lsig,
-				isLogigSig: true
+				isLogigSig: true,
+				lSig: args.lsig,
 			};
 		} else {
 			throw new Error('there is no account!');
@@ -1677,7 +1534,7 @@ export class Algonaut {
 			algoTxnArr = algosdk.assignGroupID(algoTxnArr);
 			logger.log('added group id to txn array');
 			if (algoTxnArr[0].group) {
-				let gId = this.txnBuffToB64(algoTxnArr[0].group);
+				const gId = this.txnBuffToB64(algoTxnArr[0].group);
 				logger.log('gId', gId);
 			}
 		}
@@ -1691,7 +1548,7 @@ export class Algonaut {
 	/**
 	 * Signs a transaction or multiple w the correct wallet according to AW (does not send / submit txn(s) to network)
 	 * @param txnOrTxns Either an array of atomic transactions or a single transaction to sign
-	 * @param signedTxns array of 
+	 * @param signedTxns array of
 	 * @returns Promise resolving to AlgonautTransactionStatus
 	 */
 	async signTransaction(txnOrTxns: AlgonautAtomicTransaction[] | Transaction | AlgonautAtomicTransaction): Promise<Uint8Array[]> {
@@ -1701,7 +1558,7 @@ export class Algonaut {
 		try {
 			awTxnsSigned = await signTransactions(awTxnsToSign);
 			logger.log('awTxnsSigned', awTxnsSigned);
-		} catch(e) {
+		} catch (e) {
 			console.warn('err signing txns...');
 			logger.log(e);
 			throw new Error('Error signing transactions');
@@ -1744,7 +1601,7 @@ export class Algonaut {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param str string
 	 * @param enc the encoding type of the string (defaults to utf8)
 	 * @returns string encoded as Uint8Array
@@ -1926,7 +1783,12 @@ export class Algonaut {
 						return `Delete application ID ${txn.appIndex}`;
 
 					default:
-						return `Call to application ID ${txn.appIndex}`;
+						if (txn.appIndex == undefined) {
+							// Create
+							return 'Create an application';
+						} else {
+							return `Call to application ID ${txn.appIndex}`;
+						}
 				}
 
 				// default case

@@ -1,7 +1,6 @@
 import type {
 	LogicSigAccount,
 	Transaction,
-	Account,
 	SuggestedParams,
 	MultisigMetadata,
 } from 'algosdk';
@@ -24,7 +23,7 @@ export type AlgonautConfig = {
 		API_TOKEN: any;
 	};
 
-	// if we wanted to support multiple init params of any-wallet, but too verbose... 
+	// if we wanted to support multiple init params of any-wallet, but too verbose...
 	// anyWalletConfig?: {
 	// 	walletInitParams?: WalletInitParamsObj;
 	// };
@@ -201,9 +200,8 @@ export type AlgonautTransactionFields = {
 
 export type AlgonautAtomicTransaction = {
 	transaction: Transaction;
-	// TODO remove this, yeah?
-	transactionSigner: undefined | Account | LogicSigAccount; // undefined means theres not enough info to tell, like when a .from field is in params
 	isLogigSig: boolean;
+	lSig?: LogicSigAccount;
 }
 
 export type InkeySignTxnResponse = {
