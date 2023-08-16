@@ -58,54 +58,22 @@ export type AlgoTxn = Transaction;
 
 import {
 	AnyWalletState,
-	initWallets,
-	connectWallet,
-	disconnectWallet,
-	disconnectAllWallets,
-	recallState,
-	setAsActiveAccount,
 	setLogsEnabled as AWSetLogsEnabled,
-	signTransactions,
-	subscribeToAccountChanges,
 	WALLET_ID
 } from '@thencc/any-wallet';
 import type {
 	Account,
+	AnyWalletStateConfig,
 	W_ID,
 	WalletInitParamsObj
 } from '@thencc/any-wallet';
 export * from '@thencc/any-wallet';
 
-import type { createClient } from '@thencc/inkey-client-js';
-type InkeySdk = Awaited<ReturnType<typeof createClient>>;
+import type { InkeySdk } from '@thencc/inkey-client-js';
 
 import { defaultNodeConfig, mainnetConfig, testnetConfig } from './algo-config';
 import { defaultLibConfig } from './constants';
 import { logger } from './utils';
-
-/*
-
-for stateful contracts i think we want to read it in and hold all the
-NV pairs as fields
-
-and maybe read the TEAL and make wrapper methods for things we see in
-a config file?
-
-TBD:
-
-- standard typed return values
-- standard error values, pre-parse the algo error goop
-
-
-there are a couple ways to go for atomic txs, i THINK the more pleasant API is
-
-await runAtomicTransaction([
-	await atomicSendASA(),
-	await atomicSendAlgo(),
-	await atomicCallApp()
-])
-
-*/
 
 let unsAcctSync = null as null | (() => void);
 
@@ -119,14 +87,14 @@ export class Algonaut {
 	sdk = algosdk;
 
 	// handles all algo wallets (inkey, pera, etc) + remembers last used in localstorage
-	walletState = AnyWalletState;
+	walletState!: AnyWalletState;
 	inkeyClientSdk = null as null | InkeySdk;
 	inkeyLoading = false;
 	inkeyLoaded = false;
 
-	account = null as null | typeof AnyWalletState.activeAccount;
+	account = null as null | typeof this.walletState.activeAccount;
 	get connectedAccounts() {
-		return AnyWalletState.connectedAccounts;
+		return this.walletState.connectedAccounts;
 	}
 
 	// TODO come back to private class fields during the security pass. + figure out how to make account immutable
@@ -135,6 +103,19 @@ export class Algonaut {
 	// get account() {
 	// 	return this.#account;
 	// }
+
+	// func re-mappings (definitely set in init call in class constructor)
+	/**
+	 * connects the given wallet + optional init params
+	 * @argument walletId of which wallet type to connect 
+	 * @returns an array of connected accounts
+	 */
+	connect!: typeof this.walletState.connectWallet;
+	disconnect!: typeof this.walletState.disconnectWallet;
+	disconnectAll!: typeof this.walletState.disconnectAllWallets;
+	setActiveAccount!: typeof this.walletState.setAsActiveAccount;
+	subscribeToAccountChanges!: typeof this.walletState.subscribeToAccountChanges;
+
 
 	/**
 	 * Instantiates Algonaut.js.
@@ -159,20 +140,42 @@ export class Algonaut {
 	 */
 	constructor(config?: AlgonautConfig) {
 		this.setNodeConfig(config?.nodeConfig); // makes algod client too
-		this.initWallets(config?.initWallets);
-		this.setLibConfig(config?.libConfig);
-		this.initAcctSync();
+		this.setLibConfig(config);
+		this.initAwState(config);
 	}
 
-	setLibConfig(libConfig?: AlgonautConfig['libConfig']) {
-		// logger.log('setLibConfig', libConfig);
-		if (libConfig == undefined) {
+	// initAwState(awConfig?: AnyWalletStateConfig) {
+	initAwState(config?: AlgonautConfig) {
+		logger.log('initAwState', config);
+
+		const awConfig: AnyWalletStateConfig | undefined = config ?
+			{
+				storageKey: config.storageKey,
+				storageController: config.storageController,
+				persist: config.persist,
+			} : undefined;
+		this.walletState = new AnyWalletState(awConfig);
+
+		this.initWallets(config?.initWallets); // sets init params for future .connect wallet calls
+		this.initAcctSync();
+
+		// func remappings
+		this.subscribeToAccountChanges = this.walletState.subscribeToAccountChanges;
+		this.setActiveAccount = this.walletState.setAsActiveAccount;
+		this.connect = this.walletState.connectWallet;
+		this.disconnect = this.walletState.disconnectWallet;
+		this.disconnectAll = this.walletState.disconnectAllWallets;
+	}
+
+	setLibConfig(config?: AlgonautConfig) {
+		// logger.log('setLibConfig', config);
+		let libConfig: typeof defaultLibConfig;
+		if (config == undefined) {
 			libConfig = defaultLibConfig;
-		}
-		if (libConfig !== undefined) {
-			if ('disableLogs' in libConfig && typeof libConfig.disableLogs == 'boolean') {
-				logger.enabled = !libConfig.disableLogs;
-				AWSetLogsEnabled(!libConfig.disableLogs);
+		} else {
+			if ('disableLogs' in config && typeof config.disableLogs == 'boolean') {
+				logger.enabled = !config.disableLogs;
+				AWSetLogsEnabled(!config.disableLogs);
 			}
 		}
 	}
@@ -259,7 +262,7 @@ export class Algonaut {
 	}
 
 	initAcctSync() {
-		unsAcctSync = subscribeToAccountChanges(
+		unsAcctSync = this.walletState.subscribeToAccountChanges(
 			(acct) => {
 				logger.log('acct changed', acct);
 				this.account = acct;
@@ -271,9 +274,6 @@ export class Algonaut {
 		if (unsAcctSync) unsAcctSync();
 	}
 
-	// direct map from any-wallet for ease
-	setActiveAccount = setAsActiveAccount;
-
 	initWallets(walletInitParams?: AlgonautConfig['initWallets']) {
 		if (walletInitParams == undefined) {
 			logger.debug('.enableWallets called without any init params.');
@@ -283,7 +283,7 @@ export class Algonaut {
 			// inkey: true, // not even inkey
 		};
 		const wip = walletInitParams || defaultWip;
-		initWallets(wip); // defaults to all except mnemonic client
+		this.walletState.initWallets(wip); // defaults to all except mnemonic client
 	}
 
 	/**
@@ -336,7 +336,7 @@ export class Algonaut {
 	 * Loads and/or returns the inkey-wallet client sdk for whatever use. see inkey-client-js docs for more.
 	 * @returns
 	 */
-	async getInkeyClientSdk() {
+	async getInkeyClientSdk(): Promise<InkeySdk> {
 		logger.log('getInkeyClientSdk');
 		if (this.inkeyClientSdk !== null) {
 			this.inkeyLoaded = true;
@@ -366,14 +366,6 @@ export class Algonaut {
 			return this.inkeyClientSdk;
 		}
 	}
-
-	/**
-	 * connects the given wallet + optional init params
-	 */
-	connect = connectWallet;
-	disconnect = disconnectWallet;
-	disconnectAll = disconnectAllWallets;
-	reconnect = recallState;
 
 	/**
 	 * General purpose method to await transaction confirmation
@@ -1556,7 +1548,7 @@ export class Algonaut {
 		logger.log('awTxnsToSign', awTxnsToSign);
 		let awTxnsSigned: Uint8Array[];
 		try {
-			awTxnsSigned = await signTransactions(awTxnsToSign);
+			awTxnsSigned = await this.walletState.signTransactions(awTxnsToSign);
 			logger.log('awTxnsSigned', awTxnsSigned);
 		} catch (e) {
 			console.warn('err signing txns...');
