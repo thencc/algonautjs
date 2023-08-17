@@ -24,7 +24,6 @@ export type AlgonautConfig = {
 	initWallets?: WalletInitParamsObj; // set init params for future .connect wallet calls
 	storageKey?: AnyWalletStateConfig['storageKey'];
 	storageController?: AnyWalletStateConfig['storageController'];
-	persist?: AnyWalletStateConfig['persist'];
 }
 
 export interface AlgonautStateData {

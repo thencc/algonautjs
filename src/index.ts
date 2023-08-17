@@ -152,7 +152,6 @@ export class Algonaut {
 			{
 				storageKey: config.storageKey,
 				storageController: config.storageController,
-				persist: config.persist,
 			} : undefined;
 		this.walletState = new AnyWalletState(awConfig);
 

@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@thencc/any-wallet':
-    specifier: ^0.1.94
-    version: 0.1.94(algosdk@2.3.0)
+    specifier: ^0.1.95
+    version: 0.1.95(algosdk@2.3.0)
   algosdk:
     specifier: github:thencc/js-algorand-sdk-no-fetch-poly#1a963de38b4d29b9a4d06bf829c428fc0aa61ce7
     version: github.com/thencc/js-algorand-sdk-no-fetch-poly/1a963de38b4d29b9a4d06bf829c428fc0aa61ce7
@@ -1077,8 +1077,8 @@ packages:
       '@sinonjs/commons': 3.0.0
     dev: true
 
-  /@thencc/any-wallet@0.1.94(algosdk@2.3.0):
-    resolution: {integrity: sha512-qAcrQ9KvQNMFNbKNXK/Fidm9RlRrkrDaAfQhJkUu6ZufLNccRGaMANVdRjWgE3gPbTGZjxtOUTO+X+TJ5bwIDA==}
+  /@thencc/any-wallet@0.1.95(algosdk@2.3.0):
+    resolution: {integrity: sha512-3S+kOKu7Gp2fDYkEYl/5nUItsy9ZkxIXjDAJBj0T0tV+ReatcwgNZj7jH2pp7tNBwf0bWVCcsRcvDsgb6ByvJA==}
     peerDependencies:
       algosdk: ^2.1.0
     dependencies:

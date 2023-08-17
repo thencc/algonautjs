@@ -13,7 +13,6 @@ export type AlgonautConfig = {
     initWallets?: WalletInitParamsObj;
     storageKey?: AnyWalletStateConfig['storageKey'];
     storageController?: AnyWalletStateConfig['storageController'];
-    persist?: AnyWalletStateConfig['persist'];
 };
 export interface AlgonautStateData {
     key: string;
