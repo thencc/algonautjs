@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@thencc/any-wallet':
-    specifier: ^0.2.2
-    version: 0.2.2(algosdk@2.3.0)
+    specifier: ^0.2.3
+    version: 0.2.3(algosdk@2.3.0)
   algosdk:
     specifier: github:thencc/js-algorand-sdk-no-fetch-poly#1a963de38b4d29b9a4d06bf829c428fc0aa61ce7
     version: github.com/thencc/js-algorand-sdk-no-fetch-poly/1a963de38b4d29b9a4d06bf829c428fc0aa61ce7
@@ -26,16 +26,16 @@ optionalDependencies:
     specifier: ^1.4.2
     version: 1.4.2
   '@thencc/inkey-client-js':
-    specifier: ^0.0.28
-    version: 0.0.28
+    specifier: ^0.0.29
+    version: 0.0.29
 
 devDependencies:
   '@jest/globals':
     specifier: ^29.5.0
     version: 29.5.0
   '@thencc/inkey-types':
-    specifier: ^0.0.11
-    version: 0.0.11
+    specifier: ^0.0.12
+    version: 0.0.12
   '@types/node':
     specifier: ^20.3.2
     version: 20.3.2
@@ -1068,8 +1068,8 @@ packages:
       '@sinonjs/commons': 3.0.0
     dev: true
 
-  /@thencc/any-wallet@0.2.2(algosdk@2.3.0):
-    resolution: {integrity: sha512-oLLPAy18cdQA2N4lMJqd+vOoyo+lnONxDPSOL1J6L/OGRDtj0l8AUpGvjTQ62ufTfl+l6mHh50p+Yjd06SEJjA==}
+  /@thencc/any-wallet@0.2.3(algosdk@2.3.0):
+    resolution: {integrity: sha512-cknrxdbgROWEBqg/69o7op+E/mG8FS/lZbxj4skjb5svog59CuBk0z1GUPLuP7pbyCsG20Q2hycomEhUK/iR+g==}
     peerDependencies:
       algosdk: ^2.1.0
     dependencies:
@@ -1081,21 +1081,21 @@ packages:
       '@blockshake/defly-connect': 1.1.5(algosdk@2.3.0)
       '@perawallet/connect': 1.2.3(algosdk@2.3.0)
       '@randlabs/myalgo-connect': 1.4.2
-      '@thencc/inkey-client-js': 0.0.28
+      '@thencc/inkey-client-js': 0.0.29
       buffer: 6.0.3
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
     dev: false
 
-  /@thencc/inkey-client-js@0.0.28:
-    resolution: {integrity: sha512-GPhrBd6gbCsoUbwGChZHFJIdvYMS60OehHmRLYuVawi5xRCJ08P25SH+ZJq39lDlyUP+OJCRUc80Z+ORL5PEmA==}
+  /@thencc/inkey-client-js@0.0.29:
+    resolution: {integrity: sha512-99Lf3aRTJ8fPXDvvweKugZIXtn1br+G6CRwBqcbhGQHoMhajXWkcrDLTu0O3LZbgcXMlWYEGkG1JaetIAfaETA==}
     requiresBuild: true
     dev: false
     optional: true
 
-  /@thencc/inkey-types@0.0.11:
-    resolution: {integrity: sha512-/9SifwHUqUTHORHRojn0tM3tSCxFg7Byf4DM0beu/BPwAcQKM4VmS7cG/Vc2idGdLCxTA4XcdFfgscuiY7lYhQ==}
+  /@thencc/inkey-types@0.0.12:
+    resolution: {integrity: sha512-fXcFjeEKQc7DpTgunAhFyC79uM2mTw9PvA3xu/vvD6h80irP7uBir5B8XAFtK8KZFaPB5b0aBs4Q7Isu89LD3w==}
     dev: true
 
   /@tootallnate/once@2.0.0:
