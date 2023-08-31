@@ -34,14 +34,9 @@ export declare class Algonaut {
             walWin: Window | null;
             onMsgHandler: ((event: any) => void) | null;
             requests: import("@thencc/inkey-types").FrameBusRequestsMap;
-            blur: boolean;
-            containerBg: string;
             initSrc(src?: string | undefined, align?: "center" | "left" | "right" | undefined, styles?: import("@thencc/inkey-types").InkeyStyleObj | undefined): Promise<void>;
             showFrame(routepath?: string | undefined): void;
             hideFrame(): void;
-            blurSiblings(): void;
-            unblurSiblings(): void;
-            getContainerSiblings(): HTMLElement[];
             setHeight(height: number, unit?: string | undefined): void;
             destroy(): void;
             isReady(): Promise<boolean>;

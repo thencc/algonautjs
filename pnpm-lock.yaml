@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@thencc/any-wallet':
-    specifier: ^0.2.3
-    version: 0.2.3(algosdk@2.3.0)
+    specifier: ^0.2.4
+    version: 0.2.4(algosdk@2.3.0)
   algosdk:
     specifier: github:thencc/js-algorand-sdk-no-fetch-poly#1a963de38b4d29b9a4d06bf829c428fc0aa61ce7
     version: github.com/thencc/js-algorand-sdk-no-fetch-poly/1a963de38b4d29b9a4d06bf829c428fc0aa61ce7
@@ -26,8 +26,8 @@ optionalDependencies:
     specifier: ^1.4.2
     version: 1.4.2
   '@thencc/inkey-client-js':
-    specifier: ^0.0.29
-    version: 0.0.29
+    specifier: ^0.0.30
+    version: 0.0.30
 
 devDependencies:
   '@jest/globals':
@@ -1068,8 +1068,8 @@ packages:
       '@sinonjs/commons': 3.0.0
     dev: true
 
-  /@thencc/any-wallet@0.2.3(algosdk@2.3.0):
-    resolution: {integrity: sha512-cknrxdbgROWEBqg/69o7op+E/mG8FS/lZbxj4skjb5svog59CuBk0z1GUPLuP7pbyCsG20Q2hycomEhUK/iR+g==}
+  /@thencc/any-wallet@0.2.4(algosdk@2.3.0):
+    resolution: {integrity: sha512-G1M+1DBO6jqyXrJwzIyWN0tvUNPPob1f1AazWMbUlygayknVd+z1i8YYaGd7rknA2qRm+Vw9B6DW7x7jjpgGJw==}
     peerDependencies:
       algosdk: ^2.1.0
     dependencies:
@@ -1081,15 +1081,15 @@ packages:
       '@blockshake/defly-connect': 1.1.5(algosdk@2.3.0)
       '@perawallet/connect': 1.2.3(algosdk@2.3.0)
       '@randlabs/myalgo-connect': 1.4.2
-      '@thencc/inkey-client-js': 0.0.29
+      '@thencc/inkey-client-js': 0.0.30
       buffer: 6.0.3
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
     dev: false
 
-  /@thencc/inkey-client-js@0.0.29:
-    resolution: {integrity: sha512-99Lf3aRTJ8fPXDvvweKugZIXtn1br+G6CRwBqcbhGQHoMhajXWkcrDLTu0O3LZbgcXMlWYEGkG1JaetIAfaETA==}
+  /@thencc/inkey-client-js@0.0.30:
+    resolution: {integrity: sha512-h31XV0Zrrm0+Ue/FNHR+TBLZ9kYfVXpA5HS2w7UP0Hy/3k1YVDh+0NIcxHMoq2FBYPGcz208pIX/cTW73IDyZQ==}
     requiresBuild: true
     dev: false
     optional: true
