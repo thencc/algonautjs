@@ -1,10 +1,7 @@
 import type { LogicSigAccount, Transaction, SuggestedParams, MultisigMetadata } from 'algosdk';
 import type { ApplicationStateSchema } from 'algosdk/dist/types/client/v2/algod/models/types';
-import type { WalletInitParamsObj } from '@thencc/any-wallet';
+import type { AnyWalletStateConfig, WalletInitParamsObj } from '@thencc/any-wallet';
 export type AlgonautConfig = {
-    libConfig?: {
-        disableLogs?: boolean;
-    };
     nodeConfig?: {
         BASE_SERVER: string;
         INDEX_SERVER?: string;
@@ -12,7 +9,10 @@ export type AlgonautConfig = {
         PORT: string;
         API_TOKEN: any;
     };
+    disableLogs?: boolean;
     initWallets?: WalletInitParamsObj;
+    storageKey?: AnyWalletStateConfig['storageKey'];
+    storageController?: AnyWalletStateConfig['storageController'];
 };
 export interface AlgonautStateData {
     key: string;

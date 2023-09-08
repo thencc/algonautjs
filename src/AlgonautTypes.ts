@@ -8,13 +8,9 @@ import type {
 // FYI the line below breaks in some deno envs
 import type { ApplicationStateSchema } from 'algosdk/dist/types/client/v2/algod/models/types';
 
-import type { WalletInitParamsObj } from '@thencc/any-wallet';
+import type { AnyWalletStateConfig, WalletInitParamsObj } from '@thencc/any-wallet';
 
 export type AlgonautConfig = {
-	libConfig?: {
-		disableLogs?: boolean; // should default to true
-	};
-
 	nodeConfig?: {
 		BASE_SERVER: string;
 		INDEX_SERVER?: string; // optional, but helpful
@@ -22,12 +18,12 @@ export type AlgonautConfig = {
 		PORT: string;
 		API_TOKEN: any;
 	};
-
-	// if we wanted to support multiple init params of any-wallet, but too verbose...
-	// anyWalletConfig?: {
-	// 	walletInitParams?: WalletInitParamsObj;
-	// };
-	initWallets?: WalletInitParamsObj;
+	// libConfig:
+	disableLogs?: boolean; // both AlgJs + AW
+	// awConfig:
+	initWallets?: WalletInitParamsObj; // set init params for future .connect wallet calls
+	storageKey?: AnyWalletStateConfig['storageKey'];
+	storageController?: AnyWalletStateConfig['storageController'];
 }
 
 export interface AlgonautStateData {

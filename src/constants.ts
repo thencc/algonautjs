@@ -1,5 +1,5 @@
 import type { AlgonautConfig } from './AlgonautTypes';
 
-export const defaultLibConfig: AlgonautConfig['libConfig'] = {
+export const defaultLibConfig = {
 	disableLogs: true,
 };
