@@ -191,9 +191,13 @@ algonaut is optimized for inkey! on the top level of algonaut there are useful m
 
 You can subscribe to account changes like so:
 ```ts
-import { subscribeToAccountChanges } from '@thencc/algonautjs';
+import { 
+  Algonaut
+} from '@thencc/algonautjs';
 
-const unsubscribe = subscribeToAccountChanges(
+const algonaut = new Algonaut();
+
+const unsubscribe = algonaut.subscribeToAccountChanges(
   (acct) => {
     if (acct) {
       // authenticated
@@ -211,14 +215,26 @@ unsubscribe();
 
 
 <details open>
-<summary><h3>🔋 ex: reconnect ↕</h3></summary>
+<summary><h3>🔋 ex: recall state / reconnect ↕</h3></summary>
 
-if your dapp wants to recall previously connected accounts from localstorage, it is recommended to call this on page load:
+if your dapp wants to recall previously connected accounts from localstorage, use the same `storageKey` during intialization
 ```ts
-algonaut.reconnect();
-// IF connected during a previous session... the active account + connected accounts are now populated
-console.log(algonaut.connectedAccounts);
-console.log(algonaut.account);
+import { 
+  Algonaut
+} from '@thencc/algonautjs';
+
+const algonautA = new Algonaut({
+  storageKey: 'state1'
+});
+const algonautB = new Algonaut({
+  storageKey: 'state1'
+});
+
+// now, algonautA.activeAddress == algonautB.activeAddress
+
+// and if a user connected accounts during a previous session, the active account + connected accounts are now populated
+console.log(algonautA.connectedAccounts);
+console.log(algonautA.account);
 ```
 </details>
 
